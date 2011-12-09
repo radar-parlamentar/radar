@@ -1,0 +1,14 @@
+CAMARAWS
+
+A camâra dos deputados lançou a pouco um conjunto de web services que fornecem algumas informações sobre as atividades da casa.
+Esses serviços estão disponíveis em http://www2.camara.gov.br/transparencia/dados-abertos.
+
+Neste projeto pretendo brincar um pouco com os dados das proposições legislativas.
+
+Um primeiro problema é que não tem um serviço que permita uma busca das proposições disponíveis.
+Idealmente eu gostaria de recuperar as proposições que foram votadas em um determinado período.
+Talvez alguma raspagem de dados possa ser feita a partir de http://www.camara.gov.br/sileg/default.asp
+
+Qualquer ajuda é bem vinda =)
+
+Leonardo Leite
