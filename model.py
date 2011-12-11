@@ -1,6 +1,3 @@
-#!/usr/bin/python3.2
-# -*- coding: utf-8 -*-
-#
 # Classes do modelo de negócio, no caso o XML da proposição
 import xml.etree.ElementTree as etree
 import io
@@ -11,15 +8,16 @@ class Proposicao:
   ano = ''
   votacoes = []
   
-  def fromxml(self, xml):
+  def fromxml(xml):
     tree = etree.parse(io.StringIO(xml))
-    self.sigla = tree.find('Sigla').text
-    self.numero = tree.find('Numero').text
-    self.ano = tree.find('Ano').text
+    prop = Proposicao()
+    prop.sigla = tree.find('Sigla').text
+    prop.numero = tree.find('Numero').text
+    prop.ano = tree.find('Ano').text
     for child in tree.find('Votacoes'):
-      vot = Votacao()
-      vot.fromtree(child)
-      self.votacoes.append(vot)
+      vot = Votacao.fromtree(child)
+      prop.votacoes.append(vot)
+    return prop
 
   def __str__(self):
     return "%s %s/%s" % (self.sigla, self.numero, self.ano)
@@ -30,14 +28,15 @@ class Votacao:
   hora = ''
   deputados = []
 
-  def fromtree(self, tree):
-    self.resumo = tree.attrib['Resumo']
-    self.data = tree.attrib['Data']
-    self.hora = tree.attrib['Hora']
+  def fromtree(tree):
+    vot = Votacao()
+    vot.resumo = tree.attrib['Resumo']
+    vot.data = tree.attrib['Data']
+    vot.hora = tree.attrib['Hora']
     for child in tree:
-      dep = Deputado()
-      dep.fromtree(child)
-      self.deputados.append(dep)
+      dep = Deputado.fromtree(child)
+      vot.deputados.append(dep)
+    return vot
 
   def __str__(self):
     return "[%s, %s] %s" % (self.data, self.hora, self.resumo)
@@ -48,11 +47,13 @@ class Deputado:
   uf = ''
   voto = ''
 
-  def fromtree(self, tree):
-    self.nome = tree.attrib['Nome']
-    self.partido = tree.attrib['Partido']
-    self.uf = tree.attrib['UF']
-    self.voto = tree.attrib['Voto']
+  def fromtree(tree):
+    dep = Deputado()
+    dep.nome = tree.attrib['Nome']
+    dep.partido = tree.attrib['Partido']
+    dep.uf = tree.attrib['UF']
+    dep.voto = tree.attrib['Voto']
+    return dep
 
   def __str__(self):
     return "%s (%s-%s) votou %s" % (self.nome, self.partido, self.uf, self.voto)

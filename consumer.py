@@ -2,20 +2,13 @@
 # -*- coding: utf-8 -*-
 #
 # Pequeno script que baixa a votação do código florestal
-# Fonte: http://rest.elkstein.org/2008/02/using-rest-in-python.html
-import urllib.request
-from model import Proposicao
-
+import camaraws
 
 tipo = 'pl'
 num = '1876'
 ano = '1999'
-url = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?tipo=%s&numero=%s&ano=%s' % (tipo, num, ano)
-xml = urllib.request.urlopen(url).read()
-xml = str(xml, "utf-8")
+prop = camaraws.obter_votacao(tipo, num, ano)
 
-prop = Proposicao()
-prop.fromxml(xml)
 print(prop)
 for vot in prop.votacoes:
   print(vot)
