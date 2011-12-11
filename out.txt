@@ -1,4 +1,28 @@
 pl 1876/1999
+[24/5/2011, 20:52] Aprovada a Emenda Substitutiva Global de Plenário n.º 186, com parecer favorável, ressalvados dos destaques. Sim: 410; não: 63; abstenção: 01; total: 474.
+PCdoB: 	 Sim: 14 	 Não: 0 	 Abstenções: 0
+DEM: 	 Sim: 38 	 Não: 0 	 Abstenções: 0
+PMDB: 	 Sim: 74 	 Não: 0 	 Abstenções: 0
+PR: 	 Sim: 31 	 Não: 2 	 Abstenções: 0
+PP: 	 Sim: 39 	 Não: 0 	 Abstenções: 0
+PV: 	 Sim: 0 	 Não: 12 	 Abstenções: 0
+PT: 	 Sim: 45 	 Não: 35 	 Abstenções: 0
+PRB: 	 Sim: 11 	 Não: 0 	 Abstenções: 0
+PTC: 	 Sim: 1 	 Não: 0 	 Abstenções: 0
+PTB: 	 Sim: 21 	 Não: 0 	 Abstenções: 0
+PPS: 	 Sim: 10 	 Não: 2 	 Abstenções: 0
+PRP: 	 Sim: 1 	 Não: 0 	 Abstenções: 0
+PMN: 	 Sim: 4 	 Não: 0 	 Abstenções: 0
+PSDB: 	 Sim: 47 	 Não: 1 	 Abstenções: 1
+PDT: 	 Sim: 21 	 Não: 5 	 Abstenções: 0
+PRTB: 	 Sim: 2 	 Não: 0 	 Abstenções: 0
+PTdoB: 	 Sim: 3 	 Não: 0 	 Abstenções: 0
+PSL: 	 Sim: 2 	 Não: 0 	 Abstenções: 0
+PSB: 	 Sim: 27 	 Não: 3 	 Abstenções: 0
+PSC: 	 Sim: 17 	 Não: 1 	 Abstenções: 0
+PHS: 	 Sim: 2 	 Não: 0 	 Abstenções: 0
+PSOL: 	 Sim: 0 	 Não: 2 	 Abstenções: 0
+************
 [24/5/2011, 23:50] Aprovada a Emenda de Plenário n.º 164. Sim: 273; não: 182; abstenção: 02; total: 457.
 PR: 	 Sim: 16 	 Não: 16 	 Abstenções: 0
 PSDB: 	 Sim: 45 	 Não: 3 	 Abstenções: 1
@@ -21,3 +45,4 @@ PHS: 	 Sim: 2 	 Não: 0 	 Abstenções: 0
 PMN: 	 Sim: 3 	 Não: 1 	 Abstenções: 0
 PSOL: 	 Sim: 0 	 Não: 2 	 Abstenções: 0
 PMDB: 	 Sim: 72 	 Não: 1 	 Abstenções: 0
+************

@@ -52,8 +52,6 @@ class Votacao:
     # partido => VotoPartido
     dic = {}
     for dep in self.deputados:
-      if (dep.partido == 'PTC'):
-        print('PSOL! %s' % dep.nome)
       part = dep.partido
       if not part in dic:
         dic[part] = VotoPartido(part)
