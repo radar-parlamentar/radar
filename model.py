@@ -2,6 +2,10 @@
 import xml.etree.ElementTree as etree
 import io
 
+SIM = 'Sim'
+NAO = 'Não'
+ABSTENCAO = 'Abstenção'
+
 class Proposicao:
   sigla = ''
   numero = ''
@@ -28,8 +32,14 @@ class Votacao:
   hora = ''
   deputados = []
 
+  def __init__(self): # não deveria ser necessário
+    self.resumo = ''
+    self.data = ''
+    self.hora = ''
+    self.deputados = []
+
   def fromtree(tree):
-    vot = Votacao()
+    vot = Votacao() # se não fosse pelo init, faria coisa errada (utilizar os valores do objeto anteriormente criados!!!)
     vot.resumo = tree.attrib['Resumo']
     vot.data = tree.attrib['Data']
     vot.hora = tree.attrib['Hora']
@@ -37,6 +47,20 @@ class Votacao:
       dep = Deputado.fromtree(child)
       vot.deputados.append(dep)
     return vot
+
+  def por_partido(self):
+    # partido => VotoPartido
+    dic = {}
+    for dep in self.deputados:
+      if (dep.partido == 'PTC'):
+        print('PSOL! %s' % dep.nome)
+      part = dep.partido
+      if not part in dic:
+        dic[part] = VotoPartido(part)
+      voto = dic[part]
+      voto.add(dep.voto)
+    return dic  
+  
 
   def __str__(self):
     return "[%s, %s] %s" % (self.data, self.hora, self.resumo)
@@ -59,4 +83,22 @@ class Deputado:
     return "%s (%s-%s) votou %s" % (self.nome, self.partido, self.uf, self.voto)
 
   
+class VotoPartido:
+  partido = ''
+  sim = 0
+  nao = 0
+  abstencao = 0
+
+  def add(self, voto):
+    if (voto == SIM):
+      self.sim += 1
+    if (voto == NAO):
+      self.nao += 1
+    if (voto == ABSTENCAO):
+      self.abstencao += 1
+
+  def __init__(self, partido):
+    self.partido = partido
+
+
 
