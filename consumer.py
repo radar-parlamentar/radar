@@ -17,5 +17,8 @@ xml = str(xml, "utf-8")
 prop = Proposicao()
 prop.fromxml(xml)
 print(prop)
-
+for vot in prop.votacoes:
+  print(vot)
+  for dep in vot.deputados:
+    print(dep)
 
