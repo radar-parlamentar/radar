@@ -11,6 +11,12 @@ class Proposicao:
   numero = ''
   ano = ''
   votacoes = []
+
+  def __init__(self):
+    sigla = ''
+    numero = ''
+    ano = ''
+    votacoes = []
   
   def fromxml(xml):
     tree = etree.parse(io.StringIO(xml))
@@ -68,6 +74,12 @@ class Deputado:
   partido = ''
   uf = ''
   voto = ''
+
+  def __init__(self):
+    nome = ''
+    partido = ''
+    uf = ''
+    voto = ''
 
   def fromtree(tree):
     dep = Deputado()
