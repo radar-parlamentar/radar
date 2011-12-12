@@ -9,6 +9,9 @@ Um primeiro problema é que não tem um serviço que permita uma busca das propo
 Idealmente eu gostaria de recuperar as proposições que foram votadas em um determinado período.
 Talvez alguma raspagem de dados possa ser feita a partir de http://www.camara.gov.br/sileg/default.asp
 
+Outra página que pode ser fonte de dados é http://www2.camara.gov.br/atividade-legislativa/plenario/
+Com ela posso ver as votações de cada dia
+
 Qualquer ajuda é bem vinda =)
 
 Leonardo Leite
