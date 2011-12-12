@@ -7,15 +7,19 @@ NAO = 'Não'
 ABSTENCAO = 'Abstenção'
 
 class Proposicao:
+  id = ''
   sigla = ''
   numero = ''
   ano = ''
+  explicacao = ''
   votacoes = []
 
   def __init__(self):
+    id = ''
     sigla = ''
     numero = ''
     ano = ''
+    explicacao = ''
     votacoes = []
   
   def fromxml(xml):
@@ -30,7 +34,7 @@ class Proposicao:
     return prop
 
   def __str__(self):
-    return "%s %s/%s" % (self.sigla, self.numero, self.ano)
+    return "[%s %s/%s]: %s" % (self.sigla, self.numero, self.ano, self.explicacao)
 
 class Votacao:
   resumo = ''
