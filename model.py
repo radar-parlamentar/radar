@@ -7,20 +7,14 @@ NAO = 'Não'
 ABSTENCAO = 'Abstenção'
 
 class Proposicao:
-  id = ''
-  sigla = ''
-  numero = ''
-  ano = ''
-  explicacao = ''
-  votacoes = []
 
   def __init__(self):
-    id = ''
-    sigla = ''
-    numero = ''
-    ano = ''
-    explicacao = ''
-    votacoes = []
+    self.id = ''
+    self.sigla = ''
+    self.numero = ''
+    self.ano = ''
+    self.explicacao = ''
+    self.votacoes = []
   
   def fromxml(xml):
     tree = etree.parse(io.StringIO(xml))
@@ -37,19 +31,15 @@ class Proposicao:
     return "[%s %s/%s]: %s" % (self.sigla, self.numero, self.ano, self.explicacao)
 
 class Votacao:
-  resumo = ''
-  data = ''
-  hora = ''
-  deputados = []
 
-  def __init__(self): # não deveria ser necessário
+  def __init__(self): 
     self.resumo = ''
     self.data = ''
     self.hora = ''
     self.deputados = []
 
   def fromtree(tree):
-    vot = Votacao() # se não fosse pelo init, faria coisa errada (utilizar os valores do objeto anteriormente criados!!!)
+    vot = Votacao() 
     vot.resumo = tree.attrib['Resumo']
     vot.data = tree.attrib['Data']
     vot.hora = tree.attrib['Hora']
@@ -74,16 +64,12 @@ class Votacao:
     return "[%s, %s] %s" % (self.data, self.hora, self.resumo)
 
 class Deputado:
-  nome = ''
-  partido = ''
-  uf = ''
-  voto = ''
 
   def __init__(self):
-    nome = ''
-    partido = ''
-    uf = ''
-    voto = ''
+    self.nome = ''
+    self.partido = ''
+    self.uf = ''
+    self.voto = ''
 
   def fromtree(tree):
     dep = Deputado()
@@ -98,10 +84,6 @@ class Deputado:
 
   
 class VotoPartido:
-  partido = ''
-  sim = 0
-  nao = 0
-  abstencao = 0
 
   def add(self, voto):
     if (voto == SIM):
@@ -113,6 +95,10 @@ class VotoPartido:
 
   def __init__(self, partido):
     self.partido = partido
+    self.partido = ''
+    self.sim = 0
+    self.nao = 0
+    self.abstencao = 0
 
 
 
