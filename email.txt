@@ -1,0 +1,11 @@
+Mensagem enviada pelo "Fale conosco" do camara.gov.br
+Protocolo: 9C41102614795
+========================
+
+Olá,
+
+Queria em primeiro lugar parabenizar a câmara pelo recém trabalho desenvolvido com dados abertos. Estou tentando fazer alguma coisa em cima desses dados para analisar as votacões de proposicões.
+Gostaria de saber como é possível obter uma lista das proposicões que foram votadas pela câmara em um determinado período. Na busca por proposicões do site da câmara é possível buscar por proposicões apresentadas em um determinado período, mas não por votadas em um período.
+
+grato pela atencão,
+Leonardo Leite
