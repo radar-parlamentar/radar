@@ -1,6 +1,6 @@
-Mensagem enviada pelo "Fale conosco" do camara.gov.br
-Protocolo: 9C41102614795
-========================
+Mensagens enviadas pelo "Fale conosco" do camara.gov.br
+
+==== Protocolo = 9C41102614795 ====
 
 Olá,
 
@@ -9,3 +9,41 @@ Gostaria de saber como é possível obter uma lista das proposicões que foram v
 
 grato pela atencão,
 Leonardo Leite
+
+****** resposta ******
+
+Senhor Leonardo,
+
+O Centro de Documentação e Informação (Cedi) da Câmara dos Deputados agradece o contato.
+
+Em atenção ao solicitado, informo que a sugestão para que seja adicionado mais um campo de pesquisa, relativo ao período de aprovação das proposições, será enviado ao nosso Centro de Informática, que analisará a viabilidade técnica do pleito.
+
+Quanto à demanda relatada por Vossa Senhoria, basta fazer o pedido por e-mail, indicando o período e os dados de seu interesse, que enviaremos os resultados tão logo seja possível.
+
+Atenciosamente,
+Coordenação de Relacionamento, Pesquisa e Informação – Corpi
+Centro de Documentação e Informação – Cedi
+Câmara dos Deputados – Anexo II
+Praça dos Três Poderes – Brasília – DF
+70160-900
+Tel.: 0-XX-61- 3216-5777; fax: 0-XX-61- 3216-5757
+informa.cedi@camara.gov.br
+
+==== Protocolo = B63E102616063 ====
+
+Olá,
+
+em primeiro, agradeço pela presteza em que responderam minha mensagem anterior (9C41102614795).
+
+Gostaria de solicitar a lista de proposições votadas pela câmara no ano de 2011. Basta que me retornem sua identificação (ex: "PL 1876/1999").
+
+Peço apenas os seguintes tipos de proposições:
+ * projetos de lei
+ * projetos de lei complementar
+ * propostas de emendas à constituição
+ * medidas provisórias
+ * projeto de decreto legislativo
+
+grato pela atenção,
+Leonardo Leite
+
