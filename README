@@ -12,6 +12,14 @@ Talvez alguma raspagem de dados possa ser feita a partir de http://www.camara.go
 Outra página que pode ser fonte de dados é http://www2.camara.gov.br/atividade-legislativa/plenario/
 Com ela posso ver as votações de cada dia
 
+Novidade: pedi pelo site da câmara e consegui uma lista das proposições votadas em 2011
+Mas nem todas retornam votações no web service
+Hipótese: talvez algumas sejam votações sumárias*, ou seja, não há votação individual já que ninguém é contra a proposição
+Seja como for, é preciso identificar as proposições que retornem votações no web service
+* não tem certeza desse nomenclatura
+
+IMPORTANTE: para os interessados nos resultados, checar a pasta "resultados"
+
 Qualquer ajuda é bem vinda =)
 
 Leonardo Leite

@@ -12,7 +12,7 @@ import re
 import codecs
 
 def parse_proposicoes():
-  file_name = 'proposicoes2011.htm'  # arquivo contem proposições votadas pela câmara em 2011
+  file_name = 'recursos/proposicoes2011.htm'  # arquivo contem proposições votadas pela câmara em 2011
   prop_file = codecs.open(file_name, encoding='ISO-8859-15', mode='r')
   regexp = '<A HREF=http://.*?id=([0-9]*?)>([A-Z]*?) ([0-9]*?)/([0-9]{4}?)</A>'
   proposicoes = []
