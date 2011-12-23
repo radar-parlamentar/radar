@@ -17,6 +17,7 @@ Mas isso se mestrou muito difícil
 Então pedi pelo site da câmara e consegui uma lista das proposições votadas em 2011 (recursos/proposicoes2011.htm)
 Essa lista contem 693* proposições
 Mas apenas 27 proposições retornaram a lista de votação pelo web service
+Um detalhe interessante: das 693 proposições, apenas duas eram PECs**, e essas duas PECs retornaram votações
 
 IMPORTANTE: para os interessados nos resultados, checar a pasta "resultados"
 
@@ -25,3 +26,4 @@ Qualquer ajuda é bem vinda =)
 Leonardo Leite
 
 * na verdade um pouco mais, pois não considerei proposições como "PDC 2243/2009 => TVR 1702/2009"
+** propostas de emenda à constituição, a saber: 98/2007 e 61/2011
