@@ -3,9 +3,9 @@
 #
 # faz uma análise dos tipos de proposições votadas em 2011
 
-import parser
+import proposicoes
 
-proposicoes = parser.parse_proposicoes()
+proposicoes = proposicoes.parse_html()
 pl = plp = pdc = mpv = pec = 0 
 for prop in proposicoes:
   if (prop['tipo'] == 'PL'):

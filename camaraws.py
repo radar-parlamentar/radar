@@ -9,7 +9,10 @@ OBTER_VOTACAO_POR_ID = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/Ob
 
 def obter_votacao(prop_id, tipo, num, ano):
   url = OBTER_VOTACAO_PROPOSICAO % (tipo, num, ano)
-  xml = urllib.request.urlopen(url).read()
+  try:
+    xml = urllib.request.urlopen(url).read()
+  except urllib.error.HTTPError:
+    return None
   xml = str(xml, "utf-8")
   prop = Proposicao.fromxml(xml)
   prop.id = prop_id
