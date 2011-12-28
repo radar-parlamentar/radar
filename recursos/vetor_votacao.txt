@@ -1,0 +1,83 @@
+== VETOR DE VOTAÇÕES ==
+
+Cada partido tem um vetor (v) de votações
+Cada posição (i) do vetor representa uma votação
+A votação é representada por um número real v_i \in [0,1]
+que e é calculado em função da tupla (s, n, a), 
+onde s, n e a são números inteiros (representando as votações SIM, NÃO e ABSTENÇÕES)
+
+v_i = ( 1*s + 0,5*a + 0*n ) / (s + a + n)
+
+Assim, 
+v_i = 1   => todos deputados do partido votaram SIM
+v_i = 0   => todos deputados do partido votaram NÃO
+v_i = 0,5 => pode ser que todos os deputados do partido se abstiveram
+             pode ser que metade votou SIM e metade votou NÃO
+
+== EXEMPLO DE VETOR DE VOTAÇÕES ==
+
+Sejam as votações (s,n,a):
+(9,0,0) 
+(0,8,1) 
+(7,1,1) 
+(3,3,3) 
+
+v = [1; 0,055555556; 0,833333333; 0,5]
+
+== SEMELHANÇA ENTRE PARTIDOS ==
+
+Seja dois partidos (p1 e p2) com seus respectivos vetores de votação (v1 e v2)
+A semelhança de partidos s(p1,p2) será uma função da norma da projeção de v1 sobre v2
+
+Nota matemática:
+* Quando dois vetores são iguais, a norma da projeção de um sobre o outro é 1
+* Quando dois vetores são paralelos, a norma da projeção de v1 sobre v2 é a norma de v1
+* Quando dois vetores são perpendiculares, a norma da projreção de um sobre o outro é 0
+
+Como queremos s(p1,p2) = s(p2,p1) a semelhança operará sobre os vetores de votação normalizados
+// proj_esc(u,v) = proj_esc(v,u) se |v| = |u|
+
+Nota matemática:
+* normalizar o vetor aqui quer dizer manter o vetor na mesma direção/sentido mas fazendo com que sua norma seja igual a 1
+* a norma de um vetor é o "tamanho" do vetor
+
+Ao normalizar os vetores, também já garantimos que a semelhança seja dada por um número real \in [0,1],
+o que pode ser intuitivamente entendido como um porcentual de semelhança.
+
+Assim sendo:
+
+* s(p1,p2) = proj_esc(norm(v1),norm(v2)), sendo s(p1,p2) \in [0,1]
+
+Fórmulas auxiliares
+
+* norm(v) = v / |v| 					// normalização de v
+* proj_esc(u,v) = (u.v)/|v| 				// projeção escalar de u sobre v (é a norma da projeção de u sobre v)
+* |v| = sqrt(a^2 + b^2 + c^2), para v=[a,b,c] 		// norma de v
+* u.v = ax+by+cz, para u=[a,b,c] e v=[x,y,z]		// produtor escalar entre u e v
+
+== EXEMPLO DE SEMELHANÇA ==
+
+v1 = [1; 0,8; 0,2; 0,5]
+v2 = [1; 0,7; 0,1; 0,6]
+v3 = [0; 0,2; 0,8; 0,2]
+
+Esperamos uma alta semelhança entre p1 e p2, e uma baixa semelhança entre p1 e p3 (que será parecida com s(p2,p3))
+
+|v1| = 1,389244399 
+|v2| = 1,36381817
+|v3| = 0,848528137
+
+// normalizações
+nv1 = [0,719815751; 0,575852601; 0,14396315; 0,359907875]
+nv2 = [0,733235575; 0,513264902; 0,073323557; 0,439941345]
+nv3 = [0; 0,235702261; 0,942809042; 0,235702261]
+
+s(p1,p2) = nv1.nv2 = 0,719815751*0,733235575 + 0,575852601*0,513264902 + 0,14396315*0,073323557 + 0,359907875*0,439941345
+         = 0,99225369
+
+s(p1,p3) = nv1.nv3 = 0,719815751*0 + 0,575852601*0,235702261 + 0,14396315*0,942809042 + 0,359907875*0,235702261
+         = 0,356290619
+
+s(p2,p3) = nv2.nv3 = 0,733235575*0 + 0,513264902*0,235702261 + 0,073323557*0,942809042 + 0,439941345*0,235702261
+         = 0,29380298
+

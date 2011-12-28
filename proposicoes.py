@@ -48,6 +48,10 @@ def com_votacao(proposicoes):
       votadas.append(prop)
   return votadas
 
+# Retorna a lista de proposições para as quais é possível obter o xml da votação
+def proposicoes_com_votacao():
+  return parse()
+
 #script
 #proposicoes = parse_html()
 #votadas = com_votacao(proposicoes)
