@@ -13,7 +13,9 @@ class Proposicao:
     self.sigla = ''
     self.numero = ''
     self.ano = ''
+    self.ementa = ''
     self.explicacao = ''
+    self.situacao = ''
     self.votacoes = []
   
   def fromxml(xml):
@@ -28,7 +30,7 @@ class Proposicao:
     return prop
 
   def __str__(self):
-    return "[%s %s/%s]: %s" % (self.sigla, self.numero, self.ano, self.explicacao)
+    return "[%s %s/%s]: %s \nEmenta: %s \nSituação: %s" % (self.sigla, self.numero, self.ano, self.explicacao, self.ementa, self.situacao)
 
 class Votacao:
 

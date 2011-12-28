@@ -1,5 +1,8 @@
 [pl 1876/1999]: Revoga a Lei nº 4.771, de 1965 (Código Florestal); altera a Lei nº 9.605, de 1998.  
-PL chamado de novo Código Florestal.
+PL chamado de novo Código Florestal. 
+Ementa: Dispõe sobre Áreas de Preservação Permanente, Reserva Legal, exploração florestal e dá outras providências. 
+Situação: Diversos
+************
 [24/5/2011, 20:52] Aprovada a Emenda Substitutiva Global de Plenário n.º 186, com parecer favorável, ressalvados dos destaques. Sim: 410; não: 63; abstenção: 01; total: 474.
 PCdoB: 	 Sim: 14 	 Não: 0 	 Abstenções: 0
 DEM: 	 Sim: 38 	 Não: 0 	 Abstenções: 0
@@ -46,4 +49,3 @@ PHS: 	 Sim: 2 	 Não: 0 	 Abstenções: 0
 PMN: 	 Sim: 3 	 Não: 1 	 Abstenções: 0
 PSOL: 	 Sim: 0 	 Não: 2 	 Abstenções: 0
 PMDB: 	 Sim: 72 	 Não: 1 	 Abstenções: 0
-************

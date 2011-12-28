@@ -15,8 +15,9 @@ prop = camaraws.obter_votacao(prop_id, tipo, num, ano)
 
 print(prop)
 for votacao in prop.votacoes:
+  print('************')
   print(votacao)
   dic = votacao.por_partido()
   for partido, voto in dic.items():
     print("%s: \t Sim: %s \t Não: %s \t Abstenções: %s" % (partido, voto.sim, voto.nao, voto.abstencao))
-  print('************')
+

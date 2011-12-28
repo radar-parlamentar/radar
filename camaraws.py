@@ -13,10 +13,16 @@ def obter_votacao(prop_id, tipo, num, ano):
     xml = urllib.request.urlopen(url).read()
   except urllib.error.HTTPError:
     return None
-  xml = str(xml, "utf-8")
+  xml = str(xml, "utf-8") # aqui é o xml da votação
   prop = Proposicao.fromxml(xml)
   prop.id = prop_id
-  prop.explicacao = obter_explicacao_ementa(prop_id)
+
+  xml = obter_proposicao(prop_id) # aqui é o xml com mais detalhes sobre a proposição
+  xml = str(xml, "utf-8")
+  tree = etree.parse(io.StringIO(xml))
+  prop.ementa = tree.find('Ementa').text
+  prop.explicacao = tree.find('ExplicacaoEmenta').text
+  prop.situacao = tree.find('Situacao').text
   return prop
 
 def obter_proposicao(prop_id):
@@ -24,8 +30,4 @@ def obter_proposicao(prop_id):
   xml = urllib.request.urlopen(url).read()
   return xml
 
-def obter_explicacao_ementa(prop_id):
-  xml = obter_proposicao(prop_id)
-  xml = str(xml, "utf-8")
-  tree = etree.parse(io.StringIO(xml))
-  return tree.find('ExplicacaoEmenta').text
+
