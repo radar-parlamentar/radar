@@ -11,8 +11,9 @@ v_i = ( 1*s + 0,5*a + 0*n ) / (s + a + n)
 Assim, 
 v_i = 1   => todos deputados do partido votaram SIM
 v_i = 0   => todos deputados do partido votaram NÃO
-v_i = 0,5 => pode ser que todos os deputados do partido se abstiveram
-             pode ser que metade votou SIM e metade votou NÃO
+v_i = 0,5 => representa uma indefinição da opnião do partido sobre a proposição; exemplos:
+                pode ser que todos os deputados do partido se abstiveram
+                pode ser que metade votou SIM e metade votou NÃO
 
 == EXEMPLO DE VETOR DE VOTAÇÕES ==
 
