@@ -5,12 +5,6 @@
 # Mostra votos agregados por partido
 import camaraws
 
-# prorroga a vigência da DRU até 31 de dezembro de 2015
-# http://www.camara.gov.br/proposicoesWeb/fichadetramitacao?idProposicao=513496
-prop_id = '513496'
-tipo = 'pec'
-num = '61'
-ano = '2011'
 # código florestal
 # http://www.camara.gov.br/proposicoesWeb/fichadetramitacao?idProposicao=17338
 prop_id = '17338'
