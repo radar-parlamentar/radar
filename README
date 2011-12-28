@@ -5,25 +5,41 @@ Esses serviços estão disponíveis em http://www2.camara.gov.br/transparencia/d
 
 Neste projeto pretendo brincar um pouco com os dados das proposições legislativas.
 
-Um primeiro problema é que não tem um serviço que permita uma busca das proposições disponíveis.
+Qualquer ajuda é bem vinda =)
+
+Leonardo Leite
+
+=============================
+QUESTÕES 
+
+Algumas questões específicas que espero responder analisando os dados. 
+Resultados dessas análises se encontram na pasta "resultados"
+
+#1 Quais os tipos de proposições legislativas mais frequentes na casa?
+
+#2 Partidos da base aliada tendem a aprovar medidas provisórias? E os de oposição tendem a rejeitá-las?
+
+#3 Qual a semelhança entre o PT (partido da presidente) com os demais partidos, em termos de votação?
+
+#4 Por ser um partido de oposição, será que em termos de votação o PSOL acaba se assemelhando a partidos de direita como o DEM?
+
+=============================
+PROBLEMAS
+
+Não existe um serviço que permita uma busca das proposições disponíveis.
 Idealmente eu gostaria de recuperar as proposições que foram votadas em um determinado período.
 
 Primeiro considerei resolver isso com alguma raspagem de dados de
 http://www.camara.gov.br/sileg/default.asp
 ou
 http://www2.camara.gov.br/atividade-legislativa/plenario/
-Mas isso se mestrou muito difícil
+Mas isso se mestrou muito difícil.
 
 Então pedi pelo site da câmara e consegui uma lista das proposições votadas em 2011 (recursos/proposicoes2011.htm)
 Essa lista contem 693* proposições
 Mas apenas 27 proposições retornaram a lista de votação pelo web service
 Um detalhe interessante: das 693 proposições, apenas duas eram PECs**, e essas duas PECs retornaram votações
 
-IMPORTANTE: para os interessados nos resultados, checar a pasta "resultados"
-
-Qualquer ajuda é bem vinda =)
-
-Leonardo Leite
-
 * na verdade um pouco mais, pois não considerei proposições como "PDC 2243/2009 => TVR 1702/2009"
 ** propostas de emenda à constituição, a saber: 98/2007 e 61/2011
+
