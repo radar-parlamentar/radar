@@ -16,7 +16,7 @@ import camaraws
 def parse_html():
   file_name = 'recursos/proposicoes2011.htm'  # arquivo contem proposições votadas pela câmara em 2011
   prop_file = codecs.open(file_name, encoding='ISO-8859-15', mode='r')
-  regexp = '<A HREF=http://.*?id=([0-9]*?)>([A-Z]*?) ([0-9]*?)/([0-9]{4}?)</A>'
+  regexp = '<A HREF=http://.*?id=([0-9]*?)>([A-Z]*?) ([0-9]*?)/([0-9]{4})</A>'
   proposicoes = []
   for line in prop_file:
     res = re.search(regexp, line)
@@ -24,6 +24,19 @@ def parse_html():
       proposicoes.append({'id':res.group(1), 'tipo':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
   return proposicoes
 
+# Parse do arquivo votadas.txt
+# Recupera uma lista com apenas a identificação das proposições (tipo número/ano, e id também)
+def parse():
+  file_name = 'resultados/votadas.txt'  # arquivo contem proposições votadas pela câmara em 2011 para as quais obtivemos o xml da votação
+  prop_file = open(file_name, 'r')
+  # ex: "485262: MPV 501/2010"
+  regexp = '^([0-9]*?): ([A-Z]*?) ([0-9]*?)/([0-9]{4})'
+  proposicoes = []
+  for line in prop_file:
+    res = re.search(regexp, line)
+    if res:
+      proposicoes.append({'id':res.group(1), 'tipo':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
+  return proposicoes
 
 # Verifica qual das proposições retornam votações pelo web service da câmara
 # Ou seja, sobre quais proposições poderemos fazer nossas análises de votação
@@ -36,9 +49,10 @@ def com_votacao(proposicoes):
   return votadas
 
 #script
-proposicoes = parse_html()
-votadas = com_votacao(proposicoes)
-print("# Documento entregue pela câmara continha %d proposições votadas em 2011" % len(proposicoes))
+#proposicoes = parse_html()
+#votadas = com_votacao(proposicoes)
+#print("# Documento entregue pela câmara continha %d proposições votadas em 2011" % len(proposicoes))
+votadas = parse()
 print("# %d proposições retornaram informações sobre suas votações pelo web service" % len(votadas))
 print("# Proposições que retornaram a votação:")
 for prop in votadas:
