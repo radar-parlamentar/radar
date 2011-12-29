@@ -1,0 +1,10 @@
+
+* Organizar arquivos em pastas (pra isso é preciso saber usar direito o 'import')
+
+* Separar os testes em vários arquivos
+
+* Criar mais testes
+
+* Colocar os métodos de algebra.py numa classe Vetor, ou utilizar uma biblioteca como a NumPy
+
+* Documentar funções
