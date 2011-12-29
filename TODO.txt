@@ -10,3 +10,5 @@
 * Documentar funções
 
 * Como modelar a obstrução?
+
+* Colocar no READE as respostas para as questões
