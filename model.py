@@ -5,6 +5,7 @@ import io
 SIM = 'Sim'
 NAO = 'Não'
 ABSTENCAO = 'Abstenção'
+OBSTRUCAO = 'Obstrução' # por hora será inObstruçãoterpretado como 'Não'
 
 class Proposicao:
 
@@ -92,6 +93,8 @@ class VotoPartido:
       self.sim += 1
     if (voto == NAO):
       self.nao += 1
+    if (voto == OBSTRUCAO): # pode ser mudado no futuro
+      self.nao += 1
     if (voto == ABSTENCAO):
       self.abstencao += 1
 
@@ -101,6 +104,9 @@ class VotoPartido:
     self.sim = 0
     self.nao = 0
     self.abstencao = 0
+
+  def __str__(self):
+    return '(%s, %s, %s)' % (self.sim, self.nao, self.abstencao)
 
 
 

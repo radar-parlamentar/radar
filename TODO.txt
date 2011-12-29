@@ -8,3 +8,5 @@
 * Colocar os métodos de algebra.py numa classe Vetor, ou utilizar uma biblioteca como a NumPy
 
 * Documentar funções
+
+* Como modelar a obstrução?

@@ -56,11 +56,11 @@ def proposicoes_com_votacao():
 #proposicoes = parse_html()
 #votadas = com_votacao(proposicoes)
 #print("# Documento entregue pela câmara continha %d proposições votadas em 2011" % len(proposicoes))
-votadas = parse()
-print("# %d proposições retornaram informações sobre suas votações pelo web service" % len(votadas))
-print("# Proposições que retornaram a votação:")
-for prop in votadas:
-  print("%s: %s %s/%s" % (prop['id'],prop['tipo'],prop['num'],prop['ano']))
+#votadas = parse()
+#print("# %d proposições retornaram informações sobre suas votações pelo web service" % len(votadas))
+#print("# Proposições que retornaram a votação:")
+#for prop in votadas:
+#  print("%s: %s %s/%s" % (prop['id'],prop['tipo'],prop['num'],prop['ano']))
 
 
 
