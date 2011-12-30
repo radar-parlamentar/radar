@@ -22,7 +22,7 @@ for prop in votadas:
   proposicoes.append(prop_vot)
 
 # análise das semelhanças
-print('Análise baseada em %d votações de 2011' % n_vot)
+print('Análise baseada em %d votações de %d proposições, votadas na camâra em 2011' % (n_vot, len(votadas)))
 for i in range(0,length):
   for j in range(i+1,length):
     sem = partidos.semelhanca(PARTIDOS[i], PARTIDOS[j], proposicoes)
