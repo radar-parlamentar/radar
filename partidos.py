@@ -6,7 +6,6 @@ def vetor_votacoes(partido, proposicoes):
     for votacao in prop.votacoes:
       dic = votacao.por_partido()
       voto = dic[partido]
-      print('voto(%s, %s)= %s' % (partido, prop.id, voto))
       vi = (voto.sim + 0.5*voto.abstencao) / (voto.sim + voto.nao + voto.abstencao)
       vetor.append(vi)
   return vetor  

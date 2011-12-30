@@ -8,9 +8,10 @@ import camaraws
 import partidos
 import sys
 
-partido1 = sys.argv[1]
-partido2 = sys.argv[2]
+PARTIDOS = ['PT', 'PSDB', 'PV', 'PSOL', 'PCdoB', 'PP', 'PR', 'DEM', 'PMDB']
+length = len(PARTIDOS)
 
+# recuperação das proposições
 votadas = proposicoes.parse() # identificação das proposições votadas em 2011
 proposicoes = [] # listagem das proposições com suas respectivas votações
 n_vot = 0 # total de votações analisadas
@@ -20,7 +21,10 @@ for prop in votadas:
   n_vot += len(prop_vot.votacoes)
   proposicoes.append(prop_vot)
 
-sem = partidos.semelhanca(partido1, partido2, proposicoes)
-
-print('Semelhança entre %s e %s = %.2f%s, baseado em %s votações de 2011' % (partido1, partido2, sem*100, '%', n_vot))
+# análise das semelhanças
+print('Análise baseada em %d votações de 2011' % n_vot)
+for i in range(0,length):
+  for j in range(i+1,length):
+    sem = partidos.semelhanca(PARTIDOS[i], PARTIDOS[j], proposicoes)
+    print('Semelhança entre %s e %s = %.2f%s' % (PARTIDOS[i], PARTIDOS[j], sem*100, '%'))
 
