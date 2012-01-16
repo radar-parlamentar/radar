@@ -21,3 +21,4 @@ def semelhanca(partido1, partido2, proposicoes):
   return semelhanca_vetores(v1, v2)
 
 
+
