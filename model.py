@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Classes do modelo de negócio, no caso o XML da proposição
 import xml.etree.ElementTree as etree
 import io
@@ -62,6 +63,16 @@ class Votacao:
       voto.add(dep.voto)
     return dic  
   
+  def por_uf(self):
+    # uf => VotoUF
+    dic = {}
+    for dep in self.deputados:
+      uf = dep.uf
+      if not uf in dic:
+        dic[uf] = VotoUF(uf)
+      voto = dic[uf]
+      voto.add(dep.voto)
+    return dic  
 
   def __str__(self):
     return "[%s, %s] %s" % (self.data, self.hora, self.resumo)
@@ -84,9 +95,8 @@ class Deputado:
 
   def __str__(self):
     return "%s (%s-%s) votou %s" % (self.nome, self.partido, self.uf, self.voto)
-
   
-class VotoPartido:
+class Voto:
 
   def add(self, voto):
     if (voto == SIM):
@@ -98,9 +108,7 @@ class VotoPartido:
     if (voto == ABSTENCAO):
       self.abstencao += 1
 
-  def __init__(self, partido):
-    self.partido = partido
-    self.partido = ''
+  def __init__(self):
     self.sim = 0
     self.nao = 0
     self.abstencao = 0
@@ -108,5 +116,16 @@ class VotoPartido:
   def __str__(self):
     return '(%s, %s, %s)' % (self.sim, self.nao, self.abstencao)
 
+class VotoPartido(Voto):
+
+  def __init__(self, partido):
+    Voto.__init__(self)
+    self.partido = partido
+
+class VotoUF(Voto):
+
+  def __init__(self, uf):
+    Voto.__init__(self)
+    self.uf = uf
 
 

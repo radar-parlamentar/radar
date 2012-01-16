@@ -3,7 +3,9 @@
 #
 # Pequeno script que baixa a votação do código florestal
 # Mostra votos agregados por partido
+# Se tiver flag -uf, mostra votos por UF
 import camaraws
+import sys
 
 # código florestal
 # http://www.camara.gov.br/proposicoesWeb/fichadetramitacao?idProposicao=17338
@@ -17,7 +19,10 @@ print(prop)
 for votacao in prop.votacoes:
   print('************')
   print(votacao)
-  dic = votacao.por_partido()
-  for partido, voto in dic.items():
-    print("%s: \t Sim: %s \t Não: %s \t Abstenções: %s" % (partido, voto.sim, voto.nao, voto.abstencao))
+  if (len(sys.argv)>1 and sys.argv[1] == '-uf'):
+    dic = votacao.por_uf()
+  else:
+    dic = votacao.por_partido()
+  for key, voto in dic.items():
+    print("%s: \t Sim: %s \t Não: %s \t Abstenções: %s" % (key, voto.sim, voto.nao, voto.abstencao))
 
