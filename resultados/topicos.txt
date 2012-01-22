@@ -1,0 +1,70 @@
+Uma análise dos tópicos abordados nas proposições analisadas
+A questão é aferir se realmente estamos fazendo a análise sobre proposições relevantes
+Uma vez que tivemos acesso apenas um pequeno número de proposições para a análise
+
+Esta análise foi realizada com base nos campos "ementa" e "explicação ementa" obtidos pelo web service em
+http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx?op=ObterProposicaoPorID
+
+485262: MPV 501/2010
+incentivo a exportações; BNDES; financiamento destinadas à aquisição e produção de bens de capital e à inovação tecnológica
+Tópico: indústria
+
+485274: MPV 502/2010
+normas gerais sobre desporto; bolsa atleta; Programas Atleta Pódio e Cidade Esportiva
+Tópico: esportes
+
+485275: MPV 503/2010
+consórcio público entre união, RJ estado e RJ cidade: Autoridade Pública Olímpica
+Tópico: olimpíadas
+
+485758: MPV 511/2010
+BNDES;  financiamento para o Trem de Alta Velocidade - TAV
+Tópico: transportes
+
+487868: MPV 512/2010
+incentivos fiscais para o desenvolvimento regional e da indústria automotiva
+Tópico: indústria
+
+487966: MPV 513/2010
+Fundo de Compensação de Variações Salariais (FCVS); contratos de financiamento habitacional; transferência definitiva do domínio da malha rodoviária federal para os Estados; Porto do Pólo Industrial de Manaus
+Tópicos: trabalho, habitação, transporte, indústria
+
+488607: MPV 514/2010
+Programa Minha Casa;  regularização fundiária de assentamentos localizados em áreas urbanas
+Tópico: habitação
+
+490375: MPV 517/2010
+imposto sobre a renda nas operações; Incentivos para o Desenvolvimento de Usinas Nucleares; medidas tributárias relacionadas ao Plano Nacional de Banda Larga;  Adicional ao Frete para Renovação da Marinha Mercante; extinção do Fundo Nacional de Desenvolvimento
+Tópicos: tributos, energia, comunicação, comércio
+
+490387: MPV 521/2010
+valor de bolsa e licença maternindade/paternidade para médico-residente; pagamento gratificação na Advocacia-Geral da União
+Tópico: trabalho
+
+495378: MPV 527/2011
+organização ministérios; cria Secretaria de Aviação Civil; altera legislação ANAC e INFRAERO; cria cargos de controlador de tráfego aéreo; obras e serviços relacionados a eventos esportivos (olímpiadas etc)
+Tópicos: transportes, olímpiadas
+
+496290: MPV 528/2011
+Altera os valores constantes da tabela do Imposto sobre a Renda da Pessoa Física.
+Tópico: tributos
+
+499323: MPV 530/2011
+plano especial de recuperação da rede física escolar pública
+Tópico: educação
+
+500056: MPV 532/2011
+501560: MPV 533/2011
+513172: MPV 539/2011
+513512: MPV 540/2011
+513514: MPV 541/2011
+476031: PDC 2600/2010
+357094: PEC 98/2007
+513496: PEC 61/2011
+17338: PL 1876/1999
+260404: PL 3937/2004
+491872: PL 382/2011
+500079: PL 1209/2011
+511029: PL 1749/2011
+394079: PLP 306/2008
+484191: PLP 591/2010
