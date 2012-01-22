@@ -1,0 +1,27 @@
+Fonte: http://pt.wikipedia.org/wiki/Minist%C3%A9rios_do_Brasil
+Em 22/01/12
+
+MINISTÉRIOS
+PT		12
+PMDB		4
+PP		1
+PDT		1
+PR		1
+PCdoB		1
+PSB		1
+Sem partido	3
+TOTAL		24
+
+
+SECRETARIAS com status de ministério
+PT		5
+PMDB		1
+PSB		1	
+Sem partido	2
+TOTAL		9
+
+
+ÓRGÃOS com status de ministério
+PT		1
+Sem partido	5
+TOTAL 		6
