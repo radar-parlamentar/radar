@@ -25,4 +25,7 @@ for line in vfile:
 # análise das semelhanças
 print('Análise PCA')
 pc = partidos2.semelhanca_pca(partidos, vetores)
-print pc
+
+# impressão
+for i in range(0,len(partidos)):
+  print "%s: [%f, %f]" % (partidos[i], pc[i][0], pc[i][1])
