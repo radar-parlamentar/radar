@@ -54,17 +54,97 @@ plano especial de recuperação da rede física escolar pública
 Tópico: educação
 
 500056: MPV 532/2011
+abastecimento nacional de combustíveis; redução de emissão de poluentes por veículos automotores; transformação do Departamento dos Correios e Telégrafos em empresa pública; Organização da Presidência da República e dos Ministérios
+Tópicos: energia, meio ambiente; estatizacão; organizacão do governo 
+
 501560: MPV 533/2011
+apoio financeiro à manutenção de novos estabelecimentos públicos de educação infantil
+Tópico: educacão
+
 513172: MPV 539/2011
+política monetária e cambial; negociação de contratos de derivativos
+Tópico: mercado financeiro
+
 513512: MPV 540/2011
+tributacão especial para Empresas Exportadoras; redução do Imposto sobre Produtos Industrializados - IPI à indústria automotiva
+Tópico: indústria
+
 513514: MPV 541/2011
+Fundo de Financiamento à Exportação
+Tópico: indústria
+
 476031: PDC 2600/2010
+tratados ou atos internacionais; Tratado de Itaipu Brasil x Paraguai
+Tópicos: energia, relacões internacionais
+
 357094: PEC 98/2007
+PEC da música
+Tópico: tributacão
+
 513496: PEC 61/2011
+PEC da DRU (desvinculacão orcamentária)
+Tópico: orcamento
+
 17338: PL 1876/1999
+Alteracão do código florestal
+Tópico: meio-ambiente
+
 260404: PL 3937/2004
+transforma o Conselho Administrativo de Defesa Econômica (Cade) em Autarquia, dispõe sobre a prevenção e a repressão às infrações contra a ordem econômica e dá outras providências
+Tópicos: economia
+
 491872: PL 382/2011
+Aumento do salário mínimo
+Tópico: trabalho
+
 500079: PL 1209/2011
+PRONATEC; Programa do Seguro-Desemprego, o Abono Salarial e institui o Fundo de Amparo ao Trabalhador; organização da Seguridade Social e institui Plano de Custeio; Fundo de Financiamento ao estudante do Ensino Superior
+Tópico: educacão; trabalho 
+
 511029: PL 1749/2011
+criar a empresa pública denominada Empresa Brasileira de Serviços Hospitalares S.A.
+Tópico: saúde
+
 394079: PLP 306/2008
+aplicacão do orcamento em ações e serviços públicos de saúde para união, estados e municípios
+Tópico: saúde
+
 484191: PLP 591/2010
+Altera procedimentos relativos a microempresas e empresas de pequeno porte
+Tópico: economia
+
+
+****************************************************
+
+Tópicos encontrados:
+
+indústria		5
+trabalho 		4
+transportes		3
+tributos		3
+educação		3
+energia			3
+olimpíadas		2
+habitação		2
+economia		2
+saúde			2
+meio ambiente		2
+esportes		1
+comunicação		1
+comércio		1
+estatizacão		1
+organizacão do governo	1 
+mercado financeiro	1
+relacões internacionais	1
+orcamento		1
+
+Conclusão
+Esta nao é uma análise precisa, alguns tópicos podem se sobrepor.
+O objetivo é analisar se as proposicões analisadas são realmente relevantes.
+E creio que a conclusão seja sim.
+Encontramos questoes polêmicas como o código-florestal, PEC da GRU, recursos públicos para olímpiadas
+Encontramos diversas medidas relacionadas a tributos, reducão e criacão de impostos, criacão de estatais, que se relacionam com a visão de "peso do Estado" na conomia e o incentivo que o Estado dá para a economia, o que se relaciona com a clássica separacão entre esquerda/direita.
+Há também várias matérias sobre liberacão de recursos para saúde, educacão e outras aplicacões sociais. Eventuais diferencas entre partidos nestes quisitos seriam também significativas.
+
+
+
