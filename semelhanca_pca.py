@@ -24,7 +24,7 @@ for line in vfile:
 
 # análise das semelhanças
 print('Análise PCA')
-pc = partidos2.semelhanca_pca(partidos, vetores)
+pc = partidos2.semelhanca_pca(vetores)
 
 # impressão
 for i in range(0,len(partidos)):

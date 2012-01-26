@@ -1,4 +1,6 @@
 Análise baseada em 92 votações de 27 proposições, votadas na camâra em 2011
+Esse é o resultado da primeira versão do software que geraca vetores de votações com valores [0,1]
+Agora esses valores são [-1,1]. Veja 'semelhancas2.txt' com os novos resultados
 Semelhança entre PT e PSDB = 24.56%
 Semelhança entre PT e PV = 81.08%
 Semelhança entre PT e PSOL = 18.65%

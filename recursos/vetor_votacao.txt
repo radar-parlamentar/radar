@@ -1,4 +1,5 @@
 == VETOR DE VOTAÇÕES ==
+# TODO: agora nao=-1 e abstencao=0
 
 Cada partido tem um vetor (v) de votações
 Cada posição (i) do vetor representa uma votação

@@ -6,7 +6,8 @@ def vetor_votacoes(partido, proposicoes):
     for votacao in prop.votacoes:
       dic = votacao.por_partido()
       voto = dic[partido]
-      vi = (voto.sim + 0.5*voto.abstencao) / (voto.sim + voto.nao + voto.abstencao)
+      #vi = (voto.sim + 0.5*voto.abstencao) / (voto.sim + voto.nao + voto.abstencao) # análise antigo
+      vi = (1*voto.sim + 0*voto.abstencao -1*voto.nao) / (voto.sim + voto.nao + voto.abstencao)
       vetor.append(vi)
   return vetor  
 
@@ -18,7 +19,7 @@ def semelhanca_vetores(vetor1, vetor2):
 def semelhanca(partido1, partido2, proposicoes):
   v1 = vetor_votacoes(partido1, proposicoes)
   v2 = vetor_votacoes(partido2, proposicoes)
-  return semelhanca_vetores(v1, v2)
-
+  sem = semelhanca_vetores(v1, v2)
+  return (sem+1)/2
 
 
