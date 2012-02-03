@@ -8,14 +8,12 @@ class Grafico:
     def __init__(self):
         self.svg = svgwrite.Drawing(filename="resultados/grafico.svg", size = ("1000px", "1000px"))
 
-    def add_partido(self, nome, center, raio=25):
-
-        # TODO desafio: o que fazer com os partidos que ficam com o nome escondido?
+    def add_partido(self, nome, center, raio=20):
 
         # preparação das coordenadas para uma melhor distribuição visual
         center = (center[0]*100 + 300, center[1]*100 + 300)
-        self.svg.add(self.svg.circle(center=center, r=raio, fill='white', stroke='black', stroke_width='1'))
-        text = self.svg.text(nome, insert=center, text_anchor='middle', font_family='LMMono10', font_size='10', alignment_baseline='middle')
+        self.svg.add(self.svg.circle(center=center, r=raio, fill='white', fill_opacity='0', stroke='black', stroke_width='1'))
+        text = self.svg.text(nome, insert=center, text_anchor='middle', font_family='LMMono10', font_size='12', alignment_baseline='middle')
         self.svg.add(text)
         self.svg.save()
     
@@ -48,7 +46,8 @@ if __name__ == "__main__":
 
     # desenha o gráfico
     grafico = Grafico()
-    #muda_eixos(partidos) # achei que o resultado disso ficou meio feio
+    #muda_eixos(partidos) # achei que o resultado disso ficou meio feio 
+    # pois pra apresentar na web é melhor que o eixo horizontal seja o maior
     for part, coord in partidos.items():
         grafico.add_partido(part, (coord[0], coord[1]))
 
