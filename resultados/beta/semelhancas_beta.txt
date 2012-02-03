@@ -1,0 +1,39 @@
+Análise baseada em 92 votações de 27 proposições, votadas na camâra em 2011
+Esse é o resultado da primeira versão do software que geraca vetores de votações com valores [0,1]
+Agora esses valores são [-1,1]. Veja 'semelhancas2.txt' com os novos resultados
+Semelhança entre PT e PSDB = 24.56%
+Semelhança entre PT e PV = 81.08%
+Semelhança entre PT e PSOL = 18.65%
+Semelhança entre PT e PCdoB = 97.39%
+Semelhança entre PT e PP = 96.14%
+Semelhança entre PT e PR = 93.52%
+Semelhança entre PT e DEM = 39.10%
+Semelhança entre PT e PMDB = 96.60%
+Semelhança entre PSDB e PV = 47.18%
+Semelhança entre PSDB e PSOL = 65.76%
+Semelhança entre PSDB e PCdoB = 29.13%
+Semelhança entre PSDB e PP = 32.65%
+Semelhança entre PSDB e PR = 35.52%
+Semelhança entre PSDB e DEM = 90.62%
+Semelhança entre PSDB e PMDB = 34.10%
+Semelhança entre PV e PSOL = 39.58%
+Semelhança entre PV e PCdoB = 79.62%
+Semelhança entre PV e PP = 80.90%
+Semelhança entre PV e PR = 81.16%
+Semelhança entre PV e DEM = 58.56%
+Semelhança entre PV e PMDB = 81.38%
+Semelhança entre PSOL e PCdoB = 18.80%
+Semelhança entre PSOL e PP = 20.77%
+Semelhança entre PSOL e PR = 25.47%
+Semelhança entre PSOL e DEM = 61.07%
+Semelhança entre PSOL e PMDB = 21.33%
+Semelhança entre PCdoB e PP = 97.53%
+Semelhança entre PCdoB e PR = 94.34%
+Semelhança entre PCdoB e DEM = 43.80%
+Semelhança entre PCdoB e PMDB = 98.52%
+Semelhança entre PP e PR = 94.91%
+Semelhança entre PP e DEM = 47.70%
+Semelhança entre PP e PMDB = 98.76%
+Semelhança entre PR e DEM = 47.65%
+Semelhança entre PR e PMDB = 95.90%
+Semelhança entre DEM e PMDB = 48.87%

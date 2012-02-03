@@ -11,7 +11,7 @@ import camaraws
 import partidos
 import sys
 
-PARTIDOS = ['PT', 'PSDB', 'PV', 'PSOL', 'PCdoB', 'PP', 'PR', 'DEM', 'PMDB']
+PARTIDOS = ['PT', 'PSDB', 'PV', 'PSOL', 'PCdoB', 'PP', 'PR', 'DEM', 'PMDB', 'PSC', 'PTB', 'PDT', 'PSB', 'PSB', 'PPS', 'PRB']
 length = len(PARTIDOS)
 
 # recuperação das proposições

@@ -8,7 +8,9 @@ import camaraws
 import partidos
 import sys
 
-PARTIDOS = ['PT', 'PSDB', 'PV', 'PSOL', 'PCdoB', 'PP', 'PR', 'DEM', 'PMDB']
+PARTIDOS = ['PT', 'PSDB', 'PV', 'PSOL', 'PCdoB', 'PP', 'PR', 'DEM', 'PMDB', 'PSC', 'PTB', 'PDT', 'PSB', 'PSB', 'PPS', 'PRB']
+# PRTB, PRP, PMN, PSL, PHS deram problema, pois não aparecem em algumas votações
+# TODO: o que fazer nesses casos?
 length = len(PARTIDOS)
 
 # recuperação das proposições

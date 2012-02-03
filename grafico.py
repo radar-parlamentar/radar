@@ -5,14 +5,22 @@ import re
 
 class Grafico:
 
-    def __init__(self):
-        self.svg = svgwrite.Drawing(filename="resultados/grafico.svg", size = ("1000px", "1000px"))
+    # or parâmetros são os valores extremos obtidos no PCA
+    def __init__(self, top, bottom, left, right):
+        self.radius = 20
+        self.factor = 100 # ajusta distância entre circunferências
+        self.offset = (-left*self.factor + 2*self.radius, -bottom*self.factor + 2*self.radius) # ajusta posição (obs, se valores são positivos, offset deveria ser ZERO)
+        self.width = (right - left)*self.factor + 4*self.radius
+        self.height = (top - bottom)*self.factor + 4*self.radius
+        self.svg = svgwrite.Drawing(filename="resultados/grafico.svg", size = ("%fpx" % self.width, "%fpx" % self.height))
 
-    def add_partido(self, nome, center, raio=20):
+    def add_partido(self, nome, center):
 
         # preparação das coordenadas para uma melhor distribuição visual
-        center = (center[0]*100 + 300, center[1]*100 + 300)
-        self.svg.add(self.svg.circle(center=center, r=raio, fill='white', fill_opacity='0', stroke='black', stroke_width='1'))
+        x = center[0]*self.factor + self.offset[0]
+        y = center[1]*self.factor + self.offset[1]
+        center = (x, y)
+        self.svg.add(self.svg.circle(center=center, r=self.radius, fill='white', fill_opacity='0', stroke='black', stroke_width='1'))
         text = self.svg.text(nome, insert=center, text_anchor='middle', font_family='LMMono10', font_size='12', alignment_baseline='middle')
         self.svg.add(text)
         self.svg.save()
@@ -40,12 +48,27 @@ def muda_eixos(partidos):
     for part, coord in partidos.items():
         partidos[part] = (coord[1], coord[0])
 
+# encontra extremos do gráfico
+def extremos(partidos):
+    top = bottom = left = right = 0
+    for coord in partidos.values():
+        if coord[0] > right:
+            right = coord[0] 
+        if coord[0] < left:
+            left = coord[0] 
+        if coord[1] > top:
+            top = coord[1] 
+        if coord[1] < bottom:
+            bottom = coord[1] 
+    return top, bottom, left, right 
+
 if __name__ == "__main__":
 
     partidos = parse_from_file()
+    top, bottom, left, right = extremos(partidos)
 
     # desenha o gráfico
-    grafico = Grafico()
+    grafico = Grafico(top, bottom, left, right)
     #muda_eixos(partidos) # achei que o resultado disso ficou meio feio 
     # pois pra apresentar na web é melhor que o eixo horizontal seja o maior
     for part, coord in partidos.items():
