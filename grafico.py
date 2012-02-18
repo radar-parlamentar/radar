@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import svgwrite
-import re
+import re, math
 
 class Grafico:
 
@@ -20,7 +20,17 @@ class Grafico:
         x = center[0]*self.factor + self.offset[0]
         y = center[1]*self.factor + self.offset[1]
         center = (x, y)
-        self.svg.add(self.svg.circle(center=center, r=self.radius, fill='white', fill_opacity='0', stroke='black', stroke_width='1'))
+        # a ideia é que a intensidade seja um valor entre 0 e 255, em hexadecimal
+        intensidade = hex(int(abs(y) % 255))[2:]
+        cor='#'
+        #deve-se encontrar qual a linha divisória entre "direita e esquerda", é o valor do '620'.
+        if y < 620:
+            cor += intensidade
+            cor += "0000"
+        else:
+            cor += "0000"
+            cor += intensidade
+        self.svg.add(self.svg.circle(center=center, r=self.radius, fill=cor, fill_opacity='0.5', stroke='black', stroke_width='1'))
         text = self.svg.text(nome, insert=center, text_anchor='middle', font_family='LMMono10', font_size='12', alignment_baseline='middle')
         self.svg.add(text)
         self.svg.save()
