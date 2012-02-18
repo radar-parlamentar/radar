@@ -58,3 +58,28 @@ Em atenção ao solicitado, encaminho o documento anexo, que contém as proposi�
 Se houver interesse por outras informações além das elencadas na planilha, basta clicar no número da proposição, que será aberta página de nosso portal, com outros dados, como tramitação, publicações, recursos e legislação citada.
 
 Atenciosamente,
+
+========================================================================
+========================================================================
+
+==== 18/02, protocolo 38C0102642357 ====
+
+Olá,
+
+eu estou desenvolvendo uma aplicação [1] baseada nos dados abertos disponibilizados pelos web services da câmara [2].
+
+De acordo com uma lista [3] me fornecida por este mesmo serviço de comunicação da câmara, em 2011 houve quase 700 proposições votadas na câmara. Mas minha aplicação só conseguiu acessar os detalhes de votação [4] de apenas 27 proposições! Para a maioria dos casos, é exibida uma mensagem de que não há dados disponíveis [5].
+
+Gostaria de entender a que se deva essa pequena quantidade de dados disponíveis. O sistema ainda não está completo e os dados ainda serão disponibilizados, ou há algum impeditivo relacionado à atividade legislativa?
+
+desde já grato pela atenção,
+Leonardo Leite
+
+[1] http://polignu.org/projeto/camaraws/pca
+[2] www2.camara.gov.br/transparencia/dados-abertos
+[3] http://cloud.github.com/downloads/leonardofl/camaraws/proposicoes2011.htm
+[4] http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?tipo=pl&numero=1876&ano=1999
+[5] http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?tipo=pl&numero=219&ano=2003
+
+
+
