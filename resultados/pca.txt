@@ -1,4 +1,12 @@
 Análise PCA
+
+Fração da variância explicada pelas dimensões:
+0.734741 
+0.096380 
+0.055655 
+0.032662 
+
+Coordenadas:
 PT: [-4.101318, -0.693081]
 PSDB: [8.838016, 2.629994]
 PV: [0.823291, -0.019013]

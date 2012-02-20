@@ -24,8 +24,14 @@ for line in vfile:
 
 # análise das semelhanças
 print('Análise PCA')
-pc = partidos2.semelhanca_pca(vetores)
+p = partidos2.semelhanca_pca(vetores)
+pc = p.pc()
 
 # impressão
+print "Fração da variância explicada pelas dimensões:"
+for i in range(0, 4):
+  print "%f " % ( p.eigen[i] / p.eigen.sum() )
+
+print "\nCoordenadas:"
 for i in range(0,len(partidos)):
   print "%s: [%f, %f]" % (partidos[i], pc[i][0], pc[i][1])

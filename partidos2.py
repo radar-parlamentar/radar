@@ -13,6 +13,6 @@ def semelhanca_pca(vetores):
   matriz =  numpy.array(vetores)
   matriz -= matriz.mean(axis=0) # centralização 
   p = pca.PCA(matriz)
-  return p.pc()
+  return p
 
 
