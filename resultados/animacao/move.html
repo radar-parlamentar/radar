@@ -1,4 +1,8 @@
-<html>
+<!DOCTYPE HTML>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title> Animação temporal dos partidos </title>
 <script>
 var partido = [['p1',[200,400],[200,500],[50,100]],['p2',[410,200],[400,500],[100,50]],['p3',[400,410],[200,200],[50,150]]]
 
@@ -28,6 +32,7 @@ function movePartido(ano, partido) {
 	
 }
 </script>
+</head>
 <body>
 		<svg xmlns="http://www.w3.org/2000/svg" version = "1.1" height="550px" width="1000px" >	
 	<circle id="p1" r="40" stroke="black" stroke-width="2" cx="200" cy="400" fill-opacity="0.5" fill="white">
@@ -44,9 +49,7 @@ function movePartido(ano, partido) {
 	</circle>
 	</svg>
 <div id="botoes">
-<input type="button" id="botao2010" onclick="movePartidos(2009)" value="2009"/>
-<input type="button" id="botao2010" onclick="movePartidos(2010)" value="2010"/>
-<input type="button" id="botao2011" onclick="movePartidos(2011)" value="2011"/>
+Ano: <input type="range" value="2009" step="1" min="2009" max="2011" onchange="movePartidos(this.value),ano.innerHTML=this.value"/> <div id="ano">2009</div>
 </div>
 </body>
 
