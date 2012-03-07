@@ -1,41 +1,52 @@
 <html>
 <script>
-var p1 = [[200,400],[200,500],[50,100]];
-var p2 = [[410,200],[400,500],[100,50]];
-var p3 = [[400,410],[200,200],[50,150]];
+var partido = [['p1',[200,400],[200,500],[50,100]],['p2',[410,200],[400,500],[100,50]],['p3',[400,410],[200,200],[50,150]]]
 
+function movePartidos(ano){
+    for ( i=0; i<partido.length; i++) {
+        movePartido(ano, partido[i])
+    }
+}
 
-function move(ano){
-	circle_p1 = document.getElementById("p1");
-	anime_p1_cx = document.getElementById("p1cx");
-	anime_p1_cy = document.getElementById("p1cy");
+function movePartido(ano, partido) {
+    var anoBase = 2009
+	var circle = document.getElementById(partido[0])
+    var animates = circle.getElementsByTagName("animate")
 
-	from_x = anime_p1_cx.getAttribute("to")
-	from_y = anime_p1_cy.getAttribute("to")
-	to_x = p1[ano][0]
-	to_y = p1[ano][1]
-	anime_p1_cx.setAttribute("from",from_x);
-	anime_p1_cy.setAttribute("from",from_y);
-	anime_p1_cx.setAttribute("to",to_x);
-	anime_p1_cy.setAttribute("to",to_y);
-	anime_p1_cx.beginElement()
-	anime_p1_cy.beginElement()
+    from_x = animates[0].getAttribute("to")
+    from_y = animates[1].getAttribute("to")
+
+    to_x = partido[ano - anoBase + 1 ][0]
+    to_y = partido[ano - anoBase + 1 ][1]
+
+	animates[0].setAttribute("from",from_x);
+	animates[1].setAttribute("from",from_y);
+	animates[0].setAttribute("to",to_x);
+	animates[1].setAttribute("to",to_y);
+	animates[0].beginElement()
+	animates[1].beginElement()
 	
 }
 </script>
 <body>
 		<svg xmlns="http://www.w3.org/2000/svg" version = "1.1" height="550px" width="1000px" >	
-	<circle id="p1" r="40" cx="200" cy="400" stroke="black" stroke-width="2" fill-opacity="0.5" fill="white">
-			<animate id="p1cx" begin="indefinite" attributeName="cx" from="200" to="200" dur="2s" fill="freeze" repeatCount="0"/>
-			<animate id="p1cy" begin="indefinite" attributeName="cy" from="400" to="400" dur="2s" fill="freeze" repeatCount="0"/>
+	<circle id="p1" r="40" stroke="black" stroke-width="2" cx="200" cy="400" fill-opacity="0.5" fill="white">
+			<animate begin="indefinite" attributeName="cx" from="200" to="200" dur="2s" fill="freeze" repeatCount="0"/>
+			<animate begin="indefinite" attributeName="cy" from="400" to="400" dur="2s" fill="freeze" repeatCount="0"/>
 	</circle>
-	<circle id="p2" cx="410" cy="200" r="40" stroke="black" stroke-width="2" fill-opacity="0.5" fill="white"/>
-	<circle id="p3" cx="400" cy="410" r="40" stroke="black" stroke-width="2" fill-opacity="0.5" fill="white"/>
+	<circle id="p2" r="40" stroke="black" stroke-width="2" cx="410" cy="200" fill-opacity="0.5" fill="white">
+			<animate begin="indefinite" attributeName="cx" from="410" to="410" dur="2s" fill="freeze" repeatCount="0"/>
+			<animate begin="indefinite" attributeName="cy" from="200" to="200" dur="2s" fill="freeze" repeatCount="0"/>
+	</circle>
+	<circle id="p3" r="40" stroke="black" stroke-width="2" cx="40" cy="410" fill-opacity="0.5" fill="white">
+			<animate begin="indefinite" attributeName="cx" from="40" to="40" dur="2s" fill="freeze" repeatCount="0"/>
+			<animate begin="indefinite" attributeName="cy" from="410" to="410" dur="2s" fill="freeze" repeatCount="0"/>
+	</circle>
 	</svg>
 <div id="botoes">
-<input type="button" id="botao2010" onclick="move(0)" value="2009"/>
-<input type="button" id="botao2010" onclick="move(1)" value="2010"/>
-<input type="button" id="botao2011" onclick="move(2)" value="2011"/>
+<input type="button" id="botao2010" onclick="movePartidos(2009)" value="2009"/>
+<input type="button" id="botao2010" onclick="movePartidos(2010)" value="2010"/>
+<input type="button" id="botao2011" onclick="movePartidos(2011)" value="2011"/>
 </div>
 </body>
 
