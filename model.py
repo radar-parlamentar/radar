@@ -15,14 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""Módulo model -- modelagem do domínio, baseado nos XMLs dos web services
+"""Módulo model -- modelagem do domínio, baseado nos XMLs dos web services da câmara
 
 Classes:
-Proposicao
-Votacao
-Deputado
-VotoPartido
-VotoUF
+Proposicao -- modela uma proposição parlamentar
+Votacao -- modela uma votação pertencente à uma proposição parlamentar
+Deputado -- modela o voto de um deputado numa votação
+VotoPartido -- representa um conjunto de votos de um partido
+VotoUF -- representa um conjunto de votos de uma UF (estado ou distrito federal)
 """ 
 
 import xml.etree.ElementTree as etree
@@ -34,124 +34,182 @@ ABSTENCAO = 'Abstenção'
 OBSTRUCAO = 'Obstrução' # por hora será inObstruçãoterpretado como 'Não'
 
 class Proposicao:
+    """Modela uma proposição parlamentar
+    Atributos:
+    id, sigla, numero, ano, ementa, explicacao, situacao -- strings
+    votacaoes -- lista de objetos do tipo Votacao
+    """
 
-  def __init__(self):
-    self.id = ''
-    self.sigla = ''
-    self.numero = ''
-    self.ano = ''
-    self.ementa = ''
-    self.explicacao = ''
-    self.situacao = ''
-    self.votacoes = []
+    def __init__(self):
+        self.id = ''
+        self.sigla = ''
+        self.numero = ''
+        self.ano = ''
+        self.ementa = ''
+        self.explicacao = ''
+        self.situacao = ''
+        self.votacoes = []
   
-  def fromxml(xml):
-    tree = etree.parse(io.StringIO(xml))
-    prop = Proposicao()
-    prop.sigla = tree.find('Sigla').text
-    prop.numero = tree.find('Numero').text
-    prop.ano = tree.find('Ano').text
-    for child in tree.find('Votacoes'):
-      vot = Votacao.fromtree(child)
-      prop.votacoes.append(vot)
-    return prop
+    def fromxml(xml):
+        """Transforma um texto XML em uma proposição
+        Argumentos:
+        xml -- string contendo o XML retornado do web service que retorna votações de uma proposição
 
-  def __str__(self):
-    return "[%s %s/%s]: %s \nEmenta: %s \nSituação: %s" % (self.sigla, self.numero, self.ano, self.explicacao, self.ementa, self.situacao)
+        Retorna:
+        Um objeto do tipo Proposicao
+        """  
+        tree = etree.parse(io.StringIO(xml))
+        prop = Proposicao()
+        prop.sigla = tree.find('Sigla').text
+        prop.numero = tree.find('Numero').text
+        prop.ano = tree.find('Ano').text
+        for child in tree.find('Votacoes'):
+          vot = Votacao.fromtree(child)
+          prop.votacoes.append(vot)
+        return prop
+
+    def __str__(self):
+        return "[%s %s/%s]: %s \nEmenta: %s \nSituação: %s" % (self.sigla, self.numero, self.ano, self.explicacao, self.ementa, self.situacao)
 
 class Votacao:
+    """Modela uma votação pertencente à uma proposição parlamentar
+    Atributos:
+    resumo, data, hora -- strings
+    deputados -- lista de objetos do tipo Deputado
+    """
+    def __init__(self): 
+        self.resumo = ''
+        self.data = ''
+        self.hora = ''
+        self.deputados = []
 
-  def __init__(self): 
-    self.resumo = ''
-    self.data = ''
-    self.hora = ''
-    self.deputados = []
+    def fromtree(tree):
+        """Transforma um XML em uma votação
+        Argumentos:
+        tree -- objeto do tipo xml.etree.ElementTree representando o XML que descreve uma votação
 
-  def fromtree(tree):
-    vot = Votacao() 
-    vot.resumo = tree.attrib['Resumo']
-    vot.data = tree.attrib['Data']
-    vot.hora = tree.attrib['Hora']
-    for child in tree:
-      dep = Deputado.fromtree(child)
-      vot.deputados.append(dep)
-    return vot
+        Retorna:
+        Um objeto do tipo Votacao
+        """
+        vot = Votacao() 
+        vot.resumo = tree.attrib['Resumo']
+        vot.data = tree.attrib['Data']
+        vot.hora = tree.attrib['Hora']
+        for child in tree:
+          dep = Deputado.fromtree(child)
+          vot.deputados.append(dep)
+        return vot
 
-  def por_partido(self):
-    # partido => VotoPartido
-    dic = {}
-    for dep in self.deputados:
-      part = dep.partido
-      if not part in dic:
-        dic[part] = VotoPartido(part)
-      voto = dic[part]
-      voto.add(dep.voto)
-    return dic  
+    def por_partido(self):
+        """Retorna votos agregados por partido
+        Retorna:
+        Um dicionário cuja chave é o nome do partido (string) e o valor é um VotoPartido
+        """
+        dic = {}
+        for dep in self.deputados:
+          part = dep.partido
+          if not part in dic:
+            dic[part] = VotoPartido(part)
+          voto = dic[part]
+          voto.add(dep.voto)
+        return dic  
   
-  def por_uf(self):
-    # uf => VotoUF
-    dic = {}
-    for dep in self.deputados:
-      uf = dep.uf
-      if not uf in dic:
-        dic[uf] = VotoUF(uf)
-      voto = dic[uf]
-      voto.add(dep.voto)
-    return dic  
+    def por_uf(self):
+        """Retorna votos agregados por UF
+        Retorna:
+        Um dicionário cuja chave é o nome da UF (string) e o valor é um VotoUF
+        """
+        dic = {}
+        for dep in self.deputados:
+          uf = dep.uf
+          if not uf in dic:
+            dic[uf] = VotoUF(uf)
+          voto = dic[uf]
+          voto.add(dep.voto)
+        return dic  
 
-  def __str__(self):
-    return "[%s, %s] %s" % (self.data, self.hora, self.resumo)
+    def __str__(self):
+        return "[%s, %s] %s" % (self.data, self.hora, self.resumo)
 
 class Deputado:
+    """Modela o voto de um deputado numa votação
+    Atributos:
+    nome, partido, uf -- strings que caracterizam o deputado
+    voto -- voto dado pelo deputado \in {SIM, NAO, ABSTENCAO, OBSTRUCAO}
+    """
 
-  def __init__(self):
-    self.nome = ''
-    self.partido = ''
-    self.uf = ''
-    self.voto = ''
+    def __init__(self):
+        self.nome = ''
+        self.partido = ''
+        self.uf = ''
+        self.voto = ''
 
-  def fromtree(tree):
-    dep = Deputado()
-    dep.nome = tree.attrib['Nome']
-    dep.partido = tree.attrib['Partido']
-    dep.uf = tree.attrib['UF']
-    dep.voto = tree.attrib['Voto']
-    return dep
+    def fromtree(tree):
+        """Transforma um XML no voto de um deputado
+        Argumentos:
+        tree -- objeto do tipo xml.etree.ElementTree representando o XML que descreve o voto de um deputado
 
-  def __str__(self):
-    return "%s (%s-%s) votou %s" % (self.nome, self.partido, self.uf, self.voto)
+        Retorna:
+        Um objeto do tipo Deputado
+        """
+        dep = Deputado()
+        dep.nome = tree.attrib['Nome']
+        dep.partido = tree.attrib['Partido']
+        dep.uf = tree.attrib['UF']
+        dep.voto = tree.attrib['Voto']
+        return dep
+
+    def __str__(self):
+        return "%s (%s-%s) votou %s" % (self.nome, self.partido, self.uf, self.voto)
 
 # TODO renomear para VotoAgregado  
 class Voto:
+    """Representa um conjunto de votos
+    Atributos:
+    sim, nao, abstencao -- inteiros que representam a quantidade de votos no conjunto
+    """
 
-  def add(self, voto):
-    if (voto == SIM):
-      self.sim += 1
-    if (voto == NAO):
-      self.nao += 1
-    if (voto == OBSTRUCAO): # pode ser mudado no futuro
-      self.nao += 1
-    if (voto == ABSTENCAO):
-      self.abstencao += 1
+    def add(self, voto):
+        """Adiciona um voto ao conjunto de votos
+        Argumentos:
+        voto -- string \in {SIM, NAO, ABSTENCAO, OBSTRUCAO}
+        OBSTRUCAO conta como um voto NAO
+        """
+        if (voto == SIM):
+          self.sim += 1
+        if (voto == NAO):
+          self.nao += 1
+        if (voto == OBSTRUCAO):
+          self.nao += 1
+        if (voto == ABSTENCAO):
+          self.abstencao += 1
 
-  def __init__(self):
-    self.sim = 0
-    self.nao = 0
-    self.abstencao = 0
+    def __init__(self):
+        self.sim = 0
+        self.nao = 0
+        self.abstencao = 0
 
-  def __str__(self):
-    return '(%s, %s, %s)' % (self.sim, self.nao, self.abstencao)
+    def __str__(self):
+        return '(%s, %s, %s)' % (self.sim, self.nao, self.abstencao)
 
 class VotoPartido(Voto):
-
-  def __init__(self, partido):
-    Voto.__init__(self)
-    self.partido = partido
+    """Representa um conjunto de votos de um partido
+    Atributos:
+    sim, nao, abstencao -- inteiros que representam a quantidade de votos no conjunto
+    partido -- string
+    """
+    def __init__(self, partido):
+        Voto.__init__(self)
+        self.partido = partido
 
 class VotoUF(Voto):
-
-  def __init__(self, uf):
-    Voto.__init__(self)
-    self.uf = uf
+    """Representa um conjunto de votos de uma UF (estado ou distrito federal)
+    Atributos:
+    sim, nao, abstencao -- inteiros que representam a quantidade de votos no conjunto
+    uf -- string
+    """
+    def __init__(self, uf):
+        Voto.__init__(self)
+        self.uf = uf
 
 
