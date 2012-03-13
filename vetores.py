@@ -1,10 +1,22 @@
 #!/usr/bin/python3.2
 # -*- coding: utf-8 -*-
+
+# Copyright (C) 2012, Leonardo Leite
 #
-# Salva os vetores de votação em um arquivo
-# Fiz isso porque o script pra baixar as votações só funciona com python3
-# e a análise PCA só com python2, pq depende do numpy
-# Uma solução alternativa seria fazer o download utilizar o python 2
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+"""Script vetores -- imprime os vetores de votação"""
 
 import proposicoes
 import camaraws

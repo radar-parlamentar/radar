@@ -1,5 +1,30 @@
 # -*- coding: utf-8 -*-
-# Classes do modelo de negócio, no caso o XML da proposição
+
+# Copyright (C) 2012, Leonardo Leite
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+"""Módulo model -- modelagem do domínio, baseado nos XMLs dos web services
+
+Classes:
+Proposicao
+Votacao
+Deputado
+VotoPartido
+VotoUF
+""" 
+
 import xml.etree.ElementTree as etree
 import io
 
@@ -95,7 +120,8 @@ class Deputado:
 
   def __str__(self):
     return "%s (%s-%s) votou %s" % (self.nome, self.partido, self.uf, self.voto)
-  
+
+# TODO renomear para VotoAgregado  
 class Voto:
 
   def add(self, voto):
