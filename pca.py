@@ -50,6 +50,7 @@ See also:
     PCA micro-tutorial
     iris-pca .py .png
 
+Source: http://stackoverflow.com/questions/1730600/principal-component-analysis-in-python
 """
 
 from __future__ import division

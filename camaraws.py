@@ -18,7 +18,7 @@
 """Módulo camaraws -- requisições para os Web Services da câmara
 
 Funcões:
-obter_votacao -- Obtém votacões e detalhes de uma proposicão
+obter_votacao -- obtém votacões e detalhes de uma proposicão
 """
 
 from model import Proposicao
@@ -38,9 +38,7 @@ def obter_votacao(tipo, num, ano):
 
     Retorna:
     Uma proposicão como um objeto da classe model.Proposicao
-
-    Excessões:
-    urllib.error.HTTPError -- proposicão não encontrada
+    Caso a proposição não seja encontrada ou não possua votações, retorna None
     """
     url  = OBTER_VOTACOES_PROPOSICAO % (tipo, num, ano)
     try:
@@ -68,9 +66,7 @@ def obter_votacao(prop_id, tipo, num, ano):
 
     Retorna:
     Uma proposicão como um objeto da classe model.Proposicao
-
-    Excessões:
-    urllib.error.HTTPError -- proposicão não encontrada
+    Caso a proposição não seja encontrada ou não possua votações, retorna None
     """
     url = OBTER_VOTACOES_PROPOSICAO % (tipo, num, ano)
     try:

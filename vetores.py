@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""Script vetores -- imprime os vetores de votação"""
+"""Script vetores -- imprime os vetores de votações"""
 
 import proposicoes
 import camaraws

@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-"""Script semelhanca -- verifica a diferença entre dois partidos baseado nas proposições votadas em 2011""
+"""Script semelhanca -- verifica a diferença entre dois partidos baseado nas proposições votadas em 2011"""
 
 import proposicoes
 import camaraws

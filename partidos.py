@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright (C) 2012, Leonardo Leite
 #
 # This program is free software; you can redistribute it and/or modify
@@ -15,26 +17,50 @@
 
 import algebra
 
+"""Módulo partidos -- funções para caracterização e comparação dos partidos
+
+Funcões:
+vetor_votacoes -- calcula o vetor de votações de um partido 
+semelhanca -- calcula a semelhança entre dois partidos
+"""
+
 def vetor_votacoes(partido, proposicoes):
-  vetor = []
-  for prop in proposicoes:
-    for votacao in prop.votacoes:
-      dic = votacao.por_partido()
-      voto = dic[partido]
-      #vi = (voto.sim + 0.5*voto.abstencao) / (voto.sim + voto.nao + voto.abstencao) # análise antigo
-      vi = (1*voto.sim + 0*voto.abstencao -1*voto.nao) / (voto.sim + voto.nao + voto.abstencao)
-      vetor.append(vi)
-  return vetor  
+    """Calcula o vetor de votações de um partido 
+    Argumentos:
+    partido  -- nome do partido (string)
+    proposicoes -- lista de proposições contendo votações
+
+    Retorna:
+    Uma lista representando o vetor de votações do partido
+    """    
+    vetor = []
+    for prop in proposicoes:
+        for votacao in prop.votacoes:
+            dic = votacao.por_partido()
+            voto = dic[partido]
+            #vi = (voto.sim + 0.5*voto.abstencao) / (voto.sim + voto.nao + voto.abstencao) # análise antigo
+            vi = (1*voto.sim + 0*voto.abstencao -1*voto.nao) / (voto.sim + voto.nao + voto.abstencao)
+            vetor.append(vi)
+    return vetor  
 
 def semelhanca_vetores(vetor1, vetor2):
-  nv1 = algebra.normaliza(vetor1)
-  nv2 = algebra.normaliza(vetor2)
-  return algebra.prod_escalar(nv1, nv2)
+    nv1 = algebra.normaliza(vetor1)
+    nv2 = algebra.normaliza(vetor2)
+    return algebra.prod_escalar(nv1, nv2)
 
 def semelhanca(partido1, partido2, proposicoes):
-  v1 = vetor_votacoes(partido1, proposicoes)
-  v2 = vetor_votacoes(partido2, proposicoes)
-  sem = semelhanca_vetores(v1, v2)
-  return (sem+1)/2
+    """Calcula a semelhança entre dois partidos 
+    A semelhança é implementada como o produto escalar dos vetores de votações normalizados
+    Argumentos:
+    partido1, partido2  -- nomes do partidos (string)
+    proposicoes -- lista de proposições contendo votações
+
+    Retorna:
+    Um valor real \in [0,1] representando a semelhança entre os partidos
+    """    
+    v1 = vetor_votacoes(partido1, proposicoes)
+    v2 = vetor_votacoes(partido2, proposicoes)
+    sem = semelhanca_vetores(v1, v2)
+    return (sem+1)/2
 
 

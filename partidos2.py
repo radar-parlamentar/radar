@@ -16,19 +16,32 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+"""Módulo partidos -- funções para caracterização e comparação dos partidos
+
+Funcões:
+semelhanca_pca -- calcula as semelhanças partidárias gerando um gráfico bidimensional 
+"""
+
 import numpy
 import pca
 import algebra
 
 def semelhanca_pca(vetores):
-
-  #PCA: linhas são amostras e colunas variáveis
-  # vamos fazer linhas = partidos e colunas = votações
-  # devemos também centralizar os valores
-  # como todos os valores \in [0,1], não precisamos ajustar a escala
-  matriz =  numpy.array(vetores)
-  matriz -= matriz.mean(axis=0) # centralização 
-  p = pca.PCA(matriz)
-  return p
+    """Calcula as semelhanças partidárias gerando um gráfico bidimensional 
+    Isto é feito com a Análise de Componentes Principais (PCA)
+    Argumentos:
+    vetores -- uma lista de listas, em que cada lista é um vetor de votações de um partido
+    Retorna:
+    Uma lista em que a i-ésima posição representa a coordenada bidimensional do partido 
+    cujo vetor de votações era a i-ésima lista do argumento vetores
+    """
+    #PCA: linhas são amostras e colunas variáveis
+    # vamos fazer linhas = partidos e colunas = votações
+    # devemos também centralizar os valores
+    # como todos os valores \in [0,1], não precisamos ajustar a escala
+    matriz =  numpy.array(vetores)
+    matriz -= matriz.mean(axis=0) # centralização 
+    p = pca.PCA(matriz)
+    return p
 
 
