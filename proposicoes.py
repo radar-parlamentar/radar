@@ -47,9 +47,9 @@ def parse_html():
     regexp = '<A HREF=http://.*?id=([0-9]*?)>([A-Z]*?) ([0-9]*?)/([0-9]{4})</A>'
     proposicoes = []
     for line in prop_file:
-    res = re.search(regexp, line)
-    if res:
-      proposicoes.append({'id':res.group(1), 'tipo':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
+        res = re.search(regexp, line)
+        if res:
+            proposicoes.append({'id':res.group(1), 'tipo':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
     return proposicoes
 
 def parse():
@@ -65,9 +65,9 @@ def parse():
     regexp = '^([0-9]*?): ([A-Z]*?) ([0-9]*?)/([0-9]{4})'
     proposicoes = []
     for line in prop_file:
-    res = re.search(regexp, line)
-    if res:
-      proposicoes.append({'id':res.group(1), 'tipo':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
+        res = re.search(regexp, line)
+        if res:
+            proposicoes.append({'id':res.group(1), 'tipo':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
     return proposicoes
 
 def com_votacao(proposicoes): 
@@ -85,7 +85,7 @@ def com_votacao(proposicoes):
     for prop in proposicoes:
         vot = camaraws.obter_votacao(prop['id'], prop['tipo'], prop['num'], prop['ano']) 
         if vot != None:
-          votadas.append(prop)
+            votadas.append(prop)
     return votadas
 
 def proposicoes_com_votacao():

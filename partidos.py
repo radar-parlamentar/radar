@@ -15,14 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import algebra
-
 """Módulo partidos -- funções para caracterização e comparação dos partidos
 
 Funcões:
 vetor_votacoes -- calcula o vetor de votações de um partido 
 semelhanca -- calcula a semelhança entre dois partidos
+
+Contantes:
+PARTIDOS: lista com os nomes dos partidos
 """
+
+import algebra
+
+PARTIDOS = ['PT', 'PSDB', 'PV', 'PSOL', 'PCdoB', 'PP', 'PR', 'DEM', 'PMDB', 'PSC', 'PTB', 'PDT', 'PSB', 'PPS', 'PRB']
 
 def vetor_votacoes(partido, proposicoes):
     """Calcula o vetor de votações de um partido 

@@ -22,8 +22,8 @@ import proposicoes
 import camaraws
 import partidos
 import sys
+from partidos import PARTIDOS
 
-PARTIDOS = ['PT', 'PSDB', 'PV', 'PSOL', 'PCdoB', 'PP', 'PR', 'DEM', 'PMDB', 'PSC', 'PTB', 'PDT', 'PSB', 'PSB', 'PPS', 'PRB']
 length = len(PARTIDOS)
 
 # recuperação das proposições
@@ -31,11 +31,11 @@ votadas = proposicoes.parse() # identificação das proposições votadas em 201
 proposicoes = [] # listagem das proposições com suas respectivas votações
 n_vot = 0 # total de votações analisadas
 for prop in votadas:
-  print('Analisando proposição ' + prop['id'])
-  prop_vot = camaraws.obter_votacao(prop['id'], prop['tipo'], prop['num'], prop['ano']) # obtêm votação do web service
-  n_vot += len(prop_vot.votacoes)
-  proposicoes.append(prop_vot)
+    print('Analisando proposição ' + prop['id'])
+    prop_vot = camaraws.obter_votacao(prop['id'], prop['tipo'], prop['num'], prop['ano']) # obtêm votação do web service
+    n_vot += len(prop_vot.votacoes)
+    proposicoes.append(prop_vot)
 
 for p in PARTIDOS:
-  v = partidos.vetor_votacoes(p, proposicoes)
-  print("%s\n%s" % (p, v))
+    v = partidos.vetor_votacoes(p, proposicoes)
+    print("%s\n%s" % (p, v))
