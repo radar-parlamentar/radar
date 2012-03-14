@@ -31,7 +31,7 @@ proposicoes = [] # listagem das proposições com suas respectivas votações
 n_vot = 0 # total de votações analisadas
 for prop in votadas:
   print('Analisando proposição ' + prop['id'])
-  prop_vot = camaraws.obter_votacao(prop['id'], prop['tipo'], prop['num'], prop['ano']) # obtêm votação do web service
+  prop_vot = camaraws.obter_votacao(prop['tipo'], prop['num'], prop['ano']) # obtêm votação do web service
   n_vot += len(prop_vot.votacoes)
   proposicoes.append(prop_vot)
 

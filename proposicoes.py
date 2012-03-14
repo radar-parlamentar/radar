@@ -83,7 +83,7 @@ def com_votacao(proposicoes):
     """
     votadas = []
     for prop in proposicoes:
-        vot = camaraws.obter_votacao(prop['id'], prop['tipo'], prop['num'], prop['ano']) 
+        vot = camaraws.obter_votacao(prop['tipo'], prop['num'], prop['ano']) 
         if vot != None:
             votadas.append(prop)
     return votadas

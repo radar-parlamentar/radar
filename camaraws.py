@@ -27,8 +27,7 @@ import xml.etree.ElementTree as etree
 import io
 
 OBTER_VOTACOES_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?tipo=%s&numero=%s&ano=%s'
-OBTER_INFOS_PROPOSICAO_POR_DADOS = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicao?tipo=%s&numero=%s&ano=%s'
-OBTER_INFOS_PROPOSICAO_POR_ID = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?idProp=%s'
+OBTER_INFOS_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicao?tipo=%s&numero=%s&ano=%s'
 
 def obter_votacao(tipo, num, ano):
     """Obtém votacões e detalhes de uma proposicão
@@ -46,38 +45,9 @@ def obter_votacao(tipo, num, ano):
     except urllib.error.HTTPError:
         return None
     xml = str(xml, "utf-8") # aqui é o xml da votação
-    proposicao = Proposicao.fromxml(xml)
+    prop = Proposicao.fromxml(xml)
 
     xml = obter_proposicao(tipo, num, ano) #aqui é o xml com mais detalhes sobre a proposição
-    xml = str(xml, "utf-8")
-    tree = etree.parse(io.StringIO(xml))
-    prop.ementa = tree.find('Ementa').text
-    prop.explicacao = tree.find('ExplicacaoEmenta').text
-    prop.situacao = tree.find('Situacao').text
-    return prop
-
-def obter_votacao(prop_id, tipo, num, ano):
-    """Obtém votacões de detalhes de uma proposicão utilizando o ID da proposição -- deprecated
-    A funcão obter_votacao(tipo, num, ano) retorna as mesmas informacões
-
-    Argumentos:
-    tipo, num, ano -- strings que caracterizam a proposicão
-    prop_id -- id da proposicão no sistema da câmara; pode ser encontrado em resultados/votadas.txt
-
-    Retorna:
-    Uma proposicão como um objeto da classe model.Proposicao
-    Caso a proposição não seja encontrada ou não possua votações, retorna None
-    """
-    url = OBTER_VOTACOES_PROPOSICAO % (tipo, num, ano)
-    try:
-        xml = urllib.request.urlopen(url).read()
-    except urllib.error.HTTPError:
-        return None
-    xml = str(xml, "utf-8") # aqui é o xml da votação
-    prop = Proposicao.fromxml(xml)
-    prop.id = prop_id
-
-    xml = obter_proposicao(prop_id) # aqui é o xml com mais detalhes sobre a proposição
     xml = str(xml, "utf-8")
     tree = etree.parse(io.StringIO(xml))
     prop.ementa = tree.find('Ementa').text
@@ -94,19 +64,7 @@ def obter_proposicao(tipo, num, ano):
     Retorna:
     Um xml represenando a proposicão como um objeto da classe bytes
     """
-    url = OBTER_INFOS_PROPOSICAO_POR_DADOS % (tipo, num, ano)
+    url = OBTER_INFOS_PROPOSICAO % (tipo, num, ano)
     xml = urllib.request.urlopen(url).read()
     return xml
 
-def obter_proposicao(prop_id):
-    """Obtém detalhes da proposição pelo id da proposicão
-
-    Argumentos:
-    prop_id -- id da proposicão no sistema da câmara; pode ser encontrado em resultados/votadas.txt
-
-    Retorna:
-    Um xml represenando a proposicão como um objeto da classe bytes
-    """
-    url = OBTER_INFOS_PROPOSICAO_POR_ID % prop_id
-    xml = urllib.request.urlopen(url).read()
-    return xml

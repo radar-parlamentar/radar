@@ -28,18 +28,16 @@ pecs = []
 # PEC da música (isenção fiscal para músicas e artistas brasileiros)
 # http://www.camara.gov.br/proposicoesWeb/fichadetramitacao?idProposicao=357094
 # (a primeira vista me parece absurdo que algo assim deva estar na constituição)
-prop_id = '357094'
 tipo = 'pec'
 num = '98'
 ano = '2007'
-pecs.append(camaraws.obter_votacao(prop_id, tipo, num, ano))
+pecs.append(camaraws.obter_votacao(tipo, num, ano))
 # prorroga a vigência da DRU até 31 de dezembro de 2015
 # http://www.camara.gov.br/proposicoesWeb/fichadetramitacao?idProposicao=513496
-prop_id = '513496'
 tipo = 'pec'
 num = '61'
 ano = '2011'
-pecs.append(camaraws.obter_votacao(prop_id, tipo, num, ano))
+pecs.append(camaraws.obter_votacao(tipo, num, ano))
 
 for prop in pecs:
   print(prop)
