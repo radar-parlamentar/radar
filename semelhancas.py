@@ -22,8 +22,10 @@ import proposicoes
 import camaraws
 import partidos
 import sys
+from partidos import PARTIDOS
 
-PARTIDOS = ['PT', 'PSDB', 'PV', 'PSOL', 'PCdoB', 'PP', 'PR', 'DEM', 'PMDB', 'PSC', 'PTB', 'PDT', 'PSB', 'PSB', 'PPS', 'PRB']
+length = len(PARTIDOS)
+
 # PRTB, PRP, PMN, PSL, PHS deram problema, pois não aparecem em algumas votações
 # TODO: o que fazer nesses casos?
 length = len(PARTIDOS)
