@@ -1,4 +1,4 @@
-#!/usr/bin/python3.2
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2012, Leonardo Leite
@@ -21,6 +21,7 @@ Baixa as PECs de 2011
 Mostra votos agregados por partido
 """
 
+from __future__ import unicode_literals
 import camaraws
 
 pecs = []

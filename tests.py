@@ -1,4 +1,4 @@
-#!/usr/bin/python3.2
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 from model import Deputado
@@ -72,7 +72,7 @@ class CamaraWS_Test(unittest.TestCase):
     vetor = partidos.vetor_votacoes(partido, proposicoes)
 
     # testando se tá certo
-    expected = [1, 0.055555556, 0.833333333, 0.5]
+    expected = [1, -0.88889, 0.66667, 0]
     self.assertEqual(len(expected), len(vetor))
     for e, v in zip(expected, vetor):
       self.assertAlmostEqual(e, v, 5)
@@ -220,7 +220,7 @@ class CamaraWS_Test(unittest.TestCase):
     s = partidos.semelhanca(partido1, partido2, proposicoes)
 
     # testando se tá certo
-    expected = 0.2524905 # calculado na mão
+    expected = 0.008766487 # calculado na mão
     self.assertAlmostEqual(expected, s, 5)
 
 if __name__ == '__main__':

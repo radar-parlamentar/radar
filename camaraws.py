@@ -22,7 +22,7 @@ obter_votacao -- obtém votacões e detalhes de uma proposicão
 """
 
 from model import Proposicao
-import urllib.request
+import urllib2
 import xml.etree.ElementTree as etree
 import io
 
@@ -41,18 +41,24 @@ def obter_votacao(tipo, num, ano):
     """
     url  = OBTER_VOTACOES_PROPOSICAO % (tipo, num, ano)
     try:
-        xml = urllib.request.urlopen(url).read()
-    except urllib.error.HTTPError:
+        request = urllib2.Request(url)
+        xml = urllib2.urlopen(request).read()
+    except urllib2.URLError:
         return None
-    xml = str(xml, "utf-8") # aqui é o xml da votação
-    prop = Proposicao.fromxml(xml)
+
+    try:
+        prop = Proposicao.fromxml(xml)
+    except:
+        return None
+    if not isinstance(prop, Proposicao): 
+        return None
 
     xml = obter_proposicao(tipo, num, ano) #aqui é o xml com mais detalhes sobre a proposição
-    xml = str(xml, "utf-8")
-    tree = etree.parse(io.StringIO(xml))
+    tree = etree.fromstring(xml)
+    prop.id = tree.find('idProposicao').text
     prop.ementa = tree.find('Ementa').text
     prop.explicacao = tree.find('ExplicacaoEmenta').text
-    prop.situacao = tree.find('Situacao').text
+    prop.situacao = tree.find('Situacao').text 
     return prop
 
 def obter_proposicao(tipo, num, ano):
@@ -65,6 +71,7 @@ def obter_proposicao(tipo, num, ano):
     Um xml represenando a proposicão como um objeto da classe bytes
     """
     url = OBTER_INFOS_PROPOSICAO % (tipo, num, ano)
-    xml = urllib.request.urlopen(url).read()
+    request = urllib2.Request(url)
+    xml = urllib2.urlopen(request).read()
     return xml
 

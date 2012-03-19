@@ -25,13 +25,14 @@ VotoPartido -- representa um conjunto de votos de um partido
 VotoUF -- representa um conjunto de votos de uma UF (estado ou distrito federal)
 """ 
 
+from __future__ import unicode_literals
 import xml.etree.ElementTree as etree
 import io
 
 SIM = 'Sim'
 NAO = 'Não'
 ABSTENCAO = 'Abstenção'
-OBSTRUCAO = 'Obstrução' # por hora será inObstruçãoterpretado como 'Não'
+OBSTRUCAO = 'Obstrução' # por hora será interpretado como 'Não'
 
 class Proposicao:
     """Modela uma proposição parlamentar
@@ -49,7 +50,8 @@ class Proposicao:
         self.explicacao = ''
         self.situacao = ''
         self.votacoes = []
-  
+    
+    @staticmethod
     def fromxml(xml):
         """Transforma um texto XML em uma proposição
         Argumentos:
@@ -58,7 +60,7 @@ class Proposicao:
         Retorna:
         Um objeto do tipo Proposicao
         """  
-        tree = etree.parse(io.StringIO(xml))
+        tree = etree.fromstring(xml)
         prop = Proposicao()
         prop.sigla = tree.find('Sigla').text
         prop.numero = tree.find('Numero').text
@@ -68,8 +70,11 @@ class Proposicao:
           prop.votacoes.append(vot)
         return prop
 
+    def __unicode__(self):
+        return "[%s %s/%s]: %s \nEmenta: %s \nSituação: %s" % (self.sigla, self.numero, self.ano, self.explicacao, self.ementa, self.situacao) 
+
     def __str__(self):
-        return "[%s %s/%s]: %s \nEmenta: %s \nSituação: %s" % (self.sigla, self.numero, self.ano, self.explicacao, self.ementa, self.situacao)
+        return unicode(self).encode('utf-8')
 
 class Votacao:
     """Modela uma votação pertencente à uma proposição parlamentar
@@ -83,6 +88,7 @@ class Votacao:
         self.hora = ''
         self.deputados = []
 
+    @staticmethod
     def fromtree(tree):
         """Transforma um XML em uma votação
         Argumentos:
@@ -128,8 +134,11 @@ class Votacao:
           voto.add(dep.voto)
         return dic  
 
-    def __str__(self):
+    def __unicode__(self):
         return "[%s, %s] %s" % (self.data, self.hora, self.resumo)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
 
 class Deputado:
     """Modela o voto de um deputado numa votação
@@ -144,6 +153,7 @@ class Deputado:
         self.uf = ''
         self.voto = ''
 
+    @staticmethod
     def fromtree(tree):
         """Transforma um XML no voto de um deputado
         Argumentos:
@@ -159,11 +169,13 @@ class Deputado:
         dep.voto = tree.attrib['Voto']
         return dep
 
-    def __str__(self):
+    def __unicode__(self):
         return "%s (%s-%s) votou %s" % (self.nome, self.partido, self.uf, self.voto)
 
-# TODO renomear para VotoAgregado  
-class Voto:
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
+class VotosAgregados:
     """Representa um conjunto de votos
     Atributos:
     sim, nao, abstencao -- inteiros que representam a quantidade de votos no conjunto
@@ -189,27 +201,30 @@ class Voto:
         self.nao = 0
         self.abstencao = 0
 
-    def __str__(self):
+    def __unicode__(self):
         return '(%s, %s, %s)' % (self.sim, self.nao, self.abstencao)
 
-class VotoPartido(Voto):
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
+class VotoPartido(VotosAgregados):
     """Representa um conjunto de votos de um partido
     Atributos:
     sim, nao, abstencao -- inteiros que representam a quantidade de votos no conjunto
     partido -- string
     """
     def __init__(self, partido):
-        Voto.__init__(self)
+        VotosAgregados.__init__(self)
         self.partido = partido
 
-class VotoUF(Voto):
+class VotoUF(VotosAgregados):
     """Representa um conjunto de votos de uma UF (estado ou distrito federal)
     Atributos:
     sim, nao, abstencao -- inteiros que representam a quantidade de votos no conjunto
     uf -- string
     """
     def __init__(self, uf):
-        Voto.__init__(self)
+        VotosAgregados.__init__(self)
         self.uf = uf
 
 

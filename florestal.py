@@ -1,4 +1,4 @@
-#!/usr/bin/python3.2
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2012, Leonardo Leite
@@ -21,6 +21,8 @@ Baixa a votação do código florestal
 Mostra votos agregados por partido
 Se tiver flag -uf, mostra votos por UF
 """
+
+from __future__ import unicode_literals
 import camaraws
 import sys
 
@@ -31,7 +33,9 @@ num = '1876'
 ano = '1999'
 prop = camaraws.obter_votacao(tipo, num, ano) 
 
-print(prop)
+txt = str(prop)
+print type(txt)
+#print prop
 for votacao in prop.votacoes:
   print('************')
   print(votacao)
@@ -40,5 +44,8 @@ for votacao in prop.votacoes:
   else:
     dic = votacao.por_partido()
   for key, voto in dic.items():
-    print("%s: \t Sim: %s \t Não: %s \t Abstenções: %s" % (key, voto.sim, voto.nao, voto.abstencao))
+    sim = voto.sim
+    nao = voto.nao
+    abst = voto.abstencao
+    print("%s: \t Sim: %s \t Não: %s \t Abstenções: %s" % (key, sim, nao, abst))
 

@@ -20,12 +20,15 @@
 Funcões:
 vetor_votacoes -- calcula o vetor de votações de um partido 
 semelhanca -- calcula a semelhança entre dois partidos
+semelhanca_pca -- calcula as semelhanças partidárias gerando um gráfico bidimensional 
 
 Contantes:
 PARTIDOS: lista com os nomes dos partidos
 """
 
 import algebra
+import numpy
+import pca
 
 PARTIDOS = ['PT', 'PSDB', 'PV', 'PSOL', 'PCdoB', 'PP', 'PR', 'DEM', 'PMDB', 'PSC', 'PTB', 'PDT', 'PSB', 'PPS', 'PRB']
 
@@ -44,7 +47,7 @@ def vetor_votacoes(partido, proposicoes):
             dic = votacao.por_partido()
             voto = dic[partido]
             #vi = (voto.sim + 0.5*voto.abstencao) / (voto.sim + voto.nao + voto.abstencao) # análise antigo
-            vi = (1*voto.sim + 0*voto.abstencao -1*voto.nao) / (voto.sim + voto.nao + voto.abstencao)
+            vi = (1.0*voto.sim + 0*voto.abstencao -1.0*voto.nao) / (voto.sim + voto.nao + voto.abstencao)
             vetor.append(vi)
     return vetor  
 
@@ -66,6 +69,25 @@ def semelhanca(partido1, partido2, proposicoes):
     v1 = vetor_votacoes(partido1, proposicoes)
     v2 = vetor_votacoes(partido2, proposicoes)
     sem = semelhanca_vetores(v1, v2)
-    return (sem+1)/2
+    return (sem+1)/2.0
+
+def semelhanca_pca(vetores):
+    """Calcula as semelhanças partidárias gerando um gráfico bidimensional 
+    Isto é feito com a Análise de Componentes Principais (PCA)
+    Argumentos:
+    vetores -- uma lista de listas, em que cada lista é um vetor de votações de um partido
+    Retorna:
+    Uma lista em que a i-ésima posição representa a coordenada bidimensional do partido 
+    cujo vetor de votações era a i-ésima lista do argumento vetores
+    """
+    #PCA: linhas são amostras e colunas variáveis
+    # vamos fazer linhas = partidos e colunas = votações
+    # devemos também centralizar os valores
+    # como todos os valores \in [0,1], não precisamos ajustar a escala
+    matriz =  numpy.array(vetores)
+    matriz -= matriz.mean(axis=0) # centralização 
+    p = pca.PCA(matriz)
+    return p
+
 
 

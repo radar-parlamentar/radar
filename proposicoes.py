@@ -1,4 +1,4 @@
-#!/usr/bin/python3.2
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2012, Leonardo Leite
@@ -36,13 +36,13 @@ import camaraws
 # PEC - proposta de emenda à constituição
 
 def parse_html():
-    """Parse do arquivo recusrsos/proposicoes.html
+    """Parse do arquivo recusrsos/proposicoes.htmll
     Retorna:
-    Uma lista com a identificação das proposições encontradas no html
+    Uma lista com a identificação das proposições encontradas no htmll
     Cada posição da lista é um dicionário com chaves \in {id, tipo, num, ano}
     As chaves e valores desses dicionários são strings
     """
-    file_name = 'recursos/proposicoes2011.htm'  # arquivo contem proposições votadas pela câmara em 2011
+    file_name = 'recursos/proposicoes2011.html'  # arquivo contem proposições votadas pela câmara em 2011
     prop_file = codecs.open(file_name, encoding='ISO-8859-15', mode='r')
     regexp = '<A HREF=http://.*?id=([0-9]*?)>([A-Z]*?) ([0-9]*?)/([0-9]{4})</A>'
     proposicoes = []
@@ -83,6 +83,7 @@ def com_votacao(proposicoes):
     """
     votadas = []
     for prop in proposicoes:
+        print "requisitando " + prop['id']
         vot = camaraws.obter_votacao(prop['tipo'], prop['num'], prop['ano']) 
         if vot != None:
             votadas.append(prop)
@@ -103,7 +104,6 @@ if __name__ == "__main__":
     proposicoes = parse_html()
     votadas = com_votacao(proposicoes)
     print("# Documento entregue pela câmara continha %d proposições votadas em 2011" % len(proposicoes))
-    votadas = parse()
     print("# %d proposições retornaram informações sobre suas votações pelo web service" % len(votadas))
     print("# Proposições que retornaram a votação:")
     for prop in votadas:
