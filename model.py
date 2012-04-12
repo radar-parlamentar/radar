@@ -70,6 +70,20 @@ class Proposicao:
           prop.votacoes.append(vot)
         return prop
 
+    @staticmethod
+    def fromxmlid(xml):
+        """Transforma um texto XML do ObterProposicaoPorID em um string do tipo "sigla numero/ano"
+        Argumentos:
+        xml -- string contendo o XML retornado do web service que retorna proposição por id
+
+        Retorna:
+        string do tipo "sigla numero/ano", por exemplo fromxmlid(513512) retorna "MPV 540/2011"
+        """  
+        tree = etree.fromstring(xml)
+        nome = tree.find('nomeProposicao').text
+        return nome
+
+
     def __unicode__(self):
         return "[%s %s/%s]: %s \nEmenta: %s \nSituação: %s" % (self.sigla, self.numero, self.ano, self.explicacao, self.ementa, self.situacao) 
 
