@@ -19,6 +19,7 @@
 
 Funcões:
 obter_votacao -- obtém votacões e detalhes de uma proposicão
+obter_nomeProp_porid -- Obtém nome da proposição dado o id.
 """
 
 from model import Proposicao
@@ -28,6 +29,7 @@ import io
 
 OBTER_VOTACOES_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?tipo=%s&numero=%s&ano=%s'
 OBTER_INFOS_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicao?tipo=%s&numero=%s&ano=%s'
+OBTER_INFOS_PORID = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?idProp=%s'
 
 def obter_votacao(tipo, num, ano):
     """Obtém votacões e detalhes de uma proposicão
@@ -75,3 +77,29 @@ def obter_proposicao(tipo, num, ano):
     xml = urllib2.urlopen(request).read()
     return xml
 
+
+def obter_nomeProp_porid(idProp):
+    """Obtém nome da proposição dado o id.
+    Por exemplo: obter_nomeProp_porid(513512) retorna o string "MPV 540/2011"
+
+    Argumentos:
+    idprop -- inteiro usado como identificador único de uma proposição no webservice
+
+    Retorna:
+    Uma string com tipo, número e ano da proposição, por exemplo "MPV 540/2011".
+    Caso a proposição não seja encontrada, retorna None.
+    Obs: Mesmo que a proposição seja encontrada, poderá ainda assim não possuir votações.
+    """
+    url = OBTER_INFOS_PORID % (idProp)
+    try:
+        request = urllib2.Request(url)
+        xml = urllib2.urlopen(request).read()
+    except urllib2.URLError:
+        return None
+
+    try:
+        nomeProp = Proposicao.fromxmlid(xml)
+    except:
+        return None
+
+    return nomeProp
