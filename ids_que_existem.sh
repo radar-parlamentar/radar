@@ -5,7 +5,7 @@
 
 timer=$(date -d now +%s)
 echo ""
-./ids_que_existem.py 513100 513200 > resultados/ids_que_existem.txt
+./ids_que_existem.py 485261 485276 > resultados/ids_que_existem.txt
 echo ""
 printf "Terminado. %7d segundos." $(( $(date -d now +%s) - $timer ))
 echo ""

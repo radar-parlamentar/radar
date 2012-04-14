@@ -28,6 +28,8 @@ VotoUF -- representa um conjunto de votos de uma UF (estado ou distrito federal)
 from __future__ import unicode_literals
 import xml.etree.ElementTree as etree
 import io
+import re
+import sqlite3 as lite
 
 SIM = 'Sim'
 NAO = 'Não'
@@ -159,7 +161,20 @@ class Deputado:
     Atributos:
     nome, partido, uf -- strings que caracterizam o deputado
     voto -- voto dado pelo deputado \in {SIM, NAO, ABSTENCAO, OBSTRUCAO}
+
+    Métodos estáticos: (O bd fica em 'resultados/camara.db')
+    fromtree(tree) -- Transforma um XML em um objeto tipo Deputado.
+    inicializar_dicpartidos() -- Copia tabela PARTIDOS do bd na variável Deputado.dicpartidos. Também usa informações do arquivo 'listapartidos.txt'.
+    inicializar_diclistadeps() -- Copia tabela DEPUTADOS do bd na variável Deputado.diclistadeps.
+    idPartido(siglapartido) -- Retorna inteiro que identifica o partido segundo a tabela PARTIDOS do bd.
+    idUF(siglauf) -- Retorna inteiro que identifica uma UF. Usar maiúsculas. Joga StandardError se UF não existir.
+    idDep(nome,partido,uf) -- Retorna inteiro chamado idDep que identifica univocamente a tupla (nome,partido,uf) de acordo com a tabela DEPUTADOS do bd.
     """
+    listauf = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
+    dicpartidos = dict() # chave é a sigla, valor é o idPartido, número que ele ganhou (que não é o número eleitoral, que não estamos usando porque está sujeito a mudar com o tempo)
+    dicpartidos_inicializado = False
+    diclistadeps = {}
+    diclistadeps_inicializado = False
 
     def __init__(self):
         self.nome = ''
@@ -188,6 +203,133 @@ class Deputado:
 
     def __str__(self):
         return unicode(self).encode('utf-8')
+
+    @staticmethod
+    def inicializar_dicpartidos():
+        """Lê no banco de dados 'resultados/camaraws.db' a tabela PARTIDOS, se presente, para inicializar a variável Deputado.dicpartidos com os partidos que ali constarem. Deputado.dicpartidos é um dicionário que tem como chave as siglas dos partidos e como valor o idPartido (identificador interno único, não necessariamente igual ao número eleitoral).
+
+        Lê em seguida o arquivo listapartidos.txt que contém linhas do tipo 'PV 88' onde a sigla é a sigla de um partido e o número é um idPartido preferencial que pode ser escolhido pelo usuário, editando o arquivo manualmente. Se um partido de 'listapartidos.txt' já tiver sido encontrado no banco de dados com um idPartido diferente, prevalesce o do banco de dados, o do arquivo é ignorado, com emissão de uma mensagem de warning.
+
+        Isso permite ao usuário escolher o idPartido que quer dar para cada partido, por exemplo fazendo-o coincidir com o número eleitoral. Permite também que bancos de dados criados em momentos diferentes acabem atribuindos idPartidos diferentes, o que não deveria ser um problema se os programas forem consistentes, mas poderia dificultar a localização de algum bug.
+
+        Retorna 0 se a leitura for executada com sucesso, 1 se o arquivo listapartidos.txt não existir (ou não tiver permissão de leitura).
+        """
+        con = lite.connect('resultados/camara.db')
+        if len(con.execute("select * from sqlite_master where type='table' and name='PARTIDOS'").fetchall()) != 0: # se tabela existe
+            partsdb = con.execute('SELECT * FROM PARTIDOS').fetchall()
+#            print partsdb
+            for p in partsdb:
+                Deputado.dicpartidos[p[1]] = p[0]
+        file_listapartidos = 'listapartidos.txt'
+        try:
+            prop_file = open(file_listapartidos,'r')
+        except IOError:
+            return 1
+        # ex: "PV 88"
+        regexp = '([A-z_-]*)\s*(\d*)'
+        for line in prop_file:
+#            print line
+            res = re.search(regexp,line)
+            if res:
+                siglawannabe = res.group(1)
+                idwannabe = res.group(2)
+                # verificar se ja tem, se sim warning, se nao acrescenta no bd e no dicpartidos
+                if idwannabe in Deputado.dicpartidos.values():
+                    if not Deputado.dicpartidos[siglawannabe] == idwannabe:
+                        print "WARNING: listapartidos.txt associa o %s ao idPartido %d" % (siglawannabe,idwannabe)
+                        print "mas no banco de dados este id ja esta associado ao %s." % (Deputado.dicpartidos[idwannabe])
+                        print "Foi mantido o valor do banco de dados, e ignorado o de listapartidos.txt."
+                elif siglawannabe in Deputado.dicpartidos:
+                    if not Deputado.dicpartidos[siglawannabe] == idwannabe:
+                        print "WARNING: listapartidos.txt associa o %s ao idPartido %d" % (siglawannabe,idwannabe)
+                        print "mas no banco de dados o %s ja esta associado ao id %d." % (siglawannabe,Deputado.dicpartidos[siglawannabe])
+                        print "Foi mantido o valor do banco de dados, e ignorado o de listapartidos.txt."
+                else:
+                    Deputado.dicpartidos[res.group(1)] = int(res.group(2))
+                    con.execute("insert into PARTIDOS values(?,?)",(idwannabe,siglawannabe))
+                    con.commit()
+        con.close()
+        return 0
+    
+    @staticmethod
+    def inicializar_diclistadeps():
+        """Lê no banco de dados 'resultados/camara.db' a tabela DEPUTADOS, se presente, para inicializar a variável Deputado.diclistadeps com os deputados que ali constarem. Deputado.diclistadeps é um dicionário que tem como chave um inteiro de até cinco dígitos chamado idPartUF que identifica um par partido-UF, e como valor uma lista de deputados que pertencem a este partido-UF.
+        """
+        con = lite.connect('resultados/camara.db')
+        if len(con.execute("select * from sqlite_master where type='table' and name='DEPUTADOS'").fetchall()) != 0: # Se a tabela existe
+            depsdb = con.execute('SELECT * FROM DEPUTADOS').fetchall()
+            con.close()
+            for d in depsdb:
+                iddep = d[0]
+                idpartuf = int(iddep/1000)
+                Deputado.diclistadeps[idpartuf] = [d[1]]
+        return
+
+    @staticmethod
+    def idPartido(siglapartido):
+        """Retorna um inteiro que identifica o partido de acordo com a tabela PARTIDOS do bd.
+        Se o partido não estiver na tabela, recebe um identificador novo, e é inserido na tabela.
+        """
+        if siglapartido in Deputado.dicpartidos:
+            return Deputado.dicpartidos[siglapartido]
+        else:
+            if not Deputado.dicpartidos_inicializado:
+                Deputado.inicializar_dicpartidos()
+                Deputado.dicpartidos_inicializado = True
+                if siglapartido in Deputado.dicpartidos:
+                    return Deputado.dicpartidos[siglapartido]
+            # se chegou aqui, encontrou partido novo.
+            idpartido = max(Deputado.dicpartidos.values()+[0]) + 1
+            Deputado.dicpartidos[siglapartido] = idpartido
+            print "Novo partido '%s' encontrado. Atribuido idPartido %d" % (siglapartido,idpartido)
+            # colocar no banco de dados
+            con = lite.connect('resultados/camara.db')
+            con.execute('INSERT INTO PARTIDOS VALUES(?,?)',(idpartido,siglapartido))
+            con.commit()
+            con.close()
+        return idpartido
+
+    @staticmethod
+    def idUF(siglauf):
+        """Dada a sigla de uma unidade da federação (duas maiúsculas), retorna um inteiro entre 1 e 27 que a identifica univocamente, ou None se a sigla não for válida
+        """
+        try:
+            iduf = Deputado.listauf.index(siglauf) + 1
+            return iduf
+        except:
+            raise StandardError('UF %s nao existe. Obs: usar maiusculas.' % siglauf)
+
+    @staticmethod
+    def idDep(nome,partido,uf):
+        """Dado nome, partido e uf de um deputado, retorna um inteiro, chamado idDep, que o identifica univocamente, segundo a tabela DEPUTADOS do bd.
+
+        Deputados com mesmo nome mas filiação diferente são tratados como deputados distintos (pode acontecer no caso de mudança de partido).
+        O idDep é construido de forma a ser suficiente para determinar partido e uf apenas olhando o número, pois tem a sintaxe: PPPEENNN, onde PPP é o idPartido, EE é o idUF e NNN é um número único para cada nome de deputado dentro de um partido-uf.
+        Se o deputado não estiver ainda na tabela DEPUTADOS do bd, ele ganha uma nova idDep, é inserido na tabela, e retorna-se o idDep recém atribuído.
+        """
+#        print Deputado.dicpartidos_inicializado
+        if not Deputado.diclistadeps_inicializado:
+            Deputado.inicializar_diclistadeps()
+            Deputado.diclistadeps_inicializado = True
+
+        idPartUF = 100*Deputado.idPartido(partido) + Deputado.idUF(uf)
+        if idPartUF in Deputado.diclistadeps:
+            if nome in Deputado.diclistadeps[idPartUF]:
+                iddep = idPartUF*1000 + Deputado.diclistadeps[idPartUF].index(nome) + 1
+                return iddep
+            else:
+                Deputado.diclistadeps[idPartUF].append(nome)
+                iddep = idPartUF*1000 + Deputado.diclistadeps[idPartUF].index(nome) + 1
+        else:
+            Deputado.diclistadeps[idPartUF] = [nome]
+            iddep = idPartUF*1000 + 1
+        con = lite.connect('resultados/camara.db')
+        con.execute('INSERT INTO DEPUTADOS VALUES(?,?,?,?)',(iddep,nome,partido,uf))
+        con.commit()
+        con.close()
+        return iddep
+
+
 
 class VotosAgregados:
     """Representa um conjunto de votos
