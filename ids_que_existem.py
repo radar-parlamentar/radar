@@ -67,17 +67,25 @@ def cria_txt(file_name,xmin,xmax):
             if not txt == 'None':
                 print '%d: %s' %(x,txt)
     else:
-        f = open(file_name,'w')
+        f = open(file_name,'a')
         linha = '# Procurando ids entre %d e %d.\n' % (xmin,xmax)
         f.write(linha)
         f.write('# id  : nome\n')
         f.write('#-----------\n')
+        print '. : id invalida; x : id valida; A cada 1000: diz onde esta.'
         for x in range(xmin,xmax+1):
             p = camaraws.obter_nomeProp_porid(x)
             txt = str(p)
+            if (x%1000)==0:
+                print '\n%d' %x
             if not txt == 'None':
                 linha = '%d: %s\n' %(x,txt)
                 f.write(linha)
+                sys.stdout.write('x')
+                sys.stdout.flush()
+            else:
+                sys.stdout.write('.')
+                sys.stdout.flush()
         f.close()
 
 if __name__ == "__main__":

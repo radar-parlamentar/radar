@@ -36,6 +36,11 @@ if __name__ == "__main__":
     os.system('mv resultados/camara.db resultados/camara.db.backup') # Faz backup do bd antigo.
     os.system('rm resultados/camara.db') # Apagar bd antigo para fazer um novo em folha.
 
+    print 'resultados/camara.db renomeado para resultados/camara.db.backup'
+    print 'Backup anterior, se havia, foi apagado.'
+    print 'Entre parenteses, (id da proposicao,numero de votacoes).'
+    print 'Proposicoes sem votacoes aparecem como um ponto.'
+
     proposicoes = [] # lista de objetos da classe model.Proposicao.
     numero_votacoes = [] # lista de ints que informa quantas votacoes cada proposicao da lista acima tem.
 
@@ -52,12 +57,14 @@ if __name__ == "__main__":
     con.close()
 
     for iprop in lista_proposicoes:
-        print 'AVALIANDO %s %s %s' % (iprop['tipo'],iprop['num'],iprop['ano'])
+        #print 'AVALIANDO %s %s %s' % (iprop['tipo'],iprop['num'],iprop['ano'])
         p = camaraws.obter_votacao(iprop['tipo'], iprop['num'],iprop['ano']) # Obtém proposição e suas votações do web service
         if p != None:
             proposicoes.append(p)
             numero_votacoes.append(len(p.votacoes))
-            print 'Houveram votacoes. Votacoes encontradas: %d' % (len(p.votacoes))
+            #print 'Houveram votacoes. Votacoes encontradas: %d' % (len(p.votacoes))
+            sys.stdout.write('(%s,%d),'%(iprop['id'],len(p.votacoes)))
+            sys.stdout.flush()
             #adicionar proposicao na tabela PROPOSICOES
             con = lite.connect('resultados/camara.db')
             con.execute("INSERT INTO PROPOSICOES VALUES(?,?,?,?,?,?,?,?)",(p.id,p.sigla,p.numero,p.ano,p.ementa,p.explicacao,p.situacao,len(p.votacoes)))
@@ -91,4 +98,6 @@ if __name__ == "__main__":
                 con.execute("INSERT INTO VOTACOES VALUES(?,?,?,?,?,?,?,?,?)",(pid, votid, resum, data, hora, ssim, snao, sabs, sobs))
                 con.commit()
                 con.close()
-        
+        else:
+            sys.stdout.write('.')
+            sys.stdout.flush()
