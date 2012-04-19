@@ -29,6 +29,18 @@ import model
 import ids_que_existem
 import sqlite3 as lite
 
+def arrumar_datas(arquivo_db):
+    con = lite.connect(arquivo_db)
+    with con:
+        #cur = con.cursor()
+        datas = con.execute("select idProp,idVot,data from VOTACOES;").fetchall()
+        for v in datas:
+            r = re.search('(\d*)/(\d*)/(\d*)',v[2])
+            formato_sql = r.group(3).zfill(4) + '-' + r.group(2).zfill(2) + '-' + r.group(1).zfill(2)
+            con.execute("update VOTACOES set data=? where idProp=?",(formato_sql,v[0]))
+    con.close()
+    return
+        
 
 if __name__ == "__main__":
 
@@ -101,3 +113,5 @@ if __name__ == "__main__":
         else:
             sys.stdout.write('.')
             sys.stdout.flush()
+
+    arrumar_datas('resultados/camara.db')
