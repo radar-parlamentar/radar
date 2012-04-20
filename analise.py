@@ -59,6 +59,11 @@ class Analise:
         a.semelhancas [P]x[P] : matriz simétrica de valores entre 0 e 100 representando a porcentagem de semelhança entre os partidos i e j (calculado pelo produto escalar).
         a.semelhancas2 [P]x[P] : matriz simétrica de valores entre 0 e 100 representando a semelhança entre partidos i e j, calculada pelo método da convolução.
 
+        Objetos da classe pca.PCA possuem entre outros os atributos:
+        a.pca.U [P][C] : contém os vetores votação porém na base dos componentes principais (em número C=V), não mais das votações.
+        a.pca.Vt [C][V] : informa como construir os componentes principais a partir das votações.
+        a.pca.eigen [C] : autovalores. Para obter variâncias explicadas por cada c.p., basta fazer eigen[j]/eigen.sum() .
+
     == Métodos (dinâmicos) ==
     -------------------------
     Seja a um objeto tipo análise, aplicam-se os métodos:
@@ -86,15 +91,6 @@ class Analise:
         self.tipos_proposicao = tipos_proposicao
         self.lista_partidos = lista_partidos
         self.lista_votacoes = []
-        #self.vetores_votacao = []
-        #self.vetores_tamanho = []
-        #self.tamanho_partido = []
-        #self.vetores_votacao_uf = []
-        #self.vetores_tamanho_uf = []
-        #self.tamanho_uf = []
-        #self.pca
-        #self.pca_uf
-        #self.semelhancas
 
         # Verificar se datas foram entradas corretamente:
         if not (re.match('(19)|(20)\d\d-[01]\d-[0123]\d',data_inicial) and re.match('(19)|(20)\d\d-[01]\d-[0123]\d',data_final)):
@@ -257,15 +253,15 @@ class Analise:
         fo.write('Análise PCA - por partido\n')
         fo.write('de %s a %s (ano-mês-dia)\n\n' % (self.data_inicial,self.data_final))
         fo.write('Fração da variância explicada pelas dimensões:\n')
-        fo.write('%f\n',(self.pca.eigen[0]/self.pca.eigen.sum()))
-        fo.write('%f\n',(self.pca.eigen[1]/self.pca.eigen.sum()))
-        fo.write('%f\n',(self.pca.eigen[2]/self.pca.eigen.sum()))
-        fo.write('%f\n',(self.pca.eigen[3]/self.pca.eigen.sum()))
+        fo.write('%f\n' % (self.pca.eigen[0]/self.pca.eigen.sum()))
+        fo.write('%f\n' % (self.pca.eigen[1]/self.pca.eigen.sum()))
+        fo.write('%f\n' % (self.pca.eigen[2]/self.pca.eigen.sum()))
+        fo.write('%f\n' % (self.pca.eigen[3]/self.pca.eigen.sum()))
         fo.write('\nCoordenadas:\n')
         for p in self.lista_partidos:
             ip += 1
             fo.write('%s: [%f, %f]\n' % (p,coordenadas[ip,0],coordenadas[ip,1]) )
-        fo.write('Tamanhos=%s' % str(self.tamanho_partido))
+        fo.write('Tamanhos=%s\n' % str(self.tamanho_partido))
         if fechar:
             fo.close()
         return coordenadas
@@ -283,19 +279,19 @@ class Analise:
             fechar = True
         else:
             fo = sys.stdout
-        ip = -1
+        ie = -1
         fo.write('Análise PCA - por estado\n')
         fo.write('de %s a %s (ano-mês-dia)\n\n' % (self.data_inicial,self.data_final))
         fo.write('Fração da variância explicada pelas dimensões:\n')
-        fo.write('%f\n',(self.pca.eigen[0]/self.pca_uf.eigen.sum()))
-        fo.write('%f\n',(self.pca.eigen[1]/self.pca_uf.eigen.sum()))
-        fo.write('%f\n',(self.pca.eigen[2]/self.pca_uf.eigen.sum()))
-        fo.write('%f\n',(self.pca.eigen[3]/self.pca_uf.eigen.sum()))
+        fo.write('%f\n' % (self.pca_uf.eigen[0]/self.pca_uf.eigen.sum()))
+        fo.write('%f\n' % (self.pca_uf.eigen[1]/self.pca_uf.eigen.sum()))
+        fo.write('%f\n' % (self.pca_uf.eigen[2]/self.pca_uf.eigen.sum()))
+        fo.write('%f\n' % (self.pca_uf.eigen[3]/self.pca_uf.eigen.sum()))
         fo.write('\nCoordenadas:\n')
         for e in Analise.lista_ufs:
             ie += 1
             fo.write('%s: [%f, %f]\n' % (e,coordenadas[ie,0],coordenadas[ie,1]) )
-        fo.write('Tamanhos=%s' % str(self.tamanho_uf))
+        fo.write('Tamanhos=%s\n' % str(self.tamanho_uf))
         if fechar:
             fo.close()
         return coordenadas
