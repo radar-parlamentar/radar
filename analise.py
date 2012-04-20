@@ -210,7 +210,7 @@ class Analise:
         self.semelhancas = numpy.zeros((len(lista_partidos),len(lista_partidos)))
         for i in range(0,len(lista_partidos)):
             for j in range(0,len(lista_partidos)):
-                self.semelhancas[i][j] = 100 *( ( numpy.dot(self.vetores_votacao[i],self.vetores_votacao[j]) / self.num_votacoes ) + 1 )/ 2
+                self.semelhancas[i][j] = 100 *( ( numpy.dot(self.vetores_votacao[i],self.vetores_votacao[j]) / (numpy.sqrt(numpy.dot(self.vetores_votacao[i],self.vetores_votacao[i])) * numpy.sqrt(numpy.dot(self.vetores_votacao[j],self.vetores_votacao[j])) ) ) + 1 )/ 2
 
         # Semelhancas entre partidos, segundo o método da convolução, normalizadas entre 0 e 100[%]
         self.semelhancas2 = numpy.zeros((len(lista_partidos),len(lista_partidos)))
@@ -315,7 +315,7 @@ class Analise:
         Cada tupla é normalizada dividindo pela soma dos quadrados dos elementos, e a função retorna o produto escalar das duas tuplas normalizadas.
          """
         if sum(u)==0 or sum(v)==0:
-            return 0
+            return numpy.NaN
         un= numpy.array(u,dtype=float)
         vn= numpy.array(v,dtype=float)
         x = numpy.dot(un,vn)
