@@ -1,14 +1,5 @@
+Próximos passos/ idéias:
 
-* Organizar arquivos em pastas (pra isso é preciso saber usar direito o 'import')
+* Criar medida(s) da dispersão dentro de cada partido, para saber da homogeneidade de cada um;
 
-* Separar os testes em vários arquivos
-
-* Criar mais testes
-
-* Colocar os métodos de algebra.py numa classe Vetor, ou utilizar uma biblioteca como a NumPy
-
-* Documentar funções
-
-* Como modelar a obstrução?
-
-* Colocar no READE as respostas para as questões
+* Lapidar e limpar o código (talvez alguns módulos estejam ficando obsoletos). Organizar arquivos em pastas.
