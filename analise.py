@@ -23,6 +23,9 @@ import numpy
 import pca
 import sys
 import sqlite3 as lite
+from matplotlib.pyplot import figure, show, scatter,text
+from matplotlib.patches import Ellipse
+import matplotlib.colors
 
 class Analise:
     """ Cada instância a guarda os resultados da análise em um período de tempo entre self.data_inicial e self.data_final, onde sao considerados os partidoslistados em self.lista_partidos e as proposicoes dos tipos listados em self.tipos_proposicao.
@@ -77,6 +80,7 @@ class Analise:
         a.partidos_2d(), a.partidos_2d(arquivo) : retorna matriz com as coordenadas dos partidos nas duas primeiras componentes principais, e se fornecido o nome de um arquivo escreve-as no mesmo.
         a.estados_2d(), a.estados_2d(arquivo) : analogamente para a pca por estados.
         a.sem(siglaP1,siglaP2,tipo=2) : imprime e retorna a semelhança entre os dois partidos dados pelas siglas, calculada pelo método do produto escalar se tipo=1 ou pelo método da convolução se tipo=2 (default).
+        a.figura(escala=10) : apresenta um gráfico de bolhas dos partidos com a primeira componente principal no eixo x e a segunda no eixo y, o tamanho da bolha proporcional ao tamanho do partido.
     """
 
     # Constantes:
@@ -390,7 +394,52 @@ class Analise:
             return x2
 
 
+    def figura(self, escala=10):
+        """Apresenta um plot de bolhas (usando matplotlib) com os partidos de tamanho maior ou igual a tamanho_min com o primeiro componente principal no eixo x e o segundo no eixo y.
+    """
+        dados = self.partidos_2d()
 
+        fig = figure(1)
+        fig.clf()
+
+        cores_partidos = {'PT'   :'#FF0000',
+                      'PSOL' :'#FFFF00',
+                      'PV'   :'#00CC00',
+                      'DEM'  :'#002664',
+                      'PSDB' :'#0059AB',
+                      'PSD'  :'#80c341',
+                      'PMDB' :'#CC0000',
+                      'PR'   :'#110274',
+                      'PSC'  :'#25b84a',
+                      'PSB'  :'#ff8d00',
+                      'PP'   :'#203487',
+                      'PCdoB':'#da251c',
+                      'PTB'  :'#1f1a17',
+                      'PPS'  :'#fea801',
+                      'PDT'  :'#6c85b1',
+                      'PRB'  :'#67a91e'}
+
+        lista_cores_partidos = []
+        for p in self.lista_partidos:
+            if p in cores_partidos:
+                lista_cores_partidos.append(cores_partidos[p])
+            else:
+                lista_cores_partidos.append((1,1,1))
+
+        colormap_partidos = matplotlib.colors.ListedColormap(lista_cores_partidos,name='partidos')
+
+        ax = fig.add_subplot(111, autoscale_on=True) #, xlim=(-1,5), ylim=(-5,3))
+        x = dados[:,0]
+        y = dados[:,1]
+        size = numpy.array(self.tamanho_partido) * escala
+        scatter(x, y, size, range(len(x)), marker='o', cmap=colormap_partidos) #, norm=None, vmin=None, vmax=None, alpha=None, linewidths=None, faceted=True, verts=None, hold=None, **kwargs)
+
+        ip = -1
+        for p in self.lista_partidos:
+            ip += 1
+            text(dados[ip,0]+.005,dados[ip,1],p,fontsize=12,stretch=100,alpha=1)
+
+        show()
 
 
 def partidos_expressivos(N=1,data_inicial='2011-01-01',data_final='2011-12-31',tipos_proposicao=[]):
