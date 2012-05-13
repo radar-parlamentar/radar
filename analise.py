@@ -23,12 +23,13 @@ import numpy
 import pca
 import sys
 import sqlite3 as lite
+import model
 from matplotlib.pyplot import figure, show, scatter,text
 from matplotlib.patches import Ellipse
 import matplotlib.colors
 
 class Analise:
-    """ Cada instância a guarda os resultados da análise em um período de tempo entre self.data_inicial e self.data_final, onde sao considerados os partidoslistados em self.lista_partidos e as proposicoes dos tipos listados em self.tipos_proposicao.
+    """ Cada instância a guarda os resultados da análise em um período de tempo entre self.data_inicial e self.data_final, onde sao considerados os partidos listados em self.lista_partidos e as proposicoes dos tipos listados em self.tipos_proposicao.
 
     == Construtor ==
     ----------------
@@ -52,6 +53,7 @@ class Analise:
         a.data_final : string 'aaaa-mm-dd'.
         a.tipos_proposicao : lista de strings.
         a.lista_partidos : lista de strings com P partidos.
+        a.partidos : lista de objetos do tipo Partido.
         a.lista_votacoes : lista de tuplas (idProp,idVot) com V votações.
         a.vetores_votacao [P]x[V]: elemento ij é o voto médio do partido i na votação j, entre -1(não) e 1(sim).
         a.quadrivet_vot [P]x[V]: elemento ij é uma tupla de 4 elementos representando o número de votos sim, não, abst. e obstr. do partido i na votação j.
@@ -87,7 +89,7 @@ class Analise:
     lista_ufs = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
     db = 'resultados/camara.db'
 
-    def __init__(self,data_inicial='2011-01-01',data_final='2011-12-31',tipos_proposicao=[],lista_partidos=[]):
+    def __init__(self,data_inicial='2011-01-01',data_final='2011-12-31',tipos_proposicao=[],lista_partidos=[],partidos=[]):
         """ Construtor de objetos do tipo Analise, pede como argumentos:
         * As datas inicial e final entre as quais devem ser consideradas as votações;
         * Uma lista de strings com os tipos de proposição a analisar, deixar vazio para considerar todos os tipos;
@@ -98,6 +100,7 @@ class Analise:
         self.data_final = data_final
         self.tipos_proposicao = tipos_proposicao
         self.lista_partidos = lista_partidos
+        self.partidos = partidos
         self.num_votacoes = 0     # { calculados por
         self.lista_votacoes = []  #   self._fetchVotacoes() }
         self.vetores_votacao = [] # {
@@ -129,18 +132,22 @@ class Analise:
 
         # se lista vazia, usar todos os partidos
         if not self.lista_partidos:
+            popula_partidos = 0
+            if not self.partidos:
+                popula_partidos = 1
             con = lite.connect(Analise.db)
-            self.lista_partidos = con.execute('SELECT partido FROM PARTIDOS').fetchall()
+            lista = con.execute('SELECT * FROM PARTIDOS')
+            for item in lista:
+                lista_partidos.append(item[1])
+                if popula_partidos:
+                    partido = model.Partido(item[1],item[0])
+                    partidos.append(partido)
             con.close()
-            i = 0 #Transformar lista de tuplas em lista de strings:
-            for lp in self.lista_partidos: 
-                self.lista_partidos[i] = lp[0]
-                i += 1
+
         # se inteiro, usar partidos maiores ou iguais a este inteiro
         elif isinstance(self.lista_partidos,int): 
             N = self.lista_partidos
             self.lista_partidos = partidos_expressivos(N,self.data_inicial,self.data_final,self.tipos_proposicao)
-
 
     def __str__(self):
         x = 'Data inicial: ' + self.data_inicial + '\nData final: ' + self.data_final + '\nVotações: ' + str(self.num_votacoes) + '\nTipos: ' + str(self.tipos_proposicao) + '\nPartidos: ' + str(self.lista_partidos)
@@ -396,7 +403,7 @@ class Analise:
 
     def figura(self, escala=10):
         """Apresenta um plot de bolhas (usando matplotlib) com os partidos de tamanho maior ou igual a tamanho_min com o primeiro componente principal no eixo x e o segundo no eixo y.
-    """
+        """
         dados = self.partidos_2d()
 
         fig = figure(1)
@@ -420,9 +427,9 @@ class Analise:
                       'PRB'  :'#67a91e'}
 
         lista_cores_partidos = []
-        for p in self.lista_partidos:
-            if p in cores_partidos:
-                lista_cores_partidos.append(cores_partidos[p])
+        for partido in self.partidos:
+            if partido.nome in cores_partidos:
+                lista_cores_partidos.append(cores_partidos[partido.nome])
             else:
                 lista_cores_partidos.append((1,1,1))
 
@@ -435,9 +442,9 @@ class Analise:
         scatter(x, y, size, range(len(x)), marker='o', cmap=colormap_partidos) #, norm=None, vmin=None, vmax=None, alpha=None, linewidths=None, faceted=True, verts=None, hold=None, **kwargs)
 
         ip = -1
-        for p in self.lista_partidos:
+        for partido in self.partidos:
             ip += 1
-            text(dados[ip,0]+.005,dados[ip,1],p,fontsize=12,stretch=100,alpha=1)
+            text(dados[ip,0]+.005,dados[ip,1],partido.numero,fontsize=12,stretch=100,alpha=1)
 
         show()
 
