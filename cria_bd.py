@@ -65,7 +65,7 @@ if __name__ == "__main__":
         cur.execute("CREATE TABLE if not exists  PROPOSICOES(idProp INT, tipo TEXT, num TEXT, ano TEXT, ementa TEXT, explicacao TEXT, situacao TEXT, num_votacoes INT)")
         cur.execute("CREATE TABLE if not exists DEPUTADOS(idDep INT, deputado TEXT, partido TEXT, uf TEXT)")
         cur.execute("CREATE TABLE if not exists VOTACOES(idProp INT, idVot INT, resumo TEXT, data TEXT, hora TEXT, sim TEXT, nao TEXT, abstencao TEXT, obstrucao TEXT)")
-        cur.execute("CREATE TABLE if not exists PARTIDOS(idPart INT, partido TEXT)")
+        cur.execute("CREATE TABLE if not exists PARTIDOS(numero INT, nome TEXT)")
     con.close()
 
     for iprop in lista_proposicoes:
