@@ -64,7 +64,8 @@ class Analise:
         a.vetores_tamanho_uf [E]x[V]: Deputados presentes por estado por votação.
         a.tamanho_uf [E]: Número total de deputados do estado i que apareceu em pelo menos uma votação do período.
         a.pca : objeto da classe pca.PCA
-        a.pca_uf : idem, mas analisado por UF e não por partido.
+        a.pca_partido : objeto da classe pca.PCA analisado por partido
+        a.pca_uf : objeto da classe pca.PCA analisado por UF
         a.semelhancas [P]x[P] : matriz simétrica de valores entre 0 e 100 representando a porcentagem de semelhança entre os partidos i e j (calculado pelo produto escalar).
         a.semelhancas2 [P]x[P] : matriz simétrica de valores entre 0 e 100 representando a semelhança entre partidos i e j, calculada pelo método da convolução.
 
@@ -111,7 +112,7 @@ class Analise:
         self.vetores_votacao_uf = [] # { calculados por
         self.vetores_tamanho_uf = [] #   self_inicializa_vetores_uf()
         self.tamanho_uf = []         # }
-        self.pca = None # calculado por self._pca_partido()
+        self.pca_partido = None # calculado por self._pca_partido()
         self.pca_uf = None # calculado por self._pca_uf()
         self.semelhancas = [] # self._calcula_semelhancas()
         self.semelhancas2 = [] # idem
@@ -220,12 +221,18 @@ class Analise:
 
     def _pca_partido(self):
         """Roda a análise de componentes principais por partidos.
-        Guarda o resultado em self.pca"""
-        if self.vetores_votacao==[]:
-            self._inicializa_vetores()
-        matriz = self.vetores_votacao - self.vetores_votacao.mean(axis=0)
-        self.pca = pca.PCA(matriz)
-        return
+        Guarda o resultado em self.pca
+        Retorna um dicionário no qual as chaves são as siglas dos partidos
+        e o valor de cada chave é um vetor com as n dimensões da análise pca"""
+        if not bool(self.pca_partido):
+            if self.vetores_votacao==[]:
+                self._inicializa_vetores()
+            matriz = self.vetores_votacao - self.vetores_votacao.mean(axis=0)
+            self.pca_partido = pca.PCA(matriz)
+        dicionario = {}
+        for partido, vetor in zip(self.partidos, self.pca_partido.U):
+            dicionario[partido.nome] = vetor
+        return dicionario
 
     def _inicializa_vetores_uf(self):
         """Análogo a _inicializa_vetores(self), mas agregado por estados e não por partidos."""
@@ -261,12 +268,19 @@ class Analise:
         return
 
     def _pca_uf(self):
-        """Roda a análise de componentes principais por estado."""
-        if self.vetores_votacao_uf==[]:
-            self._inicializa_vetores_uf()
-        matriz = self.vetores_votacao_uf - self.vetores_votacao_uf.mean(axis=0)
-        self.pca_uf = pca.PCA(matriz)
-        return
+        """Roda a análise de componentes principais por UF.
+        Guarda o resultado em self.pca
+        Retorna um dicionário no qual as chaves são as siglas dos partidos
+        e o valor de cada chave é um vetor com as n dimensões da análise pca"""
+        if not bool(self.pca_uf):
+            if self.vetores_votacao_uf==[]:
+                self._inicializa_vetores_uf()
+            matriz = self.vetores_votacao_uf - self.vetores_votacao_uf.mean(axis=0)
+            self.pca_uf = pca.PCA(matriz)
+        dicionario = {}
+        for uf, vetor in zip(self.lista_ufs, self.pca_uf.U):
+            dicionario[uf]=vetor
+        return dicionario
 
     def _calcula_semelhancas(self):
         """Calcula semelhancas entre todos os partidos da análise, dois a dois, segundo o produto escalar e o método da convolução, normalizadas entre 0 e 100[%].
@@ -327,9 +341,9 @@ class Analise:
 
         Se for passado como argumento o nome (não vazio) de um arquivo, o resultado da pca é escrito neste arquivo, caso contrário é escrito em stdout.
         """
-        if not bool(self.pca):
-            self._pca_partido()
-        coordenadas = self.pca.U[:,0:2]
+        coordenadas = self._pca_partido()
+        for partido in coordenadas.keys():
+            coordenadas[partido] = (coordenadas[partido])[0:2]
         fechar = False
         if arquivo:
             fo = open(arquivo,'w')
@@ -340,14 +354,13 @@ class Analise:
         fo.write('Análise PCA - por partido\n')
         fo.write('de %s a %s (ano-mês-dia)\n\n' % (self.data_inicial,self.data_final))
         fo.write('Fração da variância explicada pelas dimensões:\n')
-        fo.write('%f\n' % (self.pca.eigen[0]/self.pca.eigen.sum()))
-        fo.write('%f\n' % (self.pca.eigen[1]/self.pca.eigen.sum()))
-        fo.write('%f\n' % (self.pca.eigen[2]/self.pca.eigen.sum()))
-        fo.write('%f\n' % (self.pca.eigen[3]/self.pca.eigen.sum()))
+        fo.write('%f\n' % (self.pca_partido.eigen[0]/self.pca_partido.eigen.sum()))
+        fo.write('%f\n' % (self.pca_partido.eigen[1]/self.pca_partido.eigen.sum()))
+        fo.write('%f\n' % (self.pca_partido.eigen[2]/self.pca_partido.eigen.sum()))
+        fo.write('%f\n' % (self.pca_partido.eigen[3]/self.pca_partido.eigen.sum()))
         fo.write('\nCoordenadas:\n')
-        for p in self.lista_partidos:
-            ip += 1
-            fo.write('%s: [%f, %f]\n' % (p,coordenadas[ip,0],coordenadas[ip,1]) )
+        for partido in coordenadas.keys():
+            fo.write('%s: [%f, %f]\n' % (partido,coordenadas[partido][0],coordenadas[partido][1]) )
         fo.write('Tamanhos=%s\n' % str(self.tamanho_partido))
         if fechar:
             fo.close()
@@ -436,15 +449,16 @@ class Analise:
         colormap_partidos = matplotlib.colors.ListedColormap(lista_cores_partidos,name='partidos')
 
         ax = fig.add_subplot(111, autoscale_on=True) #, xlim=(-1,5), ylim=(-5,3))
-        x = dados[:,0]
-        y = dados[:,1]
+        x = []
+        y = []
+        for partido in self.partidos:
+            x.append(dados[partido.nome][0])
+            y.append(dados[partido.nome][1])
         size = numpy.array(self.tamanho_partido) * escala
         scatter(x, y, size, range(len(x)), marker='o', cmap=colormap_partidos) #, norm=None, vmin=None, vmax=None, alpha=None, linewidths=None, faceted=True, verts=None, hold=None, **kwargs)
 
-        ip = -1
         for partido in self.partidos:
-            ip += 1
-            text(dados[ip,0]+.005,dados[ip,1],partido.numero,fontsize=12,stretch=100,alpha=1)
+            text(dados[partido.nome][0]+.005,dados[partido.nome][1],partido.numero,fontsize=12,stretch=100,alpha=1)
 
         show()
 
