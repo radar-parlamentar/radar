@@ -18,14 +18,16 @@
 
 import svgwrite
 import re, math
+import analise
 
 class Grafico:
     """Desenha o gráfico SVG baseado nas coordenadas fornecidas"""
 
     # or parâmetros são os valores extremos obtidos no PCA
     def __init__(self, top, bottom, left, right):
-        self.radius = 20
-        self.factor = 100 # ajusta distância entre circunferências
+        self.radius = 6
+        self.factor = 400 # ajusta distância entre circunferências
+        #self.pagefactor = 600
         self.offset = (-left*self.factor + 2*self.radius, -bottom*self.factor + 2*self.radius) # ajusta posição (obs, se valores são positivos, offset deveria ser ZERO)
         self.width = (right - left)*self.factor + 4*self.radius
         self.height = (top - bottom)*self.factor + 4*self.radius
@@ -47,8 +49,8 @@ class Grafico:
         else:
             cor += "0000"
             cor += intensidade
-        self.svg.add(self.svg.circle(center=center, r=self.radius, fill=cor, fill_opacity='0.5', stroke='black', stroke_width='1'))
-        text = self.svg.text(nome, insert=center, text_anchor='middle', font_family='LMMono10', font_size='12', alignment_baseline='middle')
+        self.svg.add(self.svg.circle(center=center, r=self.radius, fill_opacity='0.5', stroke='black', stroke_width='1'))
+        text = self.svg.text(nome, insert=center, text_anchor='middle', font_family='LMMono10', font_size='6', alignment_baseline='middle')
         self.svg.add(text)
         self.svg.save()
     
@@ -76,9 +78,10 @@ def muda_eixos(partidos):
         partidos[part] = (coord[1], coord[0])
 
 # encontra extremos do gráfico
-def extremos(partidos):
+def extremos(dados):
     top = bottom = left = right = 0
-    for coord in partidos.values():
+    for partido in dados.keys():
+        coord=dados[partido]
         if coord[0] > right:
             right = coord[0] 
         if coord[0] < left:
@@ -86,20 +89,28 @@ def extremos(partidos):
         if coord[1] > top:
             top = coord[1] 
         if coord[1] < bottom:
-            bottom = coord[1] 
+            bottom = coord[1]
+
     return top, bottom, left, right 
+
+def numero_part(analise, nomePartido):
+    # meio feio =/
+    for part in analise.partidos:
+        if nomePartido == part.nome:
+            return part.numero
 
 if __name__ == "__main__":
 
-    partidos = parse_from_file()
-    top, bottom, left, right = extremos(partidos)
+    analise = analise.Analise()
+    dados = analise.partidos_2d()
+    #invertendo eixo y das coordenadas
+    for partido in dados:
+        dados[partido][1]=-dados[partido][1]
+    top, bottom, left, right = extremos(dados)
 
-    # desenha o gráfico
+    # desenha a página do gráfico
     grafico = Grafico(top, bottom, left, right)
-    #muda_eixos(partidos) # achei que o resultado disso ficou meio feio 
-    # pois pra apresentar na web é melhor que o eixo horizontal seja o maior
-    for part, coord in partidos.items():
-        grafico.add_partido(part, (coord[0], coord[1]))
-
-
+    # desenha as bolinhas dos partidos no gráfico
+    for part, coord in dados.items():
+        grafico.add_partido(numero_part(analise,part), (coord[0], coord[1]))
 
