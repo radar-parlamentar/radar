@@ -20,7 +20,7 @@ import svgwrite
 import re, math
 
 class Grafico:
-"""Desenha o gráfico SVG baseado nas coordenadas fornecidas"""
+    """Desenha o gráfico SVG baseado nas coordenadas fornecidas"""
 
     # or parâmetros são os valores extremos obtidos no PCA
     def __init__(self, top, bottom, left, right):
