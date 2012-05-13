@@ -138,11 +138,13 @@ class Analise:
                 popula_partidos = 1
             con = lite.connect(Analise.db)
             lista = con.execute('SELECT * FROM PARTIDOS')
+            lista_gambiarra = ['PT', 'PSDB', 'PV', 'PSOL', 'PCdoB', 'PP', 'PR', 'DEM', 'PMDB', 'PSC', 'PTB', 'PDT', 'PSB', 'PPS', 'PRB']
             for item in lista:
-                lista_partidos.append(item[1])
-                if popula_partidos:
-                    partido = model.Partido(item[1],item[0])
-                    partidos.append(partido)
+                if item[1] in lista_gambiarra:
+                    lista_partidos.append(item[1])
+                    if popula_partidos:
+                        partido = model.Partido(item[1],item[0])
+                        partidos.append(partido)
             con.close()
 
         # se inteiro, usar partidos maiores ou iguais a este inteiro
