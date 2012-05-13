@@ -18,6 +18,7 @@
 """Módulo model -- modelagem do domínio, baseado nos XMLs dos web services da câmara
 
 Classes:
+Partido -- modela um partido
 Proposicao -- modela uma proposição parlamentar
 Votacao -- modela uma votação pertencente à uma proposição parlamentar
 Deputado -- modela o voto de um deputado numa votação
@@ -35,6 +36,19 @@ SIM = 'Sim'
 NAO = 'Não'
 ABSTENCAO = 'Abstenção'
 OBSTRUCAO = 'Obstrução' # por hora será interpretado como 'Não'
+
+class Partido:
+    """Modela um partido político
+    Atributos:
+    nome [string], numero [int]
+    Atributos a serem implementados no futuro:
+    tamanho [int], partido do governo (executivo)?[booleano], 
+    cargos_indicados (quantidade de cargos de indicação do executivo que esse partido possui - ministros/secretários)
+    """
+
+    def __init__(self, nome='', numero=''):
+        self.nome = nome
+        self.numero = numero
 
 class Proposicao:
     """Modela uma proposição parlamentar
