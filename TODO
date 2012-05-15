@@ -12,7 +12,7 @@ Próximos passos/ idéias:
 * Consertar analise.estados_2d()
 * analise.partidos deve conter somente partidos da análise. Como fazer isso de uma forma decente?
 * Deixar o sistema genérico para diferentes tipos de parlamento. Ex: Deputado deve ser Parlamentar, e conter atributo tipo = {'deputado estadual', 'deputado federal', 'senador', 'vereador'}
-
+* Usando o BD do repositório, analise.figura() fornece uma figura similar a do nosso post, mas usando o BD gerado pelo novo cria_bd aí dá um gráfico totalmente diferente. Uma observação: parece que no BD do repositório existem bem mais proposições
 
 DONE
 * Fazer com que cria_db.cria_bd_camara_deputados() receba como argumento opcional a lista de proposicoes, assim não precisamos toda hora chamar o web service para todos os 'ids_que_existem'
