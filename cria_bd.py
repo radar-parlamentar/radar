@@ -61,9 +61,9 @@ class GeradorBD:
         return
             
     def _prepara_backup(self):
-        os.system('rm %s.backup') % self.db # Apagar backup anterior.
-        os.system('mv %s %s.backup') % self.db # Faz backup do bd antigo.
-        os.system('rm %s') % self.db # Apagar bd antigo para fazer um novo em folha.
+        os.system('rm %s.backup' % self.db) # Apagar backup anterior.
+        os.system('mv %s %s.backup' % (self.db, self.db)) # Faz backup do bd antigo.
+        os.system('rm %s' % self.db) # Apagar bd antigo para fazer um novo em folha.
         print 'resultados/camara.db renomeado para resultados/camara.db.backup'
         print 'Backup anterior, se havia, foi apagado.'
 
@@ -89,19 +89,22 @@ class GeradorBD:
 
         for prop in self.proposicoes:
             numero_votacoes.append(len(prop.votacoes))
-            sys.stdout.write('(%s,%d),'%(iprop['id'],len(p.votacoes)))
+            sys.stdout.write('(%s,%d),'%(prop.id, len(prop.votacoes)))
             sys.stdout.flush()
             #adicionar proposicao na tabela PROPOSICOES
-            con = lite.connect('resultados/camara.db')
+            con = lite.connect(self.db)
             con.execute("INSERT INTO PROPOSICOES VALUES(?,?,?,?,?,?,?,?)",(prop.id, prop.sigla, prop.numero, prop.ano, prop.ementa, prop.explicacao, prop.situacao, len(prop.votacoes)))
             con.commit()
             con.close()
             for v in prop.votacoes:
+                print 'analisando votação %s' % v
                 sim = []
                 nao = []
                 abstencao = []
                 obstrucao = []
                 for d in v.deputados:
+                    sys.stdout.write(".")
+                    sys.stdout.flush()
                     idDep = model.Deputado.idDep(d.nome,d.partido,d.uf)
                     if d.voto[0] == 'S':
                         sim.append(idDep)
@@ -111,6 +114,7 @@ class GeradorBD:
                         abstencao.append(idDep)
                     if d.voto[0] == 'O':
                         obstrucao.append(idDep)
+                print ' '
                 pid = prop.id
                 votid = prop.votacoes.index(v) + 1
                 resum = v.resumo
@@ -127,11 +131,19 @@ class GeradorBD:
 
         self.arrumar_datas()
 
-def cria_bd_camara_deputados():
-    """Cria o banco de dados da câmara dos deputados em 'resultados/camara.db' a partir de requisições ao webservice da câmara pelas proposições elencadas no arquivo 'resultados/ids_que_existem.txt' (este último pode ser criado com o módulo ids_que_existem)"""
+IDS_QUE_EXISTEM = 'resultados/ids_que_existem.txt'
+IDS_VOTADAS = 'resultados/votadas.txt'
+def cria_bd_camara_deputados(arquivo_ids=IDS_VOTADAS):
+    """Cria o banco de dados da câmara dos deputados em 'resultados/camara.db'
+        Argumentos:
+        arquivo_ids -- arquivo com a listagem de "id: tipo num/ano" (uma entrada por linha, suportando comentários com #)
+                        a função utilizará esses ids para realizar chamadas ao web service da câmara e obter as votações
+                        o valor defualt é o arquivo IDS_VOTADAS; 
+                        outro arquivo útil é o IDS_QUE_EXISTEM (que pode ser criado com o módulo ids_que_existem)
+    """
 
     props = []
-    lista_proposicoes = ids_que_existem.parse_txt('resultados/ids_que_existem.txt')
+    lista_proposicoes = ids_que_existem.parse_txt(arquivo_ids)
     for iprop in lista_proposicoes:
         print 'AVALIANDO %s %s %s' % (iprop['tipo'],iprop['num'],iprop['ano'])
         p = camaraws.obter_votacao(iprop['tipo'], iprop['num'],iprop['ano']) # Obtém proposição e suas votações do web service
