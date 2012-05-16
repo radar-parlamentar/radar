@@ -179,10 +179,10 @@ class Deputado:
     Métodos estáticos: (O bd fica em 'resultados/camara.db')
     fromtree(tree) -- Transforma um XML em um objeto tipo Deputado.
     inicializar_dicpartidos() -- Copia tabela PARTIDOS do bd na variável Deputado.dicpartidos. Também usa informações do arquivo 'listapartidos.txt'.
-    inicializar_diclistadeps() -- Copia tabela DEPUTADOS do bd na variável Deputado.diclistadeps.
+    inicializar_diclistadeps() -- Copia tabela PARLAMENTARES do bd na variável Deputado.diclistadeps.
     idPartido(siglapartido) -- Retorna inteiro que identifica o partido segundo a tabela PARTIDOS do bd.
     idUF(siglauf) -- Retorna inteiro que identifica uma UF. Usar maiúsculas. Joga StandardError se UF não existir.
-    idDep(nome,partido,uf) -- Retorna inteiro chamado idDep que identifica univocamente a tupla (nome,partido,uf) de acordo com a tabela DEPUTADOS do bd.
+    idDep(nome,partido,uf) -- Retorna inteiro chamado idDep que identifica univocamente a tupla (nome,partido,uf) de acordo com a tabela PARLAMENTARES do bd.
     """
     listauf = ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']
     dicpartidos = dict() # chave é a sigla, valor é o idPartido, número que ele ganhou (que não é o número eleitoral, que não estamos usando porque está sujeito a mudar com o tempo)
@@ -267,11 +267,11 @@ class Deputado:
     
     @staticmethod
     def inicializar_diclistadeps():
-        """Lê no banco de dados 'resultados/camara.db' a tabela DEPUTADOS, se presente, para inicializar a variável Deputado.diclistadeps com os deputados que ali constarem. Deputado.diclistadeps é um dicionário que tem como chave um inteiro de até cinco dígitos chamado idPartUF que identifica um par partido-UF, e como valor uma lista de deputados que pertencem a este partido-UF.
+        """Lê no banco de dados 'resultados/camara.db' a tabela PARLAMENTARES, se presente, para inicializar a variável Deputado.diclistadeps com os deputados que ali constarem. Deputado.diclistadeps é um dicionário que tem como chave um inteiro de até cinco dígitos chamado idPartUF que identifica um par partido-UF, e como valor uma lista de deputados que pertencem a este partido-UF.
         """
         con = lite.connect('resultados/camara.db')
-        if len(con.execute("select * from sqlite_master where type='table' and name='DEPUTADOS'").fetchall()) != 0: # Se a tabela existe
-            depsdb = con.execute('SELECT * FROM DEPUTADOS').fetchall()
+        if len(con.execute("select * from sqlite_master where type='table' and name='PARLAMENTARES'").fetchall()) != 0: # Se a tabela existe
+            depsdb = con.execute('SELECT * FROM PARLAMENTARES').fetchall()
             con.close()
             for d in depsdb:
                 iddep = d[0]
@@ -315,11 +315,11 @@ class Deputado:
 
     @staticmethod
     def idDep(nome,partido,uf):
-        """Dado nome, partido e uf de um deputado, retorna um inteiro, chamado idDep, que o identifica univocamente, segundo a tabela DEPUTADOS do bd.
+        """Dado nome, partido e uf de um deputado, retorna um inteiro, chamado idDep, que o identifica univocamente, segundo a tabela PARLAMENTARES do bd.
 
         Deputados com mesmo nome mas filiação diferente são tratados como deputados distintos (pode acontecer no caso de mudança de partido).
         O idDep é construido de forma a ser suficiente para determinar partido e uf apenas olhando o número, pois tem a sintaxe: PPPEENNN, onde PPP é o idPartido, EE é o idUF e NNN é um número único para cada nome de deputado dentro de um partido-uf.
-        Se o deputado não estiver ainda na tabela DEPUTADOS do bd, ele ganha uma nova idDep, é inserido na tabela, e retorna-se o idDep recém atribuído.
+        Se o deputado não estiver ainda na tabela PARLAMENTARES do bd, ele ganha uma nova idDep, é inserido na tabela, e retorna-se o idDep recém atribuído.
         """
 #        print Deputado.dicpartidos_inicializado
         if not Deputado.diclistadeps_inicializado:
@@ -338,7 +338,7 @@ class Deputado:
             Deputado.diclistadeps[idPartUF] = [nome]
             iddep = idPartUF*1000 + 1
         con = lite.connect('resultados/camara.db')
-        con.execute('INSERT INTO DEPUTADOS VALUES(?,?,?,?)',(iddep,nome,partido,uf))
+        con.execute('INSERT INTO PARLAMENTARES VALUES(?,?,?,?)',(iddep,nome,partido,uf))
         con.commit()
         con.close()
         return iddep

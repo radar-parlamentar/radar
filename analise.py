@@ -179,7 +179,7 @@ class Analise:
         votacoes = self._fetchVotacoes()
         # Criar dicionario com id dos partidos
         con = lite.connect(Analise.db)
-        tabela_partidos = con.execute('select idPart,partido from partidos').fetchall()
+        tabela_partidos = con.execute('select numero,nome from partidos').fetchall()
         idPartido = {}
         for tp in tabela_partidos:
             idPartido[tp[1]] = tp[0]
@@ -470,13 +470,13 @@ def partidos_expressivos(N=1,data_inicial='2011-01-01',data_final='2011-12-31',t
     """Retorna uma lista com os partidos com pelo menos N deputados diferentes que tenham vindo em votações entre as datas data_inicial e data_final. Consideram-se as proposições em tipos_proposição, ou todas se tipos_proposicao=[]."""
     # Criar dicionario com id dos partidos:
     con = lite.connect(Analise.db)
-    tabela_partidos = con.execute('select idPart,partido from partidos').fetchall()
+    tabela_partidos = con.execute('select numero,nome from partidos').fetchall()
     idPartido = {}
     for tp in tabela_partidos:
         idPartido[tp[1]] = tp[0]
     
     # Criar lista de todos os partidos:
-    lista_todos_partidos = con.execute('SELECT partido FROM PARTIDOS').fetchall()
+    lista_todos_partidos = con.execute('SELECT nome FROM PARTIDOS').fetchall()
     con.close()
     # Pegar votacoes no bd:
     a = Analise(data_inicial,data_final,tipos_proposicao)
