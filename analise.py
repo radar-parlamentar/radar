@@ -34,57 +34,60 @@ class Analise:
 
     == Construtor ==
     ----------------
-    Para criar uma instância a, que corresponde a uma análise por exemplo do primeiro semestre de 2010, usar:
+    Para criar uma instância ANLS, que corresponde a uma análise por exemplo do primeiro semestre de 2010, usar:
 
     import analise
-    a = analise.Analise('2010-01-01','2010-30-06')
+    ANLS = analise.Analise('2010-01-01','2010-30-06')
 
     Se for desejado incluir apenas alguns tipos de proposição, usar o terceiro argumento, e se for desejado incluir apenas alguns partidos, usar o quarto, por exemplo:
 
-    a2 = analise.Analise('2010-01-01','2010-30-06',['MPV','PEC'],['PT','PMDB','PSDB','DEM','PSOL'])
+    ANLS2 = analise.Analise('2010-01-01','2010-30-06',['MPV','PEC'],['PT','PMDB','PSDB','DEM','PSOL'])
 
     Em vez de uma lista de partidos, o quarto argumento pode ser um inteiro N para incluir apenas partidos com N ou mais deputados. Por exemplo para usar todos os tipos de proposição mas apenas partidos com 6 ou mais deputados:
 
-    a3 = analise.Analise('2010-01-01','2010-30-06',[],6)
+    ANLS3 = analise.Analise('2010-01-01','2010-30-06',[],6)
 
     == Atributos ==
     ---------------
-    Seja a um objeto do tipo Analise, então a possui os atributos abaixo, onde as letras entre chaves indicam as dimensões de objetos (matrizes) do tipo numpy.array :
-        a.data_inicial : string 'aaaa-mm-dd'.
-        a.data_final : string 'aaaa-mm-dd'.
-        a.tipos_proposicao : lista de strings.
-        a.lista_partidos : lista de strings com P partidos.
-        a.partidos : lista de objetos do tipo Partido.
-        a.lista_votacoes : lista de tuplas (idProp,idVot) com V votações.
-        a.vetores_votacao [P]x[V]: elemento ij é o voto médio do partido i na votação j, entre -1(não) e 1(sim).
-        a.quadrivet_vot [P]x[V]: elemento ij é uma tupla de 4 elementos representando o número de votos sim, não, abst. e obstr. do partido i na votação j.
-        a.vetores_tamanho [P]x[V]: elemento ij é o número de deputados do partido i presentes na votação j.
-        a.vetores_presenca [P]x[V]: elemento ij é a fração de deputados do partido i presentes na votação j (usa a.tamanho_partido como aproximação para o tamanho dos partidos).
-        a.tamanho_partido [P]: Número total de deputados do partido i que apareceu em pelo menos uma votação do período.
-        a.vetores_votacao_uf [E]x[V]: Votação média por estado. 'E' é o número de UFs.
-        a.vetores_tamanho_uf [E]x[V]: Deputados presentes por estado por votação.
-        a.tamanho_uf [E]: Número total de deputados do estado i que apareceu em pelo menos uma votação do período.
-        a.pca : objeto da classe pca.PCA
-        a.pca_partido : objeto da classe pca.PCA analisado por partido
-        a.pca_uf : objeto da classe pca.PCA analisado por UF
-        a.semelhancas [P]x[P] : matriz simétrica de valores entre 0 e 100 representando a porcentagem de semelhança entre os partidos i e j (calculado pelo produto escalar).
-        a.semelhancas2 [P]x[P] : matriz simétrica de valores entre 0 e 100 representando a semelhança entre partidos i e j, calculada pelo método da convolução.
+    Seja ANLS um objeto do tipo Analise, então ANLS possui os atributos abaixo, onde as letras entre chaves indicam as dimensões de objetos (matrizes) do tipo numpy.array :
+        ANLS.data_inicial : string 'aaaa-mm-dd'
+        ANLS.data_final : string 'aaaa-mm-dd'
+        ANLS.tipos_proposicao : lista de strings
+        TODO: Substituir 'lista_partidos' por 'partidos'
+        ANLS.lista_partidos : lista de strings com P partidos 
+        ANLS.partidos : lista de objetos do tipo Partido
+        ANLS.lista_votacoes : lista de tuplas (idProp,idVot) com V votações
+        ANLS.vetores_votacao [P]x[V]: elemento ij é o voto médio do partido i na votação j, entre -1(não) e 1(sim)
+        ANLS.quadrivet_vot [P]x[V]: elemento ij é uma tupla de 4 elementos representando o número de votos sim, não, abst. e obstr. do partido i na votação j
+        ANLS.vetores_tamanho [P]x[V]: elemento ij é o número de deputados do partido i presentes na votação j
+        ANLS.vetores_presenca [P]x[V]: elemento ij é a fração de deputados do partido i presentes na votação j (usa a.tamanho_partidos como aproximação para o tamanho dos partidos)
+        ANLS.tamanho_partidos [P]: Lista com número total de deputados, com presença mínima de 1 votação no período, do partido i
+        ANLS.vetores_votacao_uf [E]x[V]: Votação média por estado. 'E' é o número de UFs
+        ANLS.vetores_tamanho_uf [E]x[V]: Deputados presentes por estado por votação
+        ANLS.tamanho_uf [E]: Número total de deputados, com presença mínima de 1 votação no período, do estado i
+        ANLS.pca : objeto da classe pca.PCA
+        ANLS.pca_partido : objeto da classe pca.PCA analisado por partido
+        ANLS.pca_uf : objeto da classe pca.PCA analisado por UF
+        ANLS.semelhancas_escalar [P]x[P] : matriz simétrica de valores entre 0 e 100 representando a porcentagem de semelhança entre os partidos i e j (calculado pelo produto escalar)
+        ANLS.semelhancas_convolucao [P]x[P] : matriz simétrica de valores entre 0 e 100 representando a semelhança entre partidos i e j, calculada pelo método da convolução
 
         Objetos da classe pca.PCA possuem entre outros os atributos:
-        a.pca.U [P][C] : contém os vetores votação porém na base dos componentes principais (em número C=V), não mais das votações.
-        a.pca.Vt [C][V] : informa como construir os componentes principais a partir das votações.
-        a.pca.eigen [C] : autovalores. Para obter variâncias explicadas por cada c.p., basta fazer eigen[j]/eigen.sum() .
+        a.pca.U [P][C] : contém os vetores votação porém na base dos componentes principais (em número C=V), não mais das votações
+        a.pca.Vt [C][V] : informa como construir os componentes principais a partir das votações
+        a.pca.eigen [C] : autovalores. Para obter variâncias explicadas por cada c.p., basta fazer eigen[j]/eigen.sum() 
 
     == Métodos (dinâmicos) ==
     -------------------------
-    Seja a um objeto tipo análise, aplicam-se os métodos:
+    Seja ANLS um objeto tipo análise, aplicam-se os métodos:
 
-        a.tamanho_sigla(siglaPartido) : retorna o tamanho do partido pela sigla, ou seja, número de deputados diferentes encontrados no período do estudo.
-        a.tamanho_estado(siglaUF) : retorna o tamanho do estado pela sigla.
-        a.partidos_2d(), a.partidos_2d(arquivo) : retorna matriz com as coordenadas dos partidos nas duas primeiras componentes principais, e se fornecido o nome de um arquivo escreve-as no mesmo.
-        a.estados_2d(), a.estados_2d(arquivo) : analogamente para a pca por estados.
-        a.sem(siglaP1,siglaP2,tipo=2) : imprime e retorna a semelhança entre os dois partidos dados pelas siglas, calculada pelo método do produto escalar se tipo=1 ou pelo método da convolução se tipo=2 (default).
-        a.figura(escala=10) : apresenta um gráfico de bolhas dos partidos com a primeira componente principal no eixo x e a segunda no eixo y, o tamanho da bolha proporcional ao tamanho do partido.
+        TODO: Juntar 'tamanho_sigla' e 'tamanho_estado' num único método, passando como parâmetro a entidade que se quer ter o tamanho (partido ou UF)
+        ANLS.tamanho_sigla(siglaPartido) : retorna o tamanho do partido pela sigla, ou seja, número de deputados diferentes encontrados no período do estudo
+        ANLS.tamanho_estado(siglaUF) : retorna o tamanho do estado pela sigla
+        TODO: Juntar 'partidos_2d' e 'estados_2d' num único método
+        ANLS.partidos_2d(), a.partidos_2d(arquivo) : retorna matriz com as coordenadas dos partidos nas duas primeiras componentes principais, e se fornecido o nome de um arquivo escreve-as no mesmo
+        ANLS.estados_2d(), a.estados_2d(arquivo) : analogamente para a pca por estados
+        ANLS.sem(siglaP1,siglaP2,tipo=2) : imprime e retorna a semelhança entre os dois partidos dados pelas siglas, calculada pelo método do produto escalar (tipo=1) ou pelo método da convolução (tipo=2)(default)
+        ANLS.figura(escala=10) : apresenta um gráfico de bolhas dos partidos com a primeira componente principal no eixo x e a segunda no eixo y, o tamanho da bolha proporcional ao tamanho do partido
     """
 
     # Constantes:
@@ -95,7 +98,7 @@ class Analise:
         """ Construtor de objetos do tipo Analise, pede como argumentos:
         * As datas inicial e final entre as quais devem ser consideradas as votações;
         * Uma lista de strings com os tipos de proposição a analisar, deixar vazio para considerar todos os tipos;
-        * Uma lista de strings com os partidos a incluir na análise (deixar vazio para incluir todos os partidos), ou um inteiro N para usar partidos que tenham N ou mais deputados no período considerado.
+        * Uma lista de strings com os partidos a incluir na análise (deixar vazio para incluir todos os partidos), ou um inteiro N para usar partidos que tenham N ou mais deputados no período 
         São feitas análises de tamanho dos partidos e das UFs, análise de componentes principais (pca) por partido e por UFs, e análise de semelhança percentual por dois métodos.
         """
         self.data_inicial = data_inicial
@@ -109,28 +112,26 @@ class Analise:
         self.quadrivet_vot = []   #   calculados por   
         self.vetores_tamanho = [] #   self._inicializa_vetores() 
         self.vetores_presenca = []#
-        self.tamanho_partido = [] #  }
+        self.tamanho_partidos = [] #  }
         self.vetores_votacao_uf = [] # { calculados por
         self.vetores_tamanho_uf = [] #   self_inicializa_vetores_uf()
         self.tamanho_uf = []         # }
         self.pca_partido = None # calculado por self._pca_partido()
         self.pca_uf = None # calculado por self._pca_uf()
-        self.semelhancas = [] # self._calcula_semelhancas()
-        self.semelhancas2 = [] # idem
+        self.semelhancas_escalar = [] # self._calcula_semelhancas()
+        self.semelhancas_convolucao = [] # idem
 
         # Verificar se datas foram entradas corretamente:
         if not (re.match('(19)|(20)\d\d-[01]\d-[0123]\d',data_inicial) and re.match('(19)|(20)\d\d-[01]\d-[0123]\d',data_final)):
             raise StandardError('Datas devem estar no formato "aaaa-mm-dd", mês e dia obrigatoriamente com dois dígitos.')
 
-        # se lista vazia, usar todos os tipos de proposição
+        # se lista 'tipos_proposicao' vazia, usar todos os tipos de proposição
         if not self.tipos_proposicao: 
             con = lite.connect(Analise.db)
-            self.tipos_proposicao = con.execute('SELECT distinct tipo FROM PROPOSICOES').fetchall()
+            lista = con.execute('SELECT distinct tipo FROM PROPOSICOES')
+            for tipo in lista:
+                self.tipos_proposicao.append(tipo[0])
             con.close()
-            i = 0 #Transformar lista de tuplas em lista de strings:
-            for tp in self.tipos_proposicao: 
-                self.tipos_proposicao[i] = tp[0]
-                i += 1
 
         # se lista vazia, usar todos os partidos
         if not self.lista_partidos:
@@ -142,10 +143,10 @@ class Analise:
             lista_gambiarra = ['PT', 'PSDB', 'PV', 'PSOL', 'PCdoB', 'PP', 'PR', 'DEM', 'PMDB', 'PSC', 'PTB', 'PDT', 'PSB', 'PPS', 'PRB']
             for item in lista:
                 if item[1] in lista_gambiarra:
-                    lista_partidos.append(item[1])
+                    self.lista_partidos.append(item[1])
                     if popula_partidos:
                         partido = model.Partido(item[1],item[0])
-                        partidos.append(partido)
+                        self.partidos.append(partido)
             con.close()
 
         # se inteiro, usar partidos maiores ou iguais a este inteiro
@@ -188,7 +189,7 @@ class Analise:
         self.quadrivet_vot = numpy.empty((len(self.lista_partidos),self.num_votacoes),dtype=object)
         self.vetores_tamanho = numpy.zeros((len(self.lista_partidos),self.num_votacoes))
         self.vetores_presenca = numpy.zeros((len(self.lista_partidos),self.num_votacoes))
-        self.tamanho_partido = [0]*len(self.lista_partidos)
+        self.tamanho_partidos = [0]*len(self.lista_partidos)
         ip =-1
         for p in self.lista_partidos:
             ip += 1
@@ -212,13 +213,13 @@ class Analise:
 #                deps_presentes_list = numpy.reshape(deps_presentes_list,(1,numpy.size(deps_presentes_list)))
                 self.vetores_tamanho[ip][iv] = numpy.size(deps_presentes_list)
                 for d in deps_presentes_list[0]:
-                    num_deputados.add(d) # repetidos não entrarão duas vezes no set, permitindo calcular tamanho_partido.
-            self.tamanho_partido[ip] = len(num_deputados)
+                    num_deputados.add(d) # repetidos não entrarão duas vezes no set, permitindo calcular tamanho_partidos.
+            self.tamanho_partidos[ip] = len(num_deputados)
             # Calcular vetores_presenca:
             ivv = -1
             for v in votacoes:
                 ivv += 1
-                self.vetores_presenca[ip][ivv] = self.vetores_tamanho[ip][ivv]/self.tamanho_partido[ip]
+                self.vetores_presenca[ip][ivv] = self.vetores_tamanho[ip][ivv]/self.tamanho_partidos[ip]
         return
 
 
@@ -290,18 +291,18 @@ class Analise:
         O resultado é guardado nos atributos self.semelhancas (produto escalar) e self.semelhancas2 (convolução). """
         if self.vetores_votacao==[]:
             self._inicializa_vetores()
-        self.semelhancas = numpy.zeros((len(self.lista_partidos),len(self.lista_partidos)))
-        self.semelhancas2 = numpy.zeros((len(self.lista_partidos),len(self.lista_partidos)))
+        self.semelhancas_escalar = numpy.zeros((len(self.lista_partidos),len(self.lista_partidos)))
+        self.semelhancas_convolucao = numpy.zeros((len(self.lista_partidos),len(self.lista_partidos)))
         for i in range(0,len(self.lista_partidos)):
             for j in range(0,len(self.lista_partidos)):
                 # método 1:
-                self.semelhancas[i][j] = 100 *( ( numpy.dot(self.vetores_votacao[i],self.vetores_votacao[j]) / (numpy.sqrt(numpy.dot(self.vetores_votacao[i],self.vetores_votacao[i])) * numpy.sqrt(numpy.dot(self.vetores_votacao[j],self.vetores_votacao[j])) ) ) + 1 )/ 2
+                self.semelhancas_escalar[i][j] = 100 *( ( numpy.dot(self.vetores_votacao[i],self.vetores_votacao[j]) / (numpy.sqrt(numpy.dot(self.vetores_votacao[i],self.vetores_votacao[i])) * numpy.sqrt(numpy.dot(self.vetores_votacao[j],self.vetores_votacao[j])) ) ) + 1 )/ 2
                 # método 2:
                 x = 0
                 for k in range(self.num_votacoes) :
                     x += Analise._convolui(self.quadrivet_vot[i][k],self.quadrivet_vot[j][k])
                 x = 100 * x / self.num_votacoes
-                self.semelhancas2[i][j] = x
+                self.semelhancas_convolucao[i][j] = x
         return
 
     @staticmethod
@@ -321,10 +322,10 @@ class Analise:
     def tamanho_sigla(self,siglaPartido):
         """Retorna o tamanho do partido dada sua sigla.
         """
-        if self.tamanho_partido==0:
+        if self.tamanho_partidos==0:
             self._inicializa_vetores()
         try:
-            return self.tamanho_partido[self.lista_partidos.index(siglaPartido)]
+            return self.tamanho_partidos[self.lista_partidos.index(siglaPartido)]
         except ValueError:
             print "WARNING: Partido %s não presente na análise. Dados da análise:\n%s" % (siglaPartido,self)
             return 0
@@ -364,7 +365,7 @@ class Analise:
         fo.write('\nCoordenadas:\n')
         for partido in coordenadas.keys():
             fo.write('%s: [%f, %f]\n' % (partido,coordenadas[partido][0],coordenadas[partido][1]) )
-        fo.write('Tamanhos=%s\n' % str(self.tamanho_partido))
+        fo.write('Tamanhos=%s\n' % str(self.tamanho_partidos))
         if fechar:
             fo.close()
         return coordenadas
@@ -402,10 +403,10 @@ class Analise:
         return coordenadas
 
     def sem(self,siglaP1,siglaP2,tipo=2):
-        if self.semelhancas==[]:
+        if self.semelhancas_escalar==[]:
             self._calcula_semelhancas()
-        x = self.semelhancas[self.lista_partidos.index(siglaP1),self.lista_partidos.index(siglaP2)]
-        x2 = self.semelhancas2[self.lista_partidos.index(siglaP1),self.lista_partidos.index(siglaP2)]
+        x = self.semelhancas_escalar[self.lista_partidos.index(siglaP1),self.lista_partidos.index(siglaP2)]
+        x2 = self.semelhancas_convolucao[self.lista_partidos.index(siglaP1),self.lista_partidos.index(siglaP2)]
         print 'Semelhança entre %s e %s:' % (siglaP1,siglaP2)
         if tipo==1:
             print 'Método 1 (p. escalar): %5.1f%% <- valor retornado' % x
@@ -457,7 +458,7 @@ class Analise:
         for partido in self.partidos:
             x.append(dados[partido.nome][0])
             y.append(dados[partido.nome][1])
-        size = numpy.array(self.tamanho_partido) * escala
+        size = numpy.array(self.tamanho_partidos) * escala
         scatter(x, y, size, range(len(x)), marker='o', cmap=colormap_partidos) #, norm=None, vmin=None, vmax=None, alpha=None, linewidths=None, faceted=True, verts=None, hold=None, **kwargs)
 
         for partido in self.partidos:
@@ -482,7 +483,7 @@ def partidos_expressivos(N=1,data_inicial='2011-01-01',data_final='2011-12-31',t
     a = Analise(data_inicial,data_final,tipos_proposicao)
     votacoes = a._fetchVotacoes()
     # Inicializar variáveis
-    tamanho_partido = [0]*len(lista_todos_partidos) 
+    tamanho_partidos = [0]*len(lista_todos_partidos) 
     vetores_tamanho = numpy.zeros((len(lista_todos_partidos),a.num_votacoes))
     #Transformar lista de tuplas em lista de strings:
     i = 0 
@@ -501,14 +502,14 @@ def partidos_expressivos(N=1,data_inicial='2011-01-01',data_final='2011-12-31',t
             deps_presentes_list = [list(numpy.array(eval(v[3]))[numpy.where(numpy.array(eval(v[3]))/100000==idPartido[p])]) + list(numpy.array(eval(v[4]))[numpy.where(numpy.array(eval(v[4]))/100000==idPartido[p])]) + list(numpy.array(eval(v[5]))[numpy.where(numpy.array(eval(v[5]))/100000==idPartido[p])]) + list(numpy.array(eval(v[6]))[numpy.where(numpy.array(eval(v[6]))/100000==idPartido[p])]) ]
             vetores_tamanho[ip][iv] = numpy.size(deps_presentes_list)
             for d in deps_presentes_list[0]:
-                num_deputados.add(d) # repetidos não entrarão duas vezes no set, permitindo calcular tamanho_partido.
-        tamanho_partido[ip] = len(num_deputados)
+                num_deputados.add(d) # repetidos não entrarão duas vezes no set, permitindo calcular tamanho_partidos.
+        tamanho_partidos[ip] = len(num_deputados)
     # Fazer lista de partidos maiores do que N:
     expressivos = []
     ip = -1
     for p in lista_todos_partidos:
         ip += 1
-        if tamanho_partido[ip] >= N:
+        if tamanho_partidos[ip] >= N:
             expressivos.append(p)
     return expressivos
 
