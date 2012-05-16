@@ -3,3 +3,5 @@ Próximos passos/ idéias:
 * Criar medida(s) da dispersão dentro de cada partido, para saber da homogeneidade de cada um;
 
 * Lapidar e limpar o código (talvez alguns módulos estejam ficando obsoletos). Organizar arquivos em pastas.
+
+* Na descrição do init da classe analise está colocado que pode ser passado um parâmetro inteiro 'n' que faz com que as análises sejam feitas para os partidos com N ou mais deputados, mas não vi aonde esse parâmetro aparece no código (sequer na chamada do init)
