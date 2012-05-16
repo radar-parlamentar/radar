@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2012, Leonardo Leite, Saulo Trento, Diego Rabatone
@@ -510,3 +511,6 @@ def partidos_expressivos(N=1,data_inicial='2011-01-01',data_final='2011-12-31',t
         if tamanho_partido[ip] >= N:
             expressivos.append(p)
     return expressivos
+
+if __name__ == "__main__":
+    Analise().figura()

@@ -35,16 +35,19 @@ import sqlite3 as lite
 SIM = 'Sim'
 NAO = 'Não'
 ABSTENCAO = 'Abstenção'
-OBSTRUCAO = 'Obstrução' # por hora será interpretado como 'Não'
+OBSTRUCAO = 'Obstrução' # interpretada como Abstenção
 
 class Partido:
     """Modela um partido político
     Atributos:
-    nome [string], numero [int]
-    Atributos a serem implementados no futuro:
-    tamanho [int], partido do governo (executivo)?[booleano], 
-    cargos_indicados (quantidade de cargos de indicação do executivo que esse partido possui - ministros/secretários)
+    nome -- ex: 'PT' [string] 
+    numero -- ex: '13' [string]
     """
+#    Atributos a serem implementados no futuro:
+#    tamanho [int], partido do governo (executivo)?[booleano], 
+#    cargos_indicados (quantidade de cargos de indicação do executivo que esse partido possui - ministros/secretários)
+#    Obs: como tamanho, partido do governo etc são características variáveis do partido, 
+#    talvez seja melhor elas pertencerem a uma classe SituacaoPartido, que teria como atributos partido, periodo e as citadas
 
     def __init__(self, nome='', numero=''):
         self.nome = nome
@@ -105,6 +108,9 @@ class Proposicao:
 
     def __str__(self):
         return unicode(self).encode('utf-8')
+
+    def nome(self):
+        return "%s %s/%s" % (self.sigla, self.numero, self.ano)
 
 class Votacao:
     """Modela uma votação pertencente à uma proposição parlamentar
