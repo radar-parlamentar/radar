@@ -83,15 +83,30 @@ Proposicao
             resumo // pega a ementa da cmsp
             data
             resultado
-            parlamentares
-                Parlamentar *
-                    id
-                    nome
-                    Partido
+            votos
+                Voto *
+                    voto {Sim, Não, Abstenção, Obstrução, Não votou} // voto.valor mehor que voto.voto?
+                    Parlamentar 
+                        id
                         nome
-                        numero
-                    UF // generalizar ???
-                    voto {Sim, Não, Abstenção, Obstrução, Não votou} 
+                        genero
+                        UF // generalizar ???
+                        Partido
+                            nome
+                            numero
+                            cargos
+                                Cargo * // ministérios e secretarias
+                                    descricao // nome da secretaria/ministério
+                                    ocupante [Parlamentar] // mesmo que não seja parlamentar
+                                    Periodo
+                                        inicio
+                                        fim
+                            tamanho
+                                TamanhoPartido *
+                                    tamanho
+                                    Periodo
+                                        inicio
+                                        fim
 
 # outra opção é deixar Votacao no topo e fazer com que Votacao tenha atributo Proposicao
 # talvez assim seja melhor para facilitar análise de "votações burocráticas"
@@ -109,7 +124,7 @@ VOTOS
 id_parlamentar, id_votacao, voto
 
 PARLAMENTARES
-id, nome, partido, uf?
+id, nome, partido, uf?, genero
 
 PARTIDOS
 nome, numero
