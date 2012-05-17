@@ -259,13 +259,13 @@ class Deputado:
                 # verificar se ja tem, se sim warning, se nao acrescenta no bd e no dicpartidos
                 if idwannabe in Deputado.dicpartidos.values():
                     if not Deputado.dicpartidos[siglawannabe] == idwannabe:
-                        print "WARNING: listapartidos.txt associa o %s ao idPartido %d" % (siglawannabe,idwannabe)
+                        print "WARNING: listapartidos.txt associa o %s ao idPartido %s" % (siglawannabe,idwannabe)
                         print "mas no banco de dados este id ja esta associado ao %s." % (Deputado.dicpartidos[idwannabe])
                         print "Foi mantido o valor do banco de dados, e ignorado o de listapartidos.txt."
                 elif siglawannabe in Deputado.dicpartidos:
                     if not Deputado.dicpartidos[siglawannabe] == idwannabe:
-                        print "WARNING: listapartidos.txt associa o %s ao idPartido %d" % (siglawannabe,idwannabe)
-                        print "mas no banco de dados o %s ja esta associado ao id %d." % (siglawannabe,Deputado.dicpartidos[siglawannabe])
+                        print "WARNING: listapartidos.txt associa o %s ao idPartido %s" % (siglawannabe,idwannabe)
+                        print "mas no banco de dados o %s ja esta associado ao id %s." % (siglawannabe,Deputado.dicpartidos[siglawannabe])
                         print "Foi mantido o valor do banco de dados, e ignorado o de listapartidos.txt."
                 else:
                     Deputado.dicpartidos[res.group(1)] = int(res.group(2))
@@ -335,19 +335,22 @@ class Deputado:
             Deputado.inicializar_diclistadeps()
             Deputado.diclistadeps_inicializado = True
 
-        idPartUF = 100*Deputado.idPartido(partido) + Deputado.idUF(uf)
+        iduf = ''
+        if uf:
+            iduf = Deputado.idUF(uf)
+        idPartUF = '%s%s' % (100*Deputado.idPartido(partido), iduf)
         if idPartUF in Deputado.diclistadeps:
             if nome in Deputado.diclistadeps[idPartUF]:
-                iddep = idPartUF*1000 + Deputado.diclistadeps[idPartUF].index(nome) + 1
+                iddep = int(idPartUF)*1000 + Deputado.diclistadeps[idPartUF].index(nome) + 1
                 return iddep
             else:
                 Deputado.diclistadeps[idPartUF].append(nome)
-                iddep = idPartUF*1000 + Deputado.diclistadeps[idPartUF].index(nome) + 1
+                iddep = int(idPartUF)*1000 + Deputado.diclistadeps[idPartUF].index(nome) + 1
         else:
             Deputado.diclistadeps[idPartUF] = [nome]
-            iddep = idPartUF*1000 + 1
+            iddep = int(idPartUF*2) + 1 # TODO aqui era *1000, e não *2
         con = lite.connect('resultados/camara.db')
-        con.execute('INSERT INTO PARLAMENTARES VALUES(?,?,?,?)',(iddep,nome,partido,uf))
+        con.execute('INSERT INTO PARLAMENTARES VALUES(?,?,?,?)',(int(iddep),nome,partido,uf))
         con.commit()
         con.close()
         return iddep

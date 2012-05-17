@@ -27,6 +27,8 @@ cria_bd_camara_deputados -- Cria o banco de dados da câmara dos deputados em 'r
 cira_bc_cmsp -- Cria o banco de dados da Câmara Municipal do Município de São Paulo a partir dos XMLs em resultados/cmsp[ano].xml
 """
 
+from __future__ import unicode_literals
+import cmsp
 import proposicoes
 import camaraws
 import partidos
@@ -106,13 +108,13 @@ class GeradorBD:
                     sys.stdout.write(".")
                     sys.stdout.flush()
                     idDep = model.Deputado.idDep(d.nome,d.partido,d.uf)
-                    if d.voto[0] == 'S':
+                    if d.voto == model.SIM: # TODO antes era d.voto[0] == 'S'
                         sim.append(idDep)
-                    if d.voto[0] == 'N':
+                    if d.voto == model.NAO:
                         nao.append(idDep)
-                    if d.voto[0] == 'A':
+                    if d.voto == model.ABSTENCAO:
                         abstencao.append(idDep)
-                    if d.voto[0] == 'O':
+                    if d.voto == model.OBSTRUCAO:
                         obstrucao.append(idDep)
                 print ' '
                 pid = prop.id
@@ -155,8 +157,15 @@ def cria_bd_camara_deputados(arquivo_ids=IDS_VOTADAS):
     gerador.gera_bd()
 
 def cria_bd_cmsp():
-    print "TODO..."
+    """Cria o banco de dados da câmara municipal de são paulo em 'resultados/cmsp.db' """
+
+    props = cmsp.from_xml(cmsp.XML2010)   
+    props += cmsp.from_xml(cmsp.XML2011)
+    props += cmsp.from_xml(cmsp.XML2012)
+
+    gerador = GeradorBD(props, 'resultados/cmsp.db')
+    gerador.gera_bd()
 
 if __name__ == "__main__":
-    cria_bd_camara_deputados()    
+    cria_bd_cmsp()    
 
