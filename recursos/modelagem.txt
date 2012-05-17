@@ -1,0 +1,122 @@
+*******************************
+*** XML da câmara dos deputados
+
+Proposicao
+    Sigla
+    Numero
+    Ano
+    Votacoes
+        Votacao *
+            Resumo
+            Data
+            Hora
+            ObjVotacao
+            Deputado * // deputados ausentes não são listados
+                Nome
+                Partido
+                UF
+                Voto {Sim, Não, Abstenção, Obstrução}
+
+proposicao
+    nomeProposicao
+    tipoProposicao // ex: "Projeto de Lei"
+    ementa
+    ExplicacaoEmenta
+    Autor
+    DataApresentacao
+    RegimeTramitacao
+    UltimoDespacho
+    Apreciacao
+    Indexacao // palavras chaves
+    Situacao     
+    LinkInteiroTeor
+
+***************
+*** XML da CMSP
+
+CMSP
+    Votacao *
+        VotacaoID
+        Materia
+        TipoVotacao {Nominal, Simbólica}
+        Resultado // Aprovado, Rejeitado, Pendente de votação...
+        nPresentes
+        nSim
+        nNao
+        nBranco
+        nAbstencao
+        NomeDaSessao
+        DataDaSessao
+        Ementa
+        NotasRodape
+        Vereador *
+            NomeParlamentar
+            IDParlamentar
+            Partido
+            Voto {Sim, Não, Abstenção, Não votou}
+            Acao {VOTOU, NÃO VOTOU}
+            VotacaoID       }
+            NomeDaSessao     } replicados
+            DataDaSessao    }
+
+*****************
+*** XML do Senado
+TODO
+
+***************************
+*** model (nossa modelagem) // proposta
+
+Proposicao
+    id
+    sigla
+    numero
+    ano
+    nome // campo calculado: "Sigla Numero/Ano"
+    ementa // ementa + explicacaoEmenta
+    autor
+    data_apresentacao
+    indexacao // palavras chaves
+    situacao
+    votacoes
+        Votacao *
+            id
+            resumo // pega a ementa da cmsp
+            data
+            resultado
+            parlamentares
+                Parlamentar *
+                    id
+                    nome
+                    Partido
+                        nome
+                        numero
+                    UF // generalizar ???
+                    voto {Sim, Não, Abstenção, Obstrução, Não votou} 
+
+# outra opção é deixar Votacao no topo e fazer com que Votacao tenha atributo Proposicao
+# talvez assim seja melhor para facilitar análise de "votações burocráticas"
+
+*******************************
+*** Modelo relacional para o BD
+
+PROPOSICOES
+id, sigla, numero, ano, ementa, autor, data_apresentacao, indexacao, situacao
+
+VOTACOES
+id, proposicao, resumo, data, resultado
+
+VOTOS
+id_parlamentar, id_votacao, voto
+
+PARLAMENTARES
+id, nome, partido, uf?
+
+PARTIDOS
+nome, numero
+
+CARGOS_PARTIDOS
+partido, cargo, inicio, fim
+
+TAMANHO_PARTIDOS
+partido, tamanho, inicio, fim
+
