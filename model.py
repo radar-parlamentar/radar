@@ -219,7 +219,10 @@ class Deputado:
         return dep
 
     def __unicode__(self):
-        return "%s (%s-%s) votou %s" % (self.nome, self.partido, self.uf, self.voto)
+        ufstr = ''
+        if self.uf:
+            ufstr = '-%s' % self.uf
+        return "%s (%s%s) votou %s" % (self.nome, self.partido, ufstr, self.voto)
 
     def __str__(self):
         return unicode(self).encode('utf-8')
