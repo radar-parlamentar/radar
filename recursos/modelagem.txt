@@ -89,11 +89,13 @@ Proposicao
                     Parlamentar 
                         id
                         nome
-                        genero
-                        UF // generalizar ???
+                        genero {masculino, femenino}
+                        tipo {deputado estadual, deputado federal, senador, vereador}
+                        uf // generalizar ???
                         Partido
                             nome
                             numero
+                            governo [lista (inicio, fim)] // períodos em que o chefe do executivo era do partido
                             cargos
                                 Cargo * // ministérios e secretarias
                                     descricao // nome da secretaria/ministério
