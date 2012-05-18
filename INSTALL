@@ -1,0 +1,7 @@
+Instalação das dependências no Ubuntu
+
+sudo apt-get install python-numpy
+sudo apt-get install python-matplotlib
+sudo apt-get install python-pip
+sudo pip install svgwrite
+sudo apt-get install sqlite3
