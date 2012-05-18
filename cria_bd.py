@@ -107,8 +107,8 @@ class GeradorBD:
                 for d in v.deputados:
                     sys.stdout.write(".")
                     sys.stdout.flush()
-                    idDep = model.Deputado.idDep(d.nome,d.partido,d.uf)
-                    if d.voto == model.SIM: # TODO antes era d.voto[0] == 'S'
+                    idDep = model.Deputado.idDep(d.nome, d.partido, d.uf, self.db)
+                    if d.voto == model.SIM: 
                         sim.append(idDep)
                     if d.voto == model.NAO:
                         nao.append(idDep)

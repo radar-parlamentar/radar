@@ -323,7 +323,7 @@ class Deputado:
             raise StandardError('UF %s nao existe. Obs: usar maiusculas.' % siglauf)
 
     @staticmethod
-    def idDep(nome,partido,uf):
+    def idDep(nome,partido,uf,bd='resultados/camara.db'):
         """Dado nome, partido e uf de um deputado, retorna um inteiro, chamado idDep, que o identifica univocamente, segundo a tabela PARLAMENTARES do bd.
 
         Deputados com mesmo nome mas filiação diferente são tratados como deputados distintos (pode acontecer no caso de mudança de partido).
@@ -335,22 +335,23 @@ class Deputado:
             Deputado.inicializar_diclistadeps()
             Deputado.diclistadeps_inicializado = True
 
-        iduf = ''
+        iduf = '99' # usado quando UF não faz sentido (ex: câmara municipal)
         if uf:
             iduf = Deputado.idUF(uf)
-        idPartUF = '%s%s' % (100*Deputado.idPartido(partido), iduf)
+        idPartUF = '%s%s' % (Deputado.idPartido(partido), iduf)
+        idPartUF = int(idPartUF)
         if idPartUF in Deputado.diclistadeps:
             if nome in Deputado.diclistadeps[idPartUF]:
-                iddep = int(idPartUF)*1000 + Deputado.diclistadeps[idPartUF].index(nome) + 1
+                iddep = idPartUF*1000 + Deputado.diclistadeps[idPartUF].index(nome) + 1
                 return iddep
             else:
                 Deputado.diclistadeps[idPartUF].append(nome)
-                iddep = int(idPartUF)*1000 + Deputado.diclistadeps[idPartUF].index(nome) + 1
+                iddep = idPartUF*1000 + Deputado.diclistadeps[idPartUF].index(nome) + 1
         else:
             Deputado.diclistadeps[idPartUF] = [nome]
-            iddep = int(idPartUF*2) + 1 # TODO aqui era *1000, e não *2
-        con = lite.connect('resultados/camara.db')
-        con.execute('INSERT INTO PARLAMENTARES VALUES(?,?,?,?)',(int(iddep),nome,partido,uf))
+            iddep = idPartUF*1000 + 1
+        con = lite.connect(bd)
+        con.execute('INSERT INTO PARLAMENTARES VALUES(?,?,?,?)',(iddep,nome,partido,uf))
         con.commit()
         con.close()
         return iddep
