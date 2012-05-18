@@ -228,7 +228,7 @@ class Deputado:
         return unicode(self).encode('utf-8')
 
     @staticmethod
-    def inicializar_dicpartidos():
+    def inicializar_dicpartidos(bd='resultados/camara.db'):
         """Lê no banco de dados 'resultados/camaraws.db' a tabela PARTIDOS, se presente, para inicializar a variável Deputado.dicpartidos com os partidos que ali constarem. Deputado.dicpartidos é um dicionário que tem como chave as siglas dos partidos e como valor o idPartido (identificador interno único, não necessariamente igual ao número eleitoral).
 
         Lê em seguida o arquivo listapartidos.txt que contém linhas do tipo 'PV 88' onde a sigla é a sigla de um partido e o número é um idPartido preferencial que pode ser escolhido pelo usuário, editando o arquivo manualmente. Se um partido de 'listapartidos.txt' já tiver sido encontrado no banco de dados com um idPartido diferente, prevalesce o do banco de dados, o do arquivo é ignorado, com emissão de uma mensagem de warning.
@@ -237,7 +237,7 @@ class Deputado:
 
         Retorna 0 se a leitura for executada com sucesso, 1 se o arquivo listapartidos.txt não existir (ou não tiver permissão de leitura).
         """
-        con = lite.connect('resultados/camara.db')
+        con = lite.connect(bd)
         if len(con.execute("select * from sqlite_master where type='table' and name='PARTIDOS'").fetchall()) != 0: # se tabela existe
             partsdb = con.execute('SELECT * FROM PARTIDOS').fetchall()
 #            print partsdb
@@ -289,7 +289,7 @@ class Deputado:
         return
 
     @staticmethod
-    def idPartido(siglapartido):
+    def idPartido(siglapartido, bd='resultados/camara.db'):
         """Retorna um inteiro que identifica o partido de acordo com a tabela PARTIDOS do bd.
         Se o partido não estiver na tabela, recebe um identificador novo, e é inserido na tabela.
         """
@@ -297,7 +297,7 @@ class Deputado:
             return Deputado.dicpartidos[siglapartido]
         else:
             if not Deputado.dicpartidos_inicializado:
-                Deputado.inicializar_dicpartidos()
+                Deputado.inicializar_dicpartidos(bd)
                 Deputado.dicpartidos_inicializado = True
                 if siglapartido in Deputado.dicpartidos:
                     return Deputado.dicpartidos[siglapartido]
@@ -306,7 +306,7 @@ class Deputado:
             Deputado.dicpartidos[siglapartido] = idpartido
             print "Novo partido '%s' encontrado. Atribuido idPartido %d" % (siglapartido,idpartido)
             # colocar no banco de dados
-            con = lite.connect('resultados/camara.db')
+            con = lite.connect(bd)
             con.execute('INSERT INTO PARTIDOS VALUES(?,?)',(idpartido,siglapartido))
             con.commit()
             con.close()
@@ -338,7 +338,7 @@ class Deputado:
         iduf = '99' # usado quando UF não faz sentido (ex: câmara municipal)
         if uf:
             iduf = Deputado.idUF(uf)
-        idPartUF = '%s%s' % (Deputado.idPartido(partido), iduf)
+        idPartUF = '%s%s' % (Deputado.idPartido(partido, bd), iduf)
         idPartUF = int(idPartUF)
         if idPartUF in Deputado.diclistadeps:
             if nome in Deputado.diclistadeps[idPartUF]:
