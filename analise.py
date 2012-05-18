@@ -148,15 +148,23 @@ class Analise:
                         partido = model.Partido(item[1],item[0])
                         self.partidos.append(partido)
             con.close()
-
         # se inteiro, usar partidos maiores ou iguais a este inteiro
         elif isinstance(self.lista_partidos,int): 
             N = self.lista_partidos
             self.lista_partidos = partidos_expressivos(N,self.data_inicial,self.data_final,self.tipos_proposicao)
 
+    #imprime informações principais da classe analise - utilizado ao se dar 'print' do objeto 'ANA'
     def __str__(self):
-        x = 'Data inicial: ' + self.data_inicial + '\nData final: ' + self.data_final + '\nVotações: ' + str(self.num_votacoes) + '\nTipos: ' + str(self.tipos_proposicao) + '\nPartidos: ' + str(self.lista_partidos)
-        return x
+        print 'Data inicial da análise : ' + self.data_inicial
+        print 'Data final da análise: ' + self.data_final
+        print 'Total de Votações analisadas: ' + str(self.num_votacoes)
+        print 'Tipos de matérias analisadas: '
+        for tipo in self.tipos_proposicao:
+            print '    ' + tipo
+        print 'Partidos analisados: '
+        for partido in self.partidos:
+            print '    ' + partido.nome
+        return ''
 
     def _fetchVotacoes(self):
         """Copia votações do BD (sqlite) para uma lista (python), e a retorna."""
