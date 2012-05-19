@@ -107,7 +107,7 @@ class Analise:
         self.lista_partidos = lista_partidos
         self.partidos = partidos
         self.num_votacoes = 0     # { calculados por
-        self.lista_votacoes = []  #   self._fetchVotacoes() }
+        self.lista_votacoes = []  #   self._buscaVotacoes() }
         self.vetores_votacao = [] # {
         self.quadrivet_vot = []   #   calculados por   
         self.vetores_tamanho = [] #   self._inicializa_vetores() 
@@ -155,25 +155,26 @@ class Analise:
 
     #imprime informações principais da classe analise - utilizado ao se dar 'print' do objeto 'ANA'
     def __str__(self):
-        print 'Data inicial da análise : ' + self.data_inicial
-        print 'Data final da análise: ' + self.data_final
-        print 'Total de Votações analisadas: ' + str(self.num_votacoes)
-        print 'Tipos de matérias analisadas: '
+        retorno = ''
+        retorno = retorno + 'Data inicial da análise : ' + self.data_inicial + '\n'
+        retorno = retorno + 'Data final da análise: ' + self.data_final + '\n'
+        retorno = retorno + 'Total de Votações analisadas: ' + str(self.num_votacoes) + '\n'
+        retorno = retorno + 'Tipos de matérias analisadas: ' + '\n'
         for tipo in self.tipos_proposicao:
-            print '    ' + tipo
-        print 'Partidos analisados: '
+            retorno = retorno + '    ' + tipo + '\n'
+        retorno = retorno + 'Partidos analisados: ' + '\n'
         for partido in self.partidos:
-            print '    ' + partido.nome
-        return ''
+            retorno = retorno + '    ' + partido.nome + '\n'
+        return retorno
 
-    def _fetchVotacoes(self):
+    def _buscaVotacoes(self):
         """Copia votações do BD (sqlite) para uma lista (python), e a retorna."""
-        stipos=''
-        for t in self.tipos_proposicao:
-            stipos = stipos + "'" + t + "',"
-        stipos = "(" + stipos[0:len(stipos)-1] + ")"
+        filtro_tipos='('
+        for tipo in self.tipos_proposicao:
+            filtro_tipos = filtro_tipos + "'" + tipo + "',"
+        filtro_tipos = filtro_tipos[0:len(filtro_tipos)-1] + ")"
         con = lite.connect(Analise.db)
-        votacoes = con.execute('SELECT votacoes.idProp,idVot,data,sim,nao,abstencao,obstrucao FROM VOTACOES,PROPOSICOES WHERE votacoes.idProp=proposicoes.idProp AND date(data)>date(?) AND date(data)<date(?) AND proposicoes.tipo IN %s' % stipos,(self.data_inicial,self.data_final)).fetchall()
+        votacoes = con.execute('SELECT votacoes.idProp,idVot,data,sim,nao,abstencao,obstrucao FROM VOTACOES,PROPOSICOES WHERE votacoes.idProp=proposicoes.idProp AND date(data)>date(?) AND date(data)<date(?) AND proposicoes.tipo IN %s' % filtro_tipos,(self.data_inicial,self.data_final)).fetchall()
         self.num_votacoes = len(votacoes)
         for i in range(len(votacoes)): 
             self.lista_votacoes.append(votacoes[:][i][0:2])
@@ -185,7 +186,7 @@ class Analise:
         O 'vetor' usa um número entre -1 (não) e 1 (sim) para representar a posição global do partido em cada votação, sendo o vetor em si um de dimensão N formado pelas N votações.
         O 'quadrivetor' usa uma tupla de 4 inteiros para representar a posição do partido em cada votação, os inteiros são o número de deputados que votaram sim, não, abstenção e obstrução. O quadrivetor em si é um vetor com N destas tuplas."""
         # Pegar votações no BD:
-        votacoes = self._fetchVotacoes()
+        votacoes = self._buscaVotacoes()
         # Criar dicionario com id dos partidos
         con = lite.connect(Analise.db)
         tabela_partidos = con.execute('select numero,nome from partidos').fetchall()
@@ -249,7 +250,7 @@ class Analise:
     def _inicializa_vetores_uf(self):
         """Análogo a _inicializa_vetores(self), mas agregado por estados e não por partidos."""
         # Pegar votações no BD:
-        votacoes = self._fetchVotacoes()
+        votacoes = self._buscaVotacoes()
 
         self.vetores_votacao_uf = numpy.zeros((len(Analise.lista_ufs),self.num_votacoes))
         self.vetores_tamanho_uf = numpy.zeros((len(Analise.lista_ufs),self.num_votacoes))
@@ -489,7 +490,7 @@ def partidos_expressivos(N=1,data_inicial='2011-01-01',data_final='2011-12-31',t
     con.close()
     # Pegar votacoes no bd:
     a = Analise(data_inicial,data_final,tipos_proposicao)
-    votacoes = a._fetchVotacoes()
+    votacoes = a._buscaVotacoes()
     # Inicializar variáveis
     tamanho_partidos = [0]*len(lista_todos_partidos) 
     vetores_tamanho = numpy.zeros((len(lista_todos_partidos),a.num_votacoes))
