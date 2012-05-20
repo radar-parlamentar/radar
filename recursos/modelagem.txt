@@ -97,6 +97,7 @@ Parlamentar
         id
         casa_legislativa
         Partido
+        localidade // UF
         periodo
 
 Partido
