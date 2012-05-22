@@ -19,7 +19,26 @@ from __future__ import unicode_literals
 from django.db import models
 from django.core.exceptions import ValidationError
 
-class Partido:
+OPCOES = (
+    ('SIM', 'Sim'),
+    ('NAO', 'Não'),
+    ('ABSTENCAO', 'Abstenção'),
+    ('OBSTRUCAO', 'Obstrução'),
+    ('AUSENTE', 'Ausente'),
+)
+
+GENEROS = (
+    ('M', 'Masculino'),
+    ('F', 'Feminino'),
+)
+
+ESFERAS = (
+    ('MUNICIPAL', 'Municipal'),
+    ('ESTADUAL', 'Estadual'),
+    ('FEDERAL', 'Federal'),
+)
+
+class Partido(django.db.models.Model):
     """Partido político.
 
     Atributos:
@@ -27,9 +46,8 @@ class Partido:
         numero -- string; ex: '13'
     """
 
-    def __init__(self):
-        self.nome = ''
-        self.numero = ''
+    nome = models.CharField(max_length=10)
+    numero = models.IntegerField()
 
     def __unicode__(self):
         return self.nome
@@ -38,11 +56,11 @@ class Partido:
         return unicode(self).encode('utf-8')
 
 
-class Proposicao:
+class Proposicao(django.db.models.Model):
     """Proposição parlamentar (proposta de lei).
     
     Atributos:
-        id -- string identificadora da proposição
+        id_prop - string identificadora de acordo a fonte de dados
         sigla, numero, ano -- string que juntas formam o nome legal da proposição
         ementa-- descrição sucinta e oficial
         descricao -- descrição mais detalhada
@@ -56,18 +74,17 @@ class Proposicao:
         nome: retorna "sigla numero/ano"
     """
 
-    def __init__(self):
-        self.id = ''
-        self.sigla = ''
-        self.numero = ''
-        self.ano = ''
-        self.ementa = ''
-        self.descricao = ''
-        self.indexacao = ''
-        self.data_apresentacao = ''
-        self.situacao = ''
-        self.casa_legislativa = None
-        self.autores = []
+    id_prop = models.CharField(max_length=100) # obs: não é chave primária!
+    sigla = models.CharField(max_length=10)
+    numero = models.CharField(max_length=10)
+    ano = models.CharField(max_length=4)
+    ementa = models.TextField(blank=True)
+    descricao = models.TextField(blank=True)
+    indexacao = models.TextField(blank=True)
+    data_apresentacao = models.DateField(blank=True)
+    situacao = models.TextField(blank=True)
+    casa_legislativa = None
+    autores = []
 
     def nome(self):
         return "%s %s/%s" % (self.sigla, self.numero, self.ano)
@@ -79,11 +96,12 @@ class Proposicao:
         return unicode(self).encode('utf-8')
 
 
-class Votacao:
+class Votacao(django.db.models.Model):
     """Votação em planário.
     
     Atributos:
-        id, descricao, data, resultado -- strings
+        id_vot - string identificadora de acordo a fonte de dados
+        descricao, data, resultado -- strings
         casa_legislativa -- objeto do tipo CasaLegislativa
         proposicao -- objeto do tipo Proposicao
         votos -- lista de objetos do tipo Voto
@@ -92,14 +110,13 @@ class Votacao:
         por_partido()
     """
 
-    def __init__(self):
-        self.id = ''
-        self.descricao = ''
-        self.data = ''
-        self.resultado = ''
-        self.casa_legislativa = None
-        self.proposicao = None
-        self.votos = []
+    id_vot = models.CharField(max_length=100) # obs: não é chave primária!
+    descricao = models.TextField(blank=True)
+    data = models.DateField(blank=True)
+    resultado = models.TextField(blank=True)
+    casa_legislativa = None
+    proposicao = None
+    votos = []
 
     def por_partido(self):
         """Retorna votos agregados por partido.
@@ -128,7 +145,7 @@ class Votacao:
         return unicode(self).encode('utf-8')    
 
 
-class Voto:
+class Voto(django.db.models.Model):
     """Um voto dado por um parlamentar em uma votação.
 
     Atributos:
@@ -136,9 +153,8 @@ class Voto:
         opcao -- qual foi o voto do parlamentar (sim, não, abstenção, obstrução, não votou)
     """
 
-    def __init__(self):
-        self.parlamentar = None
-        self.opcao = ''
+    parlamentar = None
+    opcao = models.CharField(max_length=10, choices=OPCOES)
 
     def __unicode__(self):
         return "%s votou %s" % (self.parlamentar, self.opcao)
@@ -146,11 +162,12 @@ class Voto:
     def __str__(self):
         return unicode(self).encode('utf-8')
 
-class Parlamentar:
+class Parlamentar(django.db.models.Model):
     """Um parlamentar.
 
     Atributos:
-        id, nome, genero -- strings
+        id_parlamentar - string identificadora de acordo a fonte de dados
+        nome, genero -- strings
         legislatura -- lista de objetos do tipo Legislatura
 
     Métodos:
@@ -158,11 +175,10 @@ class Parlamentar:
         legislatura_atual()
     """
 
-    def __init__(self):
-        self.id = ''
-        self.nome = ''
-        self.genero = ''
-        self.legislaturas = []
+    id_parlamentar = models.CharField(max_length=100) # obs: não é chave primária! 
+    nome = models.CharField(max_length=100)
+    genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
+    legislaturas = []
 
     def partido_atual(self):
         """Retorna partido atual do parlamentar.
@@ -189,23 +205,20 @@ class Parlamentar:
         return unicode(self).encode('utf-8')
 
 
-class Legislatura:
+class Legislatura(django.db.models.Model):
     """O mandato exercido por um parlamentar.
 
     Atributos:
-        id -- string identificadora da legislatura
         localidade -- string; ex 'SP', 'RJ' se for no senado ou câmara dos deputados
         casa_legislativa -- objeto do tipo CasaLegislativa
         partido -- objeto do tipo Partido
         periodo -- objeto do tipo Periodo
     """
 
-    def __init__(self):
-        self.id = ''
-        self.localidade  = ''
-        self.casa_legislativa = None
-        self.Partido = None
-        self.periodo = None
+    localidade = models.CharField(max_length=100, blank=True)
+    casa_legislativa = None
+    Partido = None
+    periodo = None
 
     def __unicode__(self):
         return "%s" % self.periodo
@@ -213,12 +226,11 @@ class Legislatura:
     def __str__(self):
         return unicode(self).encode('utf-8')
 
-class Periodo:
+class Periodo(django.db.models.Model):
     """Intervalo de datas com um inicio e um fim"""
 
-    def__init__(self):
-        self.inicio = ''
-        self.fim = ''
+    inicio = ''
+    fim = ''
 
     def __unicode__(self):
         return "[%s,%s]" % (self.inicio, self.fim)
@@ -226,11 +238,10 @@ class Periodo:
     def __str__(self):
         return unicode(self).encode('utf-8')
 
-class CasaLegislativa:
+class CasaLegislativa(django.db.models.Model):
     """Instituição tipo Senado, Câmara etc
 
     Atributos:
-        id -- string identificadora da casa
         nome -- string; ex 'Câmara Municipal de São Paulo'
         esfera -- string (municipal, estadual, federal)
         local -- string; ex 'São Paulo' para a CMSP
@@ -238,13 +249,11 @@ class CasaLegislativa:
         composicao -- lista de objetos do tipo Composicao
     """
 
-    def __init__(self):
-        self.id = ''
-        self.nome = ''
-        self.esfera = ''
-        self.local = ''
-        self.tamanhos = []
-        self.composicoes = []
+    nome = models.CharField(max_length=100)
+    esfera = models.CharField(max_length=10, choices=ESFERAS)
+    local = models.CharField(max_length=100)
+    tamanhos = []
+    composicoes = []
 
     def __unicode__(self):
         return self.nome
@@ -253,19 +262,17 @@ class CasaLegislativa:
         return unicode(self).encode('utf-8')
 
 
-class Composicao:
+class Composicao(django.db.models.Model):
     """Participação de um partido na casa"""
 
-    def __init__(self):
-        partido = None
-        historico = []
+    partido = None
+    historico = []
 
 
-class HistoricoTamanho:
+class HistoricoTamanho(django.db.models.Model):
 
-    def __init__(self):
-        tamanho = 0
-        periodo = None
+    tamanho = models.IntegerField()
+    periodo = None
 
 
 class VotosAgregados:
@@ -274,6 +281,10 @@ class VotosAgregados:
     Atributos:
         sim, nao, abstencao -- inteiros que representam a quantidade de votos no conjunto
     """
+
+    sim = 0
+    nao = 0
+    abstencao = 0
 
     def add(self, voto):
         """Adiciona um voto ao conjunto de votos.
@@ -292,11 +303,6 @@ class VotosAgregados:
           self.abstencao += 1
         if (voto == AUSENTE):
           self.abstencao += 1
-
-    def __init__(self):
-        self.sim = 0
-        self.nao = 0
-        self.abstencao = 0
 
     def __unicode__(self):
         return '(%s, %s, %s)' % (self.sim, self.nao, self.abstencao)
