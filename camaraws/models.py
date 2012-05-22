@@ -83,8 +83,8 @@ class Proposicao(django.db.models.Model):
     indexacao = models.TextField(blank=True)
     data_apresentacao = models.DateField(blank=True)
     situacao = models.TextField(blank=True)
-    casa_legislativa = None
-    autores = []
+    casa_legislativa = models.ForeignKey(CasaLegislativa, blank=True)
+    autores = models.ManyToManyField(Parlamentar, blank=True)
 
     def nome(self):
         return "%s %s/%s" % (self.sigla, self.numero, self.ano)
@@ -114,9 +114,9 @@ class Votacao(django.db.models.Model):
     descricao = models.TextField(blank=True)
     data = models.DateField(blank=True)
     resultado = models.TextField(blank=True)
-    casa_legislativa = None
-    proposicao = None
-    votos = []
+    casa_legislativa = models.ForeignKey(CasaLegislativa, blank=True)
+    proposicao = models.ForeignKey(Proposicao, blank=True)
+    votos = models.ManyToManyField(Voto, blank=True) # votações simbólicas não tem votos
 
     def por_partido(self):
         """Retorna votos agregados por partido.
@@ -153,7 +153,7 @@ class Voto(django.db.models.Model):
         opcao -- qual foi o voto do parlamentar (sim, não, abstenção, obstrução, não votou)
     """
 
-    parlamentar = None
+    parlamentar = models.ForeignKey(Parlamentar)
     opcao = models.CharField(max_length=10, choices=OPCOES)
 
     def __unicode__(self):
@@ -178,7 +178,7 @@ class Parlamentar(django.db.models.Model):
     id_parlamentar = models.CharField(max_length=100) # obs: não é chave primária! 
     nome = models.CharField(max_length=100)
     genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
-    legislaturas = []
+    legislaturas = models.ManyToManyField(Legislatura)
 
     def partido_atual(self):
         """Retorna partido atual do parlamentar.
@@ -212,28 +212,17 @@ class Legislatura(django.db.models.Model):
         localidade -- string; ex 'SP', 'RJ' se for no senado ou câmara dos deputados
         casa_legislativa -- objeto do tipo CasaLegislativa
         partido -- objeto do tipo Partido
-        periodo -- objeto do tipo Periodo
+        inicio, fim -- datas indicando o período
     """
 
     localidade = models.CharField(max_length=100, blank=True)
-    casa_legislativa = None
-    Partido = None
-    periodo = None
+    casa_legislativa = models.ForeignKey(CasaLegislativa, blank=True)
+    partido = models.ForeignKey(Partido)
+    inicio = models.DateField(blank-True)
+    fim = models.DateField(blank=True)
 
     def __unicode__(self):
         return "%s" % self.periodo
-
-    def __str__(self):
-        return unicode(self).encode('utf-8')
-
-class Periodo(django.db.models.Model):
-    """Intervalo de datas com um inicio e um fim"""
-
-    inicio = ''
-    fim = ''
-
-    def __unicode__(self):
-        return "[%s,%s]" % (self.inicio, self.fim)
 
     def __str__(self):
         return unicode(self).encode('utf-8')
@@ -252,8 +241,8 @@ class CasaLegislativa(django.db.models.Model):
     nome = models.CharField(max_length=100)
     esfera = models.CharField(max_length=10, choices=ESFERAS)
     local = models.CharField(max_length=100)
-    tamanhos = []
-    composicoes = []
+    tamanhos = models.ManyToManyField(HistoricoTamanho, blank=True)
+    composicoes = models.ManyToManyField(Composicao, blank=True)
 
     def __unicode__(self):
         return self.nome
@@ -265,14 +254,15 @@ class CasaLegislativa(django.db.models.Model):
 class Composicao(django.db.models.Model):
     """Participação de um partido na casa"""
 
-    partido = None
-    historico = []
+    partido = models.ForeignKey(Partido)
+    historico = models.ManyToManyField(HistoricoTamanho)
 
 
 class HistoricoTamanho(django.db.models.Model):
 
     tamanho = models.IntegerField()
-    periodo = None
+    inicio = models.DateField(blank=True)
+    fim = models.DateField(blank=True)
 
 
 class VotosAgregados:
