@@ -27,6 +27,7 @@ uma lista de objetos do tipo Proposicao
 """
 
 from __future__ import unicode_literals
+from django.utils.dateparse import parse_datetime
 from modelagem import models
 import re
 import xml.etree.ElementTree as etree
@@ -55,6 +56,17 @@ PROP_REGEX = '([a-zA-Z]{1,3}) ([0-9]{1,4}) ?/([0-9]{4})'
 #       A nao ser q, a cada voto, o parlamentar esteja relacionada tb a todas as suas legislaturas.
 
 parlamentares = {}
+partidos = {}
+
+def _converte_data(data_str):
+    """Converte string "d/m/a para objeto datetime; retona None se data_str é inválido"""
+    DATA_REGEX = '(\d\d?)/(\d\d?)/(\d{4})'
+    res = re.match(DATA_REGEX, data_str)
+    if res:
+        new_str = '%s-%s-%s 0:0:0' % (res.group(3), res.group(2), res.group(1))
+        return parse_datetime(new_str)
+    else:
+        return None
 
 def _prop_nome(texto):
     """Procura "tipo num/ano" no texto"""
@@ -85,33 +97,53 @@ def _voto_cmsp_to_model(voto):
     if voto == 'Não votou':
         return models.OPCOES[2][0] 
 
+def _partido(nome_partido):
+    if partidos.has_key(nome_partido):
+        partido = partidos[nome_partido]
+    else:
+        partido = models.Partido()
+        partido.nome = nome_partido
+        partido.numero = 0 # TODO
+        partido.save()
+        print 'Partido %s salvo' 
+        partidos[nome_partido] = partido
+    return partido
+
+def _votante(ver_tree):
+    id_parlamentar = ver_tree.get('IDParlamentar')
+    if parlamentares.has_key(id_parlamentar):
+        votante = parlamentares[id_parlamentar]
+    else:
+        votante = models.Parlamentar()
+        votante.save()
+        votante.id_parlamentar = id_parlamentar
+        votante.nome =  ver_tree.get('NomeParlamentar')
+        votante.partido = _partido(ver_tree.get('Partido'))
+        votante.save() 
+        print 'Vereador %s salvo' % votante
+        parlamentares[id_parlamentar] = votante
+        #TODO genero, legislatura - da pra preencher +- a legislatura
+    return votante
+
 def _votos_from_tree(vot_tree):
     """Extrai lista de votos do XML da votação.
-        Preenche tambem um vetor contendo a descricao de cada parlamentar."""
+       Preenche tambem um vetor contendo a descricao de cada parlamentar."""
     votos = []
-
     for ver_tree in vot_tree.getchildren():
         if ver_tree.tag == 'Vereador':
-            key = ver_tree.get('IDParlamentar')
-            print 'procurando por ',key
-            if parlamentares.has_key(key):
-                print 'achou'
-                votante = parlamentares[key]
-            else:
-                votante = models.Parlamentar() # TODO classe Deputado deve virar Parlamentar
-                votante.id_parlamentar = key
-                votante.nome = ver_tree.get('NomeParlamentar')
-                parlamentares[key] = votante
-                #TODO genero, legislatura - da pra preencher +- a legislatura
-
+            votante = _votante(ver_tree)
             voto = models.Voto()
             voto.parlamentar = votante
             voto.opcao = _voto_cmsp_to_model(ver_tree.get('Voto'))
-            votos.append(voto)
+            if voto.opcao != None:
+                #print 'Voto %s salvo' % voto
+                votos.append(voto)
+                voto.save() # só pra criar a chave primária, pra poder relacionar com a votação
     return votos
           
 
-def from_xml(xml_file=XML2011):
+def save(xml_file=XML2011):
+    """Salva no banco de dados do Django e retorna lista das votações"""
 
     f = open(xml_file, 'r')
     xml = f.read()
@@ -141,37 +173,20 @@ def from_xml(xml_file=XML2011):
 
                     proposicoes[prop_nome] = prop
 
+                print 'Proposição %s salva' % prop
+                prop.save()
                 vot = models.Votacao()
                 vot.save() # só pra criar a chave primária e poder atribuir o votos
                 vot.id_vot = vot_tree.get('VotacaoID')
                 vot.descricao = resumo
-                vot.data = vot_tree.get('DataDaSessao')
+                vot.data = _converte_data(vot_tree.get('DataDaSessao'))
                 vot.resultado = vot_tree.get('Resultado')
-                vot.votos= _votos_from_tree(vot_tree)
+                vot.votos = _votos_from_tree(vot_tree)
                 vot.proposicao = prop
-                
+                print 'Votação %s salva' % vot
+                vot.save()
+
                 votacoes.append(vot)
 
     return votacoes
-
-if __name__ == "__main__":
-
-    vots = from_xml(XML2010)
-    for v in vots:
-        print '%s (%s)' % (v.descricao, v.data) 
-        for voto in v.votos:
-            print voto.parlamentar.nome
-
-#    for v in vots:
-#        p = v.proposicao
-#        print '%s' % (p.nome())
-
-
-
-    print '**************'
-    print '**************'
-#    vereadores = props[0].votacoes[0].deputados
-#    for v in vereadores:
-#        print v
-
 

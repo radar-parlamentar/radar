@@ -81,8 +81,8 @@ class CasaLegislativa(models.Model):
     nome = models.CharField(max_length=100)
     esfera = models.CharField(max_length=10, choices=ESFERAS)
     local = models.CharField(max_length=100)
-    tamanhos = models.ManyToManyField(HistoricoTamanho, blank=True)
-    composicoes = models.ManyToManyField(Composicao, blank=True)
+    tamanhos = models.ManyToManyField(HistoricoTamanho, null=True)
+    composicoes = models.ManyToManyField(Composicao, null=True)
 
     def __unicode__(self):
         return self.nome
@@ -99,10 +99,10 @@ class Legislatura(models.Model):
     """
 
     localidade = models.CharField(max_length=100, blank=True)
-    casa_legislativa = models.ForeignKey(CasaLegislativa, blank=True)
+    casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
     partido = models.ForeignKey(Partido)
-    inicio = models.DateField(blank=True)
-    fim = models.DateField(blank=True)
+    inicio = models.DateField(null=True)
+    fim = models.DateField(null=True)
 
     def __unicode__(self):
         return "%s" % self.periodo
@@ -122,11 +122,11 @@ class Parlamentar(models.Model):
         legislatura_atual()
     """
 
-    id_parlamentar = models.CharField(max_length=100) # obs: não é chave primária! 
+    id_parlamentar = models.CharField(max_length=100, blank=True) # obs: não é chave primária! 
     nome = models.CharField(max_length=100)
     genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
-    legislaturas = models.ManyToManyField(Legislatura)
-    partido = models.ForeignKey(Partido, blank=True) # para facilitar o uso, pelo menos por hora
+    legislaturas = models.ManyToManyField(Legislatura, null=True)
+    partido = models.ForeignKey(Partido, null=True) # para facilitar o uso, pelo menos por hora
 
     def partido_atual(self):
         """Retorna partido atual do parlamentar.
@@ -140,14 +140,13 @@ class Parlamentar(models.Model):
 
         Retorno: objeto do tipo Legislatura
         """
-        return self.legislaturas[-1] 
+        if self.legislaturas:
+            return self.legislaturas[-1] # TODO: se lista é vazia, o if tá caindo nessa linha!
+        else:
+            return None
 
     def __unicode__(self):
-        leg = self.legislatura_atual()
-        if (leg.localidade):
-            return "%s (%s-%s)" % (self.nome, leg.partido, leg.localidade)
-        else:
-            return "%s (%s)" % (self.nome, leg.partido)
+        return "%s (%s)" % (self.nome, self.partido) # TODO: pegar partido da legislatura mais nova, se houver
 
 
 class Proposicao(models.Model):
@@ -168,23 +167,23 @@ class Proposicao(models.Model):
         nome: retorna "sigla numero/ano"
     """
 
-    id_prop = models.CharField(max_length=100) # obs: não é chave primária!
+    id_prop = models.CharField(max_length=100, blank=True) # obs: não é chave primária!
     sigla = models.CharField(max_length=10)
     numero = models.CharField(max_length=10)
     ano = models.CharField(max_length=4)
     ementa = models.TextField(blank=True)
     descricao = models.TextField(blank=True)
     indexacao = models.TextField(blank=True)
-    data_apresentacao = models.DateField(blank=True)
+    data_apresentacao = models.DateField(null=True)
     situacao = models.TextField(blank=True)
-    casa_legislativa = models.ForeignKey(CasaLegislativa, blank=True)
-    autores = models.ManyToManyField(Parlamentar, blank=True)
+    casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
+    autores = models.ManyToManyField(Parlamentar, null=True)
 
     def nome(self):
         return "%s %s/%s" % (self.sigla, self.numero, self.ano)
 
     def __unicode__(self):
-        return "[%s] %s" % (self.nome, self.ementa) 
+        return "[%s] %s" % (self.nome(), self.ementa) 
 
 
 class Voto(models.Model):
@@ -216,13 +215,13 @@ class Votacao(models.Model):
         por_partido()
     """
 
-    id_vot = models.CharField(max_length=100) # obs: não é chave primária!
+    id_vot = models.CharField(max_length=100, blank=True) # obs: não é chave primária!
     descricao = models.TextField(blank=True)
-    data = models.DateField(blank=True)
+    data = models.DateField(blank=True, null=True)
     resultado = models.TextField(blank=True)
-    casa_legislativa = models.ForeignKey(CasaLegislativa, blank=True)
-    proposicao = models.ForeignKey(Proposicao, blank=True)
-    votos = models.ManyToManyField(Voto, blank=True) # votações simbólicas não tem votos
+    casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
+    proposicao = models.ForeignKey(Proposicao, null=True)
+    votos = models.ManyToManyField(Voto, null=True) # votações simbólicas não tem votos
 
     def por_partido(self):
         """Retorna votos agregados por partido.
