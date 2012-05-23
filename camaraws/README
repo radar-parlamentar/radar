@@ -1,0 +1,3 @@
+Projeto Django 
+
+Atenção: edite o atributo DATABASES[DEFAULT][NAME] no arquivo camaraws/settings.py para apontar para uma localização adequada em seu computador. Esta localização será onde o banco de dados do Django será criado.

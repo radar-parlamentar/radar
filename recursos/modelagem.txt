@@ -66,72 +66,109 @@ TODO
 ***************************
 *** model (nossa modelagem) // proposta
 
-Proposicao
+Votacao 
     id
-    sigla
-    numero
-    ano
-    nome // campo calculado: "Sigla Numero/Ano"
-    ementa // ementa + explicacaoEmenta
-    autor
-    data_apresentacao
-    indexacao // palavras chaves
-    situacao
-    votacoes
-        Votacao *
-            id
-            resumo // pega a ementa da cmsp
-            data
-            resultado
-            votos
-                Voto *
-                    voto {Sim, Não, Abstenção, Obstrução, Não votou} // voto.valor mehor que voto.voto?
-                    Parlamentar 
-                        id
-                        nome
-                        genero
-                        UF // generalizar ???
-                        Partido
-                            nome
-                            numero
-                            cargos
-                                Cargo * // ministérios e secretarias
-                                    descricao // nome da secretaria/ministério
-                                    ocupante [Parlamentar] // mesmo que não seja parlamentar
-                                    Periodo
-                                        inicio
-                                        fim
-                            tamanho
-                                TamanhoPartido *
-                                    tamanho
-                                    Periodo
-                                        inicio
-                                        fim
+    casa_legislativa
+    descricao // ementa da cmsp e resumo da câmara dos deputados
+    data
+    resultado
+    Proposicao
+        id
+        sigla
+        numero
+        ano
+        nome // campo calculado: "Sigla Numero/Ano"
+        ementa
+        descricao
+        indexacao // palavras chaves
+        autores [Parlamentar] * 
+        data_apresentacao
+        situacao
+        casa_legislativa 
+    Voto *
+        opcao {Sim, Não, Abstenção, Obstrução, Não votou} 
+        Parlamentar
 
-# outra opção é deixar Votacao no topo e fazer com que Votacao tenha atributo Proposicao
-# talvez assim seja melhor para facilitar análise de "votações burocráticas"
+Parlamentar 
+    id
+    nome
+    genero {masculino, femenino}
+    Legislatura *
+        id
+        casa_legislativa
+        Partido
+        localidade // UF
+        periodo
+
+Partido
+    nome
+    numero
+
+Executivo
+    nome // ex: PMSP
+    esfera \in {municipal, estadual, federal}
+    local // ex: São Paulo, Brasil
+    Governo * // períodos em que o chefe do executivo era do partido
+        partido
+        Historico *
+            periodo
+    Vice * // períodos em que o vice-chefe do executivo era do partido
+        partido
+        Historico *
+            periodo
+    Cargo * // ministérios, secretarias, e órgãos
+        partido
+        Historico *
+            descricao // nome da secretaria/ministério
+            ocupante [Parlamentar] // mesmo que não seja parlamentar
+            periodo
+
+CasaLegislativa
+    id
+    nome // ex: CMSP
+    esfera
+    local
+    Tamanho *
+        tamanho
+        periodo  
+    Composicao *
+        partido
+        Historico *
+            tamanho
+            periodo
 
 *******************************
 *** Modelo relacional para o BD
 
 PROPOSICOES
-id, sigla, numero, ano, ementa, autor, data_apresentacao, indexacao, situacao
+id, sigla, numero, ano, ementa, descricao, indexacao, data_apresentacao, situacao, id_casa_legislativa
+
+REL_PROPOSICOES_AUTORES
+id_prop, id_parlamentar
 
 VOTACOES
-id, proposicao, resumo, data, resultado
+id, id_proposicao, id_casa_legislativa, descricao, data, resultado
 
 VOTOS
-id_parlamentar, id_votacao, voto
+id_votacao, id_parlamentar, opcao
 
 PARLAMENTARES
-id, nome, partido, uf?, genero
+id, nome, genero
 
 PARTIDOS
 nome, numero
 
-CARGOS_PARTIDOS
-partido, cargo, inicio, fim
+LEGISLATURAS
+id, id_parlamentar, numero_partido, id_casa_legislativa, inicio, fim 
 
-TAMANHO_PARTIDOS
-partido, tamanho, inicio, fim
+CASAS_LEGISLATIVAS
+id, nome, esfera, local
+
+TAMANHO
+id_casa_legislativa, tamanho, inicio, fim
+
+COMPOSICOES
+id_casa_legislativa, numero_partido, tamanho, inicio, fim
+
+TODO: tabelas do executivo
 
