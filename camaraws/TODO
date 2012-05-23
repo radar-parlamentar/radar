@@ -1,0 +1,11 @@
+TODOs relacionados com Django
+
+#1
+
+Como nossa base de dados é também um produto a ser exportado, é legal tirar o compartamento de acrescentar como sufixo do nome da tabela o nome da app.
+
+Assim, para disponibilizar os dados como um banco de dados, bastará apagar as tabelas do django.
+
+#2 
+
+Aparentemente quando você usa uma classe como chave estrangeira no models, é preciso que esta classe já tenha sido declarada antes. Comportamento muito infeliz, seria legal contornar isso (mas longe de prioritário).
