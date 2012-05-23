@@ -13,3 +13,8 @@ Aparentemente quando você usa uma classe como chave estrangeira no models, é p
 #3
 
 Quando eu acrescentei um atributo na classe, o syncdb não acrescentou o campo na tabela. Foi preciso deletar a tabela para o correto refactory!
+
+#4
+
+Pra ciar um relacionamento entre objetos, é preciso salvar um deles no banco.
+Isso é chato quando você quer usar as classes sem se preocupar com o BD.

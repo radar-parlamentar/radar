@@ -101,11 +101,9 @@ def _partido(nome_partido):
     if partidos.has_key(nome_partido):
         partido = partidos[nome_partido]
     else:
-        partido = models.Partido()
-        partido.nome = nome_partido
-        partido.numero = 0 # TODO
+        partido = models.Partido.from_nome(nome_partido)
         partido.save()
-        print 'Partido %s salvo' 
+        print 'Partido %s salvo' % partido
         partidos[nome_partido] = partido
     return partido
 

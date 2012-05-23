@@ -17,6 +17,7 @@
 
 from __future__ import unicode_literals
 from django.db import models
+import re
 
 OPCOES = (
     ('SIM', 'Sim'),
@@ -44,10 +45,39 @@ class Partido(models.Model):
     Atributos:
         nome -- string; ex: 'PT' 
         numero -- string; ex: '13'
+
+    Métodos da classe:
+        partido_from_nome(nome): retorna objeto do tipo Partido
+        partido_from_numero(numero): retorna objeto do tipo Partido
     """
+
+    LISTA_PARTIDOS = 'modelagem/recursos/partidos.txt'
 
     nome = models.CharField(max_length=10)
     numero = models.IntegerField()
+
+    @classmethod
+    def from_nome(cls, nome):
+        """Recebe um nome e retornar um objeto do tipo Partido, ou None se nome for inválido"""
+        return cls._from_regex(1, nome)
+
+    @classmethod
+    def from_numero(cls, numero):
+        """Recebe um número (string) e retornar um objeto do tipo Partido, ou None se nome for inválido"""
+        return cls._from_regex(2, numero)
+
+    @classmethod
+    def _from_regex(cls, idx, key):
+        PARTIDO_REGEX = '([a-zA-Z]*) *([0-9]*)'
+        f = open(cls.LISTA_PARTIDOS)
+        for line in f:
+            res = re.search(PARTIDO_REGEX, line)
+            if res and res.group(idx) == key:
+                partido = Partido()
+                partido.nome = res.group(1)
+                partido.numero = int(res.group(2))
+                return partido
+        return None
 
     def __unicode__(self):
         return self.nome
