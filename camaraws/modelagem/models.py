@@ -124,6 +124,7 @@ class Parlamentar(models.Model):
         id_parlamentar - string identificadora de acordo a fonte de dados
         nome, genero -- strings
         legislatura -- lista de objetos do tipo Legislatura
+        partido -- pode-se guardar o partido atual aqui também (objeto do tipo Partido)
 
     Métodos:
         partido_atual()
@@ -134,6 +135,7 @@ class Parlamentar(models.Model):
     nome = models.CharField(max_length=100)
     genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
     legislaturas = models.ManyToManyField(Legislatura)
+    partido = models.ForeignKey(Partido, blank=True) # para facilitar o uso, pelo menos por hora
 
     def partido_atual(self):
         """Retorna partido atual do parlamentar.
