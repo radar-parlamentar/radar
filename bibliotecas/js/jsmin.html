@@ -1,0 +1,120 @@
+<html><head><title>JSMIN, The JavaScript Minifier</title></head>
+<body bgcolor=linen style="margin: 8%;">
+<h1 align=center><tt>JSMin</tt></h1>
+<h2 align=center>The JavaScript Minifier</h2>
+<p align=center><a href="mailto:douglas@crockford.com"><font size="+1">Douglas
+Crockford</font></a><br><a
+href="http://www.crockford.com/" target=_top><tt>www.crockford.com</tt></a></p>
+<p align=center>2003-12-04</p>
+<p><tt></tt><tt>JSMin</tt> is a filter which removes comments and unnecessary
+  whitespace from <a href="http://www.crockford.com/javascript">JavaScript</a>
+  files. It typically reduces filesize by half, resulting in faster downloads.
+  It also encourages a more expressive programming style because it eliminates
+  the download cost of clean, literate self-documentation.</p>
+<h2>What <tt>JSMin</tt> Does</h2>
+<p><tt>JSMin</tt> is a filter that omits or modifies some characters. This does
+  not change the behavior of the program that it is minifying. The result may
+  be harder to debug. It will definitely be harder to read.</p>
+<p><tt>JSMin</tt> first replaces carriage returns (<tt>'\r'</tt>) with linefeeds
+(<tt>'\n'</tt>). It replaces all other control characters (including tab) with
+spaces. It replaces comments in the <tt>//</tt> form with linefeeds. It replaces
+comments in the <tt>/* */</tt> form with spaces.&nbsp;All runs of spaces
+are replaced with a single space. All runs of linefeeds are replaced with a
+single linefeed.</p>
+
+<p> It omits spaces except when a space is preceded and followed by a non-ASCII 
+  character or by an ASCII letter or digit, or by one of these characters:</p>
+<p align=center><tt>\ $ _</tt></p>
+<p>It is more conservative in omitting linefeeds, because linefeeds are
+sometimes treated as semicolons. A linefeed is not omitted if it precedes a
+non-ASCII character or an ASCII letter or digit or one of these characters:</p>
+<p align=center><tt>\ $ _ { [ ( + -</tt></p>
+<p>and if it follows a non-ASCII character or an ASCII
+letter or digit or one of these characters:</p>
+<p align=center><tt>\ $ _ } ] ) + - " '</tt></p>
+<p>No other characters are omitted or modified.</p>
+<p><tt>JSMin</tt> knows to not modify quoted strings and regular expression literals.</p>
+<p><tt>JSMin</tt> does not obfuscate, but it does uglify.</p>
+<p>Before:</p>
+<blockquote><pre>// is.js
+
+// (c) 2001 Douglas Crockford
+// 2001 June 3
+
+
+// is
+
+// The -is- object is used to identify the browser.  Every browser edition
+// identifies itself, but there is no standard way of doing it, and some of
+// the identification is deceptive. This is because the authors of web
+// browsers are liars. For example, Microsoft's IE browsers claim to be
+// Mozilla 4. Netscape 6 claims to be version 5.
+
+var is = {
+    ie:      navigator.appName == 'Microsoft Internet Explorer',
+    java:    navigator.javaEnabled(),
+    ns:      navigator.appName == 'Netscape',
+    ua:      navigator.userAgent.toLowerCase(),
+    version: parseFloat(navigator.appVersion.substr(21)) ||
+             parseFloat(navigator.appVersion),
+    win:     navigator.platform == 'Win32'
+}
+is.mac = is.ua.indexOf('mac') &gt;= 0;
+if (is.ua.indexOf('opera') &gt;= 0) {
+    is.ie = is.ns = false;
+    is.opera = true;
+}
+if (is.ua.indexOf('gecko') &gt;= 0) {
+    is.ie = is.ns = false;
+    is.gecko = true;
+}</pre></blockquote>
+<p>After:</p>
+<blockquote><pre>var is={ie:navigator.appName=='Microsoft Internet Explorer',java:navigator.javaEnabled(),ns:navigator.appName=='Netscape',ua:navigator.userAgent.toLowerCase(),version:parseFloat(navigator.appVersion.substr(21))||parseFloat(navigator.appVersion),win:navigator.platform=='Win32'}
+is.mac=is.ua.indexOf('mac')&gt;=0;if(is.ua.indexOf('opera')&gt;=0){is.ie=is.ns=false;is.opera=true;}
+if(is.ua.indexOf('gecko')&gt;=0){is.ie=is.ns=false;is.gecko=true;}</pre></blockquote>
+<p>&nbsp;</p>
+<h2>Character Set</h2>
+<p><tt>JSMin </tt>requires, but does not verify, that the character set encoding
+of the input program is either ASCII or UTF-8. It might not work correctly with
+other encodings.</p>
+<h2>Caution</h2>
+<p>Be sure to retain your original source file. <tt>JSMin</tt> is a one-way
+trip: Once done, it cannot be undone.</p>
+<p>Do not put raw control characters inside a quoted string. That is an extremely
+  bad practice. Use <tt>\x</tt><i>hh</i> notation instead. <tt>JSMin</tt> will
+  replace control characters with spaces or linefeeds.</p>
+<p>Use parens with confusing sequences of <tt>+</tt> or <tt>-</tt>. For example,
+minification changes</p>
+<blockquote><tt>a + ++b</tt></blockquote>
+<p>into</p>
+<blockquote><tt>a+++b </tt></blockquote>
+<p>which is interpreted as</p>
+<blockquote><tt>a++ + b</tt></blockquote>
+<p>which is wrong. You can avoid this by using parens:</p>
+<blockquote><tt>a + (++b)</tt></blockquote>
+<p><a
+href="http://www.JSLint.com"><tt>JSLint</tt></a> checks for all of these problems.
+  It is suggested that <a
+href="http://www.JSLint.com"><tt>JSLint</tt></a> be used before using <tt>JSMin</tt>.</p>
+<h2>Command Line Options</h2>
+<p> Optional parameters will be listed at the beginning of the output as comments. This is a convenient way of replacing copyright messages and other documentation.</p>
+<p>Example:</p>
+<blockquote>
+  <p><tt>jsmin &lt;fulljslint.js &gt;jslint.js &quot;(c)2002 Douglas Crockford&quot;</tt></p>
+</blockquote>
+<h2>Errors</h2>
+<p><tt>JSMin</tt> can produce three error messages to <tt>stderr</tt>:</p>
+<blockquote><tt> Unterminated comment.</tt>
+  <p><tt> Unterminated string constant.</tt></p>
+  <p><tt>Unterminated regular expression.</tt></p>
+</blockquote>
+<p>It ignores all other errors that may be present in your source program.</p>
+<h2>Get Minified</h2>
+<p>You can get a <a
+href="http://www.crockford.com/javascript/jsmin.zip">zip file containing 
+  an MS-DOS.exe file</a>, or you can get the <a
+href="https://github.com/douglascrockford/JSMin">C source code</a> and 
+  build it yourself. </p>
+<p>Copyright 2001 <a href="mailto:douglas@crockford.com">Douglas Crockford.</a>
+<a href="http://www.crockford.com/">All Rights Reserved Wrrrldwide.</a></p>
+</body></html>

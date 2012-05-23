@@ -64,18 +64,70 @@
     circulo.animate(anim);
     circulo.animate(anim,delay(500));
 */
+
+var Coord1990 = '{"PT":{"x":"-4.10","y":"-0.69"}, "PSDB":{"x":"8.83","y":"2.62"}, "PV":{"x":"0.82","y":"-0.01"}, "PSOL":{"x":"10.28","y":"-5.84"}, "PCdoB":{"x":"-4.03","y":"0.02"}, "PP":{"x":"-3.16","y":"0.35"}, "PR":{"x":"-2.59","y":"-0.16"}, "DEM":{"x":"7.33","y":"2.80"}, "PMDB":{"x":"-3.38","y":"0.45"}, "PSC":{"x":"-2.36","y":"0.63"}, "PTB":{"x":"-3.03","y":"-0.14"}, "PDT":{"x":"-1.95","y":"-0.42"}, "PSB":{"x":"-3.44","y":"-0.49"}, "PPS":{"x":"7.46","y":"1.60"}, "PRB":{"x":"-3.22","y":"-0.20"}}';
+var Coord2000 = '{"PT":{"x":"-2.10","y":"-1.69"}, "PSDB":{"x":"3.83","y":"4.62"}, "PV":{"x":"3.82","y":"-4.01"}, "PSOL":{"x":"-2.28","y":"10.84"}, "PCdoB":{"x":"4.03","y":"0.02"}, "PP":{"x":"3.16","y":"-0.35"}, "PR":{"x":"-0.59","y":"-2.16"}, "DEM":{"x":"7.33","y":"-2.80"}, "PMDB":{"x":"3.38","y":"-2.45"}, "PSC":{"x":"-2.36","y":"-3.63"}, "PTB":{"x":"-3.03","y":"-0.14"}, "PDT":{"x":"-1.95","y":"-0.42"}, "PSB":{"x":"-3.44","y":"-0.49"}, "PPS":{"x":"7.46","y":"1.60"}, "PRB":{"x":"-3.22","y":"-0.20"}}';
+var coord = '{ "1990" : {"PT":{"x":"-4.10","y":"-0.69"}, "PSDB":{"x":"8.83","y":"2.62"}, "PV":{"x":"0.82","y":"-0.01"}, "PSOL":{"x":"10.28","y":"-5.84"}, "PCdoB":{"x":"-4.03","y":"0.02"}, "PP":{"x":"-3.16","y":"0.35"}, "PR":{"x":"-2.59","y":"-0.16"}, "DEM":{"x":"7.33","y":"2.80"}, "PMDB":{"x":"-3.38","y":"0.45"}, "PSC":{"x":"-2.36","y":"0.63"}, "PTB":{"x":"-3.03","y":"-0.14"}, "PDT":{"x":"-1.95","y":"-0.42"}, "PSB":{"x":"-3.44","y":"-0.49"}, "PPS":{"x":"7.46","y":"1.60"}, "PRB":{"x":"-3.22","y":"-0.20"}} , "2000" : { "PT":{"x":"-2.10","y":"-1.69"}, "PSDB":{"x":"3.83","y":"4.62"}, "PV":{"x":"3.82","y":"-4.01"}, "PSOL":{"x":"-2.28","y":"10.84"}, "PCdoB":{"x":"4.03","y":"0.02"}, "PP":{"x":"3.16","y":"-0.35"}, "PR":{"x":"-0.59","y":"-2.16"}, "DEM":{"x":"7.33","y":"-2.80"}, "PMDB":{"x":"3.38","y":"-2.45"}, "PSC":{"x":"-2.36","y":"-3.63"}, "PTB":{"x":"-3.03","y":"-0.14"}, "PDT":{"x":"-1.95","y":"-0.42"}, "PSB":{"x":"-3.44","y":"-0.49"}, "PPS":{"x":"7.46","y":"1.60"}, "PRB":{"x":"-3.22","y":"-0.20"} } }';
+
+var coordenadas = eval("("+coord+")");
+
+for(ano in coordenadas){
+    document.write( ano + "<br>");
+    //acessamos assim os elementos.
+    for(y in D[x]){//precisamos fazer D[x] para deixar claro que estamos lidando com um objeto. A iteracao 'y in x' seria avaliada como intenção de percorrer os elementos de 'Coord1' e 'Coord2', ou seja, percorreria os caracteres de strings.
+        document.write("----->"+y+" = "+D[x][y]+"<br>");
+        for(z in D[x][y])
+            document.write("----->----->"+z+" = "+ D[x][y][z] +"<br>");
+    }
+
+}
+
     Raphael(function () {
         var area = Raphael("animacao"),
             //easingx = document.getElementById("easingx"),
             //easingy = document.getElementById("easingy"),
             run = document.getElementById("run"),
-            set = area.set(area.circle(300, 200, 8),area.circle(200, 100, 8),area.circle(100, 200, 8),area.circle(200, 300, 8),area.circle(200, 200, 8)).attr({stroke: "none", fill: "#666"}),
+            set = area.set(
+                area.circle(-410, -069, 8),
+                area.text(-410, -069, "PT"),
+                area.circle(883, 262, 8),
+                area.text(883, 262, "PSDB"),
+                area.circle(082, -001, 8),
+                area.text(082, -001, "PV"),
+                area.circle(1028, -584, 8),
+                area.text(1028, -584, "PSOL"),
+                area.circle(-403, 002, 8),
+                area.text(-403, 002, "PCdoB"),
+                area.circle(-316, 035, 8),
+                area.text(-316, 035, "PP"),
+                area.circle(-259, -016, 8),
+                area.text(-259, -016, "PR"),
+                area.circle(733, 280, 8),
+                area.text(733, 280, "DEM"),
+                area.circle(-338, 045, 8),
+                area.text(-338, 045, "PMDB"),
+                area.circle(-236, 063, 8),
+                area.text(-236, 063, "PSC"),
+                area.circle(-303, -014, 8),
+                area.text(-303, -014, "PTB"),
+                area.circle(-195, -042, 8),
+                area.text(-195, -042, "PDT"),
+                area.circle(-344, -049, 8),
+                area.text(-344, -049, "PSB"),
+                area.circle(746, 160, 8),
+                area.text(746, 160, "PPS"),
+                area.circle(-322, -020, 8),
+                area.text(-322, -020, "PRB"),
+
+                area.circle(300, 200, 8),
+                area.circle(200, 100, 8),
+                area.circle(100, 200, 8),area.circle(200, 300, 8),area.circle(200, 200, 8)).attr({stroke: "none", fill: "#666"}),
             c = area.circle(200, 200, 10).attr({stroke: "#fff", "stroke-width": 4});//,
-            //fade = function (id) {
-            //    return function () {
-            //        set[id].attr({fill: "#fff", r: 12}).animate({fill: "#666", r: 8}, 500);
-            //    };
-            //};
+            fade = function (id) {
+                return function () {
+                    set[id].attr({fill: "#fff", r: 12}).animate({fill: "#666", r: 8}, 500);
+                };
+            };
 
 
         run.onclick = function () {
