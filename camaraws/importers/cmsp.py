@@ -102,6 +102,8 @@ def _partido(nome_partido):
         partido = partidos[nome_partido]
     else:
         partido = models.Partido.from_nome(nome_partido)
+        if partido == None:
+            print 'Não achou o partido %s' % nome_partido
         partido.save()
         print 'Partido %s salvo' % partido
         partidos[nome_partido] = partido
@@ -140,7 +142,7 @@ def _votos_from_tree(vot_tree):
     return votos
           
 
-def save(xml_file=XML2011):
+def _from_xml_to_bd(xml_file):
     """Salva no banco de dados do Django e retorna lista das votações"""
 
     f = open(xml_file, 'r')
@@ -187,4 +189,18 @@ def save(xml_file=XML2011):
                 votacoes.append(vot)
 
     return votacoes
+
+def save():
+    """Salva no banco de dados do Django e retorna lista das votações"""
+
+    parlamentares = {}
+    partidos = {}
+    print '*** 2010 ***'
+    vots = _from_xml_to_bd(XML2010)
+    print '*** 2011 ***'
+    vots.append(_from_xml_to_bd(XML2011))
+    print '*** 2012 ***'
+    vots.append(_from_xml_to_bd(XML2012))
+    return vots
+    
 

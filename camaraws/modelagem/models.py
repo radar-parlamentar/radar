@@ -59,12 +59,12 @@ class Partido(models.Model):
     @classmethod
     def from_nome(cls, nome):
         """Recebe um nome e retornar um objeto do tipo Partido, ou None se nome for inválido"""
-        return cls._from_regex(1, nome)
+        return cls._from_regex(1, nome.strip())
 
     @classmethod
     def from_numero(cls, numero):
         """Recebe um número (string) e retornar um objeto do tipo Partido, ou None se nome for inválido"""
-        return cls._from_regex(2, numero)
+        return cls._from_regex(2, numero.strip())
 
     @classmethod
     def _from_regex(cls, idx, key):

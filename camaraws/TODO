@@ -6,6 +6,8 @@ Como nossa base de dados é também um produto a ser exportado, é legal tirar o
 
 Assim, para disponibilizar os dados como um banco de dados, bastará apagar as tabelas do django.
 
+Obs: melhor deixar o banco gerado na pasta resultados da raiz do projeto
+
 #2 
 
 Aparentemente quando você usa uma classe como chave estrangeira no models, é preciso que esta classe já tenha sido declarada antes. Comportamento muito infeliz, seria legal contornar isso (mas longe de prioritário).
