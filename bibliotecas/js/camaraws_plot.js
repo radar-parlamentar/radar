@@ -1,29 +1,43 @@
-// ###########################
-//  DOCUMENTAÇÃO
-// ###########################
-// "dadosCompletos" é o dicionário com os dados de todos os anos a serem considerados
-// "dictAno" é o dicionário com os dados de um único ano
-// "listaAnos" é a lista com os anos considerados na análise
-             // formato:  [ano1, ano2, ano3, etc]
-// "offset" é uma lista de dois valores com as coordenadas x e y do offset a ser aplicado
-            // offset = [x,y]
+/***********************************************************************
+ *          ##################################################
+ *                              DOCUMENTAÇÃO
+ *          ##################################################
+ *
+ *  "dadosCompletos"    é o dicionário com os dados de todos os anos a
+ *                          serem considerados
+ *
+ *  "dictAno"           é o dicionário com os dados de um único ano
+ *
+ *  "listaAnos"         é a lista com os anos considerados na análise
+ *                          formato: [ano1, ano2, ano3, etc]
+ *
+ *  "offset"            é uma lista de dois valores com as coordenadas
+ *                          x e y do offset a ser aplicado
+ *                              offset = [x,y]
+ **********************************************************************/
 
-// ###########################
-//  ÁREA DE DADOS E VARIÁVEIS
-// ###########################
+/***********************************************************************
+ *          ##################################################
+ *                      ÁREA DE DADOS E VARIÁVEIS
+ *          ##################################################
+ **********************************************************************/
 
-// DADOS GERAIS
 window.GlobalAltura = 960*0.8
 window.GlobalLargura = 1280*0.8
 window.GlobalRaioMaximo = 16
 window.GlobalCoord = {1990:{"PT":{"numPartido":99,"x":-4.10,"y":-0.69}, "PSDB":{"numPartido":99,"x":8.83,"y":2.62}, "PV":{"numPartido":99,"x":0.82,"y":-0.01}, "PSOL":{"numPartido":99,"x":10.28,"y":-5.84}, "PCdoB":{"numPartido":99,"x":-4.03,"y":0.02}, "PP":{"numPartido":99,"x":-3.16,"y":0.35}, "PR":{"numPartido":99,"x":-2.59,"y":-0.16}, "DEM":{"numPartido":99,"x":7.33,"y":2.80}, "PMDB":{"numPartido":99,"x":-3.38,"y":0.45}, "PSC":{"numPartido":99,"x":-2.36,"y":0.63}, "PTB":{"numPartido":99,"x":-3.03,"y":-0.14}, "PDT":{"numPartido":99,"x":-1.95,"y":-0.42}, "PSB":{"numPartido":99,"x":-3.44,"y":-0.49}, "PPS":{"numPartido":99,"x":7.46,"y":1.60}, "PRB":{"numPartido":99,"x":-3.22,"y":-0.20}}, 2000:{"PT":{"numPartido":99,"x":-2.10,"y":-1.69}, "PSDB":{"numPartido":99,"x":3.83,"y":4.62}, "PV":{"numPartido":99,"x":3.82,"y":-4.01}, "PSOL":{"numPartido":99,"x":-2.28,"y":10.84}, "PCdoB":{"numPartido":99,"x":4.03,"y":0.02}, "PP":{"numPartido":99,"x":3.16,"y":-0.35}, "PR":{"numPartido":99,"x":-0.59,"y":-2.16}, "DEM":{"numPartido":99,"x":7.33,"y":-2.80}, "PMDB":{"numPartido":99,"x":3.38,"y":-2.45}, "PSC":{"numPartido":99,"x":-2.36,"y":-3.63}, "PTB":{"numPartido":99,"x":-3.03,"y":-0.14}, "PDT":{"numPartido":99,"x":-1.95,"y":-0.42}, "PSB":{"numPartido":99,"x":-3.44,"y":-0.49}, "PPS":{"numPartido":99,"x":7.46,"y":1.60}, "PRB":{"numPartido":99,"x":-3.22,"y":-0.20}}}
-//window.GlobalCoord = {1990:{"PT":{"x":-4.10,"y":-0.69}, "PSDB":{"x":8.83,"y":2.62}, "PV":{"x":0.82,"y":-0.01}, "PSOL":{"x":10.28,"y":-5.84}, "PCdoB":{"x":-4.03,"y":0.02}, "PP":{"x":-3.16,"y":0.35}, "PR":{"x":-2.59,"y":-0.16}, "DEM":{"x":7.33,"y":2.80}, "PMDB":{"x":-3.38,"y":0.45}, "PSC":{"x":-2.36,"y":0.63}, "PTB":{"x":-3.03,"y":-0.14}, "PDT":{"x":-1.95,"y":-0.42}, "PSB":{"x":-3.44,"y":-0.49}, "PPS":{"x":7.46,"y":1.60}, "PRB":{"x":-3.22,"y":-0.20}}, 2000:{"PT":{"x":-2.10,"y":-1.69}, "PSDB":{"x":3.83,"y":4.62}, "PV":{"x":3.82,"y":-4.01}, "PSOL":{"x":-2.28,"y":10.84}, "PCdoB":{"x":4.03,"y":0.02}, "PP":{"x":3.16,"y":-0.35}, "PR":{"x":-0.59,"y":-2.16}, "DEM":{"x":7.33,"y":-2.80}, "PMDB":{"x":3.38,"y":-2.45}, "PSC":{"x":-2.36,"y":-3.63}, "PTB":{"x":-3.03,"y":-0.14}, "PDT":{"x":-1.95,"y":-0.42}, "PSB":{"x":-3.44,"y":-0.49}, "PPS":{"x":7.46,"y":1.60}, "PRB":{"x":-3.22,"y":-0.20}}}
 
-// ###############
-// ÁREA DE FUNÇÕES
-// ###############
 
-//* Função que carrega os anos existentes no combo
+/***********************************************************************
+ *          ##################################################
+ *                             ÁREA DE FUNÇÕES
+ *          ##################################################
+ **********************************************************************/
+
+/***********************************************************************
+ * Função que carrega os anos existentes no combo
+ **********************************************************************/
+//*
 function carregaComboAnos(listaAnos){
     $.each(listaAnos,function(index,ano){
             var elOptNew = document.createElement('option');
@@ -38,9 +52,12 @@ function carregaComboAnos(listaAnos){
         });
 }//*/
 
-//* Função que calcula o offset a ser aplicado nos valores de um
-     // determinado ano para não plotar valores negativos
-     // retorna o offset [x,y]
+/***********************************************************************
+ * Função que calcula o offset a ser aplicado nos valores de um
+ *      determinado ano para não plotar valores negativos
+ *      retorna o offset [x,y]
+ **********************************************************************/
+//*
 function calculaOffset(dictAno){
     var offsetX = 0
     var offsetY = 0
@@ -57,7 +74,10 @@ function calculaOffset(dictAno){
     return [offsetX,offsetY]
 }//*/
 
-//* Recebe os dados e os retorna com o offset aplicado
+/***********************************************************************
+ * Recebe os dados e os retorna com o offset aplicado
+ **********************************************************************/
+//*
 function aplicaOffset(dictAno,offset){
     var retorno = {}
 
@@ -70,8 +90,11 @@ function aplicaOffset(dictAno,offset){
     return retorno
 }//*/
 
-//* Retorna um vetor com os maiores valores de x e y.
-     // RESTRIÇÃO: apenas para valores positivos.
+/***********************************************************************
+ * Retorna um vetor com os maiores valores de x e y.
+ * RESTRIÇÃO: apenas para valores positivos.
+ **********************************************************************/
+//*
 function calculaExtermos(dictAno){
     var maiorValor = [0,0] //[MaiorX,MaiorY]
 
@@ -85,12 +108,15 @@ function calculaExtermos(dictAno){
     return maiorValor
 }//*/
 
-//* Função que normaliza as coordenadas
-    // - Transformar os dados todos em valores positivos
-    // - retorna dicionário de dados do ano normalizado
-    //          entre tamanhoX e tamanhoY
-    // - Dá uma margem de GlobalRaioMaximo em cada um dos 4 lados
-    //          para garantir os círculos dentro do canvas
+/***********************************************************************
+ * Função que normaliza as coordenadas
+ *      - Transformar os dados todos em valores positivos
+ *      - retorna dicionário de dados do ano normalizado
+ *              entre tamanhoX e tamanhoY
+ *      Dá uma margem de GlobalRaioMaximo em cada um dos 4 lados
+ *          para garantir os círculos dentro do canvas
+ **********************************************************************/
+//*
 function normaliza(dadosCompletos, tamanhoX, tamanhoY){
 
     var retorno = dadosCompletos
@@ -118,36 +144,40 @@ function normaliza(dadosCompletos, tamanhoX, tamanhoY){
     // normalizando os dados entre tamanhoX e tamanhoY
     // ************************************************
 
-    // Calculando os maiores valores de X e Y de todos os anos
-    var maximoXY = [0,0]
-    $.each(retorno, function(ano,dados){
-        temporario = calculaExtermos(dados)
-        if (temporario[0] > maximoXY[0])
-            maximoXY[0] = temporario[0]
-        if (temporario[1] > maximoXY[1])
-            maximoXY[1] = temporario[1]
-    })
-
-    //Faz a conta para um canvas de "tamanhoX - 2*GlobalRaioMaximo
-        // para poder dar margem de GlobalRaioMaximo para cada lado
-    var percentualX = (tamanhoX - 2*GlobalRaioMaximo)/maximoXY[0]
-    var percentualY = (tamanhoY - 2*GlobalRaioMaximo)/maximoXY[1]
-
-    //normalizando efetivamente
-    $.each(retorno, function(ano,dados){
-        $.each(retorno[ano], function(partido,coordenadas){
-            retorno[ano][partido]['x'] = percentualX * retorno[ano][partido]['x'] + GlobalRaioMaximo
-            retorno[ano][partido]['y'] = percentualY * retorno[ano][partido]['y'] + GlobalRaioMaximo
+        // Calculando os maiores valores de X e Y de todos os anos
+        var maximoXY = [0,0]
+        $.each(retorno, function(ano,dados){
+            temporario = calculaExtermos(dados)
+            if (temporario[0] > maximoXY[0])
+                maximoXY[0] = temporario[0]
+            if (temporario[1] > maximoXY[1])
+                maximoXY[1] = temporario[1]
         })
-    })
+
+        //Faz a conta para um canvas de "tamanhoX - 2*GlobalRaioMaximo
+            // para poder dar margem de GlobalRaioMaximo para cada lado
+        var percentualX = (tamanhoX - 2*GlobalRaioMaximo)/maximoXY[0]
+        var percentualY = (tamanhoY - 2*GlobalRaioMaximo)/maximoXY[1]
+
+        //normalizando efetivamente
+        $.each(retorno, function(ano,dados){
+            $.each(retorno[ano], function(partido,coordenadas){
+                retorno[ano][partido]['x'] = percentualX * retorno[ano][partido]['x'] + GlobalRaioMaximo
+                retorno[ano][partido]['y'] = percentualY * retorno[ano][partido]['y'] + GlobalRaioMaximo
+            })
+        })
 
     return retorno
 }//*/
 
-//* Função que faz o plot de um determinado ano, com animação
-    // papel é o 'canvas' aonde devem ser plotados os dados
-    // conjunto é um elemento do tipo paper.set() que serve
-    // de agrupamento para os dados plotados
+/***********************************************************************
+ * Função que faz o plot de um determinado ano, sem animação
+ *      papel é o 'canvas' aonde devem ser plotados os dados
+ *      conjunto é um elemento do tipo paper.set() que serve
+ *      de agrupamento para os dados plotados e
+ *      partidos é a lista de partidos
+ **********************************************************************/
+//*
 function plotaDadosEstaticos(papel,dictAno,partidos,conjunto){
     $.each(partidos, function(index,partido){
         conjunto.push(
@@ -172,8 +202,10 @@ function plotaDadosEstaticos(papel,dictAno,partidos,conjunto){
     return conjunto
 }//*/
 
-//* Função que faz o plot inicial dos dados
-//function inicializa(){
+/***********************************************************************
+ * Função que faz o plot inicial dos dados
+ **********************************************************************/
+//*
 Raphael(function () {
     /*******************************************************************
      *                     INICIALIZANDO O GRÁFICO                     *
@@ -222,16 +254,12 @@ Raphael(function () {
         conjunto = plotaDadosEstaticos(papel,dadosCompletos[menorAno],lista_partidos, conjunto)
 
     /*******************************************************************
-     *                GERENCIANDO ANIMAÇÕES                            *
-     ******************************************************************/
-    var novoAno = document.getElementById("anos")
-    var animar = document.getElementById("animar")
+      *                GERENCIANDO ANIMAÇÕES
+      *****************************************************************/
+        var novoAno = document.getElementById("anos")
+        var animar = document.getElementById("animar")
 
 //    animar.onclick =
-
-
-
-
 
     return papel
 })//*/
