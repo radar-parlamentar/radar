@@ -52,9 +52,6 @@ class Partido(models.Model):
     def __unicode__(self):
         return self.nome
 
-    def __str__(self):
-        return unicode(self).encode('utf-8')
-
 
 class HistoricoTamanho(models.Model):
 
@@ -90,9 +87,6 @@ class CasaLegislativa(models.Model):
     def __unicode__(self):
         return self.nome
 
-    def __str__(self):
-        return unicode(self).encode('utf-8')
-
 
 class Legislatura(models.Model):
     """O mandato exercido por um parlamentar.
@@ -112,9 +106,6 @@ class Legislatura(models.Model):
 
     def __unicode__(self):
         return "%s" % self.periodo
-
-    def __str__(self):
-        return unicode(self).encode('utf-8')
 
 
 class Parlamentar(models.Model):
@@ -158,9 +149,6 @@ class Parlamentar(models.Model):
         else:
             return "%s (%s)" % (self.nome, leg.partido)
 
-    def __str__(self):
-        return unicode(self).encode('utf-8')
-
 
 class Proposicao(models.Model):
     """Proposição parlamentar (proposta de lei).
@@ -198,9 +186,6 @@ class Proposicao(models.Model):
     def __unicode__(self):
         return "[%s] %s" % (self.nome, self.ementa) 
 
-    def __str__(self):
-        return unicode(self).encode('utf-8')
-
 
 class Voto(models.Model):
     """Um voto dado por um parlamentar em uma votação.
@@ -215,9 +200,6 @@ class Voto(models.Model):
 
     def __unicode__(self):
         return "%s votou %s" % (self.parlamentar, self.opcao)
-
-    def __str__(self):
-        return unicode(self).encode('utf-8')
 
 
 class Votacao(models.Model):
@@ -264,9 +246,6 @@ class Votacao(models.Model):
             return "[%s] %s" % (self.data, self.descricao) 
         else:
             return self.descricao
-
-    def __str__(self):
-        return unicode(self).encode('utf-8')    
 
 
 class VotosAgregados:
