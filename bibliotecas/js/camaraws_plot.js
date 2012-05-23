@@ -12,16 +12,12 @@
 //  ÁREA DE DADOS E VARIÁVEIS
 // ###########################
 
-//INICIALIZAÇÃO
+// DADOS GERAIS
 window.GlobalAltura = 960*0.8
 window.GlobalLargura = 1280*0.8
 window.GlobalRaioMaximo = 16
-window.GlobalCoord1990 = {"PT":{"x":-4.10,"y":-0.69}, "PSDB":{"x":8.83,"y":2.62}, "PV":{"x":0.82,"y":-0.01}, "PSOL":{"x":10.28,"y":-5.84}, "PCdoB":{"x":-4.03,"y":0.02}, "PP":{"x":-3.16,"y":0.35}, "PR":{"x":-2.59,"y":-0.16}, "DEM":{"x":7.33,"y":2.80}, "PMDB":{"x":-3.38,"y":0.45}, "PSC":{"x":-2.36,"y":0.63}, "PTB":{"x":-3.03,"y":-0.14}, "PDT":{"x":-1.95,"y":-0.42}, "PSB":{"x":-3.44,"y":-0.49}, "PPS":{"x":7.46,"y":1.60}, "PRB":{"x":-3.22,"y":-0.20}}
-window.GlobalCoord2000 = {"PT":{"x":-2.10,"y":-1.69}, "PSDB":{"x":3.83,"y":4.62}, "PV":{"x":3.82,"y":-4.01}, "PSOL":{"x":-2.28,"y":10.84}, "PCdoB":{"x":4.03,"y":0.02}, "PP":{"x":3.16,"y":-0.35}, "PR":{"x":-0.59,"y":-2.16}, "DEM":{"x":7.33,"y":-2.80}, "PMDB":{"x":3.38,"y":-2.45}, "PSC":{"x":-2.36,"y":-3.63}, "PTB":{"x":-3.03,"y":-0.14}, "PDT":{"x":-1.95,"y":-0.42}, "PSB":{"x":-3.44,"y":-0.49}, "PPS":{"x":7.46,"y":1.60}, "PRB":{"x":-3.22,"y":-0.20}}
-window.GlobalCoord = {1990:{"PT":{"x":-4.10,"y":-0.69}, "PSDB":{"x":8.83,"y":2.62}, "PV":{"x":0.82,"y":-0.01}, "PSOL":{"x":10.28,"y":-5.84}, "PCdoB":{"x":-4.03,"y":0.02}, "PP":{"x":-3.16,"y":0.35}, "PR":{"x":-2.59,"y":-0.16}, "DEM":{"x":7.33,"y":2.80}, "PMDB":{"x":-3.38,"y":0.45}, "PSC":{"x":-2.36,"y":0.63}, "PTB":{"x":-3.03,"y":-0.14}, "PDT":{"x":-1.95,"y":-0.42}, "PSB":{"x":-3.44,"y":-0.49}, "PPS":{"x":7.46,"y":1.60}, "PRB":{"x":-3.22,"y":-0.20}}, 2000:{"PT":{"x":-2.10,"y":-1.69}, "PSDB":{"x":3.83,"y":4.62}, "PV":{"x":3.82,"y":-4.01}, "PSOL":{"x":-2.28,"y":10.84}, "PCdoB":{"x":4.03,"y":0.02}, "PP":{"x":3.16,"y":-0.35}, "PR":{"x":-0.59,"y":-2.16}, "DEM":{"x":7.33,"y":-2.80}, "PMDB":{"x":3.38,"y":-2.45}, "PSC":{"x":-2.36,"y":-3.63}, "PTB":{"x":-3.03,"y":-0.14}, "PDT":{"x":-1.95,"y":-0.42}, "PSB":{"x":-3.44,"y":-0.49}, "PPS":{"x":7.46,"y":1.60}, "PRB":{"x":-3.22,"y":-0.20}}}
-//novoAno = document.getElementById("anos"),
-//animar = document.getElementById("animar"),
-
+window.GlobalCoord = {1990:{"PT":{"numPartido":99,"x":-4.10,"y":-0.69}, "PSDB":{"numPartido":99,"x":8.83,"y":2.62}, "PV":{"numPartido":99,"x":0.82,"y":-0.01}, "PSOL":{"numPartido":99,"x":10.28,"y":-5.84}, "PCdoB":{"numPartido":99,"x":-4.03,"y":0.02}, "PP":{"numPartido":99,"x":-3.16,"y":0.35}, "PR":{"numPartido":99,"x":-2.59,"y":-0.16}, "DEM":{"numPartido":99,"x":7.33,"y":2.80}, "PMDB":{"numPartido":99,"x":-3.38,"y":0.45}, "PSC":{"numPartido":99,"x":-2.36,"y":0.63}, "PTB":{"numPartido":99,"x":-3.03,"y":-0.14}, "PDT":{"numPartido":99,"x":-1.95,"y":-0.42}, "PSB":{"numPartido":99,"x":-3.44,"y":-0.49}, "PPS":{"numPartido":99,"x":7.46,"y":1.60}, "PRB":{"numPartido":99,"x":-3.22,"y":-0.20}}, 2000:{"PT":{"numPartido":99,"x":-2.10,"y":-1.69}, "PSDB":{"numPartido":99,"x":3.83,"y":4.62}, "PV":{"numPartido":99,"x":3.82,"y":-4.01}, "PSOL":{"numPartido":99,"x":-2.28,"y":10.84}, "PCdoB":{"numPartido":99,"x":4.03,"y":0.02}, "PP":{"numPartido":99,"x":3.16,"y":-0.35}, "PR":{"numPartido":99,"x":-0.59,"y":-2.16}, "DEM":{"numPartido":99,"x":7.33,"y":-2.80}, "PMDB":{"numPartido":99,"x":3.38,"y":-2.45}, "PSC":{"numPartido":99,"x":-2.36,"y":-3.63}, "PTB":{"numPartido":99,"x":-3.03,"y":-0.14}, "PDT":{"numPartido":99,"x":-1.95,"y":-0.42}, "PSB":{"numPartido":99,"x":-3.44,"y":-0.49}, "PPS":{"numPartido":99,"x":7.46,"y":1.60}, "PRB":{"numPartido":99,"x":-3.22,"y":-0.20}}}
+//window.GlobalCoord = {1990:{"PT":{"x":-4.10,"y":-0.69}, "PSDB":{"x":8.83,"y":2.62}, "PV":{"x":0.82,"y":-0.01}, "PSOL":{"x":10.28,"y":-5.84}, "PCdoB":{"x":-4.03,"y":0.02}, "PP":{"x":-3.16,"y":0.35}, "PR":{"x":-2.59,"y":-0.16}, "DEM":{"x":7.33,"y":2.80}, "PMDB":{"x":-3.38,"y":0.45}, "PSC":{"x":-2.36,"y":0.63}, "PTB":{"x":-3.03,"y":-0.14}, "PDT":{"x":-1.95,"y":-0.42}, "PSB":{"x":-3.44,"y":-0.49}, "PPS":{"x":7.46,"y":1.60}, "PRB":{"x":-3.22,"y":-0.20}}, 2000:{"PT":{"x":-2.10,"y":-1.69}, "PSDB":{"x":3.83,"y":4.62}, "PV":{"x":3.82,"y":-4.01}, "PSOL":{"x":-2.28,"y":10.84}, "PCdoB":{"x":4.03,"y":0.02}, "PP":{"x":3.16,"y":-0.35}, "PR":{"x":-0.59,"y":-2.16}, "DEM":{"x":7.33,"y":-2.80}, "PMDB":{"x":3.38,"y":-2.45}, "PSC":{"x":-2.36,"y":-3.63}, "PTB":{"x":-3.03,"y":-0.14}, "PDT":{"x":-1.95,"y":-0.42}, "PSB":{"x":-3.44,"y":-0.49}, "PPS":{"x":7.46,"y":1.60}, "PRB":{"x":-3.22,"y":-0.20}}}
 
 // ###############
 // ÁREA DE FUNÇÕES
@@ -35,7 +31,7 @@ function carregaComboAnos(listaAnos){
             elOptNew.value = ano
             var elSel = document.getElementById('anos')
             try {
-            elSel.add(elOptNew, null) // standards compliant; doesn't work in IE
+                elSel.add(elOptNew, null) // standards compliant; doesn't work in IE
             }catch(ex){
                 elSel.add(elOptNew) // IE only
             }
@@ -149,66 +145,96 @@ function normaliza(dadosCompletos, tamanhoX, tamanhoY){
 }//*/
 
 //* Função que faz o plot de um determinado ano, com animação
-function plotaDados(dados){
-    console.log(dados)
+    // papel é o 'canvas' aonde devem ser plotados os dados
+    // conjunto é um elemento do tipo paper.set() que serve
+    // de agrupamento para os dados plotados
+function plotaDadosEstaticos(papel,dictAno,partidos,conjunto){
+    $.each(partidos, function(index,partido){
+        conjunto.push(
+            papel.circle(dictAno[partido]['x'],dictAno[partido]['y'],GlobalRaioMaximo).attr(
+                            {
+                                gradient: '90-#526c7a-#64a0c1',
+                                stroke: '#3b4449',
+                                'stroke-width': 1,
+                                'stroke-linejoin': 'round',
+                                rotation: -90,
+                                title: partido + " - " + dictAno[partido]['numPartido'],
+                                text: dictAno[partido]['numPartido']
+                            }),
+            papel.text(dictAno[partido]['x'],dictAno[partido]['y'],dictAno[partido]['numPartido']).attr(
+                            {
+                                'font-size': 11,
+                                title: partido + " - " + dictAno[partido]['numPartido'],
+                                cursor: 'default'
+                            })
+        )
+    })
+    return conjunto
 }//*/
 
 //* Função que faz o plot inicial dos dados
-function inicializa(){
+//function inicializa(){
+Raphael(function () {
+    /*******************************************************************
+     *                     INICIALIZANDO O GRÁFICO                     *
+     ******************************************************************/
 
-    var dadosCompletos = GlobalCoord
-    var anosExistentes = []
-    var menorAno = 0
+        var dadosCompletos = GlobalCoord
+        var anosExistentes = []
+        var lista_partidos = [] // Essa lista será usada só para garantir a ordem dos partidos
+        var menorAno = 0
 
-    // Recuperando a lista de anos recebida no dicionário
-         // e o menor ano da lista
-    $.each(dadosCompletos, function(ano, dados){
-        if (menorAno == 0 || menorAno > ano)
-            menorAno = ano
-        anosExistentes.push(ano)
-    })
+        // Recuperando a lista de anos recebida no dicionário
+             // e o menor ano da lista
+        $.each(dadosCompletos, function(ano, dados){
+            if (menorAno == 0 || menorAno > ano)
+                menorAno = ano
+            anosExistentes.push(ano)
+        })
 
-    var papel = Raphael(document.getElementById("animacao"),10,10)
+        // Recuperando a lista de partidos recebida no dicionário
+            // Aqui se considera que os partidos em todos os anos são
+            // os mesmos, ou seja, se aparece em um ano TEM que aparecer
+            // nos outros!
+        $.each(dadosCompletos[menorAno], function(partido, infos){
+            lista_partidos.push(partido)
+        })
+        lista_partidos.sort() // Apenas para colocar em ordem alfabética!
 
-    //Carregando o Combo com os anos disponíveis
-    carregaComboAnos(anosExistentes)
+        var papel = Raphael(document.getElementById("animacao"),10,10)
 
-    //Normalizando os dados
-    dadosCompletos = normaliza(dadosCompletos,GlobalLargura,GlobalAltura)
-    var tamanhoCanvas = calculaExtermos(dadosCompletos[menorAno])
+        //Carregando o Combo com os anos disponíveis
+        carregaComboAnos(anosExistentes)
 
-    // Altera o canvas para tamanho máximo necessário +10%
-    var papel = Raphael(document.getElementById("animacao"),10,10)
-    papel.setSize(1.1*tamanhoCanvas[0],1.1*tamanhoCanvas[1])
+        //Normalizando os dados
+        dadosCompletos = normaliza(dadosCompletos,GlobalLargura,GlobalAltura)
+        var tamanhoCanvas = calculaExtermos(dadosCompletos[menorAno])
 
-    // Pseudo elemento para agrupar os dados de um único ano
-    var conjunto = papel.set()
-    /**/
+        // Altera o canvas para tamanho máximo necessário +10%
+        var papel = Raphael(document.getElementById("animacao"),10,10)
+        papel.setSize(1.1*tamanhoCanvas[0],1.1*tamanhoCanvas[1])
 
-    //*/Parseando os dados iniciais para plotagem e adicionando ao conjunto
-    $.each(dadosCompletos, function(ano,coordenadas){
-        if (ano == menorAno){
-            $.each(coordenadas, function(partido, coordenada){
-                //alert(partido)
-                conjunto.push(
-                    papel.circle(coordenada['x'],coordenada['y'],GlobalRaioMaximo+1).attr(
-                                    {
-                                        gradient: '90-#526c7a-#64a0c1',
-                                        stroke: '#3b4449',
-                                        'stroke-width': 1,
-                                        'stroke-linejoin': 'round',
-                                        rotation: -90,
-                                        title: partido
-                                    }),
-                    papel.text(coordenada['x'],coordenada['y'],partido).attr("font-size", "10")
-                )
-            })
-        }
-        //return false;
-    })//*/
+        // Pseudo elemento para agrupar os dados plotados
+        var conjunto = papel.set()
+
+        //Parseando os dados iniciais para plotagem
+                // e plotando (agrupado em 'conjunto')
+        conjunto = plotaDadosEstaticos(papel,dadosCompletos[menorAno],lista_partidos, conjunto)
+
+    /*******************************************************************
+     *                GERENCIANDO ANIMAÇÕES                            *
+     ******************************************************************/
+    var novoAno = document.getElementById("anos")
+    var animar = document.getElementById("animar")
+
+//    animar.onclick =
+
+
+
+
 
     return papel
-}//*/
+})//*/
 
 /*
 EXEMPLO
