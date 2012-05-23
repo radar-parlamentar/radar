@@ -1,3 +1,11 @@
 Projeto Django 
 
+Antes de qualquer coisa, execute
+$python manage.py syncdb
+
+Para interagir com os objetos do django, vá na pasta do projeto (essa mesma, onde está este README) e execute
+$python manage.py shell
+Isso abre um ipython onde você tem acesso a suas coisas do Django, incluindo as classes do models
+Pra usar as classes da app modelagem, basta um 'from modelagem.models import *'
+
 Atenção: edite o atributo DATABASES[DEFAULT][NAME] no arquivo camaraws/settings.py para apontar para uma localização adequada em seu computador. Esta localização será onde o banco de dados do Django será criado.
