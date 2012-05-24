@@ -22,10 +22,13 @@
  *          ##################################################
  **********************************************************************/
 
-window.GlobalAltura = 960*0.8
-window.GlobalLargura = 1280*0.8
+window.GlobalAltura = 960
+window.GlobalLargura = 1280
 window.GlobalRaioMaximo = 16
-window.GlobalCoord = {1990:{"PT":{"numPartido":99,"x":-4.10,"y":-0.69}, "PSDB":{"numPartido":99,"x":8.83,"y":2.62}, "PV":{"numPartido":99,"x":0.82,"y":-0.01}, "PSOL":{"numPartido":99,"x":10.28,"y":-5.84}, "PCdoB":{"numPartido":99,"x":-4.03,"y":0.02}, "PP":{"numPartido":99,"x":-3.16,"y":0.35}, "PR":{"numPartido":99,"x":-2.59,"y":-0.16}, "DEM":{"numPartido":99,"x":7.33,"y":2.80}, "PMDB":{"numPartido":99,"x":-3.38,"y":0.45}, "PSC":{"numPartido":99,"x":-2.36,"y":0.63}, "PTB":{"numPartido":99,"x":-3.03,"y":-0.14}, "PDT":{"numPartido":99,"x":-1.95,"y":-0.42}, "PSB":{"numPartido":99,"x":-3.44,"y":-0.49}, "PPS":{"numPartido":99,"x":7.46,"y":1.60}, "PRB":{"numPartido":99,"x":-3.22,"y":-0.20}}, 2000:{"PT":{"numPartido":99,"x":-2.10,"y":-1.69}, "PSDB":{"numPartido":99,"x":3.83,"y":4.62}, "PV":{"numPartido":99,"x":0,"y":0}, "PSOL":{"numPartido":99,"x":-2.28,"y":10.84}, "PCdoB":{"numPartido":99,"x":4.03,"y":0.02}, "PP":{"numPartido":99,"x":3.16,"y":-0.35}, "PR":{"numPartido":99,"x":-0.59,"y":-2.16}, "DEM":{"numPartido":99,"x":7.33,"y":-2.80}, "PMDB":{"numPartido":99,"x":3.38,"y":-2.45}, "PSC":{"numPartido":99,"x":-2.36,"y":-3.63}, "PTB":{"numPartido":99,"x":-3.03,"y":-0.14}, "PDT":{"numPartido":99,"x":-1.95,"y":-0.42}, "PSB":{"numPartido":99,"x":-3.44,"y":-0.49}, "PPS":{"numPartido":99,"x":7.46,"y":1.60}, "PRB":{"numPartido":99,"x":-3.22,"y":-0.20}}}
+window.GlobalTempoAnimacao = 5000 //em milisegundos
+//window.GlobalCoord={2010:{"PT":{"numPartido":99,"x":-100,"y":-100},"PSDB":{"numPartido":99,"x":100,"y":-100},"PV":{"numPartido":99,"x":-100,"y":100},"PSOL":{"numPartido":99,"x":100,"y":100},},1990:{"PT":{"numPartido":99,"x":0,"y":0},"PSDB":{"numPartido":99,"x":0,"y":0},"PV":{"numPartido":99,"x":0,"y":0},"PSOL":{"numPartido":99,"x":0,"y":0},},2005:{"PT":{"numPartido":99,"x":100,"y":-100},"PSDB":{"numPartido":99,"x":-100,"y":100},"PV":{"numPartido":99,"x":100,"y":100},"PSOL":{"numPartido":99,"x":-100,"y":-100},},2000:{"PT":{"numPartido":99,"x":-100,"y":100},"PSDB":{"numPartido":99,"x":100,"y":100},"PV":{"numPartido":99,"x":-100,"y":-100},"PSOL":{"numPartido":99,"x":100,"y":-100},},1995:{"PT":{"numPartido":99,"x":100,"y":100},"PSDB":{"numPartido":99,"x":-100,"y":-100},"PV":{"numPartido":99,"x":100,"y":-100},"PSOL":{"numPartido":99,"x":-100,"y":100},}}
+window.GlobalCoord={1990:{"PT":{"numPartido":99,"x":-4.10,"y":-0.69},"PSDB":{"numPartido":99,"x":8.83,"y":2.62},"PV":{"numPartido":99,"x":0.82,"y":-0.01},"PSOL":{"numPartido":99,"x":10.28,"y":-5.84},"PCdoB":{"numPartido":99,"x":-4.03,"y":0.02},"PP":{"numPartido":99,"x":-3.16,"y":0.35},"DEM":{"numPartido":99,"x":7.33,"y":2.80},"PMDB":{"numPartido":99,"x":-3.38,"y":0.45}},2010:{"PT":{"numPartido":99,"x":4.10,"y":-0.69},"PSDB":{"numPartido":99,"x":4.83,"y":-2.62},"PV":{"numPartido":99,"x":4.82,"y":3.01},"PSOL":{"numPartido":99,"x":-4.28,"y":-5.84},"PCdoB":{"numPartido":99,"x":-4.03,"y":5.02},"PP":{"numPartido":99,"x":-1.16,"y":-0.35},"DEM":{"numPartido":99,"x":0.33,"y":2.80},"PMDB":{"numPartido":99,"x":-3.38,"y":-0.45}},2000:{"PT":{"numPartido":99,"x":-2.10,"y":-1.69},"PSDB":{"numPartido":99,"x":3.83,"y":4.62},"PV":{"numPartido":99,"x":0,"y":0},"PSOL":{"numPartido":99,"x":-2.28,"y":10.84},"PCdoB":{"numPartido":99,"x":4.03,"y":0.02},"PP":{"numPartido":99,"x":3.16,"y":-0.35},"DEM":{"numPartido":99,"x":7.33,"y":-2.80},"PMDB":{"numPartido":99,"x":3.38,"y":-2.45}},1995:{"PT":{"numPartido":99,"x":-3.38,"y":-0.45},"PSDB":{"numPartido":99,"x":0.33,"y":2.80},"PV":{"numPartido":99,"x":-1.16,"y":-0.35},"PSOL":{"numPartido":99,"x":-4.03,"y":5.02},"PCdoB":{"numPartido":99,"x":-4.28,"y":-5.84},"PP":{"numPartido":99,"x":4.82,"y":3.01},"DEM":{"numPartido":99,"x":4.83,"y":-2.62},"PMDB":{"numPartido":99,"x":4.10,"y":-0.69}}}
+//window.GlobalCoord = {1990:{"PT":{"numPartido":99,"x":-4.10,"y":-0.69}, "PSDB":{"numPartido":99,"x":8.83,"y":2.62}, "PV":{"numPartido":99,"x":0.82,"y":-0.01}, "PSOL":{"numPartido":99,"x":10.28,"y":-5.84}, "PCdoB":{"numPartido":99,"x":-4.03,"y":0.02}, "PP":{"numPartido":99,"x":-3.16,"y":0.35}, "PR":{"numPartido":99,"x":-2.59,"y":-0.16}, "DEM":{"numPartido":99,"x":7.33,"y":2.80}, "PMDB":{"numPartido":99,"x":-3.38,"y":0.45}, "PSC":{"numPartido":99,"x":-2.36,"y":0.63}, "PTB":{"numPartido":99,"x":-3.03,"y":-0.14}, "PDT":{"numPartido":99,"x":-1.95,"y":-0.42}, "PSB":{"numPartido":99,"x":-3.44,"y":-0.49}, "PPS":{"numPartido":99,"x":7.46,"y":1.60}, "PRB":{"numPartido":99,"x":-3.22,"y":-0.20}}, 2000:{"PT":{"numPartido":99,"x":-2.10,"y":-1.69}, "PSDB":{"numPartido":99,"x":3.83,"y":4.62}, "PV":{"numPartido":99,"x":0,"y":0}, "PSOL":{"numPartido":99,"x":-2.28,"y":10.84}, "PCdoB":{"numPartido":99,"x":4.03,"y":0.02}, "PP":{"numPartido":99,"x":3.16,"y":-0.35}, "PR":{"numPartido":99,"x":-0.59,"y":-2.16}, "DEM":{"numPartido":99,"x":7.33,"y":-2.80}, "PMDB":{"numPartido":99,"x":3.38,"y":-2.45}, "PSC":{"numPartido":99,"x":-2.36,"y":-3.63}, "PTB":{"numPartido":99,"x":-3.03,"y":-0.14}, "PDT":{"numPartido":99,"x":-1.95,"y":-0.42}, "PSB":{"numPartido":99,"x":-3.44,"y":-0.49}, "PPS":{"numPartido":99,"x":7.46,"y":1.60}, "PRB":{"numPartido":99,"x":-3.22,"y":-0.20}}}
 
 /***********************************************************************
  *          ##################################################
@@ -127,15 +130,11 @@ function normaliza(dadosCompletos, tamanhoX, tamanhoY){
     // calculando os offsets
     $.each(dadosCompletos, function(ano,dados){
         temporario = calculaOffset(dadosCompletos[ano])
-        console.log("x: " + temporario[0] + ", y: " + temporario[1])
         if (temporario[0] > offset[0])
             offset[0] = temporario[0]
         if (temporario[1] > offset[1])
             offset[1] = temporario[1]
     })
-
-    console.log("Offset Final")
-    console.log("x: " + offset[0] + ", y: " + offset[1])
 
     // aplicando o offset em cada ano
     $.each(dadosCompletos, function(ano,dados){
@@ -216,29 +215,29 @@ function plotaDadosEstaticos(papel,dictAno,partidos,conjunto){
  **********************************************************************/
 //*
 function animaDados(dictAno, partidos, conjunto){
-    animObject=Raphael.animation({}, 1000, 'linear');
+    animObject=Raphael.animation({}, GlobalTempoAnimacao, 'linear');
 
     var elemento_de_referencia = partidos.length - 1
     $.each(partidos, function(index,partido){
         if (index < elemento_de_referencia){
-            conjunto[index][0].animateWith(
+            conjunto[index].stop().animateWith(
                     conjunto[elemento_de_referencia],
                     animObject,
                     {
                         cx:dictAno[partido]['x'],
                         cy:dictAno[partido]['y']
                     },
-                    3000,
+                    GlobalTempoAnimacao,
                     'linear'
             )
-            conjunto[index][1].animateWith(
+            conjunto[index][1].stop().animateWith(
                     conjunto[elemento_de_referencia],
                     animObject,
                     {
                         x:dictAno[partido]['x'],
                         y:dictAno[partido]['y']
                     },
-                    3000,
+                    GlobalTempoAnimacao,
                     'linear'
             )
         }
@@ -246,20 +245,20 @@ function animaDados(dictAno, partidos, conjunto){
 
     //Atualizando a animação do último partido
         // assim que essa animação é disparada, todas as outras também são
-    conjunto[elemento_de_referencia][0].animate(
+    conjunto[elemento_de_referencia][0].stop().animate(
             {
                 cx:dictAno[partidos[elemento_de_referencia]]['x'],
                 cy:dictAno[partidos[elemento_de_referencia]]['y']
             },
-            3000,
+            GlobalTempoAnimacao,
             'linear'
     )
-    conjunto[elemento_de_referencia][1].animate(
+    conjunto[elemento_de_referencia][1].stop().animate(
             {
                 x:dictAno[partidos[elemento_de_referencia]]['x'],
                 y:dictAno[partidos[elemento_de_referencia]]['y']
             },
-            3000,
+            GlobalTempoAnimacao,
             'linear'
     )
 
@@ -279,6 +278,7 @@ Raphael(function () {
         var anosExistentes = []
         var lista_partidos = [] // Essa lista será usada só para garantir a ordem dos partidos
         var menorAno = 0
+        var anoOrigem = 0 // variável usada no loop de animação
 
         // Recuperando a lista de anos recebida no dicionário
              // e o menor ano da lista
@@ -286,7 +286,9 @@ Raphael(function () {
             if (menorAno == 0 || menorAno > ano)
                 menorAno = ano
             anosExistentes.push(ano)
+            anosExistentes.sort()
         })
+        anoOrigem = menorAno //inicializando variável anoOrigem
 
         // Recuperando a lista de partidos recebida no dicionário
             // Aqui se considera que os partidos em todos os anos são
@@ -325,11 +327,31 @@ Raphael(function () {
     /*******************************************************************
       *                GERENCIANDO ANIMAÇÕES
       *****************************************************************/
-        var novoAno = document.getElementById("anos")
+        var selecionaAno = document.getElementById("anos")
         var animar = document.getElementById("animar")
+
         animar.onclick = function () {
-            animaDados(dadosCompletos[novoAno.value], lista_partidos, conjunto)
-        }
+
+            var anoDestino = selecionaAno.value
+
+            // inicioLoop e fimLoop não são valores dos anos, mas sim os
+                // respectivos índices no vetor anosExistentes
+            var inicioLoop = $.inArray(anoOrigem,anosExistentes),
+                fimLoop = $.inArray(anoDestino,anosExistentes)
+
+            if (fimLoop != -1 && inicioLoop != fimLoop) { // apenas verificando se os anos de origem e destino existem na lista
+                if (inicioLoop >= fimLoop){ // nesse caso ele volta no tempo
+                    inicioLoop--
+                    for (inicioLoop ; inicioLoop <= fimLoop ; inicioLoop--)
+                        animaDados(dadosCompletos[anosExistentes[inicioLoop]], lista_partidos, conjunto)
+                }else{
+                    inicioLoop++
+                    for (inicioLoop ; inicioLoop <= fimLoop ; inicioLoop++)
+                        var retorno = animaDados(dadosCompletos[anosExistentes[inicioLoop]], lista_partidos, conjunto)
+                }
+                anoOrigem = anoDestino
+            }
+        }//fim da animação
 
     return papel
 })//*/
