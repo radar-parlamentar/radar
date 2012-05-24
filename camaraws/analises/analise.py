@@ -20,6 +20,7 @@
 import numpy
 import pca
 from django.utils.dateparse import parse_datetime
+from django.db import connection
 from modelagem import models
 from matplotlib.pyplot import figure, show, scatter,text
 from matplotlib.patches import Ellipse
@@ -36,6 +37,24 @@ class Analise:
         self.num_votacoes = len(self.votacoes)
         self.vetores_votacao = []
         self.pca_partido = []
+        self.tamanho_partidos = {}
+
+    def tamanhos_partidos(self):
+        """Retorna um dicionário cuja chave é o nome do partido, e o valor é a quantidade de parlamentares do partido no banco.
+
+        Este dicionário é também salvo no atributo self.mapa_tamanho_partidos
+        """
+        self.tamanho_partidos = {}
+        cursor = connection.cursor()
+        for partido in self.partidos:
+            # a linha comentada é mais django e mais portável, mas acho que a usada deve ser bem mais eficiente, 
+            # pois não precisamos carregar os objetos
+            # parlamentares = models.Parlamentar.objects.filter(partido=partido)
+            # tamanho = len(parlamentares)
+            cursor.execute("SELECT count(id) FROM modelagem_parlamentar WHERE partido_id = %s", [partido.id])
+            tamanho = cursor.fetchone()[0]
+            self.tamanho_partidos[partido.nome] = tamanho
+        return self.tamanho_partidos
 
     def _inicializa_vetores(self):
         """Cria os 'vetores de votação' para cada partido. 
