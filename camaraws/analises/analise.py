@@ -37,9 +37,9 @@ class Analise:
         self.num_votacoes = len(self.votacoes)
         self.vetores_votacao = []
         self.pca_partido = []
-        self.tamanho_partidos = {}
+        self.tamanhos_partidos = {}
 
-    def tamanhos_partidos(self):
+    def _inicializa_tamanhos_partidos(self):
         """Retorna um dicionário cuja chave é o nome do partido, e o valor é a quantidade de parlamentares do partido no banco.
 
         Este dicionário é também salvo no atributo self.mapa_tamanho_partidos
@@ -53,8 +53,8 @@ class Analise:
             # tamanho = len(parlamentares)
             cursor.execute("SELECT count(id) FROM modelagem_parlamentar WHERE partido_id = %s", [partido.id])
             tamanho = cursor.fetchone()[0]
-            self.tamanho_partidos[partido.nome] = tamanho
-        return self.tamanho_partidos
+            self.tamanhos_partidos[partido.nome] = tamanho
+        return self.tamanhos_partidos
 
     def _inicializa_vetores(self):
         """Cria os 'vetores de votação' para cada partido. 
@@ -122,6 +122,9 @@ class Analise:
     def figura(self, escala=10):
         """Apresenta um plot de bolhas (usando matplotlib) com os partidos de tamanho maior ou igual a tamanho_min com o primeiro componente principal no eixo x e o segundo no eixo y.
         """
+
+        if not self.tamanhos_partidos:
+            self._inicializa_tamanhos_partidos()
         dados = self.partidos_2d()
 
         fig = figure(1)
@@ -156,11 +159,12 @@ class Analise:
         ax = fig.add_subplot(111, autoscale_on=True) #, xlim=(-1,5), ylim=(-5,3))
         x = []
         y = []
+        tamanhos = []
         for partido in self.partidos:
             x.append(dados[partido.nome][0])
             y.append(dados[partido.nome][1])
-        t = 20 # self.tamanho_partido
-        size = numpy.array(t) * escala
+            tamanhos.append(self.tamanhos_partidos[partido.nome])
+        size = numpy.array(tamanhos) * escala * 3
         scatter(x, y, size, range(len(x)), marker='o', cmap=colormap_partidos) #, norm=None, vmin=None, vmax=None, alpha=None, linewidths=None, faceted=True, verts=None, hold=None, **kwargs)
 
         for partido in self.partidos:

@@ -86,7 +86,7 @@ class Partido(models.Model):
         return None
 
     def __unicode__(self):
-        return self.nome
+        return '%s-%s' % (self.nome, self.numero)
 
 
 class HistoricoTamanho(models.Model):

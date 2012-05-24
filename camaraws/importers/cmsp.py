@@ -98,6 +98,7 @@ def _voto_cmsp_to_model(voto):
         return models.OPCOES[2][0] 
 
 def _partido(nome_partido):
+    nome_partido = nome_partido.strip()
     if partidos.has_key(nome_partido):
         partido = partidos[nome_partido]
     else:

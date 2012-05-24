@@ -3,3 +3,4 @@
 .*.swp
 __pycache__
 resultados/camara.db.backup
+camaraws/camaraws.db
