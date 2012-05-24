@@ -26,3 +26,7 @@ Entender como criar de fato um projeto do django e como fazer deploy (testes e p
     - http://nonantolando.blogspot.com.br/2012/04/django-14-for-ubuntu-1204.html (não consegui fazer funcionar - Diego)
 Tutorial de Django:
     - https://docs.djangoproject.com/en/dev/intro/tutorial01/
+
+TEMPLATE
+- definir as keywords que entrarão no template (metatag)
+- definir a description que entrará no template (metatag)
