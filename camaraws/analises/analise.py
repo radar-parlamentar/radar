@@ -22,17 +22,33 @@ import pca
 from django.utils.dateparse import parse_datetime
 from django.db import connection
 from modelagem import models
-from matplotlib.pyplot import figure, show, scatter,text
+from matplotlib.pyplot import figure, show, scatter, text
 from matplotlib.patches import Ellipse
 import matplotlib.colors
 
 
 class Analise:
 
-    def __init__(self):
+    def __init__(self, data_inicio=None, data_fim=None):
+        """data_inicio e data_fim são strings no formato aaaa-mm-dd.
+        Se este argumentos não são passadas, a análise é feita sobre todas as votações
+        """
+
+        ini = parse_datetime('%s 0:0:0' % data_inicio)
+        fim = parse_datetime('%s 0:0:0' % data_fim)
 
         # pega votações do banco de dados
-        self.votacoes = models.Votacao.objects.all() 
+        if ini == None and fim == None:
+            self.votacoes = models.Votacao.objects.all() 
+        if ini == None and fim != None:
+            self.votacoes = models.Votacao.objects.filter(data__lte=fim)
+        if ini != None and fim == None:
+            self.votacoes = models.Votacao.objects.filter(data__gte=ini)
+        if ini != None and fim != None:
+            self.votacoes = models.Votacao.objects.filter(data__gte=ini, data__lte=fim)
+
+            # TODO que acontece se no período algum partido for ausente neste período?
+
         self.partidos = models.Partido.objects.all()
         self.num_votacoes = len(self.votacoes)
         self.vetores_votacao = []
