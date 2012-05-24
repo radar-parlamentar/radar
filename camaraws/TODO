@@ -20,3 +20,7 @@ Quando eu acrescentei um atributo na classe, o syncdb não acrescentou o campo n
 
 Pra ciar um relacionamento entre objetos, é preciso salvar um deles no banco.
 Isso é chato quando você quer usar as classes sem se preocupar com o BD.
+
+#5
+
+Pensar num nome melhor pra app importers. importacao?

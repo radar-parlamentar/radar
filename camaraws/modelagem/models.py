@@ -19,12 +19,18 @@ from __future__ import unicode_literals
 from django.db import models
 import re
 
+SIM = 'SIM'
+NAO = 'NAO'
+ABSTENCAO = 'ABSTENCAO'
+OBSTRUCAO = 'OBSTRUCAO'
+AUSENTE = 'AUSENTE'
+
 OPCOES = (
-    ('SIM', 'Sim'),
-    ('NAO', 'Não'),
-    ('ABSTENCAO', 'Abstenção'),
-    ('OBSTRUCAO', 'Obstrução'),
-    ('AUSENTE', 'Ausente'),
+    (SIM, 'Sim'),
+    (NAO, 'Não'),
+    (ABSTENCAO, 'Abstenção'),
+    (OBSTRUCAO, 'Obstrução'),
+    (AUSENTE, 'Ausente'),
 )
 
 GENEROS = (
@@ -259,12 +265,12 @@ class Votacao(models.Model):
         Retorno: um dicionário cuja chave é o nome do partido (string) e o valor é um VotoPartido
         """
         dic = {}
-        for voto in self.votos:
+        for voto in self.votos.all():
             # TODO poderia ser mais complexo: checar se a data da votação bate com o período da legislatura mais recente
-            part = voto.parlamentar.partido_atual() 
-            if not part in dic:
-                dic[part] = VotoPartido(part.nome)
-            voto_partido = dic[part.nome]
+            part = voto.parlamentar.partido.nome
+            if not dic.has_key(part):
+                dic[part] = VotoPartido(part)
+            voto_partido = dic[part]
             voto_partido.add(voto.opcao)
         return dic
 
@@ -306,6 +312,9 @@ class VotosAgregados:
         if (voto == AUSENTE):
           self.abstencao += 1
 
+    def total(self):
+        return self.sim + self.nao + self.abstencao
+
     def __unicode__(self):
         return '(%s, %s, %s)' % (self.sim, self.nao, self.abstencao)
 
@@ -321,7 +330,6 @@ class VotoPartido(VotosAgregados):
         sim, nao, abstencao -- inteiros que representam a quantidade de votos no conjunto
     """
     def __init__(self, partido):
-        VotosAgregados.__init__(self)
         self.partido = partido
 
 # TODO class VotoUF(VotosAgregados):
