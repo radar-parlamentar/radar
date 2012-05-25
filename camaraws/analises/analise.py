@@ -1,6 +1,6 @@
 # coding=utf8
 
-# Copyright (C) 2012, Leonardo Leite, Saulo Trento, Diego Rabatone
+# Copyright (C) 2012, Leonardo Leite, Saulo Trento, Diego Rabatone, Guilherme Januário
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -53,6 +53,7 @@ class Analise:
         self.num_votacoes = len(self.votacoes)
         self.vetores_votacao = []
         self.pca_partido = []
+        self.coordenadas = {}
         self.tamanhos_partidos = {}
 
     def _inicializa_tamanhos_partidos(self):
@@ -129,10 +130,73 @@ class Analise:
         A chave do mapa é o nome do partido (string) e o valor é uma lista de duas posições [x,y].
         """
 
-        coordenadas = self._pca_partido()
-        for partido in coordenadas.keys():
-            coordenadas[partido] = (coordenadas[partido])[0:2]
-        return coordenadas
+        self.coordenadas = self._pca_partido()
+        for partido in self.coordenadas.keys():
+            self.coordenadas[partido] = (self.coordenadas[partido])[0:2]
+        return self.coordenadas
+
+
+    def _quantidade_movimento(self,dados_meus,dados_alheios,graus=0,espelho=0):
+        """Calcula quantidade de movimento entre o instante i (corresponde ao ano anos[i]) e o instante i+1.
+        No cálculo o instante i tem os eixos rotacionados (valor graus, entre 0 e 360), e o primeiro eixo multiplicado por -1 se espelho=0.
+        """
+        qm = 0
+        antes = dados_meus.copy()
+        depois = dados_alheios
+        if espelho:
+            for partido, coords in antes.items():
+                antes[partido] = numpy.dot( coords,numpy.array( [[-1.,0.],[0.,1.]] ) )
+        if graus != 0:
+            for partido, coords in antes.items():
+                antes[partido] = numpy.dot( coords,self._matrot(graus) )
+
+#        print antes
+#        print depois
+        for p in self.partidos:
+            #TODO esse selft.tamanhos_partidos antes pegava o do 'depois' - ver implicacoes da alteracao e arrumar
+            qm += numpy.sqrt( numpy.dot( antes[p.nome] - depois[p.nome],  antes[p.nome] - depois[p.nome] ) ) * self.tamanhos_partidos[p.nome]
+        return qm
+
+    def _matrot(self,graus):
+       """ Retorna matriz de rotação 2x2 que roda os eixos em graus (0 a 360) no sentido anti-horário (como se os pontos girassem no sentido horário em torno de eixos fixos).
+       """ 
+       graus = float(graus)
+       rad = numpy.pi * graus/180.
+       c = numpy.cos(rad)
+       s = numpy.sin(rad)
+       return numpy.array([[c,-s],[s,c]])
+
+    def espelha_ou_roda(self, dados_alheios):
+        print ' '
+        print 'Espelhando e rotacionando...'
+        dados_meus = self.partidos_2d()
+
+        if not self.tamanhos_partidos:
+            self._inicializa_tamanhos_partidos()
+
+        # Rodar e espelhar eixos conforme a necessidade:
+        # O sentido dos eixos que resultam na PCA é arbitrário, e se não dermos tanta importância ao significado do eixo x e do eixo y, mas sim principalmente à distância entre os partidos dois a dois que se reflete no plano, a rotação dos eixos é também arbitrária. Ao relacionar análises feitas em períodos de tempo diferentes (no caso, anos), os eixos de uma análise não têm relação com os da análise seguinte (pois foram baseados em votações distintas), então se fixarmos os eixos do ano i mais recente, o ano i-1 pode ter o eixo x espelhado ou não, e pode sofrer uma rotação de ângulo qualquer.
+        # Gostaríamos que estas transformações fossem tais que minimizasse o movimento dos partidos: por exemplo se no ano i o partido A resultou no lado esquerdo do gráfico, e o partido B no lado direito, mas no ano i-1 o posicionamento resultou inverso, seria desejável espelhar o eixo x, ou então rodar os eixos de 180 graus.
+        # Isso é alcançado através do algoritmo abaixo, de minimização da 'quantidade de movimento' total com a variação da rotação dos eixos e espelhamento do eixo x. Entre dois anos, esta quantidade de movimento é definida pela soma das distâncias euclidianas caminhadas pelos partidos ponderadas pelo tamanho do partido [no ano mais recente].
+        qm_min = 1000000 # quero minimizar as quantidades de movimento
+        campeao = (0,0) # (espelhar, graus)
+        for espelhar in [0,1]:
+            for graus in [0,45,90,135,180,225,270,315]:
+                qm_agora = self._quantidade_movimento(dados_meus,dados_alheios,graus,espelhar)
+                #print '%d, %d, %f' % (espelhar,graus,qm_agora )
+                if qm_agora < qm_min:
+                    campeao = (espelhar, graus)
+                    qm_min = qm_agora
+        print campeao
+        if campeao[0] == 1: # espelhar
+            for partido, coords in dados_alheios.items():
+                dados_alheios[partido] = numpy.dot( coords, numpy.array([[-1.,0.],[0.,1.]]) )
+        if campeao[1] != 0: # rotacionar
+            for partido, coords in dados_alheios.items():
+                dados_alheios[partido] = numpy.dot( coords, self._matrot(campeao[1]) )
+        return dados_alheios
+
+
 
 
     def figura(self, escala=10):
@@ -141,11 +205,15 @@ class Analise:
 
         if not self.tamanhos_partidos:
             self._inicializa_tamanhos_partidos()
-        dados = self.partidos_2d()
+
+        dados = self.coordenadas #self.partidos_2d()
+
+        if not self.coordenadas:
+            dados = self.partidos_2d()
 
         fig = figure(1)
         fig.clf()
-
+    
         cores_partidos = {'PT'   :'#FF0000',
                       'PSOL' :'#FFFF00',
                       'PV'   :'#00CC00',
