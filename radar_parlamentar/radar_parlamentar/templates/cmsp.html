@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Visualização Gráfica - Câmara Municipal de São Paulo
+{% endblock title %}
+
+{% block extrascripts %}
+<script style="display: none;" src="/static/files/codes/js/raphael-min.js"></script>
+{% endblock extrascripts %}
+
+{% block extrahead %}
+
+window.GlobalCoord = {}
+{% endblock extrahead %}
+
+
+{% block nomepagina %}
+CMSP
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+Análise da Câmara Municipal de São Paulo
+{% endblock pagedesc %}
+
+
+{% block breadcrumbs %}
+    <li><a href="/index">Home</a> &raquo;</li>
+    <li><a href="/analises">Análises</a> &raquo;</li>
+    <li><a href="/analises/cmsp">CMSP</a></li>
+{% endblock breadcrumbs %}
+
+
+{% block content %}
+        <div id="animacao"></div>
+        <div id="form">
+            <select id="periodos">
+            </select>
+            <button id="animar">Animar</button>
+        </div>
+{% endblock content %}
+
+
+{% block extrascriptsend %}
+window.GlobalCoord=$.ajax("http://localhost:8000/analises/cmsp/json/", {async:false}).responseText
+
+$(function() {
+        $('#analises').addClass('active');
+    });
+
+{% endblock extrascriptsend %}
+
+{% block extrajsend %}
+<script style="display: none;" src="/static/files/codes/js/radar_parlamentar_plot.js"></script>
+{% endblock extrajsend %}

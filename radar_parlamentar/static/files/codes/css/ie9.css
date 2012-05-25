@@ -1,0 +1,14 @@
+/* Hacks for IE9 */
+
+#portCntrls .portPager,
+#btmPortCntrls .portPager,
+#portCntrls .portDT,
+.prevSBtn,
+.nextSBtn{
+	font-size: 12px;
+	text-indent: -9999px;
+}
+
+#menu{
+	padding-left: 336px;
+}

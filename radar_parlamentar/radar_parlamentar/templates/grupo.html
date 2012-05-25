@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+o grupo PoliGNU
+{% endblock title %}
+
+{% block extrascripts %}
+{% endblock extrascripts %}
+
+{% block extrahead %}
+$(function() {
+        $('#ogrupo').addClass('active');
+    });
+{% endblock extrahead %}
+
+
+{% block nomepagina %}
+O Grupo
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+POLIGNU - grupo de estudos de software livre da Poli-USP
+{% endblock pagedesc %}
+
+
+{% block breadcrumbs %}
+    <li><a href="/index">Home</a> &raquo;</li>
+    <li><a href="/ogrupo">O Grupo</a></li>
+{% endblock breadcrumbs %}
+
+
+{% block content %}
+        <article class="aboutDesc">
+           <figure>
+                <img src="/static/assets/abt.jpg" class="border" height="220" width="350" alt="About Us" />
+                <figcaption>
+                    Oficina de Datascraping com Pedro Belasco
+                </figcaption>
+           </figure>
+            <p>
+                Um grupo de estudantes da Escola Politécnica da USP (EPUSP) envolveu-se pela primeira vez com o debate sobre software livre em 2007 quando eram diretoria do Grêmio Politécnico – entidade representativa de estudantes da EPUSP. Esse grupo de estudantes manteve contato e, em 2009, fundaram o grupo PoliGNU- grupo de estudos de software livre da Poli-USP.
+           </p>
+           <p>
+        O PoliGNU é um grupo formado por estudantes de diversos cursos da Escola Politécnica, bem como de outros cursos da USP, que se dedicam ao desenvolvimento e à divulgação de tecnologia, software e cultura livres, especialmente no que se relaciona à engenharia. Não é restrito à participação de universitários visto que mantém como principal fórum de articulação sua lista aberta de e-mails (polignu@googlegroups.com), um espaço virtual que congrega por volta de 80 pessoas.
+        </p>
+            <p>
+        Ao longo de sua história tem duas principais linhas de atuação: atividades de difusão e desenvolvimento de projetos. Além disso, o grupo conseguiu atingir certa maturidade e iniciar suas própria produção de materiais. Para que tudo sej possível o PoliGNU coopera com outros grupos e entidades afins, como o CCSL-USP, Transparência Hacker, Garoa Hacker Club, ITCP e Escritório Piloto, entre outros.
+           </p>
+        </article><!-- end of .aboutDesc -->
+        <article class="workProcess">
+            <div class="stHead"><h4>Linhas de atuação</h4></div>
+            <ul>
+                <li class="step1">
+                    Como difusão o grupo promove bate-papos, palestras e oficinas a respeito de diversos temas: a diferença entre hackers e crackers, transparência pública, dados abertos, datascraping, webservices, expressões regulares, CSS, HTML5, Gimp, Inkscape, plataformas wiki, desigualdade de gênero nas carreiras ligadas à tecnologia, entre outros.
+                </li>
+                <li class="step2">
+                    Já na linha de projetos, o grupo tem contribuições em LaTeX,  desenvolvimento da LibreDWG (biblioteca livre de escrita e leitura de arquivos em formato dwg), DemocraciaUSP (portal de consulta à comunidade universitária sobre intenção de votos para reitor) e o projeto Radar Parlamentar (originalmente CamaraWS, que faz análise automatizada de votações partidárias).
+                </li>
+        <li class="step3">
+                    Em fevereiro de 2012, o grupo fez sua primeira publicação: Caderno do PoliGNU – Software e Cultura Livres. A segunda publicação está planejada para o segundo semestre de 2012 e será sobre Licenças e Patentes.
+                </li>
+            </ul>
+        </article><!-- end of .workProcess -->
+        <article class="ourTeam">
+            <div class="stHead"><h4>Nossa Equipe</h4></div>
+            <ul>
+                <li>
+                    <figure>
+                        <img src="/static/assets/team/1.jpg" class="border" height="120" width="120" alt="People" />
+                        <figcaption>
+                            Diego Rabatone Oliveira
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="/static/assets/team/2.jpg" class="border" height="120" width="120" alt="People" />
+                        <figcaption>
+                            Guilherme Carvalho Januário
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="/static/assets/team/3.jpg" class="border" height="120" width="120" alt="People" />
+                        <figcaption>
+                            Haydée Svab
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="/static/assets/team/4.jpg" class="border" height="120" width="120" alt="People" />
+                        <figcaption>
+                            Leonardo Alexandre Ferreira Leite
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="/static/assets/team/5.jpg" class="border" height="120" width="120" alt="People" />
+                        <figcaption>
+                            Saulo Trento
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="/static/assets/team/6.jpg" class="border" height="120" width="120" alt="People" />
+                        <figcaption>
+                            Tássio Naia dos Santos
+                        </figcaption>
+                    </figure>
+                </li>
+            </ul>
+        </article><!-- end of .ourTeam -->
+
+        <div id="clients">
+            <div class="stHead"><h4>Nossa Equipe</h4></div>
+            <ul>
+
+                <li>
+                    <figure>
+                        <img src="/static/assets/team/7.jpg" class="border" height="120" width="120" alt="People" />
+                        <figcaption>
+                            Anderson Pierre Cardoso
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="/static/assets/team/8.jpg" class="border" height="120" width="120" alt="People" />
+                        <figcaption>
+                            Felipe Sanches
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="/static/assets/team/9.jpg" class="border" height="120" width="120" alt="People" />
+                        <figcaption>
+                            Moisés Medeiros de Oliveira
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="/static/assets/team/10.jpg" class="border" height="120" width="120" alt="People" />
+                        <figcaption>
+                            Rodrigo Rodrigues da Silva
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="/static/assets/team/11.jpg" class="border" height="120" width="120" alt="People" />
+                        <figcaption>
+                            Thiago Costa Paiva
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <img src="/static/assets/team/12.jpg" class="border" height="120" width="120" alt="People" />
+                        <figcaption>
+                            Vitor Matosinho Martins
+                        </figcaption>
+                    </figure>
+                </li>
+
+            </ul>
+        </div><!-- end of #clients -->
+{% endblock content %}
