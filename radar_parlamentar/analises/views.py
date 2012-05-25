@@ -20,37 +20,78 @@ from django.template import RequestContext
 from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404, redirect
-from modelagem import models
+from analises.models import *
 from analise import Analise
+import modelagem 
 
 
 
 def cmsp(request):
+
     """ Retorna a lista de partidos para montar a legenda do gráfico"""
-    partidos = models.Partido.objects.order_by('numero').all()
+    partidos = Partido.objects.order_by('numero').all()
     return render_to_response('cmsp.html', {'partidos':partidos})
+
+# TODO
+# alterar json_cmsp() para usar PeriodoAnalise em vez de analise
+# testar =D
+
+def _to_periodo_analise(coordenadas, periodo):
+
+    pa = PeriodoAnalise()
+    pa.periodo = periodo
+    pa.save()
+    posicoes = []
+    for part, coord in coordenadas.items():
+        posicao = PosicaoPartido()
+        posicao.x = coord[0]
+        posicao.y = coord[1]
+        partido = modelagem.models.Partido.objects.filter(nome=part)[0]
+        posicao.partido = partido
+        posicao.save()
+        posicoes.append(posicao)
+    pa.posicoes = posicoes
+    pa.save()
+    return pa
+
+def _faz_analises():
+
+    if not PeriodoAnalise.objects.all():
+        a20102 = Analise(None, '2011-01-01')
+        a20111 = Analise('2011-01-02', '2011-07-01')
+        a20112 = Analise('2011-07-02', '2012-01-01')
+        a20121 = Analise('2011-01-02', None)
+        analises = [a20111, a20112, a20121]
+        a20102.partidos_2d()
+        coadunados = [a20102.coordenadas]
+        for a in analises:
+            a.partidos_2d()
+            coadunados.append(a.coordenadas)
+        a2010 = _to_periodo_analise(coadunados[0], '20102')
+        a2011a = _to_periodo_analise(coadunados[1], '20111')
+        a2011b = _to_periodo_analise(coadunados[2], '20112')
+        a2012 = _to_periodo_analise(coadunados[3], '20121')
+        return [a2010, a2011a, a2011b, a2012]
+    else:
+        a2010 = PeriodoAnalise.objects.filter(periodo='20102')[0]
+        a2011a = PeriodoAnalise.objects.filter(periodo='20111')[0]
+        a2011b = PeriodoAnalise.objects.filter(periodo='20112')[0]
+        a2012 = PeriodoAnalise.objects.filter(periodo='20121')[0]
+        return [a2010, a2011a, a2011b, a2012]
+
 
 def json_cmsp(request):
     """Retorna JSON tipo {periodo:{nomePartido:{numPartido:1, tamanhoPartido:1, x:1, y:1}}"""
 
-    periodos = ['20102', '20111', '20112', '20121']
+    periodos = _faz_analises()
 
-    a2010 = Analise(None, '2011-01-01')
-    a2011a = Analise('2011-01-02', '2011-07-01')
-    a2011b = Analise('2011-07-02', '2012-01-01')
-    a2012 = Analise('2011-01-02', None)
-
-    analises = [a2011a, a2011b, a2012]
-    a2010.partidos_2d()
-    coadunados = [a2010.coordenadas]
-    for a in analises:
-        a.partidos_2d()
-        coadunados.append(a.coordenadas)
+    analise = Analise()
+    analise._inicializa_tamanhos_partidos()
 
     i = 0
     json = '{'
-    for dic_pca in coadunados:
-        json += '%s:%s ' % (periodos[i], json_ano(dic_pca, a2011a))
+    for pa in periodos:
+        json += '%s:%s ' % (pa.periodo, json_ano(pa.posicoes, analise))
         i += 1
     json = json.rstrip(', ')
     json += '}'
@@ -58,20 +99,16 @@ def json_cmsp(request):
     return HttpResponse(json, mimetype='application/json')
 
 
-def json_ano(dic_pca, analise):
-
-    analise._inicializa_tamanhos_partidos()
-    nums = {}
-    for p in models.Partido.objects.all():
-        nums[p.nome] = p.numero
+def json_ano(posicoes, analise):
 
     json = '{'
-    for part, coords in dic_pca.items():
-        num = nums[part]
-        tamanho = analise.tamanhos_partidos[part]
-        x = round(coords[0], 2)
-        y = round(coords[1], 2)
-        json += '"%s":{"numPartido":%s, "tamanhoPartido":%s, "x":%s, "y":%s}, ' % (part, num, tamanho, x, y)
+    for posicao in posicoes.all():
+        nome_partido = posicao.partido.nome
+        num = posicao.partido.numero
+        tamanho = analise.tamanhos_partidos[posicao.partido.nome]
+        x = round(posicao.x, 2)
+        y = round(posicao.y, 2)
+        json += '"%s":{"numPartido":%s, "tamanhoPartido":%s, "x":%s, "y":%s}, ' % (nome_partido, num, tamanho, x, y)
     json = json.rstrip(', ')
     json += '}, '
     return json

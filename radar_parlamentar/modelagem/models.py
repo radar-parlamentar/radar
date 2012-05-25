@@ -258,6 +258,7 @@ class Votacao(models.Model):
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
     proposicao = models.ForeignKey(Proposicao, null=True)
     votos = models.ManyToManyField(Voto, null=True) # votações simbólicas não tem votos
+    # TODO Devia ser OneToMany, e não ManyToMany!
 
     def por_partido(self):
         """Retorna votos agregados por partido.
