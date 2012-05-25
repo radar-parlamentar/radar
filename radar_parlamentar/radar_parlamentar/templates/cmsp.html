@@ -1,35 +1,33 @@
 {% extends "base.html" %}
 
-
 {% block title %}
-Visualização Gráfica - Câmara Municipal de São Paulo
+    Faça sua Análise - Câmara Municipal de São Paulo
 {% endblock title %}
 
 {% block extrascripts %}
-<script style="display: none;" src="/static/files/codes/js/raphael-min.js"></script>
+    <script style="display: none;" src="/static/files/codes/js/raphael-min.js"></script>
 {% endblock extrascripts %}
 
 {% block extrahead %}
-
-window.GlobalCoord = {}
+    window.GlobalCoord = {}
+    $(function() {
+        $('#analises').addClass('active');
+    });
 {% endblock extrahead %}
 
-
 {% block nomepagina %}
-CMSP
+    Faça sua Análise
 {% endblock nomepagina %}
 
 {% block pagedesc %}
-Análise da Câmara Municipal de São Paulo
+    Entenda visualmente afinidades partidárias das casas legislativas
 {% endblock pagedesc %}
 
-
 {% block breadcrumbs %}
-    <li><a href="/index">Home</a> &raquo;</li>
-    <li><a href="/analises">Análises</a> &raquo;</li>
-    <li><a href="/analises/cmsp">CMSP</a></li>
+    <li><a href="/index/">Home</a> &raquo;</li>
+    <li><a href="/analises/">Análises</a> &raquo;</li>
+    <li><a href="/analises/cmsp/">CMSP</a></li>
 {% endblock breadcrumbs %}
-
 
 {% block content %}
         <div id="form">
@@ -52,14 +50,10 @@ Análise da Câmara Municipal de São Paulo
 
 
 {% block extrascriptsend %}
-window.GlobalCoord=$.ajax("json/", {async:false}).responseText
-
-$(function() {
-        $('#analises').addClass('active');
-    });
-
+    window.GlobalCoord=$.ajax("json/", {async:false}).responseText
 {% endblock extrascriptsend %}
 
 {% block extrajsend %}
-<script style="display: none;" src="/static/files/codes/js/radar_parlamentar_plot.js"></script>
+    <script style="display: none;" src="/static/files/codes/js/radar_parlamentar_plot.js"></script>
 {% endblock extrajsend %}
+

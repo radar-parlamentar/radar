@@ -1,34 +1,30 @@
 {% extends "base.html" %}
 
-
 {% block title %}
-o grupo PoliGNU
+    o grupo PoliGNU
 {% endblock title %}
 
 {% block extrascripts %}
 {% endblock extrascripts %}
 
 {% block extrahead %}
-$(function() {
+    $(function() {
         $('#ogrupo').addClass('active');
     });
 {% endblock extrahead %}
 
-
 {% block nomepagina %}
-O Grupo
+    O Grupo
 {% endblock nomepagina %}
 
 {% block pagedesc %}
-POLIGNU - grupo de estudos de software livre da Poli-USP
+    POLIGNU - grupo de estudos de software livre da Poli-USP
 {% endblock pagedesc %}
-
 
 {% block breadcrumbs %}
     <li><a href="/index">Home</a> &raquo;</li>
     <li><a href="/ogrupo">O Grupo</a></li>
 {% endblock breadcrumbs %}
-
 
 {% block content %}
         <article class="aboutDesc">

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Faça sua Análise - opções
+{% endblock title %}
+
+
+{% block extrascripts %}
+{% endblock extrascripts %}
+
+{% block extrahead %}
+    $(function() {
+        $('#analises').addClass('active');
+    });
+{% endblock extrahead %}
+
+{% block nomepagina %}
+    Faça sua Análise
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Entenda visualmente afinidades partidárias das casas legislativas
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}
+    <li><a href="/index/">Home</a> &raquo;</li>
+    <li><a href="/analises/">Análises</a></li>
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <article class="aboutDesc">
+        <p>
+            Escolha qual casa legislativa deseja analisar, diretamente a partir do menu principal.
+       </p>
+    </article>
+{% endblock content %}
+
+{% block extrascriptsend %}
+{% endblock extrascriptsend %}
+
+{% block extrajsend %}
+{% endblock extrajsend %}

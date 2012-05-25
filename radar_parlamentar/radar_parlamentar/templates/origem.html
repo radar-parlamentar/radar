@@ -1,26 +1,24 @@
 {% extends "base.html" %}
 
-
 {% block title %}
-a origem do Radar Parlamentar
+    A origem do Radar Parlamentar
 {% endblock title %}
 
 {% block extrascripts %}
 {% endblock extrascripts %}
 
 {% block extrahead %}
-$(function() {
+    $(function() {
         $('#origem').addClass('active');
     });
 {% endblock extrahead %}
 
-
 {% block nomepagina %}
-A Origem
+    A Origem
 {% endblock nomepagina %}
 
 {% block pagedesc %}
-Radar Parlamentar só é possível se existirem dados abertos
+    Radar Parlamentar só é possível se existirem dados abertos
 {% endblock pagedesc %}
 
 
@@ -29,37 +27,89 @@ Radar Parlamentar só é possível se existirem dados abertos
     <li><a href="/origem">A Origem</a></li>
 {% endblock breadcrumbs %}
 
-
 {% block content %}
-        <article class="aboutDesc">
-           <figure>
-                <img src="/static/assets/abt.jpg" class="border" height="220" width="350" alt="About Us" />
-                <figcaption>
-                    Oficina de Datascraping com Pedro Belasco
-                </figcaption>
-           </figure>
-            <p>
-                Um grupo de estudantes da Escola Politécnica da USP (EPUSP) envolveu-se pela primeira vez com o debate sobre software livre em 2007 quando eram diretoria do Grêmio Politécnico – entidade representativa de estudantes da EPUSP. Esse grupo de estudantes manteve contato e, em 2009, fundaram o grupo PoliGNU- grupo de estudos de software livre da Poli-USP.
-           </p>
-           <p>
-        O PoliGNU é um grupo formado por estudantes de diversos cursos da Escola Politécnica, bem como de outros cursos da USP, que se dedicam ao desenvolvimento e à divulgação de tecnologia, software e cultura livres, especialmente no que se relaciona à engenharia. Não é restrito à participação de universitários visto que mantém como principal fórum de articulação sua lista aberta de e-mails (polignu@googlegroups.com), um espaço virtual que congrega por volta de 80 pessoas.
+    <article class="aboutDesc">
+        <p>
+            A disponibilização pela Câmara dos Deputados de <a href="http://www2.camara.gov.br/transparencia/dados-abertos">dados abertos</a> na internet sob a forma de <a href="http://en.wikipedia.org/wiki/Web_service">webservices</a> sobre as votações das proposições que ali tramitam inspirou Leonardo Leite, integrante do <a href="http://polignu.org/">PoliGNU</a>, a vasculhar e analisar estes dados, criando o projeto CamaraWS no início de 2012.
         </p>
-            <p>
-        Ao longo de sua história tem duas principais linhas de atuação: atividades de difusão e desenvolvimento de projetos. Além disso, o grupo conseguiu atingir certa maturidade e iniciar suas própria produção de materiais. Para que tudo sej possível o PoliGNU coopera com outros grupos e entidades afins, como o CCSL-USP, Transparência Hacker, Garoa Hacker Club, ITCP e Escritório Piloto, entre outros.
-           </p>
-        </article><!-- end of .aboutDesc -->
-        <article class="workProcess">
-            <div class="stHead"><h4>Linhas de atuação</h4></div>
-            <ul>
-                <li class="step1">
-                    Como difusão o grupo promove bate-papos, palestras e oficinas a respeito de diversos temas: a diferença entre hackers e crackers, transparência pública, dados abertos, datascraping, webservices, expressões regulares, CSS, HTML5, Gimp, Inkscape, plataformas wiki, desigualdade de gênero nas carreiras ligadas à tecnologia, entre outros.
-                </li>
-                <li class="step2">
-                    Já na linha de projetos, o grupo tem contribuições em LaTeX,  desenvolvimento da LibreDWG (biblioteca livre de escrita e leitura de arquivos em formato dwg), DemocraciaUSP (portal de consulta à comunidade universitária sobre intenção de votos para reitor) e o projeto Radar Parlamentar (originalmente CamaraWS, que faz análise automatizada de votações partidárias).
-                </li>
-        <li class="step3">
-                    Em fevereiro de 2012, o grupo fez sua primeira publicação: Caderno do PoliGNU – Software e Cultura Livres. A segunda publicação está planejada para o segundo semestre de 2012 e será sobre Licenças e Patentes.
-                </li>
-            </ul>
-        </article><!-- end of .workProcess -->
+        <figure>
+            <img src="/static/assets/pca.jpg" class="border" height="220" width="350" alt="About Us" />
+            <figcaption>
+                Resultado gráfico da análise das votações na câmara dos deputados
+           </figcaption>
+        </figure>
+        <p>
+            Normalmente espera-se que um eleitor escolha seu voto com base em sua afinidade ideológica com o partido, mas são as votações efetuadas pelos parlamentares que realmente afetarão a vida do eleitor. E como as votações não necessariamente ocorrem de acordo com as ideologias pregadas pelos partidos, é importante para o eleitor acompanhar como efetivamente seu partido está votando.
+        </p>
+        <p>
+            É comum as votações acabarem sendo determinadas muito mais em função das alianças efetuadas entre os partidos políticos. Desta forma, foi primeiro objetivo do grupo realizar análises automatizadas dos dados abertos oferecidos pela Câmara dos Deputados para tornar possível ao eleitor esse acompanhamento.
+        </p>
+        <p>
+            DADOS ABERTOS
+        </p>
+        <p>
+            De acordo com a <a href="http://www.w3c.br/Home/WebHome">W3C</a>, dados abertos governamentais são a publicação e disseminação de informações do setor público na Web, compartilhadas em formato bruto e aberto, de modo a permitir sua reutilização em aplicações digitais desenvolvidas pela sociedade. Uma vez que os dados abertos estão publicados, e podem ser processados por aplicações desenvolvidas por diversos interessados, proporciona-se a criação de múltiplos pontos de vista sobre aqueles dados publicados de forma bruta.
+        </p>
+        <figure>
+            <img src="/static/assets/dinamico.png" class="border" height="220" width="350" alt="About Us" />
+           <figcaption>
+                Mapa Dinâmico de semelhança de partidos
+           </figcaption>
+        </figure>
+        <p>
+        Com base nesses princípios a Câmara liberou um conjunto de dados abertos acessíveis por web services que incluem os resultados das votações realizadas na câmara, sendo descrito o voto de cada parlamentar na votação.
+        </p>
+        <p>
+            ANÁLISE GRÁFICA
+        </p>
+        <p>
+            Após algum tratamento algébrico, conseguiu-se obter resultados – sob a forma de tabelas - das semelhanças entre votações de partidos, dois a dois. Porém, pensando em tornar mais acessível e completa a leitura desses dados, trabalhou-se para que isso fosse mostrado de uma forma gráfica.
+        </p>
+        <p>
+            Como as análises haviam sido feitas comparando partidos dois a dois, o desafios era representar todas as semelhanças em um mesmo gráfico. O Saulo Trento, outro membro do PoliGNU, passou a colaborar bastante com o projeto especialmente com a parte de representação gráfica. Assim optou-se por utilizar o <a href="http://en.wikipedia.org/wiki/Principal_component_analysis">PCA</a> - uma técnica de análise exploratória de dados, utilizada por exemplo em data minning para a extração de significado de grandes quantidade de dados, em cuja situação a análise manual seria inviável.
+        </p>
+        <p>
+            ANIMAÇÃO
+        </p>
+        <figure>
+            <img src="/static/assets/cs2.jpg" class="border" height="220" width="350" alt="About Us" />
+            <figcaption>
+                Análise da Câmara Municipal de São Paulo
+            </figcaption>
+        </figure>
+        <p>
+            Neste gráfico animado de bolhas, os eixos x e y são as combinações lineares ortogonais das votações na câmara que melhor explicam a variância entre as votações dos partidos. O gráfico mostra no "eixo" temporal a evolução ano a ano. Estão inclusos apenas partidos que tinham no mínimo 4 parlamentares em 2011.
+        </p>
+        <p>
+            Além das análises mostradas, aqueles que quiserem realizar suas próprias análises dos dados da câmara podem fazer isso facilmente usando <a href="http://polignu.org/projeto/camaraws/">outras ferramentas do projeto foram desenvolvidas</a>. Em particular, foram baixadas todas as proposições e votações do webservice para um banco de dados local em formato SQLite, disponível no <a href="https://github.com/leonardofl/camaraws">repositório do projeto</a> (em resultados/camara.db), juntamente com os módulos em python que permitem acessá-lo para fazer análises como as já demonstradas.
+        </p>
+        <p>
+            1ª HACKATHON DA CÂMARA MUNICIPAL DE SÃO PAULO E O RADAR PARLAMENTAR
+        </p>
+        <p>
+            Com a entrada em vigor da <a href="http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2011/Lei/L12527.htm">Lei de Acesso a informações Púbicas</a> recentemente, diversos órgãos públicos vêm respondendo positivamente no sentido de melhor dispor seus dados aos cidadãos / cidadãs.
+            Nesse movimento recente, fundamental para o amadurecimento da democracia brasileira, a Câmara Municipal de São Paulo (CMSP) lançou em 12/maio/2012 sua <a href="http://www.camara.sp.gov.br/index.php?option=com_content&view=article&id=9488&Itemid=219">1ª Hackathon</a>, uma maratona hacker que visa estimular a elaboração de aplicativos que facilitem a leitura e o entendimento dos Dados Abertos da CMSP.
+        </p>
+        <figure>
+            <img src="/static/assets/nomes.png" class="border" height="220" width="350" alt="About Us" />
+            <figcaption>
+                Resultado da votação para novo nome do projeto CamarWS
+            </figcaption>
+        </figure>
+        <p>
+            Paralelo a isso, o Senado Federal também está em processo de disponibilização de dados de suas votações, e uma ferramenta para o Senado deve surgir no futuro. Devido à ampliação iminente do escopo do projeto, outros membros do grupo como Diego Rabatone, Guilherme Januário e Haydée Svab também passaram a colaborar mais intensamente com o projeto, que foi rebatizado pela comunidade PoliGNU como <a href="http://radarparlamentar.polignu.org">Radar Parlamentar</a> - a enquete contou com 40 votos em 3 dias.
+        </p>
+        <p>
+            Pelas análises realizadas notou-se que partidos aliados realmente são "comprometidos" com a bancada partidária, ou seja, o voto parece ser realmente mais partidário do que individual. Outra obsevação pertinente é que as alianças do partido parecem prevalecer sobre suas supostas ideologias.
+        </p>
+        <p>
+            É importante o desenvolvimento de aplicações pela sociedade civil que mostrem o potencial da utilização de dados públicos abertos para  incentivar os órgãos públicos a liberarem outros conjuntos de dados abertos, construindo cada vez mais uma relação saudável de transparência e controle social entre governos e sociedade.
+        </p>
+    </article>
 {% endblock content %}
+
+{% block extrascriptsend %}
+{% endblock extrascriptsend %}
+
+{% block extrajsend %}
+{% endblock extrajsend %}
