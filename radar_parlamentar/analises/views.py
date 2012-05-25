@@ -31,7 +31,7 @@ def cmsp(request):
 
 
 def json_cmsp(request):
-    """Retorna JSON tipo {ano:{nomePartido:{numPartido:1, tamanhoPartido:1, x:1, y:1}}"""
+    """Retorna JSON tipo {periodo:{nomePartido:{numPartido:1, tamanhoPartido:1, x:1, y:1}}"""
 
     periodos = ['20102', '20111', '20112', '20121']
 
