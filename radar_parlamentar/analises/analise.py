@@ -35,8 +35,8 @@ class Analise:
         Se este argumentos não são passadas, a análise é feita sobre todas as votações
         """
 
-        ini = parse_datetime('%s 0:0:0' % data_inicio)
-        fim = parse_datetime('%s 0:0:0' % data_fim)
+        self.ini = parse_datetime('%s 0:0:0' % data_inicio)
+        self.fim = parse_datetime('%s 0:0:0' % data_fim)
 
         # pega votações do banco de dados
         if ini == None and fim == None:

@@ -20,37 +20,80 @@ from django.template import RequestContext
 from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404, redirect
-from modelagem import models
+from analises.models import *
 from analise import Analise
+import modelagem 
 
 
 
 def cmsp(request):
-#    json = json_cmsp()
+
     return render_to_response('cmsp.html') #, {'json':json})
+
+# TODO
+# alterar json_cmsp() para usar PeriodoAnalise em vez de analise
+# testar =D
+
+def _to_periodo_analise(coordenadas, periodo):
+
+    pa = PeriodoAnalise()
+    pa.periodo = periodo
+    pa.save()
+    posicoes = []
+    for part, coord in coordenadas.items():
+        posicao = PosicaoPartido()
+        posicao.x = coord[0]
+        posicao.y = coord[1]
+        posicao.save()
+        partido = modelagem.models.Partido.objects.filter(nome=part)
+        posicao.partido = partido
+        posicao.save()
+        posicoes.append(posicao)
+    pa.posicoes = posicoes
+    pa.save()
+    return pa
+
+def _faz_analises():
+
+    if not PeriodoAnalise.obejcts.all():
+        a20102 = Analise(None, '2011-01-01')
+        a20111 = Analise('2011-01-02', '2011-07-01')
+        a20112 = Analise('2011-07-02', '2012-01-01')
+        a20121 = Analise('2011-01-02', None)
+        analises = [a20111, a20112, a20121]
+        a20102.partidos_2d()
+        coadunados = [a20102.coordenadas]
+        for a in analises:
+            a.partidos_2d()
+            coadunados.append(a.coordenadas)
+        a2010 = _to_periodo_analise(coadunados[0], '2010 - 2o semestre')
+        a2011a = _to_periodo_analise(coadunados[1], '2011 - 1o semestre')
+        a2011b = _to_periodo_analise(coadunados[2], '2011 - 2o semestre')
+        a2012 = _to_periodo_analise(coadunados[3], '2012 - 1o semestre')
+        return a2010, a2011a, a2011b, a2012
+    else:
+        a2010 = PeriodoAnalise.objects.filter(periodo='2010 - 2o semestre')
+        a2011a = PeriodoAnalise.objects.filter(periodo='2011 - 1o semestre')
+        a2011a = PeriodoAnalise.objects.filter(periodo='2011 - 2o semestre')
+        a2012 = PeriodoAnalise.objects.filter(periodo='2012 - 1o semestre')
+        return a2010, a2011a, a2011b, a2012
 
 
 def json_cmsp(request):
     """Retorna JSON tipo {periodo:{nomePartido:{numPartido:1, tamanhoPartido:1, x:1, y:1}}"""
 
-    periodos = ['20102', '20111', '20112', '20121']
+    a2010, a2011a, a2011b, a2012 = _faz_analises()
 
-    a2010 = Analise(None, '2011-01-01')
-    a2011a = Analise('2011-01-02', '2011-07-01')
-    a2011b = Analise('2011-07-02', '2012-01-01')
-    a2012 = Analise('2011-01-02', None)
-
-    analises = [a2011a, a2011b, a2012]
-    a2010.partidos_2d()
-    coadunados = [a2010.coordenadas]
-    for a in analises:
-        a.partidos_2d()
-        coadunados.append(a.coordenadas)
+    analise = Analise()
+    analise._inicializa_tamanhos_partidos()
+    nums = {}
+    for p in models.Partido.objects.all():
+        nums[p.nome] = p.numero
 
     i = 0
     json = '{'
     for dic_pca in coadunados:
-        json += '%s:%s ' % (periodos[i], json_ano(dic_pca, a2011a))
+        json += '%s:%s ' % (periodos[i], json_ano(dic_pca, analise, nums))
         i += 1
     json = json.rstrip(', ')
     json += '}'
@@ -58,12 +101,7 @@ def json_cmsp(request):
     return HttpResponse(json, mimetype='application/json')
 
 
-def json_ano(dic_pca, analise):
-
-    analise._inicializa_tamanhos_partidos()
-    nums = {}
-    for p in models.Partido.objects.all():
-        nums[p.nome] = p.numero
+def json_ano(dic_pca, analise, nums):
 
     json = '{'
     for part, coords in dic_pca.items():

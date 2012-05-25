@@ -36,16 +36,4 @@ class PeriodoAnalise(models.Model):
     posicoes = models.ManyToManyField(PosicaoPartido)
 
 
-class AnaliseJSON(models.Model):
-
-    inicio = models.DateField()
-    fim = models.DateField()
-    periodos = models.ManyToManyField(PeriodoAnalise)
-
-
-class TamanhoPartido(models.Model):
-
-    partido = models.ForeignKey(Partido)
-    tamanho = models.IntegerField()
-
     
