@@ -28,7 +28,9 @@ import modelagem
 
 def cmsp(request):
 
-    return render_to_response('cmsp.html') #, {'json':json})
+    """ Retorna a lista de partidos para montar a legenda do gráfico"""
+    partidos = models.Partido.objects.order_by('numero').all()
+    return render_to_response('cmsp.html', {'partidos':partidos})
 
 # TODO
 # alterar json_cmsp() para usar PeriodoAnalise em vez de analise

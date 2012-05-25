@@ -22,15 +22,11 @@
  *          ##################################################
  **********************************************************************/
 
-window.GlobalAltura = 960*0.5
-window.GlobalLargura = 1280*0.5
-window.GlobalRaioMaximo = 16
+window.GlobalAltura = 590
+window.GlobalLargura = 880
+window.GlobalRaioMaximo = 12
+window.GlobalRaioMinimo = 12
 window.GlobalTempoAnimacao = 5000 //em milisegundos
-//  window.GlobalCoord={
-//    1990:{"PT":{"numPartido":13,"x":10,"y":10}, "PSDB":{"numPartido":45,"x":0,"y":0}, "PSOL":{"numPartido":50,"x":5,"y":0}, "DEM":{"numPartido":25,"x":0,"y":5}},
-//    1995:{"PT":{"numPartido":13,"x":10,"y":5}, "PSDB":{"numPartido":45,"x":10,"y":0}, "PSOL":{"numPartido":50,"x":0,"y":10}, "DEM":{"numPartido":25,"x":5,"y":0}},
-//    2000:{"PT":{"numPartido":13,"x":10,"y":0}, "PSDB":{"numPartido":45,"x":5,"y":0}, "PSOL":{"numPartido":50,"x":5,"y":5}, "DEM":{"numPartido":25,"x":0,"y":0}}
-//}
 
 /***********************************************************************
  *          ##################################################
@@ -45,7 +41,7 @@ window.GlobalTempoAnimacao = 5000 //em milisegundos
 function carregaComboPeriodos(lista_periodos){
     $.each(lista_periodos,function(index,periodo){
             var elOptNew = document.createElement('option');
-            elOptNew.text = periodo
+            elOptNew.text = Math.floor(periodo/10) + " - " + (periodo%10) + " semestre"
             elOptNew.value = periodo
             var elSel = document.getElementById('periodos')
             try {
@@ -183,9 +179,11 @@ function normaliza(dados_completos, tamanhoX, tamanhoY){
 function plotaDadosEstaticos(papel,dict_periodo,partidos,conjunto){
     $.each(partidos, function(index,partido){
         var partido_set = papel.set()
+        tamanho_partido = dict_periodo[partido]['tamanhoPartido']
+        tamanho_partido = dict_periodo[partido]['tamanhoPartido'] + 11
         partido_set.push(
             papel.circle(
-                dict_periodo[partido]['x'],dict_periodo[partido]['y'],GlobalRaioMaximo).attr(
+                dict_periodo[partido]['x'],dict_periodo[partido]['y'],tamanho_partido).attr(
                     {
                         gradient: '90-#526c7a-#64a0c1',
                         stroke: '#3b4449',
@@ -224,10 +222,11 @@ function animaTransicao(graficos, dados_full, partidos, periodos, indice_origem,
         //[0]: parâmetros do circulo
         //[1]: parâmetros do texto
     var parametros_gerais = geraParametrosAnimacao(dados_full, partidos[idx_ult_partido], periodos, indice_origem, indice_destino, direcao)
+    var tempo_de_animacao = GlobalTempoAnimacao * (Math.abs(indice_origem - indice_destino))
 
     //anim é um objeto do tipo 'animation' e que contém a animação que será aplicada
         //no círculo do último partido do vetor partidos.
-    var animObj = Raphael.animation(parametros_gerais[0], GlobalTempoAnimacao, "linear")
+    var animObj = Raphael.animation(parametros_gerais[0], tempo_de_animacao, "linear")
 
     //animando o último partido da lista
         //Círculo
@@ -236,7 +235,7 @@ function animaTransicao(graficos, dados_full, partidos, periodos, indice_origem,
     graficos[idx_ult_partido][1].animateWith(
                                 el_anima, animObj,
                                 parametros_gerais[1],
-                                GlobalTempoAnimacao,
+                                tempo_de_animacao,
                                 "linear"
                             )
 
@@ -251,14 +250,14 @@ function animaTransicao(graficos, dados_full, partidos, periodos, indice_origem,
             parametros_gerais = geraParametrosAnimacao(dados_full, partido, periodos, indice_origem, indice_destino, direcao)
 
             //Gerando objetos de objetos de animação para o círculo e para o texto
-            var anima_partido_circulo = Raphael.animation(parametros_gerais[0], GlobalTempoAnimacao, "linear")
-            var anima_partido_texto = Raphael.animation(parametros_gerais[1], GlobalTempoAnimacao, "linear")
+            var anima_partido_circulo = Raphael.animation(parametros_gerais[0], tempo_de_animacao, "linear")
+            var anima_partido_texto = Raphael.animation(parametros_gerais[1], tempo_de_animacao, "linear")
             //configurando animação do círculo
             var temp = graficos[key_part][0].animateWith(
                                             el_anima,
                                             animObj,
                                             anima_partido_circulo,
-                                            GlobalTempoAnimacao,
+                                            tempo_de_animacao,
                                             "linear"
                                         )
             //configurando animação do texto
@@ -266,7 +265,7 @@ function animaTransicao(graficos, dados_full, partidos, periodos, indice_origem,
                                             el_anima,
                                             animObj,
                                             anima_partido_texto,
-                                            GlobalTempoAnimacao,
+                                            tempo_de_animacao,
                                             "linear"
                                         )
         }
@@ -326,8 +325,6 @@ function geraParametrosAnimacao(dados_full, partido, periodos, indice_origem, in
 
     }
 
-
-
     return [parametros_circulo, parametros_texto]
 }
 
@@ -369,12 +366,11 @@ Raphael(function () {
         carregaComboPeriodos(lista_periodos)
 
         //Normalizando os dados
-        dados_completos = normaliza(dados_completos,GlobalLargura,GlobalAltura)
-        //var tamanho_canvas = calculaExtermos(dados_completos[menor_periodo])
+        dados_completos = normaliza(dados_completos,GlobalLargura*0.95,GlobalAltura*0.95)
 
         // Altera o canvas para tamanho máximo necessário +10%
         var papel = Raphael(document.getElementById("animacao"),GlobalLargura,GlobalAltura)
-        //papel.setSize(1.1*tamanho_canvas[0],1.1*tamanho_canvas[1])
+        papel.rect(0,0,GlobalLargura,GlobalAltura).attr({"fill":"#000000","fill-opacity":0.2})
 
         // Pseudo elemento do tipo 'conjunto' ou 'grupo' (set) para
             // agrupar os dados plotados. Nesse grupo teremos
