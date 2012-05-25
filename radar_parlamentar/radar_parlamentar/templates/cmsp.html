@@ -32,12 +32,22 @@ Análise da Câmara Municipal de São Paulo
 
 
 {% block content %}
-        <div id="animacao"></div>
         <div id="form">
             <select id="periodos">
             </select>
             <button id="animar">Animar</button>
+            <br/>
         </div>
+        <div id="legenda-cmsp" class="list">
+            <b>LEGENDA</b>
+            <ul class="links">
+                <li></li>
+                {% for partido in partidos %}
+                    <li>{{partido.numero}} | {{partido.nome}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="animacao"></div>
 {% endblock content %}
 
 

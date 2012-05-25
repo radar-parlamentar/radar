@@ -22,8 +22,8 @@
  *          ##################################################
  **********************************************************************/
 
-window.GlobalAltura = 600
-window.GlobalLargura = 980
+window.GlobalAltura = 590
+window.GlobalLargura = 880
 window.GlobalRaioMaximo = 12
 window.GlobalRaioMinimo = 12
 window.GlobalTempoAnimacao = 5000 //em milisegundos
@@ -41,7 +41,7 @@ window.GlobalTempoAnimacao = 5000 //em milisegundos
 function carregaComboPeriodos(lista_periodos){
     $.each(lista_periodos,function(index,periodo){
             var elOptNew = document.createElement('option');
-            elOptNew.text = periodo
+            elOptNew.text = Math.floor(periodo/10) + " - " + (periodo%10) + " semestre"
             elOptNew.value = periodo
             var elSel = document.getElementById('periodos')
             try {

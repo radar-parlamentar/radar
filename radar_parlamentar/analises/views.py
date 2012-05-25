@@ -26,9 +26,9 @@ from analise import Analise
 
 
 def cmsp(request):
-#    json = json_cmsp()
-    return render_to_response('cmsp.html') #, {'json':json})
-
+    """ Retorna a lista de partidos para montar a legenda do gráfico"""
+    partidos = models.Partido.objects.order_by('numero').all()
+    return render_to_response('cmsp.html', {'partidos':partidos})
 
 def json_cmsp(request):
     """Retorna JSON tipo {periodo:{nomePartido:{numPartido:1, tamanhoPartido:1, x:1, y:1}}"""
