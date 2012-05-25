@@ -150,8 +150,6 @@ class Analise:
             for partido, coords in antes.items():
                 antes[partido] = numpy.dot( coords,self._matrot(graus) )
 
-#        print antes
-#        print depois
         for p in self.partidos:
             #TODO esse selft.tamanhos_partidos antes pegava o do 'depois' - ver implicacoes da alteracao e arrumar
             qm += numpy.sqrt( numpy.dot( antes[p.nome] - depois[p.nome],  antes[p.nome] - depois[p.nome] ) ) * self.tamanhos_partidos[p.nome]
@@ -195,6 +193,14 @@ class Analise:
             for partido, coords in dados_alheios.items():
                 dados_alheios[partido] = numpy.dot( coords, self._matrot(campeao[1]) )
         return dados_alheios
+
+    
+    #recebe um vetor onde cada elemento é um mapa de coordenadas
+    def coaduna_bases(self, lista_dados):
+        saida = []
+        for d in lista_dados:
+            saida.append(self.espelha_ou_roda(d))
+        return saida
 
 
 
