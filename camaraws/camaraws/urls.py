@@ -9,6 +9,8 @@ urlpatterns = patterns('',
     # url(r'^$', 'camaraws.views.home', name='home'),
     # url(r'^camaraws/', include('camaraws.foo.urls')),
 
+    url(r'^analises/cmsp/$', 'analises.views.cmsp'),
+
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

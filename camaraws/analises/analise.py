@@ -17,6 +17,7 @@
 
 """Módulo analise"""
 
+from __future__ import unicode_literals
 import numpy
 import pca
 from django.utils.dateparse import parse_datetime
