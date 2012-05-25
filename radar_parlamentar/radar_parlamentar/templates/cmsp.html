@@ -42,7 +42,7 @@ Análise da Câmara Municipal de São Paulo
 
 
 {% block extrascriptsend %}
-window.GlobalCoord=$.ajax("http://localhost:8000/analises/cmsp/json/", {async:false}).responseText
+window.GlobalCoord=$.ajax("json/", {async:false}).responseText
 
 $(function() {
         $('#analises').addClass('active');
