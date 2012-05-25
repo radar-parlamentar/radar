@@ -29,14 +29,9 @@ def cmsp(request):
 #    json = json_cmsp()
     return render_to_response('cmsp.html') #, {'json':json})
 
-def json_cmsp(request):
 
-#exemplo de saída
-#{
-#    1990:{"PT":{"numPartido":13,"x":10,"y":10}, "PSDB":{"numPartido":45,"x":0,"y":0}, "PSOL":{"numPartido":50,"x":5,"y":0}, "DEM":#{"numPartido":25,"x":0,"y":5}},
-#    1995:{"PT":{"numPartido":13,"x":10,"y":5}, "PSDB":{"numPartido":45,"x":10,"y":0}, "PSOL":{"numPartido":50,"x":0,"y":10}, "DEM":{"numPartido":25,"x":5,"y":0}},
-#    2000:{"PT":{"numPartido":13,"x":10,"y":0}, "PSDB":{"numPartido":45,"x":5,"y":0}, "PSOL":{"numPartido":50,"x":5,"y":5}, "DEM":{"numPartido":25,"x":0,"y":0}}
-#}
+def json_cmsp(request):
+    """Retorna JSON tipo {ano:{nomePartido:{numPartido:1, tamanhoPartido:1, x:1, y:1}}"""
 
     periodos = ['20102', '20111', '20112', '20121']
 
@@ -55,19 +50,28 @@ def json_cmsp(request):
     i = 0
     json = '{'
     for dic_pca in coadunados:
-        json += '%s:%s ' % (periodos[i], json_ano(dic_pca))
+        json += '%s:%s ' % (periodos[i], json_ano(dic_pca, a2011a))
         i += 1
     json = json.rstrip(', ')
     json += '}'
 
     return HttpResponse(json, mimetype='application/json')
 
-def json_ano(dic_pca):
+
+def json_ano(dic_pca, analise):
+
+    analise._inicializa_tamanhos_partidos()
+    nums = {}
+    for p in models.Partido.objects.all():
+        nums[p.nome] = p.numero
 
     json = '{'
     for part, coords in dic_pca.items():
-        num = models.Partido.objects.filter(nome=part)[0].numero
-        json += '"%s":{"numPartido":%s, "x":%s, "y":%s}, ' % (part, num, round(coords[0], 2), round(coords[1], 2))
+        num = nums[part]
+        tamanho = analise.tamanhos_partidos[part]
+        x = round(coords[0], 2)
+        y = round(coords[1], 2)
+        json += '"%s":{"numPartido":%s, "tamanhoPartido":%s, "x":%s, "y":%s}, ' % (part, num, tamanho, x, y)
     json = json.rstrip(', ')
     json += '}, '
     return json
