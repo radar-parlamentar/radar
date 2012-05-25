@@ -48,8 +48,8 @@ def cmsp(request):
     json = '{'
     for dic_pca in coadunados:
         json += "%s: %s \n" % (periodos[i], json_ano(dic_pca))
-        i++
-    json = json.rstrip(', ')
+        i += 1
+    json = json.rstrip(', \n')
     json += '}'
 
     return HttpResponse(json, mimetype='application/json') 
@@ -59,9 +59,9 @@ def json_ano(dic_pca):
     json = '{'
     for part, coords in dic_pca.items():
         num = models.Partido.objects.filter(nome=part)[0].numero
-        json += "'%s':{'numPartido':%s, 'x':%s, 'y':%s}, " % (part, num, coords[0], coords[1])
+        json += "'%s':{'numPartido':%s, 'x':%s, 'y':%s}, " % (part, num, round(coords[0], 2), round(coords[1], 2))
     json = json.rstrip(', ')
-    json += '}, \n'
+    json += '}, '
     return json
 
 
