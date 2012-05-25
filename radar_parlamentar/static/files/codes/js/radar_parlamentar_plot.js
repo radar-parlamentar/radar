@@ -348,15 +348,12 @@ Raphael(function () {
 
         // Recuperando a lista de periodos recebida no dicionário
              // e o menor periodo da lista
-         console.log(dados_completos)
         $.each(dados_completos, function(periodo, dados){
-            console.log(periodo)
             if (menor_periodo == 0 || menor_periodo > periodo)
                 menor_periodo = periodo
             lista_periodos.push(periodo)
         })
         lista_periodos.sort()
-        console.log(lista_periodos)
         periodo_origem = menor_periodo //inicializando variável periodo_origem
 
         // Recuperando a lista de partidos recebida no dicionário
