@@ -29,7 +29,7 @@ import modelagem
 def cmsp(request):
 
     """ Retorna a lista de partidos para montar a legenda do gráfico"""
-    partidos = models.Partido.objects.order_by('numero').all()
+    partidos = Partido.objects.order_by('numero').all()
     return render_to_response('cmsp.html', {'partidos':partidos})
 
 # TODO
@@ -46,8 +46,7 @@ def _to_periodo_analise(coordenadas, periodo):
         posicao = PosicaoPartido()
         posicao.x = coord[0]
         posicao.y = coord[1]
-        posicao.save()
-        partido = modelagem.models.Partido.objects.filter(nome=part)
+        partido = modelagem.models.Partido.objects.filter(nome=part)[0]
         posicao.partido = partido
         posicao.save()
         posicoes.append(posicao)
@@ -57,7 +56,7 @@ def _to_periodo_analise(coordenadas, periodo):
 
 def _faz_analises():
 
-    if not PeriodoAnalise.obejcts.all():
+    if not PeriodoAnalise.objects.all():
         a20102 = Analise(None, '2011-01-01')
         a20111 = Analise('2011-01-02', '2011-07-01')
         a20112 = Analise('2011-07-02', '2012-01-01')
@@ -68,34 +67,31 @@ def _faz_analises():
         for a in analises:
             a.partidos_2d()
             coadunados.append(a.coordenadas)
-        a2010 = _to_periodo_analise(coadunados[0], '2010 - 2o semestre')
-        a2011a = _to_periodo_analise(coadunados[1], '2011 - 1o semestre')
-        a2011b = _to_periodo_analise(coadunados[2], '2011 - 2o semestre')
-        a2012 = _to_periodo_analise(coadunados[3], '2012 - 1o semestre')
-        return a2010, a2011a, a2011b, a2012
+        a2010 = _to_periodo_analise(coadunados[0], '20102')
+        a2011a = _to_periodo_analise(coadunados[1], '20111')
+        a2011b = _to_periodo_analise(coadunados[2], '20112')
+        a2012 = _to_periodo_analise(coadunados[3], '20121')
+        return [a2010, a2011a, a2011b, a2012]
     else:
-        a2010 = PeriodoAnalise.objects.filter(periodo='2010 - 2o semestre')
-        a2011a = PeriodoAnalise.objects.filter(periodo='2011 - 1o semestre')
-        a2011a = PeriodoAnalise.objects.filter(periodo='2011 - 2o semestre')
-        a2012 = PeriodoAnalise.objects.filter(periodo='2012 - 1o semestre')
-        return a2010, a2011a, a2011b, a2012
+        a2010 = PeriodoAnalise.objects.filter(periodo='20102')[0]
+        a2011a = PeriodoAnalise.objects.filter(periodo='20111')[0]
+        a2011b = PeriodoAnalise.objects.filter(periodo='20112')[0]
+        a2012 = PeriodoAnalise.objects.filter(periodo='20121')[0]
+        return [a2010, a2011a, a2011b, a2012]
 
 
 def json_cmsp(request):
     """Retorna JSON tipo {periodo:{nomePartido:{numPartido:1, tamanhoPartido:1, x:1, y:1}}"""
 
-    a2010, a2011a, a2011b, a2012 = _faz_analises()
+    periodos = _faz_analises()
 
     analise = Analise()
     analise._inicializa_tamanhos_partidos()
-    nums = {}
-    for p in models.Partido.objects.all():
-        nums[p.nome] = p.numero
 
     i = 0
     json = '{'
-    for dic_pca in coadunados:
-        json += '%s:%s ' % (periodos[i], json_ano(dic_pca, analise, nums))
+    for pa in periodos:
+        json += '%s:%s ' % (pa.periodo, json_ano(pa.posicoes, analise))
         i += 1
     json = json.rstrip(', ')
     json += '}'
@@ -103,15 +99,16 @@ def json_cmsp(request):
     return HttpResponse(json, mimetype='application/json')
 
 
-def json_ano(dic_pca, analise, nums):
+def json_ano(posicoes, analise):
 
     json = '{'
-    for part, coords in dic_pca.items():
-        num = nums[part]
-        tamanho = analise.tamanhos_partidos[part]
-        x = round(coords[0], 2)
-        y = round(coords[1], 2)
-        json += '"%s":{"numPartido":%s, "tamanhoPartido":%s, "x":%s, "y":%s}, ' % (part, num, tamanho, x, y)
+    for posicao in posicoes.all():
+        nome_partido = posicao.partido.nome
+        num = posicao.partido.numero
+        tamanho = analise.tamanhos_partidos[posicao.partido.nome]
+        x = round(posicao.x, 2)
+        y = round(posicao.y, 2)
+        json += '"%s":{"numPartido":%s, "tamanhoPartido":%s, "x":%s, "y":%s}, ' % (nome_partido, num, tamanho, x, y)
     json = json.rstrip(', ')
     json += '}, '
     return json

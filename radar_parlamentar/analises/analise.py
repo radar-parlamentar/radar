@@ -39,14 +39,14 @@ class Analise:
         self.fim = parse_datetime('%s 0:0:0' % data_fim)
 
         # pega votações do banco de dados
-        if ini == None and fim == None:
+        if self.ini == None and self.fim == None:
             self.votacoes = models.Votacao.objects.all() 
-        if ini == None and fim != None:
-            self.votacoes = models.Votacao.objects.filter(data__lte=fim)
-        if ini != None and fim == None:
-            self.votacoes = models.Votacao.objects.filter(data__gte=ini)
-        if ini != None and fim != None:
-            self.votacoes = models.Votacao.objects.filter(data__gte=ini, data__lte=fim)
+        if self.ini == None and self.fim != None:
+            self.votacoes = models.Votacao.objects.filter(data__lte=self.fim)
+        if self.ini != None and self.fim == None:
+            self.votacoes = models.Votacao.objects.filter(data__gte=self.ini)
+        if self.ini != None and self.fim != None:
+            self.votacoes = models.Votacao.objects.filter(data__gte=self.ini, data__lte=self.fim)
 
             # TODO que acontece se no período algum partido for ausente neste período?
 
