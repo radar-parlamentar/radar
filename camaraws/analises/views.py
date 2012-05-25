@@ -16,12 +16,20 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals
-from modelagem import models
-from analise import Analise
+from django.template import RequestContext
 from django.core import serializers
 from django.http import HttpResponse
+from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404, redirect
+from modelagem import models
+from analise import Analise
+
+
 
 def cmsp(request):
+#    json = json_cmsp()
+    return render_to_response('cmsp.html') #, {'json':json})
+
+def json_cmsp(request):
 
 #exemplo de saída
 #{
@@ -30,7 +38,7 @@ def cmsp(request):
 #    2000:{"PT":{"numPartido":13,"x":10,"y":0}, "PSDB":{"numPartido":45,"x":5,"y":0}, "PSOL":{"numPartido":50,"x":5,"y":5}, "DEM":{"numPartido":25,"x":0,"y":0}}
 #}
 
-    periodos = ['2010-2', '2011-1', '2011-2', '2012-1']
+    periodos = ['20102', '20111', '20112', '20121']
 
     a2010 = Analise(None, '2011-01-01')
     a2011a = Analise('2011-01-02', '2011-07-01')
@@ -47,21 +55,27 @@ def cmsp(request):
     i = 0
     json = '{'
     for dic_pca in coadunados:
-        json += "%s: %s \n" % (periodos[i], json_ano(dic_pca))
+        json += '%s:%s ' % (periodos[i], json_ano(dic_pca))
         i += 1
-    json = json.rstrip(', \n')
+    json = json.rstrip(', ')
     json += '}'
 
-    return HttpResponse(json, mimetype='application/json') 
+    return HttpResponse(json, mimetype='application/json')
 
 def json_ano(dic_pca):
-    
+
     json = '{'
     for part, coords in dic_pca.items():
         num = models.Partido.objects.filter(nome=part)[0].numero
-        json += "'%s':{'numPartido':%s, 'x':%s, 'y':%s}, " % (part, num, round(coords[0], 2), round(coords[1], 2))
+        json += '"%s":{"numPartido":%s, "x":%s, "y":%s}, ' % (part, num, round(coords[0], 2), round(coords[1], 2))
     json = json.rstrip(', ')
     json += '}, '
     return json
 
 
+def cdep(request):
+        return render_to_response('emconstrucao.html')
+
+
+def senf(request):
+        return render_to_response('emconstrucao.html')
