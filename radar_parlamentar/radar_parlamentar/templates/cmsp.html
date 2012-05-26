@@ -30,11 +30,19 @@
 {% endblock breadcrumbs %}
 
 {% block content %}
+    <article id="descricao" class="inwrap">
+        Aqui é apresentada a animação das análises realizadas com as votações da Câmara Municipal de São Paulo (CMSP).<br/>
+        A CMSP disponibilizou recentemente várias informações em seu site, dentre elas as votações a partir do segundo semestre de 2010.<br/>
+        O gráfico abaixo contém inicialmente a plotagem da análise dos dados do segundo semestre de 2010. Ao selecionar algum outro semestre na caixa de seleção abaixo e clicar em Animar, você poderá observar a movimentação dos partidos de um período até o outro.<br/>
+        À direita do gráfico você encontra a legenda com o número dos partidos e a sigla da legenda.<br/>
+        O tamanho de cada partido no gráfico representa a quantidade de vereadores que cada partido possui.<br/>
+        Veja as movimentações e tire suas próprias conclusões.<br/><br/>
+    </article>
         <div id="form">
-            <select id="periodos">
+            <label for="periodos" ACCESSKEY="P">Período</label> <select id="periodos">
             </select>
             <button id="animar">Animar</button>
-            <br/>
+            <br/><br/>
         </div>
         <div id="legenda-cmsp" class="list">
             <b>LEGENDA</b>

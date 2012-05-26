@@ -26,6 +26,7 @@ urlpatterns = patterns('',
     url(r'^analises/cmsp/$', 'analises.views.cmsp'),
     url(r'^analises/cdep/$', 'analises.views.cdep'),
     url(r'^analises/senf/$', 'analises.views.senf'),
+    url(r'^analises/$', 'analises.views.analises'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

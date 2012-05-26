@@ -25,6 +25,8 @@ from analise import Analise
 import modelagem 
 
 
+def analises(request):
+    return render_to_response('analise.html')
 
 def cmsp(request):
 
@@ -115,8 +117,8 @@ def json_ano(posicoes, analise):
 
 
 def cdep(request):
-        return render_to_response('emconstrucao.html')
+        return render_to_response('cdep.html')
 
 
 def senf(request):
-        return render_to_response('emconstrucao.html')
+        return render_to_response('senf.html')
