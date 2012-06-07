@@ -7,3 +7,4 @@ camaraws/camaraws.db
 radar_parlamentar.db
 settings.py
 radar_parlamentar/radar_parlamentar/settings.py
+radar_parlamentar/settings.py
