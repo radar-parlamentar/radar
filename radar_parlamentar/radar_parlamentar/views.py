@@ -14,3 +14,6 @@ def origem(request):
 
 def ogrupo(request):
     return render_to_response('grupo.html')
+
+def votoaberto(request):
+    return render_to_response('votoaberto.html')

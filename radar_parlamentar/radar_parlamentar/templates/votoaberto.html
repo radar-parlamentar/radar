@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}
+    o grupo PoliGNU
+{% endblock title %}
+
+{% block extrascripts %}
+{% endblock extrascripts %}
+
+{% block extrahead %}
+    $(function() {
+        $('#botao_votoaberto').addClass('active');
+    });
+{% endblock extrahead %}
+
+{% block nomepagina %}
+    Campanha Voto Aberto: Eu Apoio!
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    POLIGNU - grupo de estudos de software livre da Poli-USP
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}
+    <li><a href="/index">Home</a> &raquo;</li>
+    <li><a href="/sim-voto-aberto">Voto Aberto</a></li>
+{% endblock breadcrumbs %}
+
+{% block content %}
+        <article class="votoAbertoDesc">
+            <p>Durente nossos trabalhos para desenvolver o Radar Parlamentar percebemos que a grande maioria das votações no Congresso Nacional não estão disponíveis. Isso se dá pois em nosso país ainda vigora uma cultura - amparada legalmente - de que os representantes do povo possam votar secretamente, seja em projetos de lei, seja em processos de cassação.</p>
+            <p>Desde 2001 tramita na Câmara dos Deputados uma Proposta de Emenda à Constituição (PEC 349/01) que institui o voto aberto no Parlamento brasileiro. Em setembro de 2006 esta proposta foi aprovada por unaninmidade em primeiro turno na Câmara Federal e, desde então, está parada.</p>
+            <p>Não existe hoje nenhum entrave técnico-burocrático para que ela siga seu curso de aprovação, o que é preciso é um acordo dos líderes das bancadas ou, mais simples, a vontade do presidente da casa de colocá-la em votação em segundo turno.</p>
+            <p>Sendo aprovada na Câmara, ela segue para o Senado Federal e, sendo aprovada no Senado, segue para sanção presidencial. Parlamentares da <strong>Frente Parlamentar em Defesa do Voto Aberto</strong> estimam que seriam necessários cerca de 20 dias para sua completa aprovação, se todos se empenhassem por isso.</p>
+            <p>Dessa forma, o <a href="http://polignu.org" title="PoliGNU">PoliGNU</a> e o Radar Parlamentar convidam a todos a se juntar à campanha:<br/>
+            <strong>VOTO ABERTO: EU APOIO!</strong></p>
+            <p>Para tanto, adicionem em seus blogs e sites o banner da campanha que pode ser baixado aqui mesmo, entrem em contato com seus deputados e senadores, sejamos a pressão que vai fazer a diferença nesse novo passo do Brasil em direção a um país mais Democrático e Transparente! Nós temos o direito de saber em que nossos representantes votam!</p>
+        </article><!-- end of .aboutDesc -->
+        <article class="ourTeam">
+            <div class="stHead"><h4>Banners da Campanha</h4></div>
+            <ul>
+                <li>
+                    <figure>
+                        <a href="/static/assets/votoaberto/vaberto_branco_direita.png"><img src="/static/assets/votoaberto/vaberto_branco_direita.png" class="border" height="120" width="120" alt="Banner Branco Direita" /></a>
+                        <figcaption>
+                            Banner Branco, Lado Direito
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <a href="/static/assets/votoaberto/vaberto_branco_esquerda.png"><img src="/static/assets/votoaberto/vaberto_branco_esquerda.png" class="border" height="120" width="120" alt="Banner Branco Esquerda" /></a>
+                        <figcaption>
+                            Banner Branco, Lado Esquerdo
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <a href="/static/assets/votoaberto/vaberto_preto_direita.png"><img src="/static/assets/votoaberto/vaberto_preto_direita.png" class="border" height="120" width="120" alt="Banner Preto Direita" /></a>
+                        <figcaption>
+                            Banner Preto, Lado Direito
+                        </figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <a href="/static/assets/votoaberto/vaberto_preto_esquerda.png"><img src="/static/assets/votoaberto/vaberto_preto_esquerda.png" class="border" height="120" width="120" alt="Banner Preto Esquerda" /></a>
+                        <figcaption>
+                            Banner Preto, Lado Esquerdo
+                        </figcaption>
+                    </figure>
+                </li>
+            </ul>
+            <h4>Arquivos Editáveis</h4>
+            <ul>
+                <li>
+                    <a href="/static/assets/votoaberto/vaberto_branco_direita.xcf">Bannner Branco Lado Direito</a>
+                </li>
+                <li>
+                    <a href="/static/assets/votoaberto/vaberto_branco_esquerda.xcf">Bannner Branco Lado Esquerdo</a>
+                </li>
+                <li>
+                    <a href="/static/assets/votoaberto/vaberto_preto_direita.xcf">Bannner Preto Lado Direito</a>
+                </li>
+                <li>
+                    <a href="/static/assets/votoaberto/vaberto_preto_esquerda.xcf">Bannner Preto Lado Esquerdo</a>
+                </li>
+            </ul>
+        </article><!-- end of .ourTeam -->
+{% endblock content %}

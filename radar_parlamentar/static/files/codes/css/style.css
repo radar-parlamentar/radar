@@ -902,7 +902,7 @@ ol.list.alphalow{list-style: lower-alpha;}
 
 #menu{
     margin: 34px 0;
-    padding-left: 320px;
+    padding-left: 220px;
 }
 
     #menu>li{
@@ -3810,4 +3810,9 @@ port+.pager{margin-top: 40px;}
 }
 #legenda-cmsp ul {
     text-align: left;
+}
+
+.votoAbertoDesc {
+    text-align: justify;
+    overflow: hidden;
 }

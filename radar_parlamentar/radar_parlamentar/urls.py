@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^index/$', 'radar_parlamentar.views.index'),
     url(r'^origem/$', 'radar_parlamentar.views.origem'),
     url(r'^ogrupo/$', 'radar_parlamentar.views.ogrupo'),
+    url(r'^sim-voto-aberto/$', 'radar_parlamentar.views.votoaberto'),
 
     #Serivço que retorna conteúdo para plotar o mapa
     url(r'^analises/cmsp/json/$', 'analises.views.json_cmsp'),
