@@ -668,6 +668,8 @@ ol.list.alphalow{list-style: lower-alpha;}
 
     #imageBox .image.about{background-image: url(../../../assets/slides/1.jpg);}
 
+    #imageBox .image.votoaberto{background-image: url(../../../assets/votoaberto/voto_aberto_banner_pequeno.png);}
+
     #imageBox .image.blog{background-image: url(../../../assets/slides/3.jpg);}
 
     #imageBox .image.contact{background-image: url(../../../assets/slides/1.jpg);}
@@ -686,7 +688,7 @@ ol.list.alphalow{list-style: lower-alpha;}
 /* portfolio header image slides */
         #imageBox .image.portfolio .slide1{background-image: url(../../../assets/slides/1.jpg);}
 
-        #imageBox .image.portfolio .slide2{background-image: url(../../../assets/slides/2.jpg);}
+        #imageBox .image.portfolio .slide2{background-image: url(../../../assets/slides/2.png);}
 
         #imageBox .image.portfolio .slide3{background-image: url(../../../assets/slides/3.jpg);}
 
@@ -705,7 +707,7 @@ ol.list.alphalow{list-style: lower-alpha;}
 /* @#@Slides images -- declare your slides images */
     #slides li[data-slide="1"]{background-image: url(../../../assets/slides/1.jpg);}
 
-    #slides li[data-slide="2"]{background-image: url(../../../assets/slides/2.jpg);}
+    #slides li[data-slide="2"]{background-image: url(../../../assets/slides/2.png);}
 
     #slides li[data-slide="3"]{background-image: url(../../../assets/slides/3.jpg);}
 
