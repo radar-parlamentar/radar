@@ -6,3 +6,4 @@ resultados/camara.db.backup
 camaraws/camaraws.db
 radar_parlamentar.db
 settings.py
+radar_parlamentar/radar_parlamentar/settings.py
