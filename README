@@ -1,7 +1,10 @@
 _RADAR_PARLAMENTAR_
 
 Este projeto utiliza dados abertos para analisar os votos de parlamentares em diferentes casas legislativas do Brasil.
-A principal funcionalidade é a geração do gráfico bi-dimensional em que votos são agrupados por partido e plotado de forma que quanto mais próximo os círculos representando os partidos estão, é porque mais parecido esses partidos votam.
+
+O Radar Parlamentar determina "semelhanças" entre partidos políticos baseado na análise matemática dos dados de votações de projetos de lei na casa legislativa. Essas semelhanças são apresentadas em um gráfico bi-dimensional, em que círculos representam partidos e a distância entre esses círculos representa o quão parecido esses partidos votam. 
+
+Site em produção: http://radarparlamentar.polignu.org/
 
 Licença do projeto: GPL v3
 
