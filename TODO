@@ -1,33 +1,58 @@
-Próximos passos/ idéias:
+TODOs _RADAR_PARLAMENTAR_
+
+- Bugs
+- Melhorias
+- Novas funcionalidades
+- Pesquisas técnicas
+- Tarefas gerais
+- Feito
+
+** prioritário
+* não prioritário
+
+== BUGS ==
+
+== MELHORIAS ==
+** Migrar banco para MySQL
+** Alterar o algoritmo de rotação dos gráficos
+** Mudar a biblioteca javascript da interface pra deixar a interface mais leve
+** Mudar a interação cliente - servidor para que haja menos cálculos no cliente
+* Migrar pasta py: apagar o que for preciso, mover pro projeto django o que for conveniente, e garantir que tudo fique executável
+* analise.partidos deve conter somente partidos da análise
+* Pensar num nome melhor pra app importers. importacao? plugins? sources?
+* definir as keywords que entrarão no template (metatag) // ???
+* definir a description que entrará no template (metatag) // ???
+* models deve fornecer cargo específico do parlamentar {'deputado estadual', 'deputado federal', 'senador', 'vereador'} // poderá ser útil para a interface
+
+== NOVAS FUNCIONALIDADES ==
+** Acrescentar dados da câmara dos deputados
+Mas fazer de forma com que a página da câmara dos deputados e da câmara municipal tenham o mesmo código
+Assim, as próximas inserções de outras casas legislativas será muito mais fácil.
+** Exibir mais informações sobre o partido quando passar o mouse em cima do círculo
+** Filtro temático (ex: analisar proximidade dos partidos quando o assunto é educação)
+* Na página de cada casa legislativa, disponibilizar o SQLite com os dados da casa
+Para isso, seria melhor que as tabelas não tivessem o prefixo do nome da aplicação
+* Visualizar parlamentares individualmente no gráfico
 * Criar medida(s) da dispersão dentro de cada partido, para saber da homogeneidade de cada um;
-* Lapidar e limpar o código (talvez alguns módulos estejam ficando obsoletos). Organizar arquivos em pastas.
-* Na descrição do init da classe analise está colocado que pode ser passado um parâmetro inteiro 'n' que faz com que as análises sejam feitas para os partidos com N ou mais deputados, mas não vi aonde esse parâmetro aparece no código (sequer na chamada do init)
-* Fazer com que Votacao tenha lista de Voto, e que Voto tenha Deputado.
-* Deputado terá atributo do tipo Partido
-* No módulo analise, lista_partidos (str) deverá ser trocada por partidos (lista de Partido)
-* Descubrir como acessar campos do banco de dados pelo nome (e não por um número que é a posição do campo na tabela!)
-* Reduzir duplicação de código no módulo analise (ex: unir _pca_partido() e _pca_uf())
-* Consertar analise.estados_2d()
-* analise.partidos deve conter somente partidos da análise. Como fazer isso de uma forma decente?
-* Deixar o sistema genérico para diferentes tipos de parlamento. Ex: Deputado deve ser Parlamentar, e conter atributo tipo = {'deputado estadual', 'deputado federal', 'senador', 'vereador'}
-* Usando o BD do repositório, analise.figura() fornece uma figura similar a do nosso post, mas usando o BD gerado pelo novo cria_bd aí dá um gráfico totalmente diferente. Uma observação: parece que no BD do repositório existem bem mais proposições
-* Mesmo que matematicamente a ausência seja analisada como abstenção, é interessante armazenar a ausência do parlamentar na estrutura de dados para outras análises
-* Organizar pasta py: apagar o que tiver que apagar, mover pro projeto django o que for conveniente, e garantir que tudo fique executável
+E pensar em formas de representar isso graficamente!
 
-DONE
-* Fazer com que cria_db.cria_bd_camara_deputados() receba como argumento opcional a lista de proposicoes, assim não precisamos toda hora chamar o web service para todos os 'ids_que_existem'
+== PESQUISAS TÉCNICAS ==
+* Aparentemente quando você usa uma classe como chave estrangeira no models, é preciso que esta classe já tenha sido declarada antes. Comportamento muito infeliz, seria legal contornar isso (mas longe de prioritário).
+* Quando eu acrescentei um atributo na classe, o syncdb não acrescentou o campo na tabela. Foi preciso deletar a tabela para o correto refactory!
+* Pra ciar um relacionamento entre objetos, é preciso salvar um deles no banco.
+Isso é chato quando você quer usar as classes sem se preocupar com o BD.
+
+== TAREFAS GERAIS ==
+** Passar essa lista de tarefas pro issue tracker do github
+* Obter dados de cargos executivos
+* Obter dados de gênero dos parlamentares
+
+== FEITO ==
 
 
-DEPLOY E DJANGO
-Atualizar documentações.
-Instalar o django 1.4:
-    - http://blog.sudobits.com/2012/03/24/django-1-4-for-ubuntu-11-10-12-04/
-Entender como criar de fato um projeto do django e como fazer deploy (testes e producao)
-    - https://docs.djangoproject.com/en/1.4/howto/deployment/wsgi/modwsgi/
-    - http://nonantolando.blogspot.com.br/2012/04/django-14-for-ubuntu-1204.html (não consegui fazer funcionar - Diego)
-Tutorial de Django:
-    - https://docs.djangoproject.com/en/dev/intro/tutorial01/
 
-TEMPLATE
-- definir as keywords que entrarão no template (metatag)
-- definir a description que entrará no template (metatag)
+
+
+
+
+

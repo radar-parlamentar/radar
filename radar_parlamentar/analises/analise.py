@@ -48,7 +48,7 @@ class Analise:
         if self.ini != None and self.fim != None:
             self.votacoes = models.Votacao.objects.filter(data__gte=self.ini, data__lte=self.fim)
 
-            # TODO que acontece se no período algum partido for ausente neste período?
+        # TODO que acontece se algum partido for ausente neste período?
 
         self.partidos = models.Partido.objects.all()
         self.num_votacoes = len(self.votacoes)
