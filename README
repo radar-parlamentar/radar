@@ -1,61 +1,9 @@
-CAMARAWS
+_RADAR_PARLAMENTAR_
 
-A camâra dos deputados lançou a pouco um conjunto de web services que fornecem algumas informações sobre as atividades da casa.
-Esses serviços estão disponíveis em http://www2.camara.gov.br/transparencia/dados-abertos.
-
-Neste projeto pretendo brincar um pouco com os dados das proposições legislativas.
-
-Qualquer ajuda é bem vinda =)
+Este projeto utiliza dados abertos para analisar os votos de parlamentares em diferentes casas legislativas do Brasil.
+A principal funcionalidade é a geração do gráfico bi-dimensional em que votos são agrupados por partido e plotado de forma que quanto mais próximo os círculos representando os partidos estão, é porque mais parecido esses partidos votam.
 
 Licença do projeto: GPL v3
 
+Seja bem vindo,
 Leonardo Leite
-
-=============================
-QUESTÕES 
-
-Algumas questões específicas que espero responder analisando os dados. 
-Resultados dessas análises se encontram na pasta "resultados"
-
-#1 Quais os tipos de proposições legislativas mais frequentes na casa?
-
-#2 Como foi a votação da mudança do código florestal?
-
-#3 Como foram as votações das PECs** em 2011?
-
-#4 Partidos da base aliada tendem a aprovar medidas provisórias? E os de oposição tendem a rejeitá-las?
-
-#5 Qual a semelhança entre o PT (partido da presidente) com os demais partidos, em termos de votação?
-
-#6 Por ser um partido de oposição, será que em termos de votação o PSOL acaba se assemelhando a partidos de direita como o DEM?
-
-#7 Quais são as temáticas das proposições nas quais partidos ideologicamente antagônicos votam de acordo?
-
-=============================
-PROBLEMAS
-
-#1
-
-Não existe um serviço que permita uma busca das proposições disponíveis.
-Idealmente eu gostaria de recuperar as proposições que foram votadas em um determinado período.
-
-Primeiro considerei resolver isso com alguma raspagem de dados de
-http://www.camara.gov.br/sileg/default.asp
-ou
-http://www2.camara.gov.br/atividade-legislativa/plenario/
-Mas isso se mestrou muito difícil.
-
-Então pedi pelo site da câmara e consegui uma lista das proposições votadas em 2011 (recursos/proposicoes2011.htm)
-Essa lista contem 693* proposições
-Mas apenas 27 proposições retornaram a lista de votação pelo web service
-Um detalhe interessante: das 693 proposições, apenas duas eram PECs**, e essas duas PECs retornaram votações
-
-#2
-
-Na fórmula da semelhança entre vetores de votações interprei votos de 'Obstrução' como votos de 'Não'.
-Acredito ser uma interpretação razoável, mas alguém pode questionar isso.
-Assim como poder-se-ia questionar o fato de 'Abstenções' funcionarem para a análise como votos dispersos entre 'Sim' e 'Não', representando assim a indefinição do partido sobre a proposição.
-
-* na verdade um pouco mais, pois não considerei proposições como "PDC 2243/2009 => TVR 1702/2009"
-** propostas de emenda à constituição, a saber: 98/2007 e 61/2011
-

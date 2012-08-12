@@ -1,4 +1,9 @@
+DADOS ABERTOS
+
+Câmara dos deputados: http://www2.camara.gov.br/transparencia/dados-abertos
+
 DEPLOY E DJANGO
+
 Instalar o django 1.4:
     - http://blog.sudobits.com/2012/03/24/django-1-4-for-ubuntu-11-10-12-04/
 Como criar um projeto do django e como fazer deploy (testes e producao)
