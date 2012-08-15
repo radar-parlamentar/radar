@@ -33,10 +33,17 @@ OPCOES = (
     (AUSENTE, 'Ausente'),
 )
 
+M = 'M'
+F = 'F'
+
 GENEROS = (
     ('M', 'Masculino'),
     ('F', 'Feminino'),
 )
+
+MUNICIPAL = 'MUNICIPAL'
+ESTADUAL = 'ESTADUAL'
+FEDERAL = 'FEDERAL'
 
 ESFERAS = (
     ('MUNICIPAL', 'Municipal'),
@@ -108,6 +115,7 @@ class CasaLegislativa(models.Model):
 
     Atributos:
         nome -- string; ex 'Câmara Municipal de São Paulo'
+        nome_curto -- string; será usado pra gerar links. ex 'cmsp' para 'Câmara Municipal de São Paulo' 
         esfera -- string (municipal, estadual, federal)
         local -- string; ex 'São Paulo' para a CMSP
         tamanhos -- lista de objetos do tipo HistoricoTamanho representando quantas cadeiras possui a casa
@@ -115,6 +123,7 @@ class CasaLegislativa(models.Model):
     """
 
     nome = models.CharField(max_length=100)
+    nome_curto = models.CharField(max_length=50)
     esfera = models.CharField(max_length=10, choices=ESFERAS)
     local = models.CharField(max_length=100)
     tamanhos = models.ManyToManyField(HistoricoTamanho, null=True)
@@ -128,20 +137,20 @@ class Legislatura(models.Model):
     """O mandato exercido por um parlamentar.
 
     Atributos:
-        localidade -- string; ex 'SP', 'RJ' se for no senado ou câmara dos deputados
         casa_legislativa -- objeto do tipo CasaLegislativa
-        partido -- objeto do tipo Partido
         inicio, fim -- datas indicando o período
+        partido -- objeto do tipo Partido
+        localidade -- string; ex 'SP', 'RJ' se for no senado ou câmara dos deputados
     """
 
-    localidade = models.CharField(max_length=100, blank=True)
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
-    partido = models.ForeignKey(Partido)
     inicio = models.DateField(null=True)
     fim = models.DateField(null=True)
+    partido = models.ForeignKey(Partido)
+    localidade = models.CharField(max_length=100, blank=True)
 
     def __unicode__(self):
-        return "%s" % self.periodo
+        return "%s@%s [%s, %s]" % (self.partido, self.casa_legislativa.nome_curto, self.inicio, self.fim)
 
 
 class Parlamentar(models.Model):
