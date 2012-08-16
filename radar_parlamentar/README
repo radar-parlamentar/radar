@@ -11,3 +11,6 @@ Antes de começar a programar, execute
 $python manage.py syncdb
 Caso o model seja alterado, é preciso apagar o banco e executar novamente o syncdb
 
+Para levantar o servidor do Django:
+$python manage.py runserver
+

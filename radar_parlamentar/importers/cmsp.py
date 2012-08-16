@@ -44,7 +44,6 @@ PROP_REGEX = '([a-zA-Z]{1,3}) ([0-9]{1,4}) ?/([0-9]{4})'
 INICIO_PERIODO = parse_datetime('2010-01-01 0:0:0')
 FIM_PERIODO = parse_datetime('2011-07-01 0:0:0')
 
-# @parlamentares: Mapeia um ID de parlamentar incluso nalguma votacao a um OBJETO parlamentar.
 # TODO: caso o parlamentar pertenca a partidos distintos, ou, mais generciamente,
 #       se sua "legislatura" mudar, caso seu ID, provindo do XML de entrada,
 #       continue o mesmo, a primeira legislatura que sobrevalecerah para as demais
@@ -59,7 +58,7 @@ class ImportadorCMSP:
     def __init__(self):
         self.cmsp = self._gera_casa_legislativa()
         print 'at init %s' % self.cmsp
-        self.parlamentares = {}
+        self.parlamentares = {} # mapeia um ID de parlamentar incluso em alguma votacao a um objeto Parlamentar.
         self.partidos = {} # chave: nome partido; valor: objeto Partido
 
     def _gera_casa_legislativa(self):
@@ -208,6 +207,7 @@ class ImportadorCMSP:
                     vot = models.Votacao()
                     vot.save() # só pra criar a chave primária e poder atribuir o votos
                     vot.id_vot = vot_tree.get('VotacaoID')
+                    vot.casa_legislativa = self.cmsp
                     vot.descricao = resumo
                     vot.data = self._converte_data(vot_tree.get('DataDaSessao'))
                     vot.resultado = vot_tree.get('Resultado')
