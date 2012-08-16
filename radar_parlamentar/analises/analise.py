@@ -30,27 +30,35 @@ import matplotlib.colors
 
 class Analise:
 
-    def __init__(self, data_inicio=None, data_fim=None):
-        """data_inicio e data_fim são strings no formato aaaa-mm-dd.
-        Se este argumentos não são passadas, a análise é feita sobre todas as votações
+    def __init__(self, data_inicio=None, data_fim=None, votacoes=None, partidos=None):
+        """Argumentos:
+            data_inicio e data_fim -- são strings no formato aaaa-mm-dd;
+            Se este argumentos não são passadas, a análise é feita sobre todas as votações
+            votacoes -- lista de objetos do tipo Votacao para serem usados na análise
+                        se não for especificado, procura votações na base de dados de acordo data_inicio e data_fim.
+            partidos -- lista de objetos do tipo Partido para serem usados na análise;
+                        se não for especificado, usa todos os partidos no banco de dados.
         """
 
         self.ini = parse_datetime('%s 0:0:0' % data_inicio)
         self.fim = parse_datetime('%s 0:0:0' % data_fim)
 
-        # pega votações do banco de dados
-        if self.ini == None and self.fim == None:
-            self.votacoes = models.Votacao.objects.all() 
-        if self.ini == None and self.fim != None:
-            self.votacoes = models.Votacao.objects.filter(data__lte=self.fim)
-        if self.ini != None and self.fim == None:
-            self.votacoes = models.Votacao.objects.filter(data__gte=self.ini)
-        if self.ini != None and self.fim != None:
-            self.votacoes = models.Votacao.objects.filter(data__gte=self.ini, data__lte=self.fim)
+        self.votacoes = votacoes
+        if not self.votacoes: # pega votações do banco de dados
+            if self.ini == None and self.fim == None:
+                self.votacoes = models.Votacao.objects.all() 
+            if self.ini == None and self.fim != None:
+                self.votacoes = models.Votacao.objects.filter(data__lte=self.fim)
+            if self.ini != None and self.fim == None:
+                self.votacoes = models.Votacao.objects.filter(data__gte=self.ini)
+            if self.ini != None and self.fim != None:
+                self.votacoes = models.Votacao.objects.filter(data__gte=self.ini, data__lte=self.fim)
 
         # TODO que acontece se algum partido for ausente neste período?
 
-        self.partidos = models.Partido.objects.all()
+        self.partidos = partidos
+        if not self.partidos:
+            self.partidos = models.Partido.objects.all()
         self.num_votacoes = len(self.votacoes)
         self.vetores_votacao = []
         self.pca_partido = []

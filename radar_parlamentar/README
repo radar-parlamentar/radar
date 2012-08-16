@@ -14,3 +14,5 @@ Caso o model seja alterado, é preciso apagar o banco e executar novamente o syn
 Para levantar o servidor do Django:
 $python manage.py runserver
 
+Executando os testes automatizados:
+$python manage.py test <nome_do_modulo>
