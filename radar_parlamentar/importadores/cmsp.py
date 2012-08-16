@@ -29,9 +29,9 @@ import re
 import xml.etree.ElementTree as etree
 
 # arquivos com os dados fornecidos pela cmsp
-XML2010 = 'importers/dados/cmsp2010.xml'
-XML2011 = 'importers/dados/cmsp2011.xml'
-XML2012 = 'importers/dados/cmsp2012.xml'
+XML2010 = 'importadores/dados/cmsp2010.xml'
+XML2011 = 'importadores/dados/cmsp2011.xml'
+XML2012 = 'importadores/dados/cmsp2012.xml'
 
 # tipos de proposições encontradas nos XMLs da cmsp (2010, 2011, 2012)
 # esta lista ajuda a identificar as votações que são de proposições
