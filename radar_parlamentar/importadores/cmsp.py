@@ -55,9 +55,11 @@ FIM_PERIODO = parse_datetime('2011-07-01 0:0:0')
 
 class ImportadorCMSP:
 
-    def __init__(self):
+    def __init__(self, verbose=False):
+        """verbose (booleano) -- ativa/desativa prints na tela"""
+
+        self.verbose = verbose
         self.cmsp = self._gera_casa_legislativa()
-        print 'at init %s' % self.cmsp
         self.parlamentares = {} # mapeia um ID de parlamentar incluso em alguma votacao a um objeto Parlamentar.
         self.partidos = {} # chave: nome partido; valor: objeto Partido
 
@@ -112,16 +114,19 @@ class ImportadorCMSP:
 
 
     def _voto_cmsp_to_model(self, voto):
-        """Interpreta voto como tá no XML e responde em adequação a modelagem em models.py
-        Em especial, "Não votou" é mapeado para abstenção
-        """
+        """Interpreta voto como tá no XML e responde em adequação a modelagem em models.py"""
         
         if voto == 'Não':
             return models.NAO
-        if voto == 'Sim':
+        elif voto == 'Sim':
             return models.SIM
-        if voto == 'Não votou':
-            return models.ABSTENCAO # TODO mudar pra AUSENTE (ter certeza que análise trata isso corretamente)
+        elif voto == 'Não votou':
+            return models.AUSENTE
+        elif voto == 'Abstenção':
+            return models.ABSTENCAO
+        else:
+            print 'tipo de voto (%s) não mapeado!' % voto
+            return models.ABSTENCAO
 
     def _partido(self, nome_partido):
         nome_partido = nome_partido.strip()
@@ -132,7 +137,8 @@ class ImportadorCMSP:
             if partido == None:
                 print 'Não achou o partido %s' % nome_partido
             partido.save()
-            print 'Partido %s salvo' % partido
+            if self.verbose:
+                print 'Partido %s salvo' % partido
             self.partidos[nome_partido] = partido
         return partido
 
@@ -149,10 +155,11 @@ class ImportadorCMSP:
             votante.partido = partido
             legislatura = self._get_legislatura(partido)
             votante.legislaturas.add(legislatura)
-            votante.save() 
-            print 'Vereador %s salvo' % votante
+            votante.save()
+            if self.verbose: 
+                print 'Vereador %s salvo' % votante
             self.parlamentares[id_parlamentar] = votante
-            #TODO genero, legislatura - da pra preencher +- a legislatura
+            #TODO genero
         return votante
 
     def _votos_from_tree(self, vot_tree):
@@ -202,7 +209,8 @@ class ImportadorCMSP:
 
                         proposicoes[prop_nome] = prop
 
-                    print 'Proposição %s salva' % prop
+                    if self.verbose:
+                        print 'Proposição %s salva' % prop
                     prop.save()
                     vot = models.Votacao()
                     vot.save() # só pra criar a chave primária e poder atribuir o votos
@@ -213,7 +221,8 @@ class ImportadorCMSP:
                     vot.resultado = vot_tree.get('Resultado')
                     vot.votos = self._votos_from_tree(vot_tree)
                     vot.proposicao = prop
-                    print 'Votação %s salva' % vot
+                    if self.verbose:
+                        print 'Votação %s salva' % vot
                     vot.save()
 
                     votacoes.append(vot)
@@ -226,12 +235,18 @@ class ImportadorCMSP:
         Retorna lista das votações
         """
 
-        print '*** 2010 ***'
+        if self.verbose:
+            print '*** 2010 ***'
         vots = self._from_xml_to_bd(XML2010)
-        print '*** 2011 ***'
+
+        if self.verbose:
+            print '*** 2011 ***'
         vots.append(self._from_xml_to_bd(XML2011))
-        print '*** 2012 ***'
+
+        if self.verbose:
+            print '*** 2012 ***'
         vots.append(self._from_xml_to_bd(XML2012))
+
         return vots
 
 def main():

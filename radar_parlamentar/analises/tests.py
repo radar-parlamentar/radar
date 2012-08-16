@@ -34,9 +34,9 @@ class AnaliseTest(TestCase):
         an = analise.Analise()
         grafico = an.partidos_2d()
 
-        self.assertAlmostEqual(grafico['PT'][0], -0.44818132, 4)
-        self.assertAlmostEqual(grafico['PT'][1], -0.47516022, 4)
-        self.assertAlmostEqual(grafico['PSDB'][0], 0.11672679, 4)
-        self.assertAlmostEqual(grafico['PSDB'][1], -0.00805108, 4)
+        self.assertAlmostEqual(grafico['PT'][0], -0.47194561, 4)
+        self.assertAlmostEqual(grafico['PT'][1], -0.45389967, 4)
+        self.assertAlmostEqual(grafico['PSDB'][0], 0.11503374, 4)
+        self.assertAlmostEqual(grafico['PSDB'][1], -0.01685908, 4)
 
 
