@@ -159,39 +159,39 @@ class Parlamentar(models.Model):
     Atributos:
         id_parlamentar - string identificadora de acordo a fonte de dados
         nome, genero -- strings
-        legislatura -- lista de objetos do tipo Legislatura
-        partido -- pode-se guardar o partido atual aqui também (objeto do tipo Partido)
+        legislaturas -- lista de objetos do tipo Legislatura
 
     Métodos:
-        partido_atual()
-        legislatura_atual()
+        partido() -- Partido da legislatura mais recente do parlamentar.
+        legislatura() -- Legislatura mais recente do parlamentar.
     """
 
     id_parlamentar = models.CharField(max_length=100, blank=True) # obs: não é chave primária! 
     nome = models.CharField(max_length=100)
     genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
     legislaturas = models.ManyToManyField(Legislatura, null=True)
-    partido = models.ForeignKey(Partido, null=True) # para facilitar o uso, pelo menos por hora
+    #partido = models.ForeignKey(Partido, null=True) # para facilitar o uso, pelo menos por hora
 
-    def partido_atual(self):
-        """Retorna partido atual do parlamentar.
+    def partido(self):
+        """Retorna partido da legislatura mais recente do parlamentar.
+        O que provavelmente é seu partido atual.
 
         Retorno: objeto do tipo Partido
         """
-        return self.legislatura_atual().partido
+        return self.legislatura().partido
 
-    def legislatura_atual(self):
-        """Retorna legislatura atual do parlamentar.
+    def legislatura(self):
+        """Retorna legislatura mais recente do parlamentar.
 
         Retorno: objeto do tipo Legislatura
         """
         if self.legislaturas:
-            return self.legislaturas[-1] # TODO: se lista é vazia, o if tá caindo nessa linha!
+            return self.legislaturas.order_by('-id')[0] 
         else:
             return None
 
     def __unicode__(self):
-        return "%s (%s)" % (self.nome, self.partido) # TODO: pegar partido da legislatura mais nova, se houver
+        return "%s (%s)" % (self.nome, self.partido()) 
 
 
 class Proposicao(models.Model):
@@ -277,7 +277,7 @@ class Votacao(models.Model):
         dic = {}
         for voto in self.votos.all():
             # TODO poderia ser mais complexo: checar se a data da votação bate com o período da legislatura mais recente
-            part = voto.parlamentar.partido.nome
+            part = voto.parlamentar.partido().nome
             if not dic.has_key(part):
                 dic[part] = VotoPartido(part)
             voto_partido = dic[part]

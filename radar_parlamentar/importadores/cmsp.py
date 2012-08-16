@@ -152,7 +152,6 @@ class ImportadorCMSP:
             votante.id_parlamentar = id_parlamentar
             votante.nome =  ver_tree.get('NomeParlamentar')
             partido = self._partido(ver_tree.get('Partido'))
-            votante.partido = partido
             legislatura = self._get_legislatura(partido)
             votante.legislaturas.add(legislatura)
             votante.save()
