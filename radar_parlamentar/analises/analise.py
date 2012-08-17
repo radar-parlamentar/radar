@@ -30,8 +30,9 @@ import matplotlib.colors
 
 class Analise:
 
-    def __init__(self, data_inicio=None, data_fim=None, votacoes=None, partidos=None):
+    def __init__(self, casa_legislativa, data_inicio=None, data_fim=None, votacoes=None, partidos=None):
         """Argumentos:
+            casa_legislativa -- objeto do tipo CasaLegislativa; somente votações desta casa serão analisados.
             data_inicio e data_fim -- são strings no formato aaaa-mm-dd;
             Se este argumentos não são passadas, a análise é feita sobre todas as votações
             votacoes -- lista de objetos do tipo Votacao para serem usados na análise
@@ -40,19 +41,14 @@ class Analise:
                         se não for especificado, usa todos os partidos no banco de dados.
         """
 
+        self.casa_legislativa = casa_legislativa
+
         self.ini = parse_datetime('%s 0:0:0' % data_inicio)
         self.fim = parse_datetime('%s 0:0:0' % data_fim)
 
         self.votacoes = votacoes
-        if not self.votacoes: # pega votações do banco de dados
-            if self.ini == None and self.fim == None:
-                self.votacoes = models.Votacao.objects.all() 
-            if self.ini == None and self.fim != None:
-                self.votacoes = models.Votacao.objects.filter(data__lte=self.fim)
-            if self.ini != None and self.fim == None:
-                self.votacoes = models.Votacao.objects.filter(data__gte=self.ini)
-            if self.ini != None and self.fim != None:
-                self.votacoes = models.Votacao.objects.filter(data__gte=self.ini, data__lte=self.fim)
+        if not self.votacoes: 
+            self.votacoes = self._inicializa_votacoes(self.casa_legislativa, self.ini, self.fim)
 
         # TODO que acontece se algum partido for ausente neste período?
 
@@ -65,6 +61,28 @@ class Analise:
         self.coordenadas = {}
         self.tamanhos_partidos = {}
 
+    def _inicializa_votacoes(self, casa, ini, fim):
+        """Pega votações do banco de dados
+    
+        Argumentos:
+            casa -- obejto do tipo CasaLegislativa
+            ini, fim -- objetos do tipo datetime
+
+        Retorna lista de votações
+        """
+
+        if ini == None and fim == None:
+            votacoes = models.Votacao.objects.filter(casa_legislativa=casa) 
+        if ini == None and fim != None:
+            votacoes = models.Votacao.objects.filter(casa_legislativa=casa).filter(data__lte=fim)
+        if ini != None and fim == None:
+            votacoes = models.Votacao.objects.filter(casa_legislativa=casa).filter(data__gte=ini)
+        if ini != None and fim != None:
+            votacoes = models.Votacao.objects.filter(casa_legislativa=casa).filter(data__gte=ini, data__lte=fim)
+        return votacoes
+
+    # TODO: tá quebrado.
+    # talvez ajude: http://stackoverflow.com/questions/7088173/django-how-to-query-model-where-name-contains-any-word-in-python-list
     def _inicializa_tamanhos_partidos(self):
         """Retorna um dicionário cuja chave é o nome do partido, e o valor é a quantidade de parlamentares do partido no banco.
 

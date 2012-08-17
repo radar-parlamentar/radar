@@ -123,7 +123,7 @@ class CasaLegislativa(models.Model):
     """
 
     nome = models.CharField(max_length=100)
-    nome_curto = models.CharField(max_length=50)
+    nome_curto = models.CharField(max_length=50, unique=True)
     esfera = models.CharField(max_length=10, choices=ESFERAS)
     local = models.CharField(max_length=100)
     tamanhos = models.ManyToManyField(HistoricoTamanho, null=True)

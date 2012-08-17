@@ -22,7 +22,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404, redirect
 from analises.models import *
 from analise import Analise
-import modelagem 
+from modelagem import models
 
 
 def analises(request):
@@ -48,7 +48,7 @@ def _to_periodo_analise(coordenadas, periodo):
         posicao = PosicaoPartido()
         posicao.x = coord[0]
         posicao.y = coord[1]
-        partido = modelagem.models.Partido.objects.filter(nome=part)[0]
+        partido = models.Partido.objects.filter(nome=part)[0]
         posicao.partido = partido
         posicao.save()
         posicoes.append(posicao)
@@ -56,13 +56,13 @@ def _to_periodo_analise(coordenadas, periodo):
     pa.save()
     return pa
 
-def _faz_analises():
+def _faz_analises(casa_legislativa):
 
     if not PeriodoAnalise.objects.all():
-        a20102 = Analise(None, '2011-01-01')
-        a20111 = Analise('2011-01-02', '2011-07-01')
-        a20112 = Analise('2011-07-02', '2012-01-01')
-        a20121 = Analise('2011-01-02', None)
+        a20102 = Analise(casa_legislativa, None, '2011-01-01')
+        a20111 = Analise(casa_legislativa, '2011-01-02', '2011-07-01')
+        a20112 = Analise(casa_legislativa, '2011-07-02', '2012-01-01')
+        a20121 = Analise(casa_legislativa, '2011-01-02', None)
         analises = [a20111, a20112, a20121]
         a20102.partidos_2d()
         coadunados = [a20102.coordenadas]
@@ -85,9 +85,10 @@ def _faz_analises():
 def json_cmsp(request):
     """Retorna JSON tipo {periodo:{nomePartido:{numPartido:1, tamanhoPartido:1, x:1, y:1}}"""
 
-    periodos = _faz_analises()
+    cmsp = models.CasaLegislativa.objects.get(nome_curto='cmsp')
+    periodos = _faz_analises(cmsp)
 
-    analise = Analise()
+    analise = Analise(cmsp)
     analise._inicializa_tamanhos_partidos()
 
     i = 0

@@ -19,6 +19,7 @@ from __future__ import unicode_literals
 from django.test import TestCase
 from analises import analise
 from importadores import cmsp
+from modelagem import models
 
 class AnaliseTest(TestCase):
 
@@ -26,12 +27,19 @@ class AnaliseTest(TestCase):
 
         # usa só dados de 2010 pra deixar o teste mais rápido
         importer = cmsp.ImportadorCMSP()
-        importer._from_xml_to_bd(cmsp.XML2010) 
+        importer._from_xml_to_bd(cmsp.XML2010)
+
+        self.cmsp = models.CasaLegislativa.objects.get(nome_curto='cmsp')
+
+    def test_casa(self):
+        """Testa se casa legislativa foi corretamente recuperada do banco"""
+
+        self.assertAlmostEqual(self.cmsp.nome_curto, 'cmsp')
 
     def test_partidos_2d(self):
         """Testa função partido_2d com os dados da câmara municipal de são paulo"""
 
-        an = analise.Analise()
+        an = analise.Analise(self.cmsp)
         grafico = an.partidos_2d()
 
         self.assertAlmostEqual(grafico['PT'][0], -0.47194561, 4)
