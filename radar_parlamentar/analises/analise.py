@@ -81,8 +81,7 @@ class Analise:
             votacoes = models.Votacao.objects.filter(casa_legislativa=casa).filter(data__gte=ini, data__lte=fim)
         return votacoes
 
-    # TODO: tá quebrado.
-    # talvez ajude: http://stackoverflow.com/questions/7088173/django-how-to-query-model-where-name-contains-any-word-in-python-list
+    # talvez ajude a fazer algo mlehor: http://stackoverflow.com/questions/7088173/django-how-to-query-model-where-name-contains-any-word-in-python-list
     def _inicializa_tamanhos_partidos(self):
         """Retorna um dicionário cuja chave é o nome do partido, e o valor é a quantidade de parlamentares do partido no banco.
 
@@ -91,12 +90,11 @@ class Analise:
         self.tamanho_partidos = {}
         cursor = connection.cursor()
         for partido in self.partidos:
-            # a linha comentada é mais django e mais portável, mas acho que a usada deve ser bem mais eficiente, 
-            # pois não precisamos carregar os objetos
-            # parlamentares = models.Parlamentar.objects.filter(partido=partido)
-            # tamanho = len(parlamentares)
-            cursor.execute("SELECT count(id) FROM modelagem_parlamentar WHERE partido_id = %s", [partido.id])
-            tamanho = cursor.fetchone()[0]
+            parlamentares = models.Parlamentar.objects.all()
+            tamanho = 0
+            for p in parlamentares:
+                if p.partido() == partido:
+                    tamanho += 1
             self.tamanhos_partidos[partido.nome] = tamanho
         return self.tamanhos_partidos
 
