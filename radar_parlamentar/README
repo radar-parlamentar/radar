@@ -16,3 +16,12 @@ $python manage.py runserver
 
 Executando os testes automatizados:
 $python manage.py test <nome_do_modulo>
+Procure sempre criar mais testes automzatizados.
+Quando fizer mudanças, execute os testes novamente.
+
+Esteja ciente de que algumas alterações (mudanças em algoritmos, por ex)
+podem alterar os valores gerados e quebrarem os testes.
+Nestes casos, altere os testes para utilziarem os novos valores gerados.
+Mas faça isso apenas quando você realmente esperar que sua alteração vá alterar esses valores.
+(exemplo: quando consertei um bug que fez com que considerassemos algumas votações a mais,
+as posições dos partidos no gráfico foram _ligeiramente_ alteradas, conforme esperado)
