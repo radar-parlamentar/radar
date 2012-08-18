@@ -21,6 +21,7 @@ Assim não precisamos refazer todas as contas a cada requisição
 
 from django.db import models
 from modelagem.models import Partido
+from modelagem.models import CasaLegislativa
 
 
 class PosicaoPartido(models.Model):
@@ -32,6 +33,7 @@ class PosicaoPartido(models.Model):
 
 class PeriodoAnalise(models.Model):
 
+    casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
     periodo = models.CharField(max_length=100)
     posicoes = models.ManyToManyField(PosicaoPartido)
 

@@ -38,11 +38,12 @@ def cmsp(request):
 # alterar json_cmsp() para usar PeriodoAnalise em vez de analise
 # testar =D
 
-def _to_periodo_analise(coordenadas, periodo):
+def _to_periodo_analise(coordenadas, periodo, casa):
 
     pa = PeriodoAnalise()
     pa.periodo = periodo
     pa.save()
+    pa.casa_legislativa = casa
     posicoes = []
     for part, coord in coordenadas.items():
         posicao = PosicaoPartido()
@@ -56,29 +57,30 @@ def _to_periodo_analise(coordenadas, periodo):
     pa.save()
     return pa
 
-def _faz_analises(casa_legislativa):
+def _faz_analises(casa):
+    """casa -- objeto do tipo CasaLegislativa"""
 
     if not PeriodoAnalise.objects.all():
-        a20102 = Analise(casa_legislativa, None, '2011-01-01')
-        a20111 = Analise(casa_legislativa, '2011-01-02', '2011-07-01')
-        a20112 = Analise(casa_legislativa, '2011-07-02', '2012-01-01')
-        a20121 = Analise(casa_legislativa, '2011-01-02', None)
+        a20102 = Analise(casa, None, '2011-01-01')
+        a20111 = Analise(casa, '2011-01-02', '2011-07-01')
+        a20112 = Analise(casa, '2011-07-02', '2012-01-01')
+        a20121 = Analise(casa, '2011-01-02', None)
         analises = [a20111, a20112, a20121]
         a20102.partidos_2d()
         coadunados = [a20102.coordenadas]
         for a in analises:
             a.partidos_2d()
             coadunados.append(a.coordenadas)
-        a2010 = _to_periodo_analise(coadunados[0], '20102')
-        a2011a = _to_periodo_analise(coadunados[1], '20111')
-        a2011b = _to_periodo_analise(coadunados[2], '20112')
-        a2012 = _to_periodo_analise(coadunados[3], '20121')
+        a2010 = _to_periodo_analise(coadunados[0], '20102', casa)
+        a2011a = _to_periodo_analise(coadunados[1], '20111', casa)
+        a2011b = _to_periodo_analise(coadunados[2], '20112', casa)
+        a2012 = _to_periodo_analise(coadunados[3], '20121', casa)
         return [a2010, a2011a, a2011b, a2012]
     else:
-        a2010 = PeriodoAnalise.objects.filter(periodo='20102')[0]
-        a2011a = PeriodoAnalise.objects.filter(periodo='20111')[0]
-        a2011b = PeriodoAnalise.objects.filter(periodo='20112')[0]
-        a2012 = PeriodoAnalise.objects.filter(periodo='20121')[0]
+        a2010 = PeriodoAnalise.objects.filter(periodo='20102', casa_legislativa=casa)[0]
+        a2011a = PeriodoAnalise.objects.filter(periodo='20111', casa_legislativa=casa)[0]
+        a2011b = PeriodoAnalise.objects.filter(periodo='20112', casa_legislativa=casa)[0]
+        a2012 = PeriodoAnalise.objects.filter(periodo='20121', casa_legislativa=casa)[0]
         return [a2010, a2011a, a2011b, a2012]
 
 
