@@ -59,8 +59,9 @@ def _to_periodo_analise(coordenadas, periodo, casa):
 
 def _faz_analises(casa):
     """casa -- objeto do tipo CasaLegislativa"""
-
-    if not PeriodoAnalise.objects.all():
+    
+    #if not PeriodoAnalise.objects.all(): # Se a análise nunca foi feita, fazer e salvar no bd.
+    if 1: # if 1 para sempre refazer a analise, em modo teste.
         a20102 = Analise(casa, None, '2011-01-01')
         a20111 = Analise(casa, '2011-01-02', '2011-07-01')
         a20112 = Analise(casa, '2011-07-02', '2012-01-01')
@@ -70,13 +71,13 @@ def _faz_analises(casa):
         coadunados = [a20102.coordenadas]
         for a in analises:
             a.partidos_2d()
-            coadunados.append(a.coordenadas)
+            coadunados.append(a.espelha_ou_roda(coadunados[-1])) # rodar o mais novo, minimizando energia
         a2010 = _to_periodo_analise(coadunados[0], '20102', casa)
         a2011a = _to_periodo_analise(coadunados[1], '20111', casa)
         a2011b = _to_periodo_analise(coadunados[2], '20112', casa)
         a2012 = _to_periodo_analise(coadunados[3], '20121', casa)
         return [a2010, a2011a, a2011b, a2012]
-    else:
+    else: # buscar análise já feita que foi salva no banco de dados.
         a2010 = PeriodoAnalise.objects.filter(periodo='20102', casa_legislativa=casa)[0]
         a2011a = PeriodoAnalise.objects.filter(periodo='20111', casa_legislativa=casa)[0]
         a2011b = PeriodoAnalise.objects.filter(periodo='20112', casa_legislativa=casa)[0]

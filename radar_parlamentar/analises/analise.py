@@ -26,7 +26,7 @@ from modelagem import models
 from matplotlib.pyplot import figure, show, scatter, text
 from matplotlib.patches import Ellipse
 import matplotlib.colors
-
+from math import hypot, atan2, pi
 
 class Analise:
 
@@ -161,9 +161,86 @@ class Analise:
         return self.coordenadas
 
 
-    def _quantidade_movimento(self,dados_meus,dados_alheios,graus=0,espelho=0):
+    def _energia(self,dados_fixos,dados_meus,graus=0,espelho=0):
+        """Calcula energia envolvida no movimento entre dois instantes (fixo e meu), onde o meu é rodado (entre 0 e 360 graus), e primeiro eixo multiplicado por -1 se espelho=1. Ver pdf intitulado "Solução Analítica para o Problema de Rotação dos Eixos de Representação dos Partidos no Radar Parlamentar" (algoritmo_rotacao.pdf).
+        """
+        e = 0
+        dados_meus = dados_meus.copy()
+        if espelho == 1:
+            for partido, coords in dados_meus.items():
+                dados_meus[partido] = numpy.dot( coords,numpy.array( [[-1.,0.],[0.,1.]] ) )
+        if graus != 0:
+            for partido, coords in dados_meus.items():
+                dados_meus[partido] = numpy.dot( coords,self._matrot(graus) )
+
+        for p in self.partidos:
+            e += numpy.dot( dados_fixos[p.nome] - dados_meus[p.nome],  dados_fixos[p.nome] - dados_meus[p.nome] ) * self.tamanhos_partidos[p.nome]
+        return e
+
+    def _polar(self,x, y, deg=0):		# radian if deg=0; degree if deg=1
+        """
+        Convert from rectangular (x,y) to polar (r,w)
+        r = sqrt(x^2 + y^2)
+        w = arctan(y/x) = [-\pi,\pi] = [-180,180]
+        """
+        if deg:
+            return hypot(x, y), 180.0 * atan2(y, x) / pi
+        else:
+            return hypot(x, y), atan2(y, x)
+    
+    def _matrot(self,graus):
+       """ Retorna matriz de rotação 2x2 que roda os eixos em graus (0 a 360) no sentido anti-horário (como se os pontos girassem no sentido horário em torno de eixos fixos).
+       """ 
+       graus = float(graus)
+       rad = numpy.pi * graus/180.
+       c = numpy.cos(rad)
+       s = numpy.sin(rad)
+       return numpy.array([[c,-s],[s,c]])
+
+    def espelha_ou_roda(self, dados_fixos):
+        print ' '
+        print 'Espelhando e rotacionando...'
+        epsilon = 0.001
+        dados_meus = self.partidos_2d()
+        if not self.tamanhos_partidos:
+            self._inicializa_tamanhos_partidos()
+
+        numerador = 0;
+        denominador = 0;
+        for partido, coords in dados_meus.items():
+            meu_polar = self._polar(coords[0],coords[1],0)
+            alheio_polar = self._polar(dados_fixos[partido][0],dados_fixos[partido][1],0)
+            numerador += self.tamanhos_partidos[partido] * meu_polar[0] * alheio_polar[0] * numpy.sin(alheio_polar[1])
+            denominador += self.tamanhos_partidos[partido] * meu_polar[0] * alheio_polar[0] * numpy.cos(alheio_polar[1])
+        if denominador < epsilon and denominador > -epsilon:
+            teta1 = 90
+            teta2 = 270
+        else:
+            teta1 = numpy.arctan(numerador/denominador) * 180 / 3.141592
+            teta2 = teta1 + 180
+
+        ex = numpy.array([self._energia(dados_fixos,dados_meus,graus=teta1,espelho=0),self._energia(dados_fixos,dados_meus,graus=teta2,espelho=0),self._energia(dados_fixos,dados_meus,graus=teta1,espelho=1), self._energia(dados_fixos,dados_meus,graus=teta2,espelho=1) ])
+        print ex
+        
+        ganhou = ex.argmin()
+        campeao = [0,0]
+        if ganhou >= 2: # espelhar
+            campeao[0] = 1
+            for partido, coords in dados_meus.items():
+                dados_meus[partido] = numpy.dot( coords, numpy.array([[-1.,0.],[0.,1.]]) )
+        if ganhou == 0 or ganhou == 2: # girar de teta1
+            campeao[1] = teta1
+        else:
+            campeao[1] = teta2
+        for partido, coords in dados_meus.items():
+            dados_meus[partido] = numpy.dot( coords, self._matrot(campeao[1]) )
+
+        print campeao
+        return dados_meus
+
+    def _quantidade_movimento(self,dados_alheios,dados_meus,graus=0,espelho=0): # deprecated
         """Calcula quantidade de movimento entre o instante i (corresponde ao ano anos[i]) e o instante i+1.
-        No cálculo o instante i tem os eixos rotacionados (valor graus, entre 0 e 360), e o primeiro eixo multiplicado por -1 se espelho=0.
+        No cálculo o instante i tem os eixos rotacionados (valor graus, entre 0 e 360), e o primeiro eixo multiplicado por -1 se espelho=1.
         """
         qm = 0
         antes = dados_meus.copy()
@@ -180,16 +257,7 @@ class Analise:
             qm += numpy.sqrt( numpy.dot( antes[p.nome] - depois[p.nome],  antes[p.nome] - depois[p.nome] ) ) * self.tamanhos_partidos[p.nome]
         return qm
 
-    def _matrot(self,graus):
-       """ Retorna matriz de rotação 2x2 que roda os eixos em graus (0 a 360) no sentido anti-horário (como se os pontos girassem no sentido horário em torno de eixos fixos).
-       """ 
-       graus = float(graus)
-       rad = numpy.pi * graus/180.
-       c = numpy.cos(rad)
-       s = numpy.sin(rad)
-       return numpy.array([[c,-s],[s,c]])
-
-    def espelha_ou_roda(self, dados_alheios):
+    def espelha_ou_roda_qm(self, dados_alheios): # deprecated
         print ' '
         print 'Espelhando e rotacionando...'
         dados_meus = self.partidos_2d()
@@ -205,19 +273,19 @@ class Analise:
         campeao = (0,0) # (espelhar, graus)
         for espelhar in [0,1]:
             for graus in [0,45,90,135,180,225,270,315]:
-                qm_agora = self._quantidade_movimento(dados_meus,dados_alheios,graus,espelhar)
+                qm_agora = self._quantidade_movimento(dados_alheios,dados_meus,graus,espelhar)
                 #print '%d, %d, %f' % (espelhar,graus,qm_agora )
                 if qm_agora < qm_min:
                     campeao = (espelhar, graus)
                     qm_min = qm_agora
         print campeao
         if campeao[0] == 1: # espelhar
-            for partido, coords in dados_alheios.items():
-                dados_alheios[partido] = numpy.dot( coords, numpy.array([[-1.,0.],[0.,1.]]) )
+            for partido, coords in dados_meus.items():
+                dados_meus[partido] = numpy.dot( coords, numpy.array([[-1.,0.],[0.,1.]]) )
         if campeao[1] != 0: # rotacionar
-            for partido, coords in dados_alheios.items():
-                dados_alheios[partido] = numpy.dot( coords, self._matrot(campeao[1]) )
-        return dados_alheios
+            for partido, coords in dados_meus.items():
+                dados_meus[partido] = numpy.dot( coords, self._matrot(campeao[1]) )
+        return dados_meus
 
     
     #recebe um vetor onde cada elemento é um mapa de coordenadas
