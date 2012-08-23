@@ -132,17 +132,36 @@ class CasaLegislativa(models.Model):
     def __unicode__(self):
         return self.nome
 
-
-class Legislatura(models.Model):
-    """O mandato exercido por um parlamentar.
+class Parlamentar(models.Model):
+    """Um parlamentar.
 
     Atributos:
+        id_parlamentar - string identificadora de acordo a fonte de dados
+        nome, genero -- strings
+    """
+
+    id_parlamentar = models.CharField(max_length=100, blank=True) # obs: não é chave primária! 
+    nome = models.CharField(max_length=100)
+    genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
+
+    def __unicode__(self):
+        return "%s (%s)" % (self.nome, self.partido()) 
+
+
+class Legislatura(models.Model):
+    """Um período de tempo contínuo em que um político atua como parlamentar.
+    É diferente de mandato. Um mandato dura 4 anos. Se o titular sai
+    e o suplente assume, temos aí uma troca de legislatura.
+
+    Atributos:
+        parlamentar -- parlamentar exercendo a legislatura; objeto do tipo Parlamentar
         casa_legislativa -- objeto do tipo CasaLegislativa
         inicio, fim -- datas indicando o período
         partido -- objeto do tipo Partido
         localidade -- string; ex 'SP', 'RJ' se for no senado ou câmara dos deputados
     """
 
+    parlamentar = models.ForeignKey(Parlamentar)
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
     inicio = models.DateField(null=True)
     fim = models.DateField(null=True)
@@ -151,47 +170,6 @@ class Legislatura(models.Model):
 
     def __unicode__(self):
         return "%s@%s [%s, %s]" % (self.partido, self.casa_legislativa.nome_curto, self.inicio, self.fim)
-
-
-class Parlamentar(models.Model):
-    """Um parlamentar.
-
-    Atributos:
-        id_parlamentar - string identificadora de acordo a fonte de dados
-        nome, genero -- strings
-        legislaturas -- lista de objetos do tipo Legislatura
-
-    Métodos:
-        partido() -- Partido da legislatura mais recente do parlamentar.
-        legislatura() -- Legislatura mais recente do parlamentar.
-    """
-
-    id_parlamentar = models.CharField(max_length=100, blank=True) # obs: não é chave primária! 
-    nome = models.CharField(max_length=100)
-    genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
-    legislaturas = models.ManyToManyField(Legislatura, null=True)
-    #partido = models.ForeignKey(Partido, null=True) # para facilitar o uso, pelo menos por hora
-
-    def partido(self):
-        """Retorna partido da legislatura mais recente do parlamentar.
-        O que provavelmente é seu partido atual.
-
-        Retorno: objeto do tipo Partido
-        """
-        return self.legislatura().partido
-
-    def legislatura(self):
-        """Retorna legislatura mais recente do parlamentar.
-
-        Retorno: objeto do tipo Legislatura
-        """
-        if self.legislaturas:
-            return self.legislaturas.order_by('-id')[0] 
-        else:
-            return None
-
-    def __unicode__(self):
-        return "%s (%s)" % (self.nome, self.partido()) 
 
 
 class Proposicao(models.Model):
@@ -235,11 +213,11 @@ class Voto(models.Model):
     """Um voto dado por um parlamentar em uma votação.
 
     Atributos:
-        parlamentar -- objeto do tipo Parlamentar
+        legislatura -- objeto do tipo Legislatura
         opcao -- qual foi o voto do parlamentar (sim, não, abstenção, obstrução, não votou)
     """
 
-    parlamentar = models.ForeignKey(Parlamentar)
+    legislatura = models.ForeignKey(Legislatura)
     opcao = models.CharField(max_length=10, choices=OPCOES)
 
     def __unicode__(self):
@@ -277,7 +255,7 @@ class Votacao(models.Model):
         dic = {}
         for voto in self.votos.all():
             # TODO poderia ser mais complexo: checar se a data da votação bate com o período da legislatura mais recente
-            part = voto.parlamentar.partido().nome
+            part = voto.legislatura.partido.nome
             if not dic.has_key(part):
                 dic[part] = VotoPartido(part)
             voto_partido = dic[part]

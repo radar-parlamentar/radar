@@ -60,6 +60,7 @@ class ImportadorCMSP:
 
         self.verbose = verbose
         self.cmsp = self._gera_casa_legislativa()
+        
         self.parlamentares = {} # mapeia um ID de parlamentar incluso em alguma votacao a um objeto Parlamentar.
         self.partidos = {} # chave: nome partido; valor: objeto Partido
 
@@ -73,18 +74,6 @@ class ImportadorCMSP:
         cmsp.local = 'São Paulo - SP'
         cmsp.save()
         return cmsp
-
-    def _get_legislatura(self, partido):
-        """Cria e retorna uma legistura para o partido fornecido"""
-
-        leg = models.Legislatura()
-        leg.casa_legislativa = self.cmsp
-        leg.inicio = INICIO_PERIODO
-        leg.fim = FIM_PERIODO
-        leg.partido = partido
-        leg.save()
-
-        return leg
 
     def _converte_data(self, data_str):
         """Converte string "d/m/a para objeto datetime; retona None se data_str é inválido"""
@@ -136,6 +125,9 @@ class ImportadorCMSP:
             partido = models.Partido.from_nome(nome_partido)
             if partido == None:
                 print 'Não achou o partido %s' % nome_partido
+                partido = models.Partido()
+                partido.nome = 'SEM PARTIDO' # TODO virar constante no models
+                partido.numero = '00'
             partido.save()
             if self.verbose:
                 print 'Partido %s salvo' % partido
@@ -151,9 +143,6 @@ class ImportadorCMSP:
             votante.save()
             votante.id_parlamentar = id_parlamentar
             votante.nome =  ver_tree.get('NomeParlamentar')
-            partido = self._partido(ver_tree.get('Partido'))
-            legislatura = self._get_legislatura(partido)
-            votante.legislaturas.add(legislatura)
             votante.save()
             if self.verbose: 
                 print 'Vereador %s salvo' % votante
@@ -161,15 +150,36 @@ class ImportadorCMSP:
             #TODO genero
         return votante
 
+    def _legislatura(self, ver_tree):
+        """Cria e retorna uma legistura para o partido fornecido"""
+
+        partido = self._partido(ver_tree.get('Partido'))
+        votante = self._votante(ver_tree)
+
+        legs = models.Legislatura.objects.filter(parlamentar=votante,partido=partido,casa_legislativa=self.cmsp)
+        # TODO acima filtrar tb por inicio e fim
+        if legs:
+            leg = legs[0]
+        else:
+            leg = models.Legislatura()
+            leg.parlamentar = votante    
+            leg.partido = partido
+            leg.casa_legislativa = self.cmsp
+            leg.inicio = INICIO_PERIODO # TODO este período deve ser mais refinado para suportar caras que trocaram de partido
+            leg.fim = FIM_PERIODO
+            leg.save()
+
+        return leg
+
     def _votos_from_tree(self, vot_tree):
         """Extrai lista de votos do XML da votação.
            Preenche tambem um vetor contendo a descricao de cada parlamentar."""
         votos = []
         for ver_tree in vot_tree.getchildren():
             if ver_tree.tag == 'Vereador':
-                votante = self._votante(ver_tree)
+                leg = self._legislatura(ver_tree)
                 voto = models.Voto()
-                voto.parlamentar = votante
+                voto.legislatura = leg
                 voto.opcao = self._voto_cmsp_to_model(ver_tree.get('Voto'))
                 if voto.opcao != None:
                     votos.append(voto)
