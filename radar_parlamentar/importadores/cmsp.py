@@ -125,12 +125,11 @@ class ImportadorCMSP:
             partido = models.Partido.from_nome(nome_partido)
             if partido == None:
                 print 'Não achou o partido %s' % nome_partido
-                partido = models.Partido()
-                partido.nome = 'SEM PARTIDO' # TODO virar constante no models
-                partido.numero = '00'
-            partido.save()
-            if self.verbose:
-                print 'Partido %s salvo' % partido
+                partido = models.Partido.get_sem_partido()
+            else:
+                partido.save()
+                if self.verbose:
+                    print 'Partido %s salvo' % partido
             self.partidos[nome_partido] = partido
         return partido
 

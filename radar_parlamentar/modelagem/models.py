@@ -51,6 +51,7 @@ ESFERAS = (
     ('FEDERAL', 'Federal'),
 )
 
+SEM_PARTIDO = 'Sem partido'
 
 class Partido(models.Model):
     """Partido político.
@@ -60,8 +61,9 @@ class Partido(models.Model):
         numero -- string; ex: '13'
 
     Métodos da classe:
-        partido_from_nome(nome): retorna objeto do tipo Partido
-        partido_from_numero(numero): retorna objeto do tipo Partido
+        from_nome(nome): retorna objeto do tipo Partido
+        from_numero(numero): retorna objeto do tipo Partido
+        get_sem_partido(): retorna um partido chamado 'SEM PARTIDO'
     """
 
     LISTA_PARTIDOS = 'modelagem/recursos/partidos.txt'
@@ -78,6 +80,19 @@ class Partido(models.Model):
     def from_numero(cls, numero):
         """Recebe um número (string) e retornar um objeto do tipo Partido, ou None se nome for inválido"""
         return cls._from_regex(2, numero.strip())
+
+    @classmethod
+    def get_sem_partido(cls):
+        """Retorna um partido chamado 'SEM PARTIDO'"""
+        lista = Partido.objects.filter(nome = SEM_PARTIDO)
+        if not lista:
+            partido = Partido()
+            partido.nome = SEM_PARTIDO
+            partido.numero = 0
+            partido.save()
+        else:
+            partido = lista[0]
+        return partido
 
     @classmethod
     def _from_regex(cls, idx, key):
