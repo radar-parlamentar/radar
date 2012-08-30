@@ -1,8 +1,6 @@
 # Lista de proposições da Câmara dos Deputados que contenham votações para serem analisadas
 513512: MPV 540/2011
-513514: MPV 541/2011
 357094: PEC 98/2007
 513496: PEC 61/2011
 17338: PL 1876/1999
-260404: PL 3937/2004
 394079: PLP 306/2008

@@ -65,7 +65,7 @@ class ImportadorCMSP:
         self.partidos = {} # chave: nome partido; valor: objeto Partido
 
     def _gera_casa_legislativa(self):
-        """Gera objeto do tipo CasaLegislativa representando a CMSP; salva em self.cmsp"""
+        """Gera objeto do tipo CasaLegislativa representando a CMSP"""
 
         cmsp = models.CasaLegislativa()
         cmsp.nome = 'Câmara Municipal de São Paulo'

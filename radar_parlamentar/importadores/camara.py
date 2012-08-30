@@ -91,11 +91,28 @@ class Camaraws:
 
 class ImportadorCamara:
 
+    def __init__(self, verbose=False):
+        """verbose (booleano) -- ativa/desativa prints na tela"""
+
+        self.verbose = verbose
+        self.camara_dos_deputados = self._gera_casa_legislativa()
+
+    def _gera_casa_legislativa(self):
+        """Gera objeto do tipo CasaLegislativa representando a Câmara dos Deputados"""
+
+        camara_dos_deputados = models.CasaLegislativa()
+        camara_dos_deputados.nome = 'Câmara Municipal de São Paulo'
+        camara_dos_deputados.nome_curto = 'cmsp'
+        camara_dos_deputados.esfera = models.MUNICIPAL
+        camara_dos_deputados.local = 'São Paulo - SP'
+        #camara_dos_deputados.save()
+        return camara_dos_deputados
+
     def _parse_votadas(self):
         """Parse do arquivo importadores/dados/votadas.txt
         Retorna:
         Uma lista com a identificação das proposições encontradas no txt
-        Cada posição da lista é um dicionário com chaves \in {id, tipo, num, ano}
+        Cada posição da lista é um dicionário com chaves \in {id, sigla, num, ano}
         As chaves e valores desses dicionários são strings
         """
         file_name = RESOURCES_FOLDER + 'votadas.txt' 
@@ -106,14 +123,39 @@ class ImportadorCamara:
         for line in prop_file:
             res = re.search(regexp, line)
             if res:
-                proposicoes.append({'id':res.group(1), 'tipo':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
+                proposicoes.append({'id':res.group(1), 'sigla':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
         return proposicoes
+
+    def _prop_from_xml(self, prop_xml, id_prop):
+        """Recebe XML representando proposição (objeto etree) e devolve objeto do tipo Proposicao"""
+        prop = models.Proposicao()
+        prop.id_prop = id_prop
+        prop.sigla = prop_xml.get('tipo').strip()
+        prop.numero = prop_xml.get('numero').strip()
+        prop.ano = prop_xml.get('ano').strip()
+
+        prop.ementa = prop_xml.find('Ementa').text.strip()
+        prop.descricao = prop_xml.find('ExplicacaoEmenta').text.strip()
+        prop.indexacao = prop_xml.find('Indexacao').text.strip()
+#        prop.autores = prop_xml.find('Autor').text.strip()
+        prop.data_apresentacao = prop_xml.find('DataApresentacao').text.strip()
+        prop.situacao =prop_xml.find('Situacao').text.strip()
+        prop.casa_legislativa = self.camara_dos_deputados
+
+        return prop         
     
     def importar(self):
 
-        props_votadas = self._parse_votadas()
-        print props_votadas
-
+        votadas_ids = self._parse_votadas() # id/sigla/num/ano das proposições que tiveram votações
+        f = lambda dic: ( dic['id'], dic['sigla'], dic['num'], dic['ano'] ) 
+        for id_prop,sigla,num,ano in [ f(dic) for dic in votadas_ids ]:
+            print 'Importando %s: %s %s/%s' % (id_prop, sigla, num, ano)
+            camaraws = Camaraws()
+            prop_xml = camaraws.obter_proposicao(id_prop)
+            prop = self._prop_from_xml(prop_xml, id_prop)
+            #vots_xml = camaraws.obter_votacoes(sigla, num, ano)
+            print prop
+        
         
 
 def main():
