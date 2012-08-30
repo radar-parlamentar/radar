@@ -1,6 +1,11 @@
 DADOS ABERTOS
 
 Câmara dos deputados: http://www2.camara.gov.br/transparencia/dados-abertos
+Câmara municipal de São Paulo: http://www.camara.sp.gov.br/index.php?option=com_wrapper&view=wrapper&Itemid=219
+
+ESTILO DE PROGRAMAÇÃO PYTHON DO GOOGLE:
+http://google-styleguide.googlecode.com/svn/trunk/pyguide.html
+(vamos tentar seguir!)
 
 DEPLOY E DJANGO
 
