@@ -19,28 +19,41 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from importadores import camara
+from modelagem import models
+
+# constantes relativas ao código florestal
+ID = '17338'
+SIGLA = 'PL'
+NUM = '1876'
+ANO = '1999'
+NOME = 'PL 1876/1999'
 
 class CamaraTest(TestCase):
     """Testes do módulo camara"""
 
+    def setUp(self):
+
+        # vamos importar apenas as votações das proposições em votadas_test.txt
+        camara.VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
+        self.importer = camara.ImportadorCamara()
+        self.importer.importar()
+
     def test_parse_votadas(self):
 
-        importer = camara.ImportadorCamara()
-        props_votadas = importer._parse_votadas()
-        codigo_florestal =  {'ano': '1999', 'id': '17338', 'num': '1876', 'tipo': 'PL'}
-        self.assertTrue(codigo_florestal in props_votadas)
+        codigo_florestal =  {'ano': ANO, 'id': ID, 'num': NUM, 'sigla': SIGLA}
+        self.assertTrue(codigo_florestal in self.importer.votadas_ids)
 
     def test_obter_proposicao(self):
 
         camaraws = camara.Camaraws()
-        codigo_florestal_xml = camaraws.obter_proposicao('17338')
+        codigo_florestal_xml = camaraws.obter_proposicao(ID)
         nome = codigo_florestal_xml.find('nomeProposicao').text
-        self.assertEquals(nome, 'PL 1876/1999')
+        self.assertEquals(nome, NOME)
         
     def test_obter_votacoes(self):
 
         camaraws = camara.Camaraws()
-        codigo_florestal_xml = camaraws.obter_votacoes('pl', '1876', '1999')
+        codigo_florestal_xml = camaraws.obter_votacoes(SIGLA, NUM, ANO)
         data_vot_encontrada = codigo_florestal_xml.find('Votacoes').find('Votacao').get('Data')
         self.assertEquals(data_vot_encontrada, '11/5/2011')
 
@@ -69,6 +82,23 @@ class CamaraTest(TestCase):
             self.assertEquals(e.message, 'Votações da proposição %s %s/%s não encontrada' % (sigla, num, ano))
             caught = True
         self.assertTrue(caught)
+
+    def test_casa_legislativa(self):
+
+        camara = models.CasaLegislativa.objects.get(nome_curto='camara')
+        self.assertEquals(camara.nome, 'Câmara dos Deputados')
+
+    def test_prop_cod_florestal(self):
+
+        prop_cod_flor = models.Proposicao.objects.get(id_prop=ID)
+        self.assertEquals(prop_cod_flor.nome(), NOME)
+        self.assertEquals(prop_cod_flor.situacao, 'Tranformada no(a) Lei Ordinária 12651/2012')
+        data = self.importer._converte_data('19/10/1999')
+        self.assertEquals(prop_cod_flor.data_apresentacao.day, data.day)
+        self.assertEquals(prop_cod_flor.data_apresentacao.month, data.month)
+        self.assertEquals(prop_cod_flor.data_apresentacao.year, data.year)
+
+        
 
 
     

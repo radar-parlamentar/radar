@@ -1,0 +1,5 @@
+# Lista de proposições da Câmara dos Deputados que contenham votações para serem analisadas
+# Esta lista contem apenas algumas proposições, pois são para serem usadas nos testes automatizados
+513512: MPV 540/2011
+513496: PEC 61/2011
+17338: PL 1876/1999

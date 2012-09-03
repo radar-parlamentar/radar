@@ -244,7 +244,8 @@ class Votacao(models.Model):
     
     Atributos:
         id_vot - string identificadora de acordo a fonte de dados
-        descricao, data, resultado -- strings
+        descricao, resultado -- strings
+        data -- data da votação (tipo date)
         casa_legislativa -- objeto do tipo CasaLegislativa
         proposicao -- objeto do tipo Proposicao
         votos -- lista de objetos do tipo Voto
@@ -291,6 +292,10 @@ class VotosAgregados:
 
     Atributos:
         sim, nao, abstencao -- inteiros que representam a quantidade de votos no conjunto
+
+    Método:
+        add
+        total
     """
 
     sim = 0
