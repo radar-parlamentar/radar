@@ -99,15 +99,18 @@ class ImportadorCamara:
         """verbose (booleano) -- ativa/desativa prints na tela"""
 
         self.verbose = verbose
-        self.camara_dos_deputados = self._gera_casa_legislativa()
         self.votadas_ids = self._parse_votadas() # id/sigla/num/ano das proposições que tiveram votações
 
-    def _converte_data(self, data_str):
-        """Converte string "d/m/a para objeto datetime; retona None se data_str é inválido"""
+    def _converte_data(self, data_str, hora_str='00:00'):
+        """Converte string 'd/m/a' para objeto datetime; retona None se data_str é inválido
+        Pode também receber horário: hora_str como 'h:m'
+        """
         DATA_REGEX = '(\d\d?)/(\d\d?)/(\d{4})'
-        res = re.match(DATA_REGEX, data_str)
-        if res:
-            new_str = '%s-%s-%s 0:0:0' % (res.group(3), res.group(2), res.group(1))
+        HORA_REGEX = '(\d\d?):(\d\d?)'
+        dt = re.match(DATA_REGEX, data_str)
+        hr = re.match(HORA_REGEX, hora_str)
+        if dt and hr:
+            new_str = '%s-%s-%s %s:%s:0' % (dt.group(3), dt.group(2), dt.group(1), hr.group(1), hr.group(2))
             return parse_datetime(new_str)
         else:
             return None
@@ -140,7 +143,9 @@ class ImportadorCamara:
         return proposicoes
 
     def _prop_from_xml(self, prop_xml, id_prop):
-        """Recebe XML representando proposição (objeto etree) e devolve objeto do tipo Proposicao"""
+        """Recebe XML representando proposição (objeto etree) 
+        e devolve objeto do tipo Proposicao, que é salvo no banco de dados.
+        """
         prop = models.Proposicao()
         prop.id_prop = id_prop
         prop.sigla = prop_xml.get('tipo').strip()
@@ -156,9 +161,36 @@ class ImportadorCamara:
         prop.situacao =prop_xml.find('Situacao').text.strip()
         prop.casa_legislativa = self.camara_dos_deputados
 
-        return prop         
+        prop.save()
+        return prop  
+
+    def _vot_from_xml(self, vot_xml, prop):
+        """Salva votação no banco de dados.
+
+        Atributos:
+            vot_xml -- XML representando votação (objeto etree)
+            prop -- objeto do tipo Proposicao
+
+        Retorna:
+            objeto do tipo Votacao
+        """
+        votacao = models.Votacao()
+
+        votacao.descricao = 'Resumo: [%s]. ObjVotacao: [%s]' % (vot_xml.get('Resumo'), vot_xml.get('ObjVotacao'))
+        data_str = vot_xml.get('Data').strip()
+        hora_str = vot_xml.get('Hora').strip()
+        datetime = self._converte_data(data_str, hora_str)
+        votacao.data = datetime
+        votacao.proposicao = prop
+        votacao.casa_legislativa = self.camara_dos_deputados
+
+        votacao.save()
+        return votacao
+       
     
     def importar(self):
+
+        self.camara_dos_deputados = self._gera_casa_legislativa()
 
         f = lambda dic: ( dic['id'], dic['sigla'], dic['num'], dic['ano'] ) 
         for id_prop,sigla,num,ano in [ f(dic) for dic in self.votadas_ids ]:
@@ -167,9 +199,9 @@ class ImportadorCamara:
             camaraws = Camaraws()
             prop_xml = camaraws.obter_proposicao(id_prop)
             prop = self._prop_from_xml(prop_xml, id_prop)
-            prop.save()
-            #vots_xml = camaraws.obter_votacoes(sigla, num, ano)
-        
+            vots_xml = camaraws.obter_votacoes(sigla, num, ano)
+            for child in vots_xml.find('Votacoes'):
+                votacao = self._vot_from_xml(child, prop)
         
 
 def main():

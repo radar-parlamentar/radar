@@ -28,20 +28,22 @@ NUM = '1876'
 ANO = '1999'
 NOME = 'PL 1876/1999'
 
+
 class CamaraTest(TestCase):
     """Testes do módulo camara"""
 
-    def setUp(self):
-
+    @classmethod
+    def setUpClass(cls):
         # vamos importar apenas as votações das proposições em votadas_test.txt
         camara.VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
-        self.importer = camara.ImportadorCamara()
-        self.importer.importar()
+        importer = camara.ImportadorCamara()
+        importer.importar()
 
     def test_parse_votadas(self):
 
+        importer = camara.ImportadorCamara()
         codigo_florestal =  {'ano': ANO, 'id': ID, 'num': NUM, 'sigla': SIGLA}
-        self.assertTrue(codigo_florestal in self.importer.votadas_ids)
+        self.assertTrue(codigo_florestal in importer.votadas_ids)
 
     def test_obter_proposicao(self):
 
@@ -90,14 +92,33 @@ class CamaraTest(TestCase):
 
     def test_prop_cod_florestal(self):
 
+        importer = camara.ImportadorCamara()
+        data = importer._converte_data('19/10/1999')
+
         prop_cod_flor = models.Proposicao.objects.get(id_prop=ID)
         self.assertEquals(prop_cod_flor.nome(), NOME)
         self.assertEquals(prop_cod_flor.situacao, 'Tranformada no(a) Lei Ordinária 12651/2012')
-        data = self.importer._converte_data('19/10/1999')
         self.assertEquals(prop_cod_flor.data_apresentacao.day, data.day)
         self.assertEquals(prop_cod_flor.data_apresentacao.month, data.month)
         self.assertEquals(prop_cod_flor.data_apresentacao.year, data.year)
 
+    def test_votacoes_cod_florestal(self):
+
+        votacoes = models.Votacao.objects.filter(proposicao__id_prop=ID)
+        self.assertEquals(len(votacoes), 5)
+
+        vot = votacoes[0]
+        self.assertTrue('REQUERIMENTO DE RETIRADA DE PAUTA' in vot.descricao)
+
+        importer = camara.ImportadorCamara()
+        data = importer._converte_data('24/5/2011', '20:52')
+        vot = votacoes[1]
+        self.assertEquals(vot.data.day, data.day)
+        self.assertEquals(vot.data.month, data.month)
+        self.assertEquals(vot.data.year, data.year)
+        # vot.data está sem hora e minuto
+#        self.assertEquals(vot.data.hour, data.hour)
+#        self.assertEquals(vot.data.minute, data.minute)
         
 
 
