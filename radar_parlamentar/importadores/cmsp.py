@@ -42,7 +42,7 @@ TIPOS_PROPOSICOES = ['PL', 'PLO', 'PDL']
 PROP_REGEX = '([a-zA-Z]{1,3}) ([0-9]{1,4}) ?/([0-9]{4})' 
 
 INICIO_PERIODO = parse_datetime('2010-01-01 0:0:0')
-FIM_PERIODO = parse_datetime('2011-07-01 0:0:0')
+FIM_PERIODO = parse_datetime('2012-07-01 0:0:0')
 
 # TODO: caso o parlamentar pertenca a partidos distintos, ou, mais generciamente,
 #       se sua "legislatura" mudar, caso seu ID, provindo do XML de entrada,

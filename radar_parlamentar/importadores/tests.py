@@ -119,6 +119,17 @@ class CamaraTest(TestCase):
         # vot.data está sem hora e minuto
 #        self.assertEquals(vot.data.hour, data.hour)
 #        self.assertEquals(vot.data.minute, data.minute)
+
+    def test_votos_cod_florestal(self):
+
+        votacao = models.Votacao.objects.filter(proposicao__id_prop=ID)[0]
+        voto1 = [ v for v in votacao.votos.all() if v.legislatura.parlamentar.nome == 'Mara Gabrilli' ][0]
+        voto2 = [ v for v in votacao.votos.all() if v.legislatura.parlamentar.nome == 'Carlos Roberto' ][0]
+        self.assertEquals(voto1.opcao, models.SIM)
+        self.assertEquals(voto2.opcao, models.NAO)
+        self.assertEquals(voto1.legislatura.partido.nome, 'PSDB')
+        self.assertEquals(voto2.legislatura.localidade, 'SP')
+
         
 
 

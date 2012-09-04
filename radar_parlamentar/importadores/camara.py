@@ -37,7 +37,8 @@ VOTADAS_FILE_PATH = RESOURCES_FOLDER + 'votadas.txt'
 URL_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?idProp=%s'
 URL_VOTACOES = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?tipo=%s&numero=%s&ano=%s'
 
-
+INICIO_PERIODO = parse_datetime('2004-01-01 0:0:0')
+FIM_PERIODO = parse_datetime('2012-07-01 0:0:0')
 
 class Camaraws:
     """Requisições para os Web Services da Câmara dos Deputados
@@ -100,6 +101,7 @@ class ImportadorCamara:
 
         self.verbose = verbose
         self.votadas_ids = self._parse_votadas() # id/sigla/num/ano das proposições que tiveram votações
+        self.partidos = {}
 
     def _converte_data(self, data_str, hora_str='00:00'):
         """Converte string 'd/m/a' para objeto datetime; retona None se data_str é inválido
@@ -164,7 +166,7 @@ class ImportadorCamara:
         prop.save()
         return prop  
 
-    def _vot_from_xml(self, vot_xml, prop):
+    def _votacao_from_xml(self, vot_xml, prop):
         """Salva votação no banco de dados.
 
         Atributos:
@@ -183,10 +185,107 @@ class ImportadorCamara:
         votacao.data = datetime
         votacao.proposicao = prop
         votacao.casa_legislativa = self.camara_dos_deputados
+        votacao.save()
+
+        for voto_xml in vot_xml:
+            voto = self._voto_from_xml(voto_xml)
+            votacao.votos.add(voto)
 
         votacao.save()
         return votacao
        
+    def _voto_from_xml(self, voto_xml):
+        """Salva voto no banco de dados.
+
+        Atributos:
+            voto_xml -- XML representando voto (objeto etree)
+
+        Retorna:
+            objeto do tipo Voto
+        """
+        voto = models.Voto()
+
+        opcao_str = voto_xml.get('Voto')
+        voto.opcao = self._opcao_xml_to_model(opcao_str)
+        leg = self._legislatura(voto_xml)
+        voto.legislatura = leg
+        voto.save()
+
+        return voto
+
+    def _opcao_xml_to_model(self, voto):
+        """Interpreta voto como tá no XML e responde em adequação a modelagem em models.py"""
+
+        if voto == 'Não':
+            return models.NAO
+        elif voto == 'Sim':
+            return models.SIM
+        elif voto == 'Obstrução':
+            return models.OBSTRUCAO
+        elif voto == 'Abstenção':
+            return models.ABSTENCAO
+        else:
+            print 'tipo de voto (%s) não mapeado!' % voto
+            return models.ABSTENCAO
+
+    def _legislatura(self, voto_xml):
+        """Salva legislatura no banco de dados.
+
+        Atributos:
+            voto_xml -- XML representando voto (objeto etree)
+
+        Retorna:
+            objeto do tipo Legislatura
+        """
+        partido = self._partido(voto_xml.get('Partido'))
+        votante = self._votante(voto_xml.get('Nome'))
+
+        legs = models.Legislatura.objects.filter(parlamentar=votante,partido=partido,casa_legislativa=self.camara_dos_deputados)
+        # TODO acima filtrar tb por inicio e fim
+        if legs:
+            leg = legs[0]
+        else:
+            leg = models.Legislatura()
+            leg.parlamentar = votante    
+            leg.partido = partido
+            leg.localidade = voto_xml.get('UF')
+            leg.casa_legislativa = self.camara_dos_deputados
+            leg.inicio = INICIO_PERIODO # TODO refinar
+            leg.fim = FIM_PERIODO # TODO refinar
+            leg.save()
+
+        return leg
+
+    def _partido(self, nome_partido):
+        nome_partido = nome_partido.strip()
+        partidos = models.Partido.objects.filter(nome=nome_partido)
+        if partidos:
+            partido = partidos[0]
+        else:
+            partido = models.Partido.from_nome(nome_partido)
+            if partido == None:
+                print 'Não achou o partido %s' % nome_partido
+                partido = models.Partido.get_sem_partido()
+            else:
+                partido.save()
+                if self.verbose:
+                    print 'Partido %s salvo' % partido
+        return partido
+
+    def _votante(self, nome_dep):
+        votantes = models.Parlamentar.objects.filter(nome=nome_dep)
+        if votantes:
+            votante = votantes[0]
+        else:
+            votante = models.Parlamentar()
+            votante.save()
+            #votante.id_parlamentar = 
+            votante.nome = nome_dep
+            #votante.genero = 
+            votante.save()
+            if self.verbose: 
+                print 'Deputado %s salvo' % votante
+        return votante
     
     def importar(self):
 
@@ -201,7 +300,7 @@ class ImportadorCamara:
             prop = self._prop_from_xml(prop_xml, id_prop)
             vots_xml = camaraws.obter_votacoes(sigla, num, ano)
             for child in vots_xml.find('Votacoes'):
-                votacao = self._vot_from_xml(child, prop)
+                votacao = self._votacao_from_xml(child, prop)
         
 
 def main():
