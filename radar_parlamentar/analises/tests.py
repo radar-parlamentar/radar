@@ -18,8 +18,10 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from analises import analise
+from analise import JsonAnaliseGenerator
 from importadores import cmsp
 from modelagem import models
+import re
 
 class AnaliseTest(TestCase):
 
