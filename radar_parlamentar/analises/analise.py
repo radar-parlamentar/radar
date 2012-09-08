@@ -21,10 +21,8 @@ from __future__ import unicode_literals
 import numpy
 import pca
 from django.utils.dateparse import parse_datetime
-from django.db import connection
 from modelagem import models
 from matplotlib.pyplot import figure, show, scatter, text
-from matplotlib.patches import Ellipse
 import matplotlib.colors
 from math import hypot, atan2, pi
 
@@ -72,13 +70,13 @@ class Analise:
         """
 
         if ini == None and fim == None:
-            votacoes = models.Votacao.objects.filter(casa_legislativa=casa) 
+            votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa) 
         if ini == None and fim != None:
-            votacoes = models.Votacao.objects.filter(casa_legislativa=casa).filter(data__lte=fim)
+            votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa).filter(data__lte=fim)
         if ini != None and fim == None:
-            votacoes = models.Votacao.objects.filter(casa_legislativa=casa).filter(data__gte=ini)
+            votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa).filter(data__gte=ini)
         if ini != None and fim != None:
-            votacoes = models.Votacao.objects.filter(casa_legislativa=casa).filter(data__gte=ini, data__lte=fim)
+            votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa).filter(data__gte=ini, data__lte=fim)
         return votacoes
 
     def _inicializa_tamanhos_partidos(self):
@@ -87,7 +85,6 @@ class Analise:
         Este dicionário é também salvo no atributo self.mapa_tamanho_partidos
         """
         self.tamanho_partidos = {}
-        cursor = connection.cursor()
         for partido in self.partidos:
             tamanho = len(models.Legislatura.objects.filter(partido=partido, casa_legislativa=self.casa_legislativa))
             self.tamanhos_partidos[partido.nome] = tamanho
@@ -184,13 +181,13 @@ class Analise:
             return hypot(x, y), atan2(y, x)
     
     def _matrot(self,graus):
-       """ Retorna matriz de rotação 2x2 que roda os eixos em graus (0 a 360) no sentido anti-horário (como se os pontos girassem no sentido horário em torno de eixos fixos).
-       """ 
-       graus = float(graus)
-       rad = numpy.pi * graus/180.
-       c = numpy.cos(rad)
-       s = numpy.sin(rad)
-       return numpy.array([[c,-s],[s,c]])
+        """ Retorna matriz de rotação 2x2 que roda os eixos em graus (0 a 360) no sentido anti-horário (como se os pontos girassem no sentido horário em torno de eixos fixos).
+        """ 
+        graus = float(graus)
+        rad = numpy.pi * graus/180.
+        c = numpy.cos(rad)
+        s = numpy.sin(rad)
+        return numpy.array([[c,-s],[s,c]])
 
     def espelha_ou_roda(self, dados_fixos):
         print ' '
@@ -334,7 +331,7 @@ class Analise:
 
         colormap_partidos = matplotlib.colors.ListedColormap(lista_cores_partidos,name='partidos')
 
-        ax = fig.add_subplot(111, autoscale_on=True) #, xlim=(-1,5), ylim=(-5,3))
+        fig.add_subplot(111, autoscale_on=True) #, xlim=(-1,5), ylim=(-5,3))
         x = []
         y = []
         tamanhos = []

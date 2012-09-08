@@ -29,7 +29,6 @@ from modelagem import models
 import re
 import xml.etree.ElementTree as etree
 import urllib2
-import io
 
 RESOURCES_FOLDER = 'importadores/dados/'
 VOTADAS_FILE_PATH = RESOURCES_FOLDER + 'votadas.txt' 
@@ -184,7 +183,6 @@ class ImportadorCamara:
         datetime = self._converte_data(data_str, hora_str)
         votacao.data = datetime
         votacao.proposicao = prop
-        votacao.casa_legislativa = self.camara_dos_deputados
         votacao.save()
 
         for voto_xml in vot_xml:
@@ -300,7 +298,7 @@ class ImportadorCamara:
             prop = self._prop_from_xml(prop_xml, id_prop)
             vots_xml = camaraws.obter_votacoes(sigla, num, ano)
             for child in vots_xml.find('Votacoes'):
-                votacao = self._votacao_from_xml(child, prop)
+                self._votacao_from_xml(child, prop)
         
 
 def main():

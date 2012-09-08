@@ -214,7 +214,7 @@ class ImportadorCMSP:
                     else:
                         prop = models.Proposicao()
                         prop.sigla, prop.numero, prop.ano = self.tipo_num_anoDePropNome(prop_nome)
-
+                        prop.casa_legislativa = self.cmsp
                         proposicoes[prop_nome] = prop
 
                     if self.verbose:
@@ -223,7 +223,6 @@ class ImportadorCMSP:
                     vot = models.Votacao()
                     vot.save() # só pra criar a chave primária e poder atribuir o votos
                     vot.id_vot = vot_tree.get('VotacaoID')
-                    vot.casa_legislativa = self.cmsp
                     vot.descricao = resumo
                     vot.data = self._converte_data(vot_tree.get('DataDaSessao'))
                     vot.resultado = vot_tree.get('Resultado')

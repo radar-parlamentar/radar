@@ -227,7 +227,6 @@ class Votacao(models.Model):
         id_vot - string identificadora de acordo a fonte de dados
         descricao, resultado -- strings
         data -- data da votação (tipo date)
-        casa_legislativa -- objeto do tipo CasaLegislativa
         proposicao -- objeto do tipo Proposicao
         votos -- lista de objetos do tipo Voto
 
@@ -239,7 +238,6 @@ class Votacao(models.Model):
     descricao = models.TextField(blank=True)
     data = models.DateField(blank=True, null=True)
     resultado = models.TextField(blank=True)
-    casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
     proposicao = models.ForeignKey(Proposicao, null=True)
     votos = models.ManyToManyField(Voto, null=True) # votações simbólicas não tem votos
     # TODO Devia ser OneToMany, e não ManyToMany!
