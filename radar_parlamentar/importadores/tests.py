@@ -87,7 +87,7 @@ class CamaraTest(TestCase):
 
     def test_casa_legislativa(self):
 
-        camara = models.CasaLegislativa.objects.get(nome_curto='camara')
+        camara = models.CasaLegislativa.objects.get(nome_curto='cdep')
         self.assertEquals(camara.nome, 'Câmara dos Deputados')
 
     def test_prop_cod_florestal(self):

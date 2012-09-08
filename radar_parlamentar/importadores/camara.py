@@ -121,7 +121,7 @@ class ImportadorCamara:
 
         camara_dos_deputados = models.CasaLegislativa()
         camara_dos_deputados.nome = 'Câmara dos Deputados'
-        camara_dos_deputados.nome_curto = 'camara'
+        camara_dos_deputados.nome_curto = 'cdep'
         camara_dos_deputados.esfera = models.FEDERAL
         camara_dos_deputados.save()
         return camara_dos_deputados
