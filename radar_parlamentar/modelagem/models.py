@@ -110,21 +110,6 @@ class Partido(models.Model):
     def __unicode__(self):
         return '%s-%s' % (self.nome, self.numero)
 
-
-class HistoricoTamanho(models.Model):
-
-    tamanho = models.IntegerField()
-    inicio = models.DateField(blank=True)
-    fim = models.DateField(blank=True)
-
-
-class Composicao(models.Model):
-    """Participação de um partido na casa"""
-
-    partido = models.ForeignKey(Partido)
-    historico = models.ManyToManyField(HistoricoTamanho)
-
-
 class CasaLegislativa(models.Model):
     """Instituição tipo Senado, Câmara etc
 
@@ -133,16 +118,12 @@ class CasaLegislativa(models.Model):
         nome_curto -- string; será usado pra gerar links. ex 'cmsp' para 'Câmara Municipal de São Paulo' 
         esfera -- string (municipal, estadual, federal)
         local -- string; ex 'São Paulo' para a CMSP
-        tamanhos -- lista de objetos do tipo HistoricoTamanho representando quantas cadeiras possui a casa
-        composicao -- lista de objetos do tipo Composicao
     """
 
     nome = models.CharField(max_length=100)
     nome_curto = models.CharField(max_length=50, unique=True)
     esfera = models.CharField(max_length=10, choices=ESFERAS)
     local = models.CharField(max_length=100)
-    tamanhos = models.ManyToManyField(HistoricoTamanho, null=True)
-    composicoes = models.ManyToManyField(Composicao, null=True)
 
     def __unicode__(self):
         return self.nome
@@ -310,15 +291,15 @@ class VotosAgregados:
             OBSTRUCAO e AUSENTE contam como um voto ABSTENCAO
         """
         if (voto == SIM):
-          self.sim += 1
+            self.sim += 1
         if (voto == NAO):
-          self.nao += 1
+            self.nao += 1
         if (voto == ABSTENCAO):
-          self.abstencao += 1
+            self.abstencao += 1
         if (voto == OBSTRUCAO):
-          self.abstencao += 1
+            self.abstencao += 1
         if (voto == AUSENTE):
-          self.abstencao += 1
+            self.abstencao += 1
 
     def total(self):
         return self.sim + self.nao + self.abstencao
