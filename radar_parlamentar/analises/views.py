@@ -22,26 +22,26 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404, redirect
 from modelagem import models
 from analise import JsonAnaliseGenerator
+import logging
+
+logger = logging.getLogger("radar")
 
 def analises(request):
-    return render_to_response('analise.html')
+    return render_to_response('analises.html')
 
-def cmsp(request):
-
+def analise(request, nome_curto_casa_legislativa):
     """ Retorna a lista de partidos para montar a legenda do gráfico"""
+    
     partidos = models.Partido.objects.order_by('numero').all()
-    return render_to_response('cmsp.html', {'partidos':partidos})
+    return render_to_response('analise.html', {'nome_curto_casa_legislativa':nome_curto_casa_legislativa, 'partidos':partidos})
 
-def json_cmsp(request):
-
-    cmsp = models.CasaLegislativa.objects.get(nome_curto='cmsp')
+def json_pca(request, nome_curto_casa_legislativa):
+    """Retorna o JSON com as coordenadas do gráfico PCA"""
+    
+    casa_legislativa = models.CasaLegislativa.objects.get(nome_curto=nome_curto_casa_legislativa)
     gen = JsonAnaliseGenerator()
-    json = gen.get_json(cmsp)
+    json = gen.get_json(casa_legislativa)
     return HttpResponse(json, mimetype='application/json')
-
-def cdep(request):
-        return render_to_response('cdep.html')
-
 
 def senf(request):
         return render_to_response('senf.html')

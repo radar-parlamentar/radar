@@ -23,11 +23,9 @@ urlpatterns = patterns('',
     url(r'^sim-voto-aberto/$', 'radar_parlamentar.views.votoaberto'),
 
     #Serivço que retorna conteúdo para plotar o mapa
-    url(r'^analises/cmsp/json/$', 'analises.views.json_cmsp'),
-    url(r'^analises/cmsp/$', 'analises.views.cmsp'),
-    url(r'^analises/cdep/$', 'analises.views.cdep'),
-    url(r'^analises/senf/$', 'analises.views.senf'),
     url(r'^analises/$', 'analises.views.analises'),
+    url(r'^analises/analise/(?P<nome_curto_casa_legislativa>\w*)/$', 'analises.views.analise'),
+    url(r'^analises/analise/(?P<nome_curto_casa_legislativa>\w*)/json_pca/$', 'analises.views.json_pca'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

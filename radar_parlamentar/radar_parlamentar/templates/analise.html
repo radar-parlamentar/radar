@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Faça sua Análise - opções
+    Faça sua Análise - Câmara Municipal de São Paulo
 {% endblock title %}
 
-
 {% block extrascripts %}
+    <script style="display: none;" src="/static/files/codes/js/raphael-min.js"></script>
 {% endblock extrascripts %}
 
 {% block extrahead %}
+    window.GlobalCoord = {}
     $(function() {
         $('#analises').addClass('active');
     });
@@ -28,19 +29,44 @@
 
 {% block breadcrumbs %}
     <li><a href="/index/">Home</a> &raquo;</li>
-    <li><a href="/analises/">Análises</a></li>
+    <li><a href="/analises/">Análises</a> &raquo;</li>
+    <li><a href="/analises/analise/{{nome_curto_casa_legislativa}}">{{nome_curto_casa_legislativa}}</a></li>
 {% endblock breadcrumbs %}
 
 {% block content %}
-    <article class="aboutDesc">
-        <p>
-            Escolha qual casa legislativa deseja analisar, diretamente a partir do menu principal.
-       </p>
+    <article id="descricao" class="inwrap">
+        TODO: este texto deve ter uma fonte dinâmica.
+        Aqui é apresentada a animação das análises realizadas com as votações da Câmara Municipal de São Paulo (CMSP).<br/>
+        A CMSP disponibilizou recentemente várias informações em seu site, dentre elas as votações a partir do segundo semestre de 2010.<br/>
+        O gráfico abaixo contém inicialmente a plotagem da análise dos dados do segundo semestre de 2010. Ao selecionar algum outro semestre na caixa de seleção abaixo e clicar em Animar, você poderá observar a movimentação dos partidos de um período até o outro.<br/>
+        À direita do gráfico você encontra a legenda com o número dos partidos e a sigla da legenda.<br/>
+        O tamanho de cada partido no gráfico representa a quantidade de vereadores que cada partido possui.<br/>
+        Veja as movimentações e tire suas próprias conclusões.<br/><br/>
     </article>
+        <div id="form">
+            <label for="periodos" ACCESSKEY="P">Período</label> <select id="periodos">
+            </select>
+            <button id="animar">Animar</button>
+            <br/><br/>
+        </div>
+        <div id="legenda-cmsp" class="list">
+            <b>LEGENDA</b>
+            <ul class="links">
+                <li></li>
+                {% for partido in partidos %}
+                    <li>{{partido.numero}} | {{partido.nome}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="animacao"></div>
 {% endblock content %}
 
+
 {% block extrascriptsend %}
+    window.GlobalCoord=$.ajax("json_pca", {async:false}).responseText
 {% endblock extrascriptsend %}
 
 {% block extrajsend %}
+    <script style="display: none;" src="/static/files/codes/js/radar_parlamentar_plot.js"></script>
 {% endblock extrajsend %}
+
