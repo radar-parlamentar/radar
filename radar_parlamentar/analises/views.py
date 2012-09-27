@@ -33,7 +33,9 @@ def analise(request, nome_curto_casa_legislativa):
     """ Retorna a lista de partidos para montar a legenda do gráfico"""
     
     partidos = models.Partido.objects.order_by('numero').all()
-    return render_to_response('analise.html', {'nome_curto_casa_legislativa':nome_curto_casa_legislativa, 'partidos':partidos})
+    casa_legislativa = models.CasaLegislativa.objects.get(nome_curto=nome_curto_casa_legislativa)
+    
+    return render_to_response('analise.html', {'casa_legislativa':casa_legislativa, 'partidos':partidos})
 
 def json_pca(request, nome_curto_casa_legislativa):
     """Retorna o JSON com as coordenadas do gráfico PCA"""
