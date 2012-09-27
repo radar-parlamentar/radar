@@ -27,6 +27,9 @@ import matplotlib.colors
 from math import hypot, atan2, pi
 from models import PosicaoPartido
 from models import PeriodoAnalise
+import logging
+
+logger = logging.getLogger("radar")
 
 class Analise:
 
@@ -105,12 +108,10 @@ class Analise:
 
         # numpy.zeros((n,m)) gera matriz
         self.vetores_votacao = numpy.zeros((len(self.partidos), self.num_votacoes))
-        self.debug = numpy.zeros(self.num_votacoes)
 
         iv =-1
         for v in self.votacoes:
             iv += 1
-            self.debug[iv] = v.id_vot
             mapa_votos = v.por_partido() # mapa: chave é nome do partido, e valor é VotoPartido
             ip =-1
             for p in self.partidos:
@@ -394,7 +395,9 @@ class JsonAnaliseGenerator:
             a20112 = Analise(casa, '2011-07-02', '2012-01-01')
             a20121 = Analise(casa, '2011-01-02', None)
             analises = [a20111, a20112, a20121]
+            logger.debug("Going to PCA")
             a20102.partidos_2d()
+            logger.debug('First PCA calculated')
             coadunados = [a20102.coordenadas]
             for a in analises:
                 a.partidos_2d()
