@@ -388,8 +388,7 @@ class JsonAnaliseGenerator:
     def _faz_analises(self, casa):
         """casa -- objeto do tipo CasaLegislativa"""
         
-        #if not PeriodoAnalise.objects.all(): # Se a análise nunca foi feita, fazer e salvar no bd.
-        if 1: # if 1 para sempre refazer a analise, em modo teste.
+        if not PeriodoAnalise.objects.filter(casa_legislativa=casa): # Se a análise nunca foi feita, fazer e salvar no bd.
             a20102 = Analise(casa, None, '2011-01-01')
             a20111 = Analise(casa, '2011-01-02', '2011-07-01')
             a20112 = Analise(casa, '2011-07-02', '2012-01-01')
