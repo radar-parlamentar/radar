@@ -19,7 +19,7 @@
 """módulo cmsp (Câmara Municipal de São Paulo)
 
 Classes:
-    ImportadorCMSP -- salva os dados dos arquivos XML da cmsp no banco de dados
+    ImportadorCMSP
 """
 
 from __future__ import unicode_literals
@@ -27,6 +27,9 @@ from django.utils.dateparse import parse_datetime
 from modelagem import models
 import re
 import xml.etree.ElementTree as etree
+
+# data em que os arquivos XMLs foram atualizados
+ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
 
 # arquivos com os dados fornecidos pela cmsp
 XML2010 = 'importadores/dados/cmsp2010.xml'
@@ -54,6 +57,7 @@ FIM_PERIODO = parse_datetime('2012-07-01 0:0:0')
 #       A nao ser q, a cada voto, o parlamentar esteja relacionada tb a todas as suas legislaturas.
 
 class ImportadorCMSP:
+    """Salva os dados dos arquivos XML da cmsp no banco de dados"""
 
     def __init__(self, verbose=False):
         """verbose (booleano) -- ativa/desativa prints na tela"""
@@ -72,6 +76,7 @@ class ImportadorCMSP:
         cmsp.nome_curto = 'cmsp'
         cmsp.esfera = models.MUNICIPAL
         cmsp.local = 'São Paulo - SP'
+        cmsp.atualizacao = ULTIMA_ATUALIZACAO
         cmsp.save()
         return cmsp
 
@@ -231,11 +236,17 @@ class ImportadorCMSP:
                     vot.proposicao = prop
                     if self.verbose:
                         print 'Votação %s salva' % vot
+                    else:
+                        self.progresso()
                     vot.save()
 
                     votacoes.append(vot)
 
         return votacoes
+    
+    def progresso(self):
+        """Indica progresso na tela"""
+        print 'x',
 
     def importar(self):
         """Salva informações no banco de dados do Django

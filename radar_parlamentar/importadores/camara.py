@@ -30,6 +30,9 @@ import re
 import xml.etree.ElementTree as etree
 import urllib2
 
+# data em que a lista votadas.txt foi atualizada
+ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
+
 RESOURCES_FOLDER = 'importadores/dados/'
 VOTADAS_FILE_PATH = RESOURCES_FOLDER + 'votadas.txt' 
 
@@ -124,6 +127,7 @@ class ImportadorCamara:
         camara_dos_deputados.nome = 'Câmara dos Deputados'
         camara_dos_deputados.nome_curto = 'cdep'
         camara_dos_deputados.esfera = models.FEDERAL
+        camara_dos_deputados.atualizacao = ULTIMA_ATUALIZACAO
         camara_dos_deputados.save()
         return camara_dos_deputados
 
@@ -190,7 +194,12 @@ class ImportadorCamara:
             self._voto_from_xml(voto_xml, votacao)
 
         votacao.save()
+        self.progresso()
         return votacao
+    
+    def progresso(self):
+        """Indica progresso na tela"""
+        print 'x',
        
     def _voto_from_xml(self, voto_xml, votacao):
         """Salva voto no banco de dados.

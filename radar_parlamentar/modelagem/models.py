@@ -118,12 +118,14 @@ class CasaLegislativa(models.Model):
         nome_curto -- string; será usado pra gerar links. ex 'cmsp' para 'Câmara Municipal de São Paulo' 
         esfera -- string (municipal, estadual, federal)
         local -- string; ex 'São Paulo' para a CMSP
+        atualizacao -- data em que a base de dados foi atualizada pea última vez com votações desta casa
     """
 
     nome = models.CharField(max_length=100)
     nome_curto = models.CharField(max_length=50, unique=True)
     esfera = models.CharField(max_length=10, choices=ESFERAS)
     local = models.CharField(max_length=100)
+    atualizacao = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
         return self.nome
