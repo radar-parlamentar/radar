@@ -19,8 +19,8 @@
 """módulo camara (Câmara dos Deputados)
 
 Classes:
-    Camaraws -- acesso aos web services com os dados da câmara dos deputados
-    ImportadorCamara -- salva os dados dos web services da Câmara dos Deputados no banco de dados
+    Camaraws 
+    ImportadorCamara
 """
 
 from __future__ import unicode_literals
@@ -40,7 +40,7 @@ INICIO_PERIODO = parse_datetime('2004-01-01 0:0:0')
 FIM_PERIODO = parse_datetime('2012-07-01 0:0:0')
 
 class Camaraws:
-    """Requisições para os Web Services da Câmara dos Deputados
+    """Acesso aos Web Services da Câmara dos Deputados
     Métodos:
         obter_proposicao(id_prop)
         obter_votacoes(sigla, num, ano)
@@ -94,6 +94,7 @@ class Camaraws:
 
 
 class ImportadorCamara:
+    """Salva os dados dos web services da Câmara dos Deputados no banco de dados"""
 
     def __init__(self, verbose=False):
         """verbose (booleano) -- ativa/desativa prints na tela"""
@@ -186,17 +187,17 @@ class ImportadorCamara:
         votacao.save()
 
         for voto_xml in vot_xml:
-            voto = self._voto_from_xml(voto_xml)
-            votacao.votos.add(voto)
+            self._voto_from_xml(voto_xml, votacao)
 
         votacao.save()
         return votacao
        
-    def _voto_from_xml(self, voto_xml):
+    def _voto_from_xml(self, voto_xml, votacao):
         """Salva voto no banco de dados.
 
         Atributos:
             voto_xml -- XML representando voto (objeto etree)
+            votacao -- objeto do tipo Votacao
 
         Retorna:
             objeto do tipo Voto
@@ -207,6 +208,7 @@ class ImportadorCamara:
         voto.opcao = self._opcao_xml_to_model(opcao_str)
         leg = self._legislatura(voto_xml)
         voto.legislatura = leg
+        voto.votacao = votacao
         voto.save()
 
         return voto

@@ -170,21 +170,22 @@ class ImportadorCMSP:
 
         return leg
 
-    def _votos_from_tree(self, vot_tree):
-        """Extrai lista de votos do XML da votação.
-           Preenche tambem um vetor contendo a descricao de cada parlamentar."""
-        votos = []
+    def _votos_from_tree(self, vot_tree, votacao):
+        """Extrai lista de votos do XML da votação e as salva no banco de dados.
+        
+        Argumentos:
+           vot_tree -- etree dos votos
+           votacao -- objeto do tipo Votacao
+        """
         for ver_tree in vot_tree.getchildren():
             if ver_tree.tag == 'Vereador':
                 leg = self._legislatura(ver_tree)
                 voto = models.Voto()
                 voto.legislatura = leg
+                voto.votacao = votacao
                 voto.opcao = self._voto_cmsp_to_model(ver_tree.get('Voto'))
                 if voto.opcao != None:
-                    votos.append(voto)
-                    voto.save() # só pra criar a chave primária, pra poder relacionar com a votação
-        return votos
-              
+                    voto.save() 
 
     def _from_xml_to_bd(self, xml_file):
         """Salva no banco de dados do Django e retorna lista das votações"""
@@ -226,7 +227,7 @@ class ImportadorCMSP:
                     vot.descricao = resumo
                     vot.data = self._converte_data(vot_tree.get('DataDaSessao'))
                     vot.resultado = vot_tree.get('Resultado')
-                    vot.votos = self._votos_from_tree(vot_tree)
+                    self._votos_from_tree(vot_tree, vot)
                     vot.proposicao = prop
                     if self.verbose:
                         print 'Votação %s salva' % vot

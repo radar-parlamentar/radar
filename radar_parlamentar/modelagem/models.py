@@ -205,21 +205,6 @@ class Proposicao(models.Model):
         return "[%s] %s" % (self.nome(), self.ementa) 
 
 
-class Voto(models.Model):
-    """Um voto dado por um parlamentar em uma votação.
-
-    Atributos:
-        legislatura -- objeto do tipo Legislatura
-        opcao -- qual foi o voto do parlamentar (sim, não, abstenção, obstrução, não votou)
-    """
-
-    legislatura = models.ForeignKey(Legislatura)
-    opcao = models.CharField(max_length=10, choices=OPCOES)
-
-    def __unicode__(self):
-        return "%s votou %s" % (self.parlamentar, self.opcao)
-
-
 class Votacao(models.Model):
     """Votação em planário.
     
@@ -228,9 +213,9 @@ class Votacao(models.Model):
         descricao, resultado -- strings
         data -- data da votação (tipo date)
         proposicao -- objeto do tipo Proposicao
-        votos -- lista de objetos do tipo Voto
 
     Métodos:
+        votos() 
         por_partido()
     """
 
@@ -239,8 +224,10 @@ class Votacao(models.Model):
     data = models.DateField(blank=True, null=True)
     resultado = models.TextField(blank=True)
     proposicao = models.ForeignKey(Proposicao, null=True)
-    votos = models.ManyToManyField(Voto, null=True) # votações simbólicas não tem votos
-    # TODO Devia ser OneToMany, e não ManyToMany!
+    
+    def votos(self):
+        """Retorna os votos da votação (depende do banco de dados)"""
+        return self.voto_set.all()
 
     def por_partido(self):
         """Retorna votos agregados por partido.
@@ -248,7 +235,7 @@ class Votacao(models.Model):
         Retorno: um dicionário cuja chave é o nome do partido (string) e o valor é um VotoPartido
         """
         dic = {}
-        for voto in self.votos.all():
+        for voto in self.votos():
             # TODO poderia ser mais complexo: checar se a data da votação bate com o período da legislatura mais recente
             part = voto.legislatura.partido.nome
             if not dic.has_key(part):
@@ -265,7 +252,21 @@ class Votacao(models.Model):
         else:
             return self.descricao
 
+class Voto(models.Model):
+    """Um voto dado por um parlamentar em uma votação.
 
+    Atributos:
+        legislatura -- objeto do tipo Legislatura
+        opcao -- qual foi o voto do parlamentar (sim, não, abstenção, obstrução, não votou)
+    """
+
+    votacao = models.ForeignKey(Votacao)
+    legislatura = models.ForeignKey(Legislatura)
+    opcao = models.CharField(max_length=10, choices=OPCOES)
+
+    def __unicode__(self):
+        return "%s votou %s" % (self.parlamentar, self.opcao)
+    
 class VotosAgregados:
     """Um conjunto de votos.
 
