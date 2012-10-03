@@ -48,16 +48,17 @@
             <button id="animar">Animar</button>
             <br/><br/>
         </div>
-        <div id="legenda-cmsp" class="list">
-            <b>LEGENDA</b>
-            <ul class="links">
-                <li></li>
-                {% for partido in partidos %}
-                    <li>{{partido.numero}} | {{partido.nome}}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div id="animacao"></div>
+	<div id="legenda-cmsp" class="list">
+	    <b>LEGENDA</b>
+	    <ul class="links">
+		<li></li>
+		{% for partido in partidos %}
+		    <li>{{partido.numero}} | {{partido.nome}}</li>
+		{% endfor %}
+	    </ul>
+	</div>
+	<div id="animacao"></div>
+	<div style="clear:right"/>
 {% endblock content %}
 
 
