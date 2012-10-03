@@ -3810,6 +3810,7 @@ port+.pager{margin-top: 40px;}
     float:right;
     text-align: center;
     margin-right:-20px;
+    width:101px;
 }
 #legenda-cmsp ul {
     text-align: left;
