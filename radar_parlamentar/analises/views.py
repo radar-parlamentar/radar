@@ -34,8 +34,14 @@ def analise(request, nome_curto_casa_legislativa):
     
     partidos = models.Partido.objects.order_by('numero').all()
     casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
-    
-    return render_to_response('analise.html', {'casa_legislativa':casa_legislativa, 'partidos':partidos})
+    proposicoes = casa_legislativa.proposicao_set.all()
+    num_votos = 0
+    for proposicao in proposicoes:
+	votacoes = proposicao.votacao_set.all()
+	for v in votacoes:
+	    num_votos += v.voto_set.count()
+
+    return render_to_response('analise.html', {'casa_legislativa':casa_legislativa, 'partidos':partidos,'num_votos':num_votos})
 
 def json_pca(request, nome_curto_casa_legislativa):
     """Retorna o JSON com as coordenadas do gráfico PCA"""
