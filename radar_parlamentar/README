@@ -25,3 +25,6 @@ Nestes casos, altere os testes para utilziarem os novos valores gerados.
 Mas faça isso apenas quando você realmente esperar que sua alteração vá alterar esses valores.
 (exemplo: quando consertei um bug que fez com que considerassemos algumas votações a mais,
 as posições dos partidos no gráfico foram _ligeiramente_ alteradas, conforme esperado)
+
+O banco de dados (.db) está no .gitignore, portanto para fazer o commit de alguma alteração do banco:
+git add -f radar_parlamentar.db
