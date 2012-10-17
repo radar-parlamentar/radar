@@ -130,6 +130,14 @@ class CasaLegislativa(models.Model):
     def __unicode__(self):
         return self.nome
 
+    def num_votacao(self,periodo_inicial=None,periodo_final=None): 
+	votacoes = Votacao.objects.filter(proposicao__casa_legislativa=self)
+	if periodo_inicial != None:
+	    votacoes =  votacoes.filter(data__gte=periodo_inicial)
+	if periodo_final != None:
+	    votacoes = votacoes.filter(data__lte=periodo_final)
+	return votacoes.count()
+
 class Parlamentar(models.Model):
     """Um parlamentar.
 
