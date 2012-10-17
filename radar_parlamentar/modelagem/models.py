@@ -130,13 +130,13 @@ class CasaLegislativa(models.Model):
     def __unicode__(self):
         return self.nome
 
-    def num_votacao(self,periodo_inicial=None,periodo_final=None): 
+    def num_votacao(self,data_inicial=None,data_final=None): 
 	votacoes = Votacao.objects.filter(proposicao__casa_legislativa=self)
 	from django.utils.dateparse import parse_datetime
-	if periodo_inicial != None:
-	    ini = parse_datetime('%s 0:0:0' % data_inicio)
+	if data_inicial != None:
+	    ini = parse_datetime('%s 0:0:0' % data_inicial)
 	    votacoes =  votacoes.filter(data__gte=ini)
-	if periodo_final != None:
+	if data_final != None:
 	    fim = parse_datetime('%s 0:0:0' % data_final)
 	    votacoes = votacoes.filter(data__lte=fim)
 	return votacoes.count()
