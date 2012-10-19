@@ -267,18 +267,14 @@ class ImportadorCamara:
 
     def _partido(self, nome_partido):
         nome_partido = nome_partido.strip()
-        partidos = models.Partido.objects.filter(nome=nome_partido)
-        if partidos:
-            partido = partidos[0]
+        partido = models.Partido.from_nome(nome_partido)
+        if partido == None:
+            print 'Não achou o partido %s' % nome_partido
+            partido = models.Partido.get_sem_partido()
         else:
-            partido = models.Partido.from_nome(nome_partido)
-            if partido == None:
-                print 'Não achou o partido %s' % nome_partido
-                partido = models.Partido.get_sem_partido()
-            else:
-                partido.save()
-                if self.verbose:
-                    print 'Partido %s salvo' % partido
+            partido.save()
+            if self.verbose:
+                print 'Partido %s salvo' % partido
         return partido
 
     def _votante(self, nome_dep):

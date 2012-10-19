@@ -66,7 +66,6 @@ class ImportadorCMSP:
         self.cmsp = self._gera_casa_legislativa()
         
         self.parlamentares = {} # mapeia um ID de parlamentar incluso em alguma votacao a um objeto Parlamentar.
-        self.partidos = {} # chave: nome partido; valor: objeto Partido
 
     def _gera_casa_legislativa(self):
         """Gera objeto do tipo CasaLegislativa representando a CMSP"""
@@ -124,18 +123,14 @@ class ImportadorCMSP:
 
     def _partido(self, nome_partido):
         nome_partido = nome_partido.strip()
-        if self.partidos.has_key(nome_partido):
-            partido = self.partidos[nome_partido]
+        partido = models.Partido.from_nome(nome_partido)
+        if partido == None:
+            print 'Não achou o partido %s' % nome_partido
+            partido = models.Partido.get_sem_partido()
         else:
-            partido = models.Partido.from_nome(nome_partido)
-            if partido == None:
-                print 'Não achou o partido %s' % nome_partido
-                partido = models.Partido.get_sem_partido()
-            else:
-                partido.save()
-                if self.verbose:
-                    print 'Partido %s salvo' % partido
-            self.partidos[nome_partido] = partido
+            partido.save()
+            if self.verbose:
+                print 'Partido %s salvo' % partido
         return partido
 
     def _votante(self, ver_tree):
