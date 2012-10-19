@@ -377,7 +377,7 @@ class JsonAnaliseGenerator:
         for posicao in posicoes.all():
             nome_partido = posicao.partido.nome
             num = posicao.partido.numero
-            tamanho = analise.tamanhos_partidos[posicao.partido.nome]
+            tamanho = 1 # analise.tamanhos_partidos[posicao.partido.nome] Issue #44
             x = round(posicao.x, 2)
             y = round(posicao.y, 2)
             json += '"%s":{"numPartido":%s, "tamanhoPartido":%s, "x":%s, "y":%s}, ' % (nome_partido, num, tamanho, x, y)
@@ -394,9 +394,7 @@ class JsonAnaliseGenerator:
             a20112 = Analise(casa, '2011-07-02', '2012-01-01')
             a20121 = Analise(casa, '2011-01-02', None)
             analises = [a20111, a20112, a20121]
-            logger.debug("Going to PCA")
             a20102.partidos_2d()
-            logger.debug('First PCA calculated')
             coadunados = [a20102.coordenadas]
             for a in analises:
                 a.partidos_2d()
