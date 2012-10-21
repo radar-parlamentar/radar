@@ -901,7 +901,7 @@ $(document).ready(function(){
 $(document).ready(function(){
     var lColor = function(){
         var cls = (Cookie.get('rstarLink')) ? Cookie.get('rstarLink') : 'default';
-        $('#colors').attr('href', 'files/codes/css/colors/'+cls+'.css');
+        $('#colors').attr('href', '/files/codes/css/colors/'+cls+'.css');
         $('.'+cls, '#themeColors').parent().addClass('active').siblings().removeClass('active');
     };
 
