@@ -31,7 +31,7 @@ import logging
 
 logger = logging.getLogger("radar")
 
-class Analise:
+class Analisador:
 
     def __init__(self, casa_legislativa, data_inicio=None, data_fim=None, votacoes=None, partidos=None):
         """Argumentos:
@@ -358,7 +358,7 @@ class JsonAnaliseGenerator:
     
         periodos = self._faz_analises(casa_legislativa)
     
-        analise = Analise(casa_legislativa)
+        analise = Analisador(casa_legislativa)
         analise._inicializa_tamanhos_partidos()
     
         i = 0
@@ -389,10 +389,10 @@ class JsonAnaliseGenerator:
         """casa -- objeto do tipo CasaLegislativa"""
         
         if not PeriodoAnalise.objects.filter(casa_legislativa=casa): # Se a análise nunca foi feita, fazer e salvar no bd.
-            a20102 = Analise(casa, None, '2011-01-01')
-            a20111 = Analise(casa, '2011-01-02', '2011-07-01')
-            a20112 = Analise(casa, '2011-07-02', '2012-01-01')
-            a20121 = Analise(casa, '2011-01-02', None)
+            a20102 = Analisador(casa, None, '2011-01-01')
+            a20111 = Analisador(casa, '2011-01-02', '2011-07-01')
+            a20112 = Analisador(casa, '2011-07-02', '2012-01-01')
+            a20121 = Analisador(casa, '2011-01-02', None)
             analises = [a20111, a20112, a20121]
             a20102.partidos_2d()
             coadunados = [a20102.coordenadas]

@@ -18,10 +18,8 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from analises import analise
-from analise import JsonAnaliseGenerator
 from importadores import cmsp
 from modelagem import models
-import re
 
 class AnaliseTest(TestCase):
 
@@ -32,7 +30,7 @@ class AnaliseTest(TestCase):
         importer._from_xml_to_bd(cmsp.XML2010)
 
         self.cmsp = models.CasaLegislativa.objects.get(nome_curto='cmsp')
-        self.analise = analise.Analise(self.cmsp)
+        self.analise = analise.Analisador(self.cmsp)
 
     def test_casa(self):
         """Testa se casa legislativa foi corretamente recuperada do banco"""
