@@ -63,6 +63,7 @@ class Analisador:
         self.pca_partido = []
         self.coordenadas = {}
         self.tamanhos_partidos = {}
+        self.soma_dos_quadrados_dos_tamanhos_dos_partidos = 0
 
     def _inicializa_votacoes(self, casa, ini, fim):
         """Pega votações do banco de dados
@@ -90,9 +91,11 @@ class Analisador:
         Este dicionário é também salvo no atributo self.mapa_tamanho_partidos
         """
         self.tamanho_partidos = {}
+        self.soma_dos_quadrados_dos_tamanhos_dos_partidos = 0
         for partido in self.partidos:
             tamanho = len(models.Legislatura.objects.filter(partido=partido, casa_legislativa=self.casa_legislativa))
             self.tamanhos_partidos[partido.nome] = tamanho
+            self.soma_dos_quadrados_dos_tamanhos_dos_partidos += tamanho*tamanho
         return self.tamanhos_partidos
 
     def _inicializa_vetores(self):
@@ -233,55 +236,6 @@ class Analisador:
         print campeao
         return dados_meus
 
-    def _quantidade_movimento(self,dados_alheios,dados_meus,graus=0,espelho=0): # deprecated
-        """Calcula quantidade de movimento entre o instante i (corresponde ao ano anos[i]) e o instante i+1.
-        No cálculo o instante i tem os eixos rotacionados (valor graus, entre 0 e 360), e o primeiro eixo multiplicado por -1 se espelho=1.
-        """
-        qm = 0
-        antes = dados_meus.copy()
-        depois = dados_alheios
-        if espelho:
-            for partido, coords in antes.items():
-                antes[partido] = numpy.dot( coords,numpy.array( [[-1.,0.],[0.,1.]] ) )
-        if graus != 0:
-            for partido, coords in antes.items():
-                antes[partido] = numpy.dot( coords,self._matrot(graus) )
-
-        for p in self.partidos:
-            #TODO esse selft.tamanhos_partidos antes pegava o do 'depois' - ver implicacoes da alteracao e arrumar
-            qm += numpy.sqrt( numpy.dot( antes[p.nome] - depois[p.nome],  antes[p.nome] - depois[p.nome] ) ) * self.tamanhos_partidos[p.nome]
-        return qm
-
-    def espelha_ou_roda_qm(self, dados_alheios): # deprecated
-        print ' '
-        print 'Espelhando e rotacionando...'
-        dados_meus = self.partidos_2d()
-
-        if not self.tamanhos_partidos:
-            self._inicializa_tamanhos_partidos()
-
-        # Rodar e espelhar eixos conforme a necessidade:
-        # O sentido dos eixos que resultam na PCA é arbitrário, e se não dermos tanta importância ao significado do eixo x e do eixo y, mas sim principalmente à distância entre os partidos dois a dois que se reflete no plano, a rotação dos eixos é também arbitrária. Ao relacionar análises feitas em períodos de tempo diferentes (no caso, anos), os eixos de uma análise não têm relação com os da análise seguinte (pois foram baseados em votações distintas), então se fixarmos os eixos do ano i mais recente, o ano i-1 pode ter o eixo x espelhado ou não, e pode sofrer uma rotação de ângulo qualquer.
-        # Gostaríamos que estas transformações fossem tais que minimizasse o movimento dos partidos: por exemplo se no ano i o partido A resultou no lado esquerdo do gráfico, e o partido B no lado direito, mas no ano i-1 o posicionamento resultou inverso, seria desejável espelhar o eixo x, ou então rodar os eixos de 180 graus.
-        # Isso é alcançado através do algoritmo abaixo, de minimização da 'quantidade de movimento' total com a variação da rotação dos eixos e espelhamento do eixo x. Entre dois anos, esta quantidade de movimento é definida pela soma das distâncias euclidianas caminhadas pelos partidos ponderadas pelo tamanho do partido [no ano mais recente].
-        qm_min = 1000000 # quero minimizar as quantidades de movimento
-        campeao = (0,0) # (espelhar, graus)
-        for espelhar in [0,1]:
-            for graus in [0,45,90,135,180,225,270,315]:
-                qm_agora = self._quantidade_movimento(dados_alheios,dados_meus,graus,espelhar)
-                #print '%d, %d, %f' % (espelhar,graus,qm_agora )
-                if qm_agora < qm_min:
-                    campeao = (espelhar, graus)
-                    qm_min = qm_agora
-        print campeao
-        if campeao[0] == 1: # espelhar
-            for partido, coords in dados_meus.items():
-                dados_meus[partido] = numpy.dot( coords, numpy.array([[-1.,0.],[0.,1.]]) )
-        if campeao[1] != 0: # rotacionar
-            for partido, coords in dados_meus.items():
-                dados_meus[partido] = numpy.dot( coords, self._matrot(campeao[1]) )
-        return dados_meus
-
     
     #recebe um vetor onde cada elemento é um mapa de coordenadas
     def coaduna_bases(self, lista_dados):
@@ -289,7 +243,6 @@ class Analisador:
         for d in lista_dados:
             saida.append(self.espelha_ou_roda(d))
         return saida
-
 
 
 
@@ -372,12 +325,21 @@ class JsonAnaliseGenerator:
         return json
     
     def _json_ano(self, posicoes, analise):
-    
+        zzztamans = 0
+        zzzztamans = 0
         json = '{'
         for posicao in posicoes.all():
             nome_partido = posicao.partido.nome
             num = posicao.partido.numero
-            tamanho = 1 # analise.tamanhos_partidos[posicao.partido.nome] Issue #44
+            analise.tamanhos_partidos[posicao.partido.nome]
+            tamanho = analise.tamanhos_partidos[posicao.partido.nome]
+            zzztamans = zzztamans + tamanho
+            zzzztamans = zzzztamans + tamanho*tamanho
+            fator_de_escala_de_tamanho = 4000 # Ajustar esta constante para mudar o tamanho dos circulos
+            fator_de_escala_de_tamanho /= numpy.sqrt(analise.soma_dos_quadrados_dos_tamanhos_dos_partidos)
+            logger.info('PARTIDO: %s , TAMANHO: %d , %d, %d, %f' % (nome_partido,tamanho,zzztamans,zzzztamans,fator_de_escala_de_tamanho))
+            #fator_de_escala_de_tamanho = 1
+            tamanho = analise.tamanhos_partidos[posicao.partido.nome] * fator_de_escala_de_tamanho
             x = round(posicao.x, 2)
             y = round(posicao.y, 2)
             json += '"%s":{"numPartido":%s, "tamanhoPartido":%s, "x":%s, "y":%s}, ' % (nome_partido, num, tamanho, x, y)
@@ -388,7 +350,7 @@ class JsonAnaliseGenerator:
     def _faz_analises(self, casa):
         """casa -- objeto do tipo CasaLegislativa"""
         
-        if not PeriodoAnalise.objects.filter(casa_legislativa=casa): # Se a análise nunca foi feita, fazer e salvar no bd.
+        if 0: #not PeriodoAnalise.objects.filter(casa_legislativa=casa): # Se a análise nunca foi feita, fazer e salvar no bd.
             a20102 = Analisador(casa, None, '2011-01-01')
             a20111 = Analisador(casa, '2011-01-02', '2011-07-01')
             a20112 = Analisador(casa, '2011-07-02', '2012-01-01')

@@ -178,14 +178,14 @@ function normaliza(dados_completos, tamanhoX, tamanhoY){
 //*
 function plotaDadosEstaticos(papel,dict_periodo,partidos,conjunto){
     $.each(partidos, function(index,partido){
-        var partido_set = papel.set()
-        tamanho_partido = dict_periodo[partido]['tamanhoPartido']
-        tamanho_partido = dict_periodo[partido]['tamanhoPartido'] + 11
+        var partido_set = papel.set();
+	tamanho_partido = Math.sqrt(dict_periodo[partido]['tamanhoPartido'])
         partido_set.push(
             papel.circle(
                 dict_periodo[partido]['x'],dict_periodo[partido]['y'],tamanho_partido).attr(
                     {
                         gradient: '90-#526c7a-#64a0c1',
+                        'fill-opacity': 0,
                         stroke: '#3b4449',
                         'stroke-width': 1,
                         'stroke-linejoin': 'round',
