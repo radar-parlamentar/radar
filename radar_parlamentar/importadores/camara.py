@@ -199,7 +199,8 @@ class ImportadorCamara:
     
     def progresso(self):
         """Indica progresso na tela"""
-        print 'x',
+        sys.stdout.write('x')
+        sys.stdout.flush()
        
     def _voto_from_xml(self, voto_xml, votacao):
         """Salva voto no banco de dados.
