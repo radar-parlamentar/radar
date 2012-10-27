@@ -27,6 +27,7 @@ from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
 from modelagem import models
 import re
+import sys
 import xml.etree.ElementTree as etree
 import urllib2
 
