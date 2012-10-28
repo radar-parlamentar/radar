@@ -74,7 +74,7 @@ class Partido(models.Model):
 
     nome = models.CharField(max_length=10)
     numero = models.IntegerField()
-
+    
     @classmethod
     def from_nome(cls, nome):
         """Recebe um nome e retornar um objeto do tipo Partido, ou None se nome for inválido"""
@@ -143,15 +143,15 @@ class CasaLegislativa(models.Model):
         return self.nome
 
     def num_votacao(self,data_inicial=None,data_final=None): 
-	votacoes = Votacao.objects.filter(proposicao__casa_legislativa=self)
-	from django.utils.dateparse import parse_datetime
-	if data_inicial != None:
-	    ini = parse_datetime('%s 0:0:0' % data_inicial)
-	    votacoes =  votacoes.filter(data__gte=ini)
-	if data_final != None:
-	    fim = parse_datetime('%s 0:0:0' % data_final)
-	    votacoes = votacoes.filter(data__lte=fim)
-	return votacoes.count()
+        votacoes = Votacao.objects.filter(proposicao__casa_legislativa=self)
+        from django.utils.dateparse import parse_datetime
+        if data_inicial != None:
+            ini = parse_datetime('%s 0:0:0' % data_inicial)
+            votacoes =  votacoes.filter(data__gte=ini)
+        if data_final != None:
+            fim = parse_datetime('%s 0:0:0' % data_final)
+            votacoes = votacoes.filter(data__lte=fim)
+        return votacoes.count()
 
 class Parlamentar(models.Model):
     """Um parlamentar.

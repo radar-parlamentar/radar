@@ -19,6 +19,7 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from importadores import camara
+from importadores import convencao
 from modelagem import models
 
 # constantes relativas ao código florestal
@@ -28,7 +29,47 @@ NUM = '1876'
 ANO = '1999'
 NOME = 'PL 1876/1999'
 
+class ConvencaoTest(TestCase):
+    
+    @classmethod
+    def setUpClass(cls):
+        importer = convencao.ImportadorConvencao()
+        importer.importar()
+        
+    def setUp(self):
+        self.conv = models.CasaLegislativa.objects.get(nome_curto='conv')
+        
+    def test_check_len_votacoes(self):
+        NUM_VOTACOES = 8
+        num_votacoes = len(models.Votacao.objects.filter(proposicao__casa_legislativa=self.conv))
+        self.assertEquals(num_votacoes, NUM_VOTACOES)
 
+    def test_check_len_votos(self):
+        NUM_VOTOS = 8*3*3
+        num_votos = len(models.Voto.objects.filter(votacao__proposicao__casa_legislativa=self.conv))
+        self.assertEquals(num_votos, NUM_VOTOS)
+        
+    def test_check_len_votos_por_votacao(self):
+        NUM_VOTOS_POR_VOTACAO = 3*3
+        votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.conv)
+        for votacao in votacoes:
+            num_votos = len(models.Voto.objects.filter(votacao=votacao))
+            self.assertEquals(num_votos, NUM_VOTOS_POR_VOTACAO)
+    
+    def test_check_partidos(self):
+        partidos = models.Partido.objects.all()    
+        nomes_partidos = [p.nome for p in partidos]
+        self.assertTrue(convencao.GIRONDINOS in nomes_partidos)
+        self.assertTrue(convencao.JACOBINOS in nomes_partidos)
+        self.assertTrue(convencao.MONARQUISTAS in nomes_partidos)
+        
+    def test_check_parlamentares(self):
+        NUM_PARLAMENTARES = 3*3
+        parlamentares = models.Parlamentar.objects.filter(legislatura__casa_legislativa=self.conv)
+        self.assertEqual(len(parlamentares), NUM_PARLAMENTARES)
+        nomes_parlamentares = [p.nome for p in parlamentares]
+        self.assertEquals(nomes_parlamentares.count('Pierre'), NUM_PARLAMENTARES) 
+        
 class CamaraTest(TestCase):
     """Testes do módulo camara"""
 
