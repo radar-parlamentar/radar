@@ -26,6 +26,7 @@ from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
 from modelagem import models
 import re
+import sys
 import xml.etree.ElementTree as etree
 
 # data em que os arquivos XMLs foram atualizados
@@ -241,7 +242,8 @@ class ImportadorCMSP:
     
     def progresso(self):
         """Indica progresso na tela"""
-        print 'x',
+        sys.stdout.write('x')
+        sys.stdout.flush()
 
     def importar(self):
         """Salva informações no banco de dados do Django

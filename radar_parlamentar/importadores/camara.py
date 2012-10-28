@@ -27,6 +27,7 @@ from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
 from modelagem import models
 import re
+import sys
 import xml.etree.ElementTree as etree
 import urllib2
 
@@ -199,7 +200,8 @@ class ImportadorCamara:
     
     def progresso(self):
         """Indica progresso na tela"""
-        print 'x',
+        sys.stdout.write('x')
+        sys.stdout.flush()
        
     def _voto_from_xml(self, voto_xml, votacao):
         """Salva voto no banco de dados.
