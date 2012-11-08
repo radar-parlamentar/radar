@@ -312,7 +312,8 @@ class VotosAgregados:
 
         Argumentos:
             voto -- string \in {SIM, NAO, ABSTENCAO, AUSENTE, OBSTRUCAO}
-            OBSTRUCAO e AUSENTE contam como um voto ABSTENCAO
+            OBSTRUCAO conta como um voto ABSTENCAO
+            AUSENTE não conta como um voto
         """
         if (voto == SIM):
             self.sim += 1
@@ -322,8 +323,8 @@ class VotosAgregados:
             self.abstencao += 1
         if (voto == OBSTRUCAO):
             self.abstencao += 1
-        if (voto == AUSENTE):
-            self.abstencao += 1
+        #if (voto == AUSENTE):
+        #    self.abstencao += 1
 
     def total(self):
         return self.sim + self.nao + self.abstencao

@@ -22,20 +22,34 @@ Assim não precisamos refazer todas as contas a cada requisição
 from django.db import models
 from modelagem.models import Partido
 from modelagem.models import CasaLegislativa
-
+from modelagem.models import Votacao
 
 class PosicaoPartido(models.Model):
 
     partido = models.ForeignKey(Partido)
     x = models.FloatField()
     y = models.FloatField()
+    tamanho = models.IntegerField()
+    presenca = models.IntegerField()
 
+class AnaliseTemporal(models.Model):
 
-class PeriodoAnalise(models.Model):
+    hash_id = models.CharField(max_length=32,primary_key=True)
+    casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
+    periodicidade = models.CharField(max_length=15)
+    data_inicio = models.DateField()
+    data_fim = models.DateField()
+    votacoes = models.ManyToManyField(Votacao)
+    partidos = models.ManyToManyField(Partido)
+    area_total = models.FloatField()
+
+class AnalisePeriodo(models.Model):
 
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
-    periodo = models.CharField(max_length=100)
+    data_inicio = models.DateField()
+    data_fim = models.DateField()
+    #periodo = models.CharField(max_length=100)
+    #votacoes = models.ManyToManyField(Votacao)
+    #partidos = models.ManyToManyField(Partido)
     posicoes = models.ManyToManyField(PosicaoPartido)
-
-
-    
+    analiseTemporal = models.ForeignKey(AnaliseTemporal)
