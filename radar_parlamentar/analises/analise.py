@@ -540,14 +540,13 @@ class JsonAnaliseGenerator:
         for part in analise.coordenadas:
             nome_partido = part
             tamanho = analise.tamanhos_partidos[part]
-            logger.info("partido: %s , tam= %s, escala= %s" % (nome_partido,tamanho,escala_de_tamanho))
             tamanho =  tamanho * escala_de_tamanho
             tamanho = int(tamanho)
             num = models.Partido.objects.get(nome=nome_partido).numero
             x = round(analise.coordenadas[part][0], 2)
             y = round(analise.coordenadas[part][1], 2)            
             json += '"%s":{"numPartido":%s, "tamanhoPartido":%s, "x":%s, "y":%s}, ' % (nome_partido, num, tamanho, x, y)
-            logger.info('PARTIDO: %s , (%s,%s), TAMANHO: %s' % (nome_partido,x,y,tamanho))
+            #logger.info('PARTIDO: %s , (%s,%s), TAMANHO: %s' % (nome_partido,x,y,tamanho))
         json = json.rstrip(', ')
         json += '}, '
         return json

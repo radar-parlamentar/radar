@@ -179,8 +179,8 @@ function normaliza(dados_completos, tamanhoX, tamanhoY){
 function plotaDadosEstaticos(papel,dict_periodo,partidos,conjunto){
     $.each(partidos, function(index,partido){
         var partido_set = papel.set();
-	tamanho_partido = Math.sqrt(dict_periodo[partido]['tamanhoPartido']);
-	//if(tamanho_partido > 0) { // não mostrar partidos de tamanho zero
+        tamanho_partido = Math.sqrt(dict_periodo[partido]['tamanhoPartido']);
+        if(tamanho_partido > 0) { // não mostrar partidos de tamanho zero
             partido_set.push(
                 papel.circle(
                     dict_periodo[partido]['x'],dict_periodo[partido]['y'],tamanho_partido).attr(
@@ -191,20 +191,40 @@ function plotaDadosEstaticos(papel,dict_periodo,partidos,conjunto){
                         'stroke-width': 1,
                         'stroke-linejoin': 'round',
                         rotation: -90,
-			title: partido + " - " + dict_periodo[partido]['numPartido'],
-			text: dict_periodo[partido]['numPartido'],
+                        title: partido + " - " + dict_periodo[partido]['numPartido'] + " Tam:" + tamanho_partido,
                     }),
             papel.text(
-                dict_periodo[partido]['x'],dict_periodo[partido]['y'],dict_periodo[partido]['numPartido']).attr(
+                dict_periodo[partido]['x'],dict_periodo[partido]['y'],partido).attr(
                     {
                         'font-size': 11,
                         title: partido + " - " + dict_periodo[partido]['numPartido'],
                         cursor: 'default'
                     })
-            )	
+            )   
         conjunto.push(partido_set)
-	//} // fecha (if tamaho_partido > 0)
-    })
+        } else {// fecha (if tamaho_partido > 0)
+            partido_set.push(
+                papel.circle(
+                    dict_periodo[partido]['x'],dict_periodo[partido]['y'],0).attr(
+                        {
+                        gradient: '90-#526c7a-#64a0c1',
+                        'fill-opacity': 0,
+                        stroke: '#3b4449',
+                        'stroke-width': 1,
+                        'stroke-linejoin': 'round',
+                        rotation: -90,
+                        title: partido + " - " + dict_periodo[partido]['numPartido'] + " Tam:" + 'tamanho_partido',
+                    }),
+            papel.text(
+                dict_periodo[partido]['x'],dict_periodo[partido]['y'],'').attr(
+                    {
+                        'font-size': 11,
+                        title: partido + " - " + dict_periodo[partido]['numPartido'],
+                        cursor: 'default'
+                    })
+            )   
+        conjunto.push(partido_set)
+    }})
     return conjunto
 }//*/
 
