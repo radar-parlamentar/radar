@@ -30,7 +30,7 @@ class AnaliseTest(TestCase):
         importer._from_xml_to_bd(cmsp.XML2010)
 
         self.cmsp = models.CasaLegislativa.objects.get(nome_curto='cmsp')
-        self.analise = analise.Analisador(self.cmsp)
+        self.analise = analise.AnalisePeriodo(self.cmsp)
 
     def test_casa(self):
         """Testa se casa legislativa foi corretamente recuperada do banco"""
@@ -40,7 +40,8 @@ class AnaliseTest(TestCase):
     def test_tamanho_partidos(self):
         """Testa tamanho dos partidos"""
 
-        tamanhos = self.analise._inicializa_tamanhos_partidos()
+        self.analise._inicializa_vetores()
+        tamanhos = self.analise.tamanhos_partidos
         tamanho_pt = tamanhos['PT']
         tamanho_psdb = tamanhos['PSDB']
         self.assertEqual(tamanho_pt, 11)
