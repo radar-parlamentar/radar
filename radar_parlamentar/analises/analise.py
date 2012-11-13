@@ -92,20 +92,6 @@ class AnalisePeriodo:
             votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa).filter(data__gte=ini, data__lte=fim)
         return votacoes
 
-#    def _inicializa_tamanhos_partidos(self):
-#        """Retorna um dicionário cuja chave é o nome do partido, e o valor é a quantidade de parlamentares do partido no banco.
-#
-#        Este dicionário é também salvo no atributo self.tamanho_partidos
-#        """
-#        self.tamanho_partidos = {}
-#        self.soma_dos_quadrados_dos_tamanhos_dos_partidos = 0
-#        for partido in self.partidos:
-#            tamanho = len(models.Legislatura.objects.filter(partido=partido, casa_legislativa=self.casa_legislativa))
-#            logger.info('init tamanhos PARTIDO: %s -%s , TAMANHO: %d ' % (partido.nome,partido.numero,tamanho))
-#            self.tamanhos_partidos[partido.nome] = tamanho
-#            self.soma_dos_quadrados_dos_tamanhos_dos_partidos += tamanho*tamanho
-#        return self.tamanhos_partidos
-
     def _inicializa_vetores(self):
         """Cria os 'vetores de votação' para cada partido. 
 
@@ -320,9 +306,6 @@ class AnalisePeriodo:
             escala: afeta tamanho das circunferências
             print_nome: se False imprime números dos partidos, caso contrário imprime nomes dos partidos
         """
-
-        #if not self.tamanhos_partidos:
-        #    self._inicializa_tamanhos_partidos()
 
         dados = self.coordenadas #self.partidos_2d()
 
