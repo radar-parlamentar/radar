@@ -313,8 +313,12 @@ class AnalisePeriodo:
         print campeao
         return dados_meus
     
-    def figura(self, escala=10):
+    def figura(self, escala=10, print_nome=False):
         """Apresenta um plot de bolhas (usando matplotlib) com os partidos de tamanho maior ou igual a tamanho_min com o primeiro componente principal no eixo x e o segundo no eixo y.
+        
+            Argumentos:
+            escala: afeta tamanho das circunferências
+            print_nome: se False imprime números dos partidos, caso contrário imprime nomes dos partidos
         """
 
         #if not self.tamanhos_partidos:
@@ -366,7 +370,8 @@ class AnalisePeriodo:
         scatter(x, y, size, range(len(x)), marker='o', cmap=colormap_partidos) #, norm=None, vmin=None, vmax=None, alpha=None, linewidths=None, faceted=True, verts=None, hold=None, **kwargs)
 
         for partido in self.partidos:
-            text(dados[partido.nome][0]+.005,dados[partido.nome][1],partido.numero,fontsize=12,stretch=100,alpha=1)
+            legenda = partido.nome if print_nome else partido.numero
+            text(dados[partido.nome][0]+.005,dados[partido.nome][1],legenda,fontsize=12,stretch=100,alpha=1)
 
         show()
 
