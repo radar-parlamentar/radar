@@ -128,10 +128,10 @@ class ImportadorConvencao:
         self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
 
         votos_jacobinos = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, GIRONDINOS, votos_jacobinos)
+        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
 
         votos_monarquistas = [models.NAO, models.NAO, models.NAO]
-        self._gera_votos(votacao, GIRONDINOS, votos_monarquistas)
+        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas)
         
     def _gera_votacao2(self):
         
@@ -144,10 +144,10 @@ class ImportadorConvencao:
         self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
 
         votos_jacobinos = [models.NAO, models.NAO, models.NAO]
-        self._gera_votos(votacao, GIRONDINOS, votos_jacobinos)
+        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
 
         votos_monarquistas = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, GIRONDINOS, votos_monarquistas)       
+        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas)       
         
     def _gera_votacao3(self):
         
@@ -160,10 +160,10 @@ class ImportadorConvencao:
         self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
 
         votos_jacobinos = [models.NAO, models.NAO, models.NAO]
-        self._gera_votos(votacao, GIRONDINOS, votos_jacobinos)
+        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
 
         votos_monarquistas = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, GIRONDINOS, votos_monarquistas) 
+        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas) 
         
     def _gera_votacao4(self):
         
@@ -176,10 +176,10 @@ class ImportadorConvencao:
         self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
 
         votos_jacobinos = [models.SIM, models.ABSTENCAO, models.NAO]
-        self._gera_votos(votacao, GIRONDINOS, votos_jacobinos)
+        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
 
         votos_monarquistas = [models.SIM, models.NAO, models.AUSENTE]
-        self._gera_votos(votacao, GIRONDINOS, votos_monarquistas) 
+        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas) 
         
     def _gera_votacao5(self):
         
@@ -192,10 +192,10 @@ class ImportadorConvencao:
         self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
 
         votos_jacobinos = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, GIRONDINOS, votos_jacobinos)
+        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
 
         votos_monarquistas = [models.NAO, models.NAO, models.NAO]
-        self._gera_votos(votacao, GIRONDINOS, votos_monarquistas) 
+        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas) 
         
     def _gera_votacao6(self):
         
@@ -208,10 +208,10 @@ class ImportadorConvencao:
         self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
 
         votos_jacobinos = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, GIRONDINOS, votos_jacobinos)
+        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
 
         votos_monarquistas = [models.AUSENTE, models.SIM, models.SIM]
-        self._gera_votos(votacao, GIRONDINOS, votos_monarquistas) 
+        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas) 
         
     def _gera_votacao7(self):
         
@@ -224,10 +224,10 @@ class ImportadorConvencao:
         self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
 
         votos_jacobinos = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, GIRONDINOS, votos_jacobinos)
+        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
 
         votos_monarquistas = [models.SIM, models.AUSENTE, models.SIM]
-        self._gera_votos(votacao, GIRONDINOS, votos_monarquistas) 
+        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas) 
         
     def _gera_votacao8(self):
         
@@ -240,10 +240,10 @@ class ImportadorConvencao:
         self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
 
         votos_jacobinos = [models.ABSTENCAO, models.NAO, models.NAO]
-        self._gera_votos(votacao, GIRONDINOS, votos_jacobinos)
+        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
 
         votos_monarquistas = [models.SIM, models.AUSENTE, models.SIM]
-        self._gera_votos(votacao, GIRONDINOS, votos_monarquistas) 
+        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas) 
                         
     def importar(self):
         self.casa = self._gera_casa_legislativa()

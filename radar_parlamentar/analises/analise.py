@@ -174,7 +174,7 @@ class AnalisePeriodo:
         """
         # Fazer pca, se ainda não foi feita:
         if not self.pca_partido:
-            if not self.vetores_votacao:
+            if self.vetores_votacao != None and len(self.vetores_votacao) > 0:
                 self._inicializa_vetores()
             # Partidos de tamanho nulo devem ser excluidos da PCA:
             ipnn = [] # lista de indices dos partidos nao nulos

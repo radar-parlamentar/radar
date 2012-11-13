@@ -18,43 +18,47 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from analises import analise
-from importadores import cmsp
+from importadores import convencao
 from modelagem import models
 
 class AnaliseTest(TestCase):
 
     def setUp(self):
 
-        # usa só dados de 2010 pra deixar o teste mais rápido
-        importer = cmsp.ImportadorCMSP()
-        importer._from_xml_to_bd(cmsp.XML2010)
+        importer = convencao.ImportadorConvencao()
+        importer.importar()
 
-        self.cmsp = models.CasaLegislativa.objects.get(nome_curto='cmsp')
-        self.analise = analise.AnalisePeriodo(self.cmsp)
+        self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        
+        partidos = importer.partidos
+        self.analise = analise.AnalisePeriodo(self.casa_legislativa, partidos=partidos)
+        self.analise._inicializa_vetores()
 
     def test_casa(self):
         """Testa se casa legislativa foi corretamente recuperada do banco"""
 
-        self.assertAlmostEqual(self.cmsp.nome_curto, 'cmsp')
-
+        self.assertAlmostEqual(self.casa_legislativa.nome, 'Convenção Nacional Francesa')
+        
     def test_tamanho_partidos(self):
         """Testa tamanho dos partidos"""
 
-        self.analise._inicializa_vetores()
         tamanhos = self.analise.tamanhos_partidos
-        tamanho_pt = tamanhos['PT']
-        tamanho_psdb = tamanhos['PSDB']
-        self.assertEqual(tamanho_pt, 11)
-        self.assertEqual(tamanho_psdb, 12)
+        tamanho_jacobinos = tamanhos[convencao.JACOBINOS]
+        tamanho_girondinos = tamanhos[convencao.GIRONDINOS]
+        tamanho_monarquistas = tamanhos[convencao.MONARQUISTAS]
+        self.assertEqual(tamanho_jacobinos, convencao.PARLAMENTARES_POR_PARTIDO)
+        self.assertEqual(tamanho_girondinos, convencao.PARLAMENTARES_POR_PARTIDO)
+        self.assertEqual(tamanho_monarquistas, convencao.PARLAMENTARES_POR_PARTIDO)
 
     def test_partidos_2d(self):
-        """Testa função partido_2d com os dados da câmara municipal de são paulo"""
+        """Testa resultado do PCA"""
 
         grafico = self.analise.partidos_2d()
 
-        self.assertAlmostEqual(grafico['PT'][0], -0.359357, 4)
-        self.assertAlmostEqual(grafico['PT'][1], -0.638078, 4)
-        self.assertAlmostEqual(grafico['PSDB'][0], 0.220905, 4)
-        self.assertAlmostEqual(grafico['PSDB'][1], -0.041431, 4)
-
+        self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.49321534, 4)
+        self.assertAlmostEqual(grafico[convencao.JACOBINOS][1], -0.65069601, 4)
+        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][0], 0.81012694, 4)
+        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][1], -0.10178901, 4)
+        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], -0.31691161, 4)
+        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], 0.75248502, 4)
 
