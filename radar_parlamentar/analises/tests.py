@@ -23,14 +23,15 @@ from modelagem import models
 
 class AnaliseTest(TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        cls.importer = convencao.ImportadorConvencao()
+        cls.importer.importar()
+
     def setUp(self):
 
-        importer = convencao.ImportadorConvencao()
-        importer.importar()
-
         self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
-        
-        partidos = importer.partidos
+        partidos = AnaliseTest.importer.partidos
         self.analise = analise.AnalisePeriodo(self.casa_legislativa, partidos=partidos)
         self.analise._inicializa_vetores()
 
