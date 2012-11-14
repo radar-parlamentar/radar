@@ -28,11 +28,12 @@ from modelagem import models
 
 ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
 
-INICIO_PERIODO = parse_datetime('1789-01-01 0:0:0')
-FIM_PERIODO = parse_datetime('1799-07-01 0:0:0')
+# Eu queria deixar as datas no século de 1700, mas o datetime só lida com datas a partir de 1900
+INICIO_PERIODO = parse_datetime('1989-01-01 0:0:0')
+FIM_PERIODO = parse_datetime('1989-12-30 0:0:0')
 
-DATA_NO_PRIMEIRO_SEMESTRE = parse_datetime('1789-02-02 0:0:0')
-DATA_NO_SEGUNDO_SEMESTRE = parse_datetime('1789-10-10 0:0:0')
+DATA_NO_PRIMEIRO_SEMESTRE = parse_datetime('1989-02-02 0:0:0')
+DATA_NO_SEGUNDO_SEMESTRE = parse_datetime('1989-10-10 0:0:0')
 
 PARLAMENTARES_POR_PARTIDO = 3
 

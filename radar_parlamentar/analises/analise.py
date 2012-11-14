@@ -102,7 +102,6 @@ class AnalisePeriodo:
         Retorna a 'matriz de votações', em que cada linha é um vetor de votações de um partido 
                 A ordenação das linhas segue a ordem de self.partidos
         """
-
         # Inicializar matriz nula de vetores de votação e vetores presença
         self.vetores_votacao = numpy.zeros((len(self.partidos), self.num_votacoes))
         self.vetores_presenca = numpy.zeros((len(self.partidos), self.num_votacoes))
@@ -160,7 +159,7 @@ class AnalisePeriodo:
         """
         # Fazer pca, se ainda não foi feita:
         if not self.pca_partido:
-            if self.vetores_votacao != None and len(self.vetores_votacao) > 0:
+            if self.vetores_votacao == None or len(self.vetores_votacao) == 0:
                 self._inicializa_vetores()
             # Partidos de tamanho nulo devem ser excluidos da PCA:
             ipnn = [] # lista de indices dos partidos nao nulos
@@ -207,7 +206,6 @@ class AnalisePeriodo:
         A chave do mapa é o nome do partido (string) e o valor é uma lista 
         de duas posições [x,y].
         """
-
         self.coordenadas = self._pca_partido()
         if self.num_votacoes > 1:
             for partido in self.coordenadas.keys():
@@ -495,10 +493,10 @@ class AnaliseTemporal:
 
 class JsonAnaliseGenerator:
 
-    def get_json(self, casa_legislativa):
+    def get_json(self, casa_legislativa, data_inicio='2010-07-01', data_fim='2011-06-30', partidos=None):
         """Retorna JSON tipo {periodo:{nomePartido:{numPartido:1, tamanhoPartido:1, x:1, y:1}}"""
 
-        analise = AnaliseTemporal(casa_legislativa, data_inicio='2010-07-01', data_fim='2011-06-30', periodicidade='semestral', votacoes=None, partidos=None)
+        analise = AnaliseTemporal(casa_legislativa, data_inicio=data_inicio, data_fim=data_fim, periodicidade='semestral', votacoes=None, partidos=partidos)
         
         # TODO: nao fazer análise se já estiver no bd,
         #       e se tiver que fazer, salvar no bd (usando metodo analiseTemporal.salvar_no_bd())
