@@ -18,6 +18,7 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from analises import analise
+from grafico import GeradorGrafico
 from importadores import convencao
 from modelagem import models
 
@@ -73,4 +74,31 @@ class AnaliseTest(TestCase):
         fim = '1989-12-30'
         json = gen.get_json(self.casa_legislativa, ini, fim, self.partidos)
         self.assertEqual(json, EXPECTED_JSON)
+
+############################
+# Testes não automatizados #
+############################
+
+class GraficoTest():
+	
+    def importa_dados(self):
+        if not models.CasaLegislativa.objects.filter(nome_curto='conv').exists():
+            importer = convencao.ImportadorConvencao()
+            importer.importar()
+        self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        g = models.Partido.objects.get(nome=convencao.GIRONDINOS)
+        j = models.Partido.objects.get(nome=convencao.JACOBINOS)
+        m = models.Partido.objects.get(nome=convencao.MONARQUISTAS)
+        self.partidos = [g, j, m]
+
+    def testa_geracao_figura(self):
+        self.importa_dados()
+        an = analise.AnalisePeriodo(self.casa_legislativa, partidos=self.partidos)
+        an.partidos_2d()
+        gen = GeradorGrafico(an)
+        gen.figura()
+
+def main():
+    test = GraficoTest()
+    test.testa_geracao_figura()
 
