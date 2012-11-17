@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # coding=utf8
 
-# Copyright (C) 2012, Leonardo Leite
+# Copyright (C) 2012, Leonardo Leite, Diego Rabatone, Saulo Trento
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -42,6 +42,72 @@ URL_VOTACOES = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotac
 
 INICIO_PERIODO = parse_datetime('2004-01-01 0:0:0')
 FIM_PERIODO = parse_datetime('2012-07-01 0:0:0')
+
+class ProposicoesFinder:
+
+    def __init__(self, id_min, id_max):
+        """Buscas serão feitas por proposições com IDs entre id_min e id_max"""
+    
+        self.id_min = id_min
+        self.id_max = id_max
+
+    def _nome_proposicao(self, prop_xml):
+        sigla = prop_xml.get('tipo').strip()
+        numero = prop_xml.get('numero').strip()
+        ano = prop_xml.get('ano').strip()
+        return '%s %s/%s' % (sigla, numero, ano)
+
+    def find_props_que_existem(self, file_name):
+        """Retorna IDs de proposições que existem na câmara dos deputados.
+
+        Não necessariamente todos os IDs possuem votações (na verdade a grande maioria não tem!).
+        Se file_name == None, lança exceção TypeError
+        """
+
+        if file_name == None:
+            raise TypeError('file_name não pode ser None')
+
+        f = open(file_name,'a')
+        f.write('# Arquivo gerado pela classe ProposicoesFinder\n')
+        f.write('# para achar os IDs existentes na camara dos deputados\n')
+        f.write('# Procurando ids entre %d e %d.\n' % (self.id_min, self.id_max))
+        f.write('# id  : proposicao\n')
+        f.write('#-----------\n')
+        print '"." id valido; "x" id invalido'
+
+        camaraws = Camaraws()
+        for id_candidato in range(self.id_min, self.id_max+1):
+            if (id_candidato % 1000) == 0:
+                print '\nJá procurei ateh o ID %d' % id_candidato # A cada 1000: diz onde está
+            try:
+                prop_xml = camaraws.obter_proposicao(id_candidato)
+                nome_prop = self._nome_proposicao(prop_xml)
+                f.write('%d: %s\n' %(id_candidato, nome_prop))
+                sys.stdout.write('.')
+                sys.stdout.flush()
+            except ValueError:
+                sys.stdout.write('x')
+                sys.stdout.flush()
+        f.close()
+
+    def parse_ids_que_existem(self, file_name):
+        """Lê o arquivo criado por find_props_que_existem.
+
+        Retorna:
+            Uma lista com a identificação das proposições encontradas no txt
+            Cada posição da lista é um dicionário com chaves \in {id, tipo, num, ano}
+            As chaves e valores desses dicionários são strings
+        """
+        prop_file = open(file_name, 'r')
+        # ex: "485262: MPV 501/2010"
+        regexp = '^([0-9]*?): ([A-Z]*?) ([0-9]*?)/([0-9]{4})'
+        proposicoes = []
+        for line in prop_file:
+            res = re.search(regexp, line)
+            if res:
+                proposicoes.append({'id':res.group(1), 'tipo':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
+        return proposicoes
+
 
 class Camaraws:
     """Acesso aos Web Services da Câmara dos Deputados

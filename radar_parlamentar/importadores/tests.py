@@ -29,7 +29,7 @@ NUM = '1876'
 ANO = '1999'
 NOME = 'PL 1876/1999'
 
-class ConvencaoTest(TestCase):
+class ConvencaoTest():
     
     @classmethod
     def setUpClass(cls):
@@ -70,7 +70,7 @@ class ConvencaoTest(TestCase):
         nomes_parlamentares = [p.nome for p in parlamentares]
         self.assertEquals(nomes_parlamentares.count('Pierre'), NUM_PARLAMENTARES) 
         
-class CamaraTest(TestCase):
+class CamaraTest():
     """Testes do módulo camara"""
 
     @classmethod
@@ -171,8 +171,24 @@ class CamaraTest(TestCase):
         self.assertEquals(voto1.legislatura.partido.nome, 'PSDB')
         self.assertEquals(voto2.legislatura.localidade, 'SP')
 
-        
+class ProposicoesFinderTest(TestCase):
 
+    def test_find_props_existem(self):
 
+        ID_MIN = 12663
+        ID_MAX = 12667
+        IDS_QUE_EXISTEM = ['12665', '12666', '12667']       
+        IDS_QUE_NAO_EXISTEM = ['12663', '12664']       
+        FILE_NAME = 'ids_que_existem.txt'
+
+        finder = camara.ProposicoesFinder(ID_MIN, ID_MAX)
+        finder.find_props_que_existem(FILE_NAME)
+        props = finder.parse_ids_que_existem(FILE_NAME)
+
+        for prop in props:
+            self.assertTrue(prop['id'] in IDS_QUE_EXISTEM, 'prop %s não encontrada em IDS_QUE_EXISTEM' % prop['id']) 
+
+        for idp in IDS_QUE_NAO_EXISTEM:
+            self.assertFalse(idp in [prop['id'] for prop in props])
     
 
