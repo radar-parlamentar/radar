@@ -99,12 +99,11 @@ class ProposicoesFinder:
             Cada posição da lista é um dicionário com chaves \in {id, tipo, num, ano}
             As chaves e valores desses dicionários são strings
         """
-        prop_file = open(file_name, 'r')
         # ex: "485262: MPV 501/2010"
         regexp = '^([0-9]*?): ([A-Z]*?) ([0-9]*?)/([0-9]{4})'
         proposicoes = []
-        for line in prop_file:
-            res = re.search(regexp, line)
+        with open(file_name, 'r') as prop_file:
+            res = re.search(regexp, prop_file.readline())
             if res:
                 proposicoes.append({'id':res.group(1), 'tipo':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
         return proposicoes
@@ -218,12 +217,11 @@ class ImportadorCamara:
         Cada posição da lista é um dicionário com chaves \in {id, sigla, num, ano}
         As chaves e valores desses dicionários são strings
         """
-        prop_file = open(VOTADAS_FILE_PATH, 'r')
         # ex: "485262: MPV 501/2010"
         regexp = '^([0-9]*?): ([A-Z]*?) ([0-9]*?)/([0-9]{4})'
         proposicoes = []
-        for line in prop_file:
-            res = re.search(regexp, line)
+        with open(VOTADAS_FILE_PATH, 'r') as prop_file:
+            res = re.search(regexp, prop_file.readline())
             if res:
                 proposicoes.append({'id':res.group(1), 'sigla':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
         return proposicoes
