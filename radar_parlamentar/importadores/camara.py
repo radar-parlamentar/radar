@@ -136,7 +136,11 @@ class Camaraws:
         except urllib2.URLError:
             raise ValueError('Proposição %s não encontrada' % id_prop)
 
-        tree = etree.fromstring(xml)
+        try:
+            tree = etree.fromstring(xml)
+        except etree.ParseError:
+            raise ValueError('Proposição %s não encontrada' % id_prop)
+
         return tree
 
     def obter_votacoes(self, sigla, num, ano):
