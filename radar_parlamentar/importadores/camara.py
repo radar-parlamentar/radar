@@ -45,11 +45,8 @@ FIM_PERIODO = parse_datetime('2012-07-01 0:0:0')
 
 class ProposicoesFinder:
 
-    def __init__(self, id_min, id_max):
-        """Buscas serão feitas por proposições com IDs entre id_min e id_max"""
-    
-        self.id_min = id_min
-        self.id_max = id_max
+    def __init__(self, verbose=True):
+        self.verbose = verbose
 
     def _nome_proposicao(self, prop_xml):
         sigla = prop_xml.get('tipo').strip()
@@ -57,9 +54,10 @@ class ProposicoesFinder:
         ano = prop_xml.get('ano').strip()
         return '%s %s/%s' % (sigla, numero, ano)
 
-    def find_props_que_existem(self, file_name):
+    def find_props_que_existem(self, file_name, id_min, id_max):
         """Retorna IDs de proposições que existem na câmara dos deputados.
 
+        Buscas serão feitas por proposições com IDs entre id_min e id_max
         Não necessariamente todos os IDs possuem votações (na verdade a grande maioria não tem!).
         Se file_name == None, lança exceção TypeError
         """
@@ -70,24 +68,27 @@ class ProposicoesFinder:
         f = open(file_name,'a')
         f.write('# Arquivo gerado pela classe ProposicoesFinder\n')
         f.write('# para achar os IDs existentes na camara dos deputados\n')
-        f.write('# Procurando ids entre %d e %d.\n' % (self.id_min, self.id_max))
+        f.write('# Procurando ids entre %d e %d.\n' % (id_min, id_max))
         f.write('# id  : proposicao\n')
         f.write('#-----------\n')
-        print '"." id valido; "x" id invalido'
+        if self.verbose:
+            print '"." id valido; "x" id invalido'
 
         camaraws = Camaraws()
-        for id_candidato in range(self.id_min, self.id_max+1):
+        for id_candidato in range(id_min, id_max+1):
             if (id_candidato % 1000) == 0:
                 print '\nJá procurei ateh o ID %d' % id_candidato # A cada 1000: diz onde está
             try:
                 prop_xml = camaraws.obter_proposicao(id_candidato)
                 nome_prop = self._nome_proposicao(prop_xml)
                 f.write('%d: %s\n' %(id_candidato, nome_prop))
-                sys.stdout.write('.')
-                sys.stdout.flush()
+                if self.verbose:
+                    sys.stdout.write('.')
+                    sys.stdout.flush()
             except ValueError:
-                sys.stdout.write('x')
-                sys.stdout.flush()
+                if self.verbose:
+                    sys.stdout.write('x')
+                    sys.stdout.flush()
         f.close()
 
     def parse_ids_que_existem(self, file_name):

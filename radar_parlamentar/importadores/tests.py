@@ -181,8 +181,8 @@ class ProposicoesFinderTest(TestCase):
         IDS_QUE_NAO_EXISTEM = ['12663', '12664']       
         FILE_NAME = 'ids_que_existem.txt'
 
-        finder = camara.ProposicoesFinder(ID_MIN, ID_MAX)
-        finder.find_props_que_existem(FILE_NAME)
+        finder = camara.ProposicoesFinder(False) # False to verbose
+        finder.find_props_que_existem(FILE_NAME, ID_MIN, ID_MAX)
         props = finder.parse_ids_que_existem(FILE_NAME)
 
         for prop in props:
