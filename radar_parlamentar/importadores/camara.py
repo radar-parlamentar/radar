@@ -19,7 +19,7 @@
 """módulo camara (Câmara dos Deputados)
 
 Classes:
-    Camaraws 
+    Camaraws
     ImportadorCamara
 """
 
@@ -35,7 +35,7 @@ import urllib2
 ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
 
 RESOURCES_FOLDER = 'importadores/dados/'
-VOTADAS_FILE_PATH = RESOURCES_FOLDER + 'votadas.txt' 
+VOTADAS_FILE_PATH = RESOURCES_FOLDER + 'votadas.txt'
 
 URL_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?idProp=%s'
 URL_VOTACOES = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?tipo=%s&numero=%s&ano=%s'
@@ -125,7 +125,7 @@ class Camaraws:
     """
 
     def obter_proposicao(self, id_prop):
-        """Obtém detalhes de uma proposição 
+        """Obtém detalhes de uma proposição
 
         Argumentos:
         id_prop
@@ -227,7 +227,7 @@ class ImportadorCamara:
         return proposicoes
 
     def _prop_from_xml(self, prop_xml, id_prop):
-        """Recebe XML representando proposição (objeto etree) 
+        """Recebe XML representando proposição (objeto etree)
         e devolve objeto do tipo Proposicao, que é salvo no banco de dados.
         """
         prop = models.Proposicao()
@@ -239,14 +239,14 @@ class ImportadorCamara:
         prop.ementa = prop_xml.find('Ementa').text.strip()
         prop.descricao = prop_xml.find('ExplicacaoEmenta').text.strip()
         prop.indexacao = prop_xml.find('Indexacao').text.strip()
-#        prop.autores = prop_xml.find('Autor').text.strip()
+        #prop.autores = prop_xml.find('Autor').text.strip()
         date_str = prop_xml.find('DataApresentacao').text.strip()
         prop.data_apresentacao = self._converte_data(date_str)
         prop.situacao =prop_xml.find('Situacao').text.strip()
         prop.casa_legislativa = self.camara_dos_deputados
 
         prop.save()
-        return prop  
+        return prop
 
     def _votacao_from_xml(self, vot_xml, prop):
         """Salva votação no banco de dados.
@@ -274,12 +274,12 @@ class ImportadorCamara:
         votacao.save()
         self.progresso()
         return votacao
-    
+
     def progresso(self):
         """Indica progresso na tela"""
         sys.stdout.write('x')
         sys.stdout.flush()
-       
+
     def _voto_from_xml(self, voto_xml, votacao):
         """Salva voto no banco de dados.
 
@@ -334,7 +334,7 @@ class ImportadorCamara:
             leg = legs[0]
         else:
             leg = models.Legislatura()
-            leg.parlamentar = votante    
+            leg.parlamentar = votante
             leg.partido = partido
             leg.localidade = voto_xml.get('UF')
             leg.casa_legislativa = self.camara_dos_deputados
@@ -363,19 +363,19 @@ class ImportadorCamara:
         else:
             votante = models.Parlamentar()
             votante.save()
-            #votante.id_parlamentar = 
+            #votante.id_parlamentar =
             votante.nome = nome_dep
-            #votante.genero = 
+            #votante.genero =
             votante.save()
-            if self.verbose: 
+            if self.verbose:
                 print 'Deputado %s salvo' % votante
         return votante
-    
+
     def importar(self):
 
         self.camara_dos_deputados = self._gera_casa_legislativa()
 
-        f = lambda dic: ( dic['id'], dic['sigla'], dic['num'], dic['ano'] ) 
+        f = lambda dic: ( dic['id'], dic['sigla'], dic['num'], dic['ano'] )
         for id_prop,sigla,num,ano in [ f(dic) for dic in self.votadas_ids ]:
             if self.verbose:
                 print 'Importando %s: %s %s/%s' % (id_prop, sigla, num, ano)
@@ -385,7 +385,7 @@ class ImportadorCamara:
             vots_xml = camaraws.obter_votacoes(sigla, num, ano)
             for child in vots_xml.find('Votacoes'):
                 self._votacao_from_xml(child, prop)
-        
+
 
 def main():
 
