@@ -109,6 +109,14 @@ class ProposicoesFinder:
                 proposicoes.append({'id':res.group(1), 'tipo':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
         return proposicoes
 
+    def find_props_com_votacoes(self, ids_file):
+        """Procura pelo web servcie da Câmara quais IDs correspondem a proposições com pelo menos uma votação.
+
+        Argumentos:
+            ids_file -- string com a localização de arquivo no formato do arquivo gerado por find_props_que_existem,
+                        ou seja, cada linha possui uma entrada 'ID: SIGLA NUM/ANO'
+        """
+        raise NotImplementedError
 
 class Camaraws:
     """Acesso aos Web Services da Câmara dos Deputados

@@ -21,6 +21,7 @@ from django.test import TestCase
 from importadores import camara
 from importadores import convencao
 from modelagem import models
+import os
 
 # constantes relativas ao código florestal
 ID = '17338'
@@ -179,7 +180,7 @@ class ProposicoesFinderTest(TestCase):
         ID_MAX = 12667
         IDS_QUE_EXISTEM = ['12665', '12666', '12667']       
         IDS_QUE_NAO_EXISTEM = ['12663', '12664']       
-        FILE_NAME = 'ids_que_existem.txt'
+        FILE_NAME = 'ids_que_existem_test.txt'
 
         finder = camara.ProposicoesFinder(False) # False to verbose
         finder.find_props_que_existem(FILE_NAME, ID_MIN, ID_MAX)
@@ -190,5 +191,7 @@ class ProposicoesFinderTest(TestCase):
 
         for idp in IDS_QUE_NAO_EXISTEM:
             self.assertFalse(idp in [prop['id'] for prop in props])
+
+        os.system('rm %s' % FILE_NAME)
     
 
