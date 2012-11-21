@@ -49,7 +49,7 @@ class ProposicoesFinder:
         self.verbose = verbose
 
     def _nome_proposicao(self, prop_xml):
-        sigla = prop_xml.get('sigla').strip()
+        sigla = prop_xml.get('tipo').strip()
         numero = prop_xml.get('numero').strip()
         ano = prop_xml.get('ano').strip()
         return '%s %s/%s' % (sigla, numero, ano)
