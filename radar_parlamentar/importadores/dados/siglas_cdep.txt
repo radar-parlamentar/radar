@@ -1,0 +1,93 @@
+# Siglas dos IDs existentes na Câmara dos Deputados
+# Arquivo inicialmente gerado com o comando: 
+# cat ids_que_existem.txt | cut -d ' ' -f 2 | sort | uniq > siglas_cdep.txt
+# Significado das siglas retirados do site da câmara (http://www.camara.leg.br/sileg/default.asp)
+# Linhas terminadas com ** correspondem a siglas que serão consideradas em nossa análise
+#-----------
+APJ     Anteprojeto
+AV      Aviso
+AVN     Aviso (CN)
+CAC
+CON
+CST
+CVO     Complementação de voto
+CVR     Contestação ao voto do relator
+DIS
+DTQ     Destaque
+DVT     Declaração de voto
+EAG     Emenda substitutiva aglutinativa global
+EMA     Emenda Aglutinativa de Plenário
+EMC     Emenda na comissão
+EML     Emenda à LDO
+EMO     Emenda ao Orçamento
+EMP
+EMR     Emenda de relator
+EMRP    Emenda de relator parcial
+EMS     Emenda/Substitutivo do senado
+ERD     Emenda de redação
+ERR     Errata
+ESB     Emenda ao substitutivo
+ESP     Emenda substitutiva ao plenário
+INA     Indicação de autoridade
+INC     Indicação
+MCN
+MPV     Medida Provisória              **
+MSC     Mensagem
+MSF     Mensagem (SF)
+OBJ     Objeto de deliberação
+OF      Ofício
+OF.     Ofício externo
+OFN     Ofício (CN)
+PAR     Parecer de Comissão
+PARF    Parecer de Comissão para Redação Final
+P.C     Parecer (CD)
+PDC     Projeto de decreto legislativo  **
+PDN     Projeto de Decreto Legislativo (CN)
+PEC     Emenda a constituição           **
+PEP     Parecer às Emendas de Plenario
+PES     Parecer às emendas apresentadas ao Substitutivo do Relator
+PET     Petição
+PFC
+PL      Projeto de lei                  **
+PLN     Projeto de Lei (CN)
+PLP     Projeto de lei complementar     **
+PLS     Projeto de Lei do Senado Federal
+PLV     Projeto de Lei de Conversão
+PPP     Parecer Proferido em Plenário
+PPR     Parecer Reformulado
+PRC     Projeto de resolução
+PRL     Parecer do Relator
+PRN     Projeto de Resolução do Congresso Nacional
+PRP     Parecer do Relator Parcial
+PRR
+PRV     Parecer Vencedor
+PSS     Parecer às Emendas ou ao Substitutivo do Senado
+RCP
+RDF
+REC
+REL
+REM
+REP
+REQ
+RIC
+RLF
+RLP
+RLP(V)
+RPA
+RPL
+RRC
+RRL
+SBE
+SBT
+SDL
+SIT
+SLD
+SOR
+SPA
+SPP
+SRL
+SSP
+SUC
+SUG
+TVR     Ato de concessão e renovação de concessão de emissora de rádio e televisão
+VTS

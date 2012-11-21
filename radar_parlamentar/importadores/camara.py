@@ -49,7 +49,7 @@ class ProposicoesFinder:
         self.verbose = verbose
 
     def _nome_proposicao(self, prop_xml):
-        sigla = prop_xml.get('tipo').strip()
+        sigla = prop_xml.get('sigla').strip()
         numero = prop_xml.get('numero').strip()
         ano = prop_xml.get('ano').strip()
         return '%s %s/%s' % (sigla, numero, ano)
@@ -96,7 +96,7 @@ class ProposicoesFinder:
 
         Retorna:
             Uma lista com a identificação das proposições encontradas no txt
-            Cada posição da lista é um dicionário com chaves \in {id, tipo, num, ano}
+            Cada posição da lista é um dicionário com chaves \in {id, sigla, num, ano}
             As chaves e valores desses dicionários são strings
         """
         prop_file = open(file_name, 'r')
@@ -106,17 +106,56 @@ class ProposicoesFinder:
         for line in prop_file:
             res = re.search(regexp, line)
             if res:
-                proposicoes.append({'id':res.group(1), 'tipo':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
+                proposicoes.append({'id':res.group(1), 'sigla':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
         return proposicoes
 
-    def find_props_com_votacoes(self, ids_file):
+    def find_props_com_votacoes(self, ids_file, output, verbose=True):
         """Procura pelo web servcie da Câmara quais IDs correspondem a proposições com pelo menos uma votação.
 
         Argumentos:
             ids_file -- string com a localização de arquivo no formato do arquivo gerado por find_props_que_existem,
                         ou seja, cada linha possui uma entrada 'ID: SIGLA NUM/ANO'
+            output -- arquivo onde vai ser gravada a saída (equivalente ao retorno do método)
+            verbose -- True ou False, True é defaultf
+
+        Retorna:
+            Uma lista com a identificação das proposições que possuem votações
+            Cada posição da lista é um dicionário com chaves \in {id, sigla, num, ano}
+            As chaves e valores desses dicionários são strings
         """
-        raise NotImplementedError
+        
+        f = open(output,'a')
+        f.write('# Arquivo gerado pela classe ProposicoesFinder\n')
+        f.write('# para achar os IDs existentes na camara dos deputados\n')
+        f.write('# que possuem votacoes.\n')
+        f.write('# id  : proposicao\n')
+        f.write('#-----------\n')
+        if self.verbose:
+            print '"." id valido; "x" id invalido'
+
+        props = self.parse_ids_que_existem(ids_file)
+        votadas = []
+        camaraws = Camaraws()
+        count = 0
+        for prop in props:
+            if count % 1000 == 0 and verbose:
+                print '\nProcurando votações da proposição de ID ', prop['id']
+            count += 1
+            try:
+                votacoes_xml = camaraws.obter_votacoes(prop['sigla'], prop['num'], prop['ano'])
+                nome_prop = '%s %s/%s' % (prop['sigla'], prop['num'], prop['ano'])
+                f.write('%s: %s\n' %(prop['id'], nome_prop))
+                votadas.append(prop)
+                if self.verbose:
+                    sys.stdout.write('.')
+                    sys.stdout.flush()
+            except ValueError:
+                if self.verbose:
+                    sys.stdout.write('x')
+                    sys.stdout.flush()
+        f.close()
+        return votadas
+        
 
 class Camaraws:
     """Acesso aos Web Services da Câmara dos Deputados
@@ -163,8 +202,9 @@ class Camaraws:
         Exemplo: http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?tipo=pl&numero=1876&ano=1999
 
         Exceções:
-            ValueError -- quando proposição não existe
+            ValueError -- quando proposição não existe ou não possui votações
         """
+        
         url  = URL_VOTACOES % (sigla, num, ano)
         try:
             request = urllib2.Request(url)
@@ -172,7 +212,11 @@ class Camaraws:
         except urllib2.URLError:
             raise ValueError('Votações da proposição %s %s/%s não encontrada' % (sigla, num, ano))
 
-        tree = etree.fromstring(xml)
+        try:
+            tree = etree.fromstring(xml)
+        except etree.ParseError:
+            raise ValueError('Votações da proposição %s %s/%s não encontrada' % (sigla, num, ano))
+        
         return tree
 
 
