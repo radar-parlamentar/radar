@@ -3,9 +3,8 @@
 
 su
 pacman -S python2 python2-numpy python2-matplotlib python2-pip sqlite3
-ln -s /usr/bin/python2 /usr/bin/python # torna o python2 o padrão
 pip2 install svgwrite
 wget "http://www.djangoproject.com/download/1.4/tarball/" -O Django-1.4.tar.gz
 tar xzvf Django-1.4.tar.gz
 cd Django-1.4
-python setup.py install 
+python2 setup.py install 
