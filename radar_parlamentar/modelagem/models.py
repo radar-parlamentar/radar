@@ -40,8 +40,8 @@ M = 'M'
 F = 'F'
 
 GENEROS = (
-    ('M', 'Masculino'),
-    ('F', 'Feminino'),
+    (M, 'Masculino'),
+    (F, 'Feminino'),
 )
 
 MUNICIPAL = 'MUNICIPAL'
@@ -49,9 +49,19 @@ ESTADUAL = 'ESTADUAL'
 FEDERAL = 'FEDERAL'
 
 ESFERAS = (
-    ('MUNICIPAL', 'Municipal'),
-    ('ESTADUAL', 'Estadual'),
-    ('FEDERAL', 'Federal'),
+    (MUNICIPAL, 'Municipal'),
+    (ESTADUAL, 'Estadual'),
+    (FEDERAL, 'Federal'),
+)
+
+ANO = 'ANO'
+SEMESTRE = 'SEMESTRE'
+MES = 'MES'
+
+PERIODOS = (
+    (ANO, 'ano'),
+    (SEMESTRE, 'semestre'),
+    (MES, 'mes')
 )
 
 SEM_PARTIDO = 'Sem partido'
@@ -152,6 +162,23 @@ class CasaLegislativa(models.Model):
             fim = parse_datetime('%s 0:0:0' % data_final)
             votacoes = votacoes.filter(data__lte=fim)
         return votacoes.count()
+    
+    def periodos(self, delta, minimo=0):
+        """Retorna os períodos em que houve votações nesta casa legislativa.
+         
+        Argumentos:
+            delta: aceita as constantes em models.PERIODOS (ANO, SEMESTRE, MES)
+            minimo: valor entre 0 e 1 para filtrar (remover) períodos não significativos;
+                    se período não tiver pelo menos (minimo*100)% da média dos votos por período,
+                    período não é retornado. 
+                    valor default é 0.
+                    
+        Retorna:
+            Uma lista de tuplas. 
+            O primeiro valor de uma tupla é a data (datetime.datetime) do início do período correspondente
+            O segundo valor de uma tupla é a data (datetime.datetime) do fim do período correspondente
+        """
+        raise NotImplementedError
 
 class Parlamentar(models.Model):
     """Um parlamentar.
