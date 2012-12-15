@@ -264,8 +264,9 @@ class ImportadorCamara:
         # ex: "485262: MPV 501/2010"
         regexp = '^([0-9]*?): ([A-Z]*?) ([0-9]*?)/([0-9]{4})'
         proposicoes = []
-        with open(VOTADAS_FILE_PATH, 'r') as prop_file:
-            res = re.search(regexp, prop_file.readline())
+        prop_file = open(VOTADAS_FILE_PATH, 'r') 
+        for line in prop_file:
+            res = re.search(regexp, line)
             if res:
                 proposicoes.append({'id':res.group(1), 'sigla':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
         return proposicoes
