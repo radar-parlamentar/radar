@@ -27,15 +27,18 @@ from django.utils.dateparse import parse_datetime
 from modelagem import models
 import re
 import sys
+import os
 import xml.etree.ElementTree as etree
 
 # data em que os arquivos XMLs foram atualizados
 ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
 
+MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
+
 # arquivos com os dados fornecidos pela cmsp
-XML2010 = 'importadores/dados/cmsp2010.xml'
-XML2011 = 'importadores/dados/cmsp2011.xml'
-XML2012 = 'importadores/dados/cmsp2012.xml'
+XML2010 = os.path.join(MODULE_DIR, 'dados/cmsp2010.xml')
+XML2011 = os.path.join(MODULE_DIR,'dados/cmsp2011.xml')
+XML2012 = os.path.join(MODULE_DIR,'dados/cmsp2012.xml')
 
 # tipos de proposições encontradas nos XMLs da cmsp (2010, 2011, 2012)
 # esta lista ajuda a identificar as votações que são de proposições

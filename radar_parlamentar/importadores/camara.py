@@ -28,13 +28,16 @@ from django.utils.dateparse import parse_datetime
 from modelagem import models
 import re
 import sys
+import os
 import xml.etree.ElementTree as etree
 import urllib2
 
 # data em que a lista votadas.txt foi atualizada
 ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
 
-RESOURCES_FOLDER = 'importadores/dados/'
+MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+RESOURCES_FOLDER = os.path.join(MODULE_DIR, 'dados/')
 VOTADAS_FILE_PATH = RESOURCES_FOLDER + 'votadas.txt'
 
 URL_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?idProp=%s'
