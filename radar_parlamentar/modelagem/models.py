@@ -19,8 +19,10 @@ from __future__ import unicode_literals
 from django.db import models
 import re
 import logging 
+import os
 
 logger = logging.getLogger("radar")
+MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 SIM = 'SIM'
 NAO = 'NAO'
@@ -71,7 +73,7 @@ class Partido(models.Model):
 
     Atributos:
         nome -- string; ex: 'PT' 
-        numero -- string; ex: '13'
+        numero -- int; ex: '13'
 
     Métodos da classe:
         from_nome(nome): retorna objeto do tipo Partido
@@ -80,7 +82,7 @@ class Partido(models.Model):
         exists(): retorna True se já existe um partido com mesmo nome e número na base de dados, ou False caso contrário
     """
 
-    LISTA_PARTIDOS = 'modelagem/recursos/partidos.txt'
+    LISTA_PARTIDOS = os.path.join(MODULE_DIR, 'recursos/partidos.txt')
 
     nome = models.CharField(max_length=10)
     numero = models.IntegerField()
@@ -96,12 +98,12 @@ class Partido(models.Model):
 
     @classmethod
     def from_numero(cls, numero):
-        """Recebe um número (string) e retornar um objeto do tipo Partido, ou None se nome for inválido"""
+        """Recebe um número (int) e retornar um objeto do tipo Partido, ou None se nome for inválido"""
         p = Partido.objects.filter(numero=numero) # procura primeiro no banco de dados
         if p:
             return p[0]
         else: # se não estiver no BD, procura no arquivo que contém lista de partidos
-            return cls._from_regex(2, numero.strip())
+            return cls._from_regex(2, str(numero))
 
     @classmethod
     def get_sem_partido(cls):
