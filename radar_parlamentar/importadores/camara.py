@@ -105,11 +105,11 @@ class ProposicoesFinder:
         # ex: "485262: MPV 501/2010"
         regexp = '^([0-9]*?): ([A-Z]*?) ([0-9]*?)/([0-9]{4})'
         proposicoes = []
-        f = open(file_name, 'r')
-        for line in f:
-            res = re.search(regexp, line)
-            if res:
-                proposicoes.append({'id':res.group(1), 'sigla':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
+        with open(file_name, 'r') as f:
+            for line in f:
+                res = re.search(regexp, line)
+                if res:
+                    proposicoes.append({'id':res.group(1), 'sigla':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
         return proposicoes
 
     def find_props_com_votacoes(self, ids_file, output, verbose=True):
@@ -268,11 +268,11 @@ class ImportadorCamara:
         # ex: "485262: MPV 501/2010"
         regexp = '^([0-9]*?): ([A-Z]*?) ([0-9]*?)/([0-9]{4})'
         proposicoes = []
-        prop_file = open(VOTADAS_FILE_PATH, 'r') 
-        for line in prop_file:
-            res = re.search(regexp, line)
-            if res:
-                proposicoes.append({'id':res.group(1), 'sigla':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
+        with open(VOTADAS_FILE_PATH, 'r') as prop_file:
+            for line in prop_file:
+                res = re.search(regexp, line)
+                if res:
+                    proposicoes.append({'id':res.group(1), 'sigla':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
         return proposicoes
 
     def _prop_from_xml(self, prop_xml, id_prop):
