@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^origem/$', 'radar_parlamentar.views.origem'),
     url(r'^ogrupo/$', 'radar_parlamentar.views.ogrupo'),
     url(r'^sim-voto-aberto/$', 'radar_parlamentar.views.votoaberto'),
+    url(r'^importadores/$', 'radar_parlamentar.views.importadores'),
 
     #Serivço que retorna conteúdo para plotar o mapa
     url(r'^analises/$', 'analises.views.analises'),
