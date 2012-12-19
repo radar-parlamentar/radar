@@ -30,7 +30,6 @@ from calendar import monthrange
 import datetime
 import logging
 from hashlib import md5
-import pdb        #pdb.set_trace()
 
 logger = logging.getLogger("radar")
 
@@ -48,20 +47,18 @@ class AnalisePeriodo:
         """
 
         self.casa_legislativa = casa_legislativa
-
         self.ini = parse_datetime('%s 0:0:0' % data_inicio)
         self.fim = parse_datetime('%s 0:0:0' % data_fim)
+
+        self.partidos = partidos
+        if not partidos:
+            self.partidos = self.casa_legislativa.partidos()
 
         self.votacoes = votacoes
         if not self.votacoes: 
             self.votacoes = self._inicializa_votacoes(self.casa_legislativa, self.ini, self.fim)
 
         # TODO que acontece se algum partido for ausente neste período?
-
-        self.partidos = partidos
-        if not self.partidos:
-            logger.info('Lista de partidos nao foi especificada. Usando todos do universo.')
-            self.partidos = models.Partido.objects.all()
         self.num_votacoes = len(self.votacoes)
         self.vetores_votacao = [] # { sao calculados por    
         self.vetores_presenca = []#   self._inicializa_vetores() 
@@ -184,7 +181,7 @@ class AnalisePeriodo:
                 if ip in ipnn: # Se este partido for um partido não nulo
                     ipnn2 += 1
                     cpmaximo = U2.shape[1]
-                     # colocar nesta linha os valores que eu salvei antes em U2
+                    # colocar nesta linha os valores que eu salvei antes em U2
                     self.pca_partido.U[ip,0:cpmaximo] = U2[ipnn2,:]
                 else:
                     self.pca_partido.U[ip,:] = numpy.zeros((1,self.num_votacoes))
@@ -311,70 +308,29 @@ class AnaliseTemporal:
     A classe AnaliseTemporal tem métodos para criar os objetos AnalisePeriodo e
     fazer as análises.
     """
-    def __init__(self, casa_legislativa,data_inicio=None, data_fim=None, periodicidade='semestral', votacoes=None, partidos=None):
+    def __init__(self, casa_legislativa, periodicidade=models.SEMESTRE):
 
         self.casa_legislativa = casa_legislativa
+        self.periodos = self.casa_legislativa.periodos(periodicidade)
 
-        self.ini = parse_datetime('%s 0:0:0' % data_inicio)
-        self.fim = parse_datetime('%s 0:0:0' % data_fim)
+        self.ini = self.periodos[0][0]
+        self.fim = self.periodos[len(self.periodos)-1][1]
+        
         self.periodicidade = periodicidade
-
-        self.votacoes = votacoes 
-        # OBS: Se votacoes==None, a classe AnalisePeriodo usará 
-        #      todas as votações disponíveis no período solicitado.
-
-        self.partidos = partidos
-        if not self.partidos:
-            logger.info('Lista de partidos nao foi especificada. Usando todos do universo.')
-            self.partidos = models.Partido.objects.all()
         self.area_total = 1
         self.analises_periodo = [] # lista de objetos da classe AnalisePeriodo
-        self.periodos = [] # lista de tuplas (datetime de inicio,datetime de fim)
+        self.votacoes = None
+        self.partidos = None
 
     def _faz_analises(self):
-        """ Método da classe AnaliseTemporal que cria os objetos AnalisePeriodo e faz as análises.
-        """
-        # Inicializar periodos, que é a lista de pares ordenados 
-        # com datas de inicio e fim de cada análise:
-        if self.periodicidade == 'semestral':
-            delta_mes = 5
-        elif self.periodicidade == 'anual':
-            delta_mes = 11
-        elif self.periodicidade == 'trimestral':
-            delta_mes = 3
-        elif self.periodicidade == 'quadrimestral':
-            delta_mes = 2
-        else:
-            logger.info("Periodicidade '%s' desconhecida. Usando periodicidade semestral (delta_mes=6).") % self.periodicidade
-            delta_mes = 6
-        dias_que_faltam = 1
-        data_inicial = self.ini
-        while dias_que_faltam > 0:
-            mes = data_inicial.month
-            ano = data_inicial.year
-            mes = mes + delta_mes
-            while mes > 12:
-                mes = mes - 12
-                ano = ano + 1
-            data_final = data_inicial.replace(month=mes,year=ano)
-            # ir ate ultimo dia do mes:
-            dia_final = monthrange(data_final.year,data_final.month)[1]
-            data_final = data_final.replace(day=dia_final)
-            self.periodos.append((data_inicial,data_final))
-            data_inicial = data_final + datetime.timedelta(days=1)
-            delta_que_falta = self.fim - data_final
-            dias_que_faltam = delta_que_falta.days
-
-        # Fazer as análises:
+        """ Método da classe AnaliseTemporal que cria os objetos AnalisePeriodo e faz as análises."""
         for datas in self.periodos:
             data_ini_str = datas[0].strftime('%Y-%m-%d')
             data_fim_str = datas[1].strftime('%Y-%m-%d')
-            # inicializa objeto AnalisePeriodo
             x = AnalisePeriodo(self.casa_legislativa, data_inicio=data_ini_str, data_fim=data_fim_str, votacoes=self.votacoes, partidos=self.partidos)
-            # Pede as coordenadas 2d, o que efetivamente fará o cálculo ser feito:
-            x.partidos_2d()
-            # Coloca esta análise na lista de análises
-            self.analises_periodo.append(x)
+            if x.votacoes:
+                x.partidos_2d()
+                self.analises_periodo.append(x)
             
         # Rotacionar as análises, e determinar área máxima:
         maior = self.analises_periodo[0].soma_dos_quadrados_dos_tamanhos_dos_partidos
@@ -431,10 +387,10 @@ class AnaliseTemporal:
 
 class JsonAnaliseGenerator:
 
-    def get_json(self, casa_legislativa, data_inicio='2010-07-01', data_fim='2011-06-30', partidos=None):
+    def get_json(self, casa_legislativa):
         """Retorna JSON tipo {periodo:{nomePartido:{numPartido:1, tamanhoPartido:1, x:1, y:1}}"""
 
-        analise = AnaliseTemporal(casa_legislativa, data_inicio=data_inicio, data_fim=data_fim, periodicidade='semestral', votacoes=None, partidos=partidos)
+        analise = AnaliseTemporal(casa_legislativa)
         
         # TODO: nao fazer análise se já estiver no bd,
         #       e se tiver que fazer, salvar no bd (usando metodo analiseTemporal.salvar_no_bd())
@@ -452,8 +408,8 @@ class JsonAnaliseGenerator:
         
         i = 0
         json = '{'
-        for per in analise.periodos:
-            json += '%s:%s ' % (str(i+1000), self._json_ano(analise.analises_periodo[i],escala_de_tamanho))
+        for per in analise.analises_periodo:
+            json += '%s:%s ' % (str(i+1000), self._json_ano(per,escala_de_tamanho))
             i += 1
         json = json.rstrip(', ')
         json += '}'

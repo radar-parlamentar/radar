@@ -70,9 +70,7 @@ class AnaliseTest(TestCase):
         EXPECTED_JSON = '{1000:{"Monarquistas":{"numPartido":79, "tamanhoPartido":2309, "x":0.8, "y":0.18}, "Girondinos":{"numPartido":27, "tamanhoPartido":2309, "x":-0.24, "y":-0.78}, "Jacobinos":{"numPartido":42, "tamanhoPartido":2309, "x":-0.56, "y":0.6}},  1001:{"Monarquistas":{"numPartido":79, "tamanhoPartido":2309, "x":0.01, "y":0.82}, "Girondinos":{"numPartido":27, "tamanhoPartido":2309, "x":0.7, "y":-0.41}, "Jacobinos":{"numPartido":42, "tamanhoPartido":2309, "x":-0.71, "y":-0.4}}}'
         
         gen = analise.JsonAnaliseGenerator()
-        ini = '1989-01-01'
-        fim = '1989-12-30'
-        json = gen.get_json(self.casa_legislativa, ini, fim, self.partidos)
+        json = gen.get_json(self.casa_legislativa)
         self.assertEqual(json, EXPECTED_JSON)
 
 ############################
@@ -80,7 +78,7 @@ class AnaliseTest(TestCase):
 ############################
 
 class GraficoTest():
-	
+
     def importa_dados(self):
         if not models.CasaLegislativa.objects.filter(nome_curto='conv').exists():
             importer = convencao.ImportadorConvencao()
