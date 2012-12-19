@@ -30,7 +30,7 @@ NUM = '1876'
 ANO = '1999'
 NOME = 'PL 1876/1999'
 
-class ConvencaoTest():
+class ConvencaoTest(TestCase):
     
     @classmethod
     def setUpClass(cls):
@@ -71,7 +71,7 @@ class ConvencaoTest():
         nomes_parlamentares = [p.nome for p in parlamentares]
         self.assertEquals(nomes_parlamentares.count('Pierre'), NUM_PARLAMENTARES) 
         
-class CamaraTest():
+class CamaraTest(TestCase):
     """Testes do módulo camara"""
 
     @classmethod

@@ -193,7 +193,7 @@ class Parlamentar(models.Model):
     genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
 
     def __unicode__(self):
-        return "%s (%s)" % (self.nome, self.partido()) 
+        return self.nome 
 
 
 class Legislatura(models.Model):
@@ -217,7 +217,7 @@ class Legislatura(models.Model):
     localidade = models.CharField(max_length=100, blank=True)
 
     def __unicode__(self):
-        return "%s@%s [%s, %s]" % (self.partido, self.casa_legislativa.nome_curto, self.inicio, self.fim)
+        return "%s - %s@%s [%s, %s]" % (self.parlamentar, self.partido, self.casa_legislativa.nome_curto, self.inicio, self.fim)
 
 
 class Proposicao(models.Model):
