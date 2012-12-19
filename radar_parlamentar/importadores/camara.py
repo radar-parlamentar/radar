@@ -287,23 +287,26 @@ class ImportadorCamara:
     def _prop_from_xml(self, prop_xml, id_prop):
         """Recebe XML representando proposição (objeto etree)
         e devolve objeto do tipo Proposicao, que é salvo no banco de dados.
+        Caso proposição já exista no banco, é retornada a proposição que já estava no banco.
         """
-        prop = models.Proposicao()
-        prop.id_prop = id_prop
-        prop.sigla = prop_xml.get('tipo').strip()
-        prop.numero = prop_xml.get('numero').strip()
-        prop.ano = prop_xml.get('ano').strip()
-
-        prop.ementa = prop_xml.find('Ementa').text.strip()
-        prop.descricao = prop_xml.find('ExplicacaoEmenta').text.strip()
-        prop.indexacao = prop_xml.find('Indexacao').text.strip()
-        #prop.autores = prop_xml.find('Autor').text.strip()
-        date_str = prop_xml.find('DataApresentacao').text.strip()
-        prop.data_apresentacao = self._converte_data(date_str)
-        prop.situacao =prop_xml.find('Situacao').text.strip()
-        prop.casa_legislativa = self.camara_dos_deputados
-
-        prop.save()
+        query = models.Proposicao.objects.filter(id_prop=id_prop, casa_legislativa=self.camara_dos_deputados)
+        if query:
+            prop = query[0]
+        else:
+            prop = models.Proposicao()
+            prop.id_prop = id_prop
+            prop.sigla = prop_xml.get('tipo').strip()
+            prop.numero = prop_xml.get('numero').strip()
+            prop.ano = prop_xml.get('ano').strip()
+            prop.ementa = prop_xml.find('Ementa').text.strip()
+            prop.descricao = prop_xml.find('ExplicacaoEmenta').text.strip()
+            prop.indexacao = prop_xml.find('Indexacao').text.strip()
+            #prop.autores = prop_xml.find('Autor').text.strip()
+            date_str = prop_xml.find('DataApresentacao').text.strip()
+            prop.data_apresentacao = self._converte_data(date_str)
+            prop.situacao =prop_xml.find('Situacao').text.strip()
+            prop.casa_legislativa = self.camara_dos_deputados
+            prop.save()
         return prop
 
     def _votacao_from_xml(self, vot_xml, prop):
@@ -316,20 +319,25 @@ class ImportadorCamara:
         Retorna:
             objeto do tipo Votacao
         """
-        votacao = models.Votacao()
-        votacao.descricao = 'Resumo: [%s]. ObjVotacao: [%s]' % (vot_xml.get('Resumo'), vot_xml.get('ObjVotacao'))
+        descricao = 'Resumo: [%s]. ObjVotacao: [%s]' % (vot_xml.get('Resumo'), vot_xml.get('ObjVotacao'))
         data_str = vot_xml.get('Data').strip()
         hora_str = vot_xml.get('Hora').strip()
-        logger.info('Importando votação ocorrida em %s' % data_str)
-        datetime = self._converte_data(data_str, hora_str)
-        votacao.data = datetime
-        votacao.proposicao = prop
-        votacao.save()
+        date_time = self._converte_data(data_str, hora_str)
 
-        for voto_xml in vot_xml:
-            self._voto_from_xml(voto_xml, votacao)
+        query = models.Votacao.objects.filter(descricao=descricao, data=date_time, proposicao__casa_legislativa=self.camara_dos_deputados)
+        if query:
+            votacao = query[0]
+        else:
+            logger.info('Importando votação ocorrida em %s' % data_str)
+            votacao = models.Votacao()
+            votacao.descricao = descricao
+            votacao.data = date_time
+            votacao.proposicao = prop
+            votacao.save()
+            for voto_xml in vot_xml:
+                self._voto_from_xml(voto_xml, votacao)
+            votacao.save()
 
-        votacao.save()
         return votacao
 
     def _voto_from_xml(self, voto_xml, votacao):
