@@ -17,9 +17,11 @@
 
 from __future__ import unicode_literals
 from django.db import models
+from calendar import monthrange
 import re
 import logging 
 import os
+import datetime
 
 logger = logging.getLogger("radar")
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -166,21 +168,19 @@ class CasaLegislativa(models.Model):
         return votacoes
     
     def num_votacao(self,data_inicial=None,data_final=None): 
-	return self._votacoes(data_inicial,data_final).count()
+        return self._votacoes(data_inicial,data_final).count()
 
     @staticmethod
     def _delta_para_numero(delta=SEMESTRE):
-	delta_numero = {ANO:11,MES:1,SEMESTRE:5}
-	valor = delta_numero[delta]
-	return valor
+        delta_numero = {ANO:11,MES:1,SEMESTRE:5}
+        valor = delta_numero[delta]
+        return valor
  
     @staticmethod
     def _intervalo_periodo(ini,fim,delta_mes):
-	from calendar import monthrange
-	import datetime
-	intervalos = []
-	data_inicial = ini
-	dias_que_faltam = 1
+        intervalos = []
+        data_inicial = ini
+        dias_que_faltam = 1
         while dias_que_faltam > 0:
             mes = data_inicial.month
             ano = data_inicial.year
@@ -196,27 +196,27 @@ class CasaLegislativa(models.Model):
             data_inicial = data_final + datetime.timedelta(days=1)
             delta_que_falta = fim - data_final
             dias_que_faltam = delta_que_falta.days
-	return intervalos
+        return intervalos
     
     def _media_votos_por_periodo(self,periodo):
-	num_periodo = len(periodo)
-	votos = self._votos()
-	return len(votos)/num_periodo
+        num_periodo = len(periodo)
+        votos = self._votos()
+        return len(votos)/num_periodo
 
     def _votos(self,data_inicio=None,data_fim=None):
-	votacoes = self._votacoes(data_inicio,data_fim)
-	votos = []
-	for votacao in votacoes:
-	    votos+=votacao.votos()
-	return votos
-	
+        votacoes = self._votacoes(data_inicio,data_fim)
+        votos = []
+        for votacao in votacoes:
+            votos+=votacao.votos()
+        return votos
+
     def _filtro_media_periodo(self,periodos,media):
-	periodo_filtrado = []
-	for periodo in periodos:
-	    votos_periodo = len(self._votos(periodo[0],periodo[1]))
-	    if votos_periodo >= media:
-		periodo_filtrado.append(periodo)
-	return periodo_filtrado
+        periodo_filtrado = []
+        for periodo in periodos:
+            votos_periodo = len(self._votos(periodo[0],periodo[1]))
+            if votos_periodo >= media:
+                periodo_filtrado.append(periodo)
+        return periodo_filtrado
 
     def periodos(self, delta, minimo=0.0):
         """Retorna os períodos em que houve votações nesta casa legislativa.
@@ -233,19 +233,17 @@ class CasaLegislativa(models.Model):
             O primeiro valor de uma tupla é a data (datetime.datetime) do início do período correspondente
             O segundo valor de uma tupla é a data (datetime.datetime) do fim do período correspondente
         """
-	
-	casa_legislativa = self
         votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self)]
-	delta_mes = CasaLegislativa._delta_para_numero(delta)
-	ini = min(votacao_datas)
+        delta_mes = CasaLegislativa._delta_para_numero(delta)
+        ini = min(votacao_datas)
         fim = max(votacao_datas)
         intervalos = CasaLegislativa._intervalo_periodo(ini,fim, delta_mes)
-	if minimo != 0.0:
-	    media = self._media_votos_por_periodo(intervalos)
-	    corte = media*minimo
-	    intervalos = self._filtro_media_periodo(intervalos,corte)
-	return intervalos
-    
+        if minimo != 0.0:
+            media = self._media_votos_por_periodo(intervalos)
+            corte = media*minimo
+            intervalos = self._filtro_media_periodo(intervalos,corte)
+        return intervalos
+
 
 class Parlamentar(models.Model):
     """Um parlamentar.
