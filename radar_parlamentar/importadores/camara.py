@@ -417,7 +417,7 @@ class ImportadorCamara:
         if not partido:
             partido = models.Partido.from_nome(nome_partido)
             if partido == None:
-                logger.debug('Não achou o partido %s; Usando "sem partido"' % nome_partido)
+                logger.warning('Não achou o partido %s; Usando "sem partido"' % nome_partido)
                 partido = models.Partido.get_sem_partido()
             else:
                 partido.save()
@@ -467,11 +467,7 @@ class ImportadorCamara:
             vots_xml = camaraws.obter_votacoes(sigla, num, ano)
             
             for child in vots_xml.find('Votacoes'):
-                t0 = time.time()
                 self._votacao_from_xml(child, prop)
-                tf = time.time()
-                logger.debug('Tempo pra processar uma votação %f' % (tf-t0))
-
 
             self.importadas += 1
             self._progresso()
