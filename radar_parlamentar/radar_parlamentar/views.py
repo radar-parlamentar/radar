@@ -17,3 +17,6 @@ def ogrupo(request):
 
 def votoaberto(request):
     return render_to_response('votoaberto.html')
+
+def importadores(request):
+    return render_to_response('importadores.html')
