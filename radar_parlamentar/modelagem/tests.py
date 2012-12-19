@@ -33,6 +33,15 @@ class ModelsTest(TestCase):
         self.assertEquals(pt.numero, 13)
         psdb = models.Partido.from_numero(45)
         self.assertEquals(psdb.nome, 'PSDB')
+        
+    def test_casa_legislativa_partidos(self):
+        conv = models.CasaLegislativa.objects.get(nome_curto='conv')
+        partidos = conv.partidos()
+        self.assertEquals(len(partidos), 3)
+        nomes = [ p.nome for p in partidos ]
+        self.assertTrue(convencao.JACOBINOS in nomes)
+        self.assertTrue(convencao.GIRONDINOS in nomes)
+        self.assertTrue(convencao.MONARQUISTAS in nomes)
  
     def test_casa_legislativa_periodos(self):
         conv = models.CasaLegislativa.objects.get(nome_curto='conv')

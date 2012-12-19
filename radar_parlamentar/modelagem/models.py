@@ -156,6 +156,36 @@ class CasaLegislativa(models.Model):
     def __unicode__(self):
         return self.nome
 
+    def partidos(self):
+        """Retorna os partidos existentes nesta casa legislativa"""
+        return Partido.objects.filter(legislatura__casa_legislativa=self).distinct()
+
+    def periodos(self, delta, minimo=0.0):
+        """Retorna os períodos em que houve votações nesta casa legislativa.
+         
+        Argumentos:
+            delta: aceita as constantes em models.PERIODOS (ANO, SEMESTRE, MES)
+            minimo: valor entre 0 e 1 para filtrar (remover) períodos não significativos;
+                    se período não tiver pelo menos (minimo*100)% da média dos votos por período,
+                    período não é retornado. 
+                    valor default é 0.
+                    
+        Retorna:
+            Uma lista de tuplas. 
+            O primeiro valor de uma tupla é a data (datetime.datetime) do início do período correspondente
+            O segundo valor de uma tupla é a data (datetime.datetime) do fim do período correspondente
+        """
+        votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self)]
+        delta_mes = CasaLegislativa._delta_para_numero(delta)
+        ini = min(votacao_datas)
+        fim = max(votacao_datas)
+        intervalos = CasaLegislativa._intervalo_periodo(ini,fim, delta_mes)
+        if minimo != 0.0:
+            media = self._media_votos_por_periodo(intervalos)
+            corte = media*minimo
+            intervalos = self._filtro_media_periodo(intervalos,corte)
+        return intervalos
+    
     def _votacoes(self,data_inicial=None,data_final=None): 
         votacoes = Votacao.objects.filter(proposicao__casa_legislativa=self)
         from django.utils.dateparse import parse_datetime
@@ -218,31 +248,6 @@ class CasaLegislativa(models.Model):
                 periodo_filtrado.append(periodo)
         return periodo_filtrado
 
-    def periodos(self, delta, minimo=0.0):
-        """Retorna os períodos em que houve votações nesta casa legislativa.
-         
-        Argumentos:
-            delta: aceita as constantes em models.PERIODOS (ANO, SEMESTRE, MES)
-            minimo: valor entre 0 e 1 para filtrar (remover) períodos não significativos;
-                    se período não tiver pelo menos (minimo*100)% da média dos votos por período,
-                    período não é retornado. 
-                    valor default é 0.
-                    
-        Retorna:
-            Uma lista de tuplas. 
-            O primeiro valor de uma tupla é a data (datetime.datetime) do início do período correspondente
-            O segundo valor de uma tupla é a data (datetime.datetime) do fim do período correspondente
-        """
-        votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self)]
-        delta_mes = CasaLegislativa._delta_para_numero(delta)
-        ini = min(votacao_datas)
-        fim = max(votacao_datas)
-        intervalos = CasaLegislativa._intervalo_periodo(ini,fim, delta_mes)
-        if minimo != 0.0:
-            media = self._media_votos_por_periodo(intervalos)
-            corte = media*minimo
-            intervalos = self._filtro_media_periodo(intervalos,corte)
-        return intervalos
 
 
 class Parlamentar(models.Model):
