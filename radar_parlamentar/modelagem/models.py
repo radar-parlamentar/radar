@@ -135,6 +135,23 @@ class Partido(models.Model):
 
     def __unicode__(self):
         return '%s-%s' % (self.nome, self.numero)
+    
+class PeriodoVotacao():
+    """Representa um período de tempo em uma casa legislativa
+    Atributos:
+        ini -- datetime
+        fim -- datetime
+        label -- string do tipo '2010', '2010 - 1o semestre', ou '2010 - Janeiro'
+        casa_legislativa -- objeto do tipo CasaLegislativa
+        num_votacoes -- quantidade (int) de votações no período
+    """
+    
+    def __init__(self):
+        self.ini = None
+        self.fim = None
+        self.label = ''
+        self.casa_legislativa = None
+        self.num_votacoes = 0
 
 class CasaLegislativa(models.Model):
     """Instituição tipo Senado, Câmara etc
@@ -171,9 +188,7 @@ class CasaLegislativa(models.Model):
                     valor default é 0.
                     
         Retorna:
-            Uma lista de tuplas. 
-            O primeiro valor de uma tupla é a data (datetime.datetime) do início do período correspondente
-            O segundo valor de uma tupla é a data (datetime.datetime) do fim do período correspondente
+            Uma lista de objetos do tipo PeriodoVotacao. 
         """
         votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self)]
         delta_mes = CasaLegislativa._delta_para_numero(delta)
