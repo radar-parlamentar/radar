@@ -60,15 +60,31 @@ class ProposicoesFinder:
         numero = prop_xml.get('numero').strip()
         ano = prop_xml.get('ano').strip()
         return '%s %s/%s' % (sigla, numero, ano)
+    
+    def find_props_que_existem_pelo_ws(self, file_name, current_year):
+        """Retorna IDs de proposições que existem na câmara dos deputados.
+        
+        A busca é feita utilizando com o web service ListarProposicoes.
+        Os anos variam de 1989 até current_year.
+        As siglas de proposições utilizados são os 
+        retornados pelo web service ListarSiglasTipoProposicao.
+        (Sigla e Ano são os parâmetros obrigatórios de ListarProposicoes)
+        
+        Resultado é salvo no arquivo file_name.
+        Cada linha possui o formato "id: sigla num/ano".
+        """
+        raise NotImplementedError
 
-    def find_props_que_existem(self, file_name, id_min, id_max):
+    def find_props_que_existem_por_faixa(self, file_name, id_min, id_max):
         """Retorna IDs de proposições que existem na câmara dos deputados.
 
         Buscas serão feitas por proposições com IDs entre id_min e id_max
         Não necessariamente todos os IDs possuem votações (na verdade a grande maioria não tem!).
         Se file_name == None, lança exceção TypeError
+        
+        Resultado é salvo no arquivo file_name.
+        Cada linha possui o formato "id: sigla num/ano".
         """
-
         if file_name == None:
             raise TypeError('file_name não pode ser None')
 
