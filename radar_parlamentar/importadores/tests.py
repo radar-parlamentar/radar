@@ -174,7 +174,7 @@ class CamaraTest(TestCase):
 
 class ProposicoesFinderTest(TestCase):
 
-    def test_find_props_existem_por_faixa(self):
+    def test_find_props_existem(self):
 
         ID_MIN = 12663
         ID_MAX = 12667
@@ -183,7 +183,7 @@ class ProposicoesFinderTest(TestCase):
         FILE_NAME = 'ids_que_existem_test.txt'
 
         finder = camara.ProposicoesFinder(False) # False to verbose
-        finder.find_props_que_existem_por_faixa(FILE_NAME, ID_MIN, ID_MAX)
+        finder.find_props_que_existem(FILE_NAME, ID_MIN, ID_MAX)
         props = finder.parse_ids_que_existem(FILE_NAME)
 
         for prop in props:
