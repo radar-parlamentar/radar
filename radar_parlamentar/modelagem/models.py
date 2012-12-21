@@ -192,8 +192,8 @@ class CasaLegislativa(models.Model):
         """
         votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self)]
         delta_mes = CasaLegislativa._delta_para_numero(delta)
-        ini = min(votacao_datas)
-        fim = max(votacao_datas)
+        ini = CasaLegislativa._intervalo_inicio(min(votacao_datas),delta)
+        fim = CasaLegislativa._intervalo_fim(max(votacao_datas),delta)
         intervalos = CasaLegislativa._intervalo_periodo(ini,fim, delta_mes)
         if minimo != 0.0:
             media = self._media_votos_por_periodo(intervalos)
@@ -201,6 +201,31 @@ class CasaLegislativa(models.Model):
             intervalos = self._filtro_media_periodo(intervalos,corte)
         return intervalos
     
+    @staticmethod
+    def _intervalo_inicio(data_inicial,delta):
+	dia_inicial = 1
+	ano_inicial = data_inicial.year
+	if delta == MES:
+	    mes_inicial = data_inicial.month
+	if delta in [SEMESTRE,ANO]:
+	    mes_inicial = 1
+	return datetime.datetime(ano_inicial,mes_inicial,dia_inicial) 
+    
+    @staticmethod
+    def _intervalo_fim(data_fim,delta):
+	ano_fim = data_fim.year
+	if delta == MES:
+	    mes_fim = data_fim.month
+	if delta == SEMESTRE:
+	    if data_fim.month <= 6:
+		mes_fim = 6
+	    else:
+		mes_fim = 12
+	if delta == ANO:
+	    mes_fim = 12
+	dia_fim = monthrange(ano_fim,mes_fim)[1]
+	return datetime.datetime(ano_fim,mes_fim,dia_fim)
+
     def _votacoes(self,data_inicial=None,data_final=None): 
         votacoes = Votacao.objects.filter(proposicao__casa_legislativa=self)
         from django.utils.dateparse import parse_datetime
@@ -217,7 +242,7 @@ class CasaLegislativa(models.Model):
 
     @staticmethod
     def _delta_para_numero(delta=SEMESTRE):
-        delta_numero = {ANO:11,MES:1,SEMESTRE:5}
+        delta_numero = {ANO:11,MES:0,SEMESTRE:5}
         valor = delta_numero[delta]
         return valor
  
