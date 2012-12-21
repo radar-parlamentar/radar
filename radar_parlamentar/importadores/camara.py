@@ -67,6 +67,9 @@ class ProposicoesFinder:
         Buscas serão feitas por proposições com IDs entre id_min e id_max
         Não necessariamente todos os IDs possuem votações (na verdade a grande maioria não tem!).
         Se file_name == None, lança exceção TypeError
+        
+        Resultado é salvo no arquivo file_name.
+        Cada linha possui o formato "id: sigla num/ano".
         """
 
         if file_name == None:
