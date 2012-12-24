@@ -68,4 +68,5 @@ class ModelsTest(TestCase):
         self.assertEqual(12, d.month)
         self.assertEqual(periodos[0].string, '1989 1o Semestre')
         self.assertEqual(periodos[1].string, '1989 2o Semestre')
-
+        periodos = conv.periodos(models.MES,minimo=0.2)
+        self.assertEqual(len(periodos),2)

@@ -188,7 +188,7 @@ class CasaLegislativa(models.Model):
                     valor default é 0.
                     
         Retorna:
-            Uma lista de objetos do tipo PeriodoVotacao. 
+            Uma lista de objetos do tipo PeriodoCasaLegislativa. 
         """
         votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self)]
         delta_mes = CasaLegislativa._delta_para_numero(delta)
@@ -198,7 +198,7 @@ class CasaLegislativa(models.Model):
         CasaLegislativa._periodos_set_string(intervalos,delta)
         #filtro
         if minimo != 0.0:
-            media = self._media_votos_por_periodo(intervalos_finais)
+            media = self._media_votos_por_periodo(intervalos)
             corte = media*minimo
             intervalos = self._filtro_media_periodo(intervalos,corte)
         return intervalos
@@ -231,8 +231,8 @@ class CasaLegislativa(models.Model):
 	    mes_inicial = data_inicial.month
 	if delta in [SEMESTRE,ANO]:
 	    mes_inicial = 1
-	return datetime.datetime(ano_inicial,mes_inicial,dia_inicial) 
-    
+	return datetime.date(ano_inicial,mes_inicial,dia_inicial) 
+     
     @staticmethod
     def _intervalo_fim(data_fim,delta):
 	ano_fim = data_fim.year
@@ -246,7 +246,7 @@ class CasaLegislativa(models.Model):
 	if delta == ANO:
 	    mes_fim = 12
 	dia_fim = monthrange(ano_fim,mes_fim)[1]
-	return datetime.datetime(ano_fim,mes_fim,dia_fim)
+	return datetime.date(ano_fim,mes_fim,dia_fim)
 
     def _votacoes(self,data_inicial=None,data_final=None): 
         votacoes = Votacao.objects.filter(proposicao__casa_legislativa=self)
@@ -284,7 +284,7 @@ class CasaLegislativa(models.Model):
             # ir ate ultimo dia do mes:
             dia_final = monthrange(data_final.year,data_final.month)[1]
             data_final = data_final.replace(day=dia_final)
-            intervalos.append(PeriodoVotacao(data_inicial,data_final))
+            intervalos.append(PeriodoCasaLegislativa(data_inicial,data_final))
             data_inicial = data_final + datetime.timedelta(days=1)
             delta_que_falta = fim - data_final
             dias_que_faltam = delta_que_falta.days
@@ -310,7 +310,7 @@ class CasaLegislativa(models.Model):
                 periodo_filtrado.append(periodo)
         return periodo_filtrado
 
-class PeriodoVotacao(object):
+class PeriodoCasaLegislativa(object):
     
     def __init__(self,data_inicio,data_fim):
         self.ini = data_inicio
