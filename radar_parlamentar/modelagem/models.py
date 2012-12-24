@@ -195,12 +195,34 @@ class CasaLegislativa(models.Model):
         ini = CasaLegislativa._intervalo_inicio(min(votacao_datas),delta)
         fim = CasaLegislativa._intervalo_fim(max(votacao_datas),delta)
         intervalos = CasaLegislativa._intervalo_periodo(ini,fim, delta_mes)
+        CasaLegislativa._periodos_set_string(intervalos,delta)
+        #filtro
         if minimo != 0.0:
-            media = self._media_votos_por_periodo(intervalos)
+            media = self._media_votos_por_periodo(intervalos_finais)
             corte = media*minimo
             intervalos = self._filtro_media_periodo(intervalos,corte)
         return intervalos
     
+
+    @staticmethod
+    def _intervalo_to_string(intervalo,delta):
+        data_string = ""
+        meses = ['','Jan', 'Fev', 'Mar', 'Abr', 'Maio', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+        data_string += str(intervalo.ini.year)
+        if delta == MES:
+            data_string +=" "+str(meses[intervalo.ini.month])
+        return data_string
+
+    @staticmethod
+    def _periodos_set_string(periodos,delta):
+        numero_semestre = 1
+        for periodo in periodos:
+            data_string = CasaLegislativa._intervalo_to_string(periodo,delta)
+            if delta == SEMESTRE:
+                data_string += " "+str(numero_semestre)+"o Semestre"
+                numero_semestre +=1
+            periodo.string = data_string
+
     @staticmethod
     def _intervalo_inicio(data_inicial,delta):
 	dia_inicial = 1
@@ -262,7 +284,7 @@ class CasaLegislativa(models.Model):
             # ir ate ultimo dia do mes:
             dia_final = monthrange(data_final.year,data_final.month)[1]
             data_final = data_final.replace(day=dia_final)
-            intervalos.append((data_inicial,data_final))
+            intervalos.append(PeriodoVotacao(data_inicial,data_final))
             data_inicial = data_final + datetime.timedelta(days=1)
             delta_que_falta = fim - data_final
             dias_que_faltam = delta_que_falta.days
@@ -283,12 +305,20 @@ class CasaLegislativa(models.Model):
     def _filtro_media_periodo(self,periodos,media):
         periodo_filtrado = []
         for periodo in periodos:
-            votos_periodo = len(self._votos(periodo[0],periodo[1]))
+            votos_periodo = len(self._votos(periodo.ini,periodo.fim))
             if votos_periodo >= media:
                 periodo_filtrado.append(periodo)
         return periodo_filtrado
 
+class PeriodoVotacao(object):
+    
+    def __init__(self,data_inicio,data_fim):
+        self.ini = data_inicio
+        self.fim = data_fim
+        self.string = ""
 
+    def __unicode__(self):
+        return self.string
 
 class Parlamentar(models.Model):
     """Um parlamentar.

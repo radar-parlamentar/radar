@@ -47,22 +47,25 @@ class ModelsTest(TestCase):
         conv = models.CasaLegislativa.objects.get(nome_curto='conv')
         periodos = conv.periodos(models.ANO)
         self.assertEquals(len(periodos), 1)
+        self.assertEqual(periodos[0].string, '1989')
         periodos = conv.periodos(models.MES)
         self.assertEquals(len(periodos), 9)
+        self.assertEqual(periodos[0].string, '1989 Fev')
+        self.assertEqual(periodos[1].string, '1989 Mar')
         periodos = conv.periodos(models.SEMESTRE)
         self.assertEquals(len(periodos), 2)
-        d = periodos[0][0]
+        d = periodos[0].ini
         self.assertEqual(1989, d.year)
         self.assertEqual(1, d.month)
-        d = periodos[0][1]
+        d = periodos[0].fim
         self.assertEqual(1989, d.year)
         self.assertEqual(6, d.month)
-        d = periodos[1][0]
+        d = periodos[1].ini
         self.assertEqual(1989, d.year)
         self.assertEqual(7, d.month)
-        d = periodos[1][1]
+        d = periodos[1].fim
         self.assertEqual(1989, d.year)
         self.assertEqual(12, d.month)
-        #self.assertEqual(periodos[0].label, '1989 - 1o semestre')
-        #self.assertEqual(periodos[1].label, '1989 - 2o semestre')
+        self.assertEqual(periodos[0].string, '1989 1o Semestre')
+        self.assertEqual(periodos[1].string, '1989 2o Semestre')
 
