@@ -205,7 +205,10 @@ class CasaLegislativa(models.Model):
             data_string = CasaLegislativa._intervalo_to_string(periodo,delta)
             if delta == SEMESTRE:
                 data_string += " "+str(numero_semestre)+"o Semestre"
-                numero_semestre +=1
+            if numero_semestre == 1:
+                numero_semestre = 2
+            else:
+                numero_semestre = 1
             periodo.string = data_string
 
     @staticmethod
