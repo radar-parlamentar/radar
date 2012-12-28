@@ -41,7 +41,7 @@ window.GlobalTempoAnimacao = 5000 //em milisegundos
 function carregaComboPeriodos(lista_periodos){
     $.each(lista_periodos,function(index,periodo){
             var elOptNew = document.createElement('option');
-            elOptNew.text = Math.floor(periodo/10) + " - " + (periodo%10) + " semestre"
+            elOptNew.text = periodo
             elOptNew.value = periodo
             var elSel = document.getElementById('periodos')
             try {

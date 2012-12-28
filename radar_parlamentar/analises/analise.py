@@ -20,7 +20,6 @@
 """Módulo analise"""
 
 from __future__ import unicode_literals
-from django.utils.dateparse import parse_datetime
 from hashlib import md5
 from math import hypot, atan2, pi
 from models import AnalisePeriodo, AnaliseTemporal, PosicaoPartido
@@ -33,11 +32,12 @@ logger = logging.getLogger("radar")
 
 class AnalisadorPeriodo:
 
-    def __init__(self, casa_legislativa, data_inicio=None, data_fim=None, votacoes=None, partidos=None):
+    def __init__(self, casa_legislativa, periodo=None, votacoes=None, partidos=None):
         """Argumentos:
             casa_legislativa -- objeto do tipo CasaLegislativa; somente votações desta casa serão analisados.
             data_inicio e data_fim -- são strings no formato aaaa-mm-dd;
             Se este argumentos não são passadas, a análise é feita sobre todas as votações
+            periodo -- objeto do tipo PeriodoCasaLegislativa
             votacoes -- lista de objetos do tipo Votacao para serem usados na análise
                         se não for especificado, procura votações na base de dados de acordo data_inicio e data_fim.
             partidos -- lista de objetos do tipo Partido para serem usados na análise;
@@ -45,9 +45,14 @@ class AnalisadorPeriodo:
         """
 
         self.casa_legislativa = casa_legislativa
-        self.ini = parse_datetime('%s 0:0:0' % data_inicio)
-        self.fim = parse_datetime('%s 0:0:0' % data_fim)
-
+        self.periodo = periodo
+        if (periodo != None):
+            self.ini = periodo.ini
+            self.fim = periodo.fim
+        else:
+            self.ini = None
+            self.fim = None
+            
         self.partidos = partidos
         if not partidos:
             self.partidos = self.casa_legislativa.partidos()
@@ -301,10 +306,13 @@ class AnalisadorTemporal:
     para que os partidos globalmente caminhem o mínimo possível de um lado para
     o outro (vide algoritmo de rotação).
 
-    data_inicio e data_fim: strings no formato 'aaaa-mm-dd'.
-
     A classe AnalisadorTemporal tem métodos para criar os objetos AnalisadorPeriodo e
     fazer as análises.
+
+    Atributos:
+        data_inicio e data_fim -- strings no formato 'aaaa-mm-dd'.
+        analisadores_periodo -- lista de objetos da classe AnalisadorPeriodo
+
     """
     def __init__(self, casa_legislativa, periodicidade=models.SEMESTRE):
 
@@ -316,27 +324,25 @@ class AnalisadorTemporal:
         
         self.periodicidade = periodicidade
         self.area_total = 1
-        self.analises_periodo = [] # lista de objetos da classe AnalisadorPeriodo
+        self.analisadores_periodo = [] # lista de objetos da classe AnalisadorPeriodo
         self.votacoes = None
         self.partidos = None
 
     def _faz_analises(self):
         """ Método da classe AnalisadorTemporal que cria os objetos AnalisadorPeriodo e faz as análises."""
         for periodo in self.periodos:
-            data_ini_str = periodo.ini 
-            data_fim_str = periodo.fim 
-            x = AnalisadorPeriodo(self.casa_legislativa, data_inicio=data_ini_str, data_fim=data_fim_str, votacoes=self.votacoes, partidos=self.partidos)
+            x = AnalisadorPeriodo(self.casa_legislativa, periodo, votacoes=self.votacoes, partidos=self.partidos)
             if x.votacoes:
                 x.partidos_2d()
-                self.analises_periodo.append(x)
+                self.analisadores_periodo.append(x)
             
         # Rotacionar as análises, e determinar área máxima:
-        maior = self.analises_periodo[0].soma_dos_quadrados_dos_tamanhos_dos_partidos
-        for i in range(1,len(self.analises_periodo)): # a partir da segunda analise
+        maior = self.analisadores_periodo[0].soma_dos_quadrados_dos_tamanhos_dos_partidos
+        for i in range(1,len(self.analisadores_periodo)): # a partir da segunda analise
             # Rotacionar/espelhar a análise baseado na análise anterior
-            self.analises_periodo[i].espelha_ou_roda(self.analises_periodo[i-1].coordenadas)
+            self.analisadores_periodo[i].espelha_ou_roda(self.analisadores_periodo[i-1].coordenadas)
             # Área Máxima:
-            candidato = self.analises_periodo[i].soma_dos_quadrados_dos_tamanhos_dos_partidos
+            candidato = self.analisadores_periodo[i].soma_dos_quadrados_dos_tamanhos_dos_partidos
             if candidato > maior:
                 maior = candidato
         self.area_total = maior
@@ -364,7 +370,7 @@ class AnalisadorTemporal:
         # Salvar no bd, ainda sem as análises
         modat.save()
         # Salvar as análises por período no bd:
-        for ap in self.analises_periodo:
+        for ap in self.analisadores_periodo:
             modap = AnalisePeriodo()
             modap.casa_legislativa = ap.casa_legislativa
             modap.data_inicio = ap.ini.strftime('%Y-%m-%d')
@@ -388,15 +394,15 @@ class JsonAnaliseGenerator:
     def get_json(self, casa_legislativa):
         """Retorna JSON tipo {periodo:{nomePartido:{numPartido:1, tamanhoPartido:1, x:1, y:1}}"""
 
-        analise = AnalisadorTemporal(casa_legislativa)
+        analisador_temporal = AnalisadorTemporal(casa_legislativa)
         
         # TODO: nao fazer análise se já estiver no bd,
         #       e se tiver que fazer, salvar no bd (usando metodo analiseTemporal.salvar_no_bd())
-        analise._faz_analises()
+        analisador_temporal._faz_analises()
 
         # Usar mesma escala para os tamanhos dos partidos em todas as análises
         soma_quad_tam_part_max = 0
-        for ap in analise.analises_periodo:
+        for ap in analisador_temporal.analisadores_periodo:
             candidato = ap.soma_dos_quadrados_dos_tamanhos_dos_partidos
             if candidato > soma_quad_tam_part_max:
                 soma_quad_tam_part_max = candidato
@@ -404,11 +410,10 @@ class JsonAnaliseGenerator:
         fator_de_escala_de_tamanho = 4000 # Ajustar esta constante para mudar o tamanho dos circulos
         escala_de_tamanho = fator_de_escala_de_tamanho / numpy.sqrt(soma_quad_tam_part_max)
         
-        i = 0
         json = '{'
-        for per in analise.analises_periodo:
-            json += '%s:%s ' % (str(i+1000), self._json_ano(per,escala_de_tamanho))
-            i += 1
+        for analisador in analisador_temporal.analisadores_periodo:
+            label = '"%s"' % analisador.periodo
+            json += '%s:%s ' % (label, self._json_ano(analisador,escala_de_tamanho))
         json = json.rstrip(', ')
         json += '}'
         return json
@@ -424,7 +429,6 @@ class JsonAnaliseGenerator:
             x = round(analise.coordenadas[part][0], 2)
             y = round(analise.coordenadas[part][1], 2)            
             json += '"%s":{"numPartido":%s, "tamanhoPartido":%s, "x":%s, "y":%s}, ' % (nome_partido, num, tamanho, x, y)
-            #logger.info('PARTIDO: %s , (%s,%s), TAMANHO: %s' % (nome_partido,x,y,tamanho))
         json = json.rstrip(', ')
         json += '}, '
         return json
