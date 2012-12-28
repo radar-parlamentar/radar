@@ -23,16 +23,15 @@ from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
 from hashlib import md5
 from math import hypot, atan2, pi
+from models import AnalisePeriodo, AnaliseTemporal, PosicaoPartido
 from modelagem import models
-from models import AnalisePeriodo as Modelo_AnalisePeriodo, \
-    AnaliseTemporal as Modelo_AnaliseTemporal, PosicaoPartido
 import logging
 import numpy
 import pca
 
 logger = logging.getLogger("radar")
 
-class AnalisePeriodo:
+class AnalisadorPeriodo:
 
     def __init__(self, casa_legislativa, data_inicio=None, data_fim=None, votacoes=None, partidos=None):
         """Argumentos:
@@ -291,9 +290,9 @@ class AnalisePeriodo:
         print campeao
         return dados_meus
 
-class AnaliseTemporal:
-    """Um objeto da classe AnaliseTemporal é um envelope para um conjunto de
-    objetos do tipo AnalisePeriodo.
+class AnalisadorTemporal:
+    """Um objeto da classe AnalisadorTemporal é um envelope para um conjunto de
+    objetos do tipo AnalisadorPeriodo.
 
     Uma análise de um período é uma análise de componentes principais dos
     votos de um dado período, por exemplo do ano de 2010. Para fazer um gráfico
@@ -304,7 +303,7 @@ class AnaliseTemporal:
 
     data_inicio e data_fim: strings no formato 'aaaa-mm-dd'.
 
-    A classe AnaliseTemporal tem métodos para criar os objetos AnalisePeriodo e
+    A classe AnalisadorTemporal tem métodos para criar os objetos AnalisadorPeriodo e
     fazer as análises.
     """
     def __init__(self, casa_legislativa, periodicidade=models.SEMESTRE):
@@ -317,16 +316,16 @@ class AnaliseTemporal:
         
         self.periodicidade = periodicidade
         self.area_total = 1
-        self.analises_periodo = [] # lista de objetos da classe AnalisePeriodo
+        self.analises_periodo = [] # lista de objetos da classe AnalisadorPeriodo
         self.votacoes = None
         self.partidos = None
 
     def _faz_analises(self):
-        """ Método da classe AnaliseTemporal que cria os objetos AnalisePeriodo e faz as análises."""
+        """ Método da classe AnalisadorTemporal que cria os objetos AnalisadorPeriodo e faz as análises."""
         for periodo in self.periodos:
             data_ini_str = periodo.ini 
             data_fim_str = periodo.fim 
-            x = AnalisePeriodo(self.casa_legislativa, data_inicio=data_ini_str, data_fim=data_fim_str, votacoes=self.votacoes, partidos=self.partidos)
+            x = AnalisadorPeriodo(self.casa_legislativa, data_inicio=data_ini_str, data_fim=data_fim_str, votacoes=self.votacoes, partidos=self.partidos)
             if x.votacoes:
                 x.partidos_2d()
                 self.analises_periodo.append(x)
@@ -343,9 +342,9 @@ class AnaliseTemporal:
         self.area_total = maior
             
     def salvar_no_bd(self):
-        """Salva uma instância de AnaliseTemporal no banco de dados."""
+        """Salva uma instância de AnalisadorTemporal no banco de dados."""
         # 'modat' é o modelo análise temporal que vou salvar.
-        modat = Modelo_AnaliseTemporal()
+        modat = AnaliseTemporal()
         modat.casa_legislativa = self.casa_legislativa
         modat.periodicidade = self.periodicidade
         modat.data_inicio = self.ini
@@ -366,7 +365,7 @@ class AnaliseTemporal:
         modat.save()
         # Salvar as análises por período no bd:
         for ap in self.analises_periodo:
-            modap = Modelo_AnalisePeriodo()
+            modap = AnalisePeriodo()
             modap.casa_legislativa = ap.casa_legislativa
             modap.data_inicio = ap.ini.strftime('%Y-%m-%d')
             modap.data_fim = ap.fim.strftime('%Y-%m-%d')
@@ -382,14 +381,14 @@ class AnaliseTemporal:
                 posicao.save() # Salva PosicaoPartido no bd
                 posicoes.append(posicao)
             modap.posicoes = posicoes
-            modap.save() # Salva a análise do período no bd, associada a uma AnaliseTemporal
+            modap.save() # Salva a análise do período no bd, associada a uma AnalisadorTemporal
 
 class JsonAnaliseGenerator:
 
     def get_json(self, casa_legislativa):
         """Retorna JSON tipo {periodo:{nomePartido:{numPartido:1, tamanhoPartido:1, x:1, y:1}}"""
 
-        analise = AnaliseTemporal(casa_legislativa)
+        analise = AnalisadorTemporal(casa_legislativa)
         
         # TODO: nao fazer análise se já estiver no bd,
         #       e se tiver que fazer, salvar no bd (usando metodo analiseTemporal.salvar_no_bd())

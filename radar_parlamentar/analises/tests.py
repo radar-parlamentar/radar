@@ -44,7 +44,7 @@ class AnaliseTest(TestCase):
     def test_tamanho_partidos(self):
         """Testa tamanho dos partidos"""
 
-        an = analise.AnalisePeriodo(self.casa_legislativa, partidos=self.partidos)
+        an = analise.AnalisadorPeriodo(self.casa_legislativa, partidos=self.partidos)
         an._inicializa_vetores()
         tamanhos = an.tamanhos_partidos
         tamanho_jacobinos = tamanhos[convencao.JACOBINOS]
@@ -57,7 +57,7 @@ class AnaliseTest(TestCase):
     def test_partidos_2d(self):
         """Testa resultado do PCA"""
 
-        an = analise.AnalisePeriodo(self.casa_legislativa, partidos=self.partidos)
+        an = analise.AnalisadorPeriodo(self.casa_legislativa, partidos=self.partidos)
         grafico = an.partidos_2d()
 
         self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.49321534, 4)
@@ -93,7 +93,7 @@ class GraficoTest():
 
     def testa_geracao_figura(self):
         self.importa_dados()
-        an = analise.AnalisePeriodo(self.casa_legislativa, partidos=self.partidos)
+        an = analise.AnalisadorPeriodo(self.casa_legislativa, partidos=self.partidos)
         an.partidos_2d()
         gen = GeradorGrafico(an)
         gen.figura()
