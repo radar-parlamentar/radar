@@ -138,23 +138,6 @@ class Partido(models.Model):
     def __unicode__(self):
         return '%s-%s' % (self.nome, self.numero)
     
-class PeriodoVotacao():
-    """Representa um período de tempo em uma casa legislativa
-    Atributos:
-        ini -- datetime
-        fim -- datetime
-        label -- string do tipo '2010', '2010 - 1o semestre', ou '2010 - Janeiro'
-        casa_legislativa -- objeto do tipo CasaLegislativa
-        num_votacoes -- quantidade (int) de votações no período
-    """
-    
-    def __init__(self):
-        self.ini = None
-        self.fim = None
-        self.label = ''
-        self.casa_legislativa = None
-        self.num_votacoes = 0
-
 class CasaLegislativa(models.Model):
     """Instituição tipo Senado, Câmara etc
 
@@ -227,28 +210,28 @@ class CasaLegislativa(models.Model):
 
     @staticmethod
     def _intervalo_inicio(data_inicial,delta):
-	dia_inicial = 1
-	ano_inicial = data_inicial.year
-	if delta == MES:
-	    mes_inicial = data_inicial.month
-	if delta in [SEMESTRE,ANO]:
-	    mes_inicial = 1
-	return datetime.date(ano_inicial,mes_inicial,dia_inicial) 
+        dia_inicial = 1
+        ano_inicial = data_inicial.year
+        if delta == MES:
+            mes_inicial = data_inicial.month
+        if delta in [SEMESTRE,ANO]:
+            mes_inicial = 1
+        return datetime.date(ano_inicial,mes_inicial,dia_inicial) 
      
     @staticmethod
     def _intervalo_fim(data_fim,delta):
-	ano_fim = data_fim.year
-	if delta == MES:
-	    mes_fim = data_fim.month
-	if delta == SEMESTRE:
-	    if data_fim.month <= 6:
-		mes_fim = 6
-	    else:
-		mes_fim = 12
-	if delta == ANO:
-	    mes_fim = 12
-	dia_fim = monthrange(ano_fim,mes_fim)[1]
-	return datetime.date(ano_fim,mes_fim,dia_fim)
+        ano_fim = data_fim.year
+        if delta == MES:
+            mes_fim = data_fim.month
+        if delta == SEMESTRE:
+            if data_fim.month <= 6:
+                mes_fim = 6
+            else:
+                mes_fim = 12
+        if delta == ANO:
+            mes_fim = 12
+        dia_fim = monthrange(ano_fim,mes_fim)[1]
+        return datetime.date(ano_fim,mes_fim,dia_fim)
 
     def _votacoes(self,data_inicial=None,data_final=None): 
         votacoes = Votacao.objects.filter(proposicao__casa_legislativa=self)
@@ -313,6 +296,9 @@ class CasaLegislativa(models.Model):
         return periodo_filtrado
 
 class PeriodoCasaLegislativa(object):
+    """Atributos:
+        ini, fim -- objetos datetime
+    """
     
     def __init__(self,data_inicio,data_fim):
         self.ini = data_inicio

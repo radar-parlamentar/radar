@@ -20,18 +20,15 @@
 """Módulo analise"""
 
 from __future__ import unicode_literals
+from django.utils.dateparse import parse_datetime
+from hashlib import md5
+from math import hypot, atan2, pi
+from modelagem import models
+from models import AnalisePeriodo as Modelo_AnalisePeriodo, \
+    AnaliseTemporal as Modelo_AnaliseTemporal, PosicaoPartido
+import logging
 import numpy
 import pca
-from django.utils.dateparse import parse_datetime
-from modelagem import models
-from math import hypot, atan2, pi
-from models import PosicaoPartido
-from models import AnalisePeriodo as Modelo_AnalisePeriodo
-from models import AnaliseTemporal as Modelo_AnaliseTemporal
-from calendar import monthrange
-import datetime
-import logging
-from hashlib import md5
 
 logger = logging.getLogger("radar")
 
@@ -315,8 +312,8 @@ class AnaliseTemporal:
         self.casa_legislativa = casa_legislativa
         self.periodos = self.casa_legislativa.periodos(periodicidade)
 
-        self.ini = self.periodos[0][0]
-        self.fim = self.periodos[len(self.periodos)-1][1]
+        self.ini = self.periodos[0].ini
+        self.fim = self.periodos[len(self.periodos)-1].fim
         
         self.periodicidade = periodicidade
         self.area_total = 1
@@ -326,9 +323,9 @@ class AnaliseTemporal:
 
     def _faz_analises(self):
         """ Método da classe AnaliseTemporal que cria os objetos AnalisePeriodo e faz as análises."""
-        for datas in self.periodos:
-            data_ini_str = datas[0].strftime('%Y-%m-%d')
-            data_fim_str = datas[1].strftime('%Y-%m-%d')
+        for periodo in self.periodos:
+            data_ini_str = periodo.ini 
+            data_fim_str = periodo.fim 
             x = AnalisePeriodo(self.casa_legislativa, data_inicio=data_ini_str, data_fim=data_fim_str, votacoes=self.votacoes, partidos=self.partidos)
             if x.votacoes:
                 x.partidos_2d()
