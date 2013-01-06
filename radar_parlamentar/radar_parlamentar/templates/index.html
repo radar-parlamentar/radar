@@ -29,6 +29,16 @@
         document.getElementsByTagName("head")[0].appendChild(e);
       }
     </script>
+    <!-- the jQuery ligrary -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+      if (typeof jQuery === 'undefined') {
+        var e = document.createElement('script');
+            e.src = '/static/files/codes/js/jquery-1.8.3.min.js';
+            e.type='text/javascript';
+        document.getElementsByTagName("head")[0].appendChild(e);
+      }
+    </script>
 </head>
 <body>
     <header id="header"  class="largeSlides">
@@ -378,16 +388,8 @@
     </footer><!-- end of #footer -->
 
 <!-- JavaScript Libraries and Codes -->
-    <!-- the jQuery ligrary -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript">
-      if (typeof jQuery === 'undefined') {
-        var e = document.createElement('script');
-            e.src = '/static/files/codes/js/jquery-1.8.3.min.js';
-            e.type='text/javascript';
-        document.getElementsByTagName("head")[0].appendChild(e);
-      }
-    </script>
+    <!-- jQuery hoverIntent plugin -->
+    <script style="display: none;" src="/static/files/codes/js/jquery.hoverIntent.min.js"></script>
     <!-- jQuery Cycle plugin -->
     <script style="display: none;" src="/static/files/codes/js/jquery.cycle.all.min.js"></script>
     <!-- jQuery Quicksand plugin -->
