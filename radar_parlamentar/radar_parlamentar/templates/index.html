@@ -20,7 +20,15 @@
     <link rel="stylesheet" href="/static/files/codes/css/prettyPhoto.css" type="text/css" />
 
     <!-- Modernizr for HTML5 -->
-    <script style="display: none;" src="/static/files/codes/js/modernizr-2.0.6.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+    <script type="text/javascript">
+      if (typeof Modernizr === 'undefined') {
+        var e = document.createElement('script');
+            e.src = '/static/files/codes/js/modernizr-2.0.6.js';
+            e.type='text/javascript';
+        document.getElementsByTagName("head")[0].appendChild(e);
+      }
+    </script>
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -384,15 +392,21 @@
 
 <!-- JavaScript Libraries and Codes -->
     <!-- the jQuery ligrary -->
-    <script src="/static/files/codes/js/jquery-1.7.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+      if (typeof jQuery === 'undefined') {
+        var e = document.createElement('script');
+            e.src = '/static/files/codes/js/jquery-1.8.3.min.js';
+            e.type='text/javascript';
+        document.getElementsByTagName("head")[0].appendChild(e);
+      }
+    </script>
     <!-- jQuery Cycle plugin -->
     <script style="display: none;" src="/static/files/codes/js/jquery.cycle.all.min.js"></script>
     <!-- jQuery Quicksand plugin -->
     <script style="display: none;" src="/static/files/codes/js/jquery.quicksand.js"></script>
     <!-- jQuery prettyPhoto plugin -->
     <script style="display: none;" src="/static/files/codes/js/jquery.prettyPhoto.js"></script>
-    <!-- jQuery twitter plugin -->
-    <script style="display: none;" src="/static/files/codes/js/jquery.tweet.js"></script>
 
 
     <!-- This file starts/initializes all js functionalities throughout
