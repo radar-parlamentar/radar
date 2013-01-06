@@ -591,20 +591,20 @@ jQuery.extend(jQuery.easing,{def: 'easeOutQuad',swing: function(x,t,b,c,d){retur
     });
 
     /* Twitter plugin for home and about pages */
-    $(document).ready(function(){
-        $("#tweets .contents").tweet({
-            username: "palpaldal",
-            join_text: "auto",
-            avatar_size: 40,
-            count: 3,
-            auto_join_text_default: "",
-            auto_join_text_ed: "",
-            auto_join_text_ing: "",
-            auto_join_text_reply: "",
-            auto_join_text_url: "",
-            loading_text: "loading tweets..."
-        });
-    });
+//    $(document).ready(function(){
+//        $("#tweets .contents").tweet({
+//            username: "palpaldal",
+//            join_text: "auto",
+//            avatar_size: 40,
+//            count: 3,
+//            auto_join_text_default: "",
+//            auto_join_text_ed: "",
+//            auto_join_text_ing: "",
+//            auto_join_text_reply: "",
+//            auto_join_text_url: "",
+//            loading_text: "loading tweets..."
+//        });
+//    });
 
     /* a modified/tricked initializer to initialize cycle plugins on loaded tweets */
     $('#tweets').ready(function(){
