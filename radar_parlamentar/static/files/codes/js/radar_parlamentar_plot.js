@@ -70,8 +70,13 @@ var label = svg.append("text")
     .attr("x", width)
     .text(periodo_min);
 
-// Load the data.
-d3.json("/static/files/partidos.json", function(dados) {
+function plot_casa(nome_curto_casa_legislativa) {
+
+  d3.json("/analises/analise/" + nome_curto_casa_legislativa + "/json_pca", plot_data)
+}
+
+function plot_data(dados) {
+
   var partidos = dados.partidos,
       periodos = dados.periodos;
 
@@ -189,4 +194,4 @@ d3.json("/static/files/partidos.json", function(dados) {
     }
     return a[1];
   }
-});
+}

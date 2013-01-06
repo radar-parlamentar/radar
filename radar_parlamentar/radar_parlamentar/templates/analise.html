@@ -74,3 +74,7 @@
     <script style="display: none;" src="/static/files/codes/js/radar_parlamentar_plot.js"></script>
 {% endblock extrajsend %}
 
+{% block extrascriptsend %}
+    plot_casa('{{casa_legislativa.nome_curto}}');
+{% endblock extrascriptsend %}
+
