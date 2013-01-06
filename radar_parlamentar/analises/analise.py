@@ -207,22 +207,15 @@ class AnalisadorPeriodo:
         self.coordenadas = self._pca_partido()
         if self.num_votacoes > 1:
             for partido in self.coordenadas.keys():
-                coords = (self.coordenadas[partido])[0:2]
-                self.coordenadas[partido] = self.normaliza(coords[0], coords[1])
+                self.coordenadas[partido] = (self.coordenadas[partido])[0:2]
         elif self.num_votacoes == 1: # se só tem 1 votação, só tem 1 C.P. Jogar tudo zero na segunda CP.
             for partido in self.coordenadas.keys():
-                x = (self.coordenadas[partido])[0]
-                self.coordenadas[partido] = self.normaliza(x, 0.)
+                self.coordenadas[partido] = self.normaliza((self.coordenadas[partido])[0], 0.)
         else: # Zero votações no período. Os partidos são todos iguais. Tudo zero.
             for partido in self.coordenadas.keys():
                 self.coordenadas[partido] = [ 0. , 0. ]
         return self.coordenadas
     
-    def normaliza(self, x, y):
-        """Normaliza valores gerados pelo PCA para ficarem entre 0 e 100, em vez de -1 a 1"""
-        return [ x*50 + 50, y*50 + 50 ]
-
-
     def _energia(self,dados_fixos,dados_meus,graus=0,espelho=0):
         """Calcula energia envolvida no movimento entre dois instantes (fixo e meu), onde o meu é rodado (entre 0 e 360 graus), e primeiro eixo multiplicado por -1 se espelho=1. Ver pdf intitulado "Solução Analítica para o Problema de Rotação dos Eixos de Representação dos Partidos no Radar Parlamentar" (algoritmo_rotacao.pdf).
         """

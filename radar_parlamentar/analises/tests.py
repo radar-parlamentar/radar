@@ -60,21 +60,32 @@ class AnaliseTest(TestCase):
         an = analise.AnalisadorPeriodo(self.casa_legislativa, partidos=self.partidos)
         grafico = an.partidos_2d()
 
-        self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], 25.339, 2)
-        self.assertAlmostEqual(grafico[convencao.JACOBINOS][1], 17.465, 2)
-        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][0], 90.506, 2)
-        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][1], 44.911, 2)
-        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], 34.154, 2)
-        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], 87.624, 2)
+        self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.49321534, 4)
+        self.assertAlmostEqual(grafico[convencao.JACOBINOS][1], -0.65069601, 4)
+        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][0], 0.81012694, 4)
+        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][1], -0.10178901, 4)
+        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], -0.31691161, 4)
+        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], 0.75248502, 4)
         
     def test_json(self):
         
-        EXPECTED_JSON = ( '{"1989 1o Semestre":{"Monarquistas":{"numPartido":79, "tamanhoPartido":2309, "x":89.77, "y":59.24}, '
-                          '"Girondinos":{"numPartido":27, "tamanhoPartido":2309, "x":38.12, "y":10.94}, '
-                          '"Jacobinos":{"numPartido":42, "tamanhoPartido":2309, "x":22.12, "y":79.82}},  '
-                          '"1989 2o Semestre":{"Monarquistas":{"numPartido":79, "tamanhoPartido":2309, "x":97.97, "y":-33.48}, '
-                          '"Girondinos":{"numPartido":27, "tamanhoPartido":2309, "x":30.71, "y":-11.66}, '
-                          '"Jacobinos":{"numPartido":42, "tamanhoPartido":2309, "x":83.24, "y":35.68}}}' )
+        EXPECTED_JSON = '{"1989 1o Semestre":{"Monarquistas":{"numPartido":79, "tamanhoPartido":2309, "x":0.8, "y":0.18}, "Girondinos":{"numPartido":27, "tamanhoPartido":2309, "x":-0.24, "y":-0.78}, "Jacobinos":{"numPartido":42, "tamanhoPartido":2309, "x":-0.56, "y":0.6}},  "1989 2o Semestre":{"Monarquistas":{"numPartido":79, "tamanhoPartido":2309, "x":0.01, "y":0.82}, "Girondinos":{"numPartido":27, "tamanhoPartido":2309, "x":0.7, "y":-0.41}, "Jacobinos":{"numPartido":42, "tamanhoPartido":2309, "x":-0.71, "y":-0.4}}}'
+
+# estrutura do novo json (verificar valores de x e y)        
+#         EXPECTED_JSON = ( '{ "periodos":{ "1":"1989 1o Semestre", "2":"1989 2o Semestre" }, '
+#                  '"partidos":[ { "nome":"Monarquistas", "numero":79, "cor":"#A81450", '
+#                  '"tamanho":[ [1,3], [2,3] ],   '
+#                  '"x":[ [1,89.77], [2,97.97] ], '
+#                  '"y":[ [1,59.24], [2,-33.48] ] }, '
+#                  '{ "nome":"Jacobinos", "numero":42, "cor":"#1421CC", '
+#                  '"tamanho":[ [1,2], [2,3] ], '
+#                  '"x":[ [1,22.12], [2,83.24] ], '
+#                  '"y":[ [1,79.82], [2,35.68] ] }, '
+#                  '{ "nome":"Girondinos", "numero":27, "cor":"#42A116", '
+#                  '"tamanho":[ [1,3], [2,3] ], '
+#                  '"x":[ [1,38.12], [2,30.71] ], '
+#                  '"y":[ [1,10.94], [2,-11.66] ] } ] }' )
+        
         gen = analise.JsonAnaliseGenerator()
         json = gen.get_json(self.casa_legislativa)
         self.assertEqual(json, EXPECTED_JSON)
