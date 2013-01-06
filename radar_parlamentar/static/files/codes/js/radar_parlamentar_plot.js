@@ -1,436 +1,192 @@
-/***********************************************************************
- *          ##################################################
- *                              DOCUMENTAÇÃO
- *          ##################################################
- *
- *  "dados_completos"    é o dicionário com os dados de todos os periodos a
- *                          serem considerados
- *
- *  "dict_periodo"           é o dicionário com os dados de um único periodo
- *
- *  "lista_periodos"         é a lista com os periodos considerados na análise
- *                          formato: [periodo1, periodo2, periodo3, etc]
- *
- *  "offset"            é uma lista de dois valores com as coordenadas
- *                          x e y do offset a ser aplicado
- *                              offset = [x,y]
- **********************************************************************/
+// Various accessors that specify the four dimensions of data to visualize.
+function x(d) { return d.x; } // income (per capta) from original json
+function y(d) { return d.y; } // life expectancy from original json
+function tamanho(d) { return d.tamanho; } // population from original json
+function cor(d) { return d.cor; } // based on region from original json
+function nome(d) { return d.nome; } // name from original json
+function numero(d) { return d.numero; } // new parameter to json
 
-/***********************************************************************
- *          ##################################################
- *                      ÁREA DE DADOS E VARIÁVEIS
- *          ##################################################
- **********************************************************************/
+var periodo_min = 1,
+    periodo_max = 2;
 
-window.GlobalAltura = 590
-window.GlobalLargura = 880
-window.GlobalRaioMaximo = 12
-window.GlobalRaioMinimo = 12
-window.GlobalTempoAnimacao = 5000 //em milisegundos
+// Chart dimensions.
+var margin = {top: 19.5, right: 100, bottom: 19.5, left: 39.5},
+    width = 880 - margin.right,
+    height = 590 - margin.top - margin.bottom;
 
-/***********************************************************************
- *          ##################################################
- *                             ÁREA DE FUNÇÕES
- *          ##################################################
- **********************************************************************/
+// Various scales. These domains make assumptions of data, naturally.
+var xScale = d3.scale.linear().domain([0, 100]).range([0, width]),
+    yScale = d3.scale.linear().domain([0, 100]).range([height, 0]),
+    radiusScale = d3.scale.sqrt().domain([0, 3]).range([0, 40]),
+    colorScale = d3.scale.category10();
 
-/***********************************************************************
- * Função que carrega os periodos existentes no combo
- **********************************************************************/
+// The x & y axes.
+var xAxis = d3.svg.axis().orient("bottom").scale(xScale).ticks(12, d3.format(",d")),
+    yAxis = d3.svg.axis().scale(yScale).orient("left");
+
+// Create the SVG container and set the origin.
+var svg = d3.select("#animacao").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 //*
-function carregaComboPeriodos(lista_periodos){
-    $.each(lista_periodos,function(index,periodo){
-            var elOptNew = document.createElement('option');
-            elOptNew.text = periodo
-            elOptNew.value = periodo
-            var elSel = document.getElementById('periodos')
-            try {
-                elSel.add(elOptNew, null) // standards compliant; doesn't work in IE
-            }catch(ex){
-                elSel.add(elOptNew) // IE only
-            }
-        });
-}//*/
+// Add the x-axis.
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
 
-/***********************************************************************
- * Função que calcula o offset a ser aplicado nos valores de um
- *      determinado periodo para não plotar valores negativos
- *      retorna o offset [x,y]
- **********************************************************************/
+// Add the y-axis.
+svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis);
+//*/
+
 //*
-function calculaOffset(dict_periodo){
-    var offsetX = 0
-    var offsetY = 0
+// Add an x-axis label.
+svg.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height - 6)
+    .text("income per capita, inflation-adjusted (dollars)");
 
-    $.each(dict_periodo, function(partido, coordenadas){
-        if (coordenadas['x'] < offsetX)
-            offsetX = coordenadas['x']
-        if (coordenadas['y'] < offsetY)
-            offsetY = coordenadas['y']
-    })
+// Add a y-axis label.
+svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", 6)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("life expectancy (years)");
+//*/
 
-    offsetX = Math.abs(offsetX)
-    offsetY = Math.abs(offsetY)
-    return [offsetX,offsetY]
-}//*/
+// Add the year label; the value is set on transition.
+var label = svg.append("text")
+    .attr("class", "year label")
+    .attr("text-anchor", "end")
+    .attr("y", height - 24)
+    .attr("x", width)
+    .text(periodo_min);
 
-/***********************************************************************
- * Recebe os dados e os retorna com o offset aplicado
- **********************************************************************/
-//*
-function aplicaOffset(dict_periodo,offset){
-    var retorno = {}
+// Load the data.
+d3.json("/static/files/partidos.json", function(dados) {
+  var partidos = dados.partidos,
+      periodos = dados.periodos;
 
-    $.each(dict_periodo, function(partido, coordenadas){
-        retorno[partido] = dict_periodo[partido]
-        retorno[partido]['x'] = retorno[partido]['x']+offset[0]
-        retorno[partido]['y'] = retorno[partido]['y']+offset[1]
-    })
+  // A bisector since many nation's data is sparsely-defined.
+  var bisect = d3.bisector(function(d) { return d[0]; });
 
-    return retorno
-}//*/
+  // Add a dot per nation. Initialize the data at 1800, and set the colors.
+  var dot = svg.append("g")
+      .attr("class", "dots")
+    .selectAll(".dot")
+      .data(interpolateData(1))
+    .enter().append("circle")
+      .attr("class", "dot")
+      .style("fill", function(d) { return colorScale(cor(d)); })
+      .call(position)
+      .sort(order);
 
-/***********************************************************************
- * Retorna um vetor com os maiores valores de x e y.
- * RESTRIÇÃO: apenas para valores positivos.
- **********************************************************************/
-//*
-function calculaExtermos(dict_periodo){
-    var maiorValor = [0,0] //[MaiorX,MaiorY]
+  // Add a title.
+  dot.append("title")
+      .text(function(d) { return nome(d); });
 
-    $.each(dict_periodo, function(partido, coordenada){
-        if (maiorValor[0] < coordenada['x'])
-            maiorValor[0] = coordenada['x']
-        if (maiorValor[1] < coordenada['y'])
-            maiorValor[1] = coordenada['y']
-    })
+  // Add an overlay for the year label.
+  var box = label.node().getBBox();
 
-    return maiorValor
-}//*/
+  var overlay = svg.append("rect")
+        .attr("class", "overlay")
+        .attr("x", box.x)
+        .attr("y", box.y)
+        .attr("width", box.width)
+        .attr("height", box.height)
+        .on("mouseover", enableInteraction);
 
-/***********************************************************************
- * Função que normaliza as coordenadas
- *      - Transformar os dados todos em valores positivos
- *      - retorna dicionário de dados do periodo normalizado
- *              entre tamanhoX e tamanhoY
- *      Dá uma margem de GlobalRaioMaximo em cada um dos 4 lados
- *          para garantir os círculos dentro do canvas
- **********************************************************************/
-//*
-function normaliza(dados_completos, tamanhoX, tamanhoY){
+  // Start a transition that interpolates the data based on year.
+  svg.transition()
+      .duration(30000)
+      .ease("linear")
+      .tween("year", tweenYear)
+      .each("end", enableInteraction);
 
-    var retorno = dados_completos
-    var temporario = [0,0]
+  // Positions the dots based on data.
+  function position(dot) {
+    dot .attr("cx", function(d) { return xScale(x(d)); })
+        .attr("cy", function(d) { return yScale(y(d)); })
+        .attr("r", function(d) { return radiusScale(tamanho(d)); });
+  }
 
-    // variável que vai armazenaro offset a ser aplicado (maior X e maior Y)
-    var offset = [0,0]
+  // Defines a sort order so that the smallest dots are drawn on top.
+  function order(a, b) {
+    return tamanho(b) - tamanho(a);
+  }
 
-    // calculando os offsets
-    $.each(dados_completos, function(periodo,dados){
-        temporario = calculaOffset(dados_completos[periodo])
-        if (temporario[0] > offset[0])
-            offset[0] = temporario[0]
-        if (temporario[1] > offset[1])
-            offset[1] = temporario[1]
-    })
+  // After the transition finishes, you can mouseover to change the year.
+  function enableInteraction() {
+    var yearScale = d3.scale.linear()
+        .domain([periodo_min, periodo_max])
+        .range([box.x + 10, box.x + box.width - 10])
+        .clamp(true);
 
-    // aplicando o offset em cada periodo
-    $.each(dados_completos, function(periodo,dados){
-        retorno[periodo] = aplicaOffset(dados_completos[periodo],offset)
-    })
+    // Cancel the current transition, if any.
+    svg.transition().duration(0);
 
-    // ************************************************
-    // normalizando os dados entre tamanhoX e tamanhoY
-    // ************************************************
-        // Calculando os maiores valores de X e Y de todos os periodos
-        var maximoXY = [0,0]
-        $.each(retorno, function(periodo,dados){
-            temporario = calculaExtermos(dados)
-            if (temporario[0] > maximoXY[0])
-                maximoXY[0] = temporario[0]
-            if (temporario[1] > maximoXY[1])
-                maximoXY[1] = temporario[1]
-        })
+    overlay
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout)
+        .on("mousemove", mousemove)
+        .on("touchmove", mousemove);
 
-        //Faz a conta para um canvas de "tamanhoX - 2*GlobalRaioMaximo
-            // para poder dar margem de GlobalRaioMaximo para cada lado
-        var percentualX = (tamanhoX - 2*GlobalRaioMaximo)/maximoXY[0]
-        var percentualY = (tamanhoY - 2*GlobalRaioMaximo)/maximoXY[1]
-
-        //normalizando efetivamente
-        $.each(retorno, function(periodo,dados){
-            $.each(retorno[periodo], function(partido,coordenadas){
-                retorno[periodo][partido]['x'] = percentualX * retorno[periodo][partido]['x'] + GlobalRaioMaximo
-                retorno[periodo][partido]['y'] = percentualY * retorno[periodo][partido]['y'] + GlobalRaioMaximo
-            })
-        })
-
-    return retorno
-}//*/
-
-/***********************************************************************
- * Função que faz o plot de um determinado periodo, sem animação
- *      papel é o 'canvas' aonde devem ser plotados os dados
- *      conjunto é um elemento do tipo paper.set() que serve
- *      de agrupamento para os dados plotados e
- *      partidos é a lista de partidos
- **********************************************************************/
-//*
-function plotaDadosEstaticos(papel,dict_periodo,partidos,conjunto){
-    $.each(partidos, function(index,partido){
-        var partido_set = papel.set();
-        tamanho_partido = Math.sqrt(dict_periodo[partido]['tamanhoPartido']);
-        if(tamanho_partido > 0) { // não mostrar partidos de tamanho zero
-            partido_set.push(
-                papel.circle(
-                    dict_periodo[partido]['x'],dict_periodo[partido]['y'],tamanho_partido).attr(
-                        {
-                        gradient: '90-#526c7a-#64a0c1',
-                        'fill-opacity': 0,
-                        stroke: '#3b4449',
-                        'stroke-width': 1,
-                        'stroke-linejoin': 'round',
-                        rotation: -90,
-                        title: partido + " - " + dict_periodo[partido]['numPartido'] + " Tam:" + tamanho_partido,
-                    }),
-            papel.text(
-                dict_periodo[partido]['x'],dict_periodo[partido]['y'],partido).attr(
-                    {
-                        'font-size': 11,
-                        title: partido + " - " + dict_periodo[partido]['numPartido'],
-                        cursor: 'default'
-                    })
-            )   
-        conjunto.push(partido_set)
-        } else {// fecha (if tamaho_partido > 0)
-            partido_set.push(
-                papel.circle(
-                    dict_periodo[partido]['x'],dict_periodo[partido]['y'],0).attr(
-                        {
-                        gradient: '90-#526c7a-#64a0c1',
-                        'fill-opacity': 0,
-                        stroke: '#3b4449',
-                        'stroke-width': 1,
-                        'stroke-linejoin': 'round',
-                        rotation: -90,
-                        title: partido + " - " + dict_periodo[partido]['numPartido'] + " Tam:" + 'tamanho_partido',
-                    }),
-            papel.text(
-                dict_periodo[partido]['x'],dict_periodo[partido]['y'],'').attr(
-                    {
-                        'font-size': 11,
-                        title: partido + " - " + dict_periodo[partido]['numPartido'],
-                        cursor: 'default'
-                    })
-            )   
-        conjunto.push(partido_set)
-    }})
-    return conjunto
-}//*/
-
-/***********************************************************************
- * Função que faz a animação entre dois determinados periodos
- *      papel é o 'canvas' dict_periodo são os dados do fim da animação,
- *      conjunto é um elemento do tipo paper.set() que serve
- *      de agrupamento para os dados plotados e
- *      partidos é a lista de partidos
- **********************************************************************/
-//*
-function animaTransicao(graficos, dados_full, partidos, periodos, indice_origem, indice_destino, direcao){
-
-    var idx_ult_partido = partidos.length - 1 // índice do último partido na lista de partidos
-
-    //gerando uma lista de parâmetros com dois dicionários:
-        //[0]: parâmetros do circulo
-        //[1]: parâmetros do texto
-    var parametros_gerais = geraParametrosAnimacao(dados_full, partidos[idx_ult_partido], periodos, indice_origem, indice_destino, direcao)
-    var tempo_de_animacao = GlobalTempoAnimacao * (Math.abs(indice_origem - indice_destino))
-
-    //anim é um objeto do tipo 'animation' e que contém a animação que será aplicada
-        //no círculo do último partido do vetor partidos.
-    var animObj = Raphael.animation(parametros_gerais[0], tempo_de_animacao, "linear")
-
-    //animando o último partido da lista
-        //Círculo
-    var el_anima = graficos[idx_ult_partido][0].animate(animObj)
-        //Texto
-    graficos[idx_ult_partido][1].animateWith(
-                                el_anima, animObj,
-                                parametros_gerais[1],
-                                tempo_de_animacao,
-                                "linear"
-                            )
-
-    //loop para todos os partidos exceto o último
-    $.each(partidos, function(key_part, partido){
-        //excluindo o último partido das iterações
-        if (key_part < idx_ult_partido){
-
-            //gerando uma lista de parâmetros com dois dicionários:
-                //[0]: parâmetros do circulo
-                //[1]: parâmetros do texto
-            parametros_gerais = geraParametrosAnimacao(dados_full, partido, periodos, indice_origem, indice_destino, direcao)
-
-            //Gerando objetos de objetos de animação para o círculo e para o texto
-            var anima_partido_circulo = Raphael.animation(parametros_gerais[0], tempo_de_animacao, "linear")
-            var anima_partido_texto = Raphael.animation(parametros_gerais[1], tempo_de_animacao, "linear")
-            //configurando animação do círculo
-            var temp = graficos[key_part][0].animateWith(
-                                            el_anima,
-                                            animObj,
-                                            anima_partido_circulo,
-                                            tempo_de_animacao,
-                                            "linear"
-                                        )
-            //configurando animação do texto
-            temp = graficos[key_part][1].animateWith(
-                                            el_anima,
-                                            animObj,
-                                            anima_partido_texto,
-                                            tempo_de_animacao,
-                                            "linear"
-                                        )
-        }
-    })//fim do loop para os partidos
-}
-
-/***********************************************************************
- * Função que retorna uma lista com dois dicionários, cada um trazendo
- *      os parâmetro para a animação a ser realizada.
- **********************************************************************/
-//*
-function geraParametrosAnimacao(dados_full, partido, periodos, indice_origem, indice_destino, direcao){
-    var parametros_circulo = {}
-    var parametros_texto = {}
-    var x = 0,
-        y = 0,
-        periodo_lendo = 0,
-        total_intervalos = Math.abs(indice_origem - indice_destino) + 1, //variável usada como auxiliar para indexar as animações
-        passo = 100/total_intervalos,
-        contador = passo
-
-    //gerando os parâmetros
-        //considera o caminhamento crescente e decrescente no tempo
-    if (direcao==1){
-        for (var i=indice_origem; i<=indice_destino; i++){
-            periodo_lendo = periodos[i]
-            x = dados_full[periodo_lendo][partido]['x']
-            y = dados_full[periodo_lendo][partido]['y']
-
-            parametros_circulo[contador+"%"] = {
-                                'cx': x,
-                                'cy': y
-                            }
-            parametros_texto[contador+"%"] = {
-                                'x': x,
-                                'y': y
-                            }
-            contador += passo
-        }
-
-    }else{
-        for (var i=indice_origem; i>=indice_destino; i--){
-            periodo_lendo = periodos[i]
-            x = dados_full[periodo_lendo][partido]['x']
-            y = dados_full[periodo_lendo][partido]['y']
-
-            parametros_circulo[contador+"%"] = {
-                                'cx': x,
-                                'cy': y
-                            }
-            parametros_texto[contador+"%"] = {
-                                'x': x,
-                                'y': y
-                            }
-            contador += passo
-        }
-
+    function mouseover() {
+      label.classed("active", true);
     }
 
-    return [parametros_circulo, parametros_texto]
-}
+    function mouseout() {
+      label.classed("active", false);
+    }
 
-/***********************************************************************
- * Função que faz o plot inicial dos dados
- **********************************************************************/
-//*
-Raphael(function () {
-    /*******************************************************************
-     *                     INICIALIZANDO O GRÁFICO                     *
-     ******************************************************************/
+    function mousemove() {
+      displayYear(yearScale.invert(d3.mouse(this)[0]));
+    }
+  }
 
-        var dados_completos = eval('('+GlobalCoord+')')
-        var lista_periodos = []
-        var lista_partidos = [] // Essa lista será usada só para garantir a ordem dos partidos
-        var menor_periodo = 0
-        var periodo_origem = 0 // variável usada no loop de animação
+  // Tweens the entire chart by first tweening the year, and then the data.
+  // For the interpolated data, the dots and label are redrawn.
+  function tweenYear() {
+    var year = d3.interpolateNumber(periodo_min, periodo_max);
+    return function(t) { displayYear(year(t)); };
+  }
 
-        // Recuperando a lista de periodos recebida no dicionário
-             // e o menor periodo da lista
-        $.each(dados_completos, function(periodo, dados){
-            if (menor_periodo == 0 || menor_periodo > periodo)
-                menor_periodo = periodo
-            lista_periodos.push(periodo)
-        })
-        lista_periodos.sort()
-        periodo_origem = menor_periodo //inicializando variável periodo_origem
+  // Updates the display to show the specified year.
+  function displayYear(year) {
+    dot.data(interpolateData(year), nome).call(position).sort(order);
+    label.text(periodos[Math.round(year)]);
+  }
 
-        // Recuperando a lista de partidos recebida no dicionário
-            // Aqui se considera que os partidos em todos os periodos são
-            // os mesmos, ou seja, se aparece em um periodo TEM que aparecer
-            // nos outros!
-        $.each(dados_completos[menor_periodo], function(partido, infos){
-            lista_partidos.push(partido)
-        })
-        lista_partidos.sort() // Apenas para colocar em ordem alfabética!
+  // Interpolates the dataset for the given (fractional) year.
+  function interpolateData(year) {
+    return partidos.map(function(d) {
+      return {
+        nome: d.nome,
+        cor: d.cor,
+        tamanho: interpolateValues(d.tamanho, year),
+        x: interpolateValues(d.x, year),
+        y: interpolateValues(d.y, year)
+      };
+    });
+  }
 
-        //Carregando o Combo com os periodos disponíveis
-        carregaComboPeriodos(lista_periodos)
-
-        //Normalizando os dados
-        dados_completos = normaliza(dados_completos,GlobalLargura*0.95,GlobalAltura*0.95)
-
-        // Altera o canvas para tamanho máximo necessário +10%
-        var papel = Raphael(document.getElementById("animacao"),GlobalLargura,GlobalAltura)
-        papel.rect(0,0,GlobalLargura,GlobalAltura).attr({"fill":"#000000","fill-opacity":0.2})
-
-        // Pseudo elemento do tipo 'conjunto' ou 'grupo' (set) para
-            // agrupar os dados plotados. Nesse grupo teremos
-            // aninhados outros grupos, um para cada partido,
-            // contendo um elemento do tipo circle e um do tipo text
-            // CONJUNTO = [PARTIDO*]
-            //      PARTIDO = [CIRCLE,TEXT]
-        var conjunto = papel.set()
-
-        //Parseando os dados iniciais para plotagem
-                // e plotando (agrupado em 'conjunto')
-        conjunto = plotaDadosEstaticos(papel,dados_completos[menor_periodo],lista_partidos, conjunto)
-
-    /*******************************************************************
-      *                GERENCIANDO ANIMAÇÕES
-      *****************************************************************/
-        var seleciona_periodo = document.getElementById("periodos")
-        var animar = document.getElementById("animar")
-        var direcao_temporal = 1 // 1 é para direita e -1 é para esquerda
-
-        animar.onclick = function () {
-
-            var periodo_destino = seleciona_periodo.value
-            if (periodo_destino != periodo_origem){
-                //calculando variável que indica direção temporal do movimento
-                if (periodo_destino > periodo_origem)
-                    direcao_temporal = 1
-                else
-                    direcao_temporal = -1
-
-                var indice_periodo_origem = $.inArray(periodo_origem, lista_periodos)
-                var indice_periodo_destino = $.inArray(periodo_destino, lista_periodos)
-
-                animaTransicao(conjunto, dados_completos, lista_partidos, lista_periodos, indice_periodo_origem, indice_periodo_destino, direcao_temporal)
-
-                periodo_origem = periodo_destino
-            }
-        }//fim da animação
-
-    return papel
-})//*/
+  // Finds (and possibly interpolates) the value for the specified year.
+  function interpolateValues(values, year) {
+    var i = bisect.left(values, year, 0, values.length - 1),
+        a = values[i];
+    if (i > 0) {
+      var b = values[i - 1],
+          t = (year - a[0]) / (b[0] - a[0]);
+      return a[1] * (1 - t) + b[1] * t;
+    }
+    return a[1];
+  }
+});

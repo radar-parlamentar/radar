@@ -1,0 +1,29 @@
+@import url(http://fonts.googleapis.com/css?family=PT+Serif|PT+Serif:b|PT+Serif:i|PT+Sans|PT+Sans:b);
+
+#chart {
+  margin-left: -40px;
+  height: 506px;
+}
+.dot {
+  stroke: #000;
+}
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.label {
+  fill: #777;
+}
+.year.label {
+  font: 500 76px "Helvetica Neue";
+  fill: #ddd;
+}
+.year.label.active {
+  fill: #aaa;
+}
+.overlay {
+  fill: none;
+  pointer-events: all;
+  cursor: ew-resize;
+}

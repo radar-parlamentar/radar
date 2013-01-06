@@ -5,11 +5,19 @@
 {% endblock title %}
 
 {% block extrascripts %}
-    <script style="display: none;" src="/static/files/codes/js/raphael-min.js"></script>
+    <link rel="stylesheet" href="/static/files/codes/css/radar_d3_graph.css" type="text/css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js"></script>
+    <script type="text/javascript">
+      if (typeof jQuery === 'undefined') {
+        var e = document.createElement('script');
+            e.src = '/static/files/codes/js/d3.min.js';
+            e.type='text/javascript';
+        document.getElementsByTagName("head")[0].appendChild(e);
+      }
+    </script>
 {% endblock extrascripts %}
 
 {% block extrahead %}
-    window.GlobalCoord = {}
     $(function() {
         $('#analises').addClass('active');
     });
@@ -61,11 +69,6 @@
 	<div id="animacao"></div>
 	<div style="clear:right"/>
 {% endblock content %}
-
-
-{% block extrascriptsend %}
-    window.GlobalCoord=$.ajax("json_pca", {async:false}).responseText
-{% endblock extrascriptsend %}
 
 {% block extrajsend %}
     <script style="display: none;" src="/static/files/codes/js/radar_parlamentar_plot.js"></script>
