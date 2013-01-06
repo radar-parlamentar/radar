@@ -29,19 +29,16 @@
         document.getElementsByTagName("head")[0].appendChild(e);
       }
     </script>
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-11505683-7']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
+    <!-- the jQuery ligrary -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+      if (typeof jQuery === 'undefined') {
+        var e = document.createElement('script');
+            e.src = '/static/files/codes/js/jquery-1.8.3.min.js';
+            e.type='text/javascript';
+        document.getElementsByTagName("head")[0].appendChild(e);
+      }
+    </script>
 </head>
 <body>
     <header id="header"  class="largeSlides">
@@ -391,23 +388,16 @@
     </footer><!-- end of #footer -->
 
 <!-- JavaScript Libraries and Codes -->
-    <!-- the jQuery ligrary -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript">
-      if (typeof jQuery === 'undefined') {
-        var e = document.createElement('script');
-            e.src = '/static/files/codes/js/jquery-1.8.3.min.js';
-            e.type='text/javascript';
-        document.getElementsByTagName("head")[0].appendChild(e);
-      }
-    </script>
+    <!-- jQuery hoverIntent plugin -->
+    <script style="display: none;" src="/static/files/codes/js/jquery.hoverIntent.min.js"></script>
     <!-- jQuery Cycle plugin -->
     <script style="display: none;" src="/static/files/codes/js/jquery.cycle.all.min.js"></script>
     <!-- jQuery Quicksand plugin -->
     <script style="display: none;" src="/static/files/codes/js/jquery.quicksand.js"></script>
     <!-- jQuery prettyPhoto plugin -->
     <script style="display: none;" src="/static/files/codes/js/jquery.prettyPhoto.js"></script>
-
+    <!-- jQuery twitter plugin -->
+    <script style="display: none;" src="/static/files/codes/js/jquery.tweet.js"></script>
 
     <!-- This file starts/initializes all js functionalities throughout
         this site and houses some more scripts or libraries. -->
@@ -468,5 +458,18 @@
 
     <link rel="stylesheet" id="colors" href="/static/files/codes/css/colors/orange-green.css" type="text/css" />
 
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-11505683-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 </body>
 </html>
