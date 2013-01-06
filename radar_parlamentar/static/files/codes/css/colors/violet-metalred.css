@@ -26,42 +26,42 @@ a,
 .pager a:focus,
 .pager a:hover{background-color: #d54c2c;}
 
-	.links li a:focus,
-	.links li a:hover{border-color: #d54c2c;}
+        .links li a:focus,
+        .links li a:hover{border-color: #d54c2c;}
 
 
 /* heading colors */
 h1,h2,h3,h4,h5,h6,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {color: #3950c7;}
 
 /* graphics */
-	#feedback .prev,
-	#tweets .prev{background-image:  url(../../../images/btn/fb-t/ft-arw-up-vr.png);}
-	
-	#feedback .next,
-	#tweets .next{background-image:  url(../../../images/btn/fb-t/ft-arw-dn-vr.png);}
+        #feedback .prev,
+        #tweets .prev{background-image:  url(../../../images/btn/fb-t/ft-arw-up-vr.png);}
+        
+        #feedback .next,
+        #tweets .next{background-image:  url(../../../images/btn/fb-t/ft-arw-dn-vr.png);}
 
 .slideMsgs h3,
 .headerMsg h1{color: #4963e9;}
 
-		#menu>li:hover>a,
-		#menu>li>a:focus,
-		#menu>li>a:hover,
-		#menu>li.active>a{
-			background-color: #3950c7;
-			background-image: url(../../../images/menu-bg-vr.png);
-			border-top-color: rgba(255,255,255,.25);
-		}
+                #menu>li:hover>a,
+                #menu>li>a:focus,
+                #menu>li>a:hover,
+                #menu>li.active>a{
+                        background-color: #3950c7;
+                        background-image: url(../../../images/menu-bg-vr.png);
+                        border-top-color: rgba(255,255,255,.25);
+                }
 
-		#menu ul li.active>a,
-		#menu ul li:hover>a,
-		#menu ul a:focus,
-		#menu ul a:hover{background: #3950c7;}
+                #menu ul li.active>a,
+                #menu ul li:hover>a,
+                #menu ul a:focus,
+                #menu ul a:hover{background: #3950c7;}
 
-		.workProcess .step1 {background-image: url(../../../images/process/1-vr.png);}
+                .workProcess .step1 {background-image: url(../../../images/process/1-vr.png);}
 
-		.workProcess .step2 {background-image: url(../../../images/process/2-vr.png);}
+                .workProcess .step2 {background-image: url(../../../images/process/2-vr.png);}
 
-		.workProcess .step3 {background-image: url(../../../images/process/3-vr.png);}
+                .workProcess .step3 {background-image: url(../../../images/process/3-vr.png);}
 
 button,input[type="button"],
 input[type="submit"],input[type="reset"],
@@ -79,18 +79,18 @@ input[type="submit"],input[type="reset"],
 #port .thumb .link,
 .portCol2 .meta .link a{background-image: url(../../../images/links-vr.png);}
 
-	.blogList .wrap .written a{background-image: url(../../../images/icons/blog-types/vr/pencil.png);}
-	.blogList .wrap .video a{background-image: url(../../../images/icons/blog-types/vr/film.png);}
-	.blogList .wrap .audio a{background-image: url(../../../images/icons/blog-types/vr/audio.png);}
-	.blogList .wrap .image a{background-image: url(../../../images/icons/blog-types/vr/image.png);}
-	.blogList .wrap .slides a{background-image: url(../../../images/icons/blog-types/vr/slides.png);}
-	.blogList .wrap .link a{background-image: url(../../../images/icons/blog-types/vr/link.png);}
-	.blogList .wrap .quote a{background-image: url(../../../images/icons/blog-types/vr/quote.png);}
+        .blogList .wrap .written a{background-image: url(../../../images/icons/blog-types/vr/pencil.png);}
+        .blogList .wrap .video a{background-image: url(../../../images/icons/blog-types/vr/film.png);}
+        .blogList .wrap .audio a{background-image: url(../../../images/icons/blog-types/vr/audio.png);}
+        .blogList .wrap .image a{background-image: url(../../../images/icons/blog-types/vr/image.png);}
+        .blogList .wrap .slides a{background-image: url(../../../images/icons/blog-types/vr/slides.png);}
+        .blogList .wrap .link a{background-image: url(../../../images/icons/blog-types/vr/link.png);}
+        .blogList .wrap .quote a{background-image: url(../../../images/icons/blog-types/vr/quote.png);}
 
-	.post .topMeta .written a{background-image: url(../../../images/icons/blog-types/vr/mini-pencil.png);}
-	.post .topMeta .video a{background-image: url(../../../images/icons/blog-types/vr/mini-film.png);}
-	.post .topMeta .audio a{background-image: url(../../../images/icons/blog-types/vr/mini-audio.png);}
-	.post .topMeta .image a{background-image: url(../../../images/icons/blog-types/vr/mini-image.png);}
-	.post .topMeta .slides a{background-image: url(../../../images/icons/blog-types/vr/mini-slides.png);}
-	.post .topMeta .link a{background-image: url(../../../images/icons/blog-types/vr/mini-link.png);}
-	.post .topMeta .quote a{background-image: url(../../../images/icons/blog-types/vr/mini-quote.png);}
+        .post .topMeta .written a{background-image: url(../../../images/icons/blog-types/vr/mini-pencil.png);}
+        .post .topMeta .video a{background-image: url(../../../images/icons/blog-types/vr/mini-film.png);}
+        .post .topMeta .audio a{background-image: url(../../../images/icons/blog-types/vr/mini-audio.png);}
+        .post .topMeta .image a{background-image: url(../../../images/icons/blog-types/vr/mini-image.png);}
+        .post .topMeta .slides a{background-image: url(../../../images/icons/blog-types/vr/mini-slides.png);}
+        .post .topMeta .link a{background-image: url(../../../images/icons/blog-types/vr/mini-link.png);}
+        .post .topMeta .quote a{background-image: url(../../../images/icons/blog-types/vr/mini-quote.png);}

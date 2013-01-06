@@ -5,8 +5,8 @@
 #menu ul{z-index: 999;}
 
 #menu li a{
-	border: none;
-	color: #ddd;
+        border: none;
+        color: #ddd;
 }
 
 .promoMsg{margin-top: 0;}
@@ -20,8 +20,8 @@
 .breadcrumbs{margin: 0px 0 40px 0;}
 
 #port{
-	padding: 0 0 20px;
-	width: 1020px;
+        padding: 0 0 20px;
+        width: 1020px;
 }
 
 #tKeys{padding-bottom: 30px;}
@@ -67,8 +67,8 @@
 #searchForm input[type="submit"]{text-indent: -9999px;}
 
 #portCntrls{
-	padding-left: 92px;
-	width: 258px;
+        padding-left: 92px;
+        width: 258px;
 }
 
 #port.qsList .thumb{overflow: hidden;}

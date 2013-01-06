@@ -5,10 +5,10 @@
 #portCntrls .portDT,
 .prevSBtn,
 .nextSBtn{
-	font-size: 12px;
-	text-indent: -9999px;
+        font-size: 12px;
+        text-indent: -9999px;
 }
 
 #menu{
-	padding-left: 336px;
+        padding-left: 336px;
 }

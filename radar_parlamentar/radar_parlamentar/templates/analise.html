@@ -48,7 +48,7 @@
         À direita do gráfico você encontra a legenda com o número dos partidos e a sigla da legenda.<br/>
         O tamanho de cada partido no gráfico representa a quantidade de parlamentares que cada partido possui.<br/>
         Veja as movimentações e tire suas próprias conclusões.<br/>
-	Quantidade de votações considerada nesta análise: {{num_votacao}}.<br/><br/>
+        Quantidade de votações considerada nesta análise: {{num_votacao}}.<br/><br/>
         Caso você tenha conhecimentos básicos de banco de dados, você também pode fazer suas próprias análises com SQL usando o banco de dados sqlite com os votos da {{casa_legislativa.nome}}. Faça o <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (dados atualizados em {{casa_legislativa.atualizacao}}).<br/><br/>    
     </article>
         <div id="form">
@@ -57,17 +57,17 @@
             <button id="animar">Animar</button>
             <br/><br/>
         </div>
-	<div id="legenda-cmsp" class="list">
-	    <b>LEGENDA</b>
-	    <ul class="links">
-		<li></li>
-		{% for partido in partidos %}
-		    <li>{{partido.numero}} | {{partido.nome}}</li>
-		{% endfor %}
-	    </ul>
-	</div>
-	<div id="animacao"></div>
-	<div style="clear:right"/>
+        <div id="legenda-cmsp" class="list">
+            <b>LEGENDA</b>
+            <ul class="links">
+                <li></li>
+                {% for partido in partidos %}
+                    <li>{{partido.numero}} | {{partido.nome}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="animacao"></div>
+        <div style="clear:right"/>
 {% endblock content %}
 
 {% block extrajsend %}

@@ -1,14 +1,14 @@
 #navNLogo{
-	border-color: #000;
-	height: 100px;
+        border-color: #000;
+        height: 100px;
 }
 
 #logo{margin: -21px 40px -21px 0;}
 
 #searchForm input[type="text"],
 #nlForm input[type="text"]{
-	background: #111;
-	border-color: #000;
+        background: #111;
+        border-color: #000;
 }
 
 #nlForm label{top: 23px;}
@@ -29,8 +29,8 @@
 #commentForm textarea,
 #cntForm input[type="text"],
 #cntForm textarea{
-	background-color: #eee;
-	border-color: #999;
+        background-color: #eee;
+        border-color: #999;
 }
 
 #commentForm input[type="text"]:focus,
@@ -41,12 +41,12 @@
 #cntForm input[type="text"]:hover,
 #cntForm textarea:focus,
 #cntForm textarea:hover{
-	background-color: #fff;
-	border-color: #666;
+        background-color: #fff;
+        border-color: #666;
 }
 
 #portCntrls li a,
 #btmPortCntrls li a{
-	font-size: 12px;
-	text-indent: -999px;
+        font-size: 12px;
+        text-indent: -999px;
 }

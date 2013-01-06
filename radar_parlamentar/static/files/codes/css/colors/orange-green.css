@@ -19,53 +19,53 @@ a,
 #secondary .dynamic .tags a:focus,#secondary .dynamic .tags a:hover,
 #secondary .tweet_time a:focus,#secondary .tweet_time a:hover{color: #12a108;}
 
-		.archiveList a:focus,
-		.archiveList a:hover,
-		.linkList a:focus,
-		.linkList a:hover{color: #12a108;}
+                .archiveList a:focus,
+                .archiveList a:hover,
+                .linkList a:focus,
+                .linkList a:hover{color: #12a108;}
 
 .btn:focus,
 .btn:hover,
 .pager a:focus,
 .pager a:hover{background-color: #12a108;}
 
-	.links li a:focus,
-	.links li a:hover{border-color: #12a108;}
+        .links li a:focus,
+        .links li a:hover{border-color: #12a108;}
 
 
 /* heading colors */
 h1,h2,h3,h4,h5,h6,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {color: #e94025;}
 
 /* graphics */
-	#feedback .prev,
-	#tweets .prev{background-image:  url(../../../images/btn/fb-t/ft-arw-up-og.png);}
-	
-	#feedback .next,
-	#tweets .next{background-image:  url(../../../images/btn/fb-t/ft-arw-dn-og.png);}
+        #feedback .prev,
+        #tweets .prev{background-image:  url(../../../images/btn/fb-t/ft-arw-up-og.png);}
+        
+        #feedback .next,
+        #tweets .next{background-image:  url(../../../images/btn/fb-t/ft-arw-dn-og.png);}
 
 /* darker version of the heading color */
 .slideMsgs h3,
 .headerMsg h1{color: #dc3015;}
 
-		#menu>li:hover>a,
-		#menu>li>a:focus,
-		#menu>li>a:hover,
-		#menu>li.active>a{
-			background-color: #e94025;
-			background-image: url(../../../images/menu-bg-og.png);
-			border-top-color: rgba(255,255,255,.25);
-		}
+                #menu>li:hover>a,
+                #menu>li>a:focus,
+                #menu>li>a:hover,
+                #menu>li.active>a{
+                        background-color: #e94025;
+                        background-image: url(../../../images/menu-bg-og.png);
+                        border-top-color: rgba(255,255,255,.25);
+                }
 
-		#menu ul li.active>a,
-		#menu ul li:hover>a,
-		#menu ul a:focus,
-		#menu ul a:hover{background: #e94025;}
+                #menu ul li.active>a,
+                #menu ul li:hover>a,
+                #menu ul a:focus,
+                #menu ul a:hover{background: #e94025;}
 
-		.workProcess .step1 {background-image: url(../../../images/process/1-og.png);}
+                .workProcess .step1 {background-image: url(../../../images/process/1-og.png);}
 
-		.workProcess .step2 {background-image: url(../../../images/process/2-og.png);}
+                .workProcess .step2 {background-image: url(../../../images/process/2-og.png);}
 
-		.workProcess .step3 {background-image: url(../../../images/process/3-og.png);}
+                .workProcess .step3 {background-image: url(../../../images/process/3-og.png);}
 
 button,input[type="button"],
 input[type="submit"],input[type="reset"],
@@ -83,18 +83,18 @@ input[type="submit"],input[type="reset"],
 #port .thumb .link,
 .portCol2 .meta .link a{background-image: url(../../../images/links-og.png);}
 
-	.blogList .wrap .written a{background-image: url(../../../images/icons/blog-types/og/pencil.png);}
-	.blogList .wrap .video a{background-image: url(../../../images/icons/blog-types/og/film.png);}
-	.blogList .wrap .audio a{background-image: url(../../../images/icons/blog-types/og/audio.png);}
-	.blogList .wrap .image a{background-image: url(../../../images/icons/blog-types/og/image.png);}
-	.blogList .wrap .slides a{background-image: url(../../../images/icons/blog-types/og/slides.png);}
-	.blogList .wrap .link a{background-image: url(../../../images/icons/blog-types/og/link.png);}
-	.blogList .wrap .quote a{background-image: url(../../../images/icons/blog-types/og/quote.png);}
+        .blogList .wrap .written a{background-image: url(../../../images/icons/blog-types/og/pencil.png);}
+        .blogList .wrap .video a{background-image: url(../../../images/icons/blog-types/og/film.png);}
+        .blogList .wrap .audio a{background-image: url(../../../images/icons/blog-types/og/audio.png);}
+        .blogList .wrap .image a{background-image: url(../../../images/icons/blog-types/og/image.png);}
+        .blogList .wrap .slides a{background-image: url(../../../images/icons/blog-types/og/slides.png);}
+        .blogList .wrap .link a{background-image: url(../../../images/icons/blog-types/og/link.png);}
+        .blogList .wrap .quote a{background-image: url(../../../images/icons/blog-types/og/quote.png);}
 
-	.post .topMeta .written a{background-image: url(../../../images/icons/blog-types/og/mini-pencil.png);}
-	.post .topMeta .video a{background-image: url(../../../images/icons/blog-types/og/mini-film.png);}
-	.post .topMeta .audio a{background-image: url(../../../images/icons/blog-types/og/mini-audio.png);}
-	.post .topMeta .image a{background-image: url(../../../images/icons/blog-types/og/mini-image.png);}
-	.post .topMeta .slides a{background-image: url(../../../images/icons/blog-types/og/mini-slides.png);}
-	.post .topMeta .link a{background-image: url(../../../images/icons/blog-types/og/mini-link.png);}
-	.post .topMeta .quote a{background-image: url(../../../images/icons/blog-types/og/mini-quote.png);}
+        .post .topMeta .written a{background-image: url(../../../images/icons/blog-types/og/mini-pencil.png);}
+        .post .topMeta .video a{background-image: url(../../../images/icons/blog-types/og/mini-film.png);}
+        .post .topMeta .audio a{background-image: url(../../../images/icons/blog-types/og/mini-audio.png);}
+        .post .topMeta .image a{background-image: url(../../../images/icons/blog-types/og/mini-image.png);}
+        .post .topMeta .slides a{background-image: url(../../../images/icons/blog-types/og/mini-slides.png);}
+        .post .topMeta .link a{background-image: url(../../../images/icons/blog-types/og/mini-link.png);}
+        .post .topMeta .quote a{background-image: url(../../../images/icons/blog-types/og/mini-quote.png);}
