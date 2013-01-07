@@ -20,6 +20,7 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from analises import analise
+from analises import grafico
 from grafico import GeradorGrafico
 from importadores import convencao
 from modelagem import models
@@ -90,11 +91,26 @@ class AnaliseTest(TestCase):
         json = gen.get_json(self.casa_legislativa)
         self.assertEqual(json, EXPECTED_JSON)
 
+
+class GraficoTest(TestCase):
+    
+    def test_graph_scale(self):
+        partidos = {}
+        partidos['Jacobinos'] = [0.1, -0.2]
+        partidos['Girondinos'] = [0.5, 1]
+        scaler = grafico.GraphScaler()
+        scaled = scaler.scale(partidos)
+        self.assertEqual(55, scaled['Jacobinos'][0])
+        self.assertEqual(40, scaled['Jacobinos'][1])
+        self.assertEqual(75, scaled['Girondinos'][0])
+        self.assertEqual(100, scaled['Girondinos'][1])
+        
+
 ############################
 # Testes não automatizados #
 ############################
 
-class GraficoTest():
+class GraficoTestManual():
 
     def importa_dados(self):
         if not models.CasaLegislativa.objects.filter(nome_curto='conv').exists():

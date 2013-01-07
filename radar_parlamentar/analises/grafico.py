@@ -29,6 +29,21 @@ from matplotlib.pyplot import figure, show, scatter, text
 import matplotlib.colors
 import numpy
 
+class GraphScaler:
+    
+    def scale(self, partidos2d):
+        """Recebe mapa de coordenadas de partidos (saída de analise.partidos_2d()
+        e altera a escala dos valores de [-1,1] para [0,100] 
+        """
+        scaled = {}
+        for partido, coord in partidos2d.items():
+            x, y = coord[0], coord[1]
+            if x < -1 or x > 1 or y < -1 or y > 1:
+                raise ValueError("Value should be in [-1,1]")
+            scaled[partido] = [x*50+50, y*50+50]
+        return scaled
+        
+
 class GeradorGrafico:
     """Gera imagem com o gráfico estático da análise utilizando matplotlib"""
 
