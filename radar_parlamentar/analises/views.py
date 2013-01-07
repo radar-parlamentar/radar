@@ -23,7 +23,7 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404, redirect
 from modelagem import models
-from analise import JsonAnaliseGenerator
+from grafico import JsonAnaliseGenerator
 import logging
 
 logger = logging.getLogger("radar")

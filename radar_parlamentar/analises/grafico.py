@@ -28,6 +28,9 @@ from __future__ import unicode_literals
 from matplotlib.pyplot import figure, show, scatter, text
 import matplotlib.colors
 import numpy
+from sets import Set
+from analises import analise
+from modelagem import models
 
 class GraphScaler:
     
@@ -42,6 +45,68 @@ class GraphScaler:
                 raise ValueError("Value should be in [-1,1]")
             scaled[partido] = [x*50+50, y*50+50]
         return scaled
+    
+class JsonAnaliseGenerator:
+    
+    def _pair_to_json_list(self, a, b, periodo, size):
+        if (periodo < size):
+            end = ', '
+        else:
+            end = ''
+        return '[%s,%s]%s' % (a, b, end)       
+
+    def get_json(self, casa_legislativa):
+        """Retorna JSON para ser usado no gráfico"""
+
+        analisador_temporal = analise.AnalisadorTemporal(casa_legislativa)
+        analisador_temporal._faz_analises()
+
+        scaler = GraphScaler()
+        tamanhos = {}
+        xs = {}
+        ys = {}
+        partidos = Set()
+        periodo = 0
+        json_periodos = '"periodos":{ '
+        analises = analisador_temporal.analisadores_periodo
+        for analisador in analises:
+            periodo += 1
+            json_periodos += '"%s":"%s"' % (periodo, analisador.periodo)
+            if periodo != len(analises):
+                json_periodos += ', ' 
+            partidos2d = scaler.scale(analisador.partidos_2d())
+            for partido in partidos2d.keys():
+                partidos.add(partido)
+                if not tamanhos.has_key(partido):
+                    tamanhos[partido] = self._pair_to_json_list(periodo, analisador.tamanhos_partidos[partido], periodo, len(analises)) 
+                else:
+                    tamanhos[partido] = tamanhos[partido] +  self._pair_to_json_list(periodo, analisador.tamanhos_partidos[partido], periodo, len(analises))  
+                if not xs.has_key(partido):
+                    xs[partido] = self._pair_to_json_list(periodo, '%.2f' % partidos2d[partido][0], periodo, len(analises)) 
+                else:
+                    xs[partido] = xs[partido] +  self._pair_to_json_list(periodo, '%.2f' % partidos2d[partido][0], periodo, len(analises))  
+                if not ys.has_key(partido):
+                    ys[partido] =  self._pair_to_json_list(periodo, '%.2f' % partidos2d[partido][1], periodo, len(analises))  
+                else:
+                    ys[partido] = ys[partido] +  self._pair_to_json_list(periodo, '%.2f' % partidos2d[partido][1], periodo, len(analises)) 
+        
+        json_periodos += ' }'    
+        
+        json_partidos = '"partidos":[ '
+        count = 1;
+        for nome_partido in partidos:
+            partido = models.Partido.objects.get(nome=nome_partido)
+            json_partidos += '{ "nome":"%s", "numero":%d, "cor":"#000000", ' % (nome_partido, partido.numero)
+            json_partidos += '"tamanho":[ %s ], ' % tamanhos[nome_partido]             
+            json_partidos += '"x":[ %s ], ' % xs[nome_partido] 
+            json_partidos += '"y":[ %s ] ' % ys[nome_partido] 
+            json_partidos += '}'
+            if count < len(partidos):
+                json_partidos += ', '
+            count += 1
+        json_partidos += ' ]'
+
+        return '{ %s, %s }'% (json_periodos, json_partidos)
         
 
 class GeradorGrafico:

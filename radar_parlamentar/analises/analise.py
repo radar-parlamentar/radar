@@ -345,9 +345,14 @@ class AnalisadorTemporal:
             if candidato > maior:
                 maior = candidato
         self.area_total = maior
-            
+       
+    # TODO este método não deve estar nessa classe
+    # Criar uma classe que recebe os dicionários de partidos e converte em AnaliseTemporal
+    # A ideia é que JsonAnaliseGenerator chame AnalisadorTemporal, que vai gerar as análises
+    # Aí JsonAnaliseGenerator pega as coordenadas e aplicao GraphScaler
+    # O que deve ser salvo no banco de dados são os valores já "escalados"     
     def salvar_no_bd(self):
-        """Salva uma instância de AnalisadorTemporal no banco de dados."""
+        """Salva uma instância de AnaliseTemporal no banco de dados."""
         # 'modat' é o modelo análise temporal que vou salvar.
         modat = AnaliseTemporal()
         modat.casa_legislativa = self.casa_legislativa
@@ -388,49 +393,6 @@ class AnalisadorTemporal:
             modap.posicoes = posicoes
             modap.save() # Salva a análise do período no bd, associada a uma AnalisadorTemporal
 
-class JsonAnaliseGenerator:
-
-    def get_json(self, casa_legislativa):
-        """Retorna JSON tipo {periodo:{nomePartido:{numPartido:1, tamanhoPartido:1, x:1, y:1}}"""
-
-        analisador_temporal = AnalisadorTemporal(casa_legislativa)
-        
-        # TODO: nao fazer análise se já estiver no bd,
-        #       e se tiver que fazer, salvar no bd (usando metodo analiseTemporal.salvar_no_bd())
-        analisador_temporal._faz_analises()
-
-        # Usar mesma escala para os tamanhos dos partidos em todas as análises
-        soma_quad_tam_part_max = 0
-        for ap in analisador_temporal.analisadores_periodo:
-            candidato = ap.soma_dos_quadrados_dos_tamanhos_dos_partidos
-            if candidato > soma_quad_tam_part_max:
-                soma_quad_tam_part_max = candidato
-
-        fator_de_escala_de_tamanho = 4000 # Ajustar esta constante para mudar o tamanho dos circulos
-        escala_de_tamanho = fator_de_escala_de_tamanho / numpy.sqrt(soma_quad_tam_part_max)
-        
-        json = '{'
-        for analisador in analisador_temporal.analisadores_periodo:
-            label = '"%s"' % analisador.periodo
-            json += '%s:%s ' % (label, self._json_ano(analisador,escala_de_tamanho))
-        json = json.rstrip(', ')
-        json += '}'
-        return json
-
-    def _json_ano(self, analise,escala_de_tamanho):
-        json = '{'
-        for part in analise.coordenadas:
-            nome_partido = part
-            tamanho = analise.tamanhos_partidos[part]
-            tamanho =  tamanho * escala_de_tamanho
-            tamanho = int(tamanho)
-            num = models.Partido.objects.get(nome=nome_partido).numero
-            x = round(analise.coordenadas[part][0], 2)
-            y = round(analise.coordenadas[part][1], 2)            
-            json += '"%s":{"numPartido":%s, "tamanhoPartido":%s, "x":%s, "y":%s}, ' % (nome_partido, num, tamanho, x, y)
-        json = json.rstrip(', ')
-        json += '}, '
-        return json
 
 
 
