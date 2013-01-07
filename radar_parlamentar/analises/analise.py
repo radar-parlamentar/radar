@@ -210,7 +210,7 @@ class AnalisadorPeriodo:
                 self.coordenadas[partido] = (self.coordenadas[partido])[0:2]
         elif self.num_votacoes == 1: # se só tem 1 votação, só tem 1 C.P. Jogar tudo zero na segunda CP.
             for partido in self.coordenadas.keys():
-                self.coordenadas[partido] = self.normaliza((self.coordenadas[partido])[0], 0.)
+                self.coordenadas[partido] = [(self.coordenadas[partido])[0], 0.]
         else: # Zero votações no período. Os partidos são todos iguais. Tudo zero.
             for partido in self.coordenadas.keys():
                 self.coordenadas[partido] = [ 0. , 0. ]
