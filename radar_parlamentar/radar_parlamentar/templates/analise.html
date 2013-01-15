@@ -51,13 +51,13 @@
         Quantidade de votações considerada nesta análise: {{num_votacao}}.<br/><br/>
         Caso você tenha conhecimentos básicos de banco de dados, você também pode fazer suas próprias análises com SQL usando o banco de dados sqlite com os votos da {{casa_legislativa.nome}}. Faça o <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (dados atualizados em {{casa_legislativa.atualizacao}}).<br/><br/>    
     </article>
-        <div id="form">
+        <!--div id="form">
             <label for="periodos" ACCESSKEY="P">Período</label> <select id="periodos">
             </select>
             <button id="animar">Animar</button>
             <br/><br/>
         </div>
-        <div id="legenda-cmsp" class="list">
+        <aside id="legenda-cmsp" class="list">
             <b>LEGENDA</b>
             <ul class="links">
                 <li></li>
@@ -65,8 +65,8 @@
                     <li>{{partido.numero}} | {{partido.nome}}</li>
                 {% endfor %}
             </ul>
-        </div>
-        <div id="animacao"></div>
+        </aside>
+        <figure id="animacao"></figure>
         <div style="clear:right"/>
 {% endblock content %}
 
