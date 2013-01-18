@@ -34,7 +34,6 @@ import os
 import xml.etree.ElementTree as etree
 import urllib2
 import logging
-import time
 
 # data em que a lista votadas.txt foi atualizada
 ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
@@ -43,9 +42,6 @@ MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 RESOURCES_FOLDER = os.path.join(MODULE_DIR, 'dados/')
 VOTADAS_FILE_PATH = RESOURCES_FOLDER + 'votadas.txt'
-
-URL_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?idProp=%s'
-URL_VOTACOES = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?tipo=%s&numero=%s&ano=%s'
 
 INICIO_PERIODO = parse_datetime('2004-01-01 0:0:0')
 FIM_PERIODO = parse_datetime('2012-07-01 0:0:0')
@@ -154,7 +150,7 @@ class ProposicoesFinder:
                 print '\nProcurando votações da proposição de ID ', prop['id']
             count += 1
             try:
-                votacoes_xml = camaraws.obter_votacoes(prop['sigla'], prop['num'], prop['ano'])
+                camaraws.obter_votacoes(prop['sigla'], prop['num'], prop['ano'])
                 nome_prop = '%s %s/%s' % (prop['sigla'], prop['num'], prop['ano'])
                 f.write('%s: %s\n' %(prop['id'], nome_prop))
                 votadas.append(prop)
@@ -176,6 +172,10 @@ class Camaraws:
         obter_votacoes(sigla, num, ano)
     """
 
+    URL_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?idProp=%s'
+    URL_VOTACOES = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?tipo=%s&numero=%s&ano=%s'
+    URL_LISTAR_PROPOSICOES = 'http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=%s&numero=&ano=%s&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao='
+
     def obter_proposicao(self, id_prop):
         """Obtém detalhes de uma proposição
 
@@ -189,7 +189,7 @@ class Camaraws:
         Exceções:
             ValueError -- quando proposição não existe
         """
-        url = URL_PROPOSICAO % id_prop
+        url = Camaraws.URL_PROPOSICAO % id_prop
         try:
             request = urllib2.Request(url)
             xml = urllib2.urlopen(request).read()
@@ -217,7 +217,7 @@ class Camaraws:
             ValueError -- quando proposição não existe ou não possui votações
         """
         
-        url  = URL_VOTACOES % (sigla, num, ano)
+        url  = Camaraws.URL_VOTACOES % (sigla, num, ano)
         try:
             request = urllib2.Request(url)
             xml = urllib2.urlopen(request).read()
@@ -229,6 +229,34 @@ class Camaraws:
         except etree.ParseError:
             raise ValueError('Votações da proposição %s %s/%s não encontrada' % (sigla, num, ano))
         
+        return tree
+
+    def listar_proposicoes(self, sigla, ano):
+        """Busca proposições de acordo com ano e sigla desejada
+
+        Argumentos:
+        sigla, ano -- strings que caracterizam as proposições buscadas
+
+        Retorna:
+        Um objeto ElementTree correspondente ao XML retornado pelo web service
+        Exemplo: http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=PL&numero=&ano=2011&datApresentacaoIni=14/11/2011&datApresentacaoFim=16/11/2011&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=
+
+        Exceções:
+            ValueError -- quando o web service não retorna um XML, 
+            que ocorre quando não há resultados para os critérios da busca
+        """
+        url = Camaraws.URL_LISTAR_PROPOSICOES % (sigla, ano)
+        try:
+            request = urllib2.Request(url)
+            xml = urllib2.urlopen(request).read()
+        except urllib2.URLError:
+            raise ValueError('Proposições não encontradas para sigla=%s&ano=%s' % (sigla, ano))
+
+        try:
+            tree = etree.fromstring(xml)
+        except etree.ParseError:
+            raise ValueError('Proposições não encontradas para sigla=%s&ano=%s' % (sigla, ano))
+
         return tree
 
 
