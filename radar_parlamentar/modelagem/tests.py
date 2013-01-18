@@ -49,10 +49,13 @@ class ModelsTest(TestCase):
         periodos = conv.periodos(models.ANO)
         self.assertEquals(len(periodos), 1)
         self.assertEqual(periodos[0].string, '1989')
+        self.assertEqual(periodos[0].quantidade_votacoes,8)
         periodos = conv.periodos(models.MES)
         self.assertEquals(len(periodos), 9)
         self.assertEqual(periodos[0].string, '1989 Fev')
+        self.assertEqual(periodos[0].quantidade_votacoes,4)
         self.assertEqual(periodos[1].string, '1989 Mar')
+        self.assertEqual(periodos[1].quantidade_votacoes,0)
         periodos = conv.periodos(models.SEMESTRE)
         self.assertEquals(len(periodos), 2)
         d = periodos[0].ini

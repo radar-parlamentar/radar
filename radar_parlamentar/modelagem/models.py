@@ -179,7 +179,7 @@ class CasaLegislativa(models.Model):
         delta_mes = CasaLegislativa._delta_para_numero(delta)
         ini = CasaLegislativa._intervalo_inicio(min(votacao_datas),delta)
         fim = CasaLegislativa._intervalo_fim(max(votacao_datas),delta)
-        intervalos = CasaLegislativa._intervalo_periodo(ini,fim, delta_mes)
+        intervalos = self._intervalo_periodo(ini,fim, delta_mes)
         CasaLegislativa._periodos_set_string(intervalos,delta)
         #filtro
         if minimo != 0.0:
@@ -256,8 +256,7 @@ class CasaLegislativa(models.Model):
         valor = delta_numero[delta]
         return valor
  
-    @staticmethod
-    def _intervalo_periodo(ini,fim,delta_mes):
+    def _intervalo_periodo(self,ini,fim,delta_mes):
         intervalos = []
         data_inicial = ini
         dias_que_faltam = 1
@@ -272,7 +271,7 @@ class CasaLegislativa(models.Model):
             # ir ate ultimo dia do mes:
             dia_final = monthrange(data_final.year,data_final.month)[1]
             data_final = data_final.replace(day=dia_final)
-            intervalos.append(PeriodoCasaLegislativa(data_inicial,data_final))
+            intervalos.append(PeriodoCasaLegislativa(data_inicial,data_final,self.num_votacao(data_inicial,data_final)))
             data_inicial = data_final + datetime.timedelta(days=1)
             delta_que_falta = fim - data_final
             dias_que_faltam = delta_que_falta.days
@@ -303,10 +302,11 @@ class PeriodoCasaLegislativa(object):
         ini, fim -- objetos datetime
     """
     
-    def __init__(self,data_inicio,data_fim):
+    def __init__(self,data_inicio,data_fim,quantidade_votacoes = 0):
         self.ini = data_inicio
         self.fim = data_fim
         self.string = ""
+        self.quantidade_votacoes = quantidade_votacoes
 
     def __unicode__(self):
         return self.string
