@@ -103,6 +103,15 @@ class CamaraTest(TestCase):
         data_vot_encontrada = codigo_florestal_xml.find('Votacoes').find('Votacao').get('Data')
         self.assertEquals(data_vot_encontrada, '11/5/2011')
 
+    def test_listar_proposicoes(self):
+        
+        camaraws = camara.Camaraws()
+        pecs_2011_xml = camaraws.listar_proposicoes('PEC', '2011')
+        pecs_elements = pecs_2011_xml.findall('proposicao')
+        self.assertEquals(len(pecs_elements), 135) 
+        # 135 obtido por conferência manual com:
+        # http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=PEC&numero=&ano=2011&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=
+
     def test_prop_nao_existe(self):
 
         id_que_nao_existe = 'id_que_nao_existe'
@@ -128,6 +137,19 @@ class CamaraTest(TestCase):
             self.assertEquals(e.message, 'Votações da proposição %s %s/%s não encontrada' % (sigla, num, ano))
             caught = True
         self.assertTrue(caught)
+        
+    def test_listar_proposicoes_que_nao_existem(self):
+        
+        sigla = 'PEC'
+        ano = '3013'
+        camaraws = camara.Camaraws()
+        try:
+            camaraws.listar_proposicoes(sigla, ano)
+        except ValueError as e:
+            self.assertEquals(e.message, 'Proposições não encontradas para sigla=%s&ano=%s' % (sigla, ano))
+            caught = True
+        self.assertTrue(caught)
+
 
     def test_casa_legislativa(self):
 
