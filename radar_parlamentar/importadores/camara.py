@@ -28,6 +28,7 @@ Classes:
 from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
 from modelagem import models
+from datetime import datetime
 import re
 import sys
 import os
@@ -53,16 +54,28 @@ class ProposicoesFinder:
     def __init__(self, verbose=True):
         self.verbose = verbose
 
+    def _parse_nomes_lista_proposicoes(self, xml):
+        """Recebe XML (objeto etree) do web service ListarProposicoes e devolve uma lista de tuplas,
+        o primeiro item da tuple é o id da proposição, e o segundo item é o nome da proposição (sigla num/ano)
+        """
+        ids = nomes = []
+        for child in xml:
+            id_prop = child.find('id').text.strip()
+            nome = child.find('nome').text.strip()
+            ids.append(id_prop)
+            nomes.append(nome)
+        return zip(ids, nomes) 
+    
     def _nome_proposicao(self, prop_xml):
         sigla = prop_xml.get('tipo').strip()
         numero = prop_xml.get('numero').strip()
         ano = prop_xml.get('ano').strip()
         return '%s %s/%s' % (sigla, numero, ano)
 
-    def find_props_que_existem(self, file_name, id_min, id_max):
+    def find_props_que_existem(self, file_name, ano_min=1988):
         """Retorna IDs de proposições que existem na câmara dos deputados.
 
-        Buscas serão feitas por proposições com IDs entre id_min e id_max
+        Buscas são feitas por proposições apresentadas desde ano_min, que por padrão é 1988, até o presente
         Não necessariamente todos os IDs possuem votações (na verdade a grande maioria não tem!).
         Se file_name == None, lança exceção TypeError
         
@@ -72,7 +85,46 @@ class ProposicoesFinder:
 
         if file_name == None:
             raise TypeError('file_name não pode ser None')
+        
+        today = datetime.today()
+        ano_max = today.year
 
+        f = open(file_name,'a')
+        f.write('# Arquivo gerado pela classe ProposicoesFinder\n')
+        f.write('# para achar os IDs existentes na camara dos deputados\n')
+        f.write('# Procurando ids entre %d e %d.\n' % (ano_min, ano_max))
+        f.write('# id  : proposicao\n')
+        f.write('#-----------\n')
+
+        camaraws = Camaraws()
+        siglas = camaraws.listar_siglas()
+        for ano in range(ano_min, ano_max+1):
+            print 'Procurando em %s' % ano
+            for sigla in siglas:
+                print '  %s: ' % sigla,
+                try:
+                    xml = camaraws.listar_proposicoes(sigla, ano)
+                    props = self._parse_nomes_lista_proposicoes(xml)
+                    for id_prop, nome in props:
+                        f.write('%d: %s\n' %(id_prop, nome))
+                    print '%d encontradas' % len(props) 
+                except:
+                    print 'erro'
+        f.close()
+        
+    def find_props_que_existem_brute_force(self, file_name, id_min, id_max):
+        """Retorna IDs de proposições que existem na câmara dos deputados.
+
+        Buscas serão feitas por proposições com IDs entre id_min e id_max
+        Não necessariamente todos os IDs possuem votações (na verdade a grande maioria não tem!).
+        Se file_name == None, lança exceção TypeError
+        
+        Resultado é salvo no arquivo file_name.
+        Cada linha possui o formato "id: sigla num/ano".
+        """
+        if file_name == None:
+            raise TypeError('file_name não pode ser None')
+        
         f = open(file_name,'a')
         f.write('# Arquivo gerado pela classe ProposicoesFinder\n')
         f.write('# para achar os IDs existentes na camara dos deputados\n')
@@ -97,7 +149,7 @@ class ProposicoesFinder:
                 if self.verbose:
                     sys.stdout.write('x')
                     sys.stdout.flush()
-        f.close()
+        
 
     def parse_ids_que_existem(self, file_name):
         """Lê o arquivo criado por find_props_que_existem.
@@ -238,8 +290,9 @@ class Camaraws:
         sigla, ano -- strings que caracterizam as proposições buscadas
 
         Retorna:
-        Um objeto ElementTree correspondente ao XML retornado pelo web service
+        ElementTree correspondente ao XML retornado pelo web service
         Exemplo: http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=PL&numero=&ano=2011&datApresentacaoIni=14/11/2011&datApresentacaoFim=16/11/2011&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=
+        O retorno é uma lista de objetos Element sendo cara item da lista uma proposição encontrada
 
         Exceções:
             ValueError -- quando o web service não retorna um XML, 
