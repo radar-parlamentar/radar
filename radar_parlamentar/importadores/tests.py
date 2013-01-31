@@ -195,6 +195,15 @@ class CamaraTest(TestCase):
         self.assertEquals(voto2.opcao, models.NAO)
         self.assertEquals(voto1.legislatura.partido.nome, 'PSDB')
         self.assertEquals(voto2.legislatura.localidade, 'SP')
+        
+    def test_listar_siglas(self):
+        
+        camaraws = camara.Camaraws()
+        siglas = camaraws.listar_siglas()
+        self.assertTrue('PL' in siglas)
+        self.assertTrue('PEC' in siglas)
+        self.assertTrue('MPV' in siglas)
+        
 
 class ProposicoesFinderTest(TestCase):
 

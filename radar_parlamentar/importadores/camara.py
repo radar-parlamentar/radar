@@ -258,6 +258,16 @@ class Camaraws:
             raise ValueError('Proposições não encontradas para sigla=%s&ano=%s' % (sigla, ano))
 
         return tree
+    
+    def listar_siglas(self):
+        """Listar as siglas de proposições existentes; exemplo: "PL", "PEC" etc
+        O retorno é feito em uma lista de strings
+        """ 
+        # A lista completa se encontra aqui:
+        # http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarSiglasTipoProposicao
+        # No entanto, muito dessas siglas correspondem a proposições que não possuem votações
+        # Por isso estamos aqui retornando um resultado mais restrito
+        return ['PL', 'MPV', 'PDC', 'PEC', 'PLP']
 
 
 class ImportadorCamara:
