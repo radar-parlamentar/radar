@@ -1,0 +1,14 @@
+<Voto>Abstenção</Voto>
+<Voto>AP </Voto>
+<Voto>LP </Voto>
+<Voto>LS </Voto>
+<Voto>MIS</Voto>
+<Voto>NCom</Voto>
+<Voto>Não</Voto>
+<Voto>P-NRV</Voto>
+<Voto>Presidente (art. 51 RISF)</Voto>
+<Voto>PSF</Voto>
+<Voto>Sim</Voto>
+<Voto>Votou</Voto>
+Outros, ver em :
+http://www.senado.gov.br/atividade/materia/mate/votacao.asp?ct=2004320
