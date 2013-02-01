@@ -25,12 +25,11 @@ dado que os cálculos do PCA já foram realizados
 """
 
 from __future__ import unicode_literals
-from matplotlib.pyplot import figure, show, scatter, text
-import matplotlib.colors
-import numpy
 from sets import Set
 from analises import analise
 from modelagem import models
+import json
+from json import encoder
 
 class GraphScaler:
     
@@ -47,67 +46,85 @@ class GraphScaler:
         return scaled
     
 class JsonAnaliseGenerator:
-    
-    def _pair_to_json_list(self, a, b, periodo, size):
-        if (periodo < size):
-            end = ', '
-        else:
-            end = ''
-        return '[%s,%s]%s' % (a, b, end)       
+    """
+    Classe que gera o Json da Analise
+    """
 
-    def get_json(self, casa_legislativa):
-        """Retorna JSON para ser usado no gráfico"""
-
+    @staticmethod
+    def _get_analises(casa_legislativa):
+        """
+        importa os dados da analise
+        """
         analisador_temporal = analise.AnalisadorTemporal(casa_legislativa)
         analisador_temporal._faz_analises()
+        return analisador_temporal.analisadores_periodo
+    
+    @staticmethod
+    def inicia_dicionario(key,lista):
+        if key not in lista:
+            lista[key] = []
 
-        scaler = GraphScaler()
+    def _json_partidos_config(self,partidos2d,partidos, tamanhos,analises_len,periodo,analisador,xs,ys):
+            """
+            preenche a lista de tamanhos, xs e ys para serem utilizadas no json dos partidos
+            """
+            for p in partidos:
+                JsonAnaliseGenerator.inicia_dicionario(p,tamanhos)
+                JsonAnaliseGenerator.inicia_dicionario(p,xs)
+                JsonAnaliseGenerator.inicia_dicionario(p,ys)
+            for partido in partidos2d.keys():
+                tamanhos[partido].append([periodo, analisador.tamanhos_partidos[partido]])
+                xs[partido].append([periodo, round(partidos2d[partido][0],2)])
+                ys[partido].append([periodo, round(partidos2d[partido][1],2)])
+
+   
+    def _json_partidos(self,analises,analises_len):
+        """
+        constroi o json dos partidos
+        """
         tamanhos = {}
         xs = {}
         ys = {}
         partidos = Set()
+        scaler = GraphScaler()
         periodo = 0
-        json_periodos = '"periodos":{ '
-        analises = analisador_temporal.analisadores_periodo
         for analisador in analises:
-            periodo += 1
-            json_periodos += '"%s":"%s"' % (periodo, analisador.periodo)
-            if periodo != len(analises):
-                json_periodos += ', ' 
+            periodo +=1
             partidos2d = scaler.scale(analisador.partidos_2d())
-            for partido in partidos2d.keys():
-                partidos.add(partido)
-                if not tamanhos.has_key(partido):
-                    tamanhos[partido] = self._pair_to_json_list(periodo, analisador.tamanhos_partidos[partido], periodo, len(analises)) 
-                else:
-                    tamanhos[partido] = tamanhos[partido] +  self._pair_to_json_list(periodo, analisador.tamanhos_partidos[partido], periodo, len(analises))  
-                if not xs.has_key(partido):
-                    xs[partido] = self._pair_to_json_list(periodo, '%.2f' % partidos2d[partido][0], periodo, len(analises)) 
-                else:
-                    xs[partido] = xs[partido] +  self._pair_to_json_list(periodo, '%.2f' % partidos2d[partido][0], periodo, len(analises))  
-                if not ys.has_key(partido):
-                    ys[partido] =  self._pair_to_json_list(periodo, '%.2f' % partidos2d[partido][1], periodo, len(analises))  
-                else:
-                    ys[partido] = ys[partido] +  self._pair_to_json_list(periodo, '%.2f' % partidos2d[partido][1], periodo, len(analises)) 
-        
-        json_periodos += ' }'    
-        
-        json_partidos = '"partidos":[ '
-        count = 1;
+            partidos.update(set(partidos2d.keys()))
+            self._json_partidos_config(partidos2d,partidos, tamanhos,analises_len,periodo,analisador,xs,ys)
+        json_partidos = []
         for nome_partido in partidos:
             partido = models.Partido.objects.get(nome=nome_partido)
-            json_partidos += '{ "nome":"%s", "numero":%d, "cor":"#000000", ' % (nome_partido, partido.numero)
-            json_partidos += '"tamanho":[ %s ], ' % tamanhos[nome_partido]             
-            json_partidos += '"x":[ %s ], ' % xs[nome_partido] 
-            json_partidos += '"y":[ %s ] ' % ys[nome_partido] 
-            json_partidos += '}'
-            if count < len(partidos):
-                json_partidos += ', '
-            count += 1
-        json_partidos += ' ]'
+            json_partido = {"nome": nome_partido,"numero":partido.numero,"cor":"#000000","tamanho":tamanhos[nome_partido],"x":xs[nome_partido]\
+            ,"y":ys[nome_partido]}
+            json_partidos.append(json_partido)
+        return json_partidos
 
-        return '{ %s, %s }'% (json_periodos, json_partidos)
-        
+    def _json_periodos(self,analises,analises_len):
+        """
+        constroi o json dos periodos
+        """
+        periodo = 0
+        json_periodos = {}
+        for analisador in analises:
+            periodo += 1
+            json_periodos[str(periodo)] = unicode(analisador.periodo)
+        return json_periodos
+
+    def get_json(self, casa_legislativa):
+        """Retorna JSON para ser usado no gráfico"""
+        encoder.FLOAT_REPR = lambda o:format(o,'.2f')
+        return json.dumps(self.get_json_dic(casa_legislativa),separators=(",",":"))
+    
+    def get_json_dic(self,casa_legislativa):
+        """Retorna o dicionario usado para gerar o JSON"""
+        analises = JsonAnaliseGenerator._get_analises(casa_legislativa)
+        analises_len = len(analises)
+        json_periodos = self._json_periodos(analises,analises_len)
+        json_partidos = self._json_partidos(analises,analises_len)
+        return {"periodos":json_periodos,"partidos":json_partidos} 
+
 
 class GeradorGrafico:
     """Gera imagem com o gráfico estático da análise utilizando matplotlib"""
@@ -116,6 +133,9 @@ class GeradorGrafico:
         self.analise = analise
 
     def figura(self, escala=10, print_nome=False):
+        from matplotlib.pyplot import figure, show, scatter, text
+        import matplotlib.colors
+        import numpy
         """Apresenta o gráfico da análise na tela.
 
 		O gráfico é gerado utilizando o matplotlib. 
