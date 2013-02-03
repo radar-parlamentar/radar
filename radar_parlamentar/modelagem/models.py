@@ -1,6 +1,6 @@
 # coding=utf8
 
-# Copyright (C) 2012, Leonardo Leite, Eduardo Hideo
+# Copyright (C) 2012, Leonardo Leite, Eduardo Hideo, Saulo Trento
 #
 # This file is part of Radar Parlamentar.
 # 
@@ -189,27 +189,27 @@ class CasaLegislativa(models.Model):
         return intervalos
     
 
-    @staticmethod
-    def _intervalo_to_string(intervalo,delta):
-        data_string = ""
-        meses = ['','Jan', 'Fev', 'Mar', 'Abr', 'Maio', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
-        data_string += str(intervalo.ini.year)
-        if delta == MES:
-            data_string +=" "+str(meses[intervalo.ini.month])
-        return data_string
+#    @staticmethod
+#    def _intervalo_to_string(intervalo,delta):
+#        data_string = ""
+#        meses = ['','Jan', 'Fev', 'Mar', 'Abr', 'Maio', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+#        data_string += str(intervalo.ini.year)
+#        if delta == MES:
+#            data_string +=" "+str(meses[intervalo.ini.month])
+#        return data_string
 
     @staticmethod
     def _periodos_set_string(periodos,delta):
-        numero_semestre = 1
         for periodo in periodos:
-            data_string = CasaLegislativa._intervalo_to_string(periodo,delta)
-            if delta == SEMESTRE:
-                data_string += " "+str(numero_semestre)+"o Semestre"
-            if numero_semestre == 1:
-                numero_semestre = 2
-            else:
-                numero_semestre = 1
-            periodo.string = data_string
+            periodo.__unicode__()
+#            data_string = CasaLegislativa._intervalo_to_string(periodo,delta)
+#            if delta == SEMESTRE:
+#                data_string += " "+str(numero_semestre)+"o Semestre"
+#            if numero_semestre == 1:
+#                numero_semestre = 2
+#            else:
+#                numero_semestre = 1
+#            periodo.string = data_string
 
     @staticmethod
     def _intervalo_inicio(data_inicial,delta):
@@ -309,6 +309,18 @@ class PeriodoCasaLegislativa(object):
         self.quantidade_votacoes = quantidade_votacoes
 
     def __unicode__(self):
+        if not self.string: # se string ainda é vazia, setá-la.
+            data_string = str(self.ini.year) # sempre começa com o ano
+            delta = self.fim - self.ini
+            if delta.days < 35: # período é de um mês
+                meses = ['','Jan', 'Fev', 'Mar', 'Abr', 'Maio', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+                data_string +=" "+str(meses[self.ini.month])
+            elif delta.days < 200: # periodo é de um semestre
+                if self.ini.month < 6:
+                    data_string += " 1o Semestre"
+                else:
+                    data_string += " 2o Semestre"
+            self.string = data_string
         return self.string
 
 class Parlamentar(models.Model):
