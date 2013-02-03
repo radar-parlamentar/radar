@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # coding=utf8
 
-# Copyright (C) 2012, Leonardo Leite
+# Copyright (C) 2012, Leonardo Leite, Diego Rabatone
 #
 # This file is part of Radar Parlamentar.
-# 
+#
 # Radar Parlamentar is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -14,7 +14,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -26,15 +26,15 @@ from modelagem import models
 import os
 
 class ConvencaoTest(TestCase):
-    
+
     @classmethod
     def setUpClass(cls):
         importer = convencao.ImportadorConvencao()
         importer.importar()
-        
+
     def setUp(self):
         self.conv = models.CasaLegislativa.objects.get(nome_curto='conv')
-        
+
     def test_check_len_votacoes(self):
         NUM_VOTACOES = 8
         num_votacoes = len(models.Votacao.objects.filter(proposicao__casa_legislativa=self.conv))
@@ -44,27 +44,27 @@ class ConvencaoTest(TestCase):
         NUM_VOTOS = 8*3*3
         num_votos = len(models.Voto.objects.filter(votacao__proposicao__casa_legislativa=self.conv))
         self.assertEquals(num_votos, NUM_VOTOS)
-        
+
     def test_check_len_votos_por_votacao(self):
         NUM_VOTOS_POR_VOTACAO = 3*3
         votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.conv)
         for votacao in votacoes:
             num_votos = len(models.Voto.objects.filter(votacao=votacao))
             self.assertEquals(num_votos, NUM_VOTOS_POR_VOTACAO)
-    
+
     def test_check_partidos(self):
-        partidos = models.Partido.objects.all()    
+        partidos = models.Partido.objects.all()
         nomes_partidos = [p.nome for p in partidos]
         self.assertTrue(convencao.GIRONDINOS in nomes_partidos)
         self.assertTrue(convencao.JACOBINOS in nomes_partidos)
         self.assertTrue(convencao.MONARQUISTAS in nomes_partidos)
-        
+
     def test_check_parlamentares(self):
         NUM_PARLAMENTARES = 3*3
         parlamentares = models.Parlamentar.objects.filter(legislatura__casa_legislativa=self.conv)
         self.assertEqual(len(parlamentares), NUM_PARLAMENTARES)
         nomes_parlamentares = [p.nome for p in parlamentares]
-        self.assertEquals(nomes_parlamentares.count('Pierre'), NUM_PARLAMENTARES) 
+        self.assertEquals(nomes_parlamentares.count('Pierre'), NUM_PARLAMENTARES)
 
 # constantes relativas ao código florestal
 ID = '17338'
@@ -72,7 +72,7 @@ SIGLA = 'PL'
 NUM = '1876'
 ANO = '1999'
 NOME = 'PL 1876/1999'
-        
+
 class CamaraTest(TestCase):
     """Testes do módulo camara"""
 
@@ -82,7 +82,7 @@ class CamaraTest(TestCase):
         camara.VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
         importer = camara.ImportadorCamara()
         importer.importar()
-        
+
     def test_parse_votadas(self):
 
         importer = camara.ImportadorCamara()
@@ -95,7 +95,7 @@ class CamaraTest(TestCase):
         codigo_florestal_xml = camaraws.obter_proposicao(ID)
         nome = codigo_florestal_xml.find('nomeProposicao').text
         self.assertEquals(nome, NOME)
-        
+
     def test_obter_votacoes(self):
 
         camaraws = camara.Camaraws()
@@ -104,11 +104,11 @@ class CamaraTest(TestCase):
         self.assertEquals(data_vot_encontrada, '11/5/2011')
 
     def test_listar_proposicoes(self):
-        
+
         camaraws = camara.Camaraws()
         pecs_2011_xml = camaraws.listar_proposicoes('PEC', '2011')
         pecs_elements = pecs_2011_xml.findall('proposicao')
-        self.assertEquals(len(pecs_elements), 135) 
+        self.assertEquals(len(pecs_elements), 135)
         # 135 obtido por conferência manual com:
         # http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=PEC&numero=&ano=2011&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=
 
@@ -117,7 +117,7 @@ class CamaraTest(TestCase):
         id_que_nao_existe = 'id_que_nao_existe'
         camaraws = camara.Camaraws()
         caught = False
-        try:        
+        try:
             camaraws.obter_proposicao(id_que_nao_existe)
         except ValueError as e:
             self.assertEquals(e.message, 'Proposição %s não encontrada' % id_que_nao_existe)
@@ -131,15 +131,15 @@ class CamaraTest(TestCase):
         ano = '1876'
         camaraws = camara.Camaraws()
         caught = False
-        try:        
+        try:
             camaraws.obter_votacoes(sigla, num, ano)
         except ValueError as e:
             self.assertEquals(e.message, 'Votações da proposição %s %s/%s não encontrada' % (sigla, num, ano))
             caught = True
         self.assertTrue(caught)
-        
+
     def test_listar_proposicoes_que_nao_existem(self):
-        
+
         sigla = 'PEC'
         ano = '3013'
         camaraws = camara.Camaraws()
@@ -195,15 +195,15 @@ class CamaraTest(TestCase):
         self.assertEquals(voto2.opcao, models.NAO)
         self.assertEquals(voto1.legislatura.partido.nome, 'PSDB')
         self.assertEquals(voto2.legislatura.localidade, 'SP')
-        
+
     def test_listar_siglas(self):
-        
+
         camaraws = camara.Camaraws()
         siglas = camaraws.listar_siglas()
         self.assertTrue('PL' in siglas)
         self.assertTrue('PEC' in siglas)
         self.assertTrue('MPV' in siglas)
-        
+
 
 class ProposicoesFinderTest(TestCase):
 
@@ -211,8 +211,8 @@ class ProposicoesFinderTest(TestCase):
 
         ID_MIN = 12663
         ID_MAX = 12667
-        IDS_QUE_EXISTEM = ['12665', '12666', '12667']       
-        IDS_QUE_NAO_EXISTEM = ['12663', '12664']       
+        IDS_QUE_EXISTEM = ['12665', '12666', '12667']
+        IDS_QUE_NAO_EXISTEM = ['12663', '12664']
         FILE_NAME = 'ids_que_existem_test.txt'
 
         finder = camara.ProposicoesFinder(False) # False to verbose
@@ -220,22 +220,22 @@ class ProposicoesFinderTest(TestCase):
         props = finder.parse_ids_que_existem(FILE_NAME)
 
         for prop in props:
-            self.assertTrue(prop['id'] in IDS_QUE_EXISTEM, 'prop %s não encontrada em IDS_QUE_EXISTEM' % prop['id']) 
+            self.assertTrue(prop['id'] in IDS_QUE_EXISTEM, 'prop %s não encontrada em IDS_QUE_EXISTEM' % prop['id'])
 
         for idp in IDS_QUE_NAO_EXISTEM:
             self.assertFalse(idp in [prop['id'] for prop in props])
 
         os.system('rm %s' % FILE_NAME)
-    
+
     # teste comentado, pois a implementação não está terminada
-    # a implementação foi abortada, pois parece que em vários casos 
+    # a implementação foi abortada, pois parece que em vários casos
     # o web service ainda não devolve uma resposta satisfatória
     # exemplo: http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=PL&numero=&ano=2012&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=
     def _test_find_props_existem(self):
 
         ANO_MIN = 2010
-        IDS_QUE_EXISTEM = ['490372', '490340', '490282']       
-        IDS_QUE_NAO_EXISTEM = ['382651', '382650']       
+        IDS_QUE_EXISTEM = ['490372', '490340', '490282']
+        IDS_QUE_NAO_EXISTEM = ['382651', '382650']
         FILE_NAME = 'ids_que_existem_test.txt'
 
         finder = camara.ProposicoesFinder(False) # False to verbose
@@ -243,7 +243,7 @@ class ProposicoesFinderTest(TestCase):
         props = finder.parse_ids_que_existem(FILE_NAME)
 
         for prop in props:
-            self.assertTrue(prop['id'] in IDS_QUE_EXISTEM, 'prop %s não encontrada em IDS_QUE_EXISTEM' % prop['id']) 
+            self.assertTrue(prop['id'] in IDS_QUE_EXISTEM, 'prop %s não encontrada em IDS_QUE_EXISTEM' % prop['id'])
 
         for idp in IDS_QUE_NAO_EXISTEM:
             self.assertFalse(idp in [prop['id'] for prop in props])

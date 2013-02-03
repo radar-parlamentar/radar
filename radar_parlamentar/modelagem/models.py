@@ -1,9 +1,9 @@
 # coding=utf8
 
-# Copyright (C) 2012, Leonardo Leite, Eduardo Hideo, Saulo Trento
+# Copyright (C) 2012, Leonardo Leite, Eduardo Hideo, Saulo Trento, Diego Rabatone
 #
 # This file is part of Radar Parlamentar.
-# 
+#
 # Radar Parlamentar is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,7 +13,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -21,7 +21,7 @@ from __future__ import unicode_literals
 from django.db import models
 from calendar import monthrange
 import re
-import logging 
+import logging
 import os
 import datetime
 
@@ -76,7 +76,7 @@ class Partido(models.Model):
     """Partido político.
 
     Atributos:
-        nome -- string; ex: 'PT' 
+        nome -- string; ex: 'PT'
         numero -- int; ex: '13'
 
     Métodos da classe:
@@ -90,7 +90,7 @@ class Partido(models.Model):
 
     nome = models.CharField(max_length=10)
     numero = models.IntegerField()
-    
+
     @classmethod
     def from_nome(cls, nome):
         """Recebe um nome e retornar um objeto do tipo Partido, ou None se nome for inválido"""
@@ -137,13 +137,13 @@ class Partido(models.Model):
 
     def __unicode__(self):
         return '%s-%s' % (self.nome, self.numero)
-    
+
 class CasaLegislativa(models.Model):
     """Instituição tipo Senado, Câmara etc
 
     Atributos:
         nome -- string; ex 'Câmara Municipal de São Paulo'
-        nome_curto -- string; será usado pra gerar links. ex 'cmsp' para 'Câmara Municipal de São Paulo' 
+        nome_curto -- string; será usado pra gerar links. ex 'cmsp' para 'Câmara Municipal de São Paulo'
         esfera -- string (municipal, estadual, federal)
         local -- string; ex 'São Paulo' para a CMSP
         atualizacao -- data em que a base de dados foi atualizada pea última vez com votações desta casa
@@ -164,16 +164,16 @@ class CasaLegislativa(models.Model):
 
     def periodos(self, delta, minimo=0.0):
         """Retorna os períodos em que houve votações nesta casa legislativa.
-         
+
         Argumentos:
             delta: aceita as constantes em models.PERIODOS (ANO, SEMESTRE, MES)
             minimo: valor entre 0 e 1 para filtrar (remover) períodos não significativos;
                     se período não tiver pelo menos (minimo*100)% da média dos votos por período,
-                    período não é retornado. 
+                    período não é retornado.
                     valor default é 0.
-                    
+
         Retorna:
-            Uma lista de objetos do tipo PeriodoCasaLegislativa. 
+            Uma lista de objetos do tipo PeriodoCasaLegislativa.
         """
         votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self)]
         delta_mes = CasaLegislativa._delta_para_numero(delta)
@@ -187,7 +187,7 @@ class CasaLegislativa(models.Model):
             corte = media*minimo
             intervalos = self._filtro_media_periodo(intervalos,corte)
         return intervalos
-    
+
 
 #    @staticmethod
 #    def _intervalo_to_string(intervalo,delta):
@@ -219,8 +219,8 @@ class CasaLegislativa(models.Model):
             mes_inicial = data_inicial.month
         if delta in [SEMESTRE,ANO]:
             mes_inicial = 1
-        return datetime.date(ano_inicial,mes_inicial,dia_inicial) 
-     
+        return datetime.date(ano_inicial,mes_inicial,dia_inicial)
+
     @staticmethod
     def _intervalo_fim(data_fim,delta):
         ano_fim = data_fim.year
@@ -236,7 +236,7 @@ class CasaLegislativa(models.Model):
         dia_fim = monthrange(ano_fim,mes_fim)[1]
         return datetime.date(ano_fim,mes_fim,dia_fim)
 
-    def _votacoes(self,data_inicial=None,data_final=None): 
+    def _votacoes(self,data_inicial=None,data_final=None):
         votacoes = Votacao.objects.filter(proposicao__casa_legislativa=self)
         from django.utils.dateparse import parse_datetime
         if data_inicial != None:
@@ -246,8 +246,8 @@ class CasaLegislativa(models.Model):
             fim = parse_datetime('%s 0:0:0' % data_final)
             votacoes = votacoes.filter(data__lte=fim)
         return votacoes
-    
-    def num_votacao(self,data_inicial=None,data_final=None): 
+
+    def num_votacao(self,data_inicial=None,data_final=None):
         return self._votacoes(data_inicial,data_final).count()
 
     @staticmethod
@@ -255,7 +255,7 @@ class CasaLegislativa(models.Model):
         delta_numero = {ANO:11,MES:0,SEMESTRE:5}
         valor = delta_numero[delta]
         return valor
- 
+
     def _intervalo_periodo(self,ini,fim,delta_mes):
         intervalos = []
         data_inicial = ini
@@ -276,7 +276,7 @@ class CasaLegislativa(models.Model):
             delta_que_falta = fim - data_final
             dias_que_faltam = delta_que_falta.days
         return intervalos
-    
+
     def _media_votos_por_periodo(self,periodo):
         num_periodo = len(periodo)
         votos = self._votos()
@@ -301,7 +301,7 @@ class PeriodoCasaLegislativa(object):
     """Atributos:
         ini, fim -- objetos datetime
     """
-    
+
     def __init__(self,data_inicio,data_fim,quantidade_votacoes = 0):
         self.ini = data_inicio
         self.fim = data_fim
@@ -331,12 +331,12 @@ class Parlamentar(models.Model):
         nome, genero -- strings
     """
 
-    id_parlamentar = models.CharField(max_length=100, blank=True) # obs: não é chave primária! 
+    id_parlamentar = models.CharField(max_length=100, blank=True) # obs: não é chave primária!
     nome = models.CharField(max_length=100)
     genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
 
     def __unicode__(self):
-        return self.nome 
+        return self.nome
 
 
 class Legislatura(models.Model):
@@ -365,7 +365,7 @@ class Legislatura(models.Model):
 
 class Proposicao(models.Model):
     """Proposição parlamentar (proposta de lei).
-    
+
     Atributos:
         id_prop - string identificadora de acordo a fonte de dados
         sigla, numero, ano -- string que juntas formam o nome legal da proposição
@@ -397,12 +397,12 @@ class Proposicao(models.Model):
         return "%s %s/%s" % (self.sigla, self.numero, self.ano)
 
     def __unicode__(self):
-        return "[%s] %s" % (self.nome(), self.ementa) 
+        return "[%s] %s" % (self.nome(), self.ementa)
 
 
 class Votacao(models.Model):
     """Votação em planário.
-    
+
     Atributos:
         id_vot - string identificadora de acordo a fonte de dados
         descricao, resultado -- strings
@@ -410,7 +410,7 @@ class Votacao(models.Model):
         proposicao -- objeto do tipo Proposicao
 
     Métodos:
-        votos() 
+        votos()
         por_partido()
     """
 
@@ -419,7 +419,7 @@ class Votacao(models.Model):
     data = models.DateField(blank=True, null=True)
     resultado = models.TextField(blank=True)
     proposicao = models.ForeignKey(Proposicao, null=True)
-    
+
     def votos(self):
         """Retorna os votos da votação (depende do banco de dados)"""
         return self.voto_set.all()
@@ -443,7 +443,7 @@ class Votacao(models.Model):
 
     def __unicode__(self):
         if self.data:
-            return "[%s] %s" % (self.data, self.descricao) 
+            return "[%s] %s" % (self.data, self.descricao)
         else:
             return self.descricao
 
@@ -461,7 +461,7 @@ class Voto(models.Model):
 
     def __unicode__(self):
         return "%s votou %s" % (self.parlamentar, self.opcao)
-    
+
 class VotosAgregados:
     """Um conjunto de votos.
 
