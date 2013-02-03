@@ -56,7 +56,7 @@ class JsonAnaliseGenerator:
         importa os dados da analise
         """
         analisador_temporal = analise.AnalisadorTemporal(casa_legislativa)
-        analisador_temporal._faz_analises()
+        analisador_temporal.get_analises()
         return analisador_temporal.analisadores_periodo
     
     @staticmethod

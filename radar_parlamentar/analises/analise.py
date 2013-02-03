@@ -69,6 +69,7 @@ class AnalisadorPeriodo:
         self.pca_partido = None # É calculado por self._pca_partido()
         self.coordenadas = {}
         self.soma_dos_quadrados_dos_tamanhos_dos_partidos = 0
+        self.analise_ja_feita = False # quando a analise for feita, vale True.
 
     def _inicializa_votacoes(self, casa, ini, fim):
         """Pega votações do banco de dados
@@ -120,7 +121,6 @@ class AnalisadorPeriodo:
                 if voto.legislatura not in legislaturas_ja_vistas:
                     legislaturas_ja_vistas.append(voto.legislatura)
                     self.tamanhos_partidos[voto.legislatura.partido.nome] += 1
-                
                 part = voto.legislatura.partido.nome
                 if not dic_partido_votos.has_key(part):
                     dic_partido_votos[part] = models.VotoPartido(part) #cria um VotoPartido
@@ -199,21 +199,25 @@ class AnalisadorPeriodo:
 
     def partidos_2d(self):
         """Retorna mapa com as coordenadas dos partidos no plano 2D formado
-        pelas duas primeiras componentes principais.
+        pelas duas primeiras componentes principais. Para isso é preciso
+        fazer uma análise de componentes principais (pca); se esta já tiver
+        sido feita, o método apenas retorna o resultado já previamente salvo
+        na variável self.coordenadas. Caso contrário a análise é feita.
 
         A chave do mapa é o nome do partido (string) e o valor é uma lista 
         de duas posições [x,y].
         """
-        self.coordenadas = self._pca_partido()
-        if self.num_votacoes > 1:
-            for partido in self.coordenadas.keys():
-                self.coordenadas[partido] = (self.coordenadas[partido])[0:2]
-        elif self.num_votacoes == 1: # se só tem 1 votação, só tem 1 C.P. Jogar tudo zero na segunda CP.
-            for partido in self.coordenadas.keys():
-                self.coordenadas[partido] = [(self.coordenadas[partido])[0], 0.]
-        else: # Zero votações no período. Os partidos são todos iguais. Tudo zero.
-            for partido in self.coordenadas.keys():
-                self.coordenadas[partido] = [ 0. , 0. ]
+        if not self.analise_ja_feita: # A análise pca ainda tem que ser feita.
+            self.coordenadas = self._pca_partido() # Fazer análise pca.
+            if self.num_votacoes > 1:
+                for partido in self.coordenadas.keys():
+                    self.coordenadas[partido] = (self.coordenadas[partido])[0:2]
+            elif self.num_votacoes == 1: # se só tem 1 votação, só tem 1 C.P. Jogar tudo zero na segunda CP.
+                for partido in self.coordenadas.keys():
+                    self.coordenadas[partido] = [(self.coordenadas[partido])[0], 0.]
+            else: # Zero votações no período. Os partidos são todos iguais. Tudo zero.
+                for partido in self.coordenadas.keys():
+                    self.coordenadas[partido] = [ 0. , 0. ]
         return self.coordenadas
     
     def _energia(self,dados_fixos,dados_meus,graus=0,espelho=0):
@@ -324,16 +328,75 @@ class AnalisadorTemporal:
         self.periodicidade = periodicidade
         self.area_total = 1
         self.analisadores_periodo = [] # lista de objetos da classe AnalisadorPeriodo
-        self.votacoes = None
-        self.partidos = None
+        self.votacoes = [] # era None. assim FUNFA?
+        self.partidos = [] # era None. assim FUNFA?
 
+    def _calcula_hash(self):
+        hash_id = md5()
+        hash_id.update(str(self.casa_legislativa))
+        hash_id.update(self.periodicidade)
+        hash_id.update(str(self.ini))
+        hash_id.update(str(self.fim))
+        hash_id.update(str(self.votacoes)) # talvez nao sirva
+        hash_id.update(str(self.partidos)) # talvez nao sirva
+        self.hash_id = hash_id.hexdigest()
+        return self.hash_id
+
+    def get_analises(self):
+        """ Método que deve ser usado por classes exteriores para acessar os dados desta instância. Este método irá verificar se a análise já foi feita e está disponível no banco de dados. Se não estiver, os cálculos são realizados, e a análise é salva no bd."""
+        # Calcular o hash md5 da análise solicitada para ver se já está no bd
+        self.hash_id = self._calcula_hash()
+        logger.info("hash_id desta análise temporal é %s." % self.hash_id)
+        logger.info("casa legislativa é %s" % self.casa_legislativa)
+        analiseT_do_bd = AnaliseTemporal.objects.filter(hash_id__exact=self.hash_id)
+        if len(analiseT_do_bd) == 0:
+            logger.info("Análises serão feitas (ainda não existem no BD).")
+            self._faz_analises()
+            self.salvar_no_bd()
+            logger.info("Análises salvas no BD.")
+        else:
+            logger.info("Análises já existem.")
+            logger.info(" OIOIOI %s" % str(analiseT_do_bd[0]))
+            # criar lista de analisadores_periodo com dicionarios de coordenadas.
+            if len(self.votacoes) == 0:
+                votacoes = None
+            else:
+                votacoes = self.votacoes
+            if len(self.partidos) == 0:
+                partidos = None
+            else:
+                partidos = self.partidos
+            analiseT_do_bd = analiseT_do_bd[0]
+            for ap_do_bd in analiseT_do_bd.analiseperiodo_set.all():
+                periodocl = models.PeriodoCasaLegislativa(ap_do_bd.data_inicio,ap_do_bd.data_fim)
+                ap = AnalisadorPeriodo(self.casa_legislativa, periodocl,votacoes,partidos)
+                ap.analise_ja_feita = True # nao quero que faça analise, pois os dados virão do bd.
+                for pos_do_bd in ap_do_bd.posicoes.all():
+                    ap.coordenadas[pos_do_bd.partido.nome] = (pos_do_bd.x,pos_do_bd.y)
+                    ap.tamanhos_partidos[pos_do_bd.partido.nome] = (pos_do_bd.tamanho)
+                    # TODO: acrescentar presença.
+                self.analisadores_periodo.append(ap)
+            logger.info("analise baixada do bd")
+            
     def _faz_analises(self):
         """ Método da classe AnalisadorTemporal que cria os objetos AnalisadorPeriodo e faz as análises."""
         for periodo in self.periodos:
-            x = AnalisadorPeriodo(self.casa_legislativa, periodo, votacoes=self.votacoes, partidos=self.partidos)
+            logger.info("Analisando periodo %s a %s." % (str(periodo.ini),str(periodo.fim)) )
+            if len(self.votacoes) == 0: # FUNFA?
+                votacoes = None
+            else:
+                votacoes = self.votacoes
+            if len(self.partidos) == 0: # FUNFA?
+                partidos = None
+            else:
+                partidos = self.partidos
+            x = AnalisadorPeriodo(self.casa_legislativa, periodo, votacoes, partidos)
             if x.votacoes:
+                logger.info("O periodo possui %d votações." % len(x.votacoes))
                 x.partidos_2d()
                 self.analisadores_periodo.append(x)
+            else:
+                logger.info("O periodo não possui nenhuma votação.")
             
         # Rotacionar as análises, e determinar área máxima:
         maior = self.analisadores_periodo[0].soma_dos_quadrados_dos_tamanhos_dos_partidos
@@ -352,7 +415,7 @@ class AnalisadorTemporal:
     # Aí JsonAnaliseGenerator pega as coordenadas e aplicao GraphScaler
     # O que deve ser salvo no banco de dados são os valores já "escalados"     
     def salvar_no_bd(self):
-        """Salva uma instância de AnaliseTemporal no banco de dados."""
+        """Salva uma instância de AnalisadorTemporal no banco de dados."""
         # 'modat' é o modelo análise temporal que vou salvar.
         modat = AnaliseTemporal()
         modat.casa_legislativa = self.casa_legislativa
@@ -363,14 +426,7 @@ class AnalisadorTemporal:
         modat.partidos = self.partidos
         modat.area_total = self.area_total
         # Criar um hash para servir de primary key desta análise temporal:
-        hash_id = md5()
-        hash_id.update(str(self.casa_legislativa))
-        hash_id.update(self.periodicidade)
-        hash_id.update(str(self.ini))
-        hash_id.update(str(self.fim))
-        hash_id.update(str(self.votacoes)) # talvez nao sirva
-        hash_id.update(str(self.partidos)) # talvez nao sirva
-        modat.hash_id = hash_id.hexdigest()
+        modat.hash_id = self._calcula_hash()
         # Salvar no bd, ainda sem as análises
         modat.save()
         # Salvar as análises por período no bd:
@@ -381,15 +437,18 @@ class AnalisadorTemporal:
             modap.data_fim = ap.fim.strftime('%Y-%m-%d')
             #votacoes = self.votacoes
             #partidos = self.partidos
-            modap.analiseTemporal = self
+            modap.analiseTemporal = modat
             posicoes = []
             for part, coord in ap.coordenadas.items():
                 posicao = PosicaoPartido() # Cria PosicaoPartido no bd
                 posicao.x = coord[0]
                 posicao.y = coord[1]
                 posicao.partido = models.Partido.objects.filter(nome=part)[0]
+                posicao.tamanho = ap.tamanhos_partidos.get(part,0)
+                posicao.presenca = 0 # TODO: incluir presença aqui.
                 posicao.save() # Salva PosicaoPartido no bd
                 posicoes.append(posicao)
+            modap.save()
             modap.posicoes = posicoes
             modap.save() # Salva a análise do período no bd, associada a uma AnalisadorTemporal
 
