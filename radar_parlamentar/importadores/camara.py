@@ -58,7 +58,8 @@ class ProposicoesFinder:
         """Recebe XML (objeto etree) do web service ListarProposicoes e devolve uma lista de tuplas,
         o primeiro item da tuple é o id da proposição, e o segundo item é o nome da proposição (sigla num/ano)
         """
-        ids = nomes = []
+        ids = []
+        nomes = []
         for child in xml:
             id_prop = child.find('id').text.strip()
             nome = child.find('nome').text.strip()
@@ -99,17 +100,18 @@ class ProposicoesFinder:
         camaraws = Camaraws()
         siglas = camaraws.listar_siglas()
         for ano in range(ano_min, ano_max+1):
-            print 'Procurando em %s' % ano
+            logger.info('Procurando em %s' % ano)
             for sigla in siglas:
-                print '  %s: ' % sigla,
                 try:
                     xml = camaraws.listar_proposicoes(sigla, ano)
                     props = self._parse_nomes_lista_proposicoes(xml)
                     for id_prop, nome in props:
-                        f.write('%d: %s\n' %(id_prop, nome))
-                    print '%d encontradas' % len(props) 
+                        f.write('%s: %s\n' %(id_prop, nome))
+                    logger.info('%d %ss encontrados' % (len(props), sigla)) 
+                except urllib2.URLError, etree.ParseError:
+                    logger.info('access error in %s' % sigla)
                 except:
-                    print 'erro'
+                    logger.info('XML parser error in %s' % sigla)
         f.close()
         
     def find_props_que_existem_brute_force(self, file_name, id_min, id_max):
