@@ -41,7 +41,7 @@ ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
 
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-RESOURCES_FOLDER = os.path.join(MODULE_DIR, 'dados/')
+RESOURCES_FOLDER = os.path.join(MODULE_DIR, 'dados/cdep/')
 VOTADAS_FILE_PATH = RESOURCES_FOLDER + 'votadas.txt'
 
 INICIO_PERIODO = parse_datetime('2004-01-01 0:0:0')
