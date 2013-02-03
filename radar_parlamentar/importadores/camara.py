@@ -518,7 +518,7 @@ class ImportadorCamara:
             else:
                 partido.save()
                 self.partidos[nome_partido] = partido            
-                logger.debug('Partido %s salvo' % partido)
+                #logger.debug('Partido %s salvo' % partido)
             
         return partido
 
@@ -539,7 +539,7 @@ class ImportadorCamara:
             #votante.genero =
             parlamentar.save()
             self.parlamentares[key] = parlamentar
-            logger.debug('Deputado %s salvo' % parlamentar)
+            #logger.debug('Deputado %s salvo' % parlamentar)
         return parlamentar
     
     def _progresso(self):
