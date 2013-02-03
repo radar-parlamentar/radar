@@ -227,23 +227,19 @@ class ProposicoesFinderTest(TestCase):
 
         os.system('rm %s' % FILE_NAME)
 
-    # teste comentado, pois a implementação não está terminada
-    # a implementação foi abortada, pois parece que em vários casos
-    # o web service ainda não devolve uma resposta satisfatória
-    # exemplo: http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=PL&numero=&ano=2012&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=
-    def _test_find_props_existem(self):
+    def test_find_props_existem(self):
 
-        ANO_MIN = 2010
-        IDS_QUE_EXISTEM = ['490372', '490340', '490282']
-        IDS_QUE_NAO_EXISTEM = ['382651', '382650']
+        ANO_MIN = 2012
+        IDS_QUE_EXISTEM = ['564446', '564313', '564126'] # proposições de 2012
+        IDS_QUE_NAO_EXISTEM = ['382651', '382650'] # proposições de 2007
         FILE_NAME = 'ids_que_existem_test.txt'
 
         finder = camara.ProposicoesFinder(False) # False to verbose
         finder.find_props_que_existem(FILE_NAME, ANO_MIN)
         props = finder.parse_ids_que_existem(FILE_NAME)
 
-        for prop in props:
-            self.assertTrue(prop['id'] in IDS_QUE_EXISTEM, 'prop %s não encontrada em IDS_QUE_EXISTEM' % prop['id'])
+        for idp in IDS_QUE_EXISTEM:
+            self.assertTrue(idp in [prop['id'] for prop in props])
 
         for idp in IDS_QUE_NAO_EXISTEM:
             self.assertFalse(idp in [prop['id'] for prop in props])
