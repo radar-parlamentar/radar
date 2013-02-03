@@ -4,7 +4,7 @@
 # Copyright (C) 2012, Leonardo Leite, Guilherme Januário
 #
 # This file is part of Radar Parlamentar.
-# 
+#
 # Radar Parlamentar is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -14,7 +14,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -33,25 +33,26 @@ import os
 import xml.etree.ElementTree as etree
 
 # data em que os arquivos XMLs foram atualizados
-ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
+ULTIMA_ATUALIZACAO = parse_datetime('2012-12-31 0:0:0')
 
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # arquivos com os dados fornecidos pela cmsp
-XML2010 = os.path.join(MODULE_DIR, 'dados/cmsp2010.xml')
-XML2011 = os.path.join(MODULE_DIR,'dados/cmsp2011.xml')
-XML2012 = os.path.join(MODULE_DIR,'dados/cmsp2012.xml')
+XML2010 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2010.xml')
+XML2011 = os.path.join(MODULE_DIR,'dados/cmsp/cmsp2011.xml')
+XML2012 = os.path.join(MODULE_DIR,'dados/cmsp/cmsp2012.xml')
+XML2013 = os.path.join(MODULE_DIR,'dados/cmsp/cmsp2013.xml')
 
-# tipos de proposições encontradas nos XMLs da cmsp (2010, 2011, 2012)
+# tipos de proposições encontradas nos XMLs da cmsp (2010, 2011, 2012, 2013)
 # esta lista ajuda a identificar as votações que são de proposições
-# Exemplos de votações que não são de proposições: Adiamento do Prolong. do Expediente; Adiamento dos Demais itens da Pauta. 
+# Exemplos de votações que não são de proposições: Adiamento do Prolong. do Expediente; Adiamento dos Demais itens da Pauta.
 TIPOS_PROPOSICOES = ['PL', 'PLO', 'PDL']
 
 # regex que captura um nome de proposição (ex: PL 12/2010)
-PROP_REGEX = '([a-zA-Z]{1,3}) ([0-9]{1,4}) ?/([0-9]{4})' 
+PROP_REGEX = '([a-zA-Z]{1,3}) ([0-9]{1,4}) ?/([0-9]{4})'
 
 INICIO_PERIODO = parse_datetime('2010-01-01 0:0:0')
-FIM_PERIODO = parse_datetime('2012-07-01 0:0:0')
+FIM_PERIODO = parse_datetime('2012-12-31 0:0:0')
 
 # TODO: caso o parlamentar pertenca a partidos distintos, ou, mais generciamente,
 #       se sua "legislatura" mudar, caso seu ID, provindo do XML de entrada,
@@ -70,7 +71,7 @@ class ImportadorCMSP:
 
         self.verbose = verbose
         self.cmsp = self._gera_casa_legislativa()
-        
+
         self.parlamentares = {} # mapeia um ID de parlamentar incluso em alguma votacao a um objeto Parlamentar.
 
     def _gera_casa_legislativa(self):
@@ -114,7 +115,7 @@ class ImportadorCMSP:
 
     def _voto_cmsp_to_model(self, voto):
         """Interpreta voto como tá no XML e responde em adequação a modelagem em models.py"""
-        
+
         if voto == 'Não':
             return models.NAO
         elif voto == 'Sim':
@@ -149,7 +150,7 @@ class ImportadorCMSP:
             votante.id_parlamentar = id_parlamentar
             votante.nome =  ver_tree.get('NomeParlamentar')
             votante.save()
-            if self.verbose: 
+            if self.verbose:
                 print 'Vereador %s salvo' % votante
             self.parlamentares[id_parlamentar] = votante
             #TODO genero
@@ -167,7 +168,7 @@ class ImportadorCMSP:
             leg = legs[0]
         else:
             leg = models.Legislatura()
-            leg.parlamentar = votante    
+            leg.parlamentar = votante
             leg.partido = partido
             leg.casa_legislativa = self.cmsp
             leg.inicio = INICIO_PERIODO # TODO este período deve ser mais refinado para suportar caras que trocaram de partido
@@ -178,7 +179,7 @@ class ImportadorCMSP:
 
     def _votos_from_tree(self, vot_tree, votacao):
         """Extrai lista de votos do XML da votação e as salva no banco de dados.
-        
+
         Argumentos:
            vot_tree -- etree dos votos
            votacao -- objeto do tipo Votacao
@@ -191,7 +192,7 @@ class ImportadorCMSP:
                 voto.votacao = votacao
                 voto.opcao = self._voto_cmsp_to_model(ver_tree.get('Voto'))
                 if voto.opcao != None:
-                    voto.save() 
+                    voto.save()
 
     def _from_xml_to_bd(self, xml_file):
         """Salva no banco de dados do Django e retorna lista das votações"""
@@ -217,7 +218,7 @@ class ImportadorCMSP:
                     # a proposicao aa qual a votacao sob analise se refere jah estava no dicionario (eba!)
                     if proposicoes.has_key(prop_nome):
                         prop = proposicoes[prop_nome]
-                    # a prop. nao estava ainda, entao devemo-la tanto  criar qnt cadastrar no dicionario. 
+                    # a prop. nao estava ainda, entao devemo-la tanto  criar qnt cadastrar no dicionario.
                     else:
                         prop = models.Proposicao()
                         prop.sigla, prop.numero, prop.ano = self.tipo_num_anoDePropNome(prop_nome)
@@ -244,7 +245,7 @@ class ImportadorCMSP:
                     votacoes.append(vot)
 
         return votacoes
-    
+
     def progresso(self):
         """Indica progresso na tela"""
         sys.stdout.write('x')
@@ -268,6 +269,10 @@ class ImportadorCMSP:
             print '*** 2012 ***'
         vots.append(self._from_xml_to_bd(XML2012))
 
+        #if self.verbose:
+        #    print '*** 2013 ***'
+        #vots.append(self._from_xml_to_bd(XML2013))
+
         return vots
 
 def main():
@@ -275,5 +280,5 @@ def main():
     print 'IMPORTANDO DADOS DA CÂMARA MUNICIPAL DE SÃO PAULO (CMSP)'
     importer = ImportadorCMSP()
     importer.importar()
-        
+    print 'Importação dos dados da Câmara Municipal de São Paulo (CMSP) terminada'
 

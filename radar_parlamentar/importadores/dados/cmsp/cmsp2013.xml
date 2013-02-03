@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CMSP>
+  <Votacao VotacaoID="123456789" Materia="Presidente da Mesa" TipoVotacao="Nominal" Resultado="Eleito José Américo (PT)" nPresentes="52" nSim="51" nNao="0" nBranco="0" nAbstencao="1" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" Ementa="" NotasRodape=" ">
+    <Vereador NomeParlamentar="Adilson Amadeu" IDParlamentar="34" Partido="PTB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Alfredinho" IDParlamentar="119" Partido="PT" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Andrea Matarazzo" IDParlamentar="157" Partido="PSDB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Antônio Vespoli" IDParlamentar="177" Partido="PSOL" Voto="Antônio Vespoli (PSOL)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ari Friedenbach" IDParlamentar="158" Partido="PPS" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Arselino Tatto" IDParlamentar="1" Partido="PT" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Atílio Francisco" IDParlamentar="45" Partido="PRB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurelio Miguel" IDParlamentar="20" Partido="PR" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurélio Nomura" IDParlamentar="50" Partido="PSDB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Celso Jatene" IDParlamentar="35" Partido="PTB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Claudinho" IDParlamentar="41" Partido="PSDB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Conte Lopes" IDParlamentar="159" Partido="PTB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Dalton Silvano" IDParlamentar="12" Partido="PV" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="David Soares" IDParlamentar="132" Partido="PSD" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Donato" IDParlamentar="16" Partido="PT" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edemilson Chaves Silva" IDParlamentar="171" Partido="PP" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edir Sales" IDParlamentar="131" Partido="PSD" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eduardo Tuma" IDParlamentar="162" Partido="PSDB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eliseu Gabriel" IDParlamentar="38" Partido="PSB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Floriano Pesaro" IDParlamentar="118" Partido="PSDB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="George Hato" IDParlamentar="163" Partido="PMDB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Gilson Barreto" IDParlamentar="13" Partido="PSDB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Goulart" IDParlamentar="6" Partido="PSD" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jair Tatto" IDParlamentar="164" Partido="PT" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jean Madeira Silva" IDParlamentar="165" Partido="PRB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Américo" IDParlamentar="15" Partido="PT" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Police Neto" IDParlamentar="11" Partido="PSD" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Juliana Cardoso" IDParlamentar="113" Partido="PT" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Laércio Benko" IDParlamentar="166" Partido="PHS" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marco Aurélio Cunha" IDParlamentar="112" Partido="PSD" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marta Costa" IDParlamentar="10" Partido="PSD" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Masataka Ota" IDParlamentar="170" Partido="PSB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Milton Leite" IDParlamentar="9" Partido="DEM" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nabil Bonduki" IDParlamentar="168" Partido="PT" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Natalini" IDParlamentar="27" Partido="PV" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nello Rodolpho Giongo" IDParlamentar="169" Partido="PMDB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Netinho de Paula" IDParlamentar="116" Partido="PCdoB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Noemi Nonato" IDParlamentar="37" Partido="PSB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Patrícia Bezerra" IDParlamentar="172" Partido="PSDB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Fiorilo" IDParlamentar="173" Partido="PT" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Frange" IDParlamentar="32" Partido="PTB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Reis" IDParlamentar="174" Partido="PT" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Telhada" IDParlamentar="160" Partido="PSDB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Nunes" IDParlamentar="175" Partido="PMDB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Teixeira" IDParlamentar="39" Partido="PV" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Young" IDParlamentar="176" Partido="PPS" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Roberto Tripoli" IDParlamentar="49" Partido="PV" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Rubens Calvo" IDParlamentar="161" Partido="PMDB" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Sandra Tadeu" IDParlamentar="115" Partido="DEM" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Senival Moura" IDParlamentar="43" Partido="PT" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Souza Santos" IDParlamentar="127" Partido="PSD" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Valdemar Silva" IDParlamentar="178" Partido="PT" Voto="José Américo (PT)" Acao="VOTO" VotacaoID="123456789" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+  </Votacao>
+  <Votacao VotacaoID="987654321" Materia="1º Vice Presidente da Mesa" TipoVotacao="Nominal" Resultado="Eleito Marco A Cunha (PSD)" nPresentes="52" nSim="51" nNao="0" nBranco="0" nAbstencao="1" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" Ementa="" NotasRodape=" ">
+    <Vereador NomeParlamentar="Adilson Amadeu" IDParlamentar="34" Partido="PTB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Alfredinho" IDParlamentar="119" Partido="PT" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Andrea Matarazzo" IDParlamentar="157" Partido="PSDB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Antônio Vespoli" IDParlamentar="177" Partido="PSOL" Voto="Abstenção" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ari Friedenbach" IDParlamentar="158" Partido="PPS" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Arselino Tatto" IDParlamentar="1" Partido="PT" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Atílio Francisco" IDParlamentar="45" Partido="PRB" Voto="Souza Santos (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurelio Miguel" IDParlamentar="20" Partido="PR" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurélio Nomura" IDParlamentar="50" Partido="PSDB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Celso Jatene" IDParlamentar="35" Partido="PTB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Claudinho" IDParlamentar="41" Partido="PSDB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Conte Lopes" IDParlamentar="159" Partido="PTB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Dalton Silvano" IDParlamentar="12" Partido="PV" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="David Soares" IDParlamentar="132" Partido="PSD" Voto="Souza Santos (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Donato" IDParlamentar="16" Partido="PT" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edemilson Chaves Silva" IDParlamentar="171" Partido="PP" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edir Sales" IDParlamentar="131" Partido="PSD" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eduardo Tuma" IDParlamentar="162" Partido="PSDB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eliseu Gabriel" IDParlamentar="38" Partido="PSB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Floriano Pesaro" IDParlamentar="118" Partido="PSDB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="George Hato" IDParlamentar="163" Partido="PMDB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Gilson Barreto" IDParlamentar="13" Partido="PSDB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Goulart" IDParlamentar="6" Partido="PSD" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jair Tatto" IDParlamentar="164" Partido="PT" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jean Madeira Silva" IDParlamentar="165" Partido="PRB" Voto="Souza Santos (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Américo" IDParlamentar="15" Partido="PT" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Police Neto" IDParlamentar="11" Partido="PSD" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Juliana Cardoso" IDParlamentar="113" Partido="PT" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Laércio Benko" IDParlamentar="166" Partido="PHS" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marco Aurélio Cunha" IDParlamentar="112" Partido="PSD" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marta Costa" IDParlamentar="10" Partido="PSD" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Masataka Ota" IDParlamentar="170" Partido="PSB" Voto="Souza Santos (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Milton Leite" IDParlamentar="9" Partido="DEM" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nabil Bonduki" IDParlamentar="168" Partido="PT" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Natalini" IDParlamentar="27" Partido="PV" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nello Rodolpho Giongo" IDParlamentar="169" Partido="PMDB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Netinho de Paula" IDParlamentar="116" Partido="PCdoB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Noemi Nonato" IDParlamentar="37" Partido="PSB" Voto="Souza Santos (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Patrícia Bezerra" IDParlamentar="172" Partido="PSDB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Fiorilo" IDParlamentar="173" Partido="PT" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Frange" IDParlamentar="32" Partido="PTB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Reis" IDParlamentar="174" Partido="PT" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Telhada" IDParlamentar="160" Partido="PSDB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Nunes" IDParlamentar="175" Partido="PMDB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Teixeira" IDParlamentar="39" Partido="PV" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Young" IDParlamentar="176" Partido="PPS" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Roberto Tripoli" IDParlamentar="49" Partido="PV" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Rubens Calvo" IDParlamentar="161" Partido="PMDB" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Sandra Tadeu" IDParlamentar="115" Partido="DEM" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Senival Moura" IDParlamentar="43" Partido="PT" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Souza Santos" IDParlamentar="127" Partido="PSD" Voto="Souza Santos (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Valdemar Silva" IDParlamentar="178" Partido="PT" Voto="Marco A Cunha (PSD)" Acao="VOTO" VotacaoID="987654321" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+  </Votacao>
+  <Votacao VotacaoID="1243" Materia="Ver. Aurélio Miguel - 2ª Vice Presidente da Mesa" TipoVotacao="Nominal" Resultado="Eleito" nPresentes="52" nSim="51" nNao="0" nBranco="0" nAbstencao="1" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" Ementa="" NotasRodape=" ">
+    <Vereador NomeParlamentar="Adilson Amadeu" IDParlamentar="34" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Alfredinho" IDParlamentar="119" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Andrea Matarazzo" IDParlamentar="157" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Antônio Vespoli" IDParlamentar="177" Partido="PSOL" Voto="Abstenção" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ari Friedenbach" IDParlamentar="158" Partido="PPS" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Arselino Tatto" IDParlamentar="1" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Atílio Francisco" IDParlamentar="45" Partido="PRB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurelio Miguel" IDParlamentar="20" Partido="PR" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurélio Nomura" IDParlamentar="50" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Celso Jatene" IDParlamentar="35" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Claudinho" IDParlamentar="41" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Conte Lopes" IDParlamentar="159" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Dalton Silvano" IDParlamentar="12" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="David Soares" IDParlamentar="132" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Donato" IDParlamentar="16" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edemilson Chaves Silva" IDParlamentar="171" Partido="PP" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edir Sales" IDParlamentar="131" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eduardo Tuma" IDParlamentar="162" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eliseu Gabriel" IDParlamentar="38" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Floriano Pesaro" IDParlamentar="118" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="George Hato" IDParlamentar="163" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Gilson Barreto" IDParlamentar="13" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Goulart" IDParlamentar="6" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jair Tatto" IDParlamentar="164" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jean Madeira Silva" IDParlamentar="165" Partido="PRB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Américo" IDParlamentar="15" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Police Neto" IDParlamentar="11" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Juliana Cardoso" IDParlamentar="113" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Laércio Benko" IDParlamentar="166" Partido="PHS" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marco Aurélio Cunha" IDParlamentar="112" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marta Costa" IDParlamentar="10" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Masataka Ota" IDParlamentar="170" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Milton Leite" IDParlamentar="9" Partido="DEM" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nabil Bonduki" IDParlamentar="168" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Natalini" IDParlamentar="27" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nello Rodolpho Giongo" IDParlamentar="169" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Netinho de Paula" IDParlamentar="116" Partido="PCdoB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Noemi Nonato" IDParlamentar="37" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Patrícia Bezerra" IDParlamentar="172" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Fiorilo" IDParlamentar="173" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Frange" IDParlamentar="32" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Reis" IDParlamentar="174" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Telhada" IDParlamentar="160" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Nunes" IDParlamentar="175" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Teixeira" IDParlamentar="39" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Young" IDParlamentar="176" Partido="PPS" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Roberto Tripoli" IDParlamentar="49" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Rubens Calvo" IDParlamentar="161" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Sandra Tadeu" IDParlamentar="115" Partido="DEM" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Senival Moura" IDParlamentar="43" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Souza Santos" IDParlamentar="127" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Valdemar Silva" IDParlamentar="178" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1243" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+  </Votacao>
+  <Votacao VotacaoID="1242" Materia="Ver. Claudinho de Souza -  1ª Secretário da Mesa" TipoVotacao="Nominal" Resultado="Eleito" nPresentes="52" nSim="51" nNao="0" nBranco="0" nAbstencao="1" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" Ementa="" NotasRodape=" ">
+    <Vereador NomeParlamentar="Adilson Amadeu" IDParlamentar="34" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Alfredinho" IDParlamentar="119" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Andrea Matarazzo" IDParlamentar="157" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Antônio Vespoli" IDParlamentar="177" Partido="PSOL" Voto="Abstenção" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ari Friedenbach" IDParlamentar="158" Partido="PPS" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Arselino Tatto" IDParlamentar="1" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Atílio Francisco" IDParlamentar="45" Partido="PRB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurelio Miguel" IDParlamentar="20" Partido="PR" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurélio Nomura" IDParlamentar="50" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Celso Jatene" IDParlamentar="35" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Claudinho" IDParlamentar="41" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Conte Lopes" IDParlamentar="159" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Dalton Silvano" IDParlamentar="12" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="David Soares" IDParlamentar="132" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Donato" IDParlamentar="16" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edemilson Chaves Silva" IDParlamentar="171" Partido="PP" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edir Sales" IDParlamentar="131" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eduardo Tuma" IDParlamentar="162" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eliseu Gabriel" IDParlamentar="38" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Floriano Pesaro" IDParlamentar="118" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="George Hato" IDParlamentar="163" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Gilson Barreto" IDParlamentar="13" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Goulart" IDParlamentar="6" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jair Tatto" IDParlamentar="164" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jean Madeira Silva" IDParlamentar="165" Partido="PRB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Américo" IDParlamentar="15" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Police Neto" IDParlamentar="11" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Juliana Cardoso" IDParlamentar="113" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Laércio Benko" IDParlamentar="166" Partido="PHS" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marco Aurélio Cunha" IDParlamentar="112" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marta Costa" IDParlamentar="10" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Masataka Ota" IDParlamentar="170" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Milton Leite" IDParlamentar="9" Partido="DEM" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nabil Bonduki" IDParlamentar="168" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Natalini" IDParlamentar="27" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nello Rodolpho Giongo" IDParlamentar="169" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Netinho de Paula" IDParlamentar="116" Partido="PCdoB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Noemi Nonato" IDParlamentar="37" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Patrícia Bezerra" IDParlamentar="172" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Fiorilo" IDParlamentar="173" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Frange" IDParlamentar="32" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Reis" IDParlamentar="174" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Telhada" IDParlamentar="160" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Nunes" IDParlamentar="175" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Teixeira" IDParlamentar="39" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Young" IDParlamentar="176" Partido="PPS" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Roberto Tripoli" IDParlamentar="49" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Rubens Calvo" IDParlamentar="161" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Sandra Tadeu" IDParlamentar="115" Partido="DEM" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Senival Moura" IDParlamentar="43" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Souza Santos" IDParlamentar="127" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Valdemar Silva" IDParlamentar="178" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1242" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+  </Votacao>
+  <Votacao VotacaoID="1241" Materia="Ver. Adilson Amadeu - 2ª Secretário da Mesa" TipoVotacao="Nominal" Resultado="Eleito" nPresentes="52" nSim="50" nNao="0" nBranco="0" nAbstencao="1" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" Ementa="" NotasRodape=" ">
+    <Vereador NomeParlamentar="Adilson Amadeu" IDParlamentar="34" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Alfredinho" IDParlamentar="119" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Andrea Matarazzo" IDParlamentar="157" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Antônio Vespoli" IDParlamentar="177" Partido="PSOL" Voto="Abstenção" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ari Friedenbach" IDParlamentar="158" Partido="PPS" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Arselino Tatto" IDParlamentar="1" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Atílio Francisco" IDParlamentar="45" Partido="PRB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurelio Miguel" IDParlamentar="20" Partido="PR" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurélio Nomura" IDParlamentar="50" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Celso Jatene" IDParlamentar="35" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Claudinho" IDParlamentar="41" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Conte Lopes" IDParlamentar="159" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Dalton Silvano" IDParlamentar="12" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="David Soares" IDParlamentar="132" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Donato" IDParlamentar="16" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edemilson Chaves Silva" IDParlamentar="171" Partido="PP" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edir Sales" IDParlamentar="131" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eduardo Tuma" IDParlamentar="162" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eliseu Gabriel" IDParlamentar="38" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Floriano Pesaro" IDParlamentar="118" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="George Hato" IDParlamentar="163" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Gilson Barreto" IDParlamentar="13" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Goulart" IDParlamentar="6" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jair Tatto" IDParlamentar="164" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jean Madeira Silva" IDParlamentar="165" Partido="PRB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Américo" IDParlamentar="15" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Police Neto" IDParlamentar="11" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Juliana Cardoso" IDParlamentar="113" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Laércio Benko" IDParlamentar="166" Partido="PHS" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marco Aurélio Cunha" IDParlamentar="112" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marta Costa" IDParlamentar="10" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Masataka Ota" IDParlamentar="170" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Milton Leite" IDParlamentar="9" Partido="DEM" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nabil Bonduki" IDParlamentar="168" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Natalini" IDParlamentar="27" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nello Rodolpho Giongo" IDParlamentar="169" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Netinho de Paula" IDParlamentar="116" Partido="PCdoB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Noemi Nonato" IDParlamentar="37" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Patrícia Bezerra" IDParlamentar="172" Partido="PSDB" Voto="Não votou" Acao="NÃO VOTOU" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Fiorilo" IDParlamentar="173" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Frange" IDParlamentar="32" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Reis" IDParlamentar="174" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Telhada" IDParlamentar="160" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Nunes" IDParlamentar="175" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Teixeira" IDParlamentar="39" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Young" IDParlamentar="176" Partido="PPS" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Roberto Tripoli" IDParlamentar="49" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Rubens Calvo" IDParlamentar="161" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Sandra Tadeu" IDParlamentar="115" Partido="DEM" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Senival Moura" IDParlamentar="43" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Souza Santos" IDParlamentar="127" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Valdemar Silva" IDParlamentar="178" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1241" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+  </Votacao>
+  <Votacao VotacaoID="1240" Materia="Ver.Gilson Barreto -  1ª Suplente da Mesa" TipoVotacao="Nominal" Resultado="Eleito" nPresentes="52" nSim="51" nNao="0" nBranco="0" nAbstencao="1" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" Ementa="" NotasRodape=" ">
+    <Vereador NomeParlamentar="Adilson Amadeu" IDParlamentar="34" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Alfredinho" IDParlamentar="119" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Andrea Matarazzo" IDParlamentar="157" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Antônio Vespoli" IDParlamentar="177" Partido="PSOL" Voto="Abstenção" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ari Friedenbach" IDParlamentar="158" Partido="PPS" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Arselino Tatto" IDParlamentar="1" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Atílio Francisco" IDParlamentar="45" Partido="PRB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurelio Miguel" IDParlamentar="20" Partido="PR" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurélio Nomura" IDParlamentar="50" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Celso Jatene" IDParlamentar="35" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Claudinho" IDParlamentar="41" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Conte Lopes" IDParlamentar="159" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Dalton Silvano" IDParlamentar="12" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="David Soares" IDParlamentar="132" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Donato" IDParlamentar="16" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edemilson Chaves Silva" IDParlamentar="171" Partido="PP" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edir Sales" IDParlamentar="131" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eduardo Tuma" IDParlamentar="162" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eliseu Gabriel" IDParlamentar="38" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Floriano Pesaro" IDParlamentar="118" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="George Hato" IDParlamentar="163" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Gilson Barreto" IDParlamentar="13" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Goulart" IDParlamentar="6" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jair Tatto" IDParlamentar="164" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jean Madeira Silva" IDParlamentar="165" Partido="PRB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Américo" IDParlamentar="15" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Police Neto" IDParlamentar="11" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Juliana Cardoso" IDParlamentar="113" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Laércio Benko" IDParlamentar="166" Partido="PHS" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marco Aurélio Cunha" IDParlamentar="112" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marta Costa" IDParlamentar="10" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Masataka Ota" IDParlamentar="170" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Milton Leite" IDParlamentar="9" Partido="DEM" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nabil Bonduki" IDParlamentar="168" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Natalini" IDParlamentar="27" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nello Rodolpho Giongo" IDParlamentar="169" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Netinho de Paula" IDParlamentar="116" Partido="PCdoB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Noemi Nonato" IDParlamentar="37" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Patrícia Bezerra" IDParlamentar="172" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Fiorilo" IDParlamentar="173" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Frange" IDParlamentar="32" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Reis" IDParlamentar="174" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Telhada" IDParlamentar="160" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Nunes" IDParlamentar="175" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Teixeira" IDParlamentar="39" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Young" IDParlamentar="176" Partido="PPS" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Roberto Tripoli" IDParlamentar="49" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Rubens Calvo" IDParlamentar="161" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Sandra Tadeu" IDParlamentar="115" Partido="DEM" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Senival Moura" IDParlamentar="43" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Souza Santos" IDParlamentar="127" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Valdemar Silva" IDParlamentar="178" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1240" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+  </Votacao>
+  <Votacao VotacaoID="1239" Materia="Ver. Dalton Silvano -  2ª Suplente da Mesa" TipoVotacao="Nominal" Resultado="Eleito" nPresentes="52" nSim="51" nNao="0" nBranco="0" nAbstencao="1" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" Ementa="" NotasRodape=" ">
+    <Vereador NomeParlamentar="Adilson Amadeu" IDParlamentar="34" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Alfredinho" IDParlamentar="119" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Andrea Matarazzo" IDParlamentar="157" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Antônio Vespoli" IDParlamentar="177" Partido="PSOL" Voto="Abstenção" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ari Friedenbach" IDParlamentar="158" Partido="PPS" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Arselino Tatto" IDParlamentar="1" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Atílio Francisco" IDParlamentar="45" Partido="PRB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurelio Miguel" IDParlamentar="20" Partido="PR" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurélio Nomura" IDParlamentar="50" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Celso Jatene" IDParlamentar="35" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Claudinho" IDParlamentar="41" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Conte Lopes" IDParlamentar="159" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Dalton Silvano" IDParlamentar="12" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="David Soares" IDParlamentar="132" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Donato" IDParlamentar="16" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edemilson Chaves Silva" IDParlamentar="171" Partido="PP" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edir Sales" IDParlamentar="131" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eduardo Tuma" IDParlamentar="162" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eliseu Gabriel" IDParlamentar="38" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Floriano Pesaro" IDParlamentar="118" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="George Hato" IDParlamentar="163" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Gilson Barreto" IDParlamentar="13" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Goulart" IDParlamentar="6" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jair Tatto" IDParlamentar="164" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jean Madeira Silva" IDParlamentar="165" Partido="PRB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Américo" IDParlamentar="15" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Police Neto" IDParlamentar="11" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Juliana Cardoso" IDParlamentar="113" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Laércio Benko" IDParlamentar="166" Partido="PHS" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marco Aurélio Cunha" IDParlamentar="112" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marta Costa" IDParlamentar="10" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Masataka Ota" IDParlamentar="170" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Milton Leite" IDParlamentar="9" Partido="DEM" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nabil Bonduki" IDParlamentar="168" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Natalini" IDParlamentar="27" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nello Rodolpho Giongo" IDParlamentar="169" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Netinho de Paula" IDParlamentar="116" Partido="PCdoB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Noemi Nonato" IDParlamentar="37" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Patrícia Bezerra" IDParlamentar="172" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Fiorilo" IDParlamentar="173" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Frange" IDParlamentar="32" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Reis" IDParlamentar="174" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Telhada" IDParlamentar="160" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Nunes" IDParlamentar="175" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Teixeira" IDParlamentar="39" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Young" IDParlamentar="176" Partido="PPS" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Roberto Tripoli" IDParlamentar="49" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Rubens Calvo" IDParlamentar="161" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Sandra Tadeu" IDParlamentar="115" Partido="DEM" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Senival Moura" IDParlamentar="43" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Souza Santos" IDParlamentar="127" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Valdemar Silva" IDParlamentar="178" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1239" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+  </Votacao>
+  <Votacao VotacaoID="1238" Materia="Ver. Rubens Calvo -  Corregedor da C.M.S.P" TipoVotacao="Nominal" Resultado="Eleito" nPresentes="52" nSim="50" nNao="0" nBranco="0" nAbstencao="1" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" Ementa="" NotasRodape=" ">
+    <Vereador NomeParlamentar="Adilson Amadeu" IDParlamentar="34" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Alfredinho" IDParlamentar="119" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Andrea Matarazzo" IDParlamentar="157" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Antônio Vespoli" IDParlamentar="177" Partido="PSOL" Voto="Abstenção" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ari Friedenbach" IDParlamentar="158" Partido="PPS" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Arselino Tatto" IDParlamentar="1" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Atílio Francisco" IDParlamentar="45" Partido="PRB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurelio Miguel" IDParlamentar="20" Partido="PR" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Aurélio Nomura" IDParlamentar="50" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Celso Jatene" IDParlamentar="35" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Claudinho" IDParlamentar="41" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Conte Lopes" IDParlamentar="159" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Dalton Silvano" IDParlamentar="12" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="David Soares" IDParlamentar="132" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Donato" IDParlamentar="16" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edemilson Chaves Silva" IDParlamentar="171" Partido="PP" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Edir Sales" IDParlamentar="131" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eduardo Tuma" IDParlamentar="162" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Eliseu Gabriel" IDParlamentar="38" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Floriano Pesaro" IDParlamentar="118" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="George Hato" IDParlamentar="163" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Gilson Barreto" IDParlamentar="13" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Goulart" IDParlamentar="6" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jair Tatto" IDParlamentar="164" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Jean Madeira Silva" IDParlamentar="165" Partido="PRB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Américo" IDParlamentar="15" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="José Police Neto" IDParlamentar="11" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Juliana Cardoso" IDParlamentar="113" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Laércio Benko" IDParlamentar="166" Partido="PHS" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marco Aurélio Cunha" IDParlamentar="112" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Marta Costa" IDParlamentar="10" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Masataka Ota" IDParlamentar="170" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Milton Leite" IDParlamentar="9" Partido="DEM" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nabil Bonduki" IDParlamentar="168" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Natalini" IDParlamentar="27" Partido="PV" Voto="Não votou" Acao="NÃO VOTOU" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Nello Rodolpho Giongo" IDParlamentar="169" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Netinho de Paula" IDParlamentar="116" Partido="PCdoB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Noemi Nonato" IDParlamentar="37" Partido="PSB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Patrícia Bezerra" IDParlamentar="172" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Fiorilo" IDParlamentar="173" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Frange" IDParlamentar="32" Partido="PTB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Reis" IDParlamentar="174" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Paulo Telhada" IDParlamentar="160" Partido="PSDB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Nunes" IDParlamentar="175" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Teixeira" IDParlamentar="39" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Ricardo Young" IDParlamentar="176" Partido="PPS" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Roberto Tripoli" IDParlamentar="49" Partido="PV" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Rubens Calvo" IDParlamentar="161" Partido="PMDB" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Sandra Tadeu" IDParlamentar="115" Partido="DEM" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Senival Moura" IDParlamentar="43" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Souza Santos" IDParlamentar="127" Partido="PSD" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+    <Vereador NomeParlamentar="Valdemar Silva" IDParlamentar="178" Partido="PT" Voto="Sim" Acao="VOTO" VotacaoID="1238" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" />
+  </Votacao>
+  <Votacao VotacaoID="4ea78010b7ad4962858d42e6d3cb6684" Materia="REQUERIMENTO DE ADIAMENTO DE POSSE DO VER. ANTÔNIO CARLOS RODRIGUES" TipoVotacao="Simbólica" Resultado="Aprovado" nPresentes="" nSim="" nNao="" nBranco="" nAbstencao="" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" Ementa="" NotasRodape="" />
+  <Votacao VotacaoID="e615281c4c484273be2bdab193d49f2d" Materia="AUTORIZAÇÃO DO PLENÁRIO PARA POSSE DOS SUPLENTES NO RECESSO PARLAMENTAR" TipoVotacao="Simbólica" Resultado="Aprovado" nPresentes="" nSim="" nNao="" nBranco="" nAbstencao="" NomeDaSessao="1ª Sessão Solene" DataDaSessao="1/1/2013" Ementa="" NotasRodape="" />
+</CMSP>
