@@ -105,7 +105,7 @@ Plot = (function ($) {
     periodo_min = Number(d3.min(d3.keys(periodos)));
     periodo_max = Number(d3.max(d3.keys(periodos)));
 
-    first_label = periodos[periodo_min];
+    first_label = periodos[periodo_min].nome;
 
 
     // Add the year label; the value is set on transition.
@@ -203,7 +203,7 @@ Plot = (function ($) {
     // Updates the display to show the specified year.
     function displayYear(year) {
       dot.data(interpolateData(year), nome).call(position).sort(order);
-      label.text(periodos[Math.round(year)]);
+      label.text(periodos[Math.round(year)].nome);
     }
 
     // Interpolates the dataset for the given (fractional) year.
