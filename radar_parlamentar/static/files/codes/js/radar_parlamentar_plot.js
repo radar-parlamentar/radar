@@ -1,5 +1,5 @@
 /*##############################################################################
-#                 Copyright (C) 2013  Diego Rabatone Oliveira                  #
+#       Copyright (C) 2013  Diego Rabatone Oliveira, Leonardo Leite            #
 #                      <diraol(at)diraol(dot)eng(dot)br>                       #
 #                                                                              #
 #    This program is free software: you can redistribute it and/or modify      #
