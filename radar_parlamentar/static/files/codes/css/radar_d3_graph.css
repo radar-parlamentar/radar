@@ -33,6 +33,12 @@
 .label {
   fill: #777;
 }
+
+.total_label {
+  font: 700 14px "Helvetica Neue";
+  fill: #ddd;
+}
+
 .year.label {
   font: 500 50px "Helvetica Neue";
   fill: #ddd;

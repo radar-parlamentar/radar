@@ -106,7 +106,7 @@ Plot = (function ($) {
     periodo_max = Number(d3.max(d3.keys(periodos)));
 
     first_label = periodos[periodo_min].nome;
-
+    first_total = periodos[periodo_min].quantidade_votacoes;
 
     // Add the year label; the value is set on transition.
     var label = svg.append("text")
@@ -115,6 +115,13 @@ Plot = (function ($) {
         .attr("y", '34')
         .attr("x", width + margin.right)
         .text(first_label);
+    
+    var total_label = svg.append("text")
+        .attr("class", "total_label")
+        .attr("text-anchor", "end")
+        .attr("y", "50")
+        .attr("x", width + margin.right)
+        .text("Votações analisadas no período: " + first_total)
     
     // A bisector since many nation's data is sparsely-defined.
     var bisect = d3.bisector(function(d) { return d[0]; });
@@ -135,14 +142,14 @@ Plot = (function ($) {
         .text(function(d) { return nome(d); });
 
     // Add an overlay for the year label.
-    var box = label.node().getBBox();
+    var l_box = label.node().getBBox();
 
     var overlay = svg.append("rect")
           .attr("class", "overlay")
-          .attr("x", box.x)
-          .attr("y", box.y)
-          .attr("width", box.width)
-          .attr("height", box.height)
+          .attr("x", l_box.x)
+          .attr("y", l_box.y)
+          .attr("width", l_box.width)
+          .attr("height", l_box.height)
           .on("mouseover", enableInteraction);
     
     // Start a transition that interpolates the data based on year.
@@ -166,9 +173,9 @@ Plot = (function ($) {
 
     // After the transition finishes, you can mouseover to change the year.
     function enableInteraction() {
-      var yearScale = d3.scale.linear()
+      var labelScale = d3.scale.linear()
           .domain([periodo_min, periodo_max])
-          .range([box.x + 10, box.x + box.width - 10])
+          .range([l_box.x + 10, l_box.x + l_box.width - 10])
           .clamp(true);
 
       // Cancel the current transition, if any.
@@ -189,7 +196,7 @@ Plot = (function ($) {
       }
 
       function mousemove() {
-        displayYear(yearScale.invert(d3.mouse(this)[0]));
+        displayYear(labelScale.invert(d3.mouse(this)[0]));
       }
     }
 
@@ -204,6 +211,7 @@ Plot = (function ($) {
     function displayYear(year) {
       dot.data(interpolateData(year), nome).call(position).sort(order);
       label.text(periodos[Math.round(year)].nome);
+      total_label.text(periodos[Math.round(year)].quantidade_votacoes);
     }
 
     // Interpolates the dataset for the given (fractional) year.
