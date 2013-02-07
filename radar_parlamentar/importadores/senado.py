@@ -31,6 +31,9 @@ import re
 import sys
 import os
 import xml.etree.ElementTree as etree
+import logging
+
+logger = logging.getLogger("radar")
 
 # data em que os arquivos XMLs foram atualizados
 ULTIMA_ATUALIZACAO = parse_datetime('2013-02-01 0:0:0')
@@ -48,23 +51,24 @@ FIM_PERIODO = parse_datetime('2012-12-31 0:0:0')
 class ImportadorSenado:
     """Salva os dados dos arquivos XML do senado no banco de dados"""
 
-    def __init__(self, verbose=False):
+    def __init__(self):
         """verbose (booleano) -- ativa/desativa prints na tela"""
 
-        self.verbose = verbose
         self.senado = None
-        
         self.parlamentares = {} # mapeia um ID de parlamentar incluso em alguma votacao a um objeto Parlamentar.
 
     def _gera_casa_legislativa(self):
         """Gera objeto do tipo CasaLegislativa representando o Senado"""
 
-        sen = models.CasaLegislativa()
-        sen.nome = 'Senado'
-        sen.nome_curto = 'sen'
-        sen.esfera = models.FEDERAL
-        sen.atualizacao = ULTIMA_ATUALIZACAO
-        sen.save()
+        if not models.CasaLegislativa.objects.filter(nome_curto='sen'):
+            sen = models.CasaLegislativa()
+            sen.nome = 'Senado'
+            sen.nome_curto = 'sen'
+            sen.esfera = models.FEDERAL
+            sen.atualizacao = ULTIMA_ATUALIZACAO
+            sen.save()
+        else:
+            sen = models.CasaLegislativa.objects.get(nome_curto='sen')
         return sen
 
     def _converte_data(self, data_str):
@@ -101,12 +105,23 @@ class ImportadorSenado:
     def _from_xml_to_bd(self, xml_file):
         """Salva no banco de dados do Django e retorna lista das votações"""
 
-        votacoes = []
-        # Comece implementando aqui : )
-        # Cuidado com as votações secretas! Devemos ignorá-las
-        # Uma votação secreta tb tem uma lista de votos,
-        # mas só pra dizer se o cara votou ou não
+        f = open(xml_file, 'r')
+        xml = f.read()
+        f.close()
+        tree = etree.fromstring(xml)
+
+        proposicoes = {} # chave é string (ex: 'pl 127/2004'); valor é objeto do tipo Proposicao
+        votacoes = []        
+        
         # Pelo q vimos, nesses XMLs não há votações 'inúteis' (homenagens etc) como na cmsp (exceto as secretas)
+        for vot_tree in tree.find('Votacoes').getchildren():
+            if vot_tree.tag == 'Votacao' and vot_tree.find('Secreta').text == 'N': # se votação não é secreta
+                sigla = vot_tree.find('SiglaMateria').text
+                numero = vot_tree.find('NumeroMateria').text
+                ano = vot_tree.find('AnoMateria').text
+                nome = '%s %s/%s' % (sigla, numero, ano)
+                logger.debug('Importando %s' % nome)
+        
         return votacoes
     
     def progresso(self):
@@ -115,7 +130,10 @@ class ImportadorSenado:
         
     def _xml_file_names(self):
         """Retorna uma lista com os caminhos dos arquivos XMLs contidos na pasta DATA_FOLDER"""
-        raise NotImplemented
+        files = os.listdir(DATA_FOLDER)
+        xmls = filter(lambda name: name.endswith('.xml'), files)
+        xmls = map(lambda name: os.path.join(DATA_FOLDER, name), xmls)
+        return xmls
 
     def importar(self):
         """Salva informações no banco de dados 
@@ -123,16 +141,17 @@ class ImportadorSenado:
         """
         self.senado = self._gera_casa_legislativa()
         votacoes = []
-        for xml_file in self._xml_files(): 
-            if self.verbose:
-                print 'Importando %s' % xml_file
-            votacoes.append(self.from_xml_to_bd(xml_file))
+        #for xml_file in ['importadores/dados/senado/ListaVotacoes2007.xml']: # facilita debug 
+        for xml_file in self._xml_file_names():
+            logger.info('Importando %s' % xml_file)
+            votacoes += self._from_xml_to_bd(xml_file)
         return votacoes
 
 def main():
 
-    print 'IMPORTANDO DADOS DO SENADO'
+    logger.info('IMPORTANDO DADOS DO SENADO')
     importer = ImportadorSenado()
-    importer.importar()
+    votacoes = importer.importar()
+    print votacoes
         
 
