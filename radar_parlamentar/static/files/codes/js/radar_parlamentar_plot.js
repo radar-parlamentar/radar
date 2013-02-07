@@ -66,37 +66,6 @@ Plot = (function ($) {
         .style("position", "relative")
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    /*
-    // Add the x-axis.
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-    
-    // Add the y-axis.
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis);
-    //*/
-    
-    /*
-    // Add an x-axis label.
-    svg.append("text")
-        .attr("class", "x label")
-        .attr("text-anchor", "end")
-        .attr("x", width)
-        .attr("y", height - 6)
-        .text("income per capita, inflation-adjusted (dollars)");
-    
-    // Add a y-axis label.
-    svg.append("text")
-        .attr("class", "y label")
-        .attr("text-anchor", "end")
-        .attr("y", 6)
-        .attr("dy", ".75em")
-        .attr("transform", "rotate(-90)")
-        .text("life expectancy (years)");
-    //*/
     
     var partidos = dados.partidos,
         periodos = dados.periodos;
