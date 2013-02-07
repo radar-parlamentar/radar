@@ -557,7 +557,8 @@ class ImportadorCamara:
         f = lambda dic: ( dic['id'], dic['sigla'], dic['num'], dic['ano'] )
         for id_prop,sigla,num,ano in [ f(dic) for dic in self.votadas_ids ]:
 
-            logger.info('Importando proposição %s: %s %s/%s' % (id_prop, sigla, num, ano))
+            logger.info('#################################################################')
+            logger.info('Importando votações da PROPOSIÇÃO %s: %s %s/%s' % (id_prop, sigla, num, ano))
 
             camaraws = Camaraws()
             prop_xml = camaraws.obter_proposicao(id_prop)
@@ -569,6 +570,7 @@ class ImportadorCamara:
 
             self.importadas += 1
             self._progresso()
+          logger.info('### Fim da Importação das Votações das Proposições da Câmara dos Deputados.')
 
 
 def main():
