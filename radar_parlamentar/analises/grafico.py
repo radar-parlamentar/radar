@@ -109,7 +109,7 @@ class JsonAnaliseGenerator:
         json_periodos = {}
         for analisador in analises:
             periodo += 1
-            json_periodos[str(periodo)] = {"nome":unicode(analisador.periodo),"quantidade_votacoes":analisador.periodo.quantidade_votacoes}
+            json_periodos[str(periodo)] = {"nome":unicode(analisador.periodo),"quantidade_votacoes":analisador.num_votacoes}
         return json_periodos
 
     def get_json(self, casa_legislativa):
