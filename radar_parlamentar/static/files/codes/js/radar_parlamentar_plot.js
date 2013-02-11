@@ -54,6 +54,9 @@ Plot = (function ($) {
   // Function that draw the chart
   function _plot_data(dados) {
     // Various accessors that specify the four dimensions of data to visualize.
+    //
+    // First remove the spinner
+    $("#loading").remove();
     
     var periodo_min = 1,
         periodo_max = 2,
