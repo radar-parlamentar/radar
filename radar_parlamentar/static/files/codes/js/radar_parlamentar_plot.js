@@ -75,7 +75,7 @@ Plot = (function ($) {
     periodo_max = Number(d3.max(d3.keys(periodos)));
 
     first_label = periodos[periodo_min].nome;
-    first_total = periodos[periodo_min].quantidade_votacoes;
+    first_total = periodos[periodo_min].quantidade_votacoes + " votações";
 
     // Add the year label; the value is set on transition.
     var label = svg.append("text")
@@ -180,7 +180,8 @@ Plot = (function ($) {
     function displayYear(year) {
       dot.data(interpolateData(year), nome).call(position).sort(order);
       label.text(periodos[Math.round(year)].nome);
-      total_label.text(periodos[Math.round(year)].quantidade_votacoes);
+      quantidade_votacoes = periodos[Math.round(year)].quantidade_votacoes
+      total_label.text(quantidade_votacoes + " votações");
     }
 
     // Interpolates the dataset for the given (fractional) year.
