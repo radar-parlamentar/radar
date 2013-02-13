@@ -4,7 +4,7 @@
 # Copyright (C) 2012, Leonardo Leite, Diego Rabatone, Saulo Trento
 #
 # This file is part of Radar Parlamentar.
-# 
+#
 # Radar Parlamentar is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -14,7 +14,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -65,8 +65,8 @@ class ProposicoesFinder:
             nome = child.find('nome').text.strip()
             ids.append(id_prop)
             nomes.append(nome)
-        return zip(ids, nomes) 
-    
+        return zip(ids, nomes)
+
     def _nome_proposicao(self, prop_xml):
         sigla = prop_xml.get('tipo').strip()
         numero = prop_xml.get('numero').strip()
@@ -79,14 +79,14 @@ class ProposicoesFinder:
         Buscas são feitas por proposições apresentadas desde ano_min, que por padrão é 1988, até o presente
         Não necessariamente todos os IDs possuem votações (na verdade a grande maioria não tem!).
         Se file_name == None, lança exceção TypeError
-        
+
         Resultado é salvo no arquivo file_name.
         Cada linha possui o formato "id: sigla num/ano".
         """
 
         if file_name == None:
             raise TypeError('file_name não pode ser None')
-        
+
         today = datetime.today()
         ano_max = today.year
 
@@ -107,26 +107,26 @@ class ProposicoesFinder:
                     props = self._parse_nomes_lista_proposicoes(xml)
                     for id_prop, nome in props:
                         f.write('%s: %s\n' %(id_prop, nome))
-                    logger.info('%d %ss encontrados' % (len(props), sigla)) 
+                    logger.info('%d %ss encontrados' % (len(props), sigla))
                 except urllib2.URLError, etree.ParseError:
                     logger.info('access error in %s' % sigla)
                 except:
                     logger.info('XML parser error in %s' % sigla)
         f.close()
-        
+
     def find_props_que_existem_brute_force(self, file_name, id_min, id_max):
         """Retorna IDs de proposições que existem na câmara dos deputados.
 
         Buscas serão feitas por proposições com IDs entre id_min e id_max
         Não necessariamente todos os IDs possuem votações (na verdade a grande maioria não tem!).
         Se file_name == None, lança exceção TypeError
-        
+
         Resultado é salvo no arquivo file_name.
         Cada linha possui o formato "id: sigla num/ano".
         """
         if file_name == None:
             raise TypeError('file_name não pode ser None')
-        
+
         f = open(file_name,'a')
         f.write('# Arquivo gerado pela classe ProposicoesFinder\n')
         f.write('# para achar os IDs existentes na camara dos deputados\n')
@@ -151,7 +151,7 @@ class ProposicoesFinder:
                 if self.verbose:
                     sys.stdout.write('x')
                     sys.stdout.flush()
-        
+
 
     def parse_ids_que_existem(self, file_name):
         """Lê o arquivo criado por find_props_que_existem.
@@ -185,7 +185,7 @@ class ProposicoesFinder:
             Cada posição da lista é um dicionário com chaves \in {id, sigla, num, ano}
             As chaves e valores desses dicionários são strings
         """
-        
+
         f = open(output,'a')
         f.write('# Arquivo gerado pela classe ProposicoesFinder\n')
         f.write('# para achar os IDs existentes na camara dos deputados\n')
@@ -217,7 +217,7 @@ class ProposicoesFinder:
                     sys.stdout.flush()
         f.close()
         return votadas
-        
+
 
 class Camaraws:
     """Acesso aos Web Services da Câmara dos Deputados
@@ -270,7 +270,7 @@ class Camaraws:
         Exceções:
             ValueError -- quando proposição não existe ou não possui votações
         """
-        
+
         url  = Camaraws.URL_VOTACOES % (sigla, num, ano)
         try:
             request = urllib2.Request(url)
@@ -282,7 +282,7 @@ class Camaraws:
             tree = etree.fromstring(xml)
         except etree.ParseError:
             raise ValueError('Votações da proposição %s %s/%s não encontrada' % (sigla, num, ano))
-        
+
         return tree
 
     def listar_proposicoes(self, sigla, ano):
@@ -297,7 +297,7 @@ class Camaraws:
         O retorno é uma lista de objetos Element sendo cara item da lista uma proposição encontrada
 
         Exceções:
-            ValueError -- quando o web service não retorna um XML, 
+            ValueError -- quando o web service não retorna um XML,
             que ocorre quando não há resultados para os critérios da busca
         """
         url = Camaraws.URL_LISTAR_PROPOSICOES % (sigla, ano)
@@ -313,11 +313,11 @@ class Camaraws:
             raise ValueError('Proposições não encontradas para sigla=%s&ano=%s' % (sigla, ano))
 
         return tree
-    
+
     def listar_siglas(self):
         """Listar as siglas de proposições existentes; exemplo: "PL", "PEC" etc
         O retorno é feito em uma lista de strings
-        """ 
+        """
         # A lista completa se encontra aqui:
         # http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarSiglasTipoProposicao
         # No entanto, muito dessas siglas correspondem a proposições que não possuem votações
@@ -354,7 +354,7 @@ class ImportadorCamara:
 
     def _gera_casa_legislativa(self):
         """Gera objeto do tipo CasaLegislativa representando a Câmara dos Deputados e o salva no banco de dados.
-        
+
             Caso cdep já exista no banco de dados, retorna o objeto já existente.
         """
 
@@ -457,7 +457,7 @@ class ImportadorCamara:
         opcao_str = voto_xml.get('Voto')
         voto.opcao = self._opcao_xml_to_model(opcao_str)
         leg = self._legislatura(voto_xml)
-        
+
         voto.legislatura = leg
         voto.votacao = votacao
         voto.save()
@@ -519,9 +519,9 @@ class ImportadorCamara:
                 partido = models.Partido.get_sem_partido()
             else:
                 partido.save()
-                self.partidos[nome_partido] = partido            
+                self.partidos[nome_partido] = partido
                 #logger.debug('Partido %s salvo' % partido)
-            
+
         return partido
 
     def _votante(self, nome_dep, nome_partido):
@@ -533,7 +533,7 @@ class ImportadorCamara:
             if parlamentares:
                 parlamentar = parlamentares[0]
                 self.parlamentares[key] = parlamentar
-                
+
         if not parlamentar:
             parlamentar = models.Parlamentar()
             parlamentar.nome = nome_dep
@@ -543,7 +543,7 @@ class ImportadorCamara:
             self.parlamentares[key] = parlamentar
             #logger.debug('Deputado %s salvo' % parlamentar)
         return parlamentar
-    
+
     def _progresso(self):
         """Indica progresso na tela"""
         porctg = (int) (1.0*self.importadas / self.total * 100)
@@ -564,13 +564,13 @@ class ImportadorCamara:
             prop_xml = camaraws.obter_proposicao(id_prop)
             prop = self._prop_from_xml(prop_xml, id_prop)
             vots_xml = camaraws.obter_votacoes(sigla, num, ano)
-            
+
             for child in vots_xml.find('Votacoes'):
                 self._votacao_from_xml(child, prop)
 
             self.importadas += 1
             self._progresso()
-          logger.info('### Fim da Importação das Votações das Proposições da Câmara dos Deputados.')
+            logger.info('### Fim da Importação das Votações das Proposições da Câmara dos Deputados.')
 
 
 def main():
