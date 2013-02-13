@@ -50,7 +50,17 @@ Plot = (function ($) {
   // The x & y axes.
   var xAxis = d3.svg.axis().orient("bottom").scale(xScale).ticks(12, d3.format(",d")),
       yAxis = d3.svg.axis().scale(yScale).orient("left");
-    
+  
+  //Returns the max and min period
+  //  On the JSON the period unique identifier is string representing a unique number for each period.
+//  function limit_period(periodArray, choice) {
+//    var local_array = [];
+//    for (var period in periodArray) {
+//      local_array.push(parseInt(period));
+//    }
+
+
+
   // Function that draw the chart
   function _plot_data(dados) {
     // Various accessors that specify the four dimensions of data to visualize.
@@ -71,11 +81,14 @@ Plot = (function ($) {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
     var partidos = dados.partidos,
-        periodos = dados.periodos;
+        periodos = dados.periodos,
+        list_partds = []
+        list_periodos = [];
     
     //Carregando os períodos extremos dos dados
-    periodo_min = Number(d3.min(d3.keys(periodos)));
-    periodo_max = Number(d3.max(d3.keys(periodos)));
+    
+    periodo_min = d3.min( [ (parseInt(index)+1) for (index in d3.keys(periodos)) ] );
+    periodo_max = d3.max( [ (parseInt(index)+1) for (index in d3.keys(periodos)) ] );
 
     first_label = periodos[periodo_min].nome;
     first_total = periodos[periodo_min].quantidade_votacoes + " votações";
