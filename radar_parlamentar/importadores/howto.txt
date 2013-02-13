@@ -23,6 +23,6 @@ $ props = finder.parse_ids_que_existem(IDS_FILE, VOTADAS_FILE) # vai gerar VOTAD
 Passo 3: importar para o banco de dados
 
 $ camara.main()
-# só funciona se VOTADAS_FILE='importadores/dados/votadas.txt' :P
+# só funciona se VOTADAS_FILE='importadores/dados/cdep/votadas.txt' :P
 
 
