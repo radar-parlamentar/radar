@@ -322,8 +322,7 @@ class Camaraws:
         # http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarSiglasTipoProposicao
         # No entanto, muito dessas siglas correspondem a proposições que não possuem votações
         # Por isso estamos aqui retornando um resultado mais restrito
-        return ['PL', 'MPV', 'PDC', 'PEC', 'PLP']
-
+        return ['PL', 'MPV', 'PDC', 'PEC', 'PLP', 'PLC', 'PLN', 'PLOA', 'PLS', 'PLV']
 
 class ImportadorCamara:
     """Salva os dados dos web services da Câmara dos Deputados no banco de dados"""
