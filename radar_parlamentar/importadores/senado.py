@@ -56,6 +56,7 @@ class ImportadorSenado:
 
         self.senado = None
         self.parlamentares = {} # mapeia um ID de parlamentar incluso em alguma votacao a um objeto Parlamentar.
+        self.proposicoes = {} # chave é o nome da proposição (sigla num/ano), valor é objeto Proposicao
 
     def _gera_casa_legislativa(self):
         """Gera objeto do tipo CasaLegislativa representando o Senado"""
@@ -72,11 +73,11 @@ class ImportadorSenado:
         return sen
 
     def _converte_data(self, data_str):
-        """Converte string "d/m/a para objeto datetime; retona None se data_str é inválido"""
-        DATA_REGEX = '(\d\d?)/(\d\d?)/(\d{4})'
+        """Converte string "aaaa-mm-dd para objeto datetime; retona None se data_str é inválido"""
+        DATA_REGEX = '(\d{4})-(\d{2})-(\d{2})'
         res = re.match(DATA_REGEX, data_str)
         if res:
-            new_str = '%s-%s-%s 0:0:0' % (res.group(3), res.group(2), res.group(1))
+            new_str = '%s-%s-%s 0:0:0' % (res.group(1), res.group(2), res.group(3))
             return parse_datetime(new_str)
         else:
             return None
@@ -102,6 +103,84 @@ class ImportadorSenado:
             print 'tipo de voto (%s) não mapeado!' % voto
             return models.ABSTENCAO
 
+    def _partido(self, codigo_parlamentar):
+
+        # TODO tem que consultar outro XML pra descobrir o partido!
+        partido = models.Partido()
+        partido.nome = 'Fake'
+        partido.numero = 0
+        return partido
+
+    def _parlamentar_from_tree(self, voto_parlamentar_tree):
+        
+        codigo_parlamentar = voto_parlamentar_tree.find('CodigoParlamentar').text
+        if self.parlamentares.has_key(codigo_parlamentar):
+            votante = self.parlamentares[codigo_parlamentar]
+        else:
+            votante = models.Parlamentar()
+            votante.save()
+            votante.id_parlamentar = codigo_parlamentar
+            votante.nome =  voto_parlamentar_tree.find('NomeParlamentar').text
+            votante.genero = voto_parlamentar_tree.find('SexoParlamentar').text
+            #votante.save()
+            logger.debug('Senador %s salvo' % votante)
+            self.parlamentares[codigo_parlamentar] = votante
+        return votante
+    
+    def _legislatura_from_tree(self, voto_parlamentar_tree):
+        """Cria e retorna uma legistura"""
+        
+        codigo_parlamentar = voto_parlamentar_tree.find('CodigoParlamentar').text
+        partido = self._partido(codigo_parlamentar)
+        parlamentar = self._parlamentar_from_tree(voto_parlamentar_tree)
+        legs = models.Legislatura.objects.filter(parlamentar=parlamentar,partido=partido,casa_legislativa=self.senado)
+        # TODO acima filtrar tb por inicio e fim
+        if legs:
+            leg = legs[0]
+        else:
+            leg = models.Legislatura()
+            leg.parlamentar = parlamentar
+            leg.partido = partido
+            leg.casa_legislativa = self.senado
+            leg.inicio = INICIO_PERIODO # TODO este período deve ser mais refinado para suportar caras que trocaram de partido
+            leg.fim = FIM_PERIODO
+            #leg.save()
+        return leg
+
+    def _votos_from_tree(self, votos_tree, votacao):
+        """Faz o parse dos votos, salva no BD e devolve lista de votos"""
+        
+        for voto_parlamentar_tree in votos_tree:
+            legislatura = self._legislatura_from_tree(voto_parlamentar_tree)
+            voto = models.Voto()
+            voto.legislatura = legislatura
+            voto.votacao = votacao
+            voto.opcao = self._voto_senado_to_model(voto_parlamentar_tree.find('Voto').text)
+            #if voto.opcao != None:
+            #    voto.save()
+
+    def _nome_prop_from_tree(self, votacao_tree):
+        
+        sigla = votacao_tree.find('SiglaMateria').text
+        numero = votacao_tree.find('NumeroMateria').text
+        ano = votacao_tree.find('AnoMateria').text
+        return '%s %s/%s' % (sigla, numero, ano)
+    
+    def _proposicao_from_tree(self, votacao_tree):
+        
+        prop_nome = self._nome_prop_from_tree(votacao_tree)
+        if self.proposicoes.has_key(prop_nome):
+            prop = self.proposicoes[prop_nome]
+        else:
+            prop = models.Proposicao()
+            prop.sigla = votacao_tree.find('SiglaMateria').text
+            prop.numero = votacao_tree.find('NumeroMateria').text
+            prop.ano = votacao_tree.find('AnoMateria').text
+            prop.casa_legislativa = self.senado
+            self.proposicoes[prop_nome] = prop
+        return prop
+        
+
     def _from_xml_to_bd(self, xml_file):
         """Salva no banco de dados do Django e retorna lista das votações"""
 
@@ -110,17 +189,23 @@ class ImportadorSenado:
         f.close()
         tree = etree.fromstring(xml)
 
-        proposicoes = {} # chave é string (ex: 'pl 127/2004'); valor é objeto do tipo Proposicao
         votacoes = []        
-        
         # Pelo q vimos, nesses XMLs não há votações 'inúteis' (homenagens etc) como na cmsp (exceto as secretas)
-        for vot_tree in tree.find('Votacoes').getchildren():
-            if vot_tree.tag == 'Votacao' and vot_tree.find('Secreta').text == 'N': # se votação não é secreta
-                sigla = vot_tree.find('SiglaMateria').text
-                numero = vot_tree.find('NumeroMateria').text
-                ano = vot_tree.find('AnoMateria').text
-                nome = '%s %s/%s' % (sigla, numero, ano)
+        for votacao_tree in tree.find('Votacoes'):
+            if votacao_tree.tag == 'Votacao' and votacao_tree.find('Secreta').text == 'N': # se votação não é secreta
+                proposicao = self._proposicao_from_tree(votacao_tree)
+                nome = '%s %s/%s' % (proposicao.sigla, proposicao.numero, proposicao.ano)
                 logger.debug('Importando %s' % nome)
+                votacao = models.Votacao()
+                #votacao.save() # só pra criar a chave primária e poder atribuir o votos
+                votacao.id_vot = votacao_tree.find('CodigoTramitacao').text
+                votacao.descricao = votacao_tree.find('DescricaoVotacao').text
+                votacao.data = self._converte_data(votacao_tree.find('DataSessao').text)
+                votacao.resultado = votacao_tree.find('Resultado').text
+                votacao.proposicao = proposicao
+                votos_tree = votacao_tree.find('Votos')
+                self._votos_from_tree(votos_tree, votacao)
+                votacoes.append(votacao)
         
         return votacoes
     
