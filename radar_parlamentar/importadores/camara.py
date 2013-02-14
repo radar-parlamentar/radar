@@ -35,6 +35,8 @@ import os
 import xml.etree.ElementTree as etree
 import urllib2
 import logging
+import Queue
+import threading
 
 # data em que a lista votadas.txt foi atualizada
 ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
@@ -48,6 +50,46 @@ INICIO_PERIODO = parse_datetime('2004-01-01 0:0:0')
 FIM_PERIODO = parse_datetime('2012-07-01 0:0:0')
 
 logger = logging.getLogger("radar")
+
+class ThreadFindProp(threading.Thread):
+    """Executa a busca pelas proposições que estão na fila 'fila_entrada' usando multiprocessamento,
+    o que garante o uso de vários cores e processadores e acelera muito o processo de encontrar e
+    analisar as proposições.
+    Ao fim da busca, caso a proposição exista, ela é adicionada à fila para depois ser gravada
+    num arquivo de texto."""
+
+    def __init__(self, fila_ids, fila_saida):
+        threading.Thread.__init__(self)
+        self.fila_saida = fila_saida
+        self.fila_ids = fila_ids
+
+    def run(self):
+        while True:
+            id_candidato = None
+
+            #recupera id da fila de entrada
+            id_candidato = self.fila_ids.get()
+
+            #Verifica a existência da proposição
+            camaraws = Camaraws()
+            prop = ProposicoesFinder()
+            try:
+                prop_xml = camaraws.obter_proposicao(id_candidato)
+                nome_prop = prop._nome_proposicao(prop_xml)
+                #Caso exista, salva na fila de saída
+                self.fila_saida.put({id_candidato: nome_prop})
+                sys.stdout.write('.')
+                sys.stdout.flush()
+                #logger.info('%d: %s' %(id_candidato, nome_prop))
+            except ValueError:
+                sys.stdout.write('x')
+                sys.stdout.flush()
+                #logger.info('%d: x' %(id_candidato))
+
+            #Avisa que a tarefa foi terminada
+            #logger.debug('Encontrados: %d' %(self.fila_saida.qsize()))
+            self.fila_ids.task_done()
+
 
 class ProposicoesFinder:
 
@@ -127,31 +169,41 @@ class ProposicoesFinder:
         if file_name == None:
             raise TypeError('file_name não pode ser None')
 
-        f = open(file_name,'a')
+        f = open(file_name,'w') # o arquivo aqui é aberto com 'w' pois ignorar-se-á o que havia anteriormente.
         f.write('# Arquivo gerado pela classe ProposicoesFinder\n')
         f.write('# para achar os IDs existentes na camara dos deputados\n')
         f.write('# Procurando ids entre %d e %d.\n' % (id_min, id_max))
         f.write('# id  : proposicao\n')
         f.write('#-----------\n')
+        f.close()
+
         if self.verbose:
             print '"." id valido; "x" id invalido'
 
-        camaraws = Camaraws()
-        for id_candidato in range(id_min, id_max+1):
-            if (id_candidato % 1000) == 0:
-                print '\nJá procurei ateh o ID %d' % id_candidato # A cada 1000: diz onde está
-            try:
-                prop_xml = camaraws.obter_proposicao(id_candidato)
-                nome_prop = self._nome_proposicao(prop_xml)
-                f.write('%d: %s\n' %(id_candidato, nome_prop))
-                if self.verbose:
-                    sys.stdout.write('.')
-                    sys.stdout.flush()
-            except ValueError:
-                if self.verbose:
-                    sys.stdout.write('x')
-                    sys.stdout.flush()
+        # Na variável encontradas serão armazenadas as informações das proposições encontradas.
+        # A variável é um dicionário que terá como chaves os id's das proposições encontradas e como valor o nome da proposição.
+        # Ao final as informações desta variável serão gravadas no arquivo de texto acima.
+        encontradas = Queue.Queue()
+        fila_ids = Queue.Queue()
 
+        #populando a fila com ids
+        for id_candidato in range(id_min, id_max+1):
+            fila_ids.put(id_candidato)
+
+        #criando uma série de threads para tratarem as filas
+        for i in range(1000):
+            t = ThreadFindProp(fila_ids, encontradas)
+            t.setDaemon(True)
+            t.start()
+
+            #aguarda até que a fila seja toda processada
+        fila_ids.join()
+
+        f = open(file_name,'a')
+        while not encontradas.empty():
+          encontrada = encontradas.get()
+          f.write('%d: %s\n' %(encontrada.keys()[0],encontrada.values()[0]))
+        f.close()
 
     def parse_ids_que_existem(self, file_name):
         """Lê o arquivo criado por find_props_que_existem.
@@ -573,6 +625,7 @@ class ImportadorCamara:
 
 
 def main():
+
 
     logger.info('IMPORTANDO DADOS DA CÂMARA DOS DEPUTADOS')
     importer = ImportadorCamara()
