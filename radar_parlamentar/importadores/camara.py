@@ -37,6 +37,7 @@ import urllib2
 import logging
 import Queue
 import threading
+import time
 
 # data em que a lista votadas.txt foi atualizada
 ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
@@ -62,6 +63,7 @@ class ThreadFindProp(threading.Thread):
         threading.Thread.__init__(self)
         self.fila_saida = fila_saida
         self.fila_ids = fila_ids
+        self.total_itens = fila_ids.qsize()
 
     def run(self):
         while True:
@@ -73,16 +75,21 @@ class ThreadFindProp(threading.Thread):
             #Verifica a existência da proposição
             camaraws = Camaraws()
             prop = ProposicoesFinder()
+            if (id_candidato % 10000) == 0: #< 500:
+                processados = self.total_itens - self.fila_ids.qsize()
+                sys.stdout.write('Itens Processados: %d\n Itens encontrados: %d\n Itens a processar: %d\n' %(processados, self.fila_saida.qsize(), self.fila_ids.qsize()))
+                sys.stdout.flush()
+                time.sleep(10)
             try:
                 prop_xml = camaraws.obter_proposicao(id_candidato)
                 nome_prop = prop._nome_proposicao(prop_xml)
                 #Caso exista, salva na fila de saída
                 self.fila_saida.put({id_candidato: nome_prop})
-                sys.stdout.write('.')
-                sys.stdout.flush()
+                #sys.stdout.write('.')
+                #sys.stdout.flush()
                 #logger.info('%d: %s' %(id_candidato, nome_prop))
             except ValueError:
-                sys.stdout.write('x')
+                sys.stdout.write('')
                 sys.stdout.flush()
                 #logger.info('%d: x' %(id_candidato))
 
