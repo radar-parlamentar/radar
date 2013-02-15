@@ -149,22 +149,28 @@ class ImportadorVotacoesSenado:
 
         votacoes = []        
         # Pelo q vimos, nesses XMLs não há votações 'inúteis' (homenagens etc) como na cmsp (exceto as secretas)
-        for votacao_tree in tree.find('Votacoes'):
-            if votacao_tree.tag == 'Votacao' and votacao_tree.find('Secreta').text == 'N': # se votação não é secreta
-                proposicao = self._proposicao_from_tree(votacao_tree)
-                nome = '%s %s/%s' % (proposicao.sigla, proposicao.numero, proposicao.ano)
-                logger.debug('Importando %s' % nome)
-                votacao = models.Votacao()
-                votacao.save() # só pra criar a chave primária e poder atribuir o votos
-                votacao.id_vot = votacao_tree.find('CodigoTramitacao').text
-                votacao.descricao = votacao_tree.find('DescricaoVotacao').text
-                votacao.data = self._converte_data(votacao_tree.find('DataSessao').text)
-                votacao.resultado = votacao_tree.find('Resultado').text
-                votacao.proposicao = proposicao
-                votos_tree = votacao_tree.find('Votos')
-                self._votos_from_tree(votos_tree, votacao)
-                votacao.save()
-                votacoes.append(votacao)
+        votacoes_tree = tree.find('Votacoes')
+        if votacoes_tree != None:
+            for votacao_tree in votacoes_tree:
+                if votacao_tree.tag == 'Votacao' and votacao_tree.find('Secreta').text == 'N': # se votação não é secreta
+                    proposicao = self._proposicao_from_tree(votacao_tree)
+                    nome = '%s %s/%s' % (proposicao.sigla, proposicao.numero, proposicao.ano)
+                    logger.debug('Importando %s' % nome)
+                    votacao = models.Votacao()
+                    votacao.save() # só pra criar a chave primária e poder atribuir o votos
+                    votacao.id_vot = votacao_tree.find('CodigoTramitacao').text
+                    votacao.descricao = votacao_tree.find('DescricaoVotacao').text
+                    votacao.data = self._converte_data(votacao_tree.find('DataSessao').text)
+                    if votacao_tree.find('Resultado') != None:
+                        votacao.resultado = votacao_tree.find('Resultado').text
+                    votacao.proposicao = proposicao
+                    votos_tree = votacao_tree.find('Votos')
+                    if votos_tree != None:
+                        self._votos_from_tree(votos_tree, votacao)
+                        votacao.save()
+                        votacoes.append(votacao)
+                    else:
+                        votacao.delete()
         return votacoes
     
     def progresso(self):
@@ -173,6 +179,7 @@ class ImportadorVotacoesSenado:
         
     def _xml_file_names(self):
         """Retorna uma lista com os caminhos dos arquivos XMLs contidos na pasta DATA_FOLDER"""
+        # TODO não pegar Senadores.xml
         files = os.listdir(DATA_FOLDER)
         xmls = filter(lambda name: name.endswith('.xml'), files)
         xmls = map(lambda name: os.path.join(DATA_FOLDER, name), xmls)
@@ -284,4 +291,5 @@ def main():
     importer = ImportadorVotacoesSenado()
     importer.importar_votacoes()
         
+    # TODO: copiar banco gerado para sqlite/senado.db
 
