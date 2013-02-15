@@ -20,6 +20,7 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from importadores import convencao
+from datetime import date
 import models
 
 class ModelsTest(TestCase):
@@ -74,3 +75,20 @@ class ModelsTest(TestCase):
         self.assertEqual(periodos[1].string, '1989 2o Semestre')
         periodos = conv.periodos(models.MES,minimo=0.2)
         self.assertEqual(len(periodos),2)
+        
+    def test_sould_find_legislatura(self):
+        dt = date(1989, 07, 14)
+        try:
+            leg = models.Legislatura.find(dt, 'Pierre')
+            self.assertTrue(leg != None)
+        except ValueError:
+            self.fail('Legislatura não encontrada')
+            
+    def test_sould_not_find_legislatura(self):
+        dt = date(1900, 07, 14)
+        try:
+            models.Legislatura.find(dt, 'Pierre')
+            self.fail('Legislatura não deveria ter sido encontrada')
+        except:
+            self.assertTrue(True)
+            

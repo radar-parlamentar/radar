@@ -351,6 +351,9 @@ class Legislatura(models.Model):
         inicio, fim -- datas indicando o período
         partido -- objeto do tipo Partido
         localidade -- string; ex 'SP', 'RJ' se for no senado ou câmara dos deputados
+        
+    Métodos:
+        find -- busca legislatura por data e parlamentar
     """
 
     parlamentar = models.ForeignKey(Parlamentar)
@@ -360,6 +363,22 @@ class Legislatura(models.Model):
     partido = models.ForeignKey(Partido)
     localidade = models.CharField(max_length=100, blank=True)
 
+    @staticmethod
+    def find(data, nome_parlamentar):
+        """Busca a legislatura de um parlamentar pelo nome em uma determinada data
+           Argumentos:
+             data -- objeto do tipo date
+             nome_parlamentar -- string
+           Retorno: objeto do tipo Legislatura
+           Se não existir, lança exceção ValueError
+        """
+        # Assumimos que uma pessoa não pode assumir duas legislaturas em um dado período!
+        legs = Legislatura.objects.filter(parlamentar__nome=nome_parlamentar)
+        for leg in legs:
+            if data >= leg.inicio and data <= leg.fim :  
+                return leg
+        raise ValueError('Não achei legislatura para %s em %s' % (nome_parlamentar, data))
+    
     def __unicode__(self):
         return "%s - %s@%s [%s, %s]" % (self.parlamentar, self.partido, self.casa_legislativa.nome_curto, self.inicio, self.fim)
 
