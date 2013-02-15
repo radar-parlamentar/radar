@@ -132,6 +132,7 @@ class Partido(models.Model):
                 partido = Partido()
                 partido.nome = res.group(1)
                 partido.numero = int(res.group(2))
+                partido.save()
                 return partido
         return None
 

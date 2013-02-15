@@ -134,10 +134,6 @@ class ImportadorCMSP:
         if partido == None:
             print 'Não achou o partido %s' % nome_partido
             partido = models.Partido.get_sem_partido()
-        else:
-            partido.save()
-            if self.verbose:
-                print 'Partido %s salvo' % partido
         return partido
 
     def _votante(self, ver_tree):
