@@ -101,8 +101,11 @@ class ImportadorVotacoesSenado:
             return models.ABSTENCAO
 
     def _votos_from_tree(self, votos_tree, votacao):
-        """Faz o parse dos votos, salva no BD e devolve lista de votos"""
+        """Faz o parse dos votos, salva no BD e devolve lista de votos
+           Retorna lista dos votos salvos
+        """
         
+        votos = []
         for voto_parlamentar_tree in votos_tree:
             nome_senador = voto_parlamentar_tree.find('NomeParlamentar').text
             try:
@@ -112,9 +115,10 @@ class ImportadorVotacoesSenado:
                 voto.votacao = votacao
                 voto.opcao = self._voto_senado_to_model(voto_parlamentar_tree.find('Voto').text)
                 voto.save()
+                votos.append(voto)
             except ValueError:
                 logger.error('Não encontramos legislatura do senador %s' % nome_senador)
-            
+        return votos
 
     def _nome_prop_from_tree(self, votacao_tree):
         
@@ -166,10 +170,15 @@ class ImportadorVotacoesSenado:
                     votacao.proposicao = proposicao
                     votos_tree = votacao_tree.find('Votos')
                     if votos_tree != None:
-                        self._votos_from_tree(votos_tree, votacao)
-                        votacao.save()
-                        votacoes.append(votacao)
+                        votos = self._votos_from_tree(votos_tree, votacao)
+                        if not votos:
+                            logger.warn('Votação desconsiderada (sem votos)')
+                            votacao.delete()
+                        else:
+                            votacao.save()
+                            votacoes.append(votacao)
                     else:
+                        logger.warn('Votação desconsiderada (votos_tree nulo)')
                         votacao.delete()
         return votacoes
     
@@ -290,6 +299,4 @@ def main():
     logger.info('IMPORTANDO VOTAÇÕES DO SENADO')
     importer = ImportadorVotacoesSenado()
     importer.importar_votacoes()
-        
-    # TODO: copiar banco gerado para sqlite/senado.db
 
