@@ -28,7 +28,7 @@ Classes:
 
 from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from modelagem import models
 import re
 import os
@@ -75,8 +75,7 @@ class ImportadorVotacoesSenado:
         DATA_REGEX = '(\d{4})-(\d{2})-(\d{2})'
         res = re.match(DATA_REGEX, data_str)
         if res:
-            new_str = '%s-%s-%s 0:0:0' % (res.group(1), res.group(2), res.group(3))
-            return parse_datetime(new_str)
+            return date(int(res.group(1)), int(res.group(2)), int(res.group(3)))
         else:
             raise ValueError
         
@@ -105,13 +104,17 @@ class ImportadorVotacoesSenado:
         """Faz o parse dos votos, salva no BD e devolve lista de votos"""
         
         for voto_parlamentar_tree in votos_tree:
-            legislatura = self._legislatura_from_tree(voto_parlamentar_tree)
-            voto = models.Voto()
-            voto.legislatura = legislatura
-            voto.votacao = votacao
-            voto.opcao = self._voto_senado_to_model(voto_parlamentar_tree.find('Voto').text)
-            #if voto.opcao != None:
-            #    voto.save()
+            nome_senador = voto_parlamentar_tree.find('NomeParlamentar').text
+            try:
+                legislatura = models.Legislatura.find(votacao.data, nome_senador)
+                voto = models.Voto()
+                voto.legislatura = legislatura
+                voto.votacao = votacao
+                voto.opcao = self._voto_senado_to_model(voto_parlamentar_tree.find('Voto').text)
+                voto.save()
+            except ValueError:
+                logger.error('Não encontramos legislatura do senador %s' % nome_senador)
+            
 
     def _nome_prop_from_tree(self, votacao_tree):
         
@@ -131,6 +134,7 @@ class ImportadorVotacoesSenado:
             prop.numero = votacao_tree.find('NumeroMateria').text
             prop.ano = votacao_tree.find('AnoMateria').text
             prop.casa_legislativa = self.senado
+            prop.save()
             self.proposicoes[prop_nome] = prop
         return prop
         
@@ -151,7 +155,7 @@ class ImportadorVotacoesSenado:
                 nome = '%s %s/%s' % (proposicao.sigla, proposicao.numero, proposicao.ano)
                 logger.debug('Importando %s' % nome)
                 votacao = models.Votacao()
-                #votacao.save() # só pra criar a chave primária e poder atribuir o votos
+                votacao.save() # só pra criar a chave primária e poder atribuir o votos
                 votacao.id_vot = votacao_tree.find('CodigoTramitacao').text
                 votacao.descricao = votacao_tree.find('DescricaoVotacao').text
                 votacao.data = self._converte_data(votacao_tree.find('DataSessao').text)
@@ -159,8 +163,8 @@ class ImportadorVotacoesSenado:
                 votacao.proposicao = proposicao
                 votos_tree = votacao_tree.find('Votos')
                 self._votos_from_tree(votos_tree, votacao)
+                votacao.save()
                 votacoes.append(votacao)
-        
         return votacoes
     
     def progresso(self):
@@ -174,19 +178,13 @@ class ImportadorVotacoesSenado:
         xmls = map(lambda name: os.path.join(DATA_FOLDER, name), xmls)
         return xmls
 
-    def _importar_votacoes(self):
-        for xml_file in ['importadores/dados/senado/ListaVotacoes2007.xml']: # facilita debug 
-        #for xml_file in self._xml_file_names():
+    def importar_votacoes(self):
+        #for xml_file in ['importadores/dados/senado/ListaVotacoes2011.xml']: # facilita debug 
+        for xml_file in self._xml_file_names():
             logger.info('Importando %s' % xml_file)
             self._from_xml_to_bd(xml_file)
 
 
-    def importar(self):
-        """Salva informações no banco de dados 
-        Retorna lista das votações
-        """
-        self.senado = self._gera_casa_legislativa()
-        self._importar_votacoes()
 
 class ImportadorSenadores:
     
@@ -279,7 +277,11 @@ def main():
     logger.info('IMPORTANDO DADOS DO SENADO')
     geradorCasaLeg = CasaLegislativaGerador()
     geradorCasaLeg.gera_senado()
+    logger.info('IMPORTANDO SENADORES')
     importer = ImportadorSenadores()
     importer.importar_senadores()
+    logger.info('IMPORTANDO VOTAÇÕES DO SENADO')
+    importer = ImportadorVotacoesSenado()
+    importer.importar_votacoes()
         
 
