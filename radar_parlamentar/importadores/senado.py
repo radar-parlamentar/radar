@@ -21,7 +21,9 @@
 """módulo senado
 
 Classes:
-    ImportadorSenado
+    CasaLegislativaGerador
+    ImportadorVotacoesSenado
+    ImportadorSenadores
 """
 
 from __future__ import unicode_literals
@@ -173,8 +175,8 @@ class ImportadorVotacoesSenado:
         return xmls
 
     def _importar_votacoes(self):
-        #for xml_file in ['importadores/dados/senado/ListaVotacoes2007.xml']: # facilita debug 
-        for xml_file in self._xml_file_names():
+        for xml_file in ['importadores/dados/senado/ListaVotacoes2007.xml']: # facilita debug 
+        #for xml_file in self._xml_file_names():
             logger.info('Importando %s' % xml_file)
             self._from_xml_to_bd(xml_file)
 
@@ -219,8 +221,6 @@ class ImportadorSenadores:
     def _find_partido(self, nome_partido):
         
         nome_partido = nome_partido.strip()
-        if nome_partido == 'PC DO B':
-            nome_partido = 'PCdoB'
         partido = models.Partido.from_nome(nome_partido)
         if partido == None:
             logger.warn('Não achou o partido %s' % nome_partido)
@@ -238,23 +238,31 @@ class ImportadorSenadores:
         f.close()
         tree = etree.fromstring(xml)        
         parlamentares_tree = tree.find('Parlamentares')
+        
         for parlamentar_tree in parlamentares_tree:
+            
             codigo = parlamentar_tree.find('CodigoParlamentar').text
-            if not self.parlamentares.has_key(codigo):
-                nome = parlamentar_tree.find('NomeParlamentar').text
-                logger.info('Importando senador %s' % nome) 
-                uf = parlamentar_tree.find('SiglaUf').text
-                sexo = parlamentar_tree.find('Sexo').text
-                mandato_atual = parlamentar_tree.find('MandatoAtual').text
-                inicio_legislatura, fim_legislatura = self._get_intervalo_legislatura(mandato_atual)
-                nome_partido = parlamentar_tree.find('SiglaPartido').text
-                partido = self._find_partido(nome_partido)
+            nome = parlamentar_tree.find('NomeParlamentar').text
+            uf = parlamentar_tree.find('SiglaUf').text
+            sexo = parlamentar_tree.find('Sexo').text
+            mandato_atual = parlamentar_tree.find('MandatoAtual').text
+            nome_partido = parlamentar_tree.find('SiglaPartido').text
+            if nome_partido == 'PC DO B':
+                nome_partido = 'PCdoB'
+            inicio_legislatura, fim_legislatura = self._get_intervalo_legislatura(mandato_atual)
+            partido = self._find_partido(nome_partido)
+            
+            if not models.Legislatura.objects.filter(inicio=inicio_legislatura, fim=fim_legislatura, parlamentar__nome=nome, partido__nome=nome_partido).exists():
+                logger.info('Importando senador %s (%s-%s)' % (nome, nome_partido, uf)) 
                 
-                senador = models.Parlamentar()
-                senador.id_parlamentar = codigo
-                senador.nome = nome
-                senador.genero = sexo
-                senador.save()
+                if models.Parlamentar.objects.filter(nome=nome, id_parlamentar=codigo).exists():
+                    senador = models.Parlamentar.objects.get(nome=nome, id_parlamentar=codigo)
+                else:
+                    senador = models.Parlamentar()
+                    senador.id_parlamentar = codigo
+                    senador.nome = nome
+                    senador.genero = sexo
+                    senador.save()
                 
                 leg = models.Legislatura()
                 leg.parlamentar = senador
