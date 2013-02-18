@@ -87,7 +87,7 @@ Plot = (function ($) {
         comprimento_periodos = chaves_periodos.length,
         lista_chaves_periodos = [];
     for (var i = 0;i < comprimento_periodos; i++){
-        lista_chaves_periodos.push(parseInt(chaves_periodos[i])+1);
+        lista_chaves_periodos.push(parseInt(chaves_periodos[i]));
     }
     var periodo_min = d3.min(lista_chaves_periodos),
         periodo_max = d3.max(lista_chaves_periodos);
