@@ -83,14 +83,14 @@ Plot = (function ($) {
         list_periodos = [];
     
     //Carregando os períodos extremos dos dados
-    chaves_periodos = d3.keys(periodos);
-    comprimento_periodos = chaves_periodos.length;
-    lista_chaves_periodos = [];
+    var chaves_periodos = d3.keys(periodos),
+        comprimento_periodos = chaves_periodos.length,
+        lista_chaves_periodos = [];
     for (var i = 0;i < comprimento_periodos; i++){
         lista_chaves_periodos.push(parseInt(chaves_periodos[i])+1);
     }
-    periodo_min = d3.min(lista_chaves_periodos);
-    periodo_max = d3.max(lista_chaves_periodos);
+    var periodo_min = d3.min(lista_chaves_periodos),
+        periodo_max = d3.max(lista_chaves_periodos);
 
     first_label = periodos[periodo_min].nome;
     first_total = periodos[periodo_min].quantidade_votacoes + " votações";
