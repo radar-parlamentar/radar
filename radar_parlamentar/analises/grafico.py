@@ -57,14 +57,14 @@ class JsonAnaliseGenerator:
         """
         analisador_temporal = analise.AnalisadorTemporal(casa_legislativa)
         analisador_temporal.get_analises()
-        return analisador_temporal.analisadores_periodo
+        return analisador_temporal
     
     @staticmethod
     def inicia_dicionario(key,lista):
         if key not in lista:
             lista[key] = []
 
-    def _json_partidos_config(self,partidos2d,partidos, tamanhos,analises_len,periodo,analisador,xs,ys):
+    def _json_partidos_config(self,partidos2d,partidos, tamanhos,escala_tamanhos,analises_len,periodo,analisador,xs,ys):
             """
             preenche a lista de tamanhos, xs e ys para serem utilizadas no json dos partidos
             """
@@ -73,12 +73,12 @@ class JsonAnaliseGenerator:
                 JsonAnaliseGenerator.inicia_dicionario(p,xs)
                 JsonAnaliseGenerator.inicia_dicionario(p,ys)
             for partido in partidos2d.keys():
-                tamanhos[partido].append([periodo, analisador.tamanhos_partidos[partido]])
+                tamanhos[partido].append([periodo, analisador.tamanhos_partidos[partido]/escala_tamanhos])
                 xs[partido].append([periodo, round(partidos2d[partido][0],2)])
                 ys[partido].append([periodo, round(partidos2d[partido][1],2)])
 
    
-    def _json_partidos(self,analises,analises_len):
+    def _json_partidos(self,analise,analises_len):
         """
         constroi o json dos partidos
         """
@@ -88,11 +88,13 @@ class JsonAnaliseGenerator:
         partidos = Set()
         scaler = GraphScaler()
         periodo = 0
+        analises = analise.analisadores_periodo
+        escala_tamanhos = max(1,analise.area_total / 60000) # Constante a ser ajustada.
         for analisador in analises:
             periodo +=1
             partidos2d = scaler.scale(analisador.partidos_2d())
             partidos.update(set(partidos2d.keys()))
-            self._json_partidos_config(partidos2d,partidos, tamanhos,analises_len,periodo,analisador,xs,ys)
+            self._json_partidos_config(partidos2d,partidos, tamanhos,escala_tamanhos,analises_len,periodo,analisador,xs,ys)
         json_partidos = []
         for nome_partido in partidos:
             partido = models.Partido.objects.get(nome=nome_partido)
@@ -119,10 +121,11 @@ class JsonAnaliseGenerator:
     
     def get_json_dic(self,casa_legislativa):
         """Retorna o dicionario usado para gerar o JSON"""
-        analises = JsonAnaliseGenerator._get_analises(casa_legislativa)
+        analise = JsonAnaliseGenerator._get_analises(casa_legislativa)
+        analises = analise.analisadores_periodo
         analises_len = len(analises)
         json_periodos = self._json_periodos(analises,analises_len)
-        json_partidos = self._json_partidos(analises,analises_len)
+        json_partidos = self._json_partidos(analise,analises_len)
         return {"periodos":json_periodos,"partidos":json_partidos} 
 
 
