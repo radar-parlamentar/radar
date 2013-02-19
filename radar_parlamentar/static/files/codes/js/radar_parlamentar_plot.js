@@ -68,10 +68,7 @@ Plot = (function ($) {
     // First remove the spinner
     $("#loading").remove();
     
-    var periodo_min = 1,
-        periodo_max = 2,
-        first_label = "1o sem. 1788";
-    
+      
     // Create the SVG container and set the origin.
     var svg = d3.select("#animacao").append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -86,9 +83,14 @@ Plot = (function ($) {
         list_periodos = [];
     
     //Carregando os períodos extremos dos dados
-    
-    periodo_min = d3.min( [ (parseInt(index)+1) for (index in d3.keys(periodos)) ] );
-    periodo_max = d3.max( [ (parseInt(index)+1) for (index in d3.keys(periodos)) ] );
+    var chaves_periodos = d3.keys(periodos),
+        comprimento_periodos = chaves_periodos.length,
+        lista_indice_periodos = [];
+    for (var i = 0;i < comprimento_periodos; i++){
+        lista_indice_periodos.push(i+1);
+    }
+    var periodo_min = d3.min(lista_indice_periodos),
+        periodo_max = d3.max(lista_indice_periodos);
 
     first_label = periodos[periodo_min].nome;
     first_total = periodos[periodo_min].quantidade_votacoes + " votações";
