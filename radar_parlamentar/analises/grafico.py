@@ -28,8 +28,12 @@ from __future__ import unicode_literals
 from sets import Set
 from analises import analise
 from modelagem import models
+from numpy import sqrt
 import json
 from json import encoder
+import logging
+
+logger = logging.getLogger("radar")
 
 class GraphScaler:
     
@@ -89,7 +93,11 @@ class JsonAnaliseGenerator:
         scaler = GraphScaler()
         periodo = 0
         analises = analise.analisadores_periodo
-        escala_tamanhos = max(1,analise.area_total / 60000) # Constante a ser ajustada.
+        constante_escala_tamanho = 70 # quanto maior, maior serão as bolhas.
+        escala_tamanhos = sqrt(analise.area_total) / constante_escala_tamanho
+        if escala_tamanhos < 0.0001: # quero evitar divisões por zero
+            logger.info("Atenção: Fator de escala fixado em 1, pois %f seria muito baixo." %escala_tamanhos)
+            escala_tamanhos = 1
         for analisador in analises:
             periodo +=1
             partidos2d = scaler.scale(analisador.partidos_2d())

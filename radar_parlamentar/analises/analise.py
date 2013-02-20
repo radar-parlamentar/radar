@@ -356,7 +356,6 @@ class AnalisadorTemporal:
             logger.info("Análises salvas no BD.")
         else:
             logger.info("Análises já existem.")
-            logger.info(" OIOIOI %s" % str(analiseT_do_bd[0]))
             # criar lista de analisadores_periodo com dicionarios de coordenadas.
             if len(self.votacoes) == 0:
                 votacoes = None
@@ -367,6 +366,8 @@ class AnalisadorTemporal:
             else:
                 partidos = self.partidos
             analiseT_do_bd = analiseT_do_bd[0]
+            self.area_total = analiseT_do_bd.area_total
+            self.area_total = analiseT_do_bd.area_total
             for ap_do_bd in analiseT_do_bd.analiseperiodo_set.all():
                 periodocl = models.PeriodoCasaLegislativa(ap_do_bd.data_inicio,ap_do_bd.data_fim)
                 ap = AnalisadorPeriodo(self.casa_legislativa, periodocl,votacoes,partidos)
@@ -397,7 +398,8 @@ class AnalisadorTemporal:
                 self.analisadores_periodo.append(x)
             else:
                 logger.info("O periodo não possui nenhuma votação.")
-            
+            logger.info("Soma dos Quadrados dos Tamanhos dos Partidos %f" % x.soma_dos_quadrados_dos_tamanhos_dos_partidos)
+
         # Rotacionar as análises, e determinar área máxima:
         maior = self.analisadores_periodo[0].soma_dos_quadrados_dos_tamanhos_dos_partidos
         for i in range(1,len(self.analisadores_periodo)): # a partir da segunda analise
