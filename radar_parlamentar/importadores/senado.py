@@ -42,6 +42,7 @@ MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # pasta com os arquivos com os dados fornecidos pelo senado
 DATA_FOLDER = os.path.join(MODULE_DIR, 'dados/senado')
+VOTACOES_FOLDER = os.path.join(DATA_FOLDER, 'votacoes')
 
 NOME_CURTO = 'sen'
 
@@ -187,11 +188,10 @@ class ImportadorVotacoesSenado:
         print('.'),
         
     def _xml_file_names(self):
-        """Retorna uma lista com os caminhos dos arquivos XMLs contidos na pasta DATA_FOLDER"""
-        # TODO não pegar Senadores.xml
-        files = os.listdir(DATA_FOLDER)
+        """Retorna uma lista com os caminhos dos arquivos XMLs contidos na pasta VOTACOES_FOLDER"""
+        files = os.listdir(VOTACOES_FOLDER)
         xmls = filter(lambda name: name.endswith('.xml'), files)
-        xmls = map(lambda name: os.path.join(DATA_FOLDER, name), xmls)
+        xmls = map(lambda name: os.path.join(VOTACOES_FOLDER, name), xmls)
         return xmls
 
     def importar_votacoes(self):
