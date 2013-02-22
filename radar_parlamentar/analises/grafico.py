@@ -77,7 +77,7 @@ class JsonAnaliseGenerator:
                 JsonAnaliseGenerator.inicia_dicionario(p,xs)
                 JsonAnaliseGenerator.inicia_dicionario(p,ys)
             for partido in partidos2d.keys():
-                tamanhos[partido].append([periodo, analisador.tamanhos_partidos[partido]/escala_tamanhos])
+                tamanhos[partido].append([periodo, round(analisador.tamanhos_partidos[partido]/escala_tamanhos,1)])
                 xs[partido].append([periodo, round(partidos2d[partido][0],2)])
                 ys[partido].append([periodo, round(partidos2d[partido][1],2)])
 
