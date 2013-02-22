@@ -87,12 +87,8 @@ class GraficoTest(TestCase):
         
     def test_json(self):
         
-        EXPECTED_JSON = ( { "periodos":{ "1":{"nome":"1989 1o Semestre","quantidade_votacoes":4}, "2":{"nome":"1989 2o Semestre","quantidade_votacoes":4} }, \
-        "partidos":[{ "nome":"Girondinos", "numero":27, "cor":"#000000","tamanho":[ [1,3], [2,3] ], "x":[ [1,38.12], [2,29.33] ], "y":[ [1,10.94], [2,14.80] ] },{ "nome":"Monarquistas", "numero":79, "cor":"#000000", \
-        "tamanho":[ [1,3], [2,3] ], "x":[ [1,89.77], [2,90.82] ], "y":[ [1,59.24], [2,49.70] ] }, \
-                 { "nome":"Jacobinos", "numero":42, "cor":"#000000", \
-                 "tamanho":[ [1,3], [2,3] ], "x":[ [1,22.12], [2,29.85] ], "y":[ [1,79.82], [2,85.51] ] } ] } )  
-        
+        EXPECTED_JSON = {u'periodos': {'1': {u'quantidade_votacoes': 4, u'nome': u'1989 1o Semestre'}, '2': {u'quantidade_votacoes': 4, u'nome': u'1989 2o Semestre'}}, u'partidos': [{u'cor': u'#000000', u'nome': u'Girondinos', u'tamanho': [[1, 40.414518843273804], [2, 40.414518843273804]], u'numero': 27, u'y': [[1, 10.94], [2, 14.8]], u'x': [[1, 38.12], [2, 29.33]]}, {u'cor': u'#000000', u'nome': u'Monarquistas', u'tamanho': [[1, 40.414518843273804], [2, 40.414518843273804]], u'numero': 79, u'y': [[1, 59.24], [2, 49.7]], u'x': [[1, 89.77], [2, 90.82]]}, {u'cor': u'#000000', u'nome': u'Jacobinos', u'tamanho': [[1, 40.414518843273804], [2, 40.414518843273804]], u'numero': 42, u'y': [[1, 79.82], [2, 85.51]], u'x': [[1, 22.12], [2, 29.85]]}]}
+
         gen = grafico.JsonAnaliseGenerator()
         json = gen.get_json_dic(self.casa_legislativa)
         self.maxDiff = None
