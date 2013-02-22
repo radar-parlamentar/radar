@@ -98,28 +98,77 @@ class ImportadorVotacoesSenado:
         elif voto == 'P-OD': # obstrução
             return models.ABSTENCAO
         else:
-            print 'tipo de voto (%s) não mapeado!' % voto
+            logger.warn('tipo de voto (%s) não mapeado!' % voto)
             return models.ABSTENCAO
 
+    def _find_partido(self, nome_partido):
+        
+        nome_partido = nome_partido.strip()
+        partido = models.Partido.from_nome(nome_partido)
+        if partido == None:
+            logger.warn('Não achou o partido %s' % nome_partido)
+            partido = models.Partido.get_sem_partido()
+        return partido
+
+    def _cria_legislatura(self, voto_parlamentar_tree, votacao):
+        
+        nome = voto_parlamentar_tree.find('NomeParlamentar').text
+        codigo = voto_parlamentar_tree.find('CodigoParlamentar').text
+        sexo = voto_parlamentar_tree.find('SexoParlamentar').text
+        
+        if models.Parlamentar.objects.filter(nome=nome, id_parlamentar=codigo).exists():
+            senador = models.Parlamentar.objects.get(nome=nome, id_parlamentar=codigo)
+        else:
+            senador = models.Parlamentar()
+            senador.id_parlamentar = codigo
+            senador.nome = nome
+            senador.genero = sexo
+            senador.save()
+
+        leg = models.Legislatura()
+        leg.parlamentar = senador
+        leg.casa_legislativa = self.senado
+        ini, fim = self._periodo_arbitrario(votacao.data)
+        leg.inicio = ini
+        leg.fim = fim
+        sigla_partido = voto_parlamentar_tree.find('SiglaPartido').text
+        leg.partido = self._find_partido(sigla_partido)
+        leg.localidade = voto_parlamentar_tree.find('SiglaUF').text
+        leg.save()
+        return leg
+        
     def _votos_from_tree(self, votos_tree, votacao):
         """Faz o parse dos votos, salva no BD e devolve lista de votos
            Retorna lista dos votos salvos
         """
-        
         votos = []
         for voto_parlamentar_tree in votos_tree:
             nome_senador = voto_parlamentar_tree.find('NomeParlamentar').text
             try:
                 legislatura = models.Legislatura.find(votacao.data, nome_senador)
-                voto = models.Voto()
-                voto.legislatura = legislatura
-                voto.votacao = votacao
-                voto.opcao = self._voto_senado_to_model(voto_parlamentar_tree.find('Voto').text)
-                voto.save()
-                votos.append(voto)
             except ValueError:
-                logger.error('Não encontramos legislatura do senador %s' % nome_senador)
+                logger.warn('Não encontramos legislatura do senador %s' % nome_senador)
+                logger.info('Criando legislatura para o senador %s' % nome_senador)
+                legislatura = self._cria_legislatura(voto_parlamentar_tree, votacao)
+            voto = models.Voto()
+            voto.legislatura = legislatura
+            voto.votacao = votacao
+            voto.opcao = self._voto_senado_to_model(voto_parlamentar_tree.find('Voto').text)
+            voto.save()
+            votos.append(voto)
         return votos
+
+    def _periodo_arbitrario(self, dt):
+        """Retorna datas de início e fim de uma legislatura arbitrária que contenha a data informada"""
+        
+        periodo1 = (date(2011, 02, 01), date(2019, 01, 31))
+        periodo2 = (date(2003, 02, 01), date(2011, 01, 31))
+        if dt >= periodo1[0] and dt <= periodo1[1]:
+            return periodo1[0], periodo1[1]
+        elif dt >= periodo2[0] and dt <= periodo2[1]:
+            return periodo2[0], periodo2[1]
+        else:
+            raise ValueError('Data %s inválida' % dt)
 
     def _nome_prop_from_tree(self, votacao_tree):
         
@@ -158,29 +207,38 @@ class ImportadorVotacoesSenado:
         if votacoes_tree != None:
             for votacao_tree in votacoes_tree:
                 if votacao_tree.tag == 'Votacao' and votacao_tree.find('Secreta').text == 'N': # se votação não é secreta
-                    proposicao = self._proposicao_from_tree(votacao_tree)
-                    nome = '%s %s/%s' % (proposicao.sigla, proposicao.numero, proposicao.ano)
-                    logger.debug('Importando %s' % nome)
-                    votacao = models.Votacao()
-                    votacao.save() # só pra criar a chave primária e poder atribuir o votos
-                    votacao.id_vot = votacao_tree.find('CodigoTramitacao').text
-                    votacao.descricao = votacao_tree.find('DescricaoVotacao').text
-                    votacao.data = self._converte_data(votacao_tree.find('DataSessao').text)
-                    if votacao_tree.find('Resultado') != None:
-                        votacao.resultado = votacao_tree.find('Resultado').text
-                    votacao.proposicao = proposicao
-                    votos_tree = votacao_tree.find('Votos')
-                    if votos_tree != None:
-                        votos = self._votos_from_tree(votos_tree, votacao)
-                        if not votos:
-                            logger.warn('Votação desconsiderada (sem votos)')
-                            votacao.delete()
-                        else:
-                            votacao.save()
-                            votacoes.append(votacao)
+
+                    codigo = votacao_tree.find('CodigoSessaoVotacao').text
+                    votacoes_query = models.Votacao.objects.filter(id_vot=codigo)
+                    
+                    if votacoes_query:
+                        votacao = votacoes_query[0]
+                        votacoes.append(votacao)
                     else:
-                        logger.warn('Votação desconsiderada (votos_tree nulo)')
-                        votacao.delete()
+                        proposicao = self._proposicao_from_tree(votacao_tree)
+                        nome = '%s %s/%s' % (proposicao.sigla, proposicao.numero, proposicao.ano)
+                        logger.debug('Importando %s' % nome)
+                        votacao = models.Votacao()
+                        votacao.id_vot = codigo
+                        votacao.save() # só pra criar a chave primária e poder atribuir o votos
+                        votacao.id_vot = votacao_tree.find('CodigoTramitacao').text
+                        votacao.descricao = votacao_tree.find('DescricaoVotacao').text
+                        votacao.data = self._converte_data(votacao_tree.find('DataSessao').text)
+                        if votacao_tree.find('Resultado') != None:
+                            votacao.resultado = votacao_tree.find('Resultado').text
+                        votacao.proposicao = proposicao
+                        votos_tree = votacao_tree.find('Votos')
+                        if votos_tree != None:
+                            votos = self._votos_from_tree(votos_tree, votacao)
+                            if not votos:
+                                logger.warn('Votação desconsiderada (sem votos)')
+                                votacao.delete()
+                            else:
+                                votacao.save()
+                                votacoes.append(votacao)
+                        else:
+                            logger.warn('Votação desconsiderada (votos_tree nulo)')
+                            votacao.delete()
         return votacoes
     
     def progresso(self):
