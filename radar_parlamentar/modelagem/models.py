@@ -139,53 +139,62 @@ class Partido(models.Model):
     def __unicode__(self):
         return '%s-%s' % (self.nome, self.numero)
 
-class PeriodosList(object):
+class Intervalo(object):
+    """
+        classe de utilitários para PeriodoList
+    """
+
+    @staticmethod
+    def delta_para_numero(delta=SEMESTRE):
+        """define um valor para um delta"""
+        delta_numero = {ANO:11,MES:0,SEMESTRE:5}
+        valor = delta_numero[delta]
+        return valor
+    
+    @staticmethod
+    def inicio(data_inicial,delta):
+        """define a data inicial de uma lista de periodos"""
+        dia_inicial = 1
+        ano_inicial = data_inicial.year
+        if delta == MES:
+            mes_inicial = data_inicial.month
+        elif delta in [SEMESTRE,ANO]:
+            mes_inicial = 1
+        return datetime.date(ano_inicial,mes_inicial,dia_inicial)
+
+    @staticmethod
+    def fim(data_fim,delta):
+        """define a data final de uma lista de periodos"""
+        ano_fim = data_fim.year
+        if delta == MES:
+            mes_fim = data_fim.month
+        elif delta == SEMESTRE:
+            if data_fim.month <= 6:
+                mes_fim = 6
+            else:
+                mes_fim = 12
+        elif delta == ANO:
+            mes_fim = 12
+        dia_fim = monthrange(ano_fim,mes_fim)[1]
+        return datetime.date(ano_fim,mes_fim,dia_fim)
+
+
+class PeriodoList(object):
     """
         classe responsável pela lista de periodo de uma CasaLegislativa 
     """
     def __init__(self,casa_legislativa,delta):
         self.casa_legislativa = casa_legislativa
         self.votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=casa_legislativa)]
-        self.delta_mes = PeriodosList._delta_para_numero(delta)
-        self.ini = PeriodosList._intervalo_inicio(min(self.votacao_datas),delta)
-        self.fim = PeriodosList._intervalo_fim(max(self.votacao_datas),delta)
+        self.delta_mes = Intervalo.delta_para_numero(delta)
+        self.ini = Intervalo.inicio(min(self.votacao_datas),delta)
+        self.fim = Intervalo.fim(max(self.votacao_datas),delta)
         self.intervalos = self._intervalo_periodo()
         self.set_string_periodos(delta)
 
     def get(self):
         return self.intervalos
-
-    @staticmethod
-    def _delta_para_numero(delta=SEMESTRE):
-        delta_numero = {ANO:11,MES:0,SEMESTRE:5}
-        valor = delta_numero[delta]
-        return valor
-    
-    @staticmethod
-    def _intervalo_inicio(data_inicial,delta):
-        dia_inicial = 1
-        ano_inicial = data_inicial.year
-        if delta == MES:
-            mes_inicial = data_inicial.month
-        if delta in [SEMESTRE,ANO]:
-            mes_inicial = 1
-        return datetime.date(ano_inicial,mes_inicial,dia_inicial)
-
-    @staticmethod
-    def _intervalo_fim(data_fim,delta):
-        ano_fim = data_fim.year
-        if delta == MES:
-            mes_fim = data_fim.month
-        if delta == SEMESTRE:
-            if data_fim.month <= 6:
-                mes_fim = 6
-            else:
-                mes_fim = 12
-        if delta == ANO:
-            mes_fim = 12
-        dia_fim = monthrange(ano_fim,mes_fim)[1]
-        return datetime.date(ano_fim,mes_fim,dia_fim)
-    
+ 
     def _intervalo_periodo(self):
         intervalos = []
         data_inicial = self.ini
@@ -214,12 +223,12 @@ class PeriodosList(object):
         return intervalos
     
     def _media_votos(self):
-        return len(self.casa_legislativa.votos_lista())/len(self.intervalos)
+        return self.casa_legislativa.num_votos()/len(self.intervalos)
 
     def _filtro_media_votos(self,corte):
         periodos_aceitos = []
         for periodo in self.intervalos:
-            quantidade_votos = len(self.casa_legislativa.votos_lista(periodo.ini,periodo.fim))
+            quantidade_votos = self.casa_legislativa.num_votos(periodo.ini,periodo.fim)
             if quantidade_votos >= corte:
                 periodos_aceitos.append(periodo)
         return periodos_aceitos
@@ -265,7 +274,7 @@ class CasaLegislativa(models.Model):
         Retorna:
             Uma lista de objetos do tipo PeriodoCasaLegislativa.
         """
-        periodos_lista = PeriodosList(self,delta)
+        periodos_lista = PeriodoList(self,delta)
         if minimo == 0.0:
             periodos_aceitos = periodos_lista.get()
         else:
@@ -273,14 +282,16 @@ class CasaLegislativa(models.Model):
         return periodos_aceitos
 
     def num_votacao(self,data_inicial=None,data_final=None):
+        """retorna a quantidade de votacao numa casa legislativa"""
         return Votacao.por_casa_legislativa(self,data_inicial,data_final).count()
 
-    def votos_lista(self,data_inicio=None,data_fim=None):
+    def num_votos(self,data_inicio=None,data_fim=None):
+        """retorna a quantidade de votos numa casa legislativa"""
         votacoes = Votacao.por_casa_legislativa(self,data_inicio,data_fim)
         votos = []
         for votacao in votacoes:
             votos+=votacao.votos()
-        return votos
+        return len(votos)
 
 
 class PeriodoCasaLegislativa(object):
