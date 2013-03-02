@@ -139,6 +139,95 @@ class Partido(models.Model):
     def __unicode__(self):
         return '%s-%s' % (self.nome, self.numero)
 
+class PeriodosList(object):
+    """
+        classe responsável pela lista de periodo de uma CasaLegislativa 
+    """
+    def __init__(self,casa_legislativa,delta):
+        self.casa_legislativa = casa_legislativa
+        self.votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=casa_legislativa)]
+        self.delta_mes = PeriodosList._delta_para_numero(delta)
+        self.ini = PeriodosList._intervalo_inicio(min(self.votacao_datas),delta)
+        self.fim = PeriodosList._intervalo_fim(max(self.votacao_datas),delta)
+        self.intervalos = self._intervalo_periodo()
+        self.set_string_periodos(delta)
+
+    def get(self):
+        return self.intervalos
+
+    @staticmethod
+    def _delta_para_numero(delta=SEMESTRE):
+        delta_numero = {ANO:11,MES:0,SEMESTRE:5}
+        valor = delta_numero[delta]
+        return valor
+    
+    @staticmethod
+    def _intervalo_inicio(data_inicial,delta):
+        dia_inicial = 1
+        ano_inicial = data_inicial.year
+        if delta == MES:
+            mes_inicial = data_inicial.month
+        if delta in [SEMESTRE,ANO]:
+            mes_inicial = 1
+        return datetime.date(ano_inicial,mes_inicial,dia_inicial)
+
+    @staticmethod
+    def _intervalo_fim(data_fim,delta):
+        ano_fim = data_fim.year
+        if delta == MES:
+            mes_fim = data_fim.month
+        if delta == SEMESTRE:
+            if data_fim.month <= 6:
+                mes_fim = 6
+            else:
+                mes_fim = 12
+        if delta == ANO:
+            mes_fim = 12
+        dia_fim = monthrange(ano_fim,mes_fim)[1]
+        return datetime.date(ano_fim,mes_fim,dia_fim)
+    
+    def _intervalo_periodo(self):
+        intervalos = []
+        data_inicial = self.ini
+        dias_que_faltam = 1
+        while dias_que_faltam > 0:
+            mes = data_inicial.month
+            ano = data_inicial.year
+            mes = mes + self.delta_mes
+            while mes > 12:
+                mes = mes - 12
+                ano = ano + 1
+            data_final = data_inicial.replace(month=mes,year=ano)
+            # ir ate ultimo dia do mes:
+            dia_final = monthrange(data_final.year,data_final.month)[1]
+            data_final = data_final.replace(day=dia_final)
+            intervalos.append(PeriodoCasaLegislativa(data_inicial,data_final,self.casa_legislativa.num_votacao(data_inicial,data_final)))
+            data_inicial = data_final + datetime.timedelta(days=1)
+            delta_que_falta = self.fim - data_final
+            dias_que_faltam = delta_que_falta.days
+        return intervalos
+
+    def filtrar(self,minimo):
+        media = self._media_votos()
+        corte = media*minimo
+        intervalos = self._filtro_media_votos(corte)
+        return intervalos
+    
+    def _media_votos(self):
+        return len(self.casa_legislativa.votos_lista())/len(self.intervalos)
+
+    def _filtro_media_votos(self,corte):
+        periodos_aceitos = []
+        for periodo in self.intervalos:
+            quantidade_votos = len(self.casa_legislativa.votos_lista(periodo.ini,periodo.fim))
+            if quantidade_votos >= corte:
+                periodos_aceitos.append(periodo)
+        return periodos_aceitos
+    
+    def set_string_periodos(self,delta):
+        for periodo in self.intervalos:
+            periodo.__unicode__()
+
 class CasaLegislativa(models.Model):
     """Instituição tipo Senado, Câmara etc
 
@@ -176,127 +265,23 @@ class CasaLegislativa(models.Model):
         Retorna:
             Uma lista de objetos do tipo PeriodoCasaLegislativa.
         """
-        votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self)]
-        delta_mes = CasaLegislativa._delta_para_numero(delta)
-        ini = CasaLegislativa._intervalo_inicio(min(votacao_datas),delta)
-        fim = CasaLegislativa._intervalo_fim(max(votacao_datas),delta)
-        intervalos = self._intervalo_periodo(ini,fim, delta_mes)
-        CasaLegislativa._periodos_set_string(intervalos,delta)
-        #filtro
-        if minimo != 0.0:
-            media = self._media_votos_por_periodo(intervalos)
-            corte = media*minimo
-            intervalos = self._filtro_media_periodo(intervalos,corte)
-        return intervalos
-
-
-#    @staticmethod
-#    def _intervalo_to_string(intervalo,delta):
-#        data_string = ""
-#        meses = ['','Jan', 'Fev', 'Mar', 'Abr', 'Maio', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
-#        data_string += str(intervalo.ini.year)
-#        if delta == MES:
-#            data_string +=" "+str(meses[intervalo.ini.month])
-#        return data_string
-
-    @staticmethod
-    def _periodos_set_string(periodos,delta):
-        for periodo in periodos:
-            periodo.__unicode__()
-#            data_string = CasaLegislativa._intervalo_to_string(periodo,delta)
-#            if delta == SEMESTRE:
-#                data_string += " "+str(numero_semestre)+"o Semestre"
-#            if numero_semestre == 1:
-#                numero_semestre = 2
-#            else:
-#                numero_semestre = 1
-#            periodo.string = data_string
-
-    @staticmethod
-    def _intervalo_inicio(data_inicial,delta):
-        dia_inicial = 1
-        ano_inicial = data_inicial.year
-        if delta == MES:
-            mes_inicial = data_inicial.month
-        if delta in [SEMESTRE,ANO]:
-            mes_inicial = 1
-        return datetime.date(ano_inicial,mes_inicial,dia_inicial)
-
-    @staticmethod
-    def _intervalo_fim(data_fim,delta):
-        ano_fim = data_fim.year
-        if delta == MES:
-            mes_fim = data_fim.month
-        if delta == SEMESTRE:
-            if data_fim.month <= 6:
-                mes_fim = 6
-            else:
-                mes_fim = 12
-        if delta == ANO:
-            mes_fim = 12
-        dia_fim = monthrange(ano_fim,mes_fim)[1]
-        return datetime.date(ano_fim,mes_fim,dia_fim)
-
-    def _votacoes(self,data_inicial=None,data_final=None):
-        votacoes = Votacao.objects.filter(proposicao__casa_legislativa=self)
-        from django.utils.dateparse import parse_datetime
-        if data_inicial != None:
-            ini = parse_datetime('%s 0:0:0' % data_inicial)
-            votacoes =  votacoes.filter(data__gte=ini)
-        if data_final != None:
-            fim = parse_datetime('%s 0:0:0' % data_final)
-            votacoes = votacoes.filter(data__lte=fim)
-        return votacoes
+        periodos_lista = PeriodosList(self,delta)
+        if minimo == 0.0:
+            periodos_aceitos = periodos_lista.get()
+        else:
+            periodos_aceitos = periodos_lista.filtrar(minimo)
+        return periodos_aceitos
 
     def num_votacao(self,data_inicial=None,data_final=None):
-        return self._votacoes(data_inicial,data_final).count()
+        return Votacao.por_casa_legislativa(self,data_inicial,data_final).count()
 
-    @staticmethod
-    def _delta_para_numero(delta=SEMESTRE):
-        delta_numero = {ANO:11,MES:0,SEMESTRE:5}
-        valor = delta_numero[delta]
-        return valor
-
-    def _intervalo_periodo(self,ini,fim,delta_mes):
-        intervalos = []
-        data_inicial = ini
-        dias_que_faltam = 1
-        while dias_que_faltam > 0:
-            mes = data_inicial.month
-            ano = data_inicial.year
-            mes = mes + delta_mes
-            while mes > 12:
-                mes = mes - 12
-                ano = ano + 1
-            data_final = data_inicial.replace(month=mes,year=ano)
-            # ir ate ultimo dia do mes:
-            dia_final = monthrange(data_final.year,data_final.month)[1]
-            data_final = data_final.replace(day=dia_final)
-            intervalos.append(PeriodoCasaLegislativa(data_inicial,data_final,self.num_votacao(data_inicial,data_final)))
-            data_inicial = data_final + datetime.timedelta(days=1)
-            delta_que_falta = fim - data_final
-            dias_que_faltam = delta_que_falta.days
-        return intervalos
-
-    def _media_votos_por_periodo(self,periodo):
-        num_periodo = len(periodo)
-        votos = self._votos()
-        return len(votos)/num_periodo
-
-    def _votos(self,data_inicio=None,data_fim=None):
-        votacoes = self._votacoes(data_inicio,data_fim)
+    def votos_lista(self,data_inicio=None,data_fim=None):
+        votacoes = Votacao.por_casa_legislativa(self,data_inicio,data_fim)
         votos = []
         for votacao in votacoes:
             votos+=votacao.votos()
         return votos
 
-    def _filtro_media_periodo(self,periodos,media):
-        periodo_filtrado = []
-        for periodo in periodos:
-            votos_periodo = len(self._votos(periodo.ini,periodo.fim))
-            if votos_periodo >= media:
-                periodo_filtrado.append(periodo)
-        return periodo_filtrado
 
 class PeriodoCasaLegislativa(object):
     """Atributos:
@@ -459,6 +444,18 @@ class Votacao(models.Model):
             voto_partido.add(voto.opcao)
         return dic
 
+    @staticmethod
+    def por_casa_legislativa(casa_legislativa,data_inicial=None,data_final=None):
+        votacoes = Votacao.objects.filter(proposicao__casa_legislativa=casa_legislativa)
+        from django.utils.dateparse import parse_datetime
+        if data_inicial != None:
+            ini = parse_datetime('%s 0:0:0' % data_inicial)
+            votacoes =  votacoes.filter(data__gte=ini)
+        if data_final != None:
+            fim = parse_datetime('%s 0:0:0' % data_final)
+            votacoes = votacoes.filter(data__lte=fim)
+        return votacoes
+
     # TODO def por_uf(self):
 
     def __unicode__(self):
@@ -466,6 +463,7 @@ class Votacao(models.Model):
             return "[%s] %s" % (self.data, self.descricao)
         else:
             return self.descricao
+
 
 class Voto(models.Model):
     """Um voto dado por um parlamentar em uma votação.
