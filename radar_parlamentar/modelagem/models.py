@@ -139,11 +139,38 @@ class Partido(models.Model):
     def __unicode__(self):
         return '%s-%s' % (self.nome, self.numero)
 
-class Intervalo(object):
+class PeriodoList(object):
     """
-        classe de utilitários para PeriodoList
+        classe que gera a lista de periodos de uma casa legislativa
     """
+    def __init__(self,delta,casa_legislativa):
+        self.casa_legislativa = casa_legislativa
+        self.votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=casa_legislativa)]
+        self.data_inicio = PeriodoList.inicio(min(self.votacao_datas),delta)
+        self.data_fim = PeriodoList.fim(max(self.votacao_datas),delta)
+        self.valor_delta = PeriodoList.delta_para_numero(delta)
 
+    def gerar(self):
+        intervalos = []
+        data_inicial = self.data_inicio
+        dias_que_faltam = 1
+        while dias_que_faltam > 0:
+            mes = data_inicial.month
+            ano = data_inicial.year
+            mes = mes + self.valor_delta
+            while mes > 12:
+                mes = mes - 12
+                ano = ano + 1
+            data_final = data_inicial.replace(month=mes,year=ano)
+            # ir ate ultimo dia do mes:
+            dia_final = monthrange(data_final.year,data_final.month)[1]
+            data_final = data_final.replace(day=dia_final)
+            intervalos.append(PeriodoCasaLegislativa(data_inicial,data_final,self.casa_legislativa.num_votacao(data_inicial,data_final)))
+            data_inicial = data_final + datetime.timedelta(days=1)
+            delta_que_falta = self.data_fim - data_final
+            dias_que_faltam = delta_que_falta.days
+        return intervalos
+    
     @staticmethod
     def delta_para_numero(delta=SEMESTRE):
         """define um valor para um delta"""
@@ -179,44 +206,19 @@ class Intervalo(object):
         return datetime.date(ano_fim,mes_fim,dia_fim)
 
 
-class PeriodoList(object):
+class GerenciadorPeriodos(object):
     """
-        classe responsável pela lista de periodo de uma CasaLegislativa 
+        classe responsável por gerenciar a lista de periodos de uma CasaLegislativa 
     """
     def __init__(self,casa_legislativa,delta):
         self.casa_legislativa = casa_legislativa
-        self.votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=casa_legislativa)]
-        self.delta_mes = Intervalo.delta_para_numero(delta)
-        self.ini = Intervalo.inicio(min(self.votacao_datas),delta)
-        self.fim = Intervalo.fim(max(self.votacao_datas),delta)
-        self.intervalos = self._intervalo_periodo()
+        self.intervalos = PeriodoList(delta,casa_legislativa).gerar()
         self.set_string_periodos(delta)
 
-    def get(self):
+    def periodos(self):
         return self.intervalos
- 
-    def _intervalo_periodo(self):
-        intervalos = []
-        data_inicial = self.ini
-        dias_que_faltam = 1
-        while dias_que_faltam > 0:
-            mes = data_inicial.month
-            ano = data_inicial.year
-            mes = mes + self.delta_mes
-            while mes > 12:
-                mes = mes - 12
-                ano = ano + 1
-            data_final = data_inicial.replace(month=mes,year=ano)
-            # ir ate ultimo dia do mes:
-            dia_final = monthrange(data_final.year,data_final.month)[1]
-            data_final = data_final.replace(day=dia_final)
-            intervalos.append(PeriodoCasaLegislativa(data_inicial,data_final,self.casa_legislativa.num_votacao(data_inicial,data_final)))
-            data_inicial = data_final + datetime.timedelta(days=1)
-            delta_que_falta = self.fim - data_final
-            dias_que_faltam = delta_que_falta.days
-        return intervalos
 
-    def filtrar(self,minimo):
+    def filtrar_periodos(self,minimo):
         media = self._media_votos()
         corte = media*minimo
         intervalos = self._filtro_media_votos(corte)
@@ -274,11 +276,11 @@ class CasaLegislativa(models.Model):
         Retorna:
             Uma lista de objetos do tipo PeriodoCasaLegislativa.
         """
-        periodos_lista = PeriodoList(self,delta)
+        gerenciador_periodos = GerenciadorPeriodos(self,delta)
         if minimo == 0.0:
-            periodos_aceitos = periodos_lista.get()
+            periodos_aceitos = gerenciador_periodos.periodos()
         else:
-            periodos_aceitos = periodos_lista.filtrar(minimo)
+            periodos_aceitos = gerenciador_periodos.filtrar_periodos(minimo)
         return periodos_aceitos
 
     def num_votacao(self,data_inicial=None,data_final=None):
