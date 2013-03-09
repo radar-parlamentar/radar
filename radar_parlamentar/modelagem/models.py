@@ -88,7 +88,7 @@ class Partido(models.Model):
 
     LISTA_PARTIDOS = os.path.join(MODULE_DIR, 'recursos/partidos.txt')
 
-    nome = models.CharField(max_length=10)
+    nome = models.CharField(max_length=12)
     numero = models.IntegerField()
 
     @classmethod
