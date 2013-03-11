@@ -20,3 +20,6 @@ def votoaberto(request):
 
 def importadores(request):
     return render_to_response('importadores.html')
+
+def grafico_alternativo(request):
+    return render_to_response('grafico_alternativo.html')
