@@ -301,7 +301,7 @@ class ImportadorSenadores:
     
     def importar_senadores(self):
         """Cria parlamentares e legislaturas no banco de dados"""
-        # possível problema: o arquivo Senadores contém apenas
+        # problema: o arquivo Senadores contém apenas
         # Senadores da atual legislatura que estão exercendo seu mandato no Senado Federal. 
         # http://dadosabertos.senado.gov.br/dataset?page=2
         xml_file = os.path.join(DATA_FOLDER, 'Senadores.xml')
@@ -357,4 +357,14 @@ def main():
     logger.info('IMPORTANDO VOTAÇÕES DO SENADO')
     importer = ImportadorVotacoesSenado()
     importer.importar_votacoes()
+
+# Atualmente há alguns senadores importados com informações precisas sobre suas legislaturas
+# e outros sem essas informações.
+# Proposta de alteração:
+# Utilizar o WS http://legis.senado.gov.br/dadosabertos/plenario/lista/legislaturas para pegar as legislaturas mais recentes
+# Para cada uma delas chama-se o WS http://legis.senado.gov.br/dadosabertos/senador/lista/legislatura/{legislaturaInicio}/{legislaturaFim}
+# Para cada senador listado precisamos ainda saber o partido...
+
+
+
 
