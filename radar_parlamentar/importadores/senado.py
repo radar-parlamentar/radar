@@ -30,6 +30,7 @@ from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
 from datetime import datetime, timedelta, date
 from modelagem import models
+import urllib2
 import re
 import os
 import xml.etree.ElementTree as etree
@@ -47,6 +48,39 @@ VOTACOES_FOLDER = os.path.join(DATA_FOLDER, 'votacoes')
 NOME_CURTO = 'sen'
 
 logger = logging.getLogger("radar")
+
+class SenadoWS:
+    """Acesso aos web services do senado"""
+    
+    URL_LEGISLATURA = 'http://legis.senado.gov.br/dadosabertos/senador/lista/legislatura/%s'
+    
+    def obter_senadores_from_legislatura(self, id_leg):
+        """Obtém senadores de uma legislatura
+
+        Argumentos:
+        id_leg
+
+        Retorna:
+        Um objeto ElementTree correspondente ao XML retornado pelo web service
+        Exemplo: http://legis.senado.gov.br/dadosabertos/senador/lista/legislatura/52
+
+        Exceções:
+            ValueError -- quando legislatura não existe
+        """
+        url = SenadoWS.URL_LEGISLATURA % id_leg
+        try:
+            request = urllib2.Request(url)
+            xml = urllib2.urlopen(request).read()
+        except urllib2.URLError:
+            raise ValueError('Legislatura %s não encontrada' % id_leg)
+
+        try:
+            tree = etree.fromstring(xml)
+        except etree.ParseError:
+            raise ValueError('Legislatura %s não encontrada' % id_leg)
+
+        return tree
+
 
 class CasaLegislativaGerador:
     
@@ -345,6 +379,8 @@ class ImportadorSenadores:
                 leg.localidade = uf
                 leg.save()
     
+
+
 
 def main():
 
