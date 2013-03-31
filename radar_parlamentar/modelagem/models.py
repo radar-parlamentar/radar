@@ -94,6 +94,8 @@ class Partido(models.Model):
     @classmethod
     def from_nome(cls, nome):
         """Recebe um nome e retornar um objeto do tipo Partido, ou None se nome for inválido"""
+        if (nome == None):
+            return None
         p = Partido.objects.filter(nome=nome) # procura primeiro no banco de dados
         if p:
             return p[0]
@@ -103,6 +105,8 @@ class Partido(models.Model):
     @classmethod
     def from_numero(cls, numero):
         """Recebe um número (int) e retornar um objeto do tipo Partido, ou None se nome for inválido"""
+        if (numero == None):
+            return None
         p = Partido.objects.filter(numero=numero) # procura primeiro no banco de dados
         if p:
             return p[0]

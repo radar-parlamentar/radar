@@ -296,10 +296,11 @@ class ImportadorVotacoesSenado:
 
 class ImportadorSenadores:
     
+    LEGISLATURAS = [52, 53, 54, 55] # essa lista precisa ser atualizado de anos em anos
+                                # 52 é a legislatura mínima porque só temos votacões desde 2005 
+    
     def __init__(self):
         self.senado = models.CasaLegislativa.objects.get(nome_curto=NOME_CURTO)
-        self.parlamentares = {} # mapeia um ID de parlamentar incluso em alguma votacao a um objeto Parlamentar.
-        
     
     def _converte_data2(self, data_str):
         """Converte string "dd/mm/aaaa para objeto datetime; retona None se data_str é inválido"""
@@ -311,51 +312,42 @@ class ImportadorSenadores:
         else:
             raise ValueError
 
-    def _get_intervalo_legislatura(self, mandato_atual):
-        """Gera as datas de início e fim da legislatura.
-            Argumento:
-                mandato_atual -- string MandatoAtual do XML
-            Retorna:
-                datetimes para início e fim da legislatura
-        """
-        fim_legislatura = self._converte_data2(mandato_atual)
-        um_dia = timedelta(1)
-        temp = fim_legislatura + um_dia
-        inicio_legislatura = datetime(temp.year - 8, temp.month, temp.day)
-        return  inicio_legislatura, fim_legislatura
-
     def _find_partido(self, nome_partido):
-        
-        nome_partido = nome_partido.strip()
+        if nome_partido != None:
+            nome_partido = nome_partido.strip()
         partido = models.Partido.from_nome(nome_partido)
         if partido == None:
             logger.warn('Não achou o partido %s' % nome_partido)
             partido = models.Partido.get_sem_partido()
         return partido
     
-    def importar_senadores(self):
-        """Cria parlamentares e legislaturas no banco de dados"""
-        # problema: o arquivo Senadores contém apenas
-        # Senadores da atual legislatura que estão exercendo seu mandato no Senado Federal. 
-        # http://dadosabertos.senado.gov.br/dataset?page=2
-        xml_file = os.path.join(DATA_FOLDER, 'Senadores.xml')
-        f = open(xml_file, 'r')
-        xml = f.read()
-        f.close()
-        tree = etree.fromstring(xml)        
-        parlamentares_tree = tree.find('Parlamentares')
+    def _find_nome_partido(self, partidos_tree):
+        """Por hora retorna o último partido da lista"""
+        # TODO em alguns casos um senador aparece com vários partidos durante a legislatura; oq fazer?
+        for partido_tree in partidos_tree:
+            last_partido_tree = partido_tree
+        return last_partido_tree.find('SiglaPartido').text
+    
+    def processa_legislatura(self, leg_tree):
         
+        parlamentares_tree = leg_tree.find('Parlamentar').find('Parlamentares')
         for parlamentar_tree in parlamentares_tree:
-            
             codigo = parlamentar_tree.find('CodigoParlamentar').text
             nome = parlamentar_tree.find('NomeParlamentar').text
-            uf = parlamentar_tree.find('SiglaUf').text
-            sexo = parlamentar_tree.find('Sexo').text
-            mandato_atual = parlamentar_tree.find('MandatoAtual').text
-            nome_partido = parlamentar_tree.find('SiglaPartido').text
+            uf = parlamentar_tree.find('SiglaUF').text
+            partidos_tree = parlamentar_tree.find('Partidos')
+            if partidos_tree != None:
+                nome_partido = self._find_nome_partido(partidos_tree)
+            else:
+                logger.warn('Senador %s não possui lista de partidos!' % nome)
+                nome_partido = None
+            ano_inicio = parlamentar_tree.find('AnoInicio').text
+            ano_fim = parlamentar_tree.find('AnoFim').text
+            
             if nome_partido == 'PC DO B':
                 nome_partido = 'PCdoB'
-            inicio_legislatura, fim_legislatura = self._get_intervalo_legislatura(mandato_atual)
+            inicio_legislatura = self._converte_data2('01/01/%s' % ano_inicio)
+            fim_legislatura = self._converte_data2('31/12/%s' % ano_fim)
             partido = self._find_partido(nome_partido)
             
             if not models.Legislatura.objects.filter(inicio=inicio_legislatura, fim=fim_legislatura, parlamentar__nome=nome, partido__nome=nome_partido).exists():
@@ -367,7 +359,6 @@ class ImportadorSenadores:
                     senador = models.Parlamentar()
                     senador.id_parlamentar = codigo
                     senador.nome = nome
-                    senador.genero = sexo
                     senador.save()
                 
                 leg = models.Legislatura()
@@ -378,8 +369,16 @@ class ImportadorSenadores:
                 leg.partido = partido
                 leg.localidade = uf
                 leg.save()
+                
     
-
+    def importar_senadores(self):
+        """Cria parlamentares e legislaturas no banco de dados"""
+        
+        senws = SenadoWS()
+        for id_leg in ImportadorSenadores.LEGISLATURAS:
+            logger.info("Importando senadores da legislatura %s" % id_leg)
+            leg_tree = senws.obter_senadores_from_legislatura(id_leg)
+            self.processa_legislatura(leg_tree)
 
 
 def main():
@@ -390,17 +389,8 @@ def main():
     logger.info('IMPORTANDO SENADORES')
     importer = ImportadorSenadores()
     importer.importar_senadores()
-    logger.info('IMPORTANDO VOTAÇÕES DO SENADO')
-    importer = ImportadorVotacoesSenado()
-    importer.importar_votacoes()
-
-# Atualmente há alguns senadores importados com informações precisas sobre suas legislaturas
-# e outros sem essas informações.
-# Proposta de alteração:
-# Utilizar o WS http://legis.senado.gov.br/dadosabertos/plenario/lista/legislaturas para pegar as legislaturas mais recentes
-# Para cada uma delas chama-se o WS http://legis.senado.gov.br/dadosabertos/senador/lista/legislatura/{legislaturaInicio}/{legislaturaFim}
-# Para cada senador listado precisamos ainda saber o partido...
-
-
+#    logger.info('IMPORTANDO VOTAÇÕES DO SENADO')
+#    importer = ImportadorVotacoesSenado()
+#    importer.importar_votacoes()
 
 

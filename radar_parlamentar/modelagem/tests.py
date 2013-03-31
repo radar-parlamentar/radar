@@ -35,6 +35,11 @@ class ModelsTest(TestCase):
         self.assertEquals(pt.numero, 13)
         psdb = models.Partido.from_numero(45)
         self.assertEquals(psdb.nome, 'PSDB')
+        
+    def test_partido_from_nome_None(self):
+        nome = None
+        partido = models.Partido.from_nome(nome)
+        self.assertIsNone(partido)
 
     def test_casa_legislativa_partidos(self):
         conv = models.CasaLegislativa.objects.get(nome_curto='conv')
