@@ -389,8 +389,8 @@ def main():
     logger.info('IMPORTANDO SENADORES')
     importer = ImportadorSenadores()
     importer.importar_senadores()
-#    logger.info('IMPORTANDO VOTAÇÕES DO SENADO')
-#    importer = ImportadorVotacoesSenado()
-#    importer.importar_votacoes()
+    logger.info('IMPORTANDO VOTAÇÕES DO SENADO')
+    importer = ImportadorVotacoesSenado()
+    importer.importar_votacoes()
 
 
