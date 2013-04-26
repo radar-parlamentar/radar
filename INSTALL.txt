@@ -1,0 +1,34 @@
+#Passo a Passo da instalação
+
+São necessárias três instalações:
+
+- Django 1.4.5:
+	Framework web utilizado no desenvolvimento do projeto.Caso não se queira configurar o banco,será utilizado o SQLite que ja está no repositorio do projeto.Para rodar o Django basta ir,via terminal, dentro da pasta radar_parlamentar que estará dentro da pasta clonada do repositório,e executar o manage.py através do comando: python manage.py runserver. 
+  Download:https://www.djangoproject.com/download/
+
+
+
+Bibliotecas do python:
+
+ 0 numpy:Pacote que permite a criação de arrays de objetos n-dimensionais e realizar operações diversas sobre a mesma.
+ Download:	http://sourceforge.net/projects/numpy/files/
+
+
+ matplotlib:
+ O matplotlib: Biblioteca utilizada no projeto para plotar gráficos 2D, que são usadas na apresentação dos dados abertos obtidos.
+ Download: http://matplotlib.org/downloads.html
+
+ 
+
+ Observações:
+ - Se por algum motivo a versão do django instalada for a 1.5, possivelmente um erro ocorrerá devido a depreciação de uma lib utilizada no projeto. Este erro pode ser visto ao executar o programa.
+
+ 
+ - Caso ao tentar executar o manage.py um erro parecido com o abaixo ocorra:
+ UnicodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 47: ordinal not in range(128), existe um problema na leitura do python em relação a caracteres especiais.Bem provavem que esse erro ocorra caso a pasta que você criou para alocar as pastas do projeto esteja com c cedilha ou acentos. Esse erro provavelmente acontecerá no arquivo models.py dentro da pasta modelagem.
+ Você pode seguir o passo 1, ou simplesmente renomear a pasta.
+
+
+1º:Abra o arquivo models.py e adicione junto a segunte linha LISTA_PARTIDOS = os.path.join('recursos/partidos.txt',MODULE_DIR) um .decode("utf-8"). A linha ficará:
+LISTA_PARTIDOS = os.path.join('recursos/partidos.txt',MODULE_DIR).decode("utf-8")
+
