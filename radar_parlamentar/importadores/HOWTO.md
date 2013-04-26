@@ -4,13 +4,13 @@ HOW TO
 Importação dos dados abertos para o banco de dados do Radar Parlamentar
 -------------------------------------------------------------------------
 
-1. Câmara Municipal de São Paulo
+1.Câmara Municipal de São Paulo
 
     $ python manage.py shell
     $ from importadores import cmsp
     $ cmsp.main()
 
-2. Câmara dos Deputados
+2.Câmara dos Deputados
 
     * Passo 1 - Gerar lista de IDs que existem:
 
