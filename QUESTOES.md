@@ -20,4 +20,4 @@ Os resultados dessas análises se encontram na pasta "resultados"
 7. Análise de sensibilidade: será que uma votação diferente por afetar bastante o posicionamento dos partidos?
 Exemplo: será que se desconsiderarmos a votação do código florestal, o PV ficaria bem perto da base governista?
 
-***propostas de emenda à constituição, a saber: *98/2007 e 61/2011* ***
+**propostas de emenda à constituição, a saber: *98/2007 e 61/2011* **
