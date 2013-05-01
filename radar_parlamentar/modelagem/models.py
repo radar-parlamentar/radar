@@ -495,7 +495,7 @@ class Voto(models.Model):
     opcao = models.CharField(max_length=10, choices=OPCOES)
 
     def __unicode__(self):
-        return "%s votou %s" % (self.parlamentar, self.opcao)
+        return "%s votou %s" % (self.legislatura, self.opcao)
 
 class VotosAgregados:
     """Um conjunto de votos.
