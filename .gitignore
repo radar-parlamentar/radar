@@ -14,3 +14,9 @@ radar_parlamentar/radar_parlamentar.db
 .project
 .pydevproject
 .settings/*
+
+# virtualenv related
+bin/
+include/
+lib/
+local/
