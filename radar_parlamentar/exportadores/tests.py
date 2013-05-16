@@ -17,7 +17,6 @@ MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 class exportarTest (TestCase):
-    
     def test_create_file_partido(self):
     	filepath = os.path.join(MODULE_DIR, 'dados/voto.xml')
     	self.assertTrue(os.path.isfile(filepath))
