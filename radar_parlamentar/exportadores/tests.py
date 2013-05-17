@@ -56,10 +56,7 @@ class ExportadoresFileTest (TestCase):
 
 class DadosExportardosTest (TestCase):
 	
-	def test_create_file_partido(self):
-    	exportar.serialize_partido()
-    	filepath = os.path.join(MODULE_DIR, 'dados/partido.xml')
-    	self.assertTrue(os.path.isfile(filepath))
+	
 
         
 
