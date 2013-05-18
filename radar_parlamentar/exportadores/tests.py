@@ -22,21 +22,25 @@ MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 class ExportadoresFileTest(TestCase):
     @classmethod
     def setUpClass(cls):
-        partidoTest1 = models.Partido()
-        partidoTest1.nome = 'PMDB'
-        partidoTest1.numero = '15'
-        partidoTest2 = models.Partido()
-        partidoTest2.nome = 'PT'
-        partidoTest2.numero = '13'
-        partidoTest3 = models.Partido()
-        partidoTest3.nome = 'PSDB'
-        partidoTest3.numero = '23'
+        
+        partidoTest1 = models.Partido(nome = 'PMDB',numero = '40')
+        partidoTest2 = models.Partido(nome = 'PT',numero = '13')
+        partidoTest3 = models.Partido(nome = 'PSDB',numero = '23')
         partidoTest1.save()
         partidoTest2.save()
         partidoTest3.save()
-
         
+        parlamentarTest1 = models.Parlamentar(id_parlamentar = '',nome = 'Ivandro Cunha Lima',genero = '')
+        parlamentarTest2 = models.Parlamentar(id_parlamentar = '',nome = 'Fernando Ferro',genero = '')
+        parlamentarTest3 = models.Parlamentar(id_parlamentar = '',nome = 'Humberto Costa',genero = '')
+        
+        parlamentarTest1.save()
+        parlamentarTest2.save()
+        parlamentarTest3.save()
+
+
     def test_create_file_partido(self):
+        
         exportar.serialize_partido()
     	filepath = os.path.join(MODULE_DIR, 'dados/partido.xml')
     	self.assertTrue(os.path.isfile(filepath))
@@ -62,6 +66,18 @@ class ExportadoresFileTest(TestCase):
     	filepath = os.path.join(MODULE_DIR, 'dados/parlamentar.xml')
     	self.assertTrue(os.path.isfile(filepath))
     	
+    def test_virify_file_parlamentar(self):
+        parlamentar = models.Parlamentar.objects.get(nome ='Humberto Costa')
+        filepath = os.path.join(MODULE_DIR, 'dados/parlamentar.xml')
+        file_xml = open(filepath,'r')
+        file_read = file_xml.read()
+        self.assertTrue(file_read.find(parlamentar.nome) > 0)
+        
+
+
+
+
+
     def test_create_file_legislatura(self):
     	exportar.serialize_legislatura()
     	filepath = os.path.join(MODULE_DIR, 'dados/legislatura.xml')
