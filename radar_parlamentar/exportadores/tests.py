@@ -39,6 +39,16 @@ class ExportadoresFileTest(TestCase):
         parlamentarTest3.save()
 
 
+        casa_legislativaTest1 = models.CasaLegislativa(nome = 'Camara dos Deputados',nome_curto = 'cdep',esfera = 'FEDERAL',
+                local = '', atualizacao = '2012-06-01')
+
+        casa_legislativaTest2 = models.CasaLegislativa(nome = 'Camara Municipal de Sao Paulo',nome_curto = 'cmsp',
+            esfera = 'MUNICIPAL' ,local = 'Sao Paulo - SP', atualizacao = '2012-12-31')
+
+        casa_legislativaTest1.save()
+        casa_legislativaTest2.save()
+
+
     def test_create_file_partido(self):
         
         exportar.serialize_partido()
@@ -61,6 +71,19 @@ class ExportadoresFileTest(TestCase):
 		filepath = os.path.join(MODULE_DIR, 'dados/casa_legislativa.xml')
 		self.assertTrue(os.path.isfile(filepath))
     
+    
+    def test_verify_file_casa_legislativa(self):
+        casa_legislativa = models.CasaLegislativa.objects.get(atualizacao = '2012-12-31') 
+        filepath = os.path.join(MODULE_DIR, 'dados/casa_legislativa.xml')
+        file_xml = open(filepath,'r')
+        file_read = file_xml.read() #Transforma o arquivo xml em uma string 
+        self.assertTrue(file_read.find(casa_legislativa.nome.decode("utf-8")) > 0)
+        self.assertTrue(file_read.find(casa_legislativa.nome_curto)> 0)
+        self.assertTrue(file_read.find(casa_legislativa.esfera)>0)
+        self.assertTrue(file_read.find('cdeb') < 0) #Caso for menor que zero a palavra nao existe na string
+
+
+
     def test_create_file_parlamentar(self):
     	exportar.serialize_parlamentar()
     	filepath = os.path.join(MODULE_DIR, 'dados/parlamentar.xml')
@@ -73,9 +96,6 @@ class ExportadoresFileTest(TestCase):
         file_read = file_xml.read()
         self.assertTrue(file_read.find(parlamentar.nome) > 0)
         
-
-
-
 
 
     def test_create_file_legislatura(self):
