@@ -22,6 +22,8 @@ MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 class ExportadoresFileTest(TestCase):
     @classmethod
     def setUpClass(cls):
+        '''Metodo responsavel por setar o que for necessario para rodar os testes. No nosso a criacao dos objetos no 
+        banco de testes'''
         
         partidoTest1 = models.Partido(nome = 'PMDB',numero = '40')
         partidoTest2 = models.Partido(nome = 'PT',numero = '13')
@@ -89,7 +91,7 @@ class ExportadoresFileTest(TestCase):
     	filepath = os.path.join(MODULE_DIR, 'dados/parlamentar.xml')
     	self.assertTrue(os.path.isfile(filepath))
     	
-    def test_virify_file_parlamentar(self):
+    def test_verify_file_parlamentar(self):
         parlamentar = models.Parlamentar.objects.get(nome ='Humberto Costa')
         filepath = os.path.join(MODULE_DIR, 'dados/parlamentar.xml')
         file_xml = open(filepath,'r')
