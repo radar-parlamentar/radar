@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0"><object pk="1" model="modelagem.partido"><field type="CharField" name="nome">PMDB</field><field type="IntegerField" name="numero">40</field></object><object pk="2" model="modelagem.partido"><field type="CharField" name="nome">PT</field><field type="IntegerField" name="numero">13</field></object><object pk="3" model="modelagem.partido"><field type="CharField" name="nome">PSDB</field><field type="IntegerField" name="numero">23</field></object></django-objects>
