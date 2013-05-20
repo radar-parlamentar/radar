@@ -50,6 +50,9 @@ class ExportadoresFileTest(TestCase):
         casa_legislativaTest1.save()
         casa_legislativaTest2.save()
 
+	legislaturaTest1 = models.Legislatura(parlamentar=parlamentarTest1,casa_legislativa = casa_legislativaTest1, inicio='2004-01-01', 		 			fim='2012-07-01',partido=partidoTest1, localidade='PB')
+	legislaturaTest1.save()
+
 
     def test_create_file_partido(self):
         
@@ -104,6 +107,14 @@ class ExportadoresFileTest(TestCase):
     	exportar.serialize_legislatura()
     	filepath = os.path.join(MODULE_DIR, 'dados/legislatura.xml')
     	self.assertTrue(os.path.isfile(filepath))
+    
+    def test_verify_file_legislatura(self):
+	legislatura = models.Legislatura.objects.get(inicio= '2004-01-01')
+	filepath = os.path.join(MODULE_DIR, 'dados/legislatura.xml')
+	file_xml = open(filepath,'r')
+        file_read = file_xml.read()
+	self.assertTrue(file_read.find(legislatura.localidade) > 0)	
+
     	
     def test_create_file_proposicao(self):
     	exportar.serialize_proposicao()
