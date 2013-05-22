@@ -300,6 +300,15 @@ class CasaLegislativa(models.Model):
         return len(votos)
 
 
+    @classmethod
+    def deleta_casa(nome_casa_curto):
+        """Método que deleta determinado registro de casa legislativa em cascata
+            Argumentos:
+                nome_casa - Nome da casa a ser deletada"""
+        CasaLegislativa.objects.filter(nome_curto=nome_casa_curto).delete()
+
+
+
 class PeriodoCasaLegislativa(object):
     """Atributos:
         ini, fim -- objetos datetime
