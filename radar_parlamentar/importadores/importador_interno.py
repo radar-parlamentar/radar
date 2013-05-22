@@ -4,7 +4,17 @@ import re
 import sys
 import os
 
-MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
+#MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
+MODULE_DIR = os.getcwd() + '/exportadores/'
+
+def main():
+	deserialize_partido()
+	deserialize_casa_legislativa()
+	deserialize_parlamentar()
+	deserialize_legislatura()
+	deserialize_proposicao()
+	deserialize_votacao()
+	deserialize_voto()
 
 def deserialize_partido():
 	XMLSerializer = serializers.get_serializer("xml")
@@ -17,13 +27,14 @@ def deserialize_partido():
     		partido.save()	
 
 def deserialize_casa_legislativa():
+	print ("\nIsso aqui eh :" + MODULE_DIR + "\n")
 	XMLSerializer = serializers.get_serializer("xml")
 	xml_serializer = XMLSerializer()
 	filepath = os.path.join(MODULE_DIR, 'dados/casa_legislativa.xml')
 	out = open(filepath, "r")
-	data = xml_serializer.getvalue()
+	#data = xml_serializer.getvalue()
 	
-	for casa_legislativa in serializers.deserialize("xml", data):
+	for casa_legislativa in serializers.deserialize("xml", out):
     		casa_legislativa.save()
 
 def deserialize_parlamentar():
