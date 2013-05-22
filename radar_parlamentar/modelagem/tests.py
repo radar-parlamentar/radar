@@ -96,4 +96,82 @@ class ModelsTest(TestCase):
             self.fail('Legislatura não deveria ter sido encontrada')
         except:
             self.assertTrue(True)
-            
+
+    def test_deleta_casa(self):
+	'''partidoTest1 = models.Partido()
+	partidoTest1.nome = 'PA'
+	partidoTest1.numero = '01'
+        partidoTest1.save()
+        partidoTest2 = models.Partido()
+	partidoTest2.nome = 'PB'
+	partidoTest.numero = '02'
+        partidoTest2.save()
+     
+        parlamentarTest1 = models.Parlamentar()
+	parlamentarTest1.id_parlamentar = ''
+	parlamentarTest1.nome ='Pierre'
+	parlamentarTest1.genero = ''
+        parlamentarTest1.save()
+        parlamentarTest2 = models.Parlamentar()
+	parlamentarTest2.id_parlamentar = ''
+	parlamentarTest2.nome = 'Napoleao'
+	parlamentarTest2.genero = ''
+        parlamentarTest2.save()
+	'''
+        casa_legislativaTest1 = models.CasaLegislativa()
+	casa_legislativaTest1.nome= 'Casa1'
+	casa_legislativaTest1.nome_curto = 'cs1'
+	casa_legislativaTest1.esfera = 'FEDERAL'
+        casa_legislativaTest1.local = ''
+	casa_legislativaTest1.atualizacao = '2012-06-01'
+	casa_legislativaTest1.save()
+        casa_legislativaTest2 = models.CasaLegislativa()
+	casa_legislativaTest2.nome='Casa 2'
+	casa_legislativaTest2.nome_curto='cs2'
+	casa_legislativaTest2.esfera = 'MUNICIPAL'
+        casa_legislativaTest2.local = 'local2'
+	casa_legislativaTest2.atualizacao = '2012-12-31'
+        casa_legislativaTest2.save()
+
+	'''legislaturaTest1 = models.Legislatura()
+	legislaturaTest1.parlamentar=parlamentarTest1
+	legislaturaTest1.casa_legislativa = casa_legislativaTest1
+	legislaturaTest1.inicio='1111-11-11'
+	legislaturaTest1.fim='1112-12-12'
+	legislaturaTest1.partido=partidoTest1
+	legislaturaTest1.localidade='PB'
+	legislaturaTest1.save()
+	legislaturaTest2 = models.Legislatura(parlamentar=parlamentarTest2,casa_legislativa = casa_legislativaTest2, inicio='2222-22-22', 		fim='2223-23-23',partido=partidoTest2, localidade='PB')
+	legislaturaTest1.save()
+	'''
+
+	antes_objetos_casa=models.CasaLegislativa.objects.all()
+	#antes_objetos_partido=Partido.objects.all()
+	#antes_objetos_parlamentar=Parlamentar.objects.all()
+	#antes_objetos_legislatura=Legislatura.objects.all()
+
+	assertTrue(antes_objetos_casa.find('Casa 1'))
+	assertTrue(antes_objetos_casa.find('Casa 2'))
+	#assertTrue(antes_objetos_partido.find('PA'))
+	#assertTrue(antes_objetos_partido.find('PB'))
+	#assertTrue(antes_objetos_parlamentar.find('Pierre'))
+	#assertTrue(antes_objetos_parlamentar.find('Napoleao'))
+	#assertTrue(antes_objetos_legislatura.find('1111-11-11'))
+	#assertTrue(antes_objetos_legislatura.find('2222-22-22'))
+
+	models.CasaLegislativa.deleta_casa('cs1')
+
+	depois_objetos_casa=CasaLegislativa.objects.all()
+	#depois_objetos_partido=Partido.objects.all()
+	#depois_objetos_parlamentar=Parlamentar.objects.all()
+	#depois_objetos_legislatura=Legislatura.objects.all()
+
+	#assertFalse(antes_objetos_casa.find('Casa 1'))
+	#assertTrue(antes_objetos_casa.find('Casa 2'))
+	#assertTrue(antes_objetos_partido.find('PA'))
+	#assertTrue(antes_objetos_partido.find('PB'))
+	#assertTrue(antes_objetos_parlamentar.find('Pierre'))
+	#assertTrue(antes_objetos_parlamentar.find('Napoleao'))
+	#assertTrue(antes_objetos_legislatura.find('1111-11-11'))
+	#assertTrue(antes_objetos_legislatura.find('2222-22-22'))
+	
