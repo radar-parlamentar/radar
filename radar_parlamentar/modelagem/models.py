@@ -308,7 +308,6 @@ class CasaLegislativa(models.Model):
         CasaLegislativa.objects.filter(nome_curto=nome_casa_curto).delete()
 
 
-
 class PeriodoCasaLegislativa(object):
     """Atributos:
         ini, fim -- objetos datetime

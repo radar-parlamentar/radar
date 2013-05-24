@@ -98,13 +98,14 @@ class ModelsTest(TestCase):
             self.assertTrue(True)
 
     def test_deleta_casa(self):
-	'''partidoTest1 = models.Partido()
+
+	partidoTest1 = models.Partido()
 	partidoTest1.nome = 'PA'
 	partidoTest1.numero = '01'
         partidoTest1.save()
         partidoTest2 = models.Partido()
 	partidoTest2.nome = 'PB'
-	partidoTest.numero = '02'
+	partidoTest2.numero = '02'
         partidoTest2.save()
      
         parlamentarTest1 = models.Parlamentar()
@@ -117,7 +118,7 @@ class ModelsTest(TestCase):
 	parlamentarTest2.nome = 'Napoleao'
 	parlamentarTest2.genero = ''
         parlamentarTest2.save()
-	'''
+	
         casa_legislativaTest1 = models.CasaLegislativa()
 	casa_legislativaTest1.nome= 'Casa1'
 	casa_legislativaTest1.nome_curto = 'cs1'
@@ -126,52 +127,88 @@ class ModelsTest(TestCase):
 	casa_legislativaTest1.atualizacao = '2012-06-01'
 	casa_legislativaTest1.save()
         casa_legislativaTest2 = models.CasaLegislativa()
-	casa_legislativaTest2.nome='Casa 2'
+	casa_legislativaTest2.nome='Casa2'
 	casa_legislativaTest2.nome_curto='cs2'
 	casa_legislativaTest2.esfera = 'MUNICIPAL'
         casa_legislativaTest2.local = 'local2'
 	casa_legislativaTest2.atualizacao = '2012-12-31'
         casa_legislativaTest2.save()
 
-	'''legislaturaTest1 = models.Legislatura()
+	legislaturaTest1 = models.Legislatura()
 	legislaturaTest1.parlamentar=parlamentarTest1
 	legislaturaTest1.casa_legislativa = casa_legislativaTest1
-	legislaturaTest1.inicio='1111-11-11'
-	legislaturaTest1.fim='1112-12-12'
+	legislaturaTest1.inicio='2013-01-01'
+	legislaturaTest1.fim='2013-02-01'
 	legislaturaTest1.partido=partidoTest1
 	legislaturaTest1.localidade='PB'
 	legislaturaTest1.save()
-	legislaturaTest2 = models.Legislatura(parlamentar=parlamentarTest2,casa_legislativa = casa_legislativaTest2, inicio='2222-22-22', 		fim='2223-23-23',partido=partidoTest2, localidade='PB')
-	legislaturaTest1.save()
-	'''
+	legislaturaTest2 = models.Legislatura()
+	legislaturaTest2.parlamentar=parlamentarTest2
+	legislaturaTest2.casa_legislativa = casa_legislativaTest2
+	legislaturaTest2.inicio='2013-01-02'
+	legislaturaTest2.fim='2013-02-02'
+	legislaturaTest2.partido=partidoTest2
+	legislaturaTest2.localidade='PR'
+	legislaturaTest2.save()
 
+	'''proposicaoTest1= models.Proposicao()
+	proposicaoTest1.id_prop =01
+    	proposicaoTest1.sigla = 'PR1'
+    	proposicaoTest1.numero = 01
+    	proposicaoTest1.ano = 2013
+    	proposicaoTest1.ementa = 'ementa1'
+    	proposicaoTest1.descricao = ''
+    	proposicaoTest1.indexacao = ''
+    	proposicaoTest1.data_apresentacao = '2013-01-02'
+    	proposicaoTest1.situacao = ''
+    	proposicaoTest1.casa_legislativa = casa_legislativaTest2
+    	proposicaoTest1.autores = parlamentarTest1
+	proposicaoTest1.save()'''
+
+	antes_objetos_partido=models.Partido.objects.all()
+	antes_objetos_parlamentar=models.Parlamentar.objects.all()
 	antes_objetos_casa=models.CasaLegislativa.objects.all()
-	#antes_objetos_partido=Partido.objects.all()
-	#antes_objetos_parlamentar=Parlamentar.objects.all()
-	#antes_objetos_legislatura=Legislatura.objects.all()
+	antes_objetos_legislatura=models.Legislatura.objects.all()
 
-	assertTrue(antes_objetos_casa.find('Casa 1'))
-	assertTrue(antes_objetos_casa.find('Casa 2'))
-	#assertTrue(antes_objetos_partido.find('PA'))
-	#assertTrue(antes_objetos_partido.find('PB'))
-	#assertTrue(antes_objetos_parlamentar.find('Pierre'))
-	#assertTrue(antes_objetos_parlamentar.find('Napoleao'))
+        nomes_partido = [p.nome for p in antes_objetos_partido]
+        self.assertTrue('PA' in nomes_partido)
+        self.assertTrue('PB' in nomes_partido)
+
+        nomes_parlamentar = [pl.nome for pl in antes_objetos_parlamentar]
+        self.assertTrue('Pierre' in nomes_parlamentar)
+        self.assertTrue('Napoleao' in nomes_parlamentar)
+
+	nomes_casa = [c.nome for c in antes_objetos_casa]
+        self.assertTrue('Casa1' in nomes_casa)
+        self.assertTrue('Casa2' in nomes_casa)
+
+	nomes_legislatura = [l.localidade for l in antes_objetos_legislatura]
+        self.assertTrue('PB' in nomes_legislatura)
+        self.assertTrue('PR' in nomes_legislatura)
 	#assertTrue(antes_objetos_legislatura.find('1111-11-11'))
 	#assertTrue(antes_objetos_legislatura.find('2222-22-22'))
 
 	models.CasaLegislativa.deleta_casa('cs1')
+	
+	depois_objetos_partido=models.Partido.objects.all()
+	depois_objetos_parlamentar=models.Parlamentar.objects.all()
+	depois_objetos_casa=models.CasaLegislativa.objects.all()
+	depois_objetos_legislatura=models.Legislatura.objects.all()
 
-	depois_objetos_casa=CasaLegislativa.objects.all()
-	#depois_objetos_partido=Partido.objects.all()
-	#depois_objetos_parlamentar=Parlamentar.objects.all()
-	#depois_objetos_legislatura=Legislatura.objects.all()
+	nomes_partido = [p.nome for p in depois_objetos_partido]
+        self.assertTrue('PA' in nomes_partido)
+        self.assertTrue('PB' in nomes_partido)
 
-	#assertFalse(antes_objetos_casa.find('Casa 1'))
-	#assertTrue(antes_objetos_casa.find('Casa 2'))
-	#assertTrue(antes_objetos_partido.find('PA'))
-	#assertTrue(antes_objetos_partido.find('PB'))
-	#assertTrue(antes_objetos_parlamentar.find('Pierre'))
-	#assertTrue(antes_objetos_parlamentar.find('Napoleao'))
-	#assertTrue(antes_objetos_legislatura.find('1111-11-11'))
-	#assertTrue(antes_objetos_legislatura.find('2222-22-22'))
+	nomes_parlamentar = [pl.nome for pl in depois_objetos_parlamentar]
+        self.assertTrue('Pierre' in nomes_parlamentar)
+        self.assertTrue('Napoleao' in nomes_parlamentar)
+
+        nomes_casa = [c.nome for c in depois_objetos_casa]
+        self.assertFalse('Casa1' in nomes_casa)
+        self.assertTrue('Casa2' in nomes_casa)
+
+	nomes_legislatura = [l.localidade for l in antes_objetos_legislatura]
+        self.assertTrue('PB' in nomes_legislatura)
+        self.assertTrue('PR' in nomes_legislatura)
+
 	
