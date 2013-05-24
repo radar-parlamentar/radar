@@ -151,24 +151,36 @@ class ModelsTest(TestCase):
 	legislaturaTest2.localidade='PR'
 	legislaturaTest2.save()
 
-	'''proposicaoTest1= models.Proposicao()
-	proposicaoTest1.id_prop =01
+	proposicaoTest1= models.Proposicao()
+	proposicaoTest1.id_prop ='0001'
     	proposicaoTest1.sigla = 'PR1'
-    	proposicaoTest1.numero = 01
-    	proposicaoTest1.ano = 2013
-    	proposicaoTest1.ementa = 'ementa1'
-    	proposicaoTest1.descricao = ''
-    	proposicaoTest1.indexacao = ''
+    	proposicaoTest1.numero = '0001'
+    	proposicaoTest1.ano = '2013'
     	proposicaoTest1.data_apresentacao = '2013-01-02'
-    	proposicaoTest1.situacao = ''
-    	proposicaoTest1.casa_legislativa = casa_legislativaTest2
-    	proposicaoTest1.autores = parlamentarTest1
-	proposicaoTest1.save()'''
+    	proposicaoTest1.casa_legislativa = casa_legislativaTest1
+	proposicaoTest1.save()
+	proposicaoTest2= models.Proposicao()
+	proposicaoTest2.id_prop ='0002'
+    	proposicaoTest2.sigla = 'PR2'
+    	proposicaoTest2.numero = '0002'
+    	proposicaoTest2.ano = '2013'
+    	proposicaoTest2.data_apresentacao = '2013-02-02'
+    	proposicaoTest2.casa_legislativa = casa_legislativaTest2
+	proposicaoTest2.save()
 
+	votacaoTest1 = models.Votacao(id_vot = ' 12345',descricao = 'Teste da votacao',data = '1900-12-05',resultado = 'Teste',proposicao = 		proposicaoTest1)
+	votacaoTest1.save()		
+  
+  	votoTest1 = models.Voto(votacao = votacaoTest1,legislatura = legislaturaTest1,opcao = 'TESTE' )
+  	votoTest1.save()
+	
 	antes_objetos_partido=models.Partido.objects.all()
 	antes_objetos_parlamentar=models.Parlamentar.objects.all()
 	antes_objetos_casa=models.CasaLegislativa.objects.all()
 	antes_objetos_legislatura=models.Legislatura.objects.all()
+	antes_objetos_proposicao=models.Proposicao.objects.all()
+	antes_objetos_voto=models.Voto.objects.all()
+	antes_objetos_votacao=models.Votacao.objects.all()
 
         nomes_partido = [p.nome for p in antes_objetos_partido]
         self.assertTrue('PA' in nomes_partido)
@@ -185,8 +197,16 @@ class ModelsTest(TestCase):
 	nomes_legislatura = [l.localidade for l in antes_objetos_legislatura]
         self.assertTrue('PB' in nomes_legislatura)
         self.assertTrue('PR' in nomes_legislatura)
-	#assertTrue(antes_objetos_legislatura.find('1111-11-11'))
-	#assertTrue(antes_objetos_legislatura.find('2222-22-22'))
+
+	nomes_proposicao = [lg.sigla for lg in antes_objetos_proposicao]
+        self.assertTrue('PR1' in nomes_proposicao)
+        self.assertTrue('PR2' in nomes_proposicao)
+
+	nomes_voto = [v.votacao for v in antes_objetos_voto]
+        self.assertTrue(votacaoTest1 in nomes_voto)
+
+	nomes_votacao = [vt.id_vot for vt in antes_objetos_votacao]
+        self.assertTrue(' 12345' in nomes_votacao)
 
 	models.CasaLegislativa.deleta_casa('cs1')
 	
@@ -194,6 +214,9 @@ class ModelsTest(TestCase):
 	depois_objetos_parlamentar=models.Parlamentar.objects.all()
 	depois_objetos_casa=models.CasaLegislativa.objects.all()
 	depois_objetos_legislatura=models.Legislatura.objects.all()
+	depois_objetos_proposicao=models.Proposicao.objects.all()
+	depois_objetos_voto=models.Voto.objects.all()
+	depois_objetos_votacao=models.Votacao.objects.all()
 
 	nomes_partido = [p.nome for p in depois_objetos_partido]
         self.assertTrue('PA' in nomes_partido)
@@ -207,8 +230,18 @@ class ModelsTest(TestCase):
         self.assertFalse('Casa1' in nomes_casa)
         self.assertTrue('Casa2' in nomes_casa)
 
-	nomes_legislatura = [l.localidade for l in antes_objetos_legislatura]
-        self.assertTrue('PB' in nomes_legislatura)
+	nomes_legislatura = [l.localidade for l in depois_objetos_legislatura]
+        self.assertFalse('PB' in nomes_legislatura)
         self.assertTrue('PR' in nomes_legislatura)
 
-	
+	nomes_proposicao = [lg.sigla for lg in depois_objetos_proposicao]
+        self.assertFalse('PR1' in nomes_proposicao)
+        self.assertTrue('PR2' in nomes_proposicao)
+
+	nomes_voto = [v.votacao for v in depois_objetos_voto]
+        self.assertFalse(votacaoTest1 in nomes_voto)
+
+	nomes_votacao = [vt.id_vot for vt in depois_objetos_votacao]
+        self.assertFalse(' 12345' in nomes_votacao)
+
+
