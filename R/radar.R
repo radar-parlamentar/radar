@@ -75,27 +75,37 @@ pca <- function(rcobject) {
   # neste intervalo (caso de votos agregados por partido), e faz
   # a análise de componentes principais.
   x <- rcobject$votes
-  resultado <- prcomp(x,scale=FALSE,center=TRUE,)
+  resultado <- list()
+  resultado$pca <- prcomp(x,scale=FALSE,center=TRUE)
+  resultado$rcobject <- rcobject
   return(resultado)
 }
 
 
 plotar <- function(resultado) {
   # plota resultado de uma PCA.
-  xx <- resultado$x[,1]
-  yy <- resultado$x[,2]
+  xx <- resultado$pca$x[,1]
+  yy <- resultado$pca$x[,2]
   symbols(xx,yy,circles=rep(1,length(xx)),inches=0.2)
-  text(xx,yy,dimnames(resultado$x)[[1]])
+  text(xx,yy,dimnames(resultado$pca$x)[[1]])
   return
 }
 
 # exemplo:
 r <- pca(rcdados)
-plot(r$x[,1],r$x[,2])
+xx <- r$pca$x[,1]
+yy <- r$pca$x[,2]
+partido <- factor(r$rcobject$legis.data)
+num.partidos <- length(levels(partido))
+paleta <- colorRampPalette(c("darkblue","blue","yellow","green","darkmagenta","cyan","red","black","aquamarine"),space = "Lab")(num.partidos)
+cor <- paleta[as.integer(partido)]
+symbols(xx,yy,circles=rep(1,length(xx)),inches=0.05,fg=cor)
+legend("topright",levels(partido),col=paleta[1:22],pch=19)
+#plot(r$pca$x[,1],r$pca$x[,2])
 
 # por partido:
-rr <- pca(por.partido(rcdados))
-plotar(rr)
+#rr <- pca(por.partido(rcdados))
+#plotar(rr)
 
 # para fazer um wnominate basta utilizar o objeto rcdados:
 #
