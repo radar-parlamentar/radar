@@ -101,7 +101,7 @@ paleta <- colorRampPalette(c("darkblue","blue","yellow","green","darkmagenta","c
 cor <- paleta[as.integer(partido)]
 symbols(xx,yy,circles=rep(1,length(xx)),inches=0.05,fg=cor)
 legend("topright",levels(partido),col=paleta[1:22],pch=19)
-#plot(r$pca$x[,1],r$pca$x[,2])
+#plot(r$pca$x[,1],r$pca$x[,2]) # gráfico em preto e branco
 
 # por partido:
 #rr <- pca(por.partido(rcdados))
