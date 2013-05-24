@@ -47,11 +47,28 @@ class ImportadorInternoTest(TestCase):
 		legislaturaTest1 = models.Legislatura(parlamentar=parlamentarTest1,casa_legislativa = casa_legislativaTest1, inicio='2004-01-01', 		 			fim='2012-07-01',partido=partidoTest1, localidade='PB')
 		legislaturaTest1.save()
 
+		proposicaoTest1 = models.Proposicao()
+		proposicaoTest1.id_prop = '5555'
+		proposicaoTest1.sigla = 'PL'
+		proposicaoTest1.numero = '4520'
+		proposicaoTest1.casa_legislativa = casa_legislativaTest1
+		proposicaoTest1.save()
+
+	
+		votacaoTest1 = models.Votacao(id_vot = ' 12345',descricao = 'Teste da votacao',data = '1900-12-05',resultado = 'Teste',proposicao = proposicaoTest1)
+		votacaoTest1.save()		
+  
+  		votoTest1 = models.Voto(votacao = votacaoTest1,legislatura = legislaturaTest1,opcao = 'TESTE' )
+  		votoTest1.save()
+
 		#Exportando dados do mock para os xml
 		exportar.serialize_partido()
 		exportar.serialize_parlamentar()
 		exportar.serialize_casa_legislativa()
 		exportar.serialize_legislatura()
+		exportar.serialize_proposicao()
+		exportar.serialize_votacao()
+		exportar.serialize_voto()
 
 		#Deletando os registros do mock
 		partidoTest1.delete()
@@ -66,6 +83,12 @@ class ImportadorInternoTest(TestCase):
 		casa_legislativaTest2.delete()
 
 		legislaturaTest1.delete()
+
+		proposicaoTest1.delete()
+
+		votacaoTest1.delete()
+
+		votoTest1.delete()
 		
 
 	def test_importar_partido(self):
@@ -95,19 +118,21 @@ class ImportadorInternoTest(TestCase):
 		legislatura = models.Legislatura.objects.filter(parlamentar = parlamentar[0])
 		self.assertEquals(legislatura[0].parlamentar.nome,'Ivandro Cunha Lima')
 
+	def test_importar_proposicao(self):
+		importador_interno.deserialize_casa_legislativa()
+		importador_interno.deserialize_proposicao()
+		proposicao = models.Proposicao.objects.filter(numero = '4520')
+		self.assertEquals(proposicao[0].sigla,'PL')
 
+	def test_importar_votacao(self):
+		importador_interno.deserialize_casa_legislativa()
+		importador_interno.deserialize_proposicao()
+		importador_interno.deserialize_votacao()
+		votacao = models.Votacao.objects.filter(id_vot = '12345')
+		self.assertEquals(str(votacao[0].data),'1900-12-05')
 
-
-		
-
-		
-
-
-
-
-
-
-
-
-
-		
+	
+	def test_importar_voto(self):
+		importador_interno.main()
+		voto = models.Voto.objects.filter(opcao = 'TESTE')
+		self.assertEquals(voto[0].opcao,'TESTE')
