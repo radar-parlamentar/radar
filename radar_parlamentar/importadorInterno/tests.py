@@ -136,3 +136,4 @@ class ImportadorInternoTest(TestCase):
 		importador_interno.main()
 		voto = models.Voto.objects.filter(opcao = 'TESTE')
 		self.assertEquals(voto[0].opcao,'TESTE')
+	
