@@ -306,16 +306,15 @@ class CasaLegislativa(models.Model):
             Argumentos:
                 nome_casa - Nome da casa a ser deletada"""
         try:
-		allCasaLegislativa = CasaLegislativa.objects.all()
-		achei = False
-		for casa in allCasaLegislativa:
-		    if nome_casa_curto == casa.nome_curto:        
-		        CasaLegislativa.objects.filter(nome_curto=nome_casa_curto).delete()
-		        achei = True
-		if achei != True:
-		    print 'A Casa que deseja excluir não existe no banco'
-	except:
-		print 'Possivelmente a operacao extrapolou o limite de operacoes do SQLite, tente utilizar o MySQL'
+		
+            try: 
+                CasaLegislativa.objects.get(nome_curto=nome_casa_curto).delete()
+       
+            except CasaLegislativa.DoesNotExist:
+                print 'Casa legislativa ' + nome_casa_curto + ' não existe'
+	    
+        except:
+		  print 'Possivelmente a operacao extrapolou o limite de operacoes do SQLite, tente utilizar o MySQL'
 
                 
 
