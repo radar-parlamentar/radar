@@ -305,15 +305,17 @@ class CasaLegislativa(models.Model):
         """Método que deleta determinado registro de casa legislativa em cascata
             Argumentos:
                 nome_casa - Nome da casa a ser deletada"""
-        
-        allCasaLegislativa = CasaLegislativa.objects.all()
-        achei = False
-        for casa in allCasaLegislativa:
-            if nome_casa_curto == casa.nome_curto:        
-                CasaLegislativa.objects.filter(nome_curto=nome_casa_curto).delete()
-                achei = True
-        if achei != True:
-            print 'A Casa que deseja excluir não existe no banco'
+        try:
+		allCasaLegislativa = CasaLegislativa.objects.all()
+		achei = False
+		for casa in allCasaLegislativa:
+		    if nome_casa_curto == casa.nome_curto:        
+		        CasaLegislativa.objects.filter(nome_curto=nome_casa_curto).delete()
+		        achei = True
+		if achei != True:
+		    print 'A Casa que deseja excluir não existe no banco'
+	except:
+		print 'Possivelmente a operacao extrapolou o limite de operacoes do SQLite, tente utilizar o MySQL'
 
                 
 
