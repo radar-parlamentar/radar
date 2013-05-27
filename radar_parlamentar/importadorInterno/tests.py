@@ -1,9 +1,22 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
+#!/usr/bin/python
+# coding=utf8
 
-Replace this with more appropriate tests for your application.
-"""
+# Copyright (C) 2012, Leonardo Leite, Diego Rabatone, Saulo Trento
+#
+# This file is part of Radar Parlamentar.
+#
+# Radar Parlamentar is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Radar Parlamentar is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals
 from django.test import TestCase
@@ -91,49 +104,59 @@ class ImportadorInternoTest(TestCase):
 		votoTest1.delete()
 		
 
-	def test_importar_partido(self):
+	def test_deserialize_partido(self):
 	
 		importador_interno.deserialize_partido()
 		PMDB = models.Partido.objects.filter(nome = 'PMDB')
 		self.assertEquals(PMDB[0].numero,40)
 
-	def test_importar_parlamentar(self):
+	def test_deserialize_parlamentar(self):
 	
 		importador_interno.deserialize_parlamentar()
 		parlamentar = models.Parlamentar.objects.filter(nome = 'Ivandro Cunha Lima')
 		self.assertEquals(parlamentar[0].nome,'Ivandro Cunha Lima')
 
-	def test_importar_casa_legislativa(self):
+	def test_deserialize_casa_legislativa(self):
 	
 		importador_interno.deserialize_casa_legislativa()
 		casa_legislativa = models.CasaLegislativa.objects.filter(nome_curto = 'cdep')
 		self.assertEquals(casa_legislativa[0].nome,'Camara dos Deputados')
 
-	def test_importar_legislatura(self):
-		importador_interno.deserialize_parlamentar()
-		importador_interno.deserialize_casa_legislativa()
-		importador_interno.deserialize_partido()
-		importador_interno.deserialize_legislatura()
+	def test_deserialize_legislatura(self):
+		
+		importador_interno.main()
 		parlamentar = models.Parlamentar.objects.filter(nome = 'Ivandro Cunha Lima')
 		legislatura = models.Legislatura.objects.filter(parlamentar = parlamentar[0])
 		self.assertEquals(legislatura[0].parlamentar.nome,'Ivandro Cunha Lima')
 
-	def test_importar_proposicao(self):
-		importador_interno.deserialize_casa_legislativa()
-		importador_interno.deserialize_proposicao()
+	def test_deserialize_proposicao(self):
+		
+		importador_interno.main()
 		proposicao = models.Proposicao.objects.filter(numero = '4520')
 		self.assertEquals(proposicao[0].sigla,'PL')
 
-	def test_importar_votacao(self):
-		importador_interno.deserialize_casa_legislativa()
-		importador_interno.deserialize_proposicao()
-		importador_interno.deserialize_votacao()
+	def test_deserialize_votacao(self):
+		
+		importador_interno.main()
 		votacao = models.Votacao.objects.filter(id_vot = '12345')
 		self.assertEquals(str(votacao[0].data),'1900-12-05')
 
 	
-	def test_importar_voto(self):
+	def test_deserialize_voto(self):
+		
 		importador_interno.main()
 		voto = models.Voto.objects.filter(opcao = 'TESTE')
 		self.assertEquals(voto[0].opcao,'TESTE')
 	
+	def test_importa_casa_legislativa(self):
+		
+		models.CasaLegislativa.deleta_casa('cmsp')
+		models.CasaLegislativa.deleta_casa('cdep')
+		
+		importador_interno.importa_casa_legislativa('cdep')
+		casa_legislativa = models.CasaLegislativa.objects.filter(nome_curto = 'cdep')
+		self.assertEquals(casa_legislativa[0].nome,'Camara dos Deputados')
+		
+		casa_cmsp = models.CasaLegislativa.objects.filter(nome_curto = 'cmsp')
+		self.assertEquals(casa_cmsp[0].nome, 'Camara Municipal de Sao Paulo')
+		
