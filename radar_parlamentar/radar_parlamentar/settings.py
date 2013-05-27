@@ -128,7 +128,8 @@ INSTALLED_APPS = (
     'modelagem',
     'importadores',
     'analises',
-    'exportadores'
+    'exportadores',
+    'importadorInterno'
 )
 
 # A sample logging configuration. The only tangible logging
