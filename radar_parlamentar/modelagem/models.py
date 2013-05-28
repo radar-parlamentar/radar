@@ -300,14 +300,23 @@ class CasaLegislativa(models.Model):
         return len(votos)
 
 
-    @classmethod
+    @staticmethod
     def deleta_casa(nome_casa_curto):
         """Método que deleta determinado registro de casa legislativa em cascata
             Argumentos:
                 nome_casa - Nome da casa a ser deletada"""
-        CasaLegislativa.objects.filter(nome_curto=nome_casa_curto).delete()
+        try:
+		
+            try: 
+                CasaLegislativa.objects.get(nome_curto=nome_casa_curto).delete()
+       
+            except CasaLegislativa.DoesNotExist:
+                print 'Casa legislativa ' + nome_casa_curto + ' não existe'
+	    
+        except:
+		  print 'Possivelmente a operacao extrapolou o limite de operacoes do SQLite, tente utilizar o MySQL'
 
-
+                
 
 class PeriodoCasaLegislativa(object):
     """Atributos:

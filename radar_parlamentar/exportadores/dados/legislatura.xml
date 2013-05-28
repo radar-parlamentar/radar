@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<django-objects version="1.0"></django-objects>
+<django-objects version="1.0"><object pk="1" model="modelagem.legislatura"><field to="modelagem.parlamentar" name="parlamentar" rel="ManyToOneRel">1</field><field to="modelagem.casalegislativa" name="casa_legislativa" rel="ManyToOneRel">1</field><field type="DateField" name="inicio">2004-01-01</field><field type="DateField" name="fim">2012-07-01</field><field to="modelagem.partido" name="partido" rel="ManyToOneRel">1</field><field type="CharField" name="localidade">PB</field></object></django-objects>
