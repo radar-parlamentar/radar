@@ -22,6 +22,7 @@ from django.test import TestCase
 from importadores import convencao
 from datetime import date
 import models
+import pdb
 
 class ModelsTest(TestCase):
 
@@ -78,7 +79,7 @@ class ModelsTest(TestCase):
         self.assertEqual(12, d.month)
         self.assertEqual(periodos[0].string, '1989 1o Semestre')
         self.assertEqual(periodos[1].string, '1989 2o Semestre')
-        periodos = conv.periodos(models.MES,minimo=0.2)
+        periodos = conv.periodos(models.MES,numero_minimo_de_votacoes=1)
         self.assertEqual(len(periodos),2)
         
     def test_sould_find_legislatura(self):
