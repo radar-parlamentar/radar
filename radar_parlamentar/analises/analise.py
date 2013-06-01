@@ -495,15 +495,15 @@ class AnalisadorTemporal:
             dict_partido["p"] =  []
             for ap in self.analisadores_periodo:
                 scaler = grafico.GraphScaler()
-                mapa = scaler.scale(ap.partidos_2d())
-                dict_partido["x"].append(str(round(mapa[partido.nome][0],2)))
-                dict_partido["y"].append(str(round(mapa[partido.nome][1],2)))
+                mapa = scaler.scale(ap.coordenadas)
+                dict_partido["x"].append(round(mapa[partido.nome][0],2))
+                dict_partido["y"].append(round(mapa[partido.nome][1],2))
                 t = ap.tamanhos_partidos[partido.nome]
-                dict_partido["t"].append(str(t))
+                dict_partido["t"].append(t)
                 r = numpy.sqrt(t*escala)
-                dict_partido["r"].append(str(round(r,1)))
+                dict_partido["r"].append(round(r,1))
                 p = ap.presencas_partidos[partido.nome] * 100
-                dict_partido["p"].append(str(round(p,1)))
+                dict_partido["p"].append(round(p,1))
                 dict_partido["parlamentares"]=None
             self.json += json.dumps(dict_partido) + ','
         self.json = self.json[0:-1] # apaga última vírgula
