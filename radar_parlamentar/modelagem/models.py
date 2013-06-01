@@ -312,7 +312,7 @@ class Periodo(object):
                 mes_fim = 6
             else:
                 mes_fim = 12
-        elif delta == ANO:
+        else:
             mes_fim = 12
         dia_fim = monthrange(ano_fim,mes_fim)[1]
         return datetime.date(ano_fim,mes_fim,dia_fim)
