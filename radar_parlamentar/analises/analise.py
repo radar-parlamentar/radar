@@ -446,23 +446,24 @@ class AnalisadorTemporal:
     def _cria_json(self,constante_escala_tamanho=45):
         """Uma vez que a análise temporal está feita, este método cria o json. """
 
-        self.json = '{"geral":{"CasaLegislativa":'
-        self.json += '"nome":"' + self.casa_legislativa.nome + '"'
-        self.json += '"nome_curto":"' + self.casa_legislativa.nome_curto + '"'
-        self.json += '"esfera":"' + self.casa_legislativa.esfera + '"'
-        self.json += '"local":"' + self.casa_legislativa.local + '"'
+        self.json = '{"geral":{"CasaLegislativa":{'
+        self.json += '"nome":"' + self.casa_legislativa.nome + '",'
+        self.json += '"nome_curto":"' + self.casa_legislativa.nome_curto + '",'
+        self.json += '"esfera":"' + self.casa_legislativa.esfera + '",'
+        self.json += '"local":"' + self.casa_legislativa.local + '",'
         self.json += '"atualizacao":"' + unicode(self.casa_legislativa.atualizacao) + '"'
-        self.json += "},"
+        self.json += "}," # fecha casa legislativa
         escala = constante_escala_tamanho**2 / max(1,self.area_total)
         escala_20px = 20**2 * (1/escala) # numero de parlamentares representado
                                          # por um circulo de raio 20 pixels.
         self.json += '"escala_tamanho":' + str(round(escala_20px,1)) + ','
         self.json += '"filtro_partidos":null,'
-        self.json += '"filtro_votacoes":null}'
+        self.json += '"filtro_votacoes":null},' # fecha bloco "geral"
         self.json += '"periodos":['
         for ap in self.analisadores_periodo:
+            self.json += '{' # abre periodo
             self.json += '"nvotacoes":' + str(ap.periodo.quantidade_votacoes) + ','
-            self.json += '"nome":' + ap.periodo.string + ','
+            self.json += '"nome":"' + ap.periodo.string + '",'
             var_explicada = round((ap.pca_partido.eigen[0] + ap.pca_partido.eigen[1])/ap.pca_partido.eigen.sum() * 100,1)
             self.json += '"var_explicada":' + str(var_explicada) + ","
             self.json += '"cp1":{"theta":' + str(round(ap.theta,0)%180) + ','
@@ -473,14 +474,14 @@ class AnalisadorTemporal:
             var_explicada = str(round(ap.pca_partido.eigen[1]/ap.pca_partido.eigen.sum() * 100,1))
             self.json += '"var_explicada":' + str(var_explicada) + ","
             self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[1,:]**2]) + "}," # fecha cp2
-            self.json += '"votacoes":[' # deve trazer a lista de votacoes do periodo
+            self.json += '"votacoes":' # deve trazer a lista de votacoes do periodo
                                        # na mesma ordem apresentada nos vetores
                                        # composicao das componentes principais.
             lista_votacoes = []
             for votacao in ap.votacoes:
                 lista_votacoes.append({"id":unicode(votacao).replace('"',"'")})
             self.json += json.dumps(lista_votacoes)
-            self.json += '] },' # fecha lista de votações e fecha período
+            self.json += ' },' # fecha lista de votações e fecha período
         self.json = self.json[0:-1] # apaga última vírgula
         self.json += '],' # fecha lista de períodos
         self.json += '"partidos":['
