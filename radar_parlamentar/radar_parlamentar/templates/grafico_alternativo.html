@@ -64,7 +64,7 @@
           <button onClick="nome_ou_numero()">Mostrar Sigla ou Número</button><br>
           <button onClick="bolas_maiores_embaixo()">Reset Bolas Maiores Embaixo</button><br>
           <button onClick="cores_do_json()">Usar Cores do json</button><br><br>
-          Tamanho dos círculos:<br> <input type="range" name="zoom" min=1 max=3 step=0.2 value=1.2><input type="button" onClick="muda_zoom()" value="Vai!"><br>
+          Tamanho dos círculos:<br> <input type="range" name="zoom" min=1 max=5 step=0.2 value=2><input type="button" onClick="muda_zoom()" value="Vai!"><br>
         </td>
         </tr></table>
 <br>
@@ -92,14 +92,14 @@ var inferior = 50;
 var casa = 'cmsp';
 var k = 5; // fator de escala dos eixos x,y
 var kt;// = $('input[name=zoom]').val(); // fator de escala de tamanho
-var papel, dados, json_pca_parts, bolas;
+var papel, dados, json_analise, bolas;
 var mostrador_periodo, mostrador_min_size;
 var min_size_to_show=1;
 var lalign = {"text-anchor":"start"};
 var periodo_atual = 0;
 var periodo_min, periodo_max;
 var usar_numero = 0; //texto dos circulos: num. ou sigla do partido.
-var usar_cores_do_json = 0; //se for 0, plota todos na cor azul.
+var usar_cores_do_json = 1; //se for 0, plota todos na cor azul.
 
 $(document).ready(function() {
     // colocar aqui o que tiver que ser feito no loadpage.  
@@ -121,7 +121,7 @@ function muda_zoom() {
 }
 
 function inicializa_papel() {
-    var x,y,t;
+    var x,y,r;
     kt = $('input[name=zoom]').val();
     // inicializa area de plotagem ("papel")
     papel = Raphael(document.getElementById("animacao"),largura+lateral,altura+inferior);
@@ -130,8 +130,9 @@ function inicializa_papel() {
     papel.rect(largura,altura,lateral,inferior).attr({"fill":"white","fill-opacity":1,"stroke":"black"});
     // pega dados da pca de partidos
 //    casa = document.getElementById("escolha_casa");
-    json_pca_parts = $.ajax("/analises/analise/"+casa+"/json_pca", {async:false}).responseText;
-    dados = eval('('+json_pca_parts+')');
+//    json_pca_parts = $.ajax("/analises/analise/"+casa+"/json_pca", {async:false}).responseText;
+    json_analise = $.ajax("/analises/json_analise/"+casa+"/", {async:false}).responseText;
+    dados = eval('('+json_analise+')');
     periodo_min = 0;
     periodo_max = Object.size(dados.periodos)-1;
     periodo_atual = periodo_max;
@@ -154,7 +155,7 @@ function inicializa_papel() {
     $.each(dados.periodos, function(it,periodo){
         var ordem_do_periodo = new Array();
         $.each(dados.partidos, function(ip,partido){
-            ordem_do_periodo.push([ip, partido.tamanho[it-1][1] ]);
+            ordem_do_periodo.push([ip, partido.t[it] ]);
         });
         ordem.push(ordem_do_periodo);
     });
@@ -168,19 +169,21 @@ function inicializa_papel() {
         bola = papel.set();
         posics = [];
         for (var i=0;i<partido.x.length;i++) {
-            posics.push([ k*partido.x[i][1], k*partido.y[i][1], kt*partido.tamanho[i][1]]);
+            posics.push([ k*partido.x[i], k*partido.y[i], kt*partido.r[i]]);
         }
         bola.dados = posics;
         bola.partido = partido.nome;
         bola.partido_num = partido.numero;
         bola.cor = partido.cor;
+	bola.tamanho = partido.t;
+	bola.p = partido.p;
         // inicializando no período zero, que é referência de posições.
-        x = k*partido.x[0][1];
-        y = k*partido.y[0][1];
-        t = kt*partido.tamanho[0][1];;
+        x = k*partido.x[0];
+        y = k*partido.y[0];
+        r = kt*partido.r[0];;
         bola.push(
             // uma bola é um set que contem o circulo, o texto (nome do partido), e o texto da legenda ao lado.
-            bola.c=papel.circle(x,y,1).attr("fill",'blue').attr(attrbola).transform("S"+t),
+            bola.c=papel.circle(x,y,1).attr("fill",bola.cor).attr(attrbola).transform("S"+r),
             bola.t=papel.text(x,y,partido.nome),
             bola.l=papel.text(520,6+12*ip,partido.numero+" - "+partido.nome).attr(lalign).attr("cursor","pointer")
         )
@@ -239,7 +242,7 @@ function inicializa_papel() {
 
     //criar a area que mostra o periodo atualmente plotado
     mostrador_periodo = papel.text(250,525).attr({'font-size':20});
-    mostrador_periodo.attr('text',dados.periodos[periodo_atual+1].nome);
+    mostrador_periodo.attr('text',dados.periodos[periodo_atual].nome);
     esconder();
 
     //criar os botões de mudar de período
@@ -311,7 +314,7 @@ function quicksort(lista,lo,hi) {
 function esconder() {
     // Esconde bolas de raio menor que dado valor.
     bolas.forEach(function(el){
-        var tamanho = el.dados[periodo_atual][2];
+        var tamanho = el.tamanho[periodo_atual];
         if (tamanho<min_size_to_show) {
             el.hide();
         } 
@@ -381,7 +384,7 @@ function proximo(mais_menos,tempo_animacao) {
             bola.t.animate({transform:"T"+x+","+y},tempo_animacao);
             bola.c.animate({transform:"T"+x+","+y+"S"+t},tempo_animacao);
             meudiv = document.getElementById('testejson');
-            mostrador_periodo.attr('text',dados.periodos[periodo_atual+1].nome);
+            mostrador_periodo.attr('text',dados.periodos[periodo_atual].nome);
         });
         esconder(); //esconde bolas menores que min_size_to_show
     }
@@ -396,7 +399,7 @@ function proximo(mais_menos,tempo_animacao) {
 // funcoes de debug
 function ver_json() {
     meudiv = document.getElementById('testejson');
-    newcontente = document.createTextNode(json_pca_parts);
+    newcontente = document.createTextNode(json_analise);
     meudiv.appendChild(newcontente);
     //papel.circle(10,10,5)
     
