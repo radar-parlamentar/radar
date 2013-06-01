@@ -155,7 +155,10 @@ class AnalisadorPeriodo:
             ip += 1
             stp = self.tamanhos_partidos.get(p.nome,0)
             self.soma_dos_tamanhos_dos_partidos += stp
-            self.presencas_partidos[p.nome] = sum(self.vetores_presenca[ip])
+            if stp == 0: # partido de tamanho zero tem presenca zero
+                self.presencas_partidos[p.nome] = 0
+            else:
+                self.presencas_partidos[p.nome] = numpy.mean(self.vetores_presenca[ip])/stp # presenca média, valor entre 0 e 1.
         return self.vetores_votacao
 
     def _pca_partido(self):
