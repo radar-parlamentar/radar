@@ -328,7 +328,7 @@ class AnalisadorTemporal:
         analisadores_periodo -- lista de objetos da classe AnalisadorPeriodo
 
     """
-    def __init__(self, casa_legislativa, periodicidade=models.SEMESTRE, votacoes=[]):
+    def __init__(self, casa_legislativa, periodicidade=models.BIENIO, votacoes=[]):
 
         self.casa_legislativa = casa_legislativa
         self.periodos = self.casa_legislativa.periodos(periodicidade)
