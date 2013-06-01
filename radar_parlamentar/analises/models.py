@@ -26,6 +26,7 @@ from modelagem.models import Partido
 from modelagem.models import CasaLegislativa
 from modelagem.models import Votacao
 
+#deprecated (serve para o json antigo funcionar)
 class PosicaoPartido(models.Model):
 
     partido = models.ForeignKey(Partido)
@@ -34,6 +35,7 @@ class PosicaoPartido(models.Model):
     tamanho = models.IntegerField()
     presenca = models.IntegerField()
 
+#deprecated (serve para o json antigo funcionar)
 class AnaliseTemporal(models.Model):
 
     hash_id = models.CharField(max_length=32,primary_key=True)
@@ -45,6 +47,7 @@ class AnaliseTemporal(models.Model):
     partidos = models.ManyToManyField(Partido)
     area_total = models.FloatField()
 
+#deprecated (serve para o json antigo funcionar)
 class AnalisePeriodo(models.Model):
 
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)

@@ -369,6 +369,7 @@ class AnalisadorTemporal:
             logger.info("Análises já existem, json recuperado do BD.")
             return json_do_bd[0].json
 
+    #deprecated (serve para o json antigo funcionar)
     def get_analises(self):
         """ Método que deve ser usado por classes exteriores para acessar os dados desta instância. Este método irá verificar se a análise já foi feita e está disponível no banco de dados. Se não estiver, os cálculos são realizados, e a análise é salva no bd.
         Este método poderá ser apagado quando o json antigo não for mais usado (ou seja, quando o método get_json da classe JsonAnaliseGenerator do módulo gráfico não for mais usado)."""
@@ -520,6 +521,7 @@ class AnalisadorTemporal:
         json_bd.json = self.json
         json_bd.save()
 
+    #deprecated (serve para o json antigo funcionar)
     def salvar_no_bd(self):
         """Salva uma instância de AnalisadorTemporal no banco de dados.
 
