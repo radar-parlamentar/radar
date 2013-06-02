@@ -187,7 +187,7 @@ class CasaLegislativa(models.Model):
         votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self)]
         data_inicial = min(votacao_datas)
         data_final = max(votacao_datas)
-        return Periodo.lista_de_periodos(self,data_inicial,data_final,periodicidade,numero_minimo_de_votacoes)
+        return PeriodoCasaLegislativa.lista_de_periodos(self,data_inicial,data_final,periodicidade,numero_minimo_de_votacoes)
 
     def num_votacao(self,data_inicial=None,data_final=None):
         """retorna a quantidade de votacao numa casa legislativa"""
@@ -201,15 +201,24 @@ class CasaLegislativa(models.Model):
             votos+=votacao.votos()
         return len(votos)
 
-    @classmethod
+    @staticmethod
     def deleta_casa(nome_casa_curto):
         """Método que deleta determinado registro de casa legislativa em cascata
             Argumentos:
                 nome_casa - Nome da casa a ser deletada"""
-        CasaLegislativa.objects.filter(nome_curto=nome_casa_curto).delete()
+        try:
+		
+            try: 
+                CasaLegislativa.objects.get(nome_curto=nome_casa_curto).delete()
+       
+            except CasaLegislativa.DoesNotExist:
+                print 'Casa legislativa ' + nome_casa_curto + ' não existe'
+	    
+        except:
+		  print 'Possivelmente a operacao extrapolou o limite de operacoes do SQLite, tente utilizar o MySQL'
 
 
-class Periodo(object):
+class PeriodoCasaLegislativa(object):
     """Atributos:
         ini, fim -- objetos datetime
         string -- Descrição do período
@@ -267,9 +276,9 @@ class Periodo(object):
           dezembro e assim por diante, seguindo o calendário. Nunca será retornado um
           período com datas "quebradas" na lista.
     """
-        data_inicial = Periodo._inicio(inicio,periodicidade)
-        data_fim = Periodo._fim(fim,periodicidade)
-        valor_delta = Periodo.delta_para_numero(periodicidade)
+        data_inicial = PeriodoCasaLegislativa._inicio(inicio,periodicidade)
+        data_fim = PeriodoCasaLegislativa._fim(fim,periodicidade)
+        valor_delta = PeriodoCasaLegislativa.delta_para_numero(periodicidade)
         periodos_candidatos = []
         dias_que_faltam = 1
         while dias_que_faltam > 0:
@@ -283,7 +292,7 @@ class Periodo(object):
             # ir ate ultimo dia do mes:
             dia_final = monthrange(data_final.year,data_final.month)[1]
             data_final = data_final.replace(day=dia_final)
-            periodos_candidatos.append(Periodo(data_inicial,data_final,casa_legislativa.num_votacao(data_inicial,data_final)))
+            periodos_candidatos.append(PeriodoCasaLegislativa(data_inicial,data_final,casa_legislativa.num_votacao(data_inicial,data_final)))
             data_inicial = data_final + datetime.timedelta(days=1)
             delta_que_falta = data_fim - data_final
             dias_que_faltam = delta_que_falta.days
