@@ -45,7 +45,7 @@ def json_analise(request,nome_curto_casa_legislativa):
     """Retorna (novo) JSON com dados da análise solicitada."""
 
     casa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
-    at = AnalisadorTemporal(casa,periodicidade=models.ANO,votacoes=[])
+    at = AnalisadorTemporal(casa,periodicidade=models.BIENIO,votacoes=[])
     # O argumento votacoes passado em branco irá utilizar todas as votações.
     # Se for uma lista de votações, serão consideras apenas estas.
     json = at.get_json()
