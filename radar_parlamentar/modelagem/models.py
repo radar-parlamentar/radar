@@ -182,7 +182,7 @@ class CasaLegislativa(models.Model):
                     Valor default é 1.
 
         Retorna:
-            Uma lista de objetos do tipo Periodo.
+            Uma lista de objetos do tipo PeriodoCasaLegislativa.
         """
         votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self)]
         data_inicial = min(votacao_datas)
@@ -260,11 +260,11 @@ class PeriodoCasaLegislativa(object):
 
     @staticmethod
     def lista_de_periodos(casa_legislativa,inicio,fim,periodicidade,numero_minimo_de_votacoes=0):
-        """ Retorna uma lista de objetos da classe Periodo.
+        """ Retorna uma lista de objetos da classe PeriodoCasaLegislativa.
 
         Argumentos:        
           casa_legislativa: um objeto CasaLegislativa. Necessário para acrescentar a cada
-              objeto Periodo da lista o número de votações que houve no mesmo.
+              objeto PeriodoCasaLegislativa da lista o número de votações que houve no mesmo.
           inicio, fim: objetos datetime.
           periodicidade: uma constante em PERIODOS (ex. ANO, SEMESTRE).
           numero_minimo_de_votacoes: periodos com menos votações são excluídos da lista.

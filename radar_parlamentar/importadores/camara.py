@@ -469,19 +469,19 @@ class ImportadorCamara:
             prop.save()
         return prop
 
-    def _votacao_from_xml(self, vot_xml, prop):
+    def _votacao_from_xml(self, votacao_xml, prop):
         """Salva votação no banco de dados.
 
         Atributos:
-            vot_xml -- XML representando votação (objeto etree)
+            votacao_xml -- XML representando votação (objeto etree)
             prop -- objeto do tipo Proposicao
 
         Retorna:
             objeto do tipo Votacao
         """
-        descricao = 'Resumo: [%s]. ObjVotacao: [%s]' % (vot_xml.get('Resumo'), vot_xml.get('ObjVotacao'))
-        data_str = vot_xml.get('Data').strip()
-        hora_str = vot_xml.get('Hora').strip()
+        descricao = 'Resumo: [%s]. ObjVotacao: [%s]' % (votacao_xml.get('Resumo'), votacao_xml.get('ObjVotacao'))
+        data_str = votacao_xml.get('Data').strip()
+        hora_str = votacao_xml.get('Hora').strip()
         date_time = self._converte_data(data_str, hora_str)
 
         query = models.Votacao.objects.filter(descricao=descricao, data=date_time, proposicao__casa_legislativa=self.camara_dos_deputados)
@@ -494,7 +494,7 @@ class ImportadorCamara:
             votacao.data = date_time
             votacao.proposicao = prop
             votacao.save()
-            for voto_xml in vot_xml:
+            for voto_xml in votacao_xml.find('votos'):
                 self._voto_from_xml(voto_xml, votacao)
             votacao.save()
 
