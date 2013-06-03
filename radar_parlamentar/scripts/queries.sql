@@ -8,3 +8,6 @@ SELECT count(*) FROM modelagem_legislatura AS leg JOIN modelagem_parlamentar AS 
 
 -- Listar votações concatenadas a suas proposições de uma casa legislativa
 SELECT vot.id_vot, vot.descricao, vot.data, prop.sigla, prop.numero, prop.ano FROM modelagem_votacao AS vot JOIN modelagem_proposicao AS prop ON vot.proposicao_id = prop.id WHERE prop.casa_legislativa_id = ID_CASA_LEGISLATIVA;
+
+-- Conta quantas votações tem uma casa legsilativa
+SELECT count(*) FROM modelagem_votacao AS vot JOIN modelagem_proposicao AS prop ON vot.proposicao_id = prop.id WHERE prop.casa_legislativa_id = ID_CASA_LEGISLATIVA;
