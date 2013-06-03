@@ -401,7 +401,7 @@ class AnalisadorTemporal:
             self.area_total = analiseT_do_bd.area_total
             self.area_total = analiseT_do_bd.area_total
             for ap_do_bd in analiseT_do_bd.analiseperiodo_set.all():
-                periodocl = models.Periodo(ap_do_bd.data_inicio,ap_do_bd.data_fim)
+                periodocl = models.PeriodoCasaLegislativa(ap_do_bd.data_inicio,ap_do_bd.data_fim)
                 ap = AnalisadorPeriodo(self.casa_legislativa, periodocl,votacoes,partidos)
                 ap.analise_ja_feita = True # nao quero que faça analise, pois os dados virão do bd.
                 for pos_do_bd in ap_do_bd.posicoes.all():
