@@ -11,3 +11,8 @@ SELECT vot.id_vot, vot.descricao, vot.data, prop.sigla, prop.numero, prop.ano FR
 
 -- Conta quantas votações tem uma casa legsilativa
 SELECT count(*) FROM modelagem_votacao AS vot JOIN modelagem_proposicao AS prop ON vot.proposicao_id = prop.id WHERE prop.casa_legislativa_id = ID_CASA_LEGISLATIVA;
+
+-- Conta quantas votações tem em cada casa legislativa
+SELECT prop.casa_legislativa_id, count(*) FROM modelagem_votacao AS vot JOIN modelagem_proposicao AS prop ON vot.proposicao_id = prop.id GROUP BY prop.casa_legislativa_id;
+
+
