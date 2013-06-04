@@ -33,5 +33,5 @@ onde temos utilizado *ID_MIN=1 e ID_MAX=600000*
 *Passo 3* - importar para o banco de dados:
 
     $ camara.main()
-    # só funciona se VOTADAS_FILE='importadores/dados/cdep/votadas.txt' :P
+
 

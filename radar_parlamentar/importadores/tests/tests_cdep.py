@@ -24,7 +24,6 @@ from importadores import camara
 from modelagem import models
 import os
 
-
 # constantes relativas ao código florestal
 ID = '17338'
 SIGLA = 'PL'
@@ -32,21 +31,28 @@ NUM = '1876'
 ANO = '1999'
 NOME = 'PL 1876/1999'
 
+VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
+
+class VotadasParserTest(TestCase):
+    
+    def test_parse_votadas(self):
+        VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
+        votadasParser = camara.VotadasParser(VOTADAS_FILE_PATH)
+        votadas = votadasParser.parse_votadas()        
+        codigo_florestal =  {'ano': ANO, 'id': ID, 'num': NUM, 'sigla': SIGLA}
+        self.assertTrue(codigo_florestal in votadas)
+
+
 class CamaraTest(TestCase):
     """Testes do módulo camara"""
 
     @classmethod
     def setUpClass(cls):
         # vamos importar apenas as votações das proposições em votadas_test.txt
-        camara.VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
-        importer = camara.ImportadorCamara()
+        votadasParser = camara.VotadasParser(VOTADAS_FILE_PATH)
+        votadas = votadasParser.parse_votadas()        
+        importer = camara.ImportadorCamara(votadas)
         importer.importar()
-
-    def test_parse_votadas(self):
-
-        importer = camara.ImportadorCamara()
-        codigo_florestal =  {'ano': ANO, 'id': ID, 'num': NUM, 'sigla': SIGLA}
-        self.assertTrue(codigo_florestal in importer.votadas_ids)
 
     def test_obter_proposicao(self):
 
@@ -79,7 +85,7 @@ class CamaraTest(TestCase):
         try:
             camaraws.obter_proposicao(id_que_nao_existe)
         except ValueError as e:
-            self.assertEquals(e.message, 'Proposição %s não encontrada' % id_que_nao_existe)
+            self.assertEquals(e.message, 'Proposicao %s nao encontrada' % id_que_nao_existe)
             caught = True
         self.assertTrue(caught)
 
@@ -93,7 +99,7 @@ class CamaraTest(TestCase):
         try:
             camaraws.obter_votacoes(sigla, num, ano)
         except ValueError as e:
-            self.assertEquals(e.message, 'Votações da proposição %s %s/%s não encontrada' % (sigla, num, ano))
+            self.assertEquals(e.message, 'Votacoes da proposicao %s %s/%s nao encontrada' % (sigla, num, ano))
             caught = True
         self.assertTrue(caught)
 
@@ -105,7 +111,7 @@ class CamaraTest(TestCase):
         try:
             camaraws.listar_proposicoes(sigla, ano)
         except ValueError as e:
-            self.assertEquals(e.message, 'Proposições não encontradas para sigla=%s&ano=%s' % (sigla, ano))
+            self.assertEquals(e.message, 'Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
             caught = True
         self.assertTrue(caught)
 
@@ -117,7 +123,9 @@ class CamaraTest(TestCase):
 
     def test_prop_cod_florestal(self):
 
-        importer = camara.ImportadorCamara()
+        votadasParser = camara.VotadasParser(VOTADAS_FILE_PATH)
+        votadas = votadasParser.parse_votadas()        
+        importer = camara.ImportadorCamara(votadas)
         data = importer._converte_data('19/10/1999')
 
         prop_cod_flor = models.Proposicao.objects.get(id_prop=ID)
@@ -135,7 +143,7 @@ class CamaraTest(TestCase):
         vot = votacoes[0]
         self.assertTrue('REQUERIMENTO DE RETIRADA DE PAUTA' in vot.descricao)
 
-        importer = camara.ImportadorCamara()
+        importer = camara.ImportadorCamara(votacoes)
         data = importer._converte_data('24/5/2011', '20:52')
         vot = votacoes[1]
         self.assertEquals(vot.data.day, data.day)
@@ -162,6 +170,43 @@ class CamaraTest(TestCase):
         self.assertTrue('PL' in siglas)
         self.assertTrue('PEC' in siglas)
         self.assertTrue('MPV' in siglas)
+
+
+class SeparadorDeListaTest(TestCase):
+    
+    def test_separa_lista(self):
+
+        lista = [1, 2, 3, 4, 5, 6]
+        
+        separador = camara.SeparadorDeLista(1)
+        listas = separador.separa_lista_em_varias_listas(lista)
+        self.assertEquals(len(listas), 1)
+        self.assertEquals(listas[0], lista)
+
+        separador = camara.SeparadorDeLista(2)
+        listas = separador.separa_lista_em_varias_listas(lista)
+        self.assertEquals(len(listas), 2)
+        self.assertEquals(listas[0], [1, 2, 3])
+        self.assertEquals(listas[1], [4, 5, 6])
+
+        separador = camara.SeparadorDeLista(3)
+        listas = separador.separa_lista_em_varias_listas(lista)
+        self.assertEquals(len(listas), 3)
+        self.assertEquals(listas[0], [1, 2])
+        self.assertEquals(listas[1], [3, 4])
+        self.assertEquals(listas[2], [5, 6])
+
+    def test_separa_lista_quando_nao_eh_multiplo(self):
+
+        lista = [1, 2, 3, 4, 5, 6, 7]
+        
+        separador = camara.SeparadorDeLista(3)
+        listas = separador.separa_lista_em_varias_listas(lista)
+        self.assertEquals(len(listas), 3)
+        self.assertEquals(listas[0], [1, 2, 3])
+        self.assertEquals(listas[1], [4, 5, 6])
+        self.assertEquals(listas[2], [7])
+
 
 
 class ProposicoesFinderTest(TestCase):
