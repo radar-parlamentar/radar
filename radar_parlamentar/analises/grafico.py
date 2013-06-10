@@ -26,12 +26,12 @@ dado que os cálculos do PCA já foram realizados
 
 from __future__ import unicode_literals
 from sets import Set
-from analises import analise
 from modelagem import models
 from numpy import sqrt
 import json
 from json import encoder
 import logging
+import analise
 
 logger = logging.getLogger("radar")
 
@@ -48,7 +48,8 @@ class GraphScaler:
                 raise ValueError("Value should be in [-1,1]")
             scaled[partido] = [x*50+50, y*50+50]
         return scaled
-    
+
+
 class JsonAnaliseGenerator:
     """
     Classe que gera o Json da Analise
@@ -93,7 +94,7 @@ class JsonAnaliseGenerator:
         scaler = GraphScaler()
         periodo = 0
         analises = analise.analisadores_periodo
-        constante_escala_tamanho = 70 # quanto maior, maior serão as bolhas.
+        constante_escala_tamanho = 26 # quanto maior, maior serão as bolhas.
         escala_tamanhos = sqrt(analise.area_total) / constante_escala_tamanho
         if escala_tamanhos < 0.0001: # quero evitar divisões por zero
             logger.info("Atenção: Fator de escala fixado em 1, pois %f seria muito baixo." %escala_tamanhos)
@@ -136,6 +137,32 @@ class JsonAnaliseGenerator:
         json_partidos = self._json_partidos(analise,analises_len)
         return {"periodos":json_periodos,"partidos":json_partidos} 
 
+
+class CorPartido:
+    """Associa uma cor a um partido"""
+    cores_partidos = {'PT'   :'#FF0000',
+                      'PSOL' :'#FFFF00',
+                      'PV'   :'#00CC00',
+                      'DEM'  :'#002664',
+                      'PSDB' :'#0059AB',
+                      'PSD'  :'#80c341',
+                      'PMDB' :'#CC0000',
+                      'PR'   :'#110274',
+                      'PSC'  :'#25b84a',
+                      'PSB'  :'#ff8d00',
+                      'PP'   :'#203487',
+                      'PCdoB':'#da251c',
+                      'PTB'  :'#1f1a17',
+                      'PPS'  :'#fea801',
+                      'PDT'  :'#6c85b1',
+                      'PRB'  :'#67a91e'}
+    @staticmethod
+    def cor(partido):
+        """Recebe um objeto tipo partido e retorna uma cor. Retorna #000000 (preto) se não estiver na lista."""
+        try:
+            return CorPartido.cores_partidos[partido.nome]
+        except KeyError:
+            return "#000000"
 
 class GeradorGrafico:
     """Gera imagem com o gráfico estático da análise utilizando matplotlib"""

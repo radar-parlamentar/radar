@@ -163,7 +163,13 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
-        }
+        },
+        'file':{
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'simple',
+            'filename': 'radar.log'
+        }                 
     },
     'loggers': {
         'django.request': {
@@ -172,9 +178,9 @@ LOGGING = {
             'propagate': True,
         },
         'radar': {
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
         }
-    }
+    }                 
 }

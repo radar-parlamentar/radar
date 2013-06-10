@@ -132,7 +132,6 @@ class ImportadorVotacoesSenado:
         elif voto == 'P-OD': # obstrução
             return models.ABSTENCAO
         else:
-            logger.warn('tipo de voto (%s) não mapeado!' % voto)
             return models.ABSTENCAO
 
     def _find_partido(self, nome_partido):

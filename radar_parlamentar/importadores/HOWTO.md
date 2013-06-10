@@ -10,7 +10,13 @@ Importação dos dados abertos para o banco de dados do Radar Parlamentar
     $ from importadores import cmsp
     $ cmsp.main()
 
-2.Câmara dos Deputados
+2.Senado
+
+    $ python manage.py shell
+    $ from importadores import senado
+    $ senado.main()
+
+3.Câmara dos Deputados
 
 *Passo 1* - Gerar lista de IDs que existem:
 
@@ -27,4 +33,5 @@ onde temos utilizado *ID_MIN=1 e ID_MAX=600000*
 *Passo 3* - importar para o banco de dados:
 
     $ camara.main()
-    # só funciona se VOTADAS_FILE='importadores/dados/cdep/votadas.txt' :P
+
+

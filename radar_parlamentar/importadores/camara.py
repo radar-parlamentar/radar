@@ -27,6 +27,7 @@ Classes:
 
 from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
+from django.db.utils import DatabaseError
 from modelagem import models
 from datetime import datetime
 import re
@@ -38,6 +39,7 @@ import logging
 import Queue
 import threading
 import time
+import math
 
 # data em que a lista votadas.txt foi atualizada
 ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
@@ -49,6 +51,8 @@ VOTADAS_FILE_PATH = RESOURCES_FOLDER + 'votadas.txt'
 
 INICIO_PERIODO = parse_datetime('2004-01-01 0:0:0')
 FIM_PERIODO = parse_datetime('2012-07-01 0:0:0')
+
+NUM_THREADS_NA_IMPORTACAO = 16
 
 logger = logging.getLogger("radar")
 
@@ -208,8 +212,8 @@ class ProposicoesFinder:
 
         f = open(file_name,'a')
         while not encontradas.empty():
-          encontrada = encontradas.get()
-          f.write('%d: %s\n' %(encontrada.keys()[0],encontrada.values()[0]))
+            encontrada = encontradas.get()
+        f.write('%d: %s\n' %(encontrada.keys()[0],encontrada.values()[0]))
         f.close()
 
     def parse_ids_que_existem(self, file_name):
@@ -307,12 +311,12 @@ class Camaraws:
             request = urllib2.Request(url)
             xml = urllib2.urlopen(request).read()
         except urllib2.URLError:
-            raise ValueError('Proposição %s não encontrada' % id_prop)
+            raise ValueError('Proposicao %s nao encontrada' % id_prop)
 
         try:
             tree = etree.fromstring(xml)
         except etree.ParseError:
-            raise ValueError('Proposição %s não encontrada' % id_prop)
+            raise ValueError('Proposicao %s nao encontrada' % id_prop)
 
         return tree
 
@@ -335,12 +339,12 @@ class Camaraws:
             request = urllib2.Request(url)
             xml = urllib2.urlopen(request).read()
         except urllib2.URLError:
-            raise ValueError('Votações da proposição %s %s/%s não encontrada' % (sigla, num, ano))
+            raise ValueError('Votacoes da proposicao %s %s/%s nao encontrada' % (sigla, num, ano))
 
         try:
             tree = etree.fromstring(xml)
         except etree.ParseError:
-            raise ValueError('Votações da proposição %s %s/%s não encontrada' % (sigla, num, ano))
+            raise ValueError('Votacoes da proposcaão %s %s/%s nao encontrada' % (sigla, num, ano))
 
         return tree
 
@@ -364,12 +368,12 @@ class Camaraws:
             request = urllib2.Request(url)
             xml = urllib2.urlopen(request).read()
         except urllib2.URLError:
-            raise ValueError('Proposições não encontradas para sigla=%s&ano=%s' % (sigla, ano))
+            raise ValueError('Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
 
         try:
             tree = etree.fromstring(xml)
         except etree.ParseError:
-            raise ValueError('Proposições não encontradas para sigla=%s&ano=%s' % (sigla, ano))
+            raise ValueError('Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
 
         return tree
 
@@ -383,15 +387,41 @@ class Camaraws:
         # Por isso estamos aqui retornando um resultado mais restrito
         return ['PL', 'MPV', 'PDC', 'PEC', 'PLP', 'PLC', 'PLN', 'PLOA', 'PLS', 'PLV']
 
+
+class VotadasParser:
+    
+    def __init__(self, votadas_file_path):
+        self.votadas_file_path = votadas_file_path
+    
+    def parse_votadas(self):
+        """Parse do arquivo self.votadas_file_path
+        Retorna:
+        Uma lista com a identificação das proposições encontradas no txt
+        Cada posição da lista é um dicionário com chaves \in {id, sigla, num, ano}
+        As chaves e valores desses dicionários são strings
+        """
+        # ex: "485262: MPV 501/2010"
+        regexp = '^([0-9]*?): ([A-Z]*?) ([0-9]*?)/([0-9]{4})'
+        proposicoes = []
+        with open(self.votadas_file_path, 'r') as prop_file:
+            for line in prop_file:
+                res = re.search(regexp, line)
+                if res:
+                    proposicoes.append({'id':res.group(1), 'sigla':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
+        return proposicoes
+
+
+LOCK_TO_CREATE_CASA = threading.Lock()
+
 class ImportadorCamara:
     """Salva os dados dos web services da Câmara dos Deputados no banco de dados"""
 
-    def __init__(self, verbose=False):
+    def __init__(self, votadas, verbose=False):
         """verbose (booleano) -- ativa/desativa prints na tela"""
 
         self.verbose = verbose
-        self.votadas_ids = self._parse_votadas() # id/sigla/num/ano das proposições que tiveram votações
-        self.total = len(self.votadas_ids)
+        self.votadas = votadas # id/sigla/num/ano das proposições que tiveram votações
+        self.total = len(self.votadas)
         self.importadas = 0 # serve para indicar progresso
         self.partidos = {} # cache de partidos (chave é nome, e valor é objeto Partido)
         self.parlamentares = {} # cache de parlamentares (chave é 'nome-partido', e valor é objeto Parlamentar)
@@ -415,7 +445,7 @@ class ImportadorCamara:
 
             Caso cdep já exista no banco de dados, retorna o objeto já existente.
         """
-
+        LOCK_TO_CREATE_CASA.acquire()
         if (models.CasaLegislativa.objects.filter(nome_curto='cdep').count() == 0):
             camara_dos_deputados = models.CasaLegislativa()
             camara_dos_deputados.nome = 'Câmara dos Deputados'
@@ -423,33 +453,24 @@ class ImportadorCamara:
             camara_dos_deputados.esfera = models.FEDERAL
             camara_dos_deputados.atualizacao = ULTIMA_ATUALIZACAO
             camara_dos_deputados.save()
+            LOCK_TO_CREATE_CASA.release()
             return camara_dos_deputados
         else:
+            LOCK_TO_CREATE_CASA.release()
             return models.CasaLegislativa.objects.get(nome_curto='cdep')
-
-    def _parse_votadas(self):
-        """Parse do arquivo importadores/dados/votadas.txt
-        Retorna:
-        Uma lista com a identificação das proposições encontradas no txt
-        Cada posição da lista é um dicionário com chaves \in {id, sigla, num, ano}
-        As chaves e valores desses dicionários são strings
-        """
-        # ex: "485262: MPV 501/2010"
-        regexp = '^([0-9]*?): ([A-Z]*?) ([0-9]*?)/([0-9]{4})'
-        proposicoes = []
-        with open(VOTADAS_FILE_PATH, 'r') as prop_file:
-            for line in prop_file:
-                res = re.search(regexp, line)
-                if res:
-                    proposicoes.append({'id':res.group(1), 'sigla':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
-        return proposicoes
 
     def _prop_from_xml(self, prop_xml, id_prop):
         """Recebe XML representando proposição (objeto etree)
         e devolve objeto do tipo Proposicao, que é salvo no banco de dados.
         Caso proposição já exista no banco, é retornada a proposição que já estava no banco.
         """
-        query = models.Proposicao.objects.filter(id_prop=id_prop, casa_legislativa=self.camara_dos_deputados)
+        try:
+            query = models.Proposicao.objects.filter(id_prop=id_prop, casa_legislativa=self.camara_dos_deputados)
+        except DatabaseError:
+            # try again
+            time.sleep(1)
+            query = models.Proposicao.objects.filter(id_prop=id_prop, casa_legislativa=self.camara_dos_deputados)
+            
         if query:
             prop = query[0]
         else:
@@ -469,19 +490,19 @@ class ImportadorCamara:
             prop.save()
         return prop
 
-    def _votacao_from_xml(self, vot_xml, prop):
+    def _votacao_from_xml(self, votacao_xml, prop):
         """Salva votação no banco de dados.
 
         Atributos:
-            vot_xml -- XML representando votação (objeto etree)
+            votacao_xml -- XML representando votação (objeto etree)
             prop -- objeto do tipo Proposicao
 
         Retorna:
             objeto do tipo Votacao
         """
-        descricao = 'Resumo: [%s]. ObjVotacao: [%s]' % (vot_xml.get('Resumo'), vot_xml.get('ObjVotacao'))
-        data_str = vot_xml.get('Data').strip()
-        hora_str = vot_xml.get('Hora').strip()
+        descricao = 'Resumo: [%s]. ObjVotacao: [%s]' % (votacao_xml.get('Resumo'), votacao_xml.get('ObjVotacao'))
+        data_str = votacao_xml.get('Data').strip()
+        hora_str = votacao_xml.get('Hora').strip()
         date_time = self._converte_data(data_str, hora_str)
 
         query = models.Votacao.objects.filter(descricao=descricao, data=date_time, proposicao__casa_legislativa=self.camara_dos_deputados)
@@ -494,7 +515,7 @@ class ImportadorCamara:
             votacao.data = date_time
             votacao.proposicao = prop
             votacao.save()
-            for voto_xml in vot_xml:
+            for voto_xml in votacao_xml.find('votos'):
                 self._voto_from_xml(voto_xml, votacao)
             votacao.save()
 
@@ -613,30 +634,73 @@ class ImportadorCamara:
         self.camara_dos_deputados = self._gera_casa_legislativa()
 
         f = lambda dic: ( dic['id'], dic['sigla'], dic['num'], dic['ano'] )
-        for id_prop,sigla,num,ano in [ f(dic) for dic in self.votadas_ids ]:
+        for id_prop,sigla,num,ano in [ f(dic) for dic in self.votadas ]:
 
             logger.info('#################################################################')
             logger.info('Importando votações da PROPOSIÇÃO %s: %s %s/%s' % (id_prop, sigla, num, ano))
 
             camaraws = Camaraws()
-            prop_xml = camaraws.obter_proposicao(id_prop)
-            prop = self._prop_from_xml(prop_xml, id_prop)
-            vots_xml = camaraws.obter_votacoes(sigla, num, ano)
+            try:
+                prop_xml = camaraws.obter_proposicao(id_prop)
+                prop = self._prop_from_xml(prop_xml, id_prop)
+                vots_xml = camaraws.obter_votacoes(sigla, num, ano)
+    
+                for child in vots_xml.find('Votacoes'):
+                    self._votacao_from_xml(child, prop)
+    
+                self.importadas += 1
+                self._progresso()
+            except ValueError as e:
+                logger.error('%s' % e)
+        
+        logger.info('### Fim da Importação das Votações das Proposições da Câmara dos Deputados.')
 
-            for child in vots_xml.find('Votacoes'):
-                self._votacao_from_xml(child, prop)
 
-            self.importadas += 1
-            self._progresso()
-            logger.info('### Fim da Importação das Votações das Proposições da Câmara dos Deputados.')
+class SeparadorDeLista:
+    
+    def __init__(self, numero_de_listas):
+        self.numero_de_listas = numero_de_listas
+    
+    def separa_lista_em_varias_listas(self, lista):
+        lista_de_listas = []
+        start = 0;
+        chunk_size = (int) ( math.ceil( 1.0 * len(lista) / self.numero_de_listas ) ) 
+        while start<len(lista):
+            end = start+chunk_size
+            if (end > len(lista)):
+                end = len(lista)
+            lista_de_listas.append(lista[start:end])
+            start += chunk_size
+        return lista_de_listas
 
+class ImportadorCamaraThread(threading.Thread):
+
+    def __init__(self, importer):
+        threading.Thread.__init__(self)
+        self.importer = importer
+        
+    def run(self):
+        self.importer.importar()
+        
+def wait_threads(threads):
+    for t in threads:
+        t.join()    
 
 def main():
 
-
-    logger.info('IMPORTANDO DADOS DA CÂMARA DOS DEPUTADOS')
-    importer = ImportadorCamara()
-    importer.importar()
-
-
-
+    logger.info('IMPORTANDO DADOS DA CAMARA DOS DEPUTADOS')
+    votadasParser = VotadasParser(VOTADAS_FILE_PATH)
+    votadas = votadasParser.parse_votadas()
+    separador = SeparadorDeLista(NUM_THREADS_NA_IMPORTACAO)
+    listas_votadas = separador.separa_lista_em_varias_listas(votadas)
+    threads = []
+    for lista_votadas in listas_votadas:
+        importer = ImportadorCamara(lista_votadas)
+        thread = ImportadorCamaraThread(importer)
+        threads.append(thread)
+        thread.start()
+    wait_threads(threads)
+    logger.info('IMPORTACAO DE DADOS DA CAMARA DOS DEPUTADOS FINALIZADA')
+    
+    
+    

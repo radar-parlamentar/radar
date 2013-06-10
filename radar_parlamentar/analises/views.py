@@ -24,6 +24,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404, redirect
 from modelagem import models
 from grafico import JsonAnaliseGenerator
+from analise import AnalisadorTemporal
 import logging
 
 logger = logging.getLogger("radar")
@@ -38,6 +39,17 @@ def analise(request, nome_curto_casa_legislativa):
     casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
     num_votacao = casa_legislativa.num_votacao()
     return render_to_response('analise.html', {'casa_legislativa':casa_legislativa, 'partidos':partidos,'num_votacao':num_votacao})
+
+
+def json_analise(request,nome_curto_casa_legislativa):
+    """Retorna (novo) JSON com dados da análise solicitada."""
+
+    casa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
+    at = AnalisadorTemporal(casa,periodicidade=models.BIENIO,votacoes=[])
+    # O argumento votacoes passado em branco irá utilizar todas as votações.
+    # Se for uma lista de votações, serão consideras apenas estas.
+    json = at.get_json()
+    return HttpResponse(json, mimetype='application/json')
 
 
 def json_pca(request, nome_curto_casa_legislativa):
