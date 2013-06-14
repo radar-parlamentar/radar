@@ -93,7 +93,7 @@ class Partido(models.Model):
     LISTA_PARTIDOS = os.path.join(MODULE_DIR, 'recursos/partidos.txt')
 
     nome = models.CharField(max_length=12)
-    numero = models.IntegerField()
+    numero = models.IntegerField(primary_key=True)
 
     @classmethod
     def from_nome(cls, nome):
@@ -160,7 +160,7 @@ class CasaLegislativa(models.Model):
     """
 
     nome = models.CharField(max_length=100)
-    nome_curto = models.CharField(max_length=50, unique=True)
+    nome_curto = models.CharField(max_length=50, primary_key=True)
     esfera = models.CharField(max_length=10, choices=ESFERAS)
     local = models.CharField(max_length=100)
     atualizacao = models.DateField(blank=True, null=True)
