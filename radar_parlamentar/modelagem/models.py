@@ -92,12 +92,12 @@ class Partido(models.Model):
 
     LISTA_PARTIDOS = os.path.join(MODULE_DIR, 'recursos/partidos.txt')
     nome = models.CharField(max_length=12)
-<<<<<<< HEAD
+
     numero = models.IntegerField(primary_key = True)
 
-=======
+
     numero = models.IntegerField(primary_key=True)
->>>>>>> d41167204357c0ac4e95de632f938ec9de518d25
+
 
     @classmethod
     def from_nome(cls, nome):
@@ -164,11 +164,10 @@ class CasaLegislativa(models.Model):
     """
 
     nome = models.CharField(max_length=100)
-<<<<<<< HEAD
+
     nome_curto = models.CharField(primary_key = True,max_length=8, unique=True)
-=======
-    nome_curto = models.CharField(max_length=50, primary_key=True)
->>>>>>> d41167204357c0ac4e95de632f938ec9de518d25
+
+    
     esfera = models.CharField(max_length=10, choices=ESFERAS)
     local = models.CharField(max_length=100)
     atualizacao = models.DateField(blank=True, null=True)
@@ -377,12 +376,12 @@ class Legislatura(models.Model):
     Métodos:
         find -- busca legislatura por data e parlamentar
     """
-    
-    parlamentar = models.ForeignKey(Parlamentar)
+    partido = models.ForeignKey(Partido)
+    parlamentar = models.ForeignKey(Parlamentar,primary_key = True)
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
+    
     inicio = models.DateField(null=True)
     fim = models.DateField(null=True)
-    partido = models.ForeignKey(Partido)
     localidade = models.CharField(max_length=100, blank=True)
 
     @staticmethod
@@ -423,7 +422,7 @@ class Proposicao(models.Model):
         nome: retorna "sigla numero/ano"
     """
 
-    id_prop = models.CharField(primary_key = True,max_length=100, blank=True) # obs: não é chave primária!
+    id_prop = models.CharField(primary_key = True,max_length=100, blank=True) 
     sigla = models.CharField(max_length=10)
     numero = models.CharField(max_length=10)
     ano = models.CharField(max_length=4)
@@ -456,7 +455,7 @@ class Votacao(models.Model):
         por_partido()
     """
 
-    id_vot = models.CharField(primary_key = True,max_length=100, blank=True) # obs: não é chave primária!
+    id_vot = models.CharField(max_length = 100)
     descricao = models.TextField(blank=True)
     data = models.DateField(blank=True, null=True)
     resultado = models.TextField(blank=True)
