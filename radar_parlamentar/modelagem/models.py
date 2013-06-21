@@ -24,6 +24,10 @@ import re
 import logging
 import os
 import datetime
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 
 logger = logging.getLogger("radar")
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -91,9 +95,14 @@ class Partido(models.Model):
     """
 
     LISTA_PARTIDOS = os.path.join(MODULE_DIR, 'recursos/partidos.txt')
-
     nome = models.CharField(max_length=12)
+
     numero = models.IntegerField()
+    chave = models.CharField(max_length = 20, primary_key = True)
+
+    def save(self):
+        self.chave = str(self.nome) + str(self.numero)
+        super(Partido, self).save()
 
     @classmethod
     def from_nome(cls, nome):
@@ -160,7 +169,10 @@ class CasaLegislativa(models.Model):
     """
 
     nome = models.CharField(max_length=100)
-    nome_curto = models.CharField(max_length=50, unique=True)
+
+    nome_curto = models.CharField(primary_key = True,max_length=8, unique=True)
+
+    
     esfera = models.CharField(max_length=10, choices=ESFERAS)
     local = models.CharField(max_length=100)
     atualizacao = models.DateField(blank=True, null=True)
@@ -346,12 +358,21 @@ class Parlamentar(models.Model):
         nome, genero -- strings
     """
 
-    id_parlamentar = models.CharField(max_length=100, blank=True) # obs: não é chave primária!
+    id_parlamentar = models.CharField(max_length = 10) 
     nome = models.CharField(max_length=100)
+    unique_together = (("id_parlamentar", "nome"),)
+    chave = models.CharField(max_length=200, primary_key = True)
+
     genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
 
-    def __unicode__(self):
-        return self.nome
+    #def __unicode__(self):
+        #return self.nome
+
+    def save(self):
+        self.chave = (str(self.id_parlamentar)).encode('utf-8') + (str(self.nome)).encode('utf-8')
+        super(Parlamentar, self).save()
+
+  
 
 
 class Legislatura(models.Model):
@@ -369,13 +390,19 @@ class Legislatura(models.Model):
     Métodos:
         find -- busca legislatura por data e parlamentar
     """
-
+    partido = models.ForeignKey(Partido)
     parlamentar = models.ForeignKey(Parlamentar)
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
+    
     inicio = models.DateField(null=True)
     fim = models.DateField(null=True)
-    partido = models.ForeignKey(Partido)
     localidade = models.CharField(max_length=100, blank=True)
+
+    chave = models.CharField(max_length = 200, primary_key = True)
+
+    def save(self):
+        self.chave = str(self.partido.chave) + str(self.inicio)
+        super(Legislatura, self).save()
 
     @staticmethod
     def find(data, nome_parlamentar):
@@ -415,7 +442,7 @@ class Proposicao(models.Model):
         nome: retorna "sigla numero/ano"
     """
 
-    id_prop = models.CharField(max_length=100, blank=True) # obs: não é chave primária!
+    id_prop = models.CharField(max_length=100, blank=True) 
     sigla = models.CharField(max_length=10)
     numero = models.CharField(max_length=10)
     ano = models.CharField(max_length=4)
@@ -426,6 +453,12 @@ class Proposicao(models.Model):
     situacao = models.TextField(blank=True)
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
     autores = models.ManyToManyField(Parlamentar, null=True)
+
+    chave = models.CharField(max_length = 250, primary_key = True)
+
+    def save(self):
+        self.chave = str(self.sigla) + '_' + str(self.numero) + str(self.id_prop) + str(self.casa_legislativa.nome_curto) 
+        super(Proposicao, self).save()
 
     def nome(self):
         return "%s %s/%s" % (self.sigla, self.numero, self.ano)
@@ -448,11 +481,19 @@ class Votacao(models.Model):
         por_partido()
     """
 
-    id_vot = models.CharField(max_length=100, blank=True) # obs: não é chave primária!
+    id_votacao = models.CharField(primary_key = True,max_length = 255, default = ' ')
+    
+    id_vot = models.CharField(max_length = 100, blank = True)
     descricao = models.TextField(blank=True)
     data = models.DateField(blank=True, null=True)
     resultado = models.TextField(blank=True)
     proposicao = models.ForeignKey(Proposicao, null=True)
+
+    def save(self):
+        self.id_votacao =  self.id_votacao  + str(self.id_vot) + str(self.descricao).encode('utf-8') 
+        if self.proposicao:
+            self.id_votacao = self.id_votacao + str(self.id_vot)  + str(self.proposicao).encode('utf-8')
+        super(Votacao, self).save()
 
     def votos(self):
         """Retorna os votos da votação (depende do banco de dados)"""
@@ -501,10 +542,14 @@ class Voto(models.Model):
         legislatura -- objeto do tipo Legislatura
         opcao -- qual foi o voto do parlamentar (sim, não, abstenção, obstrução, não votou)
     """
-
+    id_voto = models.CharField(max_length = 250, primary_key = True)
     votacao = models.ForeignKey(Votacao)
     legislatura = models.ForeignKey(Legislatura)
     opcao = models.CharField(max_length=10, choices=OPCOES)
+
+    def save(self):
+        self.id_voto = str(self.votacao) + str(self.legislatura)
+        super(Voto, self).save()
 
     def __unicode__(self):
         return "%s votou %s" % (self.legislatura, self.opcao)
