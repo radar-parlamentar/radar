@@ -228,15 +228,15 @@ class CasaLegislativa(models.Model):
             Argumentos:
                 nome_casa - Nome da casa a ser deletada"""
         try:
-		
+        
             try: 
                 CasaLegislativa.objects.get(nome_curto=nome_casa_curto).delete()
        
             except CasaLegislativa.DoesNotExist:
                 print 'Casa legislativa ' + nome_casa_curto + ' não existe'
-	    
+        
         except:
-		  print 'Possivelmente a operacao extrapolou o limite de operacoes do SQLite, tente utilizar o MySQL'
+          print 'Possivelmente a operacao extrapolou o limite de operacoes do SQLite, tente utilizar o MySQL'
 
 
 class PeriodoCasaLegislativa(object):
