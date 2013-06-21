@@ -506,7 +506,7 @@ class Votacao(models.Model):
     def save(self):
         self.id_votacao = str(self.id_vot) + str(self.data)
         if self.proposicao:
-            self.id_votacao = self.id_votacao  + str(self.proposicao)
+            self.id_votacao = self.id_votacao  + str(self.proposicao.chave)
         super(Votacao, self).save()
 
     def votos(self):
