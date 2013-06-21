@@ -19,6 +19,7 @@
 
 from __future__ import unicode_literals
 from django.db import models
+from django.db.models import Max
 from calendar import monthrange
 import re
 import logging
@@ -97,12 +98,20 @@ class Partido(models.Model):
     LISTA_PARTIDOS = os.path.join(MODULE_DIR, 'recursos/partidos.txt')
     nome = models.CharField(max_length=12)
 
+
     numero = models.IntegerField()
     chave = models.CharField(max_length = 20, primary_key = True)
 
     def save(self):
         self.chave = str(self.nome) + str(self.numero)
         super(Partido, self).save()
+
+    
+
+
+ 
+
+
 
     @classmethod
     def from_nome(cls, nome):
@@ -391,7 +400,9 @@ class Legislatura(models.Model):
         find -- busca legislatura por data e parlamentar
     """
     partido = models.ForeignKey(Partido)
+
     parlamentar = models.ForeignKey(Parlamentar)
+
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
     
     inicio = models.DateField(null=True)
@@ -442,6 +453,7 @@ class Proposicao(models.Model):
         nome: retorna "sigla numero/ano"
     """
 
+
     id_prop = models.CharField(max_length=100, blank=True) 
     sigla = models.CharField(max_length=10)
     numero = models.CharField(max_length=10)
@@ -481,18 +493,20 @@ class Votacao(models.Model):
         por_partido()
     """
 
+
     id_votacao = models.CharField(primary_key = True,max_length = 255, default = ' ')
     
     id_vot = models.CharField(max_length = 100, blank = True)
+
     descricao = models.TextField(blank=True)
     data = models.DateField(blank=True, null=True)
     resultado = models.TextField(blank=True)
     proposicao = models.ForeignKey(Proposicao, null=True)
 
     def save(self):
-        self.id_votacao =  self.id_votacao  + str(self.id_vot) + str(self.descricao).encode('utf-8') 
+        self.id_votacao = str(self.id_vot) + str(self.data)
         if self.proposicao:
-            self.id_votacao = self.id_votacao + str(self.id_vot)  + str(self.proposicao).encode('utf-8')
+            self.id_votacao = self.id_votacao  + str(self.proposicao)
         super(Votacao, self).save()
 
     def votos(self):
@@ -542,15 +556,11 @@ class Voto(models.Model):
         legislatura -- objeto do tipo Legislatura
         opcao -- qual foi o voto do parlamentar (sim, não, abstenção, obstrução, não votou)
     """
-    id_voto = models.CharField(max_length = 250, primary_key = True)
-    votacao = models.ForeignKey(Votacao)
+    
+    votacao = models.ForeignKey(Votacao, null = True)
     legislatura = models.ForeignKey(Legislatura)
     opcao = models.CharField(max_length=10, choices=OPCOES)
-
-    def save(self):
-        self.id_voto = str(self.votacao) + str(self.legislatura)
-        super(Voto, self).save()
-
+    
     def __unicode__(self):
         return "%s votou %s" % (self.legislatura, self.opcao)
 
