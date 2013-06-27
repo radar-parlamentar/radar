@@ -69,15 +69,85 @@ por.partido <- function(rcobject){
 }
 
 
-pca <- function(rcobject) {
+pca <- function(rcobject, minvotes = 20, lop = 0.025) {
   # Pega um objeto da classe rollcall, porém necessariamente com
   # votos codificados entre -1 e 1, podendo ser qualquer número real
   # neste intervalo (caso de votos agregados por partido), e faz
   # a análise de componentes principais.
+  #   Argumentos:
+  # minvotes -- quem votou (sim ou não) em menos do que este número
+  #             de votações é excluído da análise.
+  # lop -- valor entre 0 e 1. Se a fração de parlamentares que votou
+  #        como minoria não for pelo menos igual a este valor, a
+  #        votação é considerada "unânime" e é excluída da análise.
+  # Obs.: os argumentos minvotes possuem análogos no wnominate.
+  t_inicio <- proc.time()
+  cat("\nPreparando para rodar o RADAR-PCA...")
   x <- rcobject$votes
+  xoriginal <- x
+  cat("\n\n\tVerificando dados...")
+  # Primeiro vamos retirar os votos unânimes da matriz x.
+  xs <- x; xs[xs==-1] <- 0; xs <- colSums( xs)
+  xn <- x; xn[xn== 1] <- 0; xn <- colSums(-xn)
+  total <- xs + xn
+  total[total==0] <- 1
+  minoria <- pmin(xn/total,xs/total)
+  x <- x[,minoria>lop]
+  xs <- xs[,minoria>lop]
+  xn <- xn[,minoria>lop]
+  votosminoria <- pmin(xs,xn)
+  Nvotos <- dim(x)[2]
+  cat("\n\t\t...",dim(xoriginal)[2]-Nvotos, "de", dim(xoriginal)[2],
+      "votos descartados.")
+  
+  # Agora vamos tirar parlamentares que votaram pouco.
+  quanto_votou <- rowSums(abs(x))
+  x <- x[quanto_votou>=minvotes,]
+  Nparlams <- dim(x)[1]
+  cat("\n\n\t\t...",dim(xoriginal)[1]-Nparlams, "de", dim(xoriginal)[1],
+      "parlamentares descartados.")
+
+  # Fazer análise em si.
+  cat("\n\n\t Rodando RADAR-PCA...")
   resultado <- list()
   resultado$pca <- prcomp(x,scale=FALSE,center=TRUE)
   resultado$rcobject <- rcobject
+
+  sim_verdadeiro_total <- length(which(x==1))
+  nao_verdadeiro_total <- length(which(x==-1))
+  # Determinar o previsor.
+  previsor <- with(resultado,pca$x[,c(1,2)] %*% t(pca$rotation[,c(1,2)]) + rep(1,Nparlams) %*% t(as.matrix(pca$center)))
+  resultado$previsor <- previsor
+  x_hat <- previsor
+  x_hat[x_hat < 0] <- -1
+  x_hat[x_hat >=0] <- 1
+  x_hat <- abs(x) * x_hat
+  x_sim_hat <- x_hat
+  x_sim_hat[x ==-1] <- 0
+  sim_acertado <- sum(x_sim_hat * x)
+  x_nao_hat <- x_hat
+  x_nao_hat[x == 1] <- 0
+  nao_acertado <- sum(x_nao_hat * x)
+  previsor1d <- with(resultado,pca$x[,1] %*% t(pca$rotation[,1]) + rep(1,Nparlams) %*% t(as.matrix(pca$center)))
+  xhat1d <- previsor1d
+  xhat1d[xhat1d < 0] <- -1
+  xhat1d[xhat1d >=0] <- 1
+  xhat1d <- abs(x) * xhat1d
+  # matriz com 1 nos acertos, -1 nos erros, 0 nas abstencoes:
+  acertos_erros_1d <- xhat1d * x
+  acertos_erros_2d <- x_hat * x
+  classif_correta1d <- length(which(acertos_erros_1d==1)) / sum(abs(acertos_erros_1d))
+  classif_correta2d <- length(which(acertos_erros_2d==1)) / sum(abs(acertos_erros_2d))
+  cat("\nAnalise terminada. Calculando estatisticas...")
+  cat("\n\nRESUMO DA ANALISE RADAR-PCA")
+  cat("\n---------------------------")
+  cat("\nNumero de Parlmentares:  ",Nparlams," (",dim(xoriginal)[1]-Nparlams," excluidos)")
+  cat("\nNumero de Votos:         ",Nvotos," (",dim(xoriginal)[2]-Nvotos," votos excluidos)")
+  cat("\nPrevisoes de SIM:        ",sim_acertado,"de", sim_verdadeiro_total, "(",round(100*sim_acertado/sim_verdadeiro_total,1),"%) previsoes corretas")
+  cat("\nPrevisoes de NAO:        ",nao_acertado,"de", nao_verdadeiro_total, "(",round(100*nao_acertado/nao_verdadeiro_total,1),"%) previsoes corretas")
+  cat("\nClassificacao Correta:   ",round(100*classif_correta1d,2),"%",round(100*classif_correta2d,2),"%")
+  
+  cat("\n\nRADAR PCA levou", (proc.time()-t_inicio)[3], "segundos para executar.\n\n")
   return(resultado)
 }
 
@@ -91,7 +161,7 @@ plotar <- function(resultado) {
   return
 }
 
-# exemplo:
+#exemplo
 r <- pca(rcdados)
 xx <- r$pca$x[,1]
 yy <- r$pca$x[,2]
@@ -99,8 +169,9 @@ partido <- factor(r$rcobject$legis.data)
 num.partidos <- length(levels(partido))
 paleta <- colorRampPalette(c("darkblue","blue","yellow","green","darkmagenta","cyan","red","black","aquamarine"),space = "Lab")(num.partidos)
 cor <- paleta[as.integer(partido)]
-symbols(xx,yy,circles=rep(1,length(xx)),inches=0.05,fg=cor)
-legend("topright",levels(partido),col=paleta[1:22],pch=19)
+#symbols(xx,yy,circles=rep(1,length(xx)),inches=0.05,fg=cor)
+#legend("topright",levels(partido),col=paleta[1:22],pch=19)
+
 #plot(r$pca$x[,1],r$pca$x[,2]) # gráfico em preto e branco
 
 # por partido:
