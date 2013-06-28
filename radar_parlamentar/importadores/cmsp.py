@@ -63,28 +63,30 @@ FIM_PERIODO = parse_datetime('2012-12-31 0:0:0')
 #       fosse interessante armazenar a legislatura no VOTO, e não numa lista de legislatura.
 #       A nao ser q, a cada voto, o parlamentar esteja relacionada tb a todas as suas legislaturas.
 
+class GeradorCasaLegislativa(object):
+    def gerar_cmsp(self):
+        self.cmsp = models.CasaLegislativa()
+        self.cmsp.nome = 'Câmara Municipal de São Paulo'
+        self.cmsp.nome_curto = 'cmsp'
+        self.cmsp.esfera = models.MUNICIPAL
+        self.cmsp.local = 'São Paulo - SP'
+        self.cmsp.atualizacao = ULTIMA_ATUALIZACAO
+        self.salvar()
+        return self.cmsp
+    
+    def salvar(self):
+        if (models.CasaLegislativa.objects.filter(nome_curto='cmsp').count() == 0):
+            self.cmsp.save()
+
+
 class ImportadorCMSP:
     """Salva os dados dos arquivos XML da cmsp no banco de dados"""
 
-    def __init__(self, verbose=False):
+    def __init__(self, cmsp, verbose=False):
         """verbose (booleano) -- ativa/desativa prints na tela"""
-
         self.verbose = verbose
-        self.cmsp = self._gera_casa_legislativa()
-
+        self.cmsp = cmsp
         self.parlamentares = {} # mapeia um ID de parlamentar incluso em alguma votacao a um objeto Parlamentar.
-
-    def _gera_casa_legislativa(self):
-        """Gera objeto do tipo CasaLegislativa representando a CMSP"""
-
-        cmsp = models.CasaLegislativa()
-        cmsp.nome = 'Câmara Municipal de São Paulo'
-        cmsp.nome_curto = 'cmsp'
-        cmsp.esfera = models.MUNICIPAL
-        cmsp.local = 'São Paulo - SP'
-        cmsp.atualizacao = ULTIMA_ATUALIZACAO
-        cmsp.save()
-        return cmsp
 
     def _converte_data(self, data_str):
         """Converte string "d/m/a para objeto datetime; retona None se data_str é inválido"""
@@ -204,11 +206,9 @@ class ImportadorCMSP:
         for vot_tree in tree.getchildren():
             if vot_tree.tag == 'Votacao' and vot_tree.get('TipoVotacao') == 'Nominal': # se é votação nominal
                 resumo = '%s -- %s' % (vot_tree.get('Materia'), vot_tree.get('Ementa'))
-
                 # Prop_nome eh como se identificam internamente por ora as propostas.
                 # Queremos saber a que proposicao estah associada a votacao analisanda.
                 prop_nome = self._prop_nome(resumo) # vai retornar prop_nome se votação for de proposição
-
                 # se a votacao for associavel a uma proposicao, entao..
                 if (prop_nome):
                     # a proposicao aa qual a votacao sob analise se refere jah estava no dicionario (eba!)
@@ -247,23 +247,15 @@ class ImportadorCMSP:
         sys.stdout.write('x')
         sys.stdout.flush()
 
-    def importar(self):
+    def importar_de(self,xml):
         """Salva informações no banco de dados do Django
 
         Retorna lista das votações
         """
 
         if self.verbose:
-            print '*** 2010 ***'
-        vots = self._from_xml_to_bd(XML2010)
-
-        if self.verbose:
-            print '*** 2011 ***'
-        vots.append(self._from_xml_to_bd(XML2011))
-
-        if self.verbose:
-            print '*** 2012 ***'
-        vots.append(self._from_xml_to_bd(XML2012))
+            print "importando de: " + str(xml)
+        vots = self._from_xml_to_bd(xml)
 
         #if self.verbose:
         #    print '*** 2013 ***'
@@ -272,9 +264,12 @@ class ImportadorCMSP:
         return vots
 
 def main():
-
     print 'IMPORTANDO DADOS DA CÂMARA MUNICIPAL DE SÃO PAULO (CMSP)'
-    importer = ImportadorCMSP()
-    importer.importar()
+    gerador_casa = GeradorCasaLegislativa()
+    cmsp = gerador_casa.gerar_cmsp()
+    importer = ImportadorCMSP(cmsp)
+    importer.importar_de(XML2010)
+    importer.importar_de(XML2011)
+    importer.importar_de(XML2012)
     print 'Importação dos dados da Câmara Municipal de São Paulo (CMSP) terminada'
 
