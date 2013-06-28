@@ -65,19 +65,21 @@ FIM_PERIODO = parse_datetime('2012-12-31 0:0:0')
 
 class GeradorCasaLegislativa(object):
     def gerar_cmsp(self):
-        self.cmsp = models.CasaLegislativa()
-        self.cmsp.nome = 'Câmara Municipal de São Paulo'
-        self.cmsp.nome_curto = 'cmsp'
-        self.cmsp.esfera = models.MUNICIPAL
-        self.cmsp.local = 'São Paulo - SP'
-        self.cmsp.atualizacao = ULTIMA_ATUALIZACAO
-        self.salvar()
-        return self.cmsp
-    
-    def salvar(self):
-        if (models.CasaLegislativa.objects.filter(nome_curto='cmsp').count() == 0):
-            self.cmsp.save()
+        try:
+            cmsp = models.CasaLegislativa.objects.get(nome_curto='cmsp')
+        except models.CasaLegislativa.DoesNotExist:
+            cmsp = self.salvar_cmsp()            
+        return cmsp
 
+    def salvar_cmsp(self):
+        cmsp = models.CasaLegislativa()
+        cmsp.nome = 'Câmara Municipal de São Paulo'
+        cmsp.nome_curto = 'cmsp'
+        cmsp.esfera = models.MUNICIPAL
+        cmsp.local = 'São Paulo - SP'
+        cmsp.atualizacao = ULTIMA_ATUALIZACAO
+        cmsp.save()
+        return cmsp
 
 class ImportadorCMSP:
     """Salva os dados dos arquivos XML da cmsp no banco de dados"""

@@ -28,12 +28,19 @@ from modelagem import models
 import os
 XML_TEST = os.path.join(cmsp.MODULE_DIR,'dados/cmsp/cmsp_test.xml')
 
-class GeradorCasaLegislativaCase(TestCase):
-    def test_gera_casa_correta(self):
+class GeradorCMSPCase(TestCase):
+    
+    def test_gera_a_casa(self):
         casa = GeradorCasaLegislativa().gerar_cmsp()
         self.assertEquals(casa.nome_curto,'cmsp')
 
-class ImportadorCase(TestCase):
+    def test_recupera_a_casa_existente(self):
+        casa1 = GeradorCasaLegislativa().gerar_cmsp()
+        casa2 = GeradorCasaLegislativa().gerar_cmsp()
+        self.assertEquals(casa1.pk,casa2.pk)
+
+
+class ImportadorCMSPCase(TestCase):
     def setUp(self):
         casa = GeradorCasaLegislativa().gerar_cmsp()
         importer = ImportadorCMSP(casa,True)
