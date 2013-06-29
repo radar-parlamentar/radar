@@ -69,7 +69,7 @@ por.partido <- function(rcobject){
 }
 
 
-pca <- function(rcobject, minvotes = 20, lop = 0.025) {
+radarpca <- function(rcobject, minvotes = 20, lop = 0.025) {
   # Pega um objeto da classe rollcall, porém necessariamente com
   # votos codificados entre -1 e 1, podendo ser qualquer número real
   # neste intervalo (caso de votos agregados por partido), e faz
@@ -171,8 +171,28 @@ plotar <- function(resultado) {
   return
 }
 
+
+compara <- function(resultado,wnobject) {
+  # Compara os resultados de uma PCA com os resultados do wnominate.
+  # Argumentos:
+  #   resultado -- deve ser um objeto retornado pela função radarpca.
+  #   wnobject -- deve ser um objeto retornado pela função wnominate
+  wndim1 <- wnobject$legislators$coord1D
+  wndim1 <- wndim1[!is.na(wndim1)]
+  rpdim1 <- resultado$pca$x[,1]
+  if (length(rpdim1) != length(wndim1))
+    stop("radarpca e wnominate nao tem os mesmos numeros de parlamentares.\n Ou os dados originais nao eram os mesmos, ou as opcoes lop e minvotes usadas nao foram iguais.")
+  pears <- paste("Pearson =",format(cor(-rpdim1,wndim1),digits=4,nsmall=3))
+  plot(wndim1,-rpdim1,
+       xlab="W-Nominate",
+       ylab="Radar-PCA",
+       main="53a Legislatura (Lula-2)",
+       sub=pears
+       )
+}
+
 #exemplo
-r <- pca(rcdados)
+r <- radarpca(rcdados)
 xx <- r$pca$x[,1]
 yy <- r$pca$x[,2]
 partido <- factor(r$rcobject$legis.data)
