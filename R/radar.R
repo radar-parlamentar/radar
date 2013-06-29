@@ -16,7 +16,7 @@
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
 require("wnominate")
-
+# rm(list=ls())
 load("rollcall_lulaII.Rdata")
 dados <- rollcall_lulaII
 
@@ -81,7 +81,7 @@ pca <- function(rcobject, minvotes = 20, lop = 0.025) {
   #        como minoria não for pelo menos igual a este valor, a
   #        votação é considerada "unânime" e é excluída da análise.
   # Obs.: os argumentos minvotes possuem análogos no wnominate.
-  t_inicio <- proc.time()
+  t.inicio <- proc.time()
   cat("\nPreparando para rodar o RADAR-PCA...")
   x <- rcobject$votes
   xoriginal <- x
@@ -93,16 +93,16 @@ pca <- function(rcobject, minvotes = 20, lop = 0.025) {
   total[total==0] <- 1
   minoria <- pmin(xn/total,xs/total)
   x <- x[,minoria>lop]
-  xs <- xs[,minoria>lop]
-  xn <- xn[,minoria>lop]
+  xs <- xs[minoria>lop]
+  xn <- xn[minoria>lop]
   votosminoria <- pmin(xs,xn)
   Nvotos <- dim(x)[2]
   cat("\n\t\t...",dim(xoriginal)[2]-Nvotos, "de", dim(xoriginal)[2],
       "votos descartados.")
   
   # Agora vamos tirar parlamentares que votaram pouco.
-  quanto_votou <- rowSums(abs(x))
-  x <- x[quanto_votou>=minvotes,]
+  quanto.votou <- rowSums(abs(x))
+  x <- x[quanto.votou>=minvotes,]
   Nparlams <- dim(x)[1]
   cat("\n\n\t\t...",dim(xoriginal)[1]-Nparlams, "de", dim(xoriginal)[1],
       "parlamentares descartados.")
@@ -113,41 +113,51 @@ pca <- function(rcobject, minvotes = 20, lop = 0.025) {
   resultado$pca <- prcomp(x,scale=FALSE,center=TRUE)
   resultado$rcobject <- rcobject
 
-  sim_verdadeiro_total <- length(which(x==1))
-  nao_verdadeiro_total <- length(which(x==-1))
+  resultado$x <- x
+  
+  sim.verdadeiro.total <- length(which(x==1))
+  nao.verdadeiro.total <- length(which(x==-1))
   # Determinar o previsor.
   previsor <- with(resultado,pca$x[,c(1,2)] %*% t(pca$rotation[,c(1,2)]) + rep(1,Nparlams) %*% t(as.matrix(pca$center)))
   resultado$previsor <- previsor
-  x_hat <- previsor
-  x_hat[x_hat < 0] <- -1
-  x_hat[x_hat >=0] <- 1
-  x_hat <- abs(x) * x_hat
-  x_sim_hat <- x_hat
-  x_sim_hat[x ==-1] <- 0
-  sim_acertado <- sum(x_sim_hat * x)
-  x_nao_hat <- x_hat
-  x_nao_hat[x == 1] <- 0
-  nao_acertado <- sum(x_nao_hat * x)
+  x.hat <- previsor
+  x.hat[x.hat < 0] <- -1
+  x.hat[x.hat >=0] <- 1
+  x.hat[x == 0] <- 0
+  sim.acertado <- sum(x.hat==x & x!=0 & x!=-1)
+  nao.acertado <- sum(x.hat==x & x!=0 & x!=1)
   previsor1d <- with(resultado,pca$x[,1] %*% t(pca$rotation[,1]) + rep(1,Nparlams) %*% t(as.matrix(pca$center)))
-  xhat1d <- previsor1d
-  xhat1d[xhat1d < 0] <- -1
-  xhat1d[xhat1d >=0] <- 1
-  xhat1d <- abs(x) * xhat1d
+  x.hat1d <- previsor1d
+  x.hat1d[x.hat1d < 0] <- -1
+  x.hat1d[x.hat1d >=0] <- 1
+  x.hat1d[x == 0] <- 0
   # matriz com 1 nos acertos, -1 nos erros, 0 nas abstencoes:
-  acertos_erros_1d <- xhat1d * x
-  acertos_erros_2d <- x_hat * x
-  classif_correta1d <- length(which(acertos_erros_1d==1)) / sum(abs(acertos_erros_1d))
-  classif_correta2d <- length(which(acertos_erros_2d==1)) / sum(abs(acertos_erros_2d))
+  acertos.erros.1d <- x.hat1d * x
+  acertos.erros.2d <- x.hat * x
+  classif.correta1d <- length(which(acertos.erros.1d==1)) / sum(abs(acertos.erros.1d))
+  classif.correta2d <- length(which(acertos.erros.2d==1)) / sum(abs(acertos.erros.2d))
   cat("\nAnalise terminada. Calculando estatisticas...")
   cat("\n\nRESUMO DA ANALISE RADAR-PCA")
   cat("\n---------------------------")
   cat("\nNumero de Parlmentares:  ",Nparlams," (",dim(xoriginal)[1]-Nparlams," excluidos)")
   cat("\nNumero de Votos:         ",Nvotos," (",dim(xoriginal)[2]-Nvotos," votos excluidos)")
-  cat("\nPrevisoes de SIM:        ",sim_acertado,"de", sim_verdadeiro_total, "(",round(100*sim_acertado/sim_verdadeiro_total,1),"%) previsoes corretas")
-  cat("\nPrevisoes de NAO:        ",nao_acertado,"de", nao_verdadeiro_total, "(",round(100*nao_acertado/nao_verdadeiro_total,1),"%) previsoes corretas")
-  cat("\nClassificacao Correta:   ",round(100*classif_correta1d,2),"%",round(100*classif_correta2d,2),"%")
+  cat("\nPrevisoes de SIM:        ",sim.acertado,"de", sim.verdadeiro.total, "(",round(100*sim.acertado/sim.verdadeiro.total,1),"%) previsoes corretas")
+  cat("\nPrevisoes de NAO:        ",nao.acertado,"de", nao.verdadeiro.total, "(",round(100*nao.acertado/nao.verdadeiro.total,1),"%) previsoes corretas")
+  cat("\nClassificacao Correta:   ",round(100*classif.correta1d,2),"%",round(100*classif.correta2d,2),"%")
+
+  # APRE
+  so.erros.1d <- -acertos.erros.1d
+  so.erros.1d[so.erros.1d==-1] <- 0
+  so.erros.2d <- -acertos.erros.2d
+  so.erros.2d[so.erros.2d==-1] <- 0
+  erros.1d <- colSums(so.erros.1d)
+  erros.2d <- colSums(so.erros.2d)
+  apre.1d = sum(votosminoria - erros.1d)/sum(votosminoria)
+  apre.2d = sum(votosminoria - erros.2d)/sum(votosminoria)
+
+  cat("\nAPRE:                    ",round(apre.1d,3),round(apre.2d,3))
   
-  cat("\n\nRADAR PCA levou", (proc.time()-t_inicio)[3], "segundos para executar.\n\n")
+  cat("\n\nRADAR PCA levou", (proc.time()-t.inicio)[3], "segundos para executar.\n\n")
   return(resultado)
 }
 
