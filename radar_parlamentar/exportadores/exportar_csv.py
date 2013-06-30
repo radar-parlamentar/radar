@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # coding=utf8
 
-# Copyright (C) 2013, Arthur Del Esposte, David Carlos de Araujo Silva 
+# Copyright (C) 2013, Leonardo Leite 
 #
 # This file is part of Radar Parlamentar.
 #
