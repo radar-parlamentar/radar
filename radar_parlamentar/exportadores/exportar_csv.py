@@ -22,7 +22,6 @@
 
 import os
 import csv
-import codecs
 from modelagem import models
 from django.utils.dateparse import parse_datetime
 
