@@ -569,7 +569,14 @@ class VotoPartido(VotosAgregados):
 class Dicionario():
 
     dicionario = {}
-    dicionario['educação'.encode('utf-8')] = ['escola', 'professor', 'aluno']
+    
+    def __init__(self):
+        self.inserir_sinonimo("educação", 'escola')
+        self.inserir_sinonimo("educação", 'professor')
+        self.inserir_sinonimo("educação", 'aluno')
+        self.inserir_sinonimo("segurança", 'policial')
+        self.inserir_sinonimo("segurança", 'polícia')
+        self.inserir_sinonimo("segurança", 'bandido')
 
 
     def inserir_sinonimo(self, palavra, sinonimo):
@@ -582,3 +589,15 @@ class Dicionario():
         else:
             self.dicionario[palavra.encode('utf-8')] = []
             self.dicionario[palavra.encode('utf-8')].append(sinonimo.encode('utf-8'))
+
+    def recuperar_palavras_por_sinonimo(self, sinonimo):
+        if sinonimo == None:
+            raise ValueError('Impossivel encontrar palavra\n')
+
+        palavras = []
+        for e in self.dicionario:
+            print e
+            if self.dicionario[e.encode('utf-8')].count(sinonimo) > 0:
+                palavras.append(e)
+
+        return palavras
