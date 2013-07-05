@@ -252,24 +252,20 @@ class ModelsTest(TestCase):
 
 class DictTest(TestCase):
 
-    @classmethod
+    dici = None
+
     def setUp(self):
         self.dici = models.Dicionario()
         self.dici.inserir_sinonimo("testing","test")
 
     def test_criacao_dicionario(self):
-        #print "Itens do dicionario: " + str(self.dici.dicionario.items()).encode('utf-8')
         self.assertTrue(len(self.dici.dicionario.items()) > 0)
     
     def test_insercao_palavra_nova(self):
-        #print "Itens do dicionario: " + str(self.dici.dicionario.items()).encode('utf-8')
-
         self.dici.inserir_sinonimo("teste", "test")
         self.assertTrue(self.dici.dicionario.has_key("teste"))
 
     def test_insercao_sinonimo_novo(self):
-        #print "Itens do dicionario: " + str(self.dici.dicionario.items()).encode('utf-8')
-
         self.dici.inserir_sinonimo("testing", "teste")
         self.assertEquals(2, len(self.dici.dicionario["testing"]))
 
@@ -280,5 +276,15 @@ class DictTest(TestCase):
         with self.assertRaises(ValueError):
             self.dici.inserir_sinonimo(None, "dinossauro")
 
+    def test_recuperacao_com_uma_chave(self):
+        self.dici.inserir_sinonimo("testing","assert")
+        palavras = self.dici.recuperar_palavras_por_sinonimo("assert")
+        self.assertEquals(1, len(palavras))
 
+        self.dici.inserir_sinonimo("another","assert")
+        palavras = self.dici.recuperar_palavras_por_sinonimo("assert")
+        self.assertEquals(2, len(palavras))
+    
+    
+       
 

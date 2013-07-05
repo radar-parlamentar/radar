@@ -596,8 +596,8 @@ class Dicionario():
 
         palavras = []
         for e in self.dicionario:
-            print e
-            if self.dicionario[e.encode('utf-8')].count(sinonimo) > 0:
+            
+            if self.dicionario[e].count(sinonimo) > 0:
                 palavras.append(e)
 
         return palavras
