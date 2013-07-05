@@ -284,7 +284,15 @@ class DictTest(TestCase):
         self.dici.inserir_sinonimo("another","assert")
         palavras = self.dici.recuperar_palavras_por_sinonimo("assert")
         self.assertEquals(2, len(palavras))
-    
+
+        palavras = self.dici.recuperar_palavras_por_sinonimo("sandslash")
+        self.assertEquals(0, len(palavras))
+
+    def test_recuperacao_erro(self):
+        with self.assertRaises(ValueError):
+            self.dici.recuperar_palavras_por_sinonimo(None)
+            
+        
     
        
 
