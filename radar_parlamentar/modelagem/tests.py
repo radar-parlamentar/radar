@@ -250,3 +250,35 @@ class ModelsTest(TestCase):
         self.assertFalse(' 12345' in nomes_votacao)
 
 
+class DictTest(TestCase):
+
+    @classmethod
+    def setUp(self):
+        self.dici = models.Dicionario()
+        self.dici.inserir_sinonimo("testing","test")
+
+    def test_criacao_dicionario(self):
+        #print "Itens do dicionario: " + str(self.dici.dicionario.items()).encode('utf-8')
+        self.assertTrue(len(self.dici.dicionario.items()) > 0)
+    
+    def test_insercao_palavra_nova(self):
+        #print "Itens do dicionario: " + str(self.dici.dicionario.items()).encode('utf-8')
+
+        self.dici.inserir_sinonimo("teste", "test")
+        self.assertTrue(self.dici.dicionario.has_key("teste"))
+
+    def test_insercao_sinonimo_novo(self):
+        #print "Itens do dicionario: " + str(self.dici.dicionario.items()).encode('utf-8')
+
+        self.dici.inserir_sinonimo("testing", "teste")
+        self.assertEquals(2, len(self.dici.dicionario["testing"]))
+
+    def test_insercao_erro(self):
+        with self.assertRaises(ValueError):
+            self.dici.inserir_sinonimo("testing", None)
+            
+        with self.assertRaises(ValueError):
+            self.dici.inserir_sinonimo(None, "dinossauro")
+
+
+
