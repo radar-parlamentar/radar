@@ -25,7 +25,6 @@ urlpatterns = patterns('',
     url(r'^grafico_alternativo/$', 'radar_parlamentar.views.grafico_alternativo'),
 
     #Serivço que retorna conteúdo para plotar o mapa
-    url(r'^analises/$', 'analises.views.analises'),
     url(r'^analises/analise/(?P<nome_curto_casa_legislativa>\w*)/$', 'analises.views.analise'),
     url(r'^analises/analise/(?P<nome_curto_casa_legislativa>\w*)/json_pca/$', 'analises.views.json_pca'),
     url(r'^analises/json_analise/(?P<nome_curto_casa_legislativa>\w*)/$', 'analises.views.json_analise'),
