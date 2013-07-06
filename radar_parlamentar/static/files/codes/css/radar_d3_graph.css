@@ -22,9 +22,20 @@
   margin-left: -40px;
   height: 506px;
 }
-.dot {
-  stroke: #000;
+
+.radar_background {
+    fill: rgba(230,230,230,0.6);
 }
+
+.raio_radar {
+    fill: none;
+    stroke: rgba(230,230,230,0.9);
+}
+
+.partie {
+  stroke: rgba(0,0,0,0.3);
+}
+
 .axis path, .axis line {
   fill: none;
   stroke: #000;

@@ -35,11 +35,36 @@ Plot = (function ($) {
   function cor(d) { return d.cor; } // based on region from original json
   function nome(d) { return d.nome; } // name from original json
   function numero(d) { return d.numero; } // new parameter to json
-  
+
+  //Create Gradient Fill for each circle
+  function gradiente(svg,id,color){
+        if (color == "#000000") color = "#1F77B4";
+        var identificador = "gradient-" + id;
+        var gradient = svg.append("svg:defs")
+            .append("svg:radialGradient")
+                .attr("id", identificador)
+                .attr("x1", "0%")
+                .attr("y1", "0%")
+                .attr("x2", "100%")
+                .attr("y2", "100%")
+                .attr("spreadMethod", "pad");
+
+        gradient.append("svg:stop")
+            .attr("offset", "0%")
+            .attr("stop-color", color)
+            .attr("stop-opacity", 0.5);
+
+        gradient.append("svg:stop")
+            .attr("offset", "70%")
+            .attr("stop-color", color)
+            .attr("stop-opacity", 1);
+        return "url(#" + identificador + ")";
+  }
+
   // Chart dimensions.
-  var margin = {top: 19.5, right: 100, bottom: 19.5, left: 39.5},
-      width = 880 - margin.right - margin.left;
-      height = 590 - margin.top - margin.bottom;
+  var margin = {top: 20, right: 20, bottom: 20, left: 20},
+      width = 670 - margin.right - margin.left;
+      height = 670 - margin.top - margin.bottom;
   
   // Various scales. These domains make assumptions of data, naturally.
   var xScale = d3.scale.linear().domain([0, 100]).range([0, width]),
@@ -75,8 +100,27 @@ Plot = (function ($) {
         .attr("height", height + margin.top + margin.bottom)
         .style("position", "relative")
       .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     
+    //Adicionando o fundo do radar
+    var fundo = svg.append("g")
+          .attr("class","radar")
+          .attr("transform","translate(" + width/2 + "," + height/2 + ")");
+    
+    raio_fundo = (width > height) ? height/2 : width/2;
+    
+    fundo.append("circle")
+          .attr("class", "radar_background")
+          .attr("r", raio_fundo);
+    
+    raio = 10;
+    while (raio < raio_fundo) {
+        fundo.append("circle")
+            .attr("class", "raio_radar")
+            .attr("r",raio);
+        raio = raio + 40;
+    }
+
     var partidos = dados.partidos,
         periodos = dados.periodos,
         list_partds = []
@@ -91,7 +135,7 @@ Plot = (function ($) {
         periodo_max = d3.max(lista_periodos);
 
     first_label = periodos[periodo_min].nome;
-    first_total = periodos[periodo_min].quantidade_votacoes + " votações";
+    first_total = periodos[periodo_min].quantidade_votacoes;
 
     // Add the year label; the value is set on transition.
     var label = svg.append("text")
@@ -106,25 +150,47 @@ Plot = (function ($) {
         .attr("text-anchor", "end")
         .attr("y", "50")
         .attr("x", width + margin.right)
-        .text("Votações analisadas no período: " + first_total)
+        .text("Votações analisadas no período: " + first_total + " votações")
     
     // A bisector since many nation's data is sparsely-defined.
     var bisect = d3.bisector(function(d) { return d[0]; });
 
-    // Add a dot per nation. Initialize the data at 1800, and set the colors.
-    var dot = svg.append("g")
-        .attr("class", "dots")
-      .selectAll(".dot")
-        .data(interpolateData(1))
-      .enter().append("circle")
-        .attr("class", "dot")
-        .style("fill", function(d) { return colorScale(cor(d)); })
-        .call(position)
-        .sort(order);
+    // Add a partie. Initialize the date at 1800, and set the colors.
+    var main = svg.append("g")
+                        .attr("id","parties")
+    
+    var dados = interpolateData(1)
+            .filter(function(d){ return d.tamanho;});
 
+    var parties = main.selectAll(".partie")
+            .data(dados)
+          .enter().append("g")
+            .attr("class","partie")
+            .attr("id", function(d){return "group-"+nome(d);})
+            .attr("transform", function(d) { return "translate(" + xScale(x(d)) +"," +  yScale(y(d)) + ")";});
+    
+    parties.append("circle")
+            .attr("class", "partie_circle")
+            .attr("id", function(d) { return "circle-" + nome(d); })
+            .style("fill", function(d) { return gradiente(svg, nome(d), cor(d)); }) // colorScale(cor(d)); })
+            .attr("r", function(d) { return radiusScale(tamanho(d)); });
+            //.call(position)
+    
     // Add a title.
-    dot.append("title")
+    parties.append("title")
         .text(function(d) { return nome(d); });
+   
+    parties.append("text")
+            .text(function(d){ return numero(d);})
+                //.attr("x", function(d) {return x(d);})
+                //.attr("y", function(d) {return y(d);})
+                .attr("dx", "-8")
+                .attr("dy", "3")
+                /*.attr("textLength", function(d){ return radiusScale(tamanho(d));})
+                .attr("lengthAdjust", "spacingAndGlyphs")*/
+            //.call(position_text)
+
+    parties.sort(order)
 
     // Add an overlay for the year label.
     var l_box = label.node().getBBox();
@@ -143,15 +209,66 @@ Plot = (function ($) {
         .ease("linear")
         .tween("year", tweenYear)
         .each("end", enableInteraction);
-  
-    // Positions the dots based on data.
-    function position(dot) {
-      dot .attr("cx", function(d) { return xScale(x(d)); })
+ 
+    /* TODO */
+    function redraw_parties(period) {
+
+        dados = interpolateData(period);
+
+        partie_group = svg.selectAll(".partie_group")
+                .data(dados.filter(function(d){ return d.tamanho;}),name);
+        
+        /* Adicionando novos elementos e atualizando antigos */
+        partie_group.enter().append("g")
+            .attr("class", "partie_group")
+            .attr("id", function(d){return "group-"+nome(d);})
+            .sort(order);
+
+        /* Removendo elementos não mais existentes */
+        partie_group.exit().remove();
+        
+        partie_group.append("circle")
+            .attr("class", "partie")
+            .attr("id", function(d) { return "circle-" + nome(d); })
+            .style("fill", function(d) { return gradiente(svg, nome(d), cor(d)); }) // colorScale(cor(d)); })
+            .call(position)
+        
+        partie_group.append("text")
+            .text(function(d){return nome(d);})
+            //.attr("x", function(d) {return x(d);})
+            //.attr("y", function(d) {return y(d);})
+            .attr("dx", "-10")
+            /*.attr("textLength", function(d){ return radiusScale(tamanho(d));})
+            .attr("lengthAdjust", "spacingAndGlyphs")*/
+            //.call(position_text)
+
+        // Add a title.
+        partie_group.append("title")
+            .text(function(d) { return numero(d); });
+   
+        /* Removendo elementos não mais existentes */
+        partie_group.exit().remove();
+
+        label.text(periodos[Math.round(period)].nome);
+        quantidade_votacoes = periodos[Math.round(period)].quantidade_votacoes
+        total_label.text(quantidade_votacoes + " votações");
+        
+    }
+
+    // Positions the texto over the parties based on data.
+    function position_text(partie) {
+      partie.attr("x", function(d) { return xScale(x(d)); })
+          .attr("y", function(d) { return yScale(y(d)); })
+    }
+
+    // Positions the parties based on data.
+    function position(partie) {
+      partie.attr("cx", function(d) { return xScale(x(d)); })
           .attr("cy", function(d) { return yScale(y(d)); })
           .attr("r", function(d) { return radiusScale(tamanho(d)); });
     }
 
-    // Defines a sort order so that the smallest dots are drawn on top.
+    // Defines a sort order so that the smallest parties are drawn on top.
     function order(a, b) {
       return tamanho(b) - tamanho(a);
     }
@@ -167,49 +284,81 @@ Plot = (function ($) {
       svg.transition().duration(0);
 
       overlay
-          .on("mouseover", mouseover)
-          .on("mouseout", mouseout)
-          .on("mousemove", mousemove)
-          .on("touchmove", mousemove);
+          .on("mouseover", mouseover_period)
+          .on("mouseout", mouseout_period)
+          .on("mousemove", mousemove_period)
+          .on("touchmove", mousemove_period);
 
-      function mouseover() {
+      function mouseover_period() {
         label.classed("active", true);
       }
 
-      function mouseout() {
+      function mouseout_period() {
         label.classed("active", false);
       }
 
-      function mousemove() {
-        displayYear(labelScale.invert(d3.mouse(this)[0]));
+      function mousemove_period() {
+        displayPeriod(labelScale.invert(d3.mouse(this)[0]));
       }
     }
 
     // Tweens the entire chart by first tweening the year, and then the data.
-    // For the interpolated data, the dots and label are redrawn.
+    // For the interpolated data, the parties and label are redrawn.
     function tweenYear() {
       var year = d3.interpolateNumber(periodo_min, periodo_max);
-      return function(t) { displayYear(year(t)); };
+      return function(t) { displayPeriod(year(t)); };
     }
 
-    // Updates the display to show the specified year.
-    function displayYear(year) {
-      dot.data(interpolateData(year), nome).call(position).sort(order);
-      label.text(periodos[Math.round(year)].nome);
-      quantidade_votacoes = periodos[Math.round(year)].quantidade_votacoes
-      total_label.text(quantidade_votacoes + " votações");
+    function updatePartie(partie) {}
+    
+    // Updates the display to show the specified period.
+    function displayPeriod(period) {
+        var dados = interpolateData(period)
+            .filter(function(d){ return d.tamanho;});
+        
+        var partie = svg.selectAll(".partie")
+            .data(dados)
+            .attr("transform", function(d) { return "translate(" + xScale(x(d)) +"," +  yScale(y(d)) + ")";});
+        
+        partie.enter()
+          .append("circle")
+            .attr("class", "partie_circle")
+            .attr("id", function(d) { return "circle-" + nome(d); })
+            .style("fill", function(d) { return gradiente(svg, nome(d), cor(d)); }) // colorScale(cor(d)); })
+            .attr("r", function(d) { return radiusScale(tamanho(d)); });
+    
+        // Add a title.
+        partie.enter()
+          .append("title")
+            .text(function(d) { return nome(d); });
+   
+        partie.enter()
+          .append("text")
+            .text(function(d){ return numero(d);})
+                .attr("dx", "-8")
+                .attr("dy", "3")
+
+        //partie.sort(order)
+        
+        partie.exit().remove();
+        //partie.data(dados, nome).call(position);
+        //identification.data(dados, nome).call(position_text);
+        label.text(periodos[Math.round(period)].nome);
+        quantidade_votacoes = periodos[Math.round(period)].quantidade_votacoes
+        total_label.text(quantidade_votacoes + " votações");
     }
 
     // Interpolates the dataset for the given (fractional) year.
     function interpolateData(year) {
       return partidos.map(function(d) {
-        return {
-          nome: d.nome,
-          cor: d.cor,
-          tamanho: interpolateValues(d.tamanho, year),
-          x: interpolateValues(d.x, year),
-          y: interpolateValues(d.y, year)
-        };
+              return {
+                      nome: d.nome,
+                      numero: d.numero,
+                      cor: d.cor,
+                      tamanho: interpolateValues(d.tamanho, year),
+                      x: interpolateValues(d.x, year),
+                      y: interpolateValues(d.y, year)
+                    };
       });
     }
 
