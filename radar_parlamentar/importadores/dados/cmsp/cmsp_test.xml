@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CMSP>
+    <Votacao VotacaoID="1" Materia="PL 1 /2010" TipoVotacao="Nominal" Resultado="Pendente" nPresentes="1" nSim="1" nNao="0" nBranco="0" nAbstencao="0" NomeDaSessao="1ª Sessão" DataDaSessao="10/2/2010" Ementa=" " NotasRodape=" ">
+    <Vereador NomeParlamentar="Teste_vereador" IDParlamentar="1" Partido="PTest" Voto="Não votou" Acao="NÃO VOTOU" VotacaoID="1" NomeDaSessao="1ª Sessão Ordinária" DataDaSessao="10/2/2010" />
+    </Votacao>
+</CMSP>

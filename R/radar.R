@@ -16,7 +16,7 @@
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
 require("wnominate")
-
+# rm(list=ls())
 load("rollcall_lulaII.Rdata")
 dados <- rollcall_lulaII
 
@@ -69,15 +69,95 @@ por.partido <- function(rcobject){
 }
 
 
-pca <- function(rcobject) {
+radarpca <- function(rcobject, minvotes = 20, lop = 0.025) {
   # Pega um objeto da classe rollcall, porém necessariamente com
   # votos codificados entre -1 e 1, podendo ser qualquer número real
   # neste intervalo (caso de votos agregados por partido), e faz
   # a análise de componentes principais.
+  #   Argumentos:
+  # minvotes -- quem votou (sim ou não) em menos do que este número
+  #             de votações é excluído da análise.
+  # lop -- valor entre 0 e 1. Se a fração de parlamentares que votou
+  #        como minoria não for pelo menos igual a este valor, a
+  #        votação é considerada "unânime" e é excluída da análise.
+  # Obs.: os argumentos minvotes possuem análogos no wnominate.
+  t.inicio <- proc.time()
+  cat("\nPreparando para rodar o RADAR-PCA...")
   x <- rcobject$votes
+  xoriginal <- x
+  cat("\n\n\tVerificando dados...")
+  # Primeiro vamos retirar os votos unânimes da matriz x.
+  xs <- x; xs[xs==-1] <- 0; xs <- colSums( xs)
+  xn <- x; xn[xn== 1] <- 0; xn <- colSums(-xn)
+  total <- xs + xn
+  total[total==0] <- 1
+  minoria <- pmin(xn/total,xs/total)
+  x <- x[,minoria>lop]
+  xs <- xs[minoria>lop]
+  xn <- xn[minoria>lop]
+  votosminoria <- pmin(xs,xn)
+  Nvotos <- dim(x)[2]
+  cat("\n\t\t...",dim(xoriginal)[2]-Nvotos, "de", dim(xoriginal)[2],
+      "votos descartados.")
+  
+  # Agora vamos tirar parlamentares que votaram pouco.
+  quanto.votou <- rowSums(abs(x))
+  x <- x[quanto.votou>=minvotes,]
+  Nparlams <- dim(x)[1]
+  cat("\n\n\t\t...",dim(xoriginal)[1]-Nparlams, "de", dim(xoriginal)[1],
+      "parlamentares descartados.")
+
+  # Fazer análise em si.
+  cat("\n\n\t Rodando RADAR-PCA...")
   resultado <- list()
   resultado$pca <- prcomp(x,scale=FALSE,center=TRUE)
   resultado$rcobject <- rcobject
+
+  resultado$x <- x
+  
+  sim.verdadeiro.total <- length(which(x==1))
+  nao.verdadeiro.total <- length(which(x==-1))
+  # Determinar o previsor.
+  previsor <- with(resultado,pca$x[,c(1,2)] %*% t(pca$rotation[,c(1,2)]) + rep(1,Nparlams) %*% t(as.matrix(pca$center)))
+  resultado$previsor <- previsor
+  x.hat <- previsor
+  x.hat[x.hat < 0] <- -1
+  x.hat[x.hat >=0] <- 1
+  x.hat[x == 0] <- 0
+  sim.acertado <- sum(x.hat==x & x!=0 & x!=-1)
+  nao.acertado <- sum(x.hat==x & x!=0 & x!=1)
+  previsor1d <- with(resultado,pca$x[,1] %*% t(pca$rotation[,1]) + rep(1,Nparlams) %*% t(as.matrix(pca$center)))
+  x.hat1d <- previsor1d
+  x.hat1d[x.hat1d < 0] <- -1
+  x.hat1d[x.hat1d >=0] <- 1
+  x.hat1d[x == 0] <- 0
+  # matriz com 1 nos acertos, -1 nos erros, 0 nas abstencoes:
+  acertos.erros.1d <- x.hat1d * x
+  acertos.erros.2d <- x.hat * x
+  classif.correta1d <- length(which(acertos.erros.1d==1)) / sum(abs(acertos.erros.1d))
+  classif.correta2d <- length(which(acertos.erros.2d==1)) / sum(abs(acertos.erros.2d))
+  cat("\nAnalise terminada. Calculando estatisticas...")
+  cat("\n\nRESUMO DA ANALISE RADAR-PCA")
+  cat("\n---------------------------")
+  cat("\nNumero de Parlmentares:  ",Nparlams," (",dim(xoriginal)[1]-Nparlams," excluidos)")
+  cat("\nNumero de Votos:         ",Nvotos," (",dim(xoriginal)[2]-Nvotos," votos excluidos)")
+  cat("\nPrevisoes de SIM:        ",sim.acertado,"de", sim.verdadeiro.total, "(",round(100*sim.acertado/sim.verdadeiro.total,1),"%) previsoes corretas")
+  cat("\nPrevisoes de NAO:        ",nao.acertado,"de", nao.verdadeiro.total, "(",round(100*nao.acertado/nao.verdadeiro.total,1),"%) previsoes corretas")
+  cat("\nClassificacao Correta:   ",round(100*classif.correta1d,2),"%",round(100*classif.correta2d,2),"%")
+
+  # APRE
+  so.erros.1d <- -acertos.erros.1d
+  so.erros.1d[so.erros.1d==-1] <- 0
+  so.erros.2d <- -acertos.erros.2d
+  so.erros.2d[so.erros.2d==-1] <- 0
+  erros.1d <- colSums(so.erros.1d)
+  erros.2d <- colSums(so.erros.2d)
+  apre.1d = sum(votosminoria - erros.1d)/sum(votosminoria)
+  apre.2d = sum(votosminoria - erros.2d)/sum(votosminoria)
+
+  cat("\nAPRE:                    ",round(apre.1d,3),round(apre.2d,3))
+  
+  cat("\n\nRADAR PCA levou", (proc.time()-t.inicio)[3], "segundos para executar.\n\n")
   return(resultado)
 }
 
@@ -91,16 +171,37 @@ plotar <- function(resultado) {
   return
 }
 
-# exemplo:
-r <- pca(rcdados)
+
+compara <- function(resultado,wnobject) {
+  # Compara os resultados de uma PCA com os resultados do wnominate.
+  # Argumentos:
+  #   resultado -- deve ser um objeto retornado pela função radarpca.
+  #   wnobject -- deve ser um objeto retornado pela função wnominate
+  wndim1 <- wnobject$legislators$coord1D
+  wndim1 <- wndim1[!is.na(wndim1)]
+  rpdim1 <- resultado$pca$x[,1]
+  if (length(rpdim1) != length(wndim1))
+    stop("radarpca e wnominate nao tem os mesmos numeros de parlamentares.\n Ou os dados originais nao eram os mesmos, ou as opcoes lop e minvotes usadas nao foram iguais.")
+  pears <- paste("Pearson =",format(cor(-rpdim1,wndim1),digits=4,nsmall=3))
+  plot(wndim1,-rpdim1,
+       xlab="W-Nominate",
+       ylab="Radar-PCA",
+       main="53a Legislatura (Lula-2)",
+       sub=pears
+       )
+}
+
+#exemplo
+r <- radarpca(rcdados)
 xx <- r$pca$x[,1]
 yy <- r$pca$x[,2]
 partido <- factor(r$rcobject$legis.data)
 num.partidos <- length(levels(partido))
 paleta <- colorRampPalette(c("darkblue","blue","yellow","green","darkmagenta","cyan","red","black","aquamarine"),space = "Lab")(num.partidos)
 cor <- paleta[as.integer(partido)]
-symbols(xx,yy,circles=rep(1,length(xx)),inches=0.05,fg=cor)
-legend("topright",levels(partido),col=paleta[1:22],pch=19)
+#symbols(xx,yy,circles=rep(1,length(xx)),inches=0.05,fg=cor)
+#legend("topright",levels(partido),col=paleta[1:22],pch=19)
+
 #plot(r$pca$x[,1],r$pca$x[,2]) # gráfico em preto e branco
 
 # por partido:

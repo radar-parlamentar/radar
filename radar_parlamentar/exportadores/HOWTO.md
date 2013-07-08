@@ -26,3 +26,18 @@ O mesmo pode ser feito para os seguintes tipos de objetos da models.py:
 	# exportar.serialize_proposicao()
 	# exportar.serialize_votacao()
 	# exportar.serialize_voto()
+
+Exportação dos dados existentes no banco de dados local para CSV
+-------------------------------------------------------------------------
+
+    data_ini = parse_datetime('2010-06-01 0:0:0')
+    data_fim = parse_datetime('2010-06-30 0:0:0')
+    exportador = ExportadorCSV('sen', data_ini, data_fim)
+    exportador.exportar_csv()
+
+Arquivo é gerado em exportadores/dados/votes.csv
+
+Obs: os dados exportados nessa opção visam objetivamente exportar os dados que precisamos para as nossas análises em R.
+
+
+
