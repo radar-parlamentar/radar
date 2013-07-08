@@ -150,17 +150,16 @@ class AnalisadorPeriodo:
             casa -- obejto do tipo CasaLegislativa
             ini, fim -- objetos do tipo datetime
 
-        Retorna lista de votações
+        Seta a lista de votações em self.votacoes
         """
         if ini == None and fim == None:
-            votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa) 
+            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa) 
         if ini == None and fim != None:
-            votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa).filter(data__lte=fim)
+            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa).filter(data__lte=fim)
         if ini != None and fim == None:
-            votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa).filter(data__gte=ini)
+            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa).filter(data__gte=ini)
         if ini != None and fim != None:
-            votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa).filter(data__gte=ini, data__lte=fim)
-        return votacoes
+            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa).filter(data__gte=ini, data__lte=fim)
 
     def _inicializa_vetores(self):
         matrizesBuilder = MatrizDeVotacoesBuilder(self.votacoes, self.partidos)
