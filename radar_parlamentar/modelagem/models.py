@@ -207,15 +207,13 @@ class CasaLegislativa(models.Model):
             Argumentos:
                 nome_casa - Nome da casa a ser deletada"""
         try:
-		
             try: 
                 CasaLegislativa.objects.get(nome_curto=nome_casa_curto).delete()
        
             except CasaLegislativa.DoesNotExist:
                 print 'Casa legislativa ' + nome_casa_curto + ' não existe'
-	    
         except:
-		  print 'Possivelmente a operacao extrapolou o limite de operacoes do SQLite, tente utilizar o MySQL'
+            print 'Possivelmente a operacao extrapolou o limite de operacoes do SQLite, tente utilizar o MySQL'
 
 
 class PeriodoCasaLegislativa(object):
@@ -518,11 +516,13 @@ class VotosAgregados:
     Método:
         add
         total
+        voto_medio
     """
 
-    sim = 0
-    nao = 0
-    abstencao = 0
+    def __init__(self):
+        self.sim = 0
+        self.nao = 0
+        self.abstencao = 0
 
     def add(self, voto):
         """Adiciona um voto ao conjunto de votos.
@@ -546,6 +546,14 @@ class VotosAgregados:
     def total(self):
         return self.sim + self.nao + self.abstencao
 
+    def voto_medio(self):
+        """Valor real que representa a 'opnião média' dos votos agregados; 1 representa sim e -1 representa não."""
+        total = self.total()
+        if total > 0:
+            return 1.0 * (self.sim - self.nao) / self.total()
+        else:
+            return 0
+
     def __unicode__(self):
         return '(%s, %s, %s)' % (self.sim, self.nao, self.abstencao)
 
@@ -561,6 +569,7 @@ class VotoPartido(VotosAgregados):
         sim, nao, abstencao -- inteiros que representam a quantidade de votos no conjunto
     """
     def __init__(self, partido):
+        VotosAgregados.__init__(self)
         self.partido = partido
 
 # TODO class VotoUF(VotosAgregados):

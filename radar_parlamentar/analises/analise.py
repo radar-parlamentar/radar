@@ -30,14 +30,81 @@ import pca
 
 logger = logging.getLogger("radar")
 
+class MatrizDeVotacoesBuilder:
+    
+    def __init__(self, votacoes, partidos):
+        self.votacoes = votacoes
+        self.partidos = partidos
+        self.matriz_votacoes =  numpy.zeros((len(self.partidos), len(self.votacoes)))
+        self.matriz_presencas = numpy.zeros((len(self.partidos), len(self.votacoes)))
+        self._dic_partido_votos = {}
+        
+    def gera_matriz(self):
+        """Cria os 'vetores de votação' para cada partido. 
+    
+        O 'vetor' usa um número entre -1 (não) e 1 (sim) para representar a "posição média"
+        do partido em cada votação, tendo N dimensões correspondentes às N votações.
+        Aproveita para calcular presença dos parlamentares.
+    
+        Retorna a 'matriz de votações', em que cada linha é um vetor de votações de um partido 
+                A ordenação das linhas segue a ordem de self.partidos
+        """
+        iv = -1 # índice votação
+        for votacao in self.votacoes:
+            iv += 1
+            self._agrega_votos(votacao)
+            self._preenche_matrizes(votacao, iv)
+        return self.matriz_votacoes  
+    
+    def _agrega_votos(self, votacao):
+        self._dic_partido_votos = {}
+        for partido in self.partidos:
+            self._dic_partido_votos[partido.nome] = models.VotoPartido(partido.nome)
+        for voto in votacao.votos():
+            nome_partido = voto.legislatura.partido.nome
+            voto_partido = self._dic_partido_votos[nome_partido]
+            voto_partido.add(voto.opcao) 
+            
+    def _preenche_matrizes(self, votacao, iv):
+        ip = -1 # índice partido 
+        for partido in self.partidos:
+            ip += 1
+            if self._dic_partido_votos.has_key(partido.nome):
+                voto_partido = self._dic_partido_votos[partido.nome] 
+                self.matriz_votacoes[ip][iv] = voto_partido.voto_medio() 
+                self.matriz_presencas[ip][iv] = voto_partido.total()
+            else:
+                self.matriz_votacoes[ip][iv] = 0
+                self.matriz_presencas[ip][iv] = 0
+    
+class TamanhoPartidoBuilder:
+    
+    def __init__(self, partidos, casa_legislativa):
+        self.partidos = partidos
+        self.casa_legislativa = casa_legislativa
+        self.tamanhos = {}
+        self.soma_dos_quadrados_dos_tamanhos_dos_partidos = 0
+        
+    def gera_dic_tamanho_partidos(self):
+        for partido in self.partidos:
+            tamanho = models.Legislatura.objects.filter(casa_legislativa=self.casa_legislativa, partido=partido).count()
+            self.tamanhos[partido.nome] = tamanho
+        self._calcula_soma_dos_quadrados()
+        return self.tamanhos
+    
+    def _calcula_soma_dos_quadrados(self):
+        """Calcula um valor proporcional à soma das áreas dos partidos, para usar 
+        no fator de escala de exibição do gráfico de bolhas:
+        """
+        self.soma_dos_quadrados_dos_tamanhos_dos_partidos = sum([ stp*stp for stp in self.tamanhos.values()])
+
 class AnalisadorPeriodo:
 
     def __init__(self, casa_legislativa, periodo=None, votacoes=None, partidos=None):
         """Argumentos:
             casa_legislativa -- objeto do tipo CasaLegislativa; somente votações desta casa serão analisados.
-            data_inicio e data_fim -- são strings no formato aaaa-mm-dd;
-            Se este argumentos não são passadas, a análise é feita sobre todas as votações
-            periodo -- objeto do tipo PeriodoCasaLegislativa
+            periodo -- objeto do tipo PeriodoCasaLegislativa; 
+                       sem periodo, a análise é feita sobre todas as votações.
             votacoes -- lista de objetos do tipo Votacao para serem usados na análise
                         se não for especificado, procura votações na base de dados de acordo data_inicio e data_fim.
             partidos -- lista de objetos do tipo Partido para serem usados na análise;
@@ -67,7 +134,7 @@ class AnalisadorPeriodo:
         self.vetores_presenca = []#   self._inicializa_vetores() 
         self.tamanhos_partidos = {} #  }
         self.pca_partido = None # É calculado por self._pca_partido()
-        self.coordenadas = {}
+        self.coordenadas = {} # É o produto final da análise realizada pela classe
         self.soma_dos_quadrados_dos_tamanhos_dos_partidos = 0
         self.analise_ja_feita = False # quando a analise for feita, vale True.
 
@@ -80,7 +147,6 @@ class AnalisadorPeriodo:
 
         Retorna lista de votações
         """
-
         if ini == None and fim == None:
             votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa) 
         if ini == None and fim != None:
