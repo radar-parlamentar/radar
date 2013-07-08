@@ -60,7 +60,9 @@ class MatrizDeVotacoesBuilder:
         self._dic_partido_votos = {}
         for partido in self.partidos:
             self._dic_partido_votos[partido.nome] = models.VotoPartido(partido.nome)
-        for voto in votacao.votos():
+        # com o "select_related" fazemos uma query eager
+        votos = votacao.voto_set.select_related('legislatura__partido', 'opcao').all() 
+        for voto in votos:
             nome_partido = voto.legislatura.partido.nome
             voto_partido = self._dic_partido_votos[nome_partido]
             voto_partido.add(voto.opcao) 

@@ -69,11 +69,8 @@ class AnaliseTest(TestCase):
         self.assertTrue((matriz_votacao == MATRIZ_VOTACAO_ESPERADA).all()) 
 
     def _test_partidos_2d(self):
-        """Testa resultado do PCA"""
-
         an = analise.AnalisadorPeriodo(self.casa_legislativa, partidos=self.partidos)
         grafico = an.partidos_2d()
-
         self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.49321534, 4)
         self.assertAlmostEqual(grafico[convencao.JACOBINOS][1], -0.65069601, 4)
         self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][0], 0.81012694, 4)
