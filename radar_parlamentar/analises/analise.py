@@ -110,7 +110,6 @@ class AnalisadorPeriodo:
             partidos -- lista de objetos do tipo Partido para serem usados na análise;
                         se não for especificado, usa todos os partidos no banco de dados.
         """
-
         self.casa_legislativa = casa_legislativa
         self.periodo = periodo
         if (periodo != None):
@@ -126,17 +125,21 @@ class AnalisadorPeriodo:
 
         self.votacoes = votacoes
         if not self.votacoes: 
-            self.votacoes = self._inicializa_votacoes(self.casa_legislativa, self.ini, self.fim)
+            self._inicializa_votacoes(self.casa_legislativa, self.ini, self.fim)
 
         # TODO que acontece se algum partido for ausente neste período?
+        
         self.num_votacoes = len(self.votacoes)
-        self.vetores_votacao = [] # { sao calculados por    
-        self.vetores_presenca = []#   self._inicializa_vetores() 
-        self.tamanhos_partidos = {} #  }
-        self.pca_partido = None # É calculado por self._pca_partido()
-        self.coordenadas = {} # É o produto final da análise realizada pela classe
-        self.soma_dos_quadrados_dos_tamanhos_dos_partidos = 0
         self.analise_ja_feita = False # quando a analise for feita, vale True.
+        
+        # calculados por self._inicializa_vetores():
+        self.vetores_votacao = []     
+        self.vetores_presenca = [] 
+        self.tamanhos_partidos = {}
+        self.soma_dos_quadrados_dos_tamanhos_dos_partidos = 0
+        
+        self.pca_partido = None # É calculado por self._pca_partido()
+        self.coordenadas = {} # É o produto final da análise realizada por esta classe
 
     def _inicializa_votacoes(self, casa, ini, fim):
         """Pega votações do banco de dados
@@ -158,61 +161,12 @@ class AnalisadorPeriodo:
         return votacoes
 
     def _inicializa_vetores(self):
-        """Cria os 'vetores de votação' para cada partido. 
-
-        O 'vetor' usa um número entre -1 (não) e 1 (sim) para representar a "posição média"
-        do partido em cada votação, tendo N dimensões correspondentes às N votações.
-        Aproveita para calcular o tamanho dos partidos, presença dos parlamentares, etc.
-
-        Retorna a 'matriz de votações', em que cada linha é um vetor de votações de um partido 
-                A ordenação das linhas segue a ordem de self.partidos
-        """
-        # Inicializar matriz nula de vetores de votação e vetores presença
-        self.vetores_votacao = numpy.zeros((len(self.partidos), self.num_votacoes))
-        self.vetores_presenca = numpy.zeros((len(self.partidos), self.num_votacoes))
-        # Inicializar dicionário de tamanhos dos partidos com valores nulos:
-        self.tamanhos_partidos = {}
-        for p in self.partidos:
-            self.tamanhos_partidos[p.nome]=0
-        # Inicializar um conjunto nulo de legislaturas que já foram vistas em votações anteriores:
-        legislaturas_ja_vistas = []
-        iv = -1
-        for V in self.votacoes:
-            iv += 1
-            dic_partido_votos = {}
-            votos_de_V = V.votos()
-            for voto in votos_de_V:
-                # colocar legislatura na lista de já vistas,
-                # e somar um no tamanho do partido correspondente:
-                if voto.legislatura not in legislaturas_ja_vistas:
-                    legislaturas_ja_vistas.append(voto.legislatura)
-                    self.tamanhos_partidos[voto.legislatura.partido.nome] += 1
-                part = voto.legislatura.partido.nome
-                if not dic_partido_votos.has_key(part):
-                    dic_partido_votos[part] = models.VotoPartido(part) #cria um VotoPartido
-                voto_partido = dic_partido_votos[part]
-                voto_partido.add(voto.opcao) # preenche o VotoPartido criado
-            # todos os votos da votacao V já estão em dic_partido_votos
-            ip = -1  
-            for p in self.partidos:
-                ip += 1
-                if dic_partido_votos.has_key(p.nome):
-                    votoPartido = dic_partido_votos[p.nome] # models.VotoPartido
-                    votoPartido_total = votoPartido.total()
-                    if votoPartido_total > 0:
-                        self.vetores_votacao[ip][iv] = (float(votoPartido.sim) - float(votoPartido.nao)) / float(votoPartido_total)
-                    else:
-                        self.vetores_votacao[ip][iv] = 0
-                    self.vetores_presenca[ip][iv] = votoPartido_total
-                else:
-                    self.vetores_votacao[ip][iv] = 0
-                    self.vetores_presenca[ip][iv] = 0
-        # Calcular um valor proporcional à soma das áreas dos partidos, para usar 
-        # no fator de escala de exibição do gráfico de bolhas:
-        for p in self.partidos:
-            stp = self.tamanhos_partidos.get(p.nome,0)
-            self.soma_dos_quadrados_dos_tamanhos_dos_partidos += stp*stp
-        return self.vetores_votacao
+        matrizesBuilder = MatrizDeVotacoesBuilder(self.votacoes, self.partidos)
+        self.vetores_votacao = matrizesBuilder.matriz_votacoes
+        self.vetores_presenca = matrizesBuilder.matriz_presencas
+        tamanhosBuilder = TamanhoPartidoBuilder(self.partidos, self.casa_legislativa)
+        self.tamanhos_partidos = tamanhosBuilder.gera_dic_tamanho_partidos()
+        self.soma_dos_quadrados_dos_tamanhos_dos_partidos = tamanhosBuilder.soma_dos_quadrados_dos_tamanhos_dos_partidos 
 
     def _pca_partido(self):
         """Roda a análise de componentes principais por partido.
