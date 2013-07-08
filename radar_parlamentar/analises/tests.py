@@ -68,7 +68,7 @@ class AnaliseTest(TestCase):
         matriz_votacao = builder.gera_matriz()
         self.assertTrue((matriz_votacao == MATRIZ_VOTACAO_ESPERADA).all()) 
 
-    def _test_partidos_2d(self):
+    def test_partidos_2d(self):
         an = analise.AnalisadorPeriodo(self.casa_legislativa, partidos=self.partidos)
         grafico = an.partidos_2d()
         self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.49321534, 4)

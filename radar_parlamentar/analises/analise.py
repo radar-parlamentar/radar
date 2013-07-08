@@ -128,7 +128,7 @@ class AnalisadorPeriodo:
         self.votacoes = votacoes
         if not self.votacoes: 
             self._inicializa_votacoes(self.casa_legislativa, self.ini, self.fim)
-
+        
         # TODO que acontece se algum partido for ausente neste período?
         
         self.num_votacoes = len(self.votacoes)
@@ -163,7 +163,7 @@ class AnalisadorPeriodo:
 
     def _inicializa_vetores(self):
         matrizesBuilder = MatrizDeVotacoesBuilder(self.votacoes, self.partidos)
-        self.vetores_votacao = matrizesBuilder.matriz_votacoes
+        self.vetores_votacao = matrizesBuilder.gera_matriz()
         self.vetores_presenca = matrizesBuilder.matriz_presencas
         tamanhosBuilder = TamanhoPartidoBuilder(self.partidos, self.casa_legislativa)
         self.tamanhos_partidos = tamanhosBuilder.gera_dic_tamanho_partidos()
