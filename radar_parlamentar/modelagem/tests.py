@@ -250,3 +250,49 @@ class ModelsTest(TestCase):
         self.assertFalse(' 12345' in nomes_votacao)
 
 
+class DictTest(TestCase):
+
+    dici = None
+
+    def setUp(self):
+        self.dici = models.Dicionario()
+        self.dici.inserir_sinonimo("testing","test")
+
+    def test_criacao_dicionario(self):
+        self.assertTrue(len(self.dici.dicionario.items()) > 0)
+    
+    def test_insercao_palavra_nova(self):
+        self.dici.inserir_sinonimo("teste", "test")
+        self.assertTrue(self.dici.dicionario.has_key("teste"))
+
+    def test_insercao_sinonimo_novo(self):
+        self.dici.inserir_sinonimo("testing", "teste")
+        self.assertEquals(2, len(self.dici.dicionario["testing"]))
+
+    def test_insercao_erro(self):
+        with self.assertRaises(ValueError):
+            self.dici.inserir_sinonimo("testing", None)
+            
+        with self.assertRaises(ValueError):
+            self.dici.inserir_sinonimo(None, "dinossauro")
+
+    def test_recuperacao_com_uma_chave(self):
+        self.dici.inserir_sinonimo("testing","assert")
+        palavras = self.dici.recuperar_palavras_por_sinonimo("assert")
+        self.assertEquals(1, len(palavras))
+
+        self.dici.inserir_sinonimo("another","assert")
+        palavras = self.dici.recuperar_palavras_por_sinonimo("assert")
+        self.assertEquals(2, len(palavras))
+
+        palavras = self.dici.recuperar_palavras_por_sinonimo("sandslash")
+        self.assertEquals(0, len(palavras))
+
+    def test_recuperacao_erro(self):
+        with self.assertRaises(ValueError):
+            self.dici.recuperar_palavras_por_sinonimo(None)
+            
+        
+    
+       
+

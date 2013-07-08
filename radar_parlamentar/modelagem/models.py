@@ -81,6 +81,7 @@ PERIODOS = (
 
 SEM_PARTIDO = 'Sem partido'
 
+
 class Partido(models.Model):
     """Partido político.
 
@@ -620,4 +621,38 @@ class VotoPartido(VotosAgregados):
 
 # TODO class VotoUF(VotosAgregados):
 
+class Dicionario():
 
+    dicionario = {}
+    
+    def __init__(self):
+        self.inserir_sinonimo("educação", 'escola')
+        self.inserir_sinonimo("educação", 'professor')
+        self.inserir_sinonimo("educação", 'aluno')
+        self.inserir_sinonimo("segurança", 'policial')
+        self.inserir_sinonimo("segurança", 'polícia')
+        self.inserir_sinonimo("segurança", 'bandido')
+
+
+    def inserir_sinonimo(self, palavra, sinonimo):
+        if palavra == None or sinonimo == None:
+            raise ValueError('Impossivel adicionar sinonimo\n')
+
+        if self.dicionario.has_key(palavra.encode('utf-8')):
+            if self.dicionario[palavra.encode('utf-8')].count(sinonimo.encode('utf-8')) == 0:
+                self.dicionario[palavra.encode('utf-8')].append(sinonimo.encode('utf-8'))
+        else:
+            self.dicionario[palavra.encode('utf-8')] = []
+            self.dicionario[palavra.encode('utf-8')].append(sinonimo.encode('utf-8'))
+
+    def recuperar_palavras_por_sinonimo(self, sinonimo):
+        if sinonimo == None:
+            raise ValueError('Impossivel encontrar palavra\n')
+
+        palavras = []
+        for e in self.dicionario:
+            
+            if self.dicionario[e].count(sinonimo) > 0:
+                palavras.append(e)
+
+        return palavras
