@@ -95,8 +95,7 @@ class GraficoTest(TestCase):
         self.assertEqual(75, scaled['Girondinos'][0])
         self.assertEqual(100, scaled['Girondinos'][1])
         
-    # issue #125     
-    def _test_json(self):
+    def test_json(self):
         EXPECTED_JSON = {u'periodos': {'1': {u'quantidade_votacoes': 8, u'nome': u'1989 e 1990'}}, u'partidos': [{u'cor': u'#000000', u'nome': u'Girondinos', u'tamanho': [[1, 26.0]], u'numero': 27, u'y': [[1, 87.62]], u'x': [[1, 34.15]]}, {u'cor': u'#000000', u'nome': u'Monarquistas', u'tamanho': [[1, 26.0]], u'numero': 79, u'y': [[1, 44.91]], u'x': [[1, 90.51]]}, {u'cor': u'#000000', u'nome': u'Jacobinos', u'tamanho': [[1, 26.0]], u'numero': 42, u'y': [[1, 17.47]], u'x': [[1, 25.34]]}]}
         gen = grafico.JsonAnaliseGenerator()
         json = gen.get_json_dic(self.casa_legislativa)
