@@ -21,6 +21,7 @@
 from django.core import serializers
 from modelagem import models
 from xml.dom.minidom import parseString
+from xml.etree.ElementTree import Element, ElementTree
 import re
 import sys
 import os
@@ -37,24 +38,49 @@ def main():
 	serialize_voto()
 
 def serialize_casa_legislativa(nome_curto):
+
+	#Identificando Casa
 	casa = models.CasaLegislativa.objects.filter(nome_curto = nome_curto)
 	if len(casa) <= 0:
 		raise ValueError('Casa Legislativa não encontrada\n')
 
-	casa_xml = '<CasaLegislativa nome="' + casa[0].nome + '" nome_curto="' + casa[0].nome_curto + '" esfera="' + casa[0].esfera + '" local="' + casa[0].local + '" atualizacao="' + str(casa[0].atualizacao) + '">'
+	root = Element('CasaLegislativa', nome = casa[0].nome, nome_curto = casa[0].nome_curto, esfera = casa[0].esfera, local = casa[0].local, atualizacao = str(casa[0].atualizacao))
 
-	print casa_xml
+	#casa_xml = '<CasaLegislativa nome="' + casa[0].nome + '" nome_curto="' + casa[0].nome_curto + '" esfera="' + casa[0].esfera + '" local="' + casa[0].local + '" atualizacao="' + str(casa[0].atualizacao) + '">'
+    
+	#Identificando a proposição
+	proposicao = models.Proposicao.objects.filter(casa_legislativa_id__nome_curto = nome_curto)
 
-	'''
-	doc = parseString("""<CasaLegislativa""")
+	for e in proposicao:
+		proposicao_xml = Element('Proposicao', id_prop = e.id_prop, sigla = e.sigla, numero = e.numero, ano = str(e.ano), ementa = e.ementa, descricao = e.descricao, indexacao = str(e.indexacao), data_apresentacao = str(e.data_apresentacao), situacao = e.situacao)
+		
+		
+		votacao = models.Votacao.objects.filter(proposicao_id = e)
+		for v in votacao:
+			votacao_xml = Element('Votacao', id_vot = v.id_vot, descricao = v.descricao, data = str(v.data), resultado = v.resultado)
+			
+			#=--------------Voto----------=#
+			votos = models.Voto.objects.filter(votacao_id = v)
+			for voto in votos:
 
-	XMLSerializer = serializers.get_serializer("xml")
-	xml_serializer = XMLSerializer()
-	out = open(os.path.join(MODULE_DIR, 'dados/'+nome_curto+'.xml'), "w")
+				legislatura = voto.legislatura
+				parlamentar = legislatura.parlamentar
+				partido = legislatura.partido
+				
+				voto_xml = Element('Voto', nome = parlamentar.nome, id_parlamentar = parlamentar.id_parlamentar, genero = parlamentar.genero, partido = partido.nome, inicio = str(legislatura.inicio), fim = str(legislatura.fim), numero = partido.numero, opcao = voto.opcao)
 
-	xml_serializer.serialize(models.CasaLegislativa.objects.filter(), stream=out)
-	data = xml_serializer.getvalue()
-	'''
+				votacao_xml.append(voto_xml)
+
+			proposicao_xml.append(votacao_xml)
+
+		root.append(proposicao_xml)	
+
+	print root.getchildren()
+	filepath = os.path.join(MODULE_DIR, 'dados/' + nome_curto + '.xml')
+	out = open(filepath, "w")
+	#ElementTree(root).write(out)
+	out.close()
+
 
 def serialize_partido():
 	XMLSerializer = serializers.get_serializer("xml")
