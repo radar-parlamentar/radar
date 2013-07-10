@@ -584,11 +584,10 @@ class Temas():
             raise ValueError('Impossivel adicionar sinonimo\n')
 
         if self.dicionario.has_key(palavra.encode('utf-8')):
-            if self.dicionario[palavra.encode('utf-8')].count(sinonimo.encode('utf-8')) == 0:
-                self.dicionario[palavra.encode('utf-8')].append(sinonimo.encode('utf-8'))
+            self.dicionario[palavra.encode('utf-8')].add(sinonimo.encode('utf-8'))
         else:
-            self.dicionario[palavra.encode('utf-8')] = []
-            self.dicionario[palavra.encode('utf-8')].append(sinonimo.encode('utf-8'))
+            self.dicionario[palavra.encode('utf-8')] = set()
+            self.dicionario[palavra.encode('utf-8')].add(sinonimo.encode('utf-8'))
 
     def recuperar_palavras_por_sinonimo(self, sinonimo):
         if sinonimo == None:
@@ -597,7 +596,7 @@ class Temas():
         palavras = []
         for e in self.dicionario:
             
-            if self.dicionario[e].count(sinonimo) > 0:
+            if sinonimo in self.dicionario[e]:
                 palavras.append(e)
 
         return palavras
