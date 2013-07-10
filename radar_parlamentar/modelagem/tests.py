@@ -255,7 +255,7 @@ class DictTest(TestCase):
     dici = None
 
     def setUp(self):
-        self.dici = models.Dicionario()
+        self.dici = models.Temas()
         self.dici.inserir_sinonimo("testing","test")
 
     def test_criacao_dicionario(self):

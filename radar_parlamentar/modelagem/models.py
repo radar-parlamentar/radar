@@ -566,7 +566,7 @@ class VotoPartido(VotosAgregados):
 
 # TODO class VotoUF(VotosAgregados):
 
-class Dicionario():
+class Temas():
 
     dicionario = {}
     
