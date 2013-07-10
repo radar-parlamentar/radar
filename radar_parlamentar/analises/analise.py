@@ -93,14 +93,14 @@ class TamanhoPartidoBuilder:
         for partido in self.partidos:
             tamanho = models.Legislatura.objects.filter(casa_legislativa=self.casa_legislativa, partido=partido).count()
             self.tamanhos[partido.nome] = tamanho
-        self._calcula_soma_dos_quadrados()
+        self._calcula_soma_dos_tamanhos()
         return self.tamanhos
     
-    def _calcula_soma_dos_quadrados(self):
+    def _calcula_soma_dos_tamanhos(self):
         """Calcula um valor proporcional à soma das áreas dos partidos, para usar 
-        no fator de escala de exibição do gráfico de bolhas:
+        no fator de escala de exibição do gráfico de bolhas
         """
-        self.soma_dos_tamanhos_dos_partidos = sum([ stp for stp in self.tamanhos.values()])
+        self.soma_dos_tamanhos_dos_partidos = sum(self.tamanhos.values())
 
 class AnalisadorPeriodo:
 
@@ -114,29 +114,21 @@ class AnalisadorPeriodo:
             partidos -- lista de objetos do tipo Partido para serem usados na análise;
                         se não for especificado, usa todos os partidos no banco de dados.
         """
+        # TODO que acontece se algum partido for ausente neste período?
         self.casa_legislativa = casa_legislativa
         self.periodo = periodo
-        if (periodo != None):
-            self.ini = periodo.ini
-            self.fim = periodo.fim
-        else:
-            self.ini = None
-            self.fim = None
-            
+        self.ini = periodo.ini if periodo != None else None
+        self.fim = periodo.fim if periodo != None else None
         self.partidos = partidos
         if not partidos:
             self.partidos = self.casa_legislativa.partidos()
-
         self.votacoes = votacoes
         if not self.votacoes: 
-            self._inicializa_votacoes(self.casa_legislativa, self.ini, self.fim)
-        
-        # TODO que acontece se algum partido for ausente neste período?
+            self._inicializa_votacoes()
         
         self.num_votacoes = len(self.votacoes)
         self.analise_ja_feita = False # quando a analise for feita, vale True.
         self.theta = 0 # em graus, eventual rotação feita por self.espelha_ou_roda()
-
         
         # calculados por self._inicializa_vetores():
         self.vetores_votacao = []     
@@ -148,23 +140,16 @@ class AnalisadorPeriodo:
         self.pca_partido = None # É calculado por self._pca_partido()
         self.coordenadas = {} # É o produto final da análise realizada por esta classe
 
-    def _inicializa_votacoes(self, casa, ini, fim):
-        """Pega votações do banco de dados
-    
-        Argumentos:
-            casa -- obejto do tipo CasaLegislativa
-            ini, fim -- objetos do tipo datetime
-
-        Seta a lista de votações em self.votacoes
-        """
-        if ini == None and fim == None:
-            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa) 
-        if ini == None and fim != None:
-            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa).filter(data__lte=fim)
-        if ini != None and fim == None:
-            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa).filter(data__gte=ini)
-        if ini != None and fim != None:
-            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=casa).filter(data__gte=ini, data__lte=fim)
+    def _inicializa_votacoes(self):
+        """Pega votações do banco de dados e seta a lista self.votacoes"""
+        if self.ini == None and self.fim == None:
+            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa) 
+        if self.ini == None and self.fim != None:
+            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa).filter(data__lte=self.fim)
+        if self.ini != None and self.fim == None:
+            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa).filter(data__gte=self.ini)
+        if self.ini != None and self.fim != None:
+            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa).filter(data__gte=self.ini, data__lte=self.fim)
 
     def _inicializa_vetores(self):
         matrizesBuilder = MatrizDeVotacoesBuilder(self.votacoes, self.partidos)
@@ -183,47 +168,47 @@ class AnalisadorPeriodo:
         Retorna um dicionário no qual as chaves são as siglas dos partidos
         e o valor de cada chave é um vetor com as n dimensões da análise pca
         """
-        # Fazer pca, se ainda não foi feita:
         if not self.pca_partido:
             if self.vetores_votacao == None or len(self.vetores_votacao) == 0:
                 self._inicializa_vetores()
-            # Partidos de tamanho nulo devem ser excluidos da PCA:
-            ipnn = [] # lista de indices dos partidos nao nulos
-            ip = -1
-            for p in self.partidos:
-                ip += 1
-                if self.tamanhos_partidos[p.nome] != 0:
-                    ipnn.append(ip)
-            
+            ipnn = self._lista_de_indices_de_partidos_naos_nulos()
             matriz = self.vetores_votacao
-            matriz = matriz[ipnn,:] # excluir partidos de tamanho zero
-            # Centralizar dados:
-            matriz = matriz - matriz.mean(axis=0)
-            # Fazer pca:
-            self.pca_partido = pca.PCA(matriz,fraction=1)
-            # Recuperar partidos de tamanho nulo, atribuindo zero em
-            # em todas as dimensões no espaço das componentes principais:
-            U2 = self.pca_partido.U.copy() # Salvar resultado da pca em U2
-            self.pca_partido.U = numpy.zeros((len(self.partidos), self.num_votacoes))
-            ip = -1
-            ipnn2 = -1
-            for p in self.partidos:
-                ip += 1
-                if ip in ipnn: # Se este partido for um partido não nulo
-                    ipnn2 += 1
-                    cpmaximo = U2.shape[1]
-                    # colocar nesta linha os valores que eu salvei antes em U2
-                    self.pca_partido.U[ip,0:cpmaximo] = U2[ipnn2,:]
-                else:
-                    self.pca_partido.U[ip,:] = numpy.zeros((1,self.num_votacoes))
+            matriz = matriz[ipnn,:] # exclui partidos de tamanho zero
+            matriz = matriz - matriz.mean(axis=0) # centraliza dados
+            self.pca_partido = pca.PCA(matriz,fraction=1) # faz o pca
+            self._preenche_pca_de_partidos_nulos(ipnn)
             logger.info("PCA terminada com sucesso. ini=%s, fim=%s" % (str(self.ini),str(self.fim)))
-
         # Criar dicionario a ser retornado:
         dicionario = {}
         for partido, vetor in zip(self.partidos, self.pca_partido.U):
             dicionario[partido.nome] = vetor
         return dicionario
-
+    
+    def _lista_de_indices_de_partidos_naos_nulos(self):
+        ipnn = [] 
+        ip = -1
+        for p in self.partidos:
+            ip += 1
+            if self.tamanhos_partidos[p.nome] != 0:
+                ipnn.append(ip)
+        return ipnn
+    
+    def _preenche_pca_de_partidos_nulos(self, ipnn):
+        """Recupera partidos de tamanho nulo, atribuindo zero em todas as dimensões no espaço das componentes principais"""
+        U2 = self.pca_partido.U.copy() # Salvar resultado da pca em U2
+        self.pca_partido.U = numpy.zeros((len(self.partidos), self.num_votacoes))
+        ip = -1
+        ipnn2 = -1
+        for p in self.partidos:
+            ip += 1
+            if ip in ipnn: # Se este partido for um partido não nulo
+                ipnn2 += 1
+                cpmaximo = U2.shape[1]
+                # colocar nesta linha os valores que eu salvei antes em U2
+                self.pca_partido.U[ip,0:cpmaximo] = U2[ipnn2,:]
+            else:
+                self.pca_partido.U[ip,:] = numpy.zeros((1,self.num_votacoes))
+        
 
     def partidos_2d(self):
         """Retorna mapa com as coordenadas dos partidos no plano 2D formado
@@ -249,8 +234,7 @@ class AnalisadorPeriodo:
         return self.coordenadas
     
     def _energia(self,dados_fixos,dados_meus,graus=0,espelho=0):
-        """Calcula energia envolvida no movimento entre dois instantes (fixo e meu), onde o meu é rodado (entre 0 e 360 graus), e primeiro eixo multiplicado por -1 se espelho=1. Ver pdf intitulado "Solução Analítica para o Problema de Rotação dos Eixos de Representação dos Partidos no Radar Parlamentar" (algoritmo_rotacao.pdf).
-        """
+        """Calcula energia envolvida no movimento entre dois instantes (fixo e meu), onde o meu é rodado (entre 0 e 360 graus), e primeiro eixo multiplicado por -1 se espelho=1. Ver pdf intitulado "Solução Analítica para o Problema de Rotação dos Eixos de Representação dos Partidos no Radar Parlamentar" (algoritmo_rotacao.pdf)."""
         e = 0
         dados_meus = dados_meus.copy()
         if espelho == 1:
@@ -276,8 +260,7 @@ class AnalisadorPeriodo:
             return hypot(x, y), atan2(y, x)
     
     def _matrot(self,graus):
-        """ Retorna matriz de rotação 2x2 que roda os eixos em graus (0 a 360) no sentido anti-horário (como se os pontos girassem no sentido horário em torno de eixos fixos).
-        """ 
+        """ Retorna matriz de rotação 2x2 que roda os eixos em graus (0 a 360) no sentido anti-horário (como se os pontos girassem no sentido horário em torno de eixos fixos)."""
         graus = float(graus)
         rad = numpy.pi * graus/180.
         c = numpy.cos(rad)
@@ -473,7 +456,7 @@ class AnalisadorTemporal:
         self.json += "}," # fecha casa legislativa
         escala = constante_escala_tamanho**2 / max(1,self.area_total)
         escala_20px = 20**2 * (1/max(1,escala)) # numero de parlamentares representado
-                                         # por um circulo de raio 20 pixels.
+                                                # por um circulo de raio 20 pixels.
         self.json += '"escala_tamanho":' + str(round(escala_20px,1)) + ','
         self.json += '"filtro_partidos":null,'
         self.json += '"filtro_votacoes":null},' # fecha bloco "geral"
@@ -493,8 +476,8 @@ class AnalisadorTemporal:
             self.json += '"var_explicada":' + str(var_explicada) + ","
             self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[1,:]**2]) + "}," # fecha cp2
             self.json += '"votacoes":' # deve trazer a lista de votacoes do periodo
-                                       # na mesma ordem apresentada nos vetores
-                                       # composicao das componentes principais.
+                                        # na mesma ordem apresentada nos vetores
+                                        # composicao das componentes principais.
             lista_votacoes = []
             for votacao in ap.votacoes:
                 lista_votacoes.append({"id":unicode(votacao).replace('"',"'")})
@@ -503,7 +486,6 @@ class AnalisadorTemporal:
         self.json = self.json[0:-1] # apaga última vírgula
         self.json += '],' # fecha lista de períodos
         self.json += '"partidos":['
-        parts = []
         for partido in self.casa_legislativa.partidos():
             dict_partido = {"nome":partido.nome ,"numero":partido.numero,"cor":grafico.CorPartido.cor(partido)}
             dict_partido["t"] =  []
@@ -533,8 +515,9 @@ class AnalisadorTemporal:
 
     def _salvar_json_no_bd(self):
         """Salva o resultado de um AnalisadorTemporal no banco de dados como json.
-
-        Este método poderá ser excluído quando o json antigo não for mais usado."""
+        
+        Este método poderá ser excluído quando o json antigo não for mais usado.
+        """
         json_bd = JsonAnaliseTemporal()
         json_bd.hash_id = self._calcula_hash()
         json_bd.casa_legislativa = self.casa_legislativa
@@ -550,7 +533,8 @@ class AnalisadorTemporal:
     def salvar_no_bd(self):
         """Salva uma instância de AnalisadorTemporal no banco de dados.
 
-        Este método poderá ser excluído quando o json antigo não for mais usado."""
+        Este método poderá ser excluído quando o json antigo não for mais usado.
+        """
         # 'modat' é o modelo análise temporal que vou salvar.
         modat = AnaliseTemporal()
         modat.casa_legislativa = self.casa_legislativa
