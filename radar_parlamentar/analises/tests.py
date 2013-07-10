@@ -56,8 +56,8 @@ class AnaliseTest(TestCase):
         self.assertEqual(tamanho_jacobinos, tamanho)
         self.assertEqual(tamanho_girondinos, tamanho)
         self.assertEqual(tamanho_monarquistas, tamanho)
-        some_dos_quadrados = 3*(tamanho*tamanho)
-        self.assertEqual(builder.soma_dos_quadrados_dos_tamanhos_dos_partidos, some_dos_quadrados)
+        soma = 3*tamanho
+        self.assertEqual(builder.soma_dos_tamanhos_dos_partidos, soma)
         
     def test_matriz_votacao(self):
         vetor_girondinos =   [mean([1, 0, -1]), mean([-1, -1, -1]), mean([-1, -1, 1]), mean([1, 1, 1]), mean([1, 1, 0]), mean([1, 1, 1]), mean([1, 1, 0]), mean([-1, -1, -1])]
