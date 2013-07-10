@@ -64,8 +64,9 @@ def serialize_casa_legislativa(nome_curto):
 
 		root.append(proposicao_xml)	
 
-	print root.getchildren()
 	filepath = os.path.join(MODULE_DIR, 'dados/' + nome_curto + '.xml')
 	out = open(filepath, "w")
 	ElementTree(root).write(out)
 	out.close()
+
+	print "Exportação realizada com sucesso"
