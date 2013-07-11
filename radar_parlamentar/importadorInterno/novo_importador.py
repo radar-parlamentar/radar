@@ -1,4 +1,22 @@
-from __future__ import unicode_literals
+#!/usr/bin/python
+# coding=utf8
+
+# Copyright (C) 2013, David Carlos de Araujo Silva
+#
+# This file is part of Radar Parlamentar.
+#
+# Radar Parlamentar is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Radar Parlamentar is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.from __future__ import unicode_literals
 from django.core import serializers
 import xml.etree.ElementTree as etree
 import urllib2
@@ -12,15 +30,16 @@ RESOURCES_FOLDER = os.path.join(MODULE_DIR, '../exportadores/dados/EXEMPLO.xml')
 
 class importador_interno:
 
+	def __init__(self):
+		self.lista_proposicao = []
 
-	@staticmethod
-	def carrega_xml():
+
+	
+	def carrega_xml(self):
 		diretorio = RESOURCES_FOLDER	
 		tree = etree.parse(diretorio)
 		root = tree.getroot()
-		for child in root:
-			print root.tag,root.attrib
-			print child.tag	
+		
 		#dicionario = dict(root)
 		casaLegislativa = models.CasaLegislativa()
 		casaLegislativa.nome_curto = root.attrib.get("nome_curto")
@@ -28,10 +47,34 @@ class importador_interno:
 		casaLegislativa.esfera = root.attrib.get("esfera")
 		casaLegislativa.local = root.attrib.get("local")
 		casaLegislativa.atualizacao = root.attrib.get("atualizacao")
-		casaLegislativa.save()	
+		casaLegislativa.save()
+		
+		for child in root:
+			proposicao = models.Proposicao()
+			proposicao.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto = casaLegislativa.nome_curto)
+			proposicao.id_prop = child.attrib.get("id_prop")
+			proposicao.sigla = child.attrib.get("sigla")
+			proposicao.numero = child.attrib.get("numero")
+			proposicao.ano = child.attrib.get("ano")
+			proposicao.ementa = child.attrib.get("ementa")
+			proposicao.descricao = child.attrib.get("descricao")
+			proposicao.indexacao = child.attrib.get("indexacao")
+				 
+
+			if(child.attrib.get("data_apresentacao") == ""):
+				#Valor default caso a data venha em branco
+				proposicao.data_apresentacao = "1900-01-01"
+			else:	
+				proposicao.data_apresentacao = child.attrib.get("data_apresentacao")
+			self.lista_proposicao.append(proposicao)
+	
+		for e in self.lista_proposicao:
+			e.save()		
+		#print	self.lista_proposicao
 
 def main():
-	importador_interno.carrega_xml()
+	x = importador_interno()
+	x.carrega_xml()
 
 
 
