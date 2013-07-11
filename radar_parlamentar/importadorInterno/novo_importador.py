@@ -32,6 +32,7 @@ class importador_interno:
 
 	def __init__(self):
 		self.lista_proposicao = []
+		self.lista_votacao = []
 
 
 	
@@ -49,7 +50,7 @@ class importador_interno:
 		casaLegislativa.atualizacao = root.attrib.get("atualizacao")
 		casaLegislativa.save()
 		
-		for child in root:
+		for child in root.iter("Proposicao"):
 			proposicao = models.Proposicao()
 			proposicao.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto = casaLegislativa.nome_curto)
 			proposicao.id_prop = child.attrib.get("id_prop")
@@ -59,18 +60,28 @@ class importador_interno:
 			proposicao.ementa = child.attrib.get("ementa")
 			proposicao.descricao = child.attrib.get("descricao")
 			proposicao.indexacao = child.attrib.get("indexacao")
-				 
-
 			if(child.attrib.get("data_apresentacao") == ""):
 				#Valor default caso a data venha em branco
 				proposicao.data_apresentacao = "1900-01-01"
+				proposicao.save()
 			else:	
-				proposicao.data_apresentacao = child.attrib.get("data_apresentacao")
-			self.lista_proposicao.append(proposicao)
+				proposicao.data_apresentacao = child.attrib.get("data_apresentacao")	
+				proposicao.save()	
 	
-		for e in self.lista_proposicao:
-			e.save()		
-		#print	self.lista_proposicao
+			for child in root.iter("Votacao"):
+				votacao = models.Votacao()
+				votacao.proposicao = models.Proposicao.objects.get(id_prop = proposicao.id_prop)
+				votacao.id_vot = child.attrib.get("id_vot")
+				votacao.descricao = child.attrib.get("descricao")
+		   		votacao.data = child.attrib.get("data")
+				votacao.resultado = child.attrib.get("resultado")
+				votacao.save()
+
+				
+
+				#self.lista_votacao.append(votacao)	
+				
+		
 
 def main():
 	x = importador_interno()
