@@ -73,11 +73,39 @@ class importador_interno:
 				votacao.proposicao = models.Proposicao.objects.get(id_prop = proposicao.id_prop)
 				votacao.id_vot = child.attrib.get("id_vot")
 				votacao.descricao = child.attrib.get("descricao")
-		   		votacao.data = child.attrib.get("data")
+			   	votacao.data = child.attrib.get("data")
 				votacao.resultado = child.attrib.get("resultado")
 				votacao.save()
 
+				for child in root.iter("Voto"):
+					partido = models.Partido()
+					partido.numero = child.attrib.get("numero")
+					partido.nome = child.attrib.get("partido")
+					partido.save()
+					
+					parlamentar = models.Parlamentar()
+					parlamentar.nome = child.attrib.get("nome")
+					parlamentar.id_parlamentar = child.attrib.get("id_parlamentar")
+					parlamentar.genero = child.attrib.get("genero")
+					parlamentar.save()
 				
+					legislatura = models.Legislatura()
+					legislatura.partido = models.Partido.objects.get(chave = partido.chave)
+					legislatura.parlamentar = models.Parlamentar.objects.get(chave = parlamentar.chave)
+					legislatura.casa_legislativa = models.CasaLegislativa(nome_curto= casaLegislativa.nome_curto)
+					legislatura.inicio = child.attrib.get("inicio")
+					legislatura.fim = child.attrib.get("fim")
+					legislatura.localidade = "vazio"
+					legislatura.save()
+
+					
+					voto = models.Voto()
+					voto.votacao = models.Votacao.objects.get(id_votacao = votacao.id_votacao)
+					voto.legislatura = models.Legislatura.objects.get(chave = legislatura.chave)
+					voto.opcao = child.attrib.get("opcao")
+					voto.save()
+
+			return;	
 
 				#self.lista_votacao.append(votacao)	
 				
