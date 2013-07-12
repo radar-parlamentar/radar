@@ -568,16 +568,18 @@ class VotoPartido(VotosAgregados):
 
 class Temas():
 
-    dicionario = {}
-    
-    def __init__(self):
-        self.inserir_sinonimo("educação", 'escola')
+    dicionario = {}   
+           
+  
+
+    def carregar_alguns_valores(self):
+	self.inserir_sinonimo("educação", 'escola')
         self.inserir_sinonimo("educação", 'professor')
         self.inserir_sinonimo("educação", 'aluno')
         self.inserir_sinonimo("segurança", 'policial')
         self.inserir_sinonimo("segurança", 'polícia')
         self.inserir_sinonimo("segurança", 'bandido')
-
+	
 
     def inserir_sinonimo(self, palavra, sinonimo):
         if palavra == None or sinonimo == None:

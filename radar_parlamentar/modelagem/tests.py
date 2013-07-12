@@ -256,6 +256,7 @@ class DictTest(TestCase):
 
     def setUp(self):
         self.dici = models.Temas()
+	self.dici.carregar_alguns_valores()
         self.dici.inserir_sinonimo("testing","test")
 
     def test_criacao_dicionario(self):
