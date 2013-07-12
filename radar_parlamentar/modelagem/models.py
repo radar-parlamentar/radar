@@ -581,15 +581,15 @@ class Temas():
         self.inserir_sinonimo("segurança", 'bandido')
 	
 
-    def inserir_sinonimo(self, palavra, sinonimo):
-        if palavra == None or sinonimo == None:
+    def inserir_sinonimo(self, tema, sinonimo):
+        if tema == None or sinonimo == None:
             raise ValueError('Impossivel adicionar sinonimo\n')
 
-        if self.dicionario.has_key(palavra.encode('utf-8')):
-            self.dicionario[palavra.encode('utf-8')].add(sinonimo.encode('utf-8'))
+        if self.dicionario.has_key(tema.encode('utf-8')):
+            self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
         else:
-            self.dicionario[palavra.encode('utf-8')] = set()
-            self.dicionario[palavra.encode('utf-8')].add(sinonimo.encode('utf-8'))
+            self.dicionario[tema.encode('utf-8')] = set()
+            self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
 
     def recuperar_palavras_por_sinonimo(self, sinonimo):
         if sinonimo == None:
