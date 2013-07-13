@@ -26,7 +26,34 @@ from importadores.cmsp import *
 from importadores import cmsp
 from modelagem import models
 import os
+import xml.etree.ElementTree as etree
+
 XML_TEST = os.path.join(cmsp.MODULE_DIR,'dados/cmsp/cmsp_test.xml')
+
+class AprendizadoEtreeCase(TestCase):
+
+    def setUp(self):
+        xml =   """<CMSP>
+                    <Votacao VotacaoID="1">
+                        <Vereador NomeParlamentar="Teste_vereador"/>
+                    </Votacao>
+                </CMSP>
+                """
+        self.no_xml = etree.fromstring(xml)
+
+    def test_ler_no(self):
+        self.assertEquals(self.no_xml.tag,"CMSP")
+    
+    def test_percorre_no(self):
+        for no_filho in self.no_xml.getchildren():
+            self.assertEquals(no_filho.tag,"Votacao")
+            for no_neto in no_filho:
+                self.assertEquals(no_neto.tag,"Vereador")
+
+    def test_ler_atributo(self):
+        for no_filho in self.no_xml.getchildren():
+            self.assertEquals(no_filho.get("VotacaoID"),"1")
+
 
 class GeradorCMSPCase(TestCase):
     
@@ -52,3 +79,4 @@ class ImportadorCMSPCase(TestCase):
     def test_parlamentar_importado(self):
         parlamentar = models.Parlamentar.objects.get(id_parlamentar='1')
         self.assertTrue(parlamentar)
+

@@ -31,6 +31,7 @@ import re
 import sys
 import os
 import xml.etree.ElementTree as etree
+import threading
 
 # data em que os arquivos XMLs foram atualizados
 ULTIMA_ATUALIZACAO = parse_datetime('2012-12-31 0:0:0')
@@ -204,45 +205,51 @@ class ImportadorCMSP:
 
         proposicoes = {} # chave é string (ex: 'pl 127/2004'); valor é objeto do tipo Proposicao
         votacoes = []
-
-        for vot_tree in tree.getchildren():
-            if vot_tree.tag == 'Votacao' and vot_tree.get('TipoVotacao') == 'Nominal': # se é votação nominal
-                resumo = '%s -- %s' % (vot_tree.get('Materia'), vot_tree.get('Ementa'))
-                # Prop_nome eh como se identificam internamente por ora as propostas.
-                # Queremos saber a que proposicao estah associada a votacao analisanda.
-                prop_nome = self._prop_nome(resumo) # vai retornar prop_nome se votação for de proposição
-                # se a votacao for associavel a uma proposicao, entao..
-                if (prop_nome):
-                    # a proposicao aa qual a votacao sob analise se refere jah estava no dicionario (eba!)
-                    if proposicoes.has_key(prop_nome):
-                        prop = proposicoes[prop_nome]
-                    # a prop. nao estava ainda, entao devemo-la tanto  criar qnt cadastrar no dicionario.
-                    else:
-                        prop = models.Proposicao()
-                        prop.sigla, prop.numero, prop.ano = self.tipo_num_anoDePropNome(prop_nome)
-                        prop.casa_legislativa = self.cmsp
-                        proposicoes[prop_nome] = prop
-
-                    if self.verbose:
-                        print 'Proposição %s salva' % prop
-                    prop.save()
-                    vot = models.Votacao()
-                    vot.save() # só pra criar a chave primária e poder atribuir o votos
-                    vot.id_vot = vot_tree.get('VotacaoID')
-                    vot.descricao = resumo
-                    vot.data = self._converte_data(vot_tree.get('DataDaSessao'))
-                    vot.resultado = vot_tree.get('Resultado')
-                    self._votos_from_tree(vot_tree, vot)
-                    vot.proposicao = prop
-                    if self.verbose:
-                        print 'Votação %s salva' % vot
-                    else:
-                        self.progresso()
-                    vot.save()
-
-                    votacoes.append(vot)
-
+        self.votacoes_em_serie(proposicoes,votacoes,tree)
         return votacoes
+
+    def votacoes_em_serie(self,proposicoes,votacoes,tree):
+        for vot_tree in tree.getchildren():
+            self.votacao_from_tree(proposicoes,votacoes,vot_tree)
+    
+
+    def votacao_from_tree(self, proposicoes,votacoes,vot_tree):
+        if vot_tree.tag == 'Votacao' and vot_tree.get('TipoVotacao') == 'Nominal': # se é votação nominal
+            resumo = '%s -- %s' % (vot_tree.get('Materia'), vot_tree.get('Ementa'))
+            # Prop_nome eh como se identificam internamente por ora as propostas.
+            # Queremos saber a que proposicao estah associada a votacao analisanda.
+            prop_nome = self._prop_nome(resumo) # vai retornar prop_nome se votação for de proposição
+            # se a votacao for associavel a uma proposicao, entao..
+            if (prop_nome):
+                # a proposicao a qual a votacao sob analise se refere jah estava no dicionario (eba!)
+                if proposicoes.has_key(prop_nome):
+                    prop = proposicoes[prop_nome]
+                # a prop. nao estava ainda, entao devemo-la tanto  criar qnt cadastrar no dicionario.
+                else:
+                    prop = models.Proposicao()
+                    prop.sigla, prop.numero, prop.ano = self.tipo_num_anoDePropNome(prop_nome)
+                    prop.casa_legislativa = self.cmsp
+                    proposicoes[prop_nome] = prop
+
+                if self.verbose:
+                    print 'Proposição %s salva' % prop
+                prop.save()
+                vot = models.Votacao()
+                vot.save() # só pra criar a chave primária e poder atribuir o votos
+                vot.id_vot = vot_tree.get('VotacaoID')
+                vot.descricao = resumo
+                vot.data = self._converte_data(vot_tree.get('DataDaSessao'))
+                vot.resultado = vot_tree.get('Resultado')
+                self._votos_from_tree(vot_tree, vot)
+                vot.proposicao = prop
+                if self.verbose:
+                    print 'Votação %s salva' % vot
+                else:
+                    self.progresso()
+                vot.save()
+
+                votacoes.append(vot)
+
 
     def progresso(self):
         """Indica progresso na tela"""
@@ -254,15 +261,9 @@ class ImportadorCMSP:
 
         Retorna lista das votações
         """
-
         if self.verbose:
             print "importando de: " + str(xml)
         vots = self._from_xml_to_bd(xml)
-
-        #if self.verbose:
-        #    print '*** 2013 ***'
-        #vots.append(self._from_xml_to_bd(XML2013))
-
         return vots
 
 def main():
@@ -270,8 +271,7 @@ def main():
     gerador_casa = GeradorCasaLegislativa()
     cmsp = gerador_casa.gerar_cmsp()
     importer = ImportadorCMSP(cmsp)
-    importer.importar_de(XML2010)
-    importer.importar_de(XML2011)
-    importer.importar_de(XML2012)
+    for xml in [XML2010,XML2011,XML2012]:
+        importer.importar_de(xml)
     print 'Importação dos dados da Câmara Municipal de São Paulo (CMSP) terminada'
 
