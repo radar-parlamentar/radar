@@ -69,3 +69,8 @@ class JsonAnaliseTemporal(models.Model):
     votacoes = models.ManyToManyField(Votacao)
     partidos = models.ManyToManyField(Partido)
     json = models.TextField()
+    
+def clear_cache():
+    ats = AnaliseTemporal.objects.all()
+    for at in ats:
+        at.delete()
