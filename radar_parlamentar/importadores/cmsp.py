@@ -82,16 +82,13 @@ class GeradorCasaLegislativa(object):
         cmsp.save()
         return cmsp
 
-class ImportadorCMSP:
-    """Salva os dados dos arquivos XML da cmsp no banco de dados"""
-
-    def __init__(self, cmsp, verbose=False):
-        """verbose (booleano) -- ativa/desativa prints na tela"""
-        self.verbose = verbose
+class XmlCMSP:
+    def __init__(self, cmsp, verbose=False): 
+        self.parlamentares = {}
         self.cmsp = cmsp
-        self.parlamentares = {} # mapeia um ID de parlamentar incluso em alguma votacao a um objeto Parlamentar.
+        self.verbose = verbose
 
-    def _converte_data(self, data_str):
+    def converte_data(self, data_str):
         """Converte string "d/m/a para objeto datetime; retona None se data_str é inválido"""
         DATA_REGEX = '(\d\d?)/(\d\d?)/(\d{4})'
         res = re.match(DATA_REGEX, data_str)
@@ -101,7 +98,7 @@ class ImportadorCMSP:
         else:
             return None
 
-    def _prop_nome(self, texto):
+    def prop_nome(self, texto):
         """Procura "tipo num/ano" no texto"""
         res = re.search(PROP_REGEX, texto)
         if res and res.group(1).upper() in TIPOS_PROPOSICOES:
@@ -118,7 +115,7 @@ class ImportadorCMSP:
             return None, None, None
 
 
-    def _voto_cmsp_to_model(self, voto):
+    def voto_cmsp_to_model(self, voto):
         """Interpreta voto como tá no XML e responde em adequação a modelagem em models.py"""
 
         if voto == 'Não':
@@ -133,7 +130,7 @@ class ImportadorCMSP:
             print 'tipo de voto (%s) não mapeado!' % voto
             return models.ABSTENCAO
 
-    def _partido(self, nome_partido):
+    def partido(self, nome_partido):
         nome_partido = nome_partido.strip()
         partido = models.Partido.from_nome(nome_partido)
         if partido == None:
@@ -141,7 +138,7 @@ class ImportadorCMSP:
             partido = models.Partido.get_sem_partido()
         return partido
 
-    def _votante(self, ver_tree):
+    def votante(self, ver_tree):
         id_parlamentar = ver_tree.get('IDParlamentar')
         if self.parlamentares.has_key(id_parlamentar):
             votante = self.parlamentares[id_parlamentar]
@@ -157,11 +154,11 @@ class ImportadorCMSP:
             #TODO genero
         return votante
 
-    def _legislatura(self, ver_tree):
+    def legislatura(self, ver_tree):
         """Cria e retorna uma legistura para o partido fornecido"""
 
-        partido = self._partido(ver_tree.get('Partido'))
-        votante = self._votante(ver_tree)
+        partido = self.partido(ver_tree.get('Partido'))
+        votante = self.votante(ver_tree)
 
         legs = models.Legislatura.objects.filter(parlamentar=votante,partido=partido,casa_legislativa=self.cmsp)
         # TODO acima filtrar tb por inicio e fim
@@ -178,7 +175,7 @@ class ImportadorCMSP:
 
         return leg
 
-    def _votos_from_tree(self, vot_tree, votacao):
+    def votos_from_tree(self, vot_tree, votacao):
         """Extrai lista de votos do XML da votação e as salva no banco de dados.
 
         Argumentos:
@@ -187,38 +184,20 @@ class ImportadorCMSP:
         """
         for ver_tree in vot_tree.getchildren():
             if ver_tree.tag == 'Vereador':
-                leg = self._legislatura(ver_tree)
+                leg = self.legislatura(ver_tree)
                 voto = models.Voto()
                 voto.legislatura = leg
                 voto.votacao = votacao
-                voto.opcao = self._voto_cmsp_to_model(ver_tree.get('Voto'))
+                voto.opcao = self.voto_cmsp_to_model(ver_tree.get('Voto'))
                 if voto.opcao != None:
                     voto.save()
-
-    def _from_xml_to_bd(self, xml_file):
-        """Salva no banco de dados do Django e retorna lista das votações"""
-
-        f = open(xml_file, 'r')
-        xml = f.read()
-        f.close()
-        tree = etree.fromstring(xml)
-
-        proposicoes = {} # chave é string (ex: 'pl 127/2004'); valor é objeto do tipo Proposicao
-        votacoes = []
-        self.votacoes_em_serie(proposicoes,votacoes,tree)
-        return votacoes
-
-    def votacoes_em_serie(self,proposicoes,votacoes,tree):
-        for vot_tree in tree.getchildren():
-            self.votacao_from_tree(proposicoes,votacoes,vot_tree)
-    
 
     def votacao_from_tree(self, proposicoes,votacoes,vot_tree):
         if vot_tree.tag == 'Votacao' and vot_tree.get('TipoVotacao') == 'Nominal': # se é votação nominal
             resumo = '%s -- %s' % (vot_tree.get('Materia'), vot_tree.get('Ementa'))
             # Prop_nome eh como se identificam internamente por ora as propostas.
             # Queremos saber a que proposicao estah associada a votacao analisanda.
-            prop_nome = self._prop_nome(resumo) # vai retornar prop_nome se votação for de proposição
+            prop_nome = self.prop_nome(resumo) # vai retornar prop_nome se votação for de proposição
             # se a votacao for associavel a uma proposicao, entao..
             if (prop_nome):
                 # a proposicao a qual a votacao sob analise se refere jah estava no dicionario (eba!)
@@ -238,9 +217,9 @@ class ImportadorCMSP:
                 vot.save() # só pra criar a chave primária e poder atribuir o votos
                 vot.id_vot = vot_tree.get('VotacaoID')
                 vot.descricao = resumo
-                vot.data = self._converte_data(vot_tree.get('DataDaSessao'))
+                vot.data = self.converte_data(vot_tree.get('DataDaSessao'))
                 vot.resultado = vot_tree.get('Resultado')
-                self._votos_from_tree(vot_tree, vot)
+                self.votos_from_tree(vot_tree, vot)
                 vot.proposicao = prop
                 if self.verbose:
                     print 'Votação %s salva' % vot
@@ -250,22 +229,39 @@ class ImportadorCMSP:
 
                 votacoes.append(vot)
 
-
     def progresso(self):
         """Indica progresso na tela"""
         sys.stdout.write('x')
         sys.stdout.flush()
 
-    def importar_de(self,xml):
-        """Salva informações no banco de dados do Django
 
-        Retorna lista das votações
-        """
+class ImportadorCMSP:
+    """Salva os dados dos arquivos XML da cmsp no banco de dados"""
+
+    def __init__(self, cmsp, verbose=False):
+        """verbose (booleano) -- ativa/desativa prints na tela"""
+        self.verbose = verbose
+        self.xml_cmsp = XmlCMSP(cmsp,verbose)
+    
+    def importar_de(self, xml_file):
+        """Salva no banco de dados do Django e retorna lista das votações"""
         if self.verbose:
-            print "importando de: " + str(xml)
-        vots = self._from_xml_to_bd(xml)
-        return vots
+            print "importando de: " + str(xml_file)
+        f = open(xml_file, 'r')
+        xml = f.read()
+        f.close()
+        tree = etree.fromstring(xml)
 
+        proposicoes = {} # chave é string (ex: 'pl 127/2004'); valor é objeto do tipo Proposicao
+        votacoes = []
+        self.analisar_xml(proposicoes,votacoes,tree)
+        return votacoes
+
+    def analisar_xml(self,proposicoes,votacoes,tree):
+        for vot_tree in tree.getchildren():
+            self.xml_cmsp.votacao_from_tree(proposicoes,votacoes,vot_tree)
+
+  
 def main():
     print 'IMPORTANDO DADOS DA CÂMARA MUNICIPAL DE SÃO PAULO (CMSP)'
     gerador_casa = GeradorCasaLegislativa()
