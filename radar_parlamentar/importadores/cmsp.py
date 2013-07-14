@@ -83,7 +83,7 @@ class GeradorCasaLegislativa(object):
         return cmsp
 
 class XmlCMSP:
-    def __init__(self, cmsp, verbose=False): 
+    def __init__(self, cmsp, verbose=False):
         self.parlamentares = {}
         self.cmsp = cmsp
         self.verbose = verbose
@@ -130,8 +130,8 @@ class XmlCMSP:
             print 'tipo de voto (%s) não mapeado!' % voto
             return models.ABSTENCAO
 
-    def partido(self, nome_partido):
-        nome_partido = nome_partido.strip()
+    def partido(self, ver_tree):
+        nome_partido = ver_tree.get('Partido').strip()
         partido = models.Partido.from_nome(nome_partido)
         if partido == None:
             print 'Não achou o partido %s' % nome_partido
@@ -157,7 +157,7 @@ class XmlCMSP:
     def legislatura(self, ver_tree):
         """Cria e retorna uma legistura para o partido fornecido"""
 
-        partido = self.partido(ver_tree.get('Partido'))
+        partido = self.partido(ver_tree)
         votante = self.votante(ver_tree)
 
         legs = models.Legislatura.objects.filter(parlamentar=votante,partido=partido,casa_legislativa=self.cmsp)
@@ -247,11 +247,8 @@ class ImportadorCMSP:
         """Salva no banco de dados do Django e retorna lista das votações"""
         if self.verbose:
             print "importando de: " + str(xml_file)
-        f = open(xml_file, 'r')
-        xml = f.read()
-        f.close()
-        tree = etree.fromstring(xml)
-
+        
+        tree = ImportadorCMSP.abrir_xml(xml_file)
         proposicoes = {} # chave é string (ex: 'pl 127/2004'); valor é objeto do tipo Proposicao
         votacoes = []
         self.analisar_xml(proposicoes,votacoes,tree)
@@ -261,7 +258,14 @@ class ImportadorCMSP:
         for vot_tree in tree.getchildren():
             self.xml_cmsp.votacao_from_tree(proposicoes,votacoes,vot_tree)
 
-  
+    @staticmethod
+    def abrir_xml(xml_file):
+        f = open(xml_file, 'r')
+        xml = f.read()
+        f.close()
+        return etree.fromstring(xml)
+
+ 
 def main():
     print 'IMPORTANDO DADOS DA CÂMARA MUNICIPAL DE SÃO PAULO (CMSP)'
     gerador_casa = GeradorCasaLegislativa()
