@@ -39,7 +39,10 @@ def serialize_casa_legislativa(nome_curto):
    
 	#Identificando a proposição
 	proposicao = models.Proposicao.objects.filter(casa_legislativa_id__nome_curto = nome_curto)
-
+	
+	reload(sys)
+	sys.setdefaultencoding("utf-8")
+	
 	for e in proposicao:
 		proposicao_xml = Element('Proposicao', id_prop = str(e.id_prop), sigla = e.sigla, numero = str(e.numero), ano = str(e.ano), ementa = e.ementa, descricao = e.descricao, indexacao = str(e.indexacao), data_apresentacao = str(e.data_apresentacao), situacao = e.situacao)
 		
