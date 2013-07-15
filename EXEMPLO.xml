@@ -1,0 +1,15 @@
+<CasaLegislativa nome="Convencao" nome_curto="conv" esfera="Federal" local="Paris (FR)" atualizacao="2012-06-01">
+	<Proposicao id_prop="2" sigla="PL" numero="2" ano="" ementa="Aumento da pensão dos nobres" descricao="Aumento da pensão dos nobres" indexacao="" data_apresentacao="">
+		<Votacao id_vot="1044" descricao="PL 29/2012 , Substitutivo n 4 da lid. do governo  -- Autoriza a concessão administrativa de uso das áreas municipais situadas na Rua dos Protestantes, Centro, ao Instituto Luiz Inácio Lula da Silva - Instituto Lula, nas condições que especifica. FASE DA DISCUSSÃO: 2ª APROVAÇÃO MEDIANTE VOTO FAVORÁVEL DA MAIORIA ABSOLUTA DOS MEMBROS DA CÂMARA." data="2012-05-16" resultado="Aprovado">
+			<Voto nome="Pierre" id_parlamentar="G0" genero="" partido="PSB" inicio="VEM DE LEGISLATURA" fim="VEM DE LEGISLATURA" numero="40" opcao="SIM"/>
+			<Voto nome="Pierre" id_parlamentar="G0" genero="" partido="PSB" inicio="VEM DE LEGISLATURA" fim="VEM DE LEGISLATURA" numero="40" opcao="SIM"/>
+			<Voto nome="Pierre" id_parlamentar="G0" genero="" partido="PSB" inicio="VEM DE LEGISLATURA" fim="VEM DE LEGISLATURA" numero="40" opcao="SIM"/>
+			<Voto nome="Pierre" id_parlamentar="G0" genero="" partido="PSB" inicio="VEM DE LEGISLATURA" fim="VEM DE LEGISLATURA" numero="40" opcao="SIM"/>
+		</Votacao>
+	</Proposicao>
+	<Proposicao id_prop="2" sigla="PL" numero="2" ano="" ementa="Aumento da pensão dos nobres" descricao="Aumento da pensão dos nobres" indexacao="" data_apresentacao="">
+		<Votacao id_vot="1044" descricao="PL 29/2012 , Substitutivo n 4 da lid. do governo  -- Autoriza a concessão administrativa de uso das áreas municipais situadas na Rua dos Protestantes, Centro, ao Instituto Luiz Inácio Lula da Silva - Instituto Lula, nas condições que especifica. FASE DA DISCUSSÃO: 2ª APROVAÇÃO MEDIANTE VOTO FAVORÁVEL DA MAIORIA ABSOLUTA DOS MEMBROS DA CÂMARA." data="2012-05-16" resultado="Aprovado">
+			<Voto nome="Pierre" id_parlamentar="G0" genero="" partido="PSB" inicio="VEM DE LEGISLATURA" fim="VEM DE LEGISLATURA" numero="40" opcao="SIM"/>
+		</Votacao>
+	</Proposicao>
+</CasaLegislativa>	
