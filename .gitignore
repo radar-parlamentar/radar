@@ -9,6 +9,7 @@ settings.py
 radar_parlamentar/radar_parlamentar/settings.py
 radar_parlamentar/settings.py
 radar_parlamentar/radar_parlamentar.db
+radar.log
 
 # eclipse related
 .project
