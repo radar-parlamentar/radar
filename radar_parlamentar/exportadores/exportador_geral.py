@@ -35,15 +35,19 @@ def serialize_casa_legislativa(nome_curto):
 	if len(casa) <= 0:
 		raise ValueError('Casa Legislativa não encontrada\n')
 
+	reload(sys)
+	sys.setdefaultencoding("utf-8")
+
+	print "\nExportando dados de %s\n" %casa[0].nome
+
 	root = Element('CasaLegislativa', nome = casa[0].nome, nome_curto = casa[0].nome_curto, esfera = casa[0].esfera, local = casa[0].local, atualizacao = str(casa[0].atualizacao))
    
 	#Identificando a proposição
 	proposicao = models.Proposicao.objects.filter(casa_legislativa_id__nome_curto = nome_curto)
 	
-	reload(sys)
-	sys.setdefaultencoding("utf-8")
-	
+
 	for e in proposicao:
+		print "Exportando todos as votações e votos de Proposicao id: " + str(e.id_prop) + ", numero: " + str(e.numero)
 		proposicao_xml = Element('Proposicao', id_prop = str(e.id_prop), sigla = e.sigla, numero = str(e.numero), ano = str(e.ano), ementa = e.ementa, descricao = e.descricao, indexacao = str(e.indexacao), data_apresentacao = str(e.data_apresentacao), situacao = e.situacao)
 		
 		
