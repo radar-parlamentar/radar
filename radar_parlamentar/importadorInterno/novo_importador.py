@@ -31,9 +31,8 @@ RESOURCES_FOLDER = os.path.join(MODULE_DIR, '../exportadores/dados/EXEMPLO.xml')
 class importador_interno:
 
 	def __init__(self):
-		self.lista_proposicao = []
-		self.lista_votacao = []
-
+		self.verifica_voto = False
+		self.verifica_votacao = False
 
 	
 	def carrega_xml(self):
@@ -50,51 +49,63 @@ class importador_interno:
 		casaLegislativa.atualizacao = root.attrib.get("atualizacao")
 		casaLegislativa.save()
 		
-		for child in root.iter("Proposicao"):
+		for child_proposicao in root.iter("Proposicao"):
+			#if self.verifica_votacao == True:
+					#continue
+
+			#self.verifica_voto = False
 			proposicao = models.Proposicao()
 			proposicao.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto = casaLegislativa.nome_curto)
-			proposicao.id_prop = child.attrib.get("id_prop")
-			proposicao.sigla = child.attrib.get("sigla")
-			proposicao.numero = child.attrib.get("numero")
-			proposicao.ano = child.attrib.get("ano")
-			proposicao.ementa = child.attrib.get("ementa")
-			proposicao.descricao = child.attrib.get("descricao")
-			proposicao.indexacao = child.attrib.get("indexacao")
-			if(child.attrib.get("data_apresentacao") == ""):
+			proposicao.id_prop = child_proposicao.attrib.get("id_prop")
+			proposicao.sigla = child_proposicao.attrib.get("sigla")
+			proposicao.numero = child_proposicao.attrib.get("numero")
+			proposicao.ano = child_proposicao.attrib.get("ano")
+			proposicao.ementa = child_proposicao.attrib.get("ementa")
+			proposicao.descricao = child_proposicao.attrib.get("descricao")
+			proposicao.indexacao = child_proposicao.attrib.get("indexacao")
+			if(child_proposicao.attrib.get("data_apresentacao") == ""):
 				#Valor default caso a data venha em branco
 				proposicao.data_apresentacao = "1900-01-01"
 				proposicao.save()
 			else:	
-				proposicao.data_apresentacao = child.attrib.get("data_apresentacao")	
+				proposicao.data_apresentacao = child_proposicao.attrib.get("data_apresentacao")	
 				proposicao.save()	
-	
-			for child in root.iter("Votacao"):
-				votacao = models.Votacao()
-				votacao.proposicao = models.Proposicao.objects.get(id_prop = proposicao.id_prop)
-				votacao.id_vot = child.attrib.get("id_vot")
-				votacao.descricao = child.attrib.get("descricao")
-			   	votacao.data = child.attrib.get("data")
-				votacao.resultado = child.attrib.get("resultado")
-				votacao.save()
 
-				for child in root.iter("Voto"):
+	
+			for child_votacao in child_proposicao.findall("Votacao"):		
+				
+				
+				votacao = models.Votacao()
+				votacao.proposicao = models.Proposicao.objects.get(chave = proposicao.chave)
+				votacao.id_votacao = child_votacao.attrib.get("id_votacao")
+				votacao.id_vot = child_votacao.attrib.get("id_vot")
+				votacao.descricao = child_votacao.attrib.get("descricao")
+			   	votacao.data = child_votacao.attrib.get("data")
+				votacao.resultado = child_votacao.attrib.get("resultado")
+				votacao.save()
+				#self.verifica_votacao = True
+
+
+
+
+				for child_voto in child_votacao.findall("Voto"):
 					partido = models.Partido()
-					partido.numero = child.attrib.get("numero")
-					partido.nome = child.attrib.get("partido")
+					partido.numero = child_voto.attrib.get("numero")
+					partido.nome = child_voto.attrib.get("partido")
 					partido.save()
 					
 					parlamentar = models.Parlamentar()
-					parlamentar.nome = child.attrib.get("nome")
-					parlamentar.id_parlamentar = child.attrib.get("id_parlamentar")
-					parlamentar.genero = child.attrib.get("genero")
+					parlamentar.nome = child_voto.attrib.get("nome")
+					parlamentar.id_parlamentar = child_voto.attrib.get("id_parlamentar")
+					parlamentar.genero = child_voto.attrib.get("genero")
 					parlamentar.save()
 				
 					legislatura = models.Legislatura()
 					legislatura.partido = models.Partido.objects.get(chave = partido.chave)
 					legislatura.parlamentar = models.Parlamentar.objects.get(chave = parlamentar.chave)
 					legislatura.casa_legislativa = models.CasaLegislativa(nome_curto= casaLegislativa.nome_curto)
-					legislatura.inicio = child.attrib.get("inicio")
-					legislatura.fim = child.attrib.get("fim")
+					legislatura.inicio = child_voto.attrib.get("inicio")
+					legislatura.fim = child_voto.attrib.get("fim")
 					legislatura.localidade = "vazio"
 					legislatura.save()
 
@@ -102,12 +113,12 @@ class importador_interno:
 					voto = models.Voto()
 					voto.votacao = models.Votacao.objects.get(id_votacao = votacao.id_votacao)
 					voto.legislatura = models.Legislatura.objects.get(chave = legislatura.chave)
-					voto.opcao = child.attrib.get("opcao")
+					voto.opcao = child_voto.attrib.get("opcao")
 					voto.save()
+									
+				
 
-			return;	
-
-				#self.lista_votacao.append(votacao)	
+				
 				
 		
 
