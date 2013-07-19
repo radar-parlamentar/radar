@@ -62,7 +62,7 @@ class importador_interno:
 		for child_proposicao in root.iter("Proposicao"):
 			
 			proposicao = models.Proposicao()
-			proposicao.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto = casaLegislativa.nome_curto)
+			proposicao.casa_legislativa = casaLegislativa
 			proposicao.id_prop = child_proposicao.attrib.get("id_prop")
 			proposicao.sigla = child_proposicao.attrib.get("sigla")
 			proposicao.numero = child_proposicao.attrib.get("numero")
@@ -83,7 +83,7 @@ class importador_interno:
 				
 				
 				votacao = models.Votacao()
-				votacao.proposicao = models.Proposicao.objects.get(chave = proposicao.chave)
+				votacao.proposicao = proposicao
 				votacao.id_votacao = child_votacao.attrib.get("id_votacao")
 				votacao.id_vot = child_votacao.attrib.get("id_vot")
 				votacao.descricao = child_votacao.attrib.get("descricao")
@@ -96,30 +96,46 @@ class importador_interno:
 
 
 				for child_voto in child_votacao.findall("Voto"):
+					
 					partido = models.Partido()
 					partido.numero = child_voto.attrib.get("numero")
 					partido.nome = child_voto.attrib.get("partido")
-					partido.save()
+					partido_existente = models.Partido.objects.filter(numero = partido.numero, nome = partido.nome)
+					if len(partido_existente) > 0:
+						partido = partido_existente[0]
+					else:
+						partido.save()
 					
 					parlamentar = models.Parlamentar()
 					parlamentar.nome = child_voto.attrib.get("nome")
 					parlamentar.id_parlamentar = child_voto.attrib.get("id_parlamentar")
 					parlamentar.genero = child_voto.attrib.get("genero")
-					parlamentar.save()
+					parlamentar_existente = models.Parlamentar.objects.filter(nome = parlamentar.nome, id_parlamentar = parlamentar.id_parlamentar, genero = parlamentar.genero)
+					if len(parlamentar_existente) > 0:
+						parlamentar = parlamentar_existente[0]
+					else:
+						parlamentar.save()
 				
 					legislatura = models.Legislatura()
-					legislatura.partido = models.Partido.objects.get(chave = partido.chave)
-					legislatura.parlamentar = models.Parlamentar.objects.get(chave = parlamentar.chave)
-					legislatura.casa_legislativa = models.CasaLegislativa(nome_curto= casaLegislativa.nome_curto)
+					legislatura.partido = partido
+					legislatura.parlamentar = parlamentar
+					legislatura.casa_legislativa = casaLegislativa
 					legislatura.inicio = child_voto.attrib.get("inicio")
 					legislatura.fim = child_voto.attrib.get("fim")
-					legislatura.localidade = "vazio"
-					legislatura.save()
-
+					legislatura.localidade = child_voto.attrib.get("localidade")
+					if legislatura.localidade == None:
+						legislatura.localidade = ""
+					else:
+						legislatura.localidade = "" + legislatura.localidade
+					legislatura_existente = models.Legislatura.objects.filter(partido = legislatura.partido, parlamentar = legislatura.parlamentar, casa_legislativa = legislatura.casa_legislativa, inicio = legislatura.inicio, fim = legislatura.fim)
+					if len(legislatura_existente) > 0:
+						legislatura = legislatura_existente[0]
+					else:
+						legislatura.save()
 					
 					voto = models.Voto()
-					voto.votacao = models.Votacao.objects.get(id_votacao = votacao.id_votacao)
-					voto.legislatura = models.Legislatura.objects.get(chave = legislatura.chave)
+					voto.votacao = votacao
+					voto.legislatura = legislatura
 					voto.opcao = child_voto.attrib.get("opcao")
 					voto.save()
 									
