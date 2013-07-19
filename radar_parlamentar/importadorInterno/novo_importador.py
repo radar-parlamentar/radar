@@ -24,7 +24,7 @@ import os
 from modelagem import models
 
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
-RESOURCES_FOLDER = os.path.join(MODULE_DIR, '../exportadores/dados/EXEMPLO.xml')
+RESOURCES_FOLDER = os.path.join(MODULE_DIR, '../exportadores/dados/')
 
 
 
@@ -35,14 +35,24 @@ class importador_interno:
 		self.verifica_votacao = False
 
 	
-	def carrega_xml(self):
-		diretorio = RESOURCES_FOLDER	
-		tree = etree.parse(diretorio)
-		root = tree.getroot()
+	def carrega_xml(self,nome_curto):
+		diretorio = RESOURCES_FOLDER + nome_curto + '.xml'	
+		try:
+			tree = etree.parse(diretorio)
+			root = tree.getroot()
+		except Exception:
+			print "Xml não encontrado"
+			return None	
+
+		models.CasaLegislativa.deleta_casa(nome_curto)
+		print	"Voltei"
 		
-		#dicionario = dict(root)
 		casaLegislativa = models.CasaLegislativa()
 		casaLegislativa.nome_curto = root.attrib.get("nome_curto")
+		#if(models.CasaLegislativa.objects.get(nome_curto = casaLegislativa.nome_curto)):
+			#models.deleta_casa(casaLegislativa.nome_curto)
+
+
 		casaLegislativa.nome = root.attrib.get("nome")
 		casaLegislativa.esfera = root.attrib.get("esfera")
 		casaLegislativa.local = root.attrib.get("local")
@@ -50,10 +60,7 @@ class importador_interno:
 		casaLegislativa.save()
 		
 		for child_proposicao in root.iter("Proposicao"):
-			#if self.verifica_votacao == True:
-					#continue
-
-			#self.verifica_voto = False
+			
 			proposicao = models.Proposicao()
 			proposicao.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto = casaLegislativa.nome_curto)
 			proposicao.id_prop = child_proposicao.attrib.get("id_prop")
@@ -63,7 +70,7 @@ class importador_interno:
 			proposicao.ementa = child_proposicao.attrib.get("ementa")
 			proposicao.descricao = child_proposicao.attrib.get("descricao")
 			proposicao.indexacao = child_proposicao.attrib.get("indexacao")
-			if(child_proposicao.attrib.get("data_apresentacao") == ""):
+			if(child_proposicao.attrib.get("data_apresentacao") == "None"):
 				#Valor default caso a data venha em branco
 				proposicao.data_apresentacao = "1900-01-01"
 				proposicao.save()
@@ -71,7 +78,7 @@ class importador_interno:
 				proposicao.data_apresentacao = child_proposicao.attrib.get("data_apresentacao")	
 				proposicao.save()	
 
-	
+			#Pega a filha da subarvore que está sendo percorrida.
 			for child_votacao in child_proposicao.findall("Votacao"):		
 				
 				
@@ -122,9 +129,9 @@ class importador_interno:
 				
 		
 
-def main():
+def main(nome_curto):
 	x = importador_interno()
-	x.carrega_xml()
+	x.carrega_xml(nome_curto)
 
 
 
