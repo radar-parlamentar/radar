@@ -1,24 +1,7 @@
 # Django settings for radar_parlamentar project.
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-
-ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
-)
-
+ADMINS = ()
 MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'radar',                      # Or path to database file if using sqlite3.
-        'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': 'root',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -82,7 +65,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '&amp;bt*nmd1d(+8*rm^nm9#0ge$iepd8!vw(2#v9+z3!e9iel^ls8'
+SECRET_KEY = '&amp;bt*nmd1d(+8*rm^nm9#0ge$iepd8!vw(2#v9+z3!e9iel^ls8' # [TOOO] Remover daqui, colocar em um arquivo de config local.
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -91,7 +74,7 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -100,7 +83,7 @@ MIDDLEWARE_CLASSES = (
     'radar_parlamentar.middleware.ConsoleExceptionMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+]
 
 ROOT_URLCONF = 'radar_parlamentar.urls'
 
@@ -169,7 +152,7 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'formatter': 'simple',
             'filename': 'radar.log'
-        }                 
+        }
     },
     'loggers': {
         'django.request': {
@@ -182,5 +165,5 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         }
-    }                 
+    }
 }
