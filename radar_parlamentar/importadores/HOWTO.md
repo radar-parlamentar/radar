@@ -22,13 +22,11 @@ Importação dos dados abertos para o banco de dados do Radar Parlamentar
 
     $ from importadores import camara
     $ finder = camara.ProposicoesFinder()
-    $ finder.find_props_que_existem_brute_force(IDS_FILE, ID_MIN, ID_MAX) # vai gerar IDS_FILE
-
-onde temos utilizado *ID_MIN=1 e ID_MAX=600000*
+    $ finder.find_props_que_existem() # vai gerar dados/cdep/ids_que_existem.txt
 
 *Passo 2* - Verificar dos IDs que existem, quais são os IDs que possuem votações associadas:
 
-    $ props = finder.parse_ids_que_existem(IDS_FILE, VOTADAS_FILE) # vai gerar VOTADAS_FILE
+    $ props = finder.find_props_com_votacoes() # vai gerar dados/cdep/votadas.txt
 
 *Passo 3* - importar para o banco de dados:
 

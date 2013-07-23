@@ -15,6 +15,7 @@ radar.log
 .project
 .pydevproject
 .settings/*
+.metadata/
 
 # virtualenv related
 bin/

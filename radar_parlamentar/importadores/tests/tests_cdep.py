@@ -23,6 +23,7 @@ from django.test import TestCase
 from importadores import camara
 from modelagem import models
 import os
+import Queue
 
 # constantes relativas ao código florestal
 ID = '17338'
@@ -33,12 +34,12 @@ NOME = 'PL 1876/1999'
 
 VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
 
-class VotadasParserTest(TestCase):
+class ProposicoesParserTest(TestCase):
     
-    def test_parse_votadas(self):
+    def test_parse(self):
         VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
-        votadasParser = camara.VotadasParser(VOTADAS_FILE_PATH)
-        votadas = votadasParser.parse_votadas()        
+        votadasParser = camara.ProposicoesParser(VOTADAS_FILE_PATH)
+        votadas = votadasParser.parse()        
         codigo_florestal =  {'ano': ANO, 'id': ID, 'num': NUM, 'sigla': SIGLA}
         self.assertTrue(codigo_florestal in votadas)
 
@@ -49,8 +50,8 @@ class CamaraTest(TestCase):
     @classmethod
     def setUpClass(cls):
         # vamos importar apenas as votações das proposições em votadas_test.txt
-        votadasParser = camara.VotadasParser(VOTADAS_FILE_PATH)
-        votadas = votadasParser.parse_votadas()        
+        votadasParser = camara.ProposicoesParser(VOTADAS_FILE_PATH)
+        votadas = votadasParser.parse()        
         importer = camara.ImportadorCamara(votadas)
         importer.importar()
 
@@ -123,8 +124,8 @@ class CamaraTest(TestCase):
 
     def test_prop_cod_florestal(self):
 
-        votadasParser = camara.VotadasParser(VOTADAS_FILE_PATH)
-        votadas = votadasParser.parse_votadas()        
+        votadasParser = camara.ProposicoesParser(VOTADAS_FILE_PATH)
+        votadas = votadasParser.parse()        
         importer = camara.ImportadorCamara(votadas)
         data = importer._converte_data('19/10/1999')
 
@@ -211,42 +212,47 @@ class SeparadorDeListaTest(TestCase):
 
 class ProposicoesFinderTest(TestCase):
 
-    def test_find_props_existem_brute_force(self):
-
-        ID_MIN = 12663
-        ID_MAX = 12667
-        IDS_QUE_EXISTEM = ['12665', '12666', '12667']
-        IDS_QUE_NAO_EXISTEM = ['12663', '12664']
-        FILE_NAME = 'ids_que_existem_test.txt'
-
-        finder = camara.ProposicoesFinder(False) # False to verbose
-        finder.find_props_que_existem_brute_force(FILE_NAME, ID_MIN, ID_MAX)
-        props = finder.parse_ids_que_existem(FILE_NAME)
-
-        for prop in props:
-            self.assertTrue(prop['id'] in IDS_QUE_EXISTEM, 'prop %s não encontrada em IDS_QUE_EXISTEM' % prop['id'])
-
-        for idp in IDS_QUE_NAO_EXISTEM:
-            self.assertFalse(idp in [prop['id'] for prop in props])
-
-        os.system('rm %s' % FILE_NAME)
-
     def test_find_props_existem(self):
 
         ANO_MIN = 2012
+        ANO_MAX = 2012
         IDS_QUE_EXISTEM = ['564446', '564313', '564126'] # proposições de 2012
         IDS_QUE_NAO_EXISTEM = ['382651', '382650'] # proposições de 2007
         FILE_NAME = 'ids_que_existem_test.txt'
 
         finder = camara.ProposicoesFinder(False) # False to verbose
-        finder.find_props_que_existem(FILE_NAME, ANO_MIN)
-        props = finder.parse_ids_que_existem(FILE_NAME)
+        ids = finder.find_props_que_existem(ANO_MIN, ANO_MAX, FILE_NAME)
 
         for idp in IDS_QUE_EXISTEM:
-            self.assertTrue(idp in [prop['id'] for prop in props])
+            self.assertTrue(idp in ids)
 
         for idp in IDS_QUE_NAO_EXISTEM:
-            self.assertFalse(idp in [prop['id'] for prop in props])
+            self.assertFalse(idp in ids)
 
         os.system('rm %s' % FILE_NAME)
 
+
+class VerificadorDeProposicoesTest(TestCase):
+            
+    def test_verifica_se_tem_votacoes(self):
+        
+        prop_com_votacao = {'id': '17338', 'sigla': 'PL', 'num': '1876', 'ano': '1999'}
+        prop_sem_votacao = {'id': '192074', 'sigla': 'PL', 'num': '1433', 'ano': '1988'}
+
+        props_queue = Queue.Queue()
+        props_queue.put(prop_com_votacao)
+        props_queue.put(prop_sem_votacao)
+        
+        votadas_queue = Queue.Queue()    
+        verificador = camara.VerificadorDeProposicoes(props_queue, votadas_queue, False)
+        verificador.verifica_se_tem_votacoes()
+
+        props_queue.join() # aguarda até que a fila seja toda processada
+        votadas = []        
+        while not votadas_queue.empty():
+            prop = votadas_queue.get()            
+            votadas.append(prop)
+            
+        self.assertEquals(len(votadas), 1)
+        self.assertEquals(votadas[0], prop_com_votacao)
+        
