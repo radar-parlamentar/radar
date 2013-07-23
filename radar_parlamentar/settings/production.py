@@ -17,3 +17,5 @@ DATABASES = {
 }
 
 # MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ['radar_parlamentar.middleware.ConsoleExceptionMiddleware']
+
+TEMPLATE_DIRS = ( 'radar_parlamentar/radar_parlamentar/templates/' )
