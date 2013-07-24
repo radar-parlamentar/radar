@@ -292,9 +292,6 @@ class DictTest(TestCase):
     def test_recuperacao_erro(self):
         with self.assertRaises(ValueError):
             self.dici.recuperar_palavras_por_sinonimo(None)
-
-    def test_break_the_build(self):
-        self.assertEquals(1, 0)
             
         
     
