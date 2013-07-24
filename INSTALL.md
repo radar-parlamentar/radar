@@ -1,39 +1,33 @@
 Passo a Passo da instalação
 ============================
 
-* **Clonando o repositório**
+Clonando o repositório
+------------------------------
     
     A primeira coisa que deve ser feita é o clone do projeto no *Github*. Para isso basta fazer:
 
         $ git clone https://github.com/leonardofl/radar_parlamentar.git
 
+Configuração do ambiente
+------------------------------
+
 Após clonar o repositório você tem as 3 opções abaixo para instalação
 
 
-Instalação Manual
----------------------------------
+* **Configuração Manual**
 
-* **Django 1.4.5**
+    * **Django 1.4.5**: Framework web utilizado no desenvolvimento do projeto. Download: [Django](https://www.djangoproject.com/download/)
 
-    Framework web utilizado no desenvolvimento do projeto. Caso não se queira configurar o banco, será utilizado o *SQLite* que ja está no repositorio do projeto. Para rodar o Django basta ir, via terminal, dentro da pasta *radar_parlamentar* que estará dentro da pasta clonada do repositório, e executar o *manage.py* através do comando:
-
-        $ python manage.py runserver. 
-
-    Download: [Django](https://www.djangoproject.com/download/)
-
-* Bibliotecas do python
-
-    * **numpy**: Pacote que permite a criação de arrays de objetos n-dimensionais e realização de operações diversas sobre o mesmo.
+    * **numpy**: Biblioteca que permite a criação de arrays de objetos n-dimensionais e realização de operações diversas sobre o mesmo.
         Download: [numpy](http://sourceforge.net/projects/numpy/files/)
 
     * **matplotlib**: Biblioteca utilizada no projeto para plotar gráficos 2D que são usados na apresentação dos dados abertos obtidos.
         Download: [matplotlib](http://matplotlib.org/downloads.html)
 
 
-Instalação utilizando Scripts
---------------------------------
+* **Configuração utilizando Scripts**
 
-* **Arch Linux**
+    * **Arch Linux**
 
     Depois de clonar o repositório, basta executar o script específico para o Arch Linux que se encontra no projeto:
 
@@ -41,7 +35,7 @@ Instalação utilizando Scripts
 
     E o script fará todo o trabalho para você.
 
-* **Ubuntu**
+    * **Ubuntu**
 
     Depois de clonar o repositório, basta executar o script específico para o Ubuntu que se encontra no projeto:
 
@@ -50,8 +44,7 @@ Instalação utilizando Scripts
     E o script fará todo o trabalho para você.
 
 
-Instalação utilizando o *virtualenv*
---------------------------------------
+* **Configuração utilizando o virtualenv**
 
 Para quem não conheçe, o [virtualenv](http://www.virtualenv.org "Virtual Env") cria um *conteiner* com todo um ambiente Python "limpo" para você instalar os pacotes separadamente do seu Sistema Operacional.
 
@@ -97,3 +90,34 @@ Observações
         adicione um *.decode("utf-8")* no final, ficando da seguinte forma:
             
             LISTA_PARTIDOS = os.path.join('recursos/partidos.txt',MODULE_DIR).decode("utf-8")
+
+Banco de dados
+--------------------------
+
+Você deve configurar um banco de dados MySQL para ser utilizado pelo Radar.
+
+Para mais detalhes, confira o arquivo **radar_parlamentar/BD_CONFIG.md**.
+
+Para que seu banco possua dados, você deve realizar os processos de importação de dados descritos em **radar_parlamentar/importadores/HOWTO.md**.
+
+Recomendamos inicialmente que você realiza a importação dos dados Convenção Nacional Francesa (uma casa legislativa fictícia).
+
+
+Conferindo se está tudo certo
+---------------------------------
+
+Execute os testes:
+
+    $ python manage.py <module_name>
+
+Onde `<module_name>` pode ser `analises, modelagem, importadores, exportadores ou importadorInterno`.
+
+Inicie o servidor do Django:
+
+    $ python manage.py runserver
+
+Considerando que você importou os dados da Convenção Nacional Francesa, acesse **http://127.0.0.1:8000/analises/analise/conv** e verifique se o gráfico aparece corretamente (um gráfico estático com três circunferâncias, dispostos aproximadamente como um triângulo equilátero).
+
+
+
+
