@@ -82,6 +82,10 @@ class ExportadoresFileTest(TestCase):
   		
   		exportar.main()
 
+        @classmethod
+        def tearDownClass(cls):
+                from util_test import flush_db
+                flush_db(cls)
 
 	def test_create_file_partido(self):
 		filepath = os.path.join(MODULE_DIR, 'dados/partido.xml')

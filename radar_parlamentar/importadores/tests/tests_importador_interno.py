@@ -72,17 +72,7 @@ class ImportadorInternoTest(TestCase):
 		PMDB = Partido.objects.filter(nome = 'PMDB')
 		assertEquals(PMDB.numero,40)
 
-
-		
-
-		
-
-
-
-
-
-
-
-
-
-		
+        @classmethod
+        def tearDownClass(cls):
+                from util_test import flush_db
+                flush_db(cls)

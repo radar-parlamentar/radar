@@ -36,6 +36,11 @@ class AnaliseTest(TestCase):
         cls.importer = convencao.ImportadorConvencao()
         cls.importer.importar()
 
+    @classmethod
+    def tearDownClass(cls):
+        from util_test import flush_db
+        flush_db(cls)
+
     def setUp(self):
         self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
         self.partidos = AnaliseTest.importer.partidos
@@ -80,7 +85,16 @@ class AnaliseTest(TestCase):
         
 
 class GraficoTest(TestCase):
-    
+    @classmethod
+    def setUpClass(cls):
+        cls.importer = convencao.ImportadorConvencao()
+        cls.importer.importar()
+
+    @classmethod
+    def tearDownClass(cls):
+        from util_test import flush_db
+        flush_db(cls)
+
     def setUp(self):
         self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
     

@@ -32,6 +32,11 @@ class ConvencaoTest(TestCase):
         importer = convencao.ImportadorConvencao()
         importer.importar()
 
+    @classmethod
+    def tearDownClass(cls):
+        from util_test import flush_db
+        flush_db(cls)
+
     def setUp(self):
         self.conv = models.CasaLegislativa.objects.get(nome_curto='conv')
 
