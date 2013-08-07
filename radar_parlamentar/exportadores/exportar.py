@@ -83,7 +83,10 @@ def serialize_voto():
 	XMLSerializer = serializers.get_serializer("xml")
 	xml_serializer = XMLSerializer()
 	out = open(os.path.join(MODULE_DIR, 'dados/voto.xml'), "w")
-	xml_serializer.serialize(models.Voto.objects.all(), stream=out)
+	voto = models.Voto.objects.all()
+	for e in voto:
+		e.id = None
+	xml_serializer.serialize(voto, stream=out)
 	data = xml_serializer.getvalue()
 	
 
