@@ -76,7 +76,6 @@ PERIODOS = (
 
 SEM_PARTIDO = 'Sem partido'
 
-
 class Partido(models.Model):
     """Partido político.
 
@@ -574,6 +573,7 @@ class VotoPartido(VotosAgregados):
         self.partido = partido
 
 # TODO class VotoUF(VotosAgregados):
+
 
 class Temas():
 
