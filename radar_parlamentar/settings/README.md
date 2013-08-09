@@ -8,4 +8,5 @@ Ao rodar python manage.py runserver no ambiente de desenvolvimento, será usado 
 Para python manage.py test vai usar settings/test.py.
 
 No ambiente de produção é necessário exportar a variável de ambiente export DJANGO_SETTINGS_MODULE='settings.production'.
+Para isso basta executar o script is_prod.sh.
 
