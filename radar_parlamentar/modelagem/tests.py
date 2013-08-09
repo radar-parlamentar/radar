@@ -30,6 +30,12 @@ class ModelsTest(TestCase):
     def setUpClass(cls):
         importer = convencao.ImportadorConvencao()
         importer.importar()
+    
+    @classmethod
+    def tearDownClass(cls):
+        from util_test import flush_db
+        flush_db(cls)
+
 
     def test_partido(self):
         pt = models.Partido.from_nome('PT')

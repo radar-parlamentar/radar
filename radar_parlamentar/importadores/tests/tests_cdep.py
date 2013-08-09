@@ -55,6 +55,12 @@ class CamaraTest(TestCase):
         importer = camara.ImportadorCamara(votadas)
         importer.importar()
 
+    @classmethod
+    def tearDownClass(cls):
+        from util_test import flush_db
+        flush_db(cls)
+
+
     def test_obter_proposicao(self):
 
         camaraws = camara.Camaraws()

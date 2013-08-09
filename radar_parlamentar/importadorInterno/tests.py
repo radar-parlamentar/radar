@@ -102,7 +102,13 @@ class ImportadorInternoTest(TestCase):
 		votacaoTest1.delete()
 
 		votoTest1.delete()
-		
+        
+        
+        @classmethod
+        def tearDownClass(cls):
+                from util_test import flush_db
+                flush_db(cls)
+
 
 	def test_deserialize_partido(self):
 	
