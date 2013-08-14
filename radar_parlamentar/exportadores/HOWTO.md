@@ -1,7 +1,16 @@
 HOW TO
 ===========
 
-Exportação dos dados existentes no banco de dados local para arquivos XML
+Exportação dos dados existentes no banco de dados local para XML
+-------------------------------------------------------------------------
+
+    $ from exportadores import exportador_xml
+    $ exportador_xml.serialize_casa_legislativa(nome_curto)
+
+A exportação gera um arquivo nome_curto.xml na pasta exportadores/dados.
+Esse arquivo contém todos os dados relativos à casa legislativa correspondente ao nome_curto.
+
+Exportação refinada dos dados existentes no banco de dados local para XML
 -------------------------------------------------------------------------
 
 1.Exportar todos os registros existentes
