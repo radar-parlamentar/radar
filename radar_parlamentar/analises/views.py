@@ -34,7 +34,6 @@ def analises(request):
 
 def analise(request, nome_curto_casa_legislativa):
     """ Retorna a lista de partidos para montar a legenda do gráfico"""
-    
     partidos = models.Partido.objects.order_by('numero').all()
     casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
     num_votacao = casa_legislativa.num_votacao()
@@ -43,7 +42,6 @@ def analise(request, nome_curto_casa_legislativa):
 
 def json_analise(request,nome_curto_casa_legislativa):
     """Retorna (novo) JSON com dados da análise solicitada."""
-
     casa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
     at = AnalisadorTemporal(casa,periodicidade=models.BIENIO,votacoes=[])
     # O argumento votacoes passado em branco irá utilizar todas as votações.
@@ -54,11 +52,11 @@ def json_analise(request,nome_curto_casa_legislativa):
 
 def json_pca(request, nome_curto_casa_legislativa):
     """Retorna o JSON com as coordenadas do gráfico PCA"""
-    
     casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
     gen = JsonAnaliseGenerator()
     json = gen.get_json(casa_legislativa)
     return HttpResponse(json, mimetype='application/json')
 
+# ?????
 def senf(request):
         return render_to_response('senf.html')
