@@ -19,13 +19,13 @@
 
 from __future__ import unicode_literals
 from django.template import RequestContext
-from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404, redirect
 from modelagem import models
 from grafico import JsonAnaliseGenerator
 from analise import AnalisadorTemporal
 import logging
+from django.views.decorators.cache import cache_page
 
 logger = logging.getLogger("radar")
 
@@ -39,7 +39,7 @@ def analise(request, nome_curto_casa_legislativa):
     num_votacao = casa_legislativa.num_votacao()
     return render_to_response('analise.html', {'casa_legislativa':casa_legislativa, 'partidos':partidos,'num_votacao':num_votacao})
 
-
+@cache_page(60 * 60)
 def json_analise(request,nome_curto_casa_legislativa):
     """Retorna (novo) JSON com dados da análise solicitada."""
     casa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
@@ -49,7 +49,7 @@ def json_analise(request,nome_curto_casa_legislativa):
     json = at.get_json()
     return HttpResponse(json, mimetype='application/json')
 
-
+@cache_page(60 * 60)
 def json_pca(request, nome_curto_casa_legislativa):
     """Retorna o JSON com as coordenadas do gráfico PCA"""
     casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)

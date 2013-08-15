@@ -8,3 +8,4 @@ wget "http://www.djangoproject.com/download/1.4/tarball/" -O Django-1.4.tar.gz
 tar xzvf Django-1.4.tar.gz
 cd Django-1.4
 python2 setup.py install 
+mkdir /tmp/django_cache

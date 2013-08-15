@@ -3,3 +3,4 @@
 
 sudo apt-get install sqlite3 python-pip
 sudo pip install -r requirements.txt
+mkdir /tmp/django_cache

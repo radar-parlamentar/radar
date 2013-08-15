@@ -24,6 +24,8 @@ Após clonar o repositório você tem as 3 opções abaixo para instalação
     * **matplotlib**: Biblioteca utilizada no projeto para plotar gráficos 2D que são usados na apresentação dos dados abertos obtidos.
         Download: [matplotlib](http://matplotlib.org/downloads.html)
 
+    * É preciso também criar o diretório /tmp/django_cache.
+
 
 * **Configuração utilizando Scripts**
 
