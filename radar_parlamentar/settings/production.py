@@ -19,3 +19,10 @@ DATABASES = {
 # MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ['radar_parlamentar.middleware.ConsoleExceptionMiddleware']
 
 TEMPLATE_DIRS = ( 'radar_parlamentar/radar_parlamentar/templates/' )
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/home/radarparlamentar/radarparlamentar.polignu.org/django_cache',
+    }
+}
