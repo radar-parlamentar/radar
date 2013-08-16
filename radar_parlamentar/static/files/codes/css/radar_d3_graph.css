@@ -22,9 +22,20 @@
   margin-left: -40px;
   height: 506px;
 }
-.dot {
-  stroke: #000;
+
+.radar_background {
+    fill: rgba(230,230,230,0.6);
 }
+
+.raio_radar {
+    fill: none;
+    stroke: rgba(230,230,230,0.9);
+}
+
+.partie {
+  stroke: rgba(0,0,0,0.3);
+}
+
 .axis path, .axis line {
   fill: none;
   stroke: #000;
@@ -36,18 +47,40 @@
 
 .total_label {
   font: 700 16px "Helvetica Neue";
-  fill: #ddd;
+  fill: #bbb;
 }
 
 .year.label {
-  font: 500 50px "Helvetica Neue";
-  fill: #ddd;
+    font: 500 50px "Helvetica Neue";
+    fill: #bbb;
+    transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -webkit-transition: all 0.5s;
 }
+
 .year.label.active {
-  fill: #aaa;
+  fill: #555;
 }
+
 .overlay {
   fill: none;
   pointer-events: all;
   cursor: ew-resize;
 }
+
+.previous, .next {
+    font: 700 30px "Helvetica Neue";
+    fill: #bbb;
+    transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    cursor: default;
+}
+
+.previous.active, .next.active {
+    font: 700 35px "Helvetica Neue";
+    fill: #333;
+    cursor: pointer;
+}
+
+
