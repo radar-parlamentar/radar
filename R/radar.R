@@ -17,6 +17,7 @@
 
 require("wnominate")
 # rm(list=ls())
+# options(max.print=1000)
 load("rollcall_lulaII.Rdata")
 dados <- rollcall_lulaII
 
@@ -69,7 +70,7 @@ por.partido <- function(rcobject){
 }
 
 
-radarpca <- function(rcobject, minvotes = 20, lop = 0.025) {
+radarpca <- function(rcobject, minvotes = 20, lop = 0.025, scale = FALSE , center = TRUE) {
   # Pega um objeto da classe rollcall, porém necessariamente com
   # votos codificados entre -1 e 1, podendo ser qualquer número real
   # neste intervalo (caso de votos agregados por partido), e faz
@@ -78,39 +79,59 @@ radarpca <- function(rcobject, minvotes = 20, lop = 0.025) {
   # minvotes -- quem votou (sim ou não) em menos do que este número
   #             de votações é excluído da análise.
   # lop -- valor entre 0 e 1. Se a fração de parlamentares que votou
-  #        como minoria não for pelo menos igual a este valor, a
+  #        como minoria não for estritamente maior que este valor, a
   #        votação é considerada "unânime" e é excluída da análise.
+  #        Para considerar todas as votações deve-se usar lop=-1.
+  # scale -- Define se vai reescalar variáveis aleatórias (votações)
+  #          para todos terem variância igual a 1.
+  # center -- Define se antes da PCA vai centralizar as votações
+  #           subtraindo-se a média.
   # Obs.: os argumentos minvotes possuem análogos no wnominate.
   t.inicio <- proc.time()
+  resultado <- list()
+  resultado$minvotes <- minvotes
+  resultado$lop <- lop
+  resultado$scale <- scale
+  resultado$center <- center
   cat("\nPreparando para rodar o RADAR-PCA...")
   x <- rcobject$votes
   xoriginal <- x
   cat("\n\n\tVerificando dados...")
-  # Primeiro vamos retirar os votos unânimes da matriz x.
-  xs <- x; xs[xs==-1] <- 0; xs <- colSums( xs)
-  xn <- x; xn[xn== 1] <- 0; xn <- colSums(-xn)
+
+  # Vamos retirar os votos unânimes da matriz x.
+  xs <- xoriginal; xs[xs==-1] <- 0; xs <- colSums( xs)
+  xn <- xoriginal; xn[xn== 1] <- 0; xn <- colSums(-xn)
   total <- xs + xn
   total[total==0] <- 1
   minoria <- pmin(xn/total,xs/total)
-  x <- x[,minoria>lop]
-  xs <- xs[minoria>lop]
-  xn <- xn[minoria>lop]
+  votos.retidos <- minoria>lop
+  x <- x[,votos.retidos]
+  xs <- xs[votos.retidos]
+  xn <- xn[votos.retidos]
   votosminoria <- pmin(xs,xn)
   Nvotos <- dim(x)[2]
+  resultado$votos.retidos <- votos.retidos
   cat("\n\t\t...",dim(xoriginal)[2]-Nvotos, "de", dim(xoriginal)[2],
       "votos descartados.")
-  
-  # Agora vamos tirar parlamentares que votaram pouco.
+
+  # Vamos tirar parlamentares que votaram pouco.
   quanto.votou <- rowSums(abs(x))
-  x <- x[quanto.votou>=minvotes,]
+  parlams.retidos <- quanto.votou>=minvotes
+  x <- x[parlams.retidos,]
   Nparlams <- dim(x)[1]
+  resultado$parlams.retidos <- parlams.retidos
   cat("\n\n\t\t...",dim(xoriginal)[1]-Nparlams, "de", dim(xoriginal)[1],
       "parlamentares descartados.")
-
+  
   # Fazer análise em si.
   cat("\n\n\t Rodando RADAR-PCA...")
-  resultado <- list()
-  resultado$pca <- prcomp(x,scale=FALSE,center=TRUE)
+  if (center == TRUE) {
+    centraliza <- TRUE
+  } else {
+    centraliza <- rep(0,ncol(x))
+  }
+  
+  resultado$pca <- prcomp(x,scale=scale,center=centraliza)
   resultado$rcobject <- rcobject
 
   resultado$x <- x
@@ -191,35 +212,37 @@ compara <- function(resultado,wnobject) {
        )
 }
 
-#exemplo
-r <- radarpca(rcdados)
-xx <- r$pca$x[,1]
-yy <- r$pca$x[,2]
-partido <- factor(r$rcobject$legis.data)
-num.partidos <- length(levels(partido))
-paleta <- colorRampPalette(c("darkblue","blue","yellow","green","darkmagenta","cyan","red","black","aquamarine"),space = "Lab")(num.partidos)
-cor <- paleta[as.integer(partido)]
-#symbols(xx,yy,circles=rep(1,length(xx)),inches=0.05,fg=cor)
-#legend("topright",levels(partido),col=paleta[1:22],pch=19)
 
-#plot(r$pca$x[,1],r$pca$x[,2]) # gráfico em preto e branco
+ver.votacao <- function(resultado,numero.votacao) {
+  # Faz um plot de uma votação específica.
+  votacao = resultado$x[,numero.votacao]
+  variancia = var(votacao)
+  if ( sum(votacao==-1|votacao==0|votacao==1)==length(votacao) ) {
+    # Os votos analisados sao somente sim/nao ou "zero".
+    alturas = c(sum(votacao==-1),sum(votacao==0),sum(votacao==1))
+    textonao = paste("N =",alturas[1],"(",round(100*alturas[1]/length(votacao),2),"%)")
+    textoout = paste("O =",alturas[2],"(",round(100*alturas[2]/length(votacao),2),"%)")
+    textosim = paste("S =",alturas[3],"(",round(100*alturas[3]/length(votacao),2),"%)")
+    barplot(alturas,names.arg=c(textonao,textoout,textosim),main=paste("Votacao",numero.votacao,),sub=paste("Variancia Amostral =",round(variancia,5)),ylim=c(0,length(votacao)))
+  } else {
+    # Os "votos" são valores reais entre -1 (nao) e 1 (sim).
+    # Vou fazer um histograma.
+    hist(votacao,breaks=c(-1,-.6,-.2,.2,.6,1),freq=TRUE,main=paste("Votacao Numero",numero.votacao),sub=paste("Variancia Amostral =",round(variancia,5)),ylim=c(0,length(votacao)))
+  }
+# para talvez uso futuro nesta funcao:
+#  partidos = resultado$rcobject$legis.data[resultado$votos.retidos]
+}
 
-# por partido:
-#rr <- pca(por.partido(rcdados))
-#plotar(rr)
 
-# para fazer um wnominate basta utilizar o objeto rcdados:
-#
-#   wn <- wnominate(rcdados,polarity=c(1,1))
-#
-# e para ver os resultados, use summary ou plot:
-#
-#   summary(wn)
-#   plot(wn)
-#
-# note que não é possível fazer o wnominate em dados agregados
-# por partido, pois neste caso as votações não são "sim" ou "não",
-# e sim um valor numérico que resume o voto médio do partido.
+ver.pc <- function(resultado,numero.pc) {
+  # Faz um plot dos coeficientes das votações que formam uma dada PC.
+  pca <- resultado$pca
+  alturas <- pca$rotation[,numero.pc]
+  xvotos <- seq(1,ncol(pca$rotation))
+  alt.max <- max(alturas) 
+  plot(xvotos,abs(alturas),type="s",main=NULL,sub=NULL,xlab="",ylab="",ylim=c(-alt.max,alt.max))
+  barplot(alturas,sub=paste("Variancia Explicada =",round(pca$sdev[numero.pc]^2,2),"(",round(100*(pca$sdev[numero.pc]^2)/sum(pca$sdev^2),1),"%)"),space=0,border=NA,add=TRUE,xlab=NULL,names.arg=" ")
+}
 
 # OBSERVAÇÕES:
 
