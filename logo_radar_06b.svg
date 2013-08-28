@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="logo_radar_06.svg">
+   sodipodi:docname="logo_radar_06a.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -148,8 +148,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.71630688"
-     inkscape:cx="517.79168"
-     inkscape:cy="383.58923"
+     inkscape:cx="338.34724"
+     inkscape:cy="324.97638"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -158,13 +158,15 @@
      inkscape:snap-intersection-paths="true"
      inkscape:snap-object-midpoints="true"
      inkscape:object-nodes="true"
-     inkscape:snap-global="false"
+     inkscape:snap-global="true"
      inkscape:snap-smooth-nodes="false"
      inkscape:window-width="1280"
      inkscape:window-height="752"
      inkscape:window-x="0"
      inkscape:window-y="0"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -184,17 +186,17 @@
      transform="translate(0,-308.2677)">
     <text
        xml:space="preserve"
-       style="font-size:154.59072875999999042px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.08934127999999997;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans Bold"
-       x="15.06763"
-       y="536.90094"
+       style="font-size:155.27694702px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans Bold"
+       x="3.323638"
+       y="560.63281"
        id="text6672"
        sodipodi:linespacing="125%"
-       transform="scale(0.92544803,1.0805577)"><tspan
+       transform="scale(0.96471281,1.0365779)"><tspan
          sodipodi:role="line"
-         x="15.06763"
-         y="536.90094"
+         x="3.323638"
+         y="560.63281"
          id="tspan6676"
-         style="fill:#000000;stroke:none;stroke-width:1.08934127999999997;stroke-opacity:1">RADAR</tspan></text>
+         style="fill:#000000;stroke:none">RADAR</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text6680"
