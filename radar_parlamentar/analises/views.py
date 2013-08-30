@@ -3,7 +3,7 @@
 # Copyright (C) 2012, Leonardo Leite
 #
 # This file is part of Radar Parlamentar.
-# 
+#
 # Radar Parlamentar is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -13,7 +13,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -30,14 +30,18 @@ from django.views.decorators.cache import cache_page
 logger = logging.getLogger("radar")
 
 def analises(request):
-    return render_to_response('analises.html')
+    return render_to_response('analises.html', {}, context_instance=RequestContext(request))
 
 def analise(request, nome_curto_casa_legislativa):
     """ Retorna a lista de partidos para montar a legenda do gráfico"""
     partidos = models.Partido.objects.order_by('numero').all()
     casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
     num_votacao = casa_legislativa.num_votacao()
-    return render_to_response('analise.html', {'casa_legislativa':casa_legislativa, 'partidos':partidos,'num_votacao':num_votacao})
+    return render_to_response(
+                'analise.html',
+                {'casa_legislativa':casa_legislativa, 'partidos':partidos,'num_votacao':num_votacao},
+                context_instance=RequestContext(request)
+            )
 
 @cache_page(60 * 60)
 def json_analise(request,nome_curto_casa_legislativa):
