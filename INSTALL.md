@@ -110,7 +110,7 @@ Conferindo se está tudo certo
 
 Execute os testes:
 
-    $ python manage.py <module_name>
+    $ python manage.py test <module_name>
 
 Onde `<module_name>` pode ser `analises, modelagem, importadores, exportadores ou importadorInterno`.
 
