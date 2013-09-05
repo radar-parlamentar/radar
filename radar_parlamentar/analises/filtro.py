@@ -1,6 +1,6 @@
 # coding=utf8
 
-# Copyright (C) 2012, Leonardo Leite, Saulo Trento, Diego Rabatone, Guilherme Januário, Arthur Del Esposte
+# Copyright (C) 2012, Arthur Del Esposte, Leonardo Leite
 #
 # This file is part of Radar Parlamentar.
 # 
@@ -25,18 +25,18 @@ class Temas():
 
     @staticmethod
     def get_temas_padrao():
-    	temas = Temas()
+        temas = Temas()
 
-    	temas.inserir_sinonimo("educação", 'escola')
-    	temas.inserir_sinonimo("educação", 'professor')
-    	temas.inserir_sinonimo("educação", 'aluno')
+        temas.inserir_sinonimo("educação", 'escola')
+        temas.inserir_sinonimo("educação", 'professor')
+        temas.inserir_sinonimo("educação", 'aluno')
 
-    	temas.inserir_sinonimo("segurança", 'policial')
-    	temas.inserir_sinonimo("segurança", 'polícia')
-    	temas.inserir_sinonimo("segurança", 'bandido')
+        temas.inserir_sinonimo("segurança", 'policial')
+        temas.inserir_sinonimo("segurança", 'polícia')
+        temas.inserir_sinonimo("segurança", 'bandido')
 
-    	return temas
-	
+        return temas
+
 
     def inserir_sinonimo(self, tema, sinonimo):
         if tema == None or sinonimo == None:

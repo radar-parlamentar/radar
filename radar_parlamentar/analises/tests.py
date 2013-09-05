@@ -83,7 +83,29 @@ class AnaliseTest(TestCase):
         self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][1], -0.10178901, 4)
         self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], -0.31691161, 4)
         self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], 0.75248502, 4)
-        
+
+    def test_analisador_temporal(self):
+        analisadorTemporal = analise.AnalisadorTemporal(self.casa_legislativa, models.SEMESTRE, self.votacoes)
+        analises = analisadorTemporal.get_analises()
+        self.assertEqual(len(analises), 2)
+        # primeiro semestre
+        grafico = analises[0].coordenadas
+        self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.55767883, 4)
+        self.assertAlmostEqual(grafico[convencao.JACOBINOS][1], 0.5963732, 4)
+        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][0], 0.79531375, 4)
+        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][1], 0.18477743, 4)
+        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], -0.23763493, 4)
+        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], -0.78115063, 4)
+        # segundo semestre
+        grafico = analises[1].coordenadas
+        self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.71010899, 4)
+        self.assertAlmostEqual(grafico[convencao.JACOBINOS][1], -0.40300359, 4)
+        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][0], 0.00604315, 4)
+        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][1], 0.81647422, 4)
+        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], 0.70406584, 4)
+        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], -0.41347063, 4)        
+
+
 
 class GraficoTest(TestCase):
     @classmethod
