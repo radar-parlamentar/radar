@@ -75,8 +75,9 @@ class AnaliseTest(TestCase):
         self.assertTrue((matriz_votacao == MATRIZ_VOTACAO_ESPERADA).all()) 
 
     def test_partidos_2d(self):
-        an = analise.AnalisadorPeriodo(self.casa_legislativa, partidos=self.partidos)
-        grafico = an.partidos_2d()
+        analisador = analise.AnalisadorPeriodo(self.casa_legislativa, partidos=self.partidos)
+        analisePeriodo = analisador.analisa()
+        grafico = analisePeriodo.coordenadas
         self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.49321534, 4)
         self.assertAlmostEqual(grafico[convencao.JACOBINOS][1], -0.65069601, 4)
         self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][0], 0.81012694, 4)

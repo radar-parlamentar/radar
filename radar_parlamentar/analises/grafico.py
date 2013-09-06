@@ -70,9 +70,7 @@ class JsonAnaliseGenerator:
             lista[key] = []
 
     def _json_partidos_config(self,partidos2d,partidos, tamanhos,escala_tamanhos,analises_len,periodo,analisador,xs,ys):
-            """
-            preenche a lista de tamanhos, xs e ys para serem utilizadas no json dos partidos
-            """
+            """preenche a lista de tamanhos, xs e ys para serem utilizadas no json dos partidos"""
             for p in partidos:
                 JsonAnaliseGenerator.inicia_dicionario(p,tamanhos)
                 JsonAnaliseGenerator.inicia_dicionario(p,xs)
@@ -93,17 +91,17 @@ class JsonAnaliseGenerator:
         partidos = Set()
         scaler = GraphScaler()
         periodo = 0
-        analises = analise.analisadores_periodo
+        analises = analise.analises_periodo
         constante_escala_tamanho = 26 # quanto maior, maior serão as bolhas.
         escala_tamanhos = sqrt(analise.area_total) / constante_escala_tamanho
         if escala_tamanhos < 0.0001: # quero evitar divisões por zero
             logger.info("Atenção: Fator de escala fixado em 1, pois %f seria muito baixo." %escala_tamanhos)
             escala_tamanhos = 1
-        for analisador in analises:
+        for analise in analises:
             periodo +=1
-            partidos2d = scaler.scale(analisador.partidos_2d())
+            partidos2d = scaler.scale(analise.coordenadas)
             partidos.update(set(partidos2d.keys()))
-            self._json_partidos_config(partidos2d,partidos, tamanhos,escala_tamanhos,analises_len,periodo,analisador,xs,ys)
+            self._json_partidos_config(partidos2d,partidos, tamanhos,escala_tamanhos,analises_len,periodo,analise,xs,ys)
         json_partidos = []
         for nome_partido in partidos:
             partido = models.Partido.objects.get(nome=nome_partido)
@@ -131,7 +129,7 @@ class JsonAnaliseGenerator:
     def get_json_dic(self,casa_legislativa):
         """Retorna o dicionario usado para gerar o JSON"""
         analise = JsonAnaliseGenerator._get_analises(casa_legislativa)
-        analises = analise.analisadores_periodo
+        analises = analise.analises_periodo
         analises_len = len(analises)
         json_periodos = self._json_periodos(analises,analises_len)
         json_partidos = self._json_partidos(analise,analises_len)
