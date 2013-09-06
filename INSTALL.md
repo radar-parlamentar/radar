@@ -1,17 +1,17 @@
 Passo a Passo da instalação
 ============================
 
-Clonando o repositório
+1. Clonando o repositório
 ------------------------------
     
-    A primeira coisa que deve ser feita é o clone do projeto no *Github*. Para isso basta fazer:
+A primeira coisa que deve ser feita é o clone do projeto no *Github*. Para isso basta fazer:
 
         $ git clone https://github.com/leonardofl/radar_parlamentar.git
 
-Configuração do ambiente
+2. Configuração do ambiente
 ------------------------------
 
-Após clonar o repositório você tem as 3 opções abaixo para instalação
+Após clonar o repositório você tem as 3 opções abaixo para instalação:
 
 
 * **Configuração Manual**
@@ -93,7 +93,7 @@ Observações
             
             LISTA_PARTIDOS = os.path.join('recursos/partidos.txt',MODULE_DIR).decode("utf-8")
 
-Banco de dados
+3. Banco de dados
 --------------------------
 
 Você deve configurar um banco de dados MySQL para ser utilizado pelo Radar.
@@ -102,10 +102,10 @@ Para mais detalhes, confira o arquivo **radar_parlamentar/BD_CONFIG.md**.
 
 Para que seu banco possua dados, você deve realizar os processos de importação de dados descritos em **radar_parlamentar/importadores/HOWTO.md**.
 
-Recomendamos inicialmente que você realiza a importação dos dados Convenção Nacional Francesa (uma casa legislativa fictícia).
+Recomendamos inicialmente que você realize a importação dos dados Convenção Nacional Francesa (uma casa legislativa fictícia).
 
 
-Conferindo se está tudo certo
+4. Conferindo se está tudo certo
 ---------------------------------
 
 Execute os testes:
