@@ -582,12 +582,18 @@ class Temas():
   
 
     def carregar_alguns_valores(self):
-	self.inserir_sinonimo("educação", 'escola')
-        self.inserir_sinonimo("educação", 'professor')
-        self.inserir_sinonimo("educação", 'aluno')
-        self.inserir_sinonimo("segurança", 'policial')
-        self.inserir_sinonimo("segurança", 'polícia')
-        self.inserir_sinonimo("segurança", 'bandido')
+        sinonimos = {}
+        sinonimos['educação'] = ['escola', 'professor', 'aluno', 'EAD', 'universidade', 'cotas']
+        sinonimos['segurança'] = ['policial', 'polícia', 'bandido', 'PM']
+        sinonimos['economia'] = ['impostos', 'dívida']
+        sinonimos['saúde'] = ['medicina', 'médicos', 'SUS']
+        sinonimos['transporte'] = ['trânsito', 'pedágio', 'congestionamento'] 
+        sinonimos['violência'] = ['desarmamento', 'bullying']
+        sinonimos['esporte'] = ['futebol', 'inclusão']
+        sinonimos['drogas'] = ['álcool', 'entorpecentes', 'maconha']
+        for i in sinonimos:
+            for j in sinonimos[i]:
+                self.inserir_sinonimo(i,j)
 	
 
     def inserir_sinonimo(self, tema, sinonimo):
