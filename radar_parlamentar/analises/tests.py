@@ -84,6 +84,22 @@ class AnaliseTest(TestCase):
         self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][1], -0.10178901, 4)
         self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], -0.31691161, 4)
         self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], 0.75248502, 4)
+        
+    def test_rotacao(self):
+        periodos = self.casa_legislativa.periodos(models.SEMESTRE)
+        analisador1 = analise.AnalisadorPeriodo(self.casa_legislativa, periodo=periodos[0], partidos=self.partidos)
+        analise_do_periodo1 = analisador1.analisa()
+        analisador2 = analise.AnalisadorPeriodo(self.casa_legislativa, periodo=periodos[1], partidos=self.partidos)
+        analise_do_periodo2 = analisador2.analisa()
+        rotacionador = analise.Rotacionador(analise_do_periodo2, analise_do_periodo1)
+        analise_rotacionada = rotacionador.espelha_ou_roda()
+        grafico = analise_rotacionada.coordenadas
+        self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.71010899, 4)
+        self.assertAlmostEqual(grafico[convencao.JACOBINOS][1], -0.40300359, 4)
+        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][0], 0.00604315, 4)
+        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][1], 0.81647422, 4)
+        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], 0.70406584, 4)
+        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], -0.41347063, 4)
 
     def test_analisador_temporal(self):
         analisadorTemporal = analise.AnalisadorTemporal(self.casa_legislativa, models.SEMESTRE, self.votacoes)
