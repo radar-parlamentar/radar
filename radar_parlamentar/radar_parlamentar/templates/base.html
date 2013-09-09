@@ -21,16 +21,16 @@
 
     {% if request.get_host == '127.0.0.1:8000' or request.get_host == 'localhost:8000' %}
         <!-- Modernizr for HTML5 -->
-        <script src="/static/files/codes/js/modernizr-2.0.6.min.js"></script>
+        <script src="/static/files/codes/js/modernizr.min.js"></script>
         <!-- the jQuery library -->
-        <script src="/static/files/codes/js/jquery-1.8.3.min.js"></script>
+        <script src="/static/files/codes/js/jquery.min.js"></script>
     {% else %}
         <!-- Modernizr for HTML5 -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
         <script type="text/javascript">
           if (typeof Modernizr === 'undefined') {
             var e = document.createElement('script');
-                e.src = '/static/files/codes/js/modernizr-2.0.6.min.js';
+                e.src = '/static/files/codes/js/modernizr.min.js';
                 e.type='text/javascript';
             document.getElementsByTagName("head")[0].appendChild(e);
           }
@@ -41,7 +41,7 @@
         <script type="text/javascript">
           if (typeof jQuery === 'undefined' || typeof $ === 'undefined') {
             var e = document.createElement('script');
-                e.src = '/static/files/codes/js/jquery-1.8.3.min.js';
+                e.src = '/static/files/codes/js/jquery.min.js';
                 e.type='text/javascript';
             document.getElementsByTagName("head")[0].appendChild(e);
           }
@@ -327,6 +327,17 @@
     </footer><!-- end of #footer -->
 
 <!-- JavaScript Libraries and Codes -->
+    <!-- jQuery hoverIntent plugin -->
+    <script style="display: none;" src="/static/files/codes/js/jquery.hoverIntent.min.js"></script>
+    <!-- jQuery Cycle plugin -->
+    <script style="display: none;" src="/static/files/codes/js/jquery.cycle.all.min.js"></script>
+    <!-- jQuery Quicksand plugin -->
+    <script style="display: none;" src="/static/files/codes/js/jquery.quicksand.min.js"></script>
+    <!-- jQuery prettyPhoto plugin -->
+    <script style="display: none;" src="/static/files/codes/js/jquery.prettyPhoto.min.js"></script>
+    <!-- jQuery twitter plugin -->
+    <script style="display: none;" src="/static/files/codes/js/jquery.tweet.min.js"></script>
+
 
     <!-- This file starts/initializes all js functionalities throughout
         this site and houses some more scripts or libraries. -->
