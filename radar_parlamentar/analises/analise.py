@@ -21,12 +21,14 @@
 
 from __future__ import unicode_literals
 from math import hypot, atan2, pi
+from models import AnalisePeriodo
 from modelagem import models
 import grafico
 import logging
 import numpy
 import pca
 import json
+import copy
 
 logger = logging.getLogger("radar")
 
@@ -208,7 +210,7 @@ class AnalisadorPeriodo:
                 self.pca_partido.U[ip,:] = numpy.zeros((1,self.num_votacoes))
         
 
-    def partidos_2d(self):
+    def _calcula_partidos_2d(self):
         """Retorna mapa com as coordenadas dos partidos no plano 2D formado
         pelas duas primeiras componentes principais. Para isso é preciso
         fazer uma análise de componentes principais (pca); se esta já tiver
@@ -231,6 +233,29 @@ class AnalisadorPeriodo:
                     self.coordenadas[partido] = [ 0. , 0. ]
         return self.coordenadas
     
+    def analisa(self):
+        """Retorna AnalisePeriodo"""
+        self._calcula_partidos_2d()
+        analisePeriodo = AnalisePeriodo()
+        analisePeriodo.casa_legislativa = self.casa_legislativa
+        analisePeriodo.periodo = self.periodo
+        analisePeriodo.partidos = self.partidos
+        analisePeriodo.votacoes = self.votacoes
+        analisePeriodo.num_votacoes = self.num_votacoes
+        analisePeriodo.tamanhos_partidos = self.tamanhos_partidos
+        analisePeriodo.presencas_partidos = self.presencas_partidos        
+        analisePeriodo.soma_dos_tamanhos_dos_partidos = self.soma_dos_tamanhos_dos_partidos
+        analisePeriodo.pca_partido = self.pca_partido
+        analisePeriodo.coordenadas = self.coordenadas
+        return analisePeriodo
+    
+    
+class Rotacionador:
+    
+    def __init__(self, analisePeriodo, analisePeriodoReferencia):
+        self.analisePeriodo = analisePeriodo
+        self.analisePeriodoReferencia = analisePeriodoReferencia
+    
     def _energia(self,dados_fixos,dados_meus,graus=0,espelho=0):
         """Calcula energia envolvida no movimento entre dois instantes (fixo e meu), onde o meu é rodado (entre 0 e 360 graus), e primeiro eixo multiplicado por -1 se espelho=1. Ver pdf intitulado "Solução Analítica para o Problema de Rotação dos Eixos de Representação dos Partidos no Radar Parlamentar" (algoritmo_rotacao.pdf)."""
         e = 0
@@ -242,8 +267,8 @@ class AnalisadorPeriodo:
             for partido, coords in dados_meus.items():
                 dados_meus[partido] = numpy.dot( coords,self._matrot(graus) )
 
-        for p in self.partidos:
-            e += numpy.dot( dados_fixos[p.nome] - dados_meus[p.nome],  dados_fixos[p.nome] - dados_meus[p.nome] ) * self.tamanhos_partidos[p.nome]
+        for p in self.analisePeriodo.partidos:
+            e += numpy.dot( dados_fixos[p.nome] - dados_meus[p.nome],  dados_fixos[p.nome] - dados_meus[p.nome] ) * self.analisePeriodo.tamanhos_partidos[p.nome]
         return e
 
     def _polar(self,x, y, deg=0):		# radian if deg=0; degree if deg=1
@@ -265,21 +290,19 @@ class AnalisadorPeriodo:
         s = numpy.sin(rad)
         return numpy.array([[c,-s],[s,c]])
 
-    def espelha_ou_roda(self, dados_fixos):
-        print ' '
-        print 'Espelhando e rotacionando...'
+    def espelha_ou_roda(self):
+        """Retorna nova AnalisePeriodo com coordenadas rotacionadas"""
         epsilon = 0.001
-        dados_meus = self.partidos_2d() # calcula coordenadas, grava em self.coordenadas, e as retorna.
-        if not self.tamanhos_partidos:
-            self._inicializa_tamanhos_partidos()
+        dados_meus = self.analisePeriodo.coordenadas
+        dados_fixos = self.analisePeriodoReferencia.coordenadas
 
         numerador = 0;
         denominador = 0;
         for partido, coords in dados_meus.items():
             meu_polar = self._polar(coords[0],coords[1],0)
             alheio_polar = self._polar(dados_fixos[partido][0],dados_fixos[partido][1],0)
-            numerador += self.tamanhos_partidos[partido] * meu_polar[0] * alheio_polar[0] * numpy.sin(alheio_polar[1])
-            denominador += self.tamanhos_partidos[partido] * meu_polar[0] * alheio_polar[0] * numpy.cos(alheio_polar[1])
+            numerador += self.analisePeriodo.tamanhos_partidos[partido] * meu_polar[0] * alheio_polar[0] * numpy.sin(alheio_polar[1])
+            denominador += self.analisePeriodo.tamanhos_partidos[partido] * meu_polar[0] * alheio_polar[0] * numpy.cos(alheio_polar[1])
         if denominador < epsilon and denominador > -epsilon:
             teta1 = 90
             teta2 = 270
@@ -305,8 +328,10 @@ class AnalisadorPeriodo:
 
         self.coordenadas = dados_meus; # altera coordenadas originais da instância.
         self.theta = campeao[1]
-        print campeao
-        return dados_meus
+        
+        analiseRotacionada = copy.copy(self.analisePeriodo)
+        analiseRotacionada.coordenadas = dados_meus
+        return analiseRotacionada
 
 class AnalisadorTemporal:
     """Um objeto da classe AnalisadorTemporal é um envelope para um conjunto de
@@ -324,8 +349,7 @@ class AnalisadorTemporal:
 
     Atributos:
         data_inicio e data_fim -- strings no formato 'aaaa-mm-dd'.
-        analisadores_periodo -- lista de objetos da classe AnalisadorPeriodo
-
+        analises_periodo -- lista de objetos da classe AnalisePeriodo
     """
     def __init__(self, casa_legislativa, periodicidade=models.BIENIO, votacoes=[]):
 
@@ -337,7 +361,7 @@ class AnalisadorTemporal:
         
         self.periodicidade = periodicidade
         self.area_total = 1
-        self.analisadores_periodo = [] # lista de objetos da classe AnalisadorPeriodo
+        self.analises_periodo = [] 
         self.votacoes = []
         self.partidos = []
         self.json = ""
@@ -352,10 +376,10 @@ class AnalisadorTemporal:
     # Este método poderá ser apagado quando o json antigo não for mais usado (ou seja, quando o método get_json da classe JsonAnaliseGenerator do módulo gráfico não for mais usado).
     def get_analises(self):
         self._faz_analises()
-        return self.analisadores_periodo
+        return self.analises_periodo
             
     def _faz_analises(self):
-        """ Método da classe AnalisadorTemporal que cria os objetos AnalisadorPeriodo e faz as análises."""
+        """Método da classe AnalisadorTemporal que cria os objetos AnalisadorPeriodo e faz as análises."""
         for periodo in self.periodos:
             logger.info("Analisando periodo %s a %s." % (str(periodo.ini),str(periodo.fim)) )
             if len(self.votacoes) == 0: # FUNFA?
@@ -366,25 +390,23 @@ class AnalisadorTemporal:
                 partidos = None
             else:
                 partidos = self.partidos
-            x = AnalisadorPeriodo(self.casa_legislativa, periodo, votacoes, partidos)
-            if x.votacoes:
-                logger.info("O periodo possui %d votações." % len(x.votacoes))
-                x.partidos_2d()
-                self.analisadores_periodo.append(x)
+            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, votacoes, partidos)
+            if analisadorPeriodo.votacoes:
+                logger.info("O periodo possui %d votações." % len(analisadorPeriodo.votacoes))
+                analisePeriodo = analisadorPeriodo.analisa()
+                self.analises_periodo.append(analisePeriodo)
             else:
                 logger.info("O periodo não possui nenhuma votação.")
-            logger.info("Soma dos Tamanhos dos Partidos %f" % x.soma_dos_tamanhos_dos_partidos)
 
-        # Rotacionar as análises, e determinar área máxima:
-        maior = self.analisadores_periodo[0].soma_dos_tamanhos_dos_partidos
-        for i in range(1,len(self.analisadores_periodo)): # a partir da segunda analise
-            # Rotacionar/espelhar a análise baseado na análise anterior
-            self.analisadores_periodo[i].espelha_ou_roda(self.analisadores_periodo[i-1].coordenadas)
-            # Área Máxima:
-            candidato = self.analisadores_periodo[i].soma_dos_tamanhos_dos_partidos
-            if candidato > maior:
-                maior = candidato
-        self.area_total = maior
+        # Rotaciona/espelha cada análise baseado em sua análise anterior
+        for i in range(1,len(self.analises_periodo)): # a partir da segunda analise
+            rotacionador = Rotacionador(self.analises_periodo[i], self.analises_periodo[i-1])
+            analiseRotacionada = rotacionador.espelha_ou_roda()
+            self.analises_periodo[i] = analiseRotacionada 
+        
+        # determina área máxima:
+        maior_soma_dos_tamanhos_dos_partidos = max([ analise.soma_dos_tamanhos_dos_partidos for analise in self.analises_periodo ])
+        self.area_total = maior_soma_dos_tamanhos_dos_partidos
 
 
     def _cria_json(self,constante_escala_tamanho=45):
@@ -404,7 +426,7 @@ class AnalisadorTemporal:
         self.json += '"filtro_partidos":null,'
         self.json += '"filtro_votacoes":null},' # fecha bloco "geral"
         self.json += '"periodos":['
-        for ap in self.analisadores_periodo:
+        for ap in self.analises_periodo:
             self.json += '{' # abre periodo
             self.json += '"nvotacoes":' + str(ap.periodo.quantidade_votacoes) + ','
             self.json += '"nome":"' + ap.periodo.string + '",'

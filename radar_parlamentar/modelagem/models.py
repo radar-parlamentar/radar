@@ -582,53 +582,20 @@ class Temas():
   
 
     def carregar_alguns_valores(self):
-	self.inserir_sinonimo("educação", 'escola')
-        self.inserir_sinonimo("educação", 'professor')
-        self.inserir_sinonimo("educação", 'aluno')
-        self.inserir_sinonimo("segurança", 'policial')
-        self.inserir_sinonimo("segurança", 'polícia')
-        self.inserir_sinonimo("segurança", 'bandido')
-	self.inserir_sinonimo("segurança", 'violência')
-	self.inserir_sinonimo("segurança", 'presídios')
-	self.inserir_sinonimo("saúde", 'hospital')
-        self.inserir_sinonimo("saúde", 'médico')
-	self.inserir_sinonimo("saúde", 'enfermeiro')
-	self.inserir_sinonimo("saúde", 'remédios')
-	self.inserir_sinonimo("saúde", 'receita')
-        self.inserir_sinonimo("transporte", 'ônibus')
-        self.inserir_sinonimo("transporte", 'metrô')
-	self.inserir_sinonimo("transporte", 'avião')
-	self.inserir_sinonimo("esporte", 'torcida')
-	self.inserir_sinonimo("esporte", 'estádio')
-	self.inserir_sinonimo("esporte", 'copa')
-	self.inserir_sinonimo("esporte", 'jogo')
-	self.inserir_sinonimo("economia", 'impostos')
-	self.inserir_sinonimo("economia", 'tributos')
-	self.inserir_sinonimo("turismo", 'hotel')
-	self.inserir_sinonimo("turismo", 'turista')
-	self.inserir_sinonimo("meio ambiente", 'poluição')
-	self.inserir_sinonimo("meio ambiente", 'mineração')
-	self.inserir_sinonimo("meio ambiente", 'desmatamento')
-	self.inserir_sinonimo("meio ambiente", 'energia')
-	self.inserir_sinonimo("assistência social", 'bolsa')
-	self.inserir_sinonimo("assistência social", 'família')
-	self.inserir_sinonimo("assistência social", 'cidadania')
-	self.inserir_sinonimo("tecnologia", 'inovação')
-	self.inserir_sinonimo("tecnologia", 'internet')
-	self.inserir_sinonimo("tecnologia", 'rede')
-	self.inserir_sinonimo("tecnologia", 'dados')	
-	self.inserir_sinonimo("política", 'eleição')
-	self.inserir_sinonimo("política", 'partido')
-	self.inserir_sinonimo("política", 'mandato')
-	self.inserir_sinonimo("política", 'sistema eleitoral')
-	self.inserir_sinonimo("política", 'voto')
-	self.inserir_sinonimo("política", 'reforma')
-	self.inserir_sinonimo("política", 'prefeito')
-	self.inserir_sinonimo("política", 'deputado')
-	self.inserir_sinonimo("política", 'vereador')
-	self.inserir_sinonimo("política", 'senador')	
-	self.inserir_sinonimo("política", 'presidente')	
-	self.inserir_sinonimo("política", 'eleitor')
+
+        sinonimos = {}
+        sinonimos['educação'] = ['escola', 'professor', 'aluno', 'EAD', 'universidade', 'cotas']
+        sinonimos['segurança'] = ['policial', 'polícia', 'bandido', 'PM']
+        sinonimos['economia'] = ['impostos', 'dívida']
+        sinonimos['saúde'] = ['medicina', 'médicos', 'SUS']
+        sinonimos['transporte'] = ['trânsito', 'pedágio', 'congestionamento'] 
+        sinonimos['violência'] = ['desarmamento', 'bullying']
+        sinonimos['esporte'] = ['futebol', 'inclusão']
+        sinonimos['drogas'] = ['álcool', 'entorpecentes', 'maconha']
+        for i in sinonimos:
+            for j in sinonimos[i]:
+                self.inserir_sinonimo(i,j)
+	
 
     def inserir_sinonimo(self, tema, sinonimo):
         if tema == None or sinonimo == None:
