@@ -16,6 +16,9 @@ def origem(request):
 def ogrupo(request):
     return render_to_response('grupo.html', {}, context_instance=RequestContext(request))
 
+def premiacoes(request):
+    return render_to_response('premiacoes.html', {}, context_instance=RequestContext(request))
+
 def votoaberto(request):
     return render_to_response('votoaberto.html', {}, context_instance=RequestContext(request))
 
