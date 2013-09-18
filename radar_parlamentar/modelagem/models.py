@@ -582,16 +582,20 @@ class Temas():
   
 
     def carregar_alguns_valores(self):
-
         sinonimos = {}
         sinonimos['educação'] = ['escola', 'professor', 'aluno', 'EAD', 'universidade', 'cotas']
-        sinonimos['segurança'] = ['policial', 'polícia', 'bandido', 'PM']
-        sinonimos['economia'] = ['impostos', 'dívida']
-        sinonimos['saúde'] = ['medicina', 'médicos', 'SUS']
-        sinonimos['transporte'] = ['trânsito', 'pedágio', 'congestionamento'] 
+        sinonimos['segurança'] = ['policial', 'polícia', 'bandido', 'PM','violência', 'presídios']
+        sinonimos['economia'] = ['impostos', 'dívida', 'tributos']
+        sinonimos['saúde'] = ['medicina', 'médicos', 'SUS', 'hospital', 'enfermeiro', 'remédios', 'receita']
+        sinonimos['transporte'] = ['trânsito', 'pedágio', 'congestionamento', 'ônibus', 'metrô', 'avião'] 
         sinonimos['violência'] = ['desarmamento', 'bullying']
-        sinonimos['esporte'] = ['futebol', 'inclusão']
-        sinonimos['drogas'] = ['álcool', 'entorpecentes', 'maconha']
+        sinonimos['esporte'] = ['futebol', 'inclusão', 'torcida', 'estádio', 'copa', 'jogo']
+        sinonimos['drogas'] = ['álcool', 'entorpecentes', 'maconha', 'cigarro']
+        sinonimos['turismo'] = ['hotel', 'turista']
+        sinonimos['meio ambiente'] = ['poluição', 'mineração', 'desmatamento', 'energia', 'usina']
+        sinonimos['assistência social'] = ['bolsa', 'família', 'cidadania']
+        sinonimos['tecnologia'] = ['inovação', 'internet', 'rede', 'dados', 'hacker']
+        sinonimos['política'] = ['eleição', 'partido', 'mandato', 'sistema eleitoral', 'voto', 'reforma', 'prefeito', 'deputado', 'vereador', 'senador', 'presidente', 'eleitor']
         for i in sinonimos:
             for j in sinonimos[i]:
                 self.inserir_sinonimo(i,j)
