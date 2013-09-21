@@ -635,6 +635,9 @@ class Temas():
     def inserir_sinonimo(self, tema, sinonimo):
         if tema == None or sinonimo == None:
             raise ValueError('Impossivel adicionar sinonimo\n')
+        if self.dicionario.has_key(tema.encode('utf-8')):
+		 self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
+        else:
             self.dicionario[tema.encode('utf-8')] = set()
             self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
 
