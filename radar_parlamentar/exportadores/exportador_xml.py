@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # coding=utf8
 
-# Copyright (C) 2013, Arthur Del Esposte, David Carlos de Araujo Silva, Luciano Endo 
+# Copyright (C) 2013, Arthur Del Esposte, David Carlos de Araujo Silva, Luciano Endo, Diego Rabatone
 #
 # This file is part of Radar Parlamentar.
 #
@@ -41,20 +41,20 @@ def serialize_casa_legislativa(nome_curto):
 	print "\nExportando dados de %s\n" %casa[0].nome
 
 	root = Element('CasaLegislativa', nome = casa[0].nome, nome_curto = casa[0].nome_curto, esfera = casa[0].esfera, local = casa[0].local, atualizacao = str(casa[0].atualizacao))
-   
+
 	#Identificando a proposição
 	proposicao = models.Proposicao.objects.filter(casa_legislativa_id__nome_curto = nome_curto)
-	
+
 
 	for e in proposicao:
-		print "Exportando todos as votações e votos de Proposicao id: " + str(e.id_prop) + ", numero: " + str(e.numero)
+		print "Exportando todas as votações e votos da Proposicao com id: " + str(e.id_prop) + ", numero: " + str(e.numero)
 		proposicao_xml = Element('Proposicao', id_prop = str(e.id_prop), sigla = e.sigla, numero = str(e.numero), ano = str(e.ano), ementa = e.ementa, descricao = e.descricao, indexacao = str(e.indexacao), data_apresentacao = str(e.data_apresentacao), situacao = e.situacao)
-		
-		
+
+
 		votacao = models.Votacao.objects.filter(proposicao_id = e)
 		for v in votacao:
 			votacao_xml = Element('Votacao', id_vot = str(v.id_vot), descricao = v.descricao, data = str(v.data), resultado = v.resultado)
-			
+
 			#=--------------Voto----------=#
 			votos = models.Voto.objects.filter(votacao_id = v)
 			for voto in votos:
@@ -62,14 +62,14 @@ def serialize_casa_legislativa(nome_curto):
 				legislatura = voto.legislatura
 				parlamentar = legislatura.parlamentar
 				partido = legislatura.partido
-				
+
 				voto_xml = Element('Voto', nome = parlamentar.nome, id_parlamentar = str(parlamentar.id_parlamentar), genero = parlamentar.genero, partido = partido.nome, inicio = str(legislatura.inicio), fim = str(legislatura.fim), numero = str(partido.numero), opcao = voto.opcao)
 
 				votacao_xml.append(voto_xml)
 
 			proposicao_xml.append(votacao_xml)
 
-		root.append(proposicao_xml)	
+		root.append(proposicao_xml)
 
 	filepath = os.path.join(MODULE_DIR, 'dados/' + nome_curto + '.xml')
 	out = open(filepath, "w")
