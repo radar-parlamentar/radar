@@ -35,15 +35,15 @@
 
     {% if request.get_host == '127.0.0.1:8000' or request.get_host == 'localhost:8000' %}
         <!-- the jQuery library -->
-        <script src="/static/files/codes/js/jquery-1.8.3.min.js"></script>
+        <script src="/static/files/codes/js/jquery.min.js"></script>
         <script src="/static/files/codes/js/raphael-min.js"></script>
     {% else %}
-        <!-- the jQuery ligrary -->
+        <!-- the jQuery library -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script type="text/javascript">
           if (typeof jQuery === 'undefined') {
             var e = document.createElement('script');
-                e.src = '/static/files/codes/js/jquery-1.8.3.min.js';
+                e.src = '/static/files/codes/js/jquery.min.js';
                 e.type='text/javascript';
             document.getElementsByTagName("head")[0].appendChild(e);
           }
