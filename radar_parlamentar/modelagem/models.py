@@ -430,6 +430,39 @@ class Proposicao(models.Model):
 
     def __unicode__(self):
         return "[%s] %s" % (self.nome(), self.ementa)
+    
+    def filtra_proposicao(*args):
+    	proposicao = Proposicao.objects.all()
+	a = 0
+	lista_siglas = []
+	lista_palavras = []
+	lista_siglas = args[1]
+	lista_palavras = args[2]
+	lista_proposicao = []	
+
+	for r in lista_siglas:
+		sigla = r
+		for p in proposicao:
+			if(sigla == p.sigla):
+				for e in lista_palavras:
+					
+					palavra = e
+					if(re.search(palavra,p.descricao)!= None):
+						print 'Descricao:' + p.descricao + '\n'
+    						print 'Ementa:' + p.ementa + '\n'
+						lista_proposicao.append(p.descricao)
+						lista_proposicao.append(p.ementa)
+
+					else:
+						print 'palavra: ' + palavra + ' nao encontrada na descricao: ' + p.descricao + '\n' 
+
+	
+	return lista_proposicao
+	 
+
+
+
+
 
 
 class Votacao(models.Model):
@@ -490,6 +523,9 @@ class Votacao(models.Model):
             return "[%s] %s" % (self.data, self.descricao)
         else:
             return self.descricao
+
+    
+
 
 
 class Voto(models.Model):
@@ -599,9 +635,8 @@ class Temas():
     def inserir_sinonimo(self, tema, sinonimo):
         if tema == None or sinonimo == None:
             raise ValueError('Impossivel adicionar sinonimo\n')
-
         if self.dicionario.has_key(tema.encode('utf-8')):
-            self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
+		 self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
         else:
             self.dicionario[tema.encode('utf-8')] = set()
             self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
