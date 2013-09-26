@@ -87,8 +87,13 @@ class ModelsTest(TestCase):
         self.assertEqual(periodos[1].string, '1989 2o Semestre')
         periodos = conv.periodos(models.MES,numero_minimo_de_votacoes=1)
         self.assertEqual(len(periodos),2)
-        
-    def test_sould_find_legislatura(self):
+
+    def test_casa_legislativa_periodos_sem_lista_votacoes(self):
+        casa_nova = models.CasaLegislativa(nome="Casa Nova")
+        self.assertRaises(ValueError, casa_nova.periodos,models.ANO)
+
+
+    def test_should_find_legislatura(self):
         dt = date(1989, 07, 14)
         try:
             leg = models.Legislatura.find(dt, 'Pierre')
@@ -96,7 +101,7 @@ class ModelsTest(TestCase):
         except ValueError:
             self.fail('Legislatura não encontrada')
             
-    def test_sould_not_find_legislatura(self):
+    def test_should_not_find_legislatura(self):
         dt = date(1900, 07, 14)
         try:
             models.Legislatura.find(dt, 'Pierre')
