@@ -22,28 +22,37 @@ from __future__ import unicode_literals
 class Temas():
 
     dicionario = {}   
-
+           
+  
     @staticmethod
     def get_temas_padrao():
-        temas = Temas()
-
-        temas.inserir_sinonimo("educação", 'escola')
-        temas.inserir_sinonimo("educação", 'professor')
-        temas.inserir_sinonimo("educação", 'aluno')
-
-        temas.inserir_sinonimo("segurança", 'policial')
-        temas.inserir_sinonimo("segurança", 'polícia')
-        temas.inserir_sinonimo("segurança", 'bandido')
-
-        return temas
-
+	temas = Temas()
+        sinonimos = {}
+        sinonimos['educação'] = ['escola', 'professor', 'aluno', 'EAD', 'universidade', 'cotas']
+        sinonimos['segurança'] = ['policial', 'polícia', 'bandido', 'PM','violência', 'presídios']
+        sinonimos['economia'] = ['impostos', 'dívida', 'tributos']
+        sinonimos['saúde'] = ['medicina', 'médicos', 'SUS', 'hospital', 'enfermeiro', 'remédios', 'receita']
+        sinonimos['transporte'] = ['trânsito', 'pedágio', 'congestionamento', 'ônibus', 'metrô', 'avião'] 
+        sinonimos['violência'] = ['desarmamento', 'bullying']
+        sinonimos['esporte'] = ['futebol', 'inclusão', 'torcida', 'estádio', 'copa', 'jogo']
+        sinonimos['drogas'] = ['álcool', 'entorpecentes', 'maconha', 'cigarro']
+        sinonimos['turismo'] = ['hotel', 'turista']
+        sinonimos['meio ambiente'] = ['poluição', 'mineração', 'desmatamento', 'energia', 'usina']
+        sinonimos['assistência social'] = ['bolsa', 'família', 'cidadania']
+        sinonimos['tecnologia'] = ['inovação', 'internet', 'rede', 'dados', 'hacker']
+        sinonimos['política'] = ['eleição', 'partido', 'mandato', 'sistema eleitoral', 'voto', 'reforma', 'prefeito', 'deputado', 'vereador', 'senador', 'presidente', 'eleitor']
+        for i in sinonimos:
+            for j in sinonimos[i]:
+                temas.inserir_sinonimo(i,j)
+	return temas
+	
+	
 
     def inserir_sinonimo(self, tema, sinonimo):
         if tema == None or sinonimo == None:
             raise ValueError('Impossivel adicionar sinonimo\n')
-
         if self.dicionario.has_key(tema.encode('utf-8')):
-            self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
+		 self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
         else:
             self.dicionario[tema.encode('utf-8')] = set()
             self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
