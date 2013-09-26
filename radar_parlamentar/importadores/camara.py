@@ -176,7 +176,7 @@ class ProposicoesFinder:
         ano = prop_xml.get('ano').strip()
         return '%s %s/%s' % (sigla, numero, ano)
 
-    def find_props_que_existem(self, ano_min=1988, ano_max=None, outputFilePath=None):
+    def find_props_que_existem(self, ano_min=1988, ano_max=None, outputFilePath=None, camaraws = Camaraws()):
         """Retorna IDs de proposições que existem na câmara dos deputados.
 
         Buscas são feitas por proposições apresentadas desde ano_min, que por padrão é 1988, até o presente.
@@ -194,7 +194,6 @@ class ProposicoesFinder:
         if (outputFilePath == None):
             outputFilePath = IDS_FILE_PATH
 
-        camaraws = Camaraws()
         siglas = camaraws.listar_siglas()
         ids_que_existem = []
         with open(outputFilePath, 'a') as f:
@@ -289,16 +288,16 @@ class VerificadorDeProposicoes:
 class VerificadorDeProposicao:
     """Verifica se uma proposição possui votações"""
     
-    def __init__(self, sigla, num, ano):
+    def __init__(self, sigla, num, ano, camaraws = Camaraws()):
         self.sigla = sigla
         self.num = num
         self.ano = ano
-        
+        self.camaraws = camaraws
+
     def verifica_se_tem_votacoes(self):
         """Retorna True ou False"""
-        camaraws = Camaraws()
         try:
-            camaraws.obter_votacoes(self.sigla, self.num, self.ano)
+            self.camaraws.obter_votacoes(self.sigla, self.num, self.ano)
             return True
         except ValueError:
             return False
@@ -554,7 +553,7 @@ class ImportadorCamara:
         logger.info('Progresso: %d / %d proposições (%d%%)' % (self.importadas, self.total, porctg))
 
 
-    def importar(self):
+    def importar(self,camaraws = Camaraws()):
 
         self.camara_dos_deputados = self._gera_casa_legislativa()
 
@@ -564,7 +563,6 @@ class ImportadorCamara:
             logger.info('#################################################################')
             logger.info('Importando votações da PROPOSIÇÃO %s: %s %s/%s' % (id_prop, sigla, num, ano))
 
-            camaraws = Camaraws()
             try:
                 prop_xml = camaraws.obter_proposicao(id_prop)
                 prop = self._prop_from_xml(prop_xml, id_prop)
