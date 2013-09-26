@@ -84,7 +84,6 @@ class Camaraws:
             tree = etree.fromstring(xml)
         except etree.ParseError:
             raise ValueError('Proposicao %s nao encontrada' % id_prop)
-
         return tree
 
     def obter_votacoes(self, sigla, num, ano):
@@ -112,7 +111,6 @@ class Camaraws:
             tree = etree.fromstring(xml)
         except etree.ParseError:
             raise ValueError('Votacoes da proposcaão %s %s/%s nao encontrada' % (sigla, num, ano))
-
         return tree
 
     def listar_proposicoes(self, sigla, ano):
@@ -136,12 +134,10 @@ class Camaraws:
             xml = urllib2.urlopen(request).read()
         except urllib2.URLError:
             raise ValueError('Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
-
         try:
             tree = etree.fromstring(xml)
         except etree.ParseError:
             raise ValueError('Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
-
         return tree
 
     def listar_siglas(self):
@@ -219,7 +215,7 @@ class ProposicoesFinder:
                         logger.info('%d %ss encontrados' % (len(props), sigla))
                     except urllib2.URLError, etree.ParseError:
                         logger.info('access error in %s' % sigla)
-                    except:
+                    except ValueError:
                         logger.info('XML parser error in %s' % sigla)
         return ids_que_existem
 
