@@ -1,0 +1,2014 @@
+<?xml version="1.0" encoding="utf-8"?>
+<proposicoes>
+  <proposicao>
+    <id>564455</id>
+    <nome>PLV 32/2012 MPV58112 =&gt; MPV 581/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>32</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100944</id>
+      <sigla>MPV58112  </sigla>
+      <nome>Comissão Mista da MPV 581/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>19/12/2012 14:00:00</datApresentacao>
+    <txtEmenta>Dispõe sobre o Fundo de Desenvolvimento do Centro-Oeste - FDCO; autoriza a União a conceder subvenção econômica às instituições financeiras oficiais federais, sob a forma de equalização de taxa de juros nas operações de crédito para investimentos no âmbito do FDCO; altera as Leis nº 7.827, de 27 de setembro de 1989, e nº 10.177, de 12 de janeiro de 2001, que tratam das operações com recursos dos Fundos Constitucionais de Financiamento do Norte, do Nordeste e do Centro-Oeste; constitui fonte adicional de recursos para ampliação de limites operacionais da Caixa Econômica Federal e do Banco do Brasil S.A., e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>Altera as leis nºs 12.712, de 2012 e 11.196 de 2005.
+Altera a Medida Provisória nº 2.199-14 de 2001</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 581/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>563675</id>
+    <nome>PLV 31/2012 MPV58812 =&gt; MPV 588/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>31</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100955</id>
+      <sigla>MPV58812  </sigla>
+      <nome>Comissão Mista da MPV 588/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>13/12/2012 19:31:00</datApresentacao>
+    <txtEmenta>Abre crédito extraordinário, em favor de Operações Oficiais de Crédito, no valor de R$ 1.683.716.400,00, para o fim que especifica. </txtEmenta>
+    <txtExplicacaoEmenta>
+    </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 588/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>562892</id>
+    <nome>PLV 30/2012 MPV57912 =&gt; MPV 579/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>30</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100942</id>
+      <sigla>MPV57912  </sigla>
+      <nome>Comissão Mista da MPV 579/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>11/12/2012 20:25:00</datApresentacao>
+    <txtEmenta>Dispõe sobre as concessões de geração, transmissão e distribuição de energia elétrica, sobre a redução dos encargos setoriais, sobre a modicidade tarifária, e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>
+    </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 579/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>561799</id>
+    <nome>PLV 28/2012 MPV58512 =&gt; MPV 585/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>28</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100951</id>
+      <sigla>MPV58512  </sigla>
+      <nome>Comissão Mista da MPV 585/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>30/11/2012 10:22:00</datApresentacao>
+    <txtEmenta>Dispõe sobre a prestação de auxílio financeiro pela União aos Estados, Distrito Federal e aos Municípios no exercício de 2012, com o objetivo de fomentar as exportações do País.</txtEmenta>
+    <txtExplicacaoEmenta>Altera a Lei nº 12.350, de 2010, para assegurar benefícios fiscais no custo dos projetos de construção ou reforma  de estádios de futebol e para autorizar a União a transferir recursos à Fifa e a sua subsidiária no Brasil, ao LOC e à CBF.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 585/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>561845</id>
+    <nome>PLV 29/2012 MPV57712 =&gt; MPV 577/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>29</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100936</id>
+      <sigla>MPV57712  </sigla>
+      <nome>Comissão Mista da MPV 577/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>28/11/2012 18:10:00</datApresentacao>
+    <txtEmenta>Dispõe sobre a extinção das concessões de serviço público de energia elétrica e a prestação temporária do serviço, sobre a intervenção para adequação do serviço público de energia elétrica, e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>Altera as Leis nºs 8.987, de 1995; 11.508, de 2007; 11.484, de 2007; 9.028, de 1995; 9.492, 1997; 10.931, de 2004; 12.024, de 2009; 10.833, de 2003.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 577/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>560935</id>
+    <nome>PLV 27/2012 MPV57812 =&gt; MPV 578/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>27</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100937</id>
+      <sigla>MPV57812  </sigla>
+      <nome>Comissão Mista da MPV 578/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>21/11/2012 10:20:00</datApresentacao>
+    <txtEmenta>Permite a depreciação acelerada dos veículos automóveis para transportes de mercadorias e dos vagões, locomotivas, locotratores e tênderes que menciona, previstos na Tabela de Incidência do Imposto sobre Produtos Industrializados - TIPI. </txtEmenta>
+    <txtExplicacaoEmenta>Altera as Leis nºs 7.064, de 1982; 8.352, de 1991; 7.998, de 1990; 11.775, de 2008; 9.430, de 1996; 10.522, de 2002; 10.893, de 2004; 12.249, de 2010; 12.546, de 2011; 10.971, de 2004; 11.539, de 2007; 11.357, de 2006; 11.355, de 2006; 8.691, de 1993; 9.620, de 1998. Revoga o inciso V da Lei nº 10.893, de 2004 e o inciso II do art. 3º da Lei nº 7.064, de 1982.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 578/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>560934</id>
+    <nome>PLV 26/2012 MPV58412 =&gt; MPV 584/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>26</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100947</id>
+      <sigla>MPV58412  </sigla>
+      <nome>Comissão Mista da MPV 584/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>21/11/2012 10:15:00</datApresentacao>
+    <txtEmenta>Dispõe sobre medidas tributárias referentes à realização, no Brasil, dos Jogos Olímpicos de 2016 e dos Jogos Paraolímpicos de 2016.</txtEmenta>
+    <txtExplicacaoEmenta>
+    </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 584/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>559933</id>
+    <nome>PLV 25/2012 MPV57512 =&gt; MPV 575/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>25</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100931</id>
+      <sigla>MPV57512  </sigla>
+      <nome>Comissão Mista da MPV 575/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>13/11/2012 12:25:00</datApresentacao>
+    <txtEmenta>Altera a Lei nº 11.079, de 30 de dezembro de 2004, que institui normas gerais para licitação e contratação de parceria público-privada no âmbito da administração pública, para dispor sobre o aporte de recursos em favor do parceiro privado, e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>PLV da Medida Provisória nº 575, de 2012. Altera as Leis nºs 11.079, de 2004; 10.637, de 2002; 10.833, de 2003; 12.058, de 2009; 9.430, de 1996; 10.420, de 2002; 4.117, de 1962; 10.925, de 2004; 10.602, de 2002; 11.033, de 2004, 9.718,  de 1998 e a Medida Provisória nº 2.158-35, de 2001.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 575/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>559608</id>
+    <nome>PLV 24/2012 MPV58012 =&gt; MPV 580/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>24</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100943</id>
+      <sigla>MPV58012  </sigla>
+      <nome>Comissão Mista da MPV 580/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>6/11/2012 16:36:00</datApresentacao>
+    <txtEmenta>Altera as Leis nº 11.759, de 31 de julho de 2008, que autoriza a criação da empresa pública Centro Nacional de Tecnologia Eletrônica Avançada S.A. - Ceitec, e nº 11.578, de 26 de novembro de 2007, que dispõe sobre a transferência obrigatória de recursos financeiros para a execução pelos Estados, Distrito Federal e Municípios de ações do Programa de Aceleração do Crescimento - PAC, e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>PLV da Medida Provisória nº 580, de 2012. Altera a Lei nº 12.462, de 2011.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 580/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>559336</id>
+    <nome>PLV 23/2012 MPV57612 =&gt; MPV 576/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>23</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100933</id>
+      <sigla>MPV57612  </sigla>
+      <nome>Comissão Mista da MPV 576/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>31/10/2012 18:25:00</datApresentacao>
+    <txtEmenta>Altera as Leis nº 10.233, de 5 de junho de 2001, e nº 12.404, de 4 de maio de 2011, para modificar a denominação da Empresa de Transporte Ferroviário de Alta Velocidade S.A. - ETAV para Empresa de Planejamento e Logística S.A. - EPL, e ampliar suas competências</txtEmenta>
+    <txtExplicacaoEmenta>PLV da Medida Provisória nº 576, de 2012.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 576/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>557771</id>
+    <nome>PLV 22/2012 MPV57412 =&gt; MPV 574/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>22</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100924</id>
+      <sigla>MPV57412  </sigla>
+      <nome>Comissão Mista da MPV 574/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>17/10/2012 19:31:00</datApresentacao>
+    <txtEmenta>Estabelece medidas para estimular o pagamento de débitos relativos ao Programa de Formação do Patrimônio do Servidor Público - PASEP, de responsabilidade dos Estados, do Distrito Federal, dos Municípios, e de suas autarquias e fundações; altera o art. 1º da Lei nº 10.925, de 23 de julho de 2004, para prorrogar a vigência da redução a zero das alíquotas da Contribuição para o PIS/PASEP e da Contribuição para o Financiamento da Seguridade Social - COFINS incidentes na importação e sobre a receita decorrente da venda no mercado interno das massas alimentícias que menciona.</txtEmenta>
+    <txtExplicacaoEmenta>Altera também as Leis nºs 12.249, de 2010; 11.775, de 2008; 10.833, de 2003; 12.375, de 2010; 9.430, de 1996; 10.522, de 2002; 10.893, de 2004; 12. 599, de 2012.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 574/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>554490</id>
+    <nome>PLV 21/2012 MPV57112 =&gt; MPV 571/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>21</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100926</id>
+      <sigla>MPV57112  </sigla>
+      <nome>Comissão Mista da MPV 571/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>29/8/2012 19:56:00</datApresentacao>
+    <txtEmenta>Altera a Lei nº 12.651, de 25 de maio de 2012, que dispõe sobre a proteção da vegetação nativa; altera as Leis nº 6.938, de 31 de agosto de 1981, 9.393, de 19 de dezembro de 1996, e 11.428, de 22 de dezembro de 2006; e revoga as Leis nº 4.771, de 15 de setembro de 1965, e 7.754, de 14 de abril de 1989, e a Medida Provisória nº 2.166-67, de 24 de agosto de 2001, o item 22 do inciso II do art. 167 da Lei nº 6.015, de 31 de dezembro de 1973, e o § 2º do art. 4º da Lei nº 12.651, de 25 de maio de 2012.</txtEmenta>
+    <txtExplicacaoEmenta>Prevê a  garantia de proteção aos rios intermitentes; a ampliação para 15 módulos fiscais das propriedades que terão benefícios na recomposição de Áreas de Proteção Permanente (APPs) desmatadas irregularmente;  estabelece a largura do curso d'água  em propriedade  de quatro a quinze módulos fiscais para a recuperação;  propriedade  acima de quinze módulos fiscais,  a recuperação de no mínimo vinte metros e máxima de cem metros, a ser definida pelo plano de recomposição ambiental.
+</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 571/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>552438</id>
+    <nome>PLV 20/2012 MPV56512 =&gt; MPV 565/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>20</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100913</id>
+      <sigla>MPV56512  </sigla>
+      <nome>Comissão Mista da MPV 565/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>6/7/2012 12:09:00</datApresentacao>
+    <txtEmenta>Altera a Lei nº 10.177, de 12 de janeiro de 2001; a Lei nº 7.827, de 27 de setembro de 1989; a Lei nº 11.196, de 21 de setembro de 2005; a Lei nº 10.954, de 29 de setembro de 2004; a Lei nº 11.775, de 17 de setembro de 2008; a Lei nº 9.469, de 10 de julho de 1997; e a Lei nº 8.029, de 12 de abril de 1990; e dá outras providências</txtEmenta>
+    <txtExplicacaoEmenta>Medida Provisória 565, de 2012.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 565/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>552436</id>
+    <nome>PLV 18/2012 MPV56312 =&gt; MPV 563/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>18</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100911</id>
+      <sigla>MPV56312  </sigla>
+      <nome>Comissão Mista da MPV 563/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>4/7/2012 12:00:00</datApresentacao>
+    <txtEmenta>Altera a alíquota das contribuições previdenciárias sobre a folha de salários devidas pelas empresas que especifica, institui o Programa de Incentivo à Inovação Tecnológica e Adensamento da Cadeia Produtiva de Veículos Automotores, o Regime Especial de Tributação do Programa Nacional de Banda Larga para Implantação de Redes de Telecomunicações, o Regime Especial de Incentivo a Computadores para Uso Educacional, o Programa Nacional de Apoio à Atenção Oncológica, o Programa Nacional de Apoio à Atenção da Saúde da Pessoa com Deficiência, restabelece o Programa Um Computador por Aluno, altera o Programa de Apoio ao Desenvolvimento Tecnológico da Indústria de Semicondutores, instituído pela Lei nº 11.484, de 31 de maio de 2007, e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>Altera as Leis nºs  9.250, de 26 de dezembro de 1995; 11.033, de 21 de dezembro de 2004; 9.430, de 27 de dezembro de 1996; 10.865, de 30 de abril de 2004; 11.774, de 17 de setembro de 2008; 12.546, de 14 de dezembro de 2011; 11.484, de 31 de maio de 2007; 10.637, de 30 de dezembro de 2002; 11.196, de 21 de novembro de 2005; 10.406, de 10 de janeiro de 2002; 9.532, de 10 de dezembro de 1997; 12.431, de 24 de junho de 2011; 12.414, de 9 de junho de 2011; 8.666, de 21 de junho de 1993; 10.925, de 23 de julho de 2004; os Decretos-Leis nºs 1.455, de 7 de abril de 1976; 1.593, de 21 de dezembro de 1977; e a Medida Provisória nº 2.199-14, de 24 de agosto de 2001;</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 563/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>551427</id>
+    <nome>PLV 19/2012 MPV56412 =&gt; MPV 564/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>19</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100912</id>
+      <sigla>MPV56412  </sigla>
+      <nome>Comissão Mista da MPV 564/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>3/7/2012 15:21:00</datApresentacao>
+    <txtEmenta>Altera a Lei nº 12.096, de 24 de novembro de 2009; a Lei nº 12.453, de 21 de julho de 2011, para conceder crédito ao Banco Nacional de Desenvolvimento Econômico e Social - BNDES; a Lei nº 11.529, de 22 de outubro de 2007, para incluir no Programa Revitaliza do BNDES os setores que especifica, dispõe sobre financiamento às exportações indiretas; autoriza a União a aumentar o capital social do Banco do Nordeste do Brasil S.A. e do Banco da Amazônia SA.; autoriza o Poder Executivo a criar a Agência Brasileira Gestora de Fundos e Garantias S.A. - ABGF; autoriza a União a conceder subvenção econômica nas operações de crédito do Fundo de Desenvolvimento da Amazônia - FDA e do Fundo de Desenvolvimento do Nordeste - FDNE; autoriza a União a participar de fundos dedicados a garantir operações de comércio exterior ou projetos de infraestrutura de grande vulto; e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>Altera as Leis nº 11.196, de 2005; nº 12.666, de 2012; nº 7.827, de 1989; nº 10.849, de 2004; nº 6.704, de 1979. Autoriza a União a conceder subvenção econômica nas operações de financiamento destinadas às empresas dos setores de processamento de proteína animal, pesca e aquicultura, óleo de palma, torrefação e moagem de café e fabricação de solúvel, castanha de caju e ceras de origem vegetal. Estabelece que o Banco do Nordeste do Brasil irá operacionalizar o percentual de recursos destinado ao custeio de atividades em pesquisa, desenvolvimento e tecnologia de interesse do desenvolvimento regional.
+Determina que o FDNE terá como agente operador, preferencialmente, o Banco do Nordeste do Brasil.
+Estabelece que o Banco da Amazônia irá operacionalizar o percentual de recursos do Fundo do Desenvolvimento da Amazônia (FDA) destinado ao custeio de atividades em pesquisa, desenvolvimento e tecnologia de interesse do desenvolvimento regional. Autoriza a União a subscrever e integralizar ações do Banco do Nordeste do Brasil  e do Banco da Amazônia visando aumentar seus respectivos capitais sociais. Autoriza a União a dispensar o Banco do Nordeste do Brasil do recolhimento dos dividendos e dos juros sobre capital próprio. Prorroga os prazos dos incentivos fiscais às pessoas jurídicas, visando investimento nas Regiões Norte e Nordeste. Estende aos demais municípios do Espírito Santo a subvenção econômica para os produtores de cana-de-áçucar. Autoriza que os banco financiadores dos fundos constitucionais renegociem o saldo devedor tendo como limite mínimo o valor da operação com encargos contratuais normais. Estabelece que o Conselho de Participação em Fundo Garantidor de Operações de Comércio Exterior integrará a estrutura do Ministério do Desenvolvimento, Indústria e Comércio Exterior. Estipula a necessidade de aprovação dos estatutos dos fundos garantidores de comércio exterior e da Agência Brasileira Gestora de Fundos e Garantias (ABGF). Aperfeiçoa as normas do Programa Nacional de Financiamento da Ampliação e Modernização da Frota Pesqueira Nacional - Profrota Pesqueira. Estabelece que os riscos relacionados à realização da Copa das Confederações Fifa 2013, da Copa do Mundo Fifa 2014, dos jogos Olímpicos e Paraolímpicos de 2016 e os projetos resultantes de parceria público-privadas organizados por Estados e Distrito Federal poderão ser cobertos por seguros do fundo garantidor para cobertura de riscos. Autoriza a realização de desapropriações em áreas lindeiras aos complexos aeroportuários.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 564/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>550424</id>
+    <nome>PLV 16/2012 MPV57012 =&gt; MPV 570/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>16</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>536926</id>
+      <sigla>MPV57012  </sigla>
+      <nome>Comissão Mista da MPV 570/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>26/6/2012 18:58:00</datApresentacao>
+    <txtEmenta>Altera a Lei nº 10.836, de 9 de janeiro de 2004; dispõe sobre o apoio financeiro da União aos Municípios e ao Distrito Federal para ampliação da oferta da educação infantil; e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>Altera a Lei nº 12.462, de 2011 e a  Lei nº 11.977, de 2009. Estabelece que os recursos transferidos pela União aos Municípios e ao Distrito Federal com a finalidade de prestar apoio financeiro à ampliação da oferta de educação infantil não poderão ser aplicados nas depesas de manutenção e desenvolvimento da educação infantil relativas a: levantamentos estatísticos, estudos e pesquisas; concessão de bolsas de estudo a alunos de escolas públicas e privadas;  amortização e custeio de operações de crédito.
+Determina que a expansão das redes escolares será norteada pelo levantamento periódico da demanda por educação infantil em creches e pré-escolas.
+Permite o uso do Regime Diferenciado de Contratações Públicas (RDC) nas obras do sistema de ensino e  estabelece que no âmbito do Programa Minha Casa, Minha Vida, no caso de empreendimentos construídos com recursos do Fundo de Arrendamento Residencial (FAR) poderá ser custeada a edificação de equipamentos de educação, saúde e outros complementares à habitação.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 570/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>550379</id>
+    <nome>PLV 17/2012 MPV56712 =&gt; MPV 567/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>17</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100928</id>
+      <sigla>MPV56712  </sigla>
+      <nome>Comissão Mista da MPV 567/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>26/6/2012 17:37:00</datApresentacao>
+    <txtEmenta>Altera o art. 12 da Lei nº 8177, de 1º de março de 1981 que estabelece regras para a desindexação da economia e dá outras providências; o art. 25 da Lei nº 9.514, de 20 de novembro de 1997 que dispõe sobre o sistema de financiamento imobiliário, institui a alienação fiduciária de coisa imóvel e dá outras providências; o inciso II do art. 167 da Lei nº 6.015, de 31 de dezembro de 1973, que dispõe sobre os registros públicos e dá outras providências</txtEmenta>
+    <txtExplicacaoEmenta>
+    </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista da MPV 567/2012</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>549523</id>
+    <nome>PLV 14/2012 MPV56812 =&gt; MPV 568/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>14</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>100920</id>
+      <sigla>MPV56812  </sigla>
+      <nome>Comissão Mista da MPV 568/2012</nome>
+    </orgaoNumerador>
+    <datApresentacao>19/6/2012 19:17:00</datApresentacao>
+    <txtEmenta>Dispõe sobre servidores do Instituto Nacional de Meteorologia, da Comissão Executiva do Plano da Lavoura Cacaueira, da Agência Brasileira de Inteligência, da Comissão de Valores Mobiliários, do Instituto Evandro Chagas, do Centro Nacional de Primatas, da Fundação Oswaldo Cruz, do Instituto de Pesquisa Econômica Aplicada, do Instituto Nacional do Seguro Social, da Superintendência de Seguros Privados, do Instituto Nacional de Metrologia, Qualidade e Tecnologia, da Superintendência Nacional de Previdência Complementar, do Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira, do Fundo Nacional de Desenvolvimento para a Educação, do Departamento Nacional de Obras Contra as Secas, do Serviço Exterior Brasileiro, do Instituto Brasileiro de Turismo, da Superintendência da Zona Franca de Manaus, do ex-Território de Fernando de Noronha e do Ministério da Fazenda, sobre os ocupantes de cargos de Médico do Poder Executivo, de cargos de Especialista em Infraestrutura Sênior, de cargos de Agente de Combate às Endemias e de cargos das carreiras de Magistério Superior e do Ensino Básico, Técnico e Tecnológico, de Analista de Infraestrutura, de Ciência e Tecnologia, de Tecnologia Militar, de Desenvolvimento de Políticas Sociais e de Finanças e Controle, sobre as gratificações e adicionais que menciona, e dá outras providências.
+</txtEmenta>
+    <txtExplicacaoEmenta>Altera a carga horária mínima necessária para que os titulares de cargos de nível intermediário integrantes de cargos da carreira da Fundação Oswaldo Cruz e da carreira de Tecnologia Militar façam jus a Gratificação de Qualificação. Retira dispositivo que tratava dos servidores do Departamento Nacional de Obras conta as Secas (DNOcs) e que alterava os critérios de pagamento dos adicionais de insalubridade e periculosidade. Altera o valor do vencimento básico dos cargos de Médico de acordo com a jornada de trabalho.
+</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Comissão Mista - MPV56812</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>
+      </codPartido>
+      <txtSiglaPartido>
+      </txtSiglaPartido>
+      <txtSiglaUF>
+      </txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>548501</id>
+    <nome>PLV 15/2012 =&gt; MPV 561/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>15</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>19/6/2012 18:32:00</datApresentacao>
+    <txtEmenta>Altera as Leis nº 12.409, de 25 de maio de 2011, nº 11.578, de 26 de novembro de 2007, nº 11.977, de 7 de julho de 2009, e nº 10.188, de 12 de fevereiro de 2001.</txtEmenta>
+    <txtExplicacaoEmenta>Altera a Lei nº 10.150, de 2000; Lei nº 10.637, de 2002; Lei nº 6.015, de 1973; Lei nº 9.636, de 1998.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Hugo Motta</txtNomeAutor>
+      <idecadastro>160674</idecadastro>
+      <codPartido>111</codPartido>
+      <txtSiglaPartido>PMDB      </txtSiglaPartido>
+      <txtSiglaUF>PB</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>547107</id>
+    <nome>PLV 13/2012 =&gt; MPV 559/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>13</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>5/6/2012 19:41:00</datApresentacao>
+    <txtEmenta>Autoriza a Centrais Elétricas Brasileiras S.A. - ELETROBRAS a adquirir participação na Celg Distribuição S.A. - CELG D e dá outras providências. </txtEmenta>
+    <txtExplicacaoEmenta>Altera as Leis nºs 38.090-A, de 1961; 9.718, de 1998; 10.637, de 2002; 10.833, de 2003; 10.887 e 11.033, de 2004; 11.128, de 2005; 12.024 e 12.101, de 2009; 12.429, 12.462 e 12.546, de 2011.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Pedro Uczai</txtNomeAutor>
+      <idecadastro>160604</idecadastro>
+      <codPartido>134</codPartido>
+      <txtSiglaPartido>PT        </txtSiglaPartido>
+      <txtSiglaUF>SC</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>544267</id>
+    <nome>PLV 12/2012 =&gt; MPV 558/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>12</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>10/5/2012 11:41:00</datApresentacao>
+    <txtEmenta>Dispõe sobre alterações nos limites dos Parques Nacionais da Amazônia, dos Campos Amazônicos e Mapinguari, das Florestas Nacionais de Itaituba I, Itaituba II e do Crepori e da Área de Proteção Ambiental do Tapajós, e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>Altera a Lei nº 12.249, de 2010.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Zé Geraldo</txtNomeAutor>
+      <idecadastro>73931</idecadastro>
+      <codPartido>134</codPartido>
+      <txtSiglaPartido>PT        </txtSiglaPartido>
+      <txtSiglaUF>PA</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>544088</id>
+    <nome>PLV 11/2012 =&gt; MPV 554/2011</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>11</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>9/5/2012 17:20:00</datApresentacao>
+    <txtEmenta>Altera a Lei nº 11.110, de 25 de abril de 2005, para autorizar a União a conceder subvenção econômica, sob a forma de equalização de parte dos custos a que estão sujeitas as instituições financeiras para contratação e acompanhamento de operações de microcrédito produtivo orientado e autoriza a concessão de subvenção econômica, sob a modalidade equalização de taxa de juros, nas operações de financiamento para a estocagem de álcool combustível, e altera a Lei n. 10.453, de 13 de maio de 2002.</txtEmenta>
+    <txtExplicacaoEmenta>Autoriza a União Federal a conceder subvenção econômica, referente a safra de 2010/2011, para produtores independentes de cana-de-açúcar, que desenvolvam suas atividades na área de atuação da Sudene.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Heleno Silva</txtNomeAutor>
+      <idecadastro>74053</idecadastro>
+      <codPartido>199</codPartido>
+      <txtSiglaPartido>PRB       </txtSiglaPartido>
+      <txtSiglaUF>SE</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>543590</id>
+    <nome>PLV 10/2012 =&gt; MPV 562/2012</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>10</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>7/5/2012 18:29:00</datApresentacao>
+    <txtEmenta>Dispõe sobre o apoio técnico ou financeiro da União no âmbito do Plano de Ações Articuladas, altera a Lei nº 11.947, de 16 de junho de 2009, para incluir os polos presenciais do sistema Universidade Aberta do Brasil na assistência financeira do Programa Dinheiro Direto na Escola, altera a Lei nº 11.494, de 20 de junho de 2007, para contemplar com recursos do FUNDEB as instituições comunitárias que atuam na educação do campo, altera a Lei nº 10.880, de 9 de junho de 2004, para dispor sobre a assistência financeira da União no âmbito do Programa de Apoio aos Sistemas de Ensino para Atendimento à Educação de Jovens e Adultos, altera  Lei nº 8.405, de 9 de janeiro de 1992 e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>Inclui o art. 33-A à Lei nº 11.947, de 2009,  de forma a autorizar o Poder Executivo a conceder bolsas aos professores das redes públicas de educação e a estudantes beneficiários do Programa Nacional de Educação na Reforma Agrária - Pronera. </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Padre João</txtNomeAutor>
+      <idecadastro>160556</idecadastro>
+      <codPartido>134</codPartido>
+      <txtSiglaPartido>PT        </txtSiglaPartido>
+      <txtSiglaUF>MG</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>541533</id>
+    <nome>PLV 9/2012 =&gt; MPV 552/2011</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>9</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>17/4/2012 19:00:00</datApresentacao>
+    <txtEmenta>Altera o art. 4º da Lei nº 10.931, de 2 de agosto de 2004, e o art. 1º da Lei nº 10.925, de 23 de julho de 2004.</txtEmenta>
+    <txtExplicacaoEmenta>Reduz as alíquotas da contribuição para o PIS/PASEP e da Contribuição para o Financiamento da Seguridade Social - COFINS de massas alimentícias, farinha de trigo, pré-mistura própria para fabricação pão e queijos. </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Miguel Corrêa</txtNomeAutor>
+      <idecadastro>141509</idecadastro>
+      <codPartido>134</codPartido>
+      <txtSiglaPartido>PT        </txtSiglaPartido>
+      <txtSiglaUF>MG</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>541000</id>
+    <nome>PLV 8/2012 =&gt; MPV 551/2011</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>8</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>11/4/2012 18:36:00</datApresentacao>
+    <txtEmenta>Altera dispositivos das Leis nºs 7.920, de 12 de dezembro de 1989, 8.399, de 7 de janeiro de 1992, 9.825, de 23 de agosto de 1999, 12.462, de 5 de agosto de 2011, 6.009, de 26 de dezembro de 1973, e 5.862, de 12 de dezembro de 1972; revoga o Decreto-Lei nº 1.896, de 17 de dezembro de 1981; e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>
+    </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Arthur Oliveira Maia</txtNomeAutor>
+      <idecadastro>160600</idecadastro>
+      <codPartido>111</codPartido>
+      <txtSiglaPartido>PMDB      </txtSiglaPartido>
+      <txtSiglaUF>BA</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>540175</id>
+    <nome>PLV 7/2012 =&gt; MPV 549/2011</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>7</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>3/4/2012 14:00:00</datApresentacao>
+    <txtEmenta>Reduz a zero as alíquotas da Contribuição para o PIS/PASEP, da Contribuição para o Financiamento da Seguridade Social - COFINS, da Contribuição para o PIS/PASEP - Importação e da COFINS - Importação incidentes sobre a importação e a receita de venda no mercado interno dos produtos que menciona. </txtEmenta>
+    <txtExplicacaoEmenta>Oclusores interauriculares, aparelhos de surdez, software de leitores de tela que convertam texto em voz sintetizada ou em caracteres braille, neuroestimuladores para tremor essencial/Parkinson.
+</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Sandro Mabel</txtNomeAutor>
+      <idecadastro>73676</idecadastro>
+      <codPartido>111</codPartido>
+      <txtSiglaPartido>PMDB      </txtSiglaPartido>
+      <txtSiglaUF>GO</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>537399</id>
+    <nome>PLV 6/2012 =&gt; MPV 550/2011</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>6</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>14/3/2012 14:00:00</datApresentacao>
+    <txtEmenta>Altera a Lei nº 10.735, de 11 de setembro de 2003, que dispõe sobre o direcionamento de depósitos à vista captados pelas instituições financeiras para operações de crédito destinadas à população de baixa renda e a microempreendedores, e dá outras providências. </txtEmenta>
+    <txtExplicacaoEmenta>
+    </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Mara Gabrilli</txtNomeAutor>
+      <idecadastro>160565</idecadastro>
+      <codPartido>128</codPartido>
+      <txtSiglaPartido>PSDB      </txtSiglaPartido>
+      <txtSiglaUF>SP</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>536073</id>
+    <nome>PLV 5/2012 =&gt; MPV 548/2011</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>5</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>6/3/2012 20:35:00</datApresentacao>
+    <txtEmenta>Abre crédito extraordinário, em favor do Ministério da Educação, no valor de R$ 460.530.000,00, para o fim que especifica. </txtEmenta>
+    <txtExplicacaoEmenta>
+    </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Artur Bruno</txtNomeAutor>
+      <idecadastro>160678</idecadastro>
+      <codPartido>134</codPartido>
+      <txtSiglaPartido>PT        </txtSiglaPartido>
+      <txtSiglaUF>CE</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>535910</id>
+    <nome>PLV 4/2012 =&gt; MPV 547/2011</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>4</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>29/2/2012 12:56:00</datApresentacao>
+    <txtEmenta>Institui o Estatuto da Proteção Civil, altera as Leis nºs 8.239, de 4 de outubro de 1991 (Serviço Alternativo ao Serviço Militar Obrigatório); 9.394, de 20 de dezembro de 1996 (Lei de Diretrizes e Bases da Educação Nacional); 9.433, de 8 de janeiro de 1997 (Recursos Hídricos); 9.478, de 6 de agosto de 1997 (Lei do Petróleo); 9.605, de 12 de fevereiro de 1998 (Crimes Ambientais); 10.257, de 10 de julho de 2001 (Estatuto da Cidade); 11.445, de 5 de janeiro de 2007 (Saneamento Básico); 11.977, de 7 de julho de 2009 (Programa Minha Casa, Minha Vida); e 12.351, de 22 de dezembro de 2010 (Pré-Sal); revoga a Lei nº 12.340, de 1º de dezembro de 2010 (Defesa Civil) e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>Cria o PNPC, o Funpec, o Sinpec e o Sinide.  Revoga a Lei nº 12.340, de 2010.</txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Glauber Braga</txtNomeAutor>
+      <idecadastro>152605</idecadastro>
+      <codPartido>125</codPartido>
+      <txtSiglaPartido>PSB       </txtSiglaPartido>
+      <txtSiglaUF>RJ</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>534631</id>
+    <nome>PLV 3/2012 =&gt; MPV 545/2011</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>3</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>14/2/2012 18:58:00</datApresentacao>
+    <txtEmenta>Altera a Lei nº 10.893, de 13 de julho de 2004, que dispõe sobre o Adicional ao Frete para a Renovação da Marinha Mercante - AFRMM e o Fundo da Marinha Mercante - FMM; altera a Medida Provisória nº 2.228-1, de 6 de setembro de 2001, e as Leis nº 11.434, de 28 de dezembro de 2006, nº 11.196, de 21 de novembro de 2005, nº 10.865, de 30 de abril de 2004, e nº 8.685, de 20 de julho de 1993; altera a incidência da Contribuição para o PIS/PASEP e da Contribuição para o Financiamento da Seguridade Social - COFINS na cadeia produtiva do café, institui o Programa Cinema Perto de Você, e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>
+    </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Júnior Coimbra</txtNomeAutor>
+      <idecadastro>160648</idecadastro>
+      <codPartido>111</codPartido>
+      <txtSiglaPartido>PMDB      </txtSiglaPartido>
+      <txtSiglaUF>TO</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>534618</id>
+    <nome>PLV 2/2012 =&gt; MPV 544/2011</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>2</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>14/2/2012 17:41:00</datApresentacao>
+    <txtEmenta>Estabelece normas especiais para as compras, as contratações e o desenvolvimento de produtos e de sistemas de defesa e dispõe sobre regras de incentivo à área estratégica de defesa e dá outras providências.</txtEmenta>
+    <txtExplicacaoEmenta>
+    </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Carlinhos Almeida</txtNomeAutor>
+      <idecadastro>160584</idecadastro>
+      <codPartido>134</codPartido>
+      <txtSiglaPartido>PT        </txtSiglaPartido>
+      <txtSiglaUF>SP</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>534172</id>
+    <nome>PLV 1/2012 =&gt; MPV 546/2011</nome>
+    <tipoProposicao>
+      <id>390</id>
+      <sigla>PLV</sigla>
+      <nome>Projeto de Lei de Conversão</nome>
+    </tipoProposicao>
+    <numero>1</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>180</id>
+      <sigla>PLEN      </sigla>
+      <nome>PLENÁRIO</nome>
+    </orgaoNumerador>
+    <datApresentacao>7/2/2012 14:00:00</datApresentacao>
+    <txtEmenta>Dispõe sobre a prestação de auxílio financeiro pela União aos Estados, ao Distrito Federal e aos Municípios, no exercício de 2011, com o objetivo de fomentar as exportações do País, altera a Lei nº 12.409, de 25 de maio de 2011, e dá outras providências. </txtEmenta>
+    <txtExplicacaoEmenta>
+    </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>99</codRegime>
+      <txtRegime>.</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>99</id>
+      <txtApreciacao>.</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Zeca Dirceu</txtNomeAutor>
+      <idecadastro>160592</idecadastro>
+      <codPartido>134</codPartido>
+      <txtSiglaPartido>PT        </txtSiglaPartido>
+      <txtSiglaUF>PR</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+</proposicoes>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<proposicoes>
+  <proposicao>
+    <id>560438</id>
+    <nome>PLS 415/2012 MERCOSUL</nome>
+    <tipoProposicao>
+      <id>464</id>
+      <sigla>PLS</sigla>
+      <nome>Projeto de Lei do Senado Federal</nome>
+    </tipoProposicao>
+    <numero>415</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>5973</id>
+      <sigla>MERCOSUL  </sigla>
+      <nome>Representação Brasileira no Parlamento do Mercosul.</nome>
+    </orgaoNumerador>
+    <datApresentacao>19/11/2012 10:31:00</datApresentacao>
+    <txtEmenta>Concede  isenção do IPI (imposto sobre produtos industrializados) às operações com automóveis equipados com motor acionado, exclusivamente por baterias recarregáveis na rede elétrica (carros elétricos), extensivo às matérias-primas, peças e embalagens utilizadas no processo produtivo, bem como na importação de carros elétricos dos países do mercosul.</txtEmenta>
+    <txtExplicacaoEmenta>
+    </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>14</codRegime>
+      <txtRegime>Ordinária</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>6</id>
+      <txtApreciacao>Proposição Sujeita à Apreciação Interna nas Comissões</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Eduardo Amorim</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>126</codPartido>
+      <txtSiglaPartido>PSC       </txtSiglaPartido>
+      <txtSiglaUF>SE</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>924</id>
+      <descricao>Pronta para Pauta</descricao>
+      <orgao>
+        <codOrgaoEstado>MERCOSUL  </codOrgaoEstado>
+        <siglaOrgaoEstado>MERCOSUL  </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>1</qtdOrgaosComEstado>
+  </proposicao>
+  <proposicao>
+    <id>534192</id>
+    <nome>PLS 6/2012 MERCOSUL</nome>
+    <tipoProposicao>
+      <id>464</id>
+      <sigla>PLS</sigla>
+      <nome>Projeto de Lei do Senado Federal</nome>
+    </tipoProposicao>
+    <numero>6</numero>
+    <ano>2012</ano>
+    <orgaoNumerador>
+      <id>5973</id>
+      <sigla>MERCOSUL  </sigla>
+      <nome>Representação Brasileira no Parlamento do Mercosul.</nome>
+    </orgaoNumerador>
+    <datApresentacao>8/2/2012 10:26:00</datApresentacao>
+    <txtEmenta>Isenta do Imposto de Importação os produtos classficados na posição 22.04 (vinho) da nomenclatura comum do Mercosul originários e procedentes de Portugal.</txtEmenta>
+    <txtExplicacaoEmenta>
+    </txtExplicacaoEmenta>
+    <regime>
+      <codRegime>14</codRegime>
+      <txtRegime>Ordinária</txtRegime>
+    </regime>
+    <apreciacao>
+      <id>6</id>
+      <txtApreciacao>Proposição Sujeita à Apreciação Interna nas Comissões</txtApreciacao>
+    </apreciacao>
+    <autor1>
+      <txtNomeAutor>Vital do Rêgo</txtNomeAutor>
+      <idecadastro>
+      </idecadastro>
+      <codPartido>111</codPartido>
+      <txtSiglaPartido>PMDB      </txtSiglaPartido>
+      <txtSiglaUF>PB</txtSiglaUF>
+    </autor1>
+    <qtdAutores>1</qtdAutores>
+    <ultimoDespacho>
+      <datDespacho>
+      </datDespacho>
+      <txtDespacho>
+      </txtDespacho>
+    </ultimoDespacho>
+    <situacao>
+      <id>
+      </id>
+      <descricao>
+      </descricao>
+      <orgao>
+        <codOrgaoEstado>
+        </codOrgaoEstado>
+        <siglaOrgaoEstado>
+        </siglaOrgaoEstado>
+      </orgao>
+      <principal>
+        <codProposicaoPrincipal>0</codProposicaoPrincipal>
+        <proposicaoPrincipal>
+        </proposicaoPrincipal>
+      </principal>
+    </situacao>
+    <indGenero>o</indGenero>
+    <qtdOrgaosComEstado>0</qtdOrgaosComEstado>
+  </proposicao>
+</proposicoes>

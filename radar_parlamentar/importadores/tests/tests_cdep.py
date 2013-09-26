@@ -24,6 +24,9 @@ from importadores import camara
 from modelagem import models
 import os
 import Queue
+import glob
+from mock import Mock
+import xml.etree.ElementTree as etree
 
 # constantes relativas ao código florestal
 ID = '17338'
@@ -33,9 +36,29 @@ ANO = '1999'
 NOME = 'PL 1876/1999'
 
 VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
+MOCK_PATH = os.path.join(camara.RESOURCES_FOLDER,'mocks')
+MOCK_PROPOSICAO = glob.glob(os.path.join(MOCK_PATH,'proposicao_*'))
+MOCK_PROPOSICOES = glob.glob(os.path.join(MOCK_PATH,'proposicoes_*'))
+MOCK_VOTACOES = glob.glob(os.path.join(MOCK_PATH,'votacoes_*'))
+
+def verificar_xml(nome,lista_xmls):
+    for xml in lista_xmls:
+        if nome == os.path.basename(xml):
+            with open(xml) as arquivo_xml:
+                return etree.fromstring(arquivo_xml.read())
+    raise ValueError
+
+def mock_obter_proposicao(id_prop):
+    return verificar_xml('proposicao_'+str(id_prop),MOCK_PROPOSICAO)
+
+def mock_listar_proposicoes(sigla,ano):
+    return verificar_xml('proposicoes_'+sigla+str(ano),MOCK_PROPOSICOES)
+
+def mock_obter_votacoes(sigla,num,ano):
+    return verificar_xml('votacoes_'+sigla+str(num)+str(ano), MOCK_VOTACOES)
 
 class ProposicoesParserTest(TestCase):
-    
+
     def test_parse(self):
         VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
         votadasParser = camara.ProposicoesParser(VOTADAS_FILE_PATH)
@@ -53,7 +76,11 @@ class CamaraTest(TestCase):
         votadasParser = camara.ProposicoesParser(VOTADAS_FILE_PATH)
         votadas = votadasParser.parse()        
         importer = camara.ImportadorCamara(votadas)
-        importer.importar()
+        camaraWS = camara.Camaraws()
+        camaraWS.obter_proposicao = Mock(side_effect=mock_obter_proposicao)
+        camaraWS.listar_proposicoes = Mock(side_effect=mock_listar_proposicoes)
+        camaraWS.obter_votacoes = Mock(side_effect=mock_obter_votacoes)
+        importer.importar(camaraWS)
 
     @classmethod
     def tearDownClass(cls):
@@ -217,6 +244,11 @@ class SeparadorDeListaTest(TestCase):
 
 
 class ProposicoesFinderTest(TestCase):
+    def setUp(self):
+        self.camaraws = camara.Camaraws()
+        self.camaraws.listar_proposicoes = Mock(side_effect=mock_listar_proposicoes)
+        self.camaraws.obter_proposicao = Mock(side_effect=mock_obter_proposicao)
+        self.camaraws.obter_votacoes = Mock(side_effect=mock_obter_votacoes)
 
     def test_find_props_existem(self):
 
@@ -227,7 +259,7 @@ class ProposicoesFinderTest(TestCase):
         FILE_NAME = 'ids_que_existem_test.txt'
 
         finder = camara.ProposicoesFinder(False) # False to verbose
-        ids = finder.find_props_que_existem(ANO_MIN, ANO_MAX, FILE_NAME)
+        ids = finder.find_props_que_existem(ANO_MIN, ANO_MAX, FILE_NAME,camaraws=self.camaraws)
 
         for idp in IDS_QUE_EXISTEM:
             self.assertTrue(idp in ids)
@@ -239,7 +271,10 @@ class ProposicoesFinderTest(TestCase):
 
 
 class VerificadorDeProposicoesTest(TestCase):
-            
+    def setUp(self):
+        self.camaraws = camara.Camaraws()
+        self.camaraws.obter_votacoes = Mock(side_effect=mock_obter_votacoes)
+
     def test_verifica_se_tem_votacoes(self):
         
         prop_com_votacao = {'id': '17338', 'sigla': 'PL', 'num': '1876', 'ano': '1999'}
