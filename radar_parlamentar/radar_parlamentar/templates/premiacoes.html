@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}
+   Premiações do Radar Parlamentar
+{% endblock title %}
+
+{% block extrascripts %}
+{% endblock extrascripts %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block headerImgClass %}
+    about
+{% endblock headerImgClass %}
+
+{% block nomepagina %}
+    Premiações
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Radar Parlamentar só é possível se existirem dados abertos
+{% endblock pagedesc %}
+
+
+{% block breadcrumbs %}    
+    <li><a href="/index">Home</a> &raquo;</li>
+    <li><a href="/premiacoes">Premiações</a></li>	 	
+	
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <article class="aboutDesc">
+        <p>
+	    <h3>2º lugar no Hackathon da Câmara Municipal</h3>
+            A Câmara Municipal de São Paulo, em parceria com a W3C e a Open Knowledge Foundation Brasil, lançou em 12/maio/2012 sua 1ª Hackathon, uma maratona hacker que visa estimular a elaboração de aplicativos que facilitem a leitura e o entendimento de seus Dados Abertos.Em 06 de junho saiu o resultado oficial da competição no site da Câmara Municipal de São Paulo: o Radar Parlamentar ficou em 2º lugar!
+	    <br><a href="http://www.polignu.org/votacao-radar-parlamentar">Saiba mais...</a><br>
+        </p>
+	<p>
+	    <h3>Prêmio Mario Covas 2013</h3>
+            No dia 27 de maio de 2013, em cerimônia realizada na Sala São Paulo, foram escolhidos os vencedores da 9º edição do Prêmio Mario Covas, iniciativa que objetiva promover práticas inovadoras destinadas a aprimorar a qualidade dos serviços públicos e elevar o bem-estar dos cidadãos de São Paulo. Na Categoria Governo Aberto o Radar Parlamentar recebeu o  Prêmio Destaque "Excelência do Gasto Público".
+	    <br><a href="http://ccsl.ime.usp.br/pt-br/news/13/06/13/radar-parlamentar-recebe-premio-destaque-excelencia-do-gasto-publico-na-categoria-gove">Saiba mais...</a><br>
+        </p>
+	<p>
+	    <h3>Prêmio Hackathon da Thacker na Campus Party 2013</h3>
+	    Hackathon é uma maratona de desenvolvimento de projetos de transparência, informação pública e tecnologias digitais. Hackers, programadoras, desenvolvedores e inventores em geral podem usar dados governamentais abertos para criar sites, aplicativos de celular, gráficos interativos e até mesmo projetos de hardware que ajudem a melhorar a vida dos cidadãos e cidadãs do Brasil. É uma forma de juntar habilidades técnicas com o interesse público.
+	    <br><a href="http://dadosgovernamentaisabertos.org/">Saiba mais...</a>
+        </p>
+    </article>
+{% endblock content %}
+
+{% block extrascriptsend %}
+    menuActive('sobre_nos');   
+{% endblock extrascriptsend %}
+
+{% block extrajsend %}
+{% endblock extrajsend %}

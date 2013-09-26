@@ -932,7 +932,7 @@ ol.list.alphalow{list-style: lower-alpha;}
             display: block;
             height: 30px;
             margin: 1px;
-            padding: 0 20px;
+            padding: 0 15px;
             -moz-transition:
                 background-color .3s ease-in-out,
                 border-color .3s ease-in-out;
