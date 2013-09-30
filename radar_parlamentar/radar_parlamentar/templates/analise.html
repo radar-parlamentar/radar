@@ -52,10 +52,9 @@
         </div-->
         <aside id="legenda-cmsp" class="list">
             <b>LEGENDA</b>
-            <ul class="links">
-                <li></li>
+            <ul class="legenda">
                 {% for partido in partidos %}
-                    <li>{{partido.numero}} | {{partido.nome}}</li>
+                    <li class="botao_partido" id="list_cor_{{partido.numero}}">{{partido.numero}} | {{partido.nome}}</li>
                 {% endfor %}
             </ul>
         </aside>

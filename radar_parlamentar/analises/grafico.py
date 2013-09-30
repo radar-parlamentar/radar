@@ -4,7 +4,7 @@
 # Copyright (C) 2012, Leonardo Leite, Saulo Trento, Diego Rabatone
 #
 # This file is part of Radar Parlamentar.
-# 
+#
 # Radar Parlamentar is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -14,7 +14,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -36,10 +36,10 @@ import analise
 logger = logging.getLogger("radar")
 
 class GraphScaler:
-    
+
     def scale(self, partidos2d):
         """Recebe mapa de coordenadas de partidos (saída de analise.partidos_2d()
-        e altera a escala dos valores de [-1,1] para [0,100] 
+        e altera a escala dos valores de [-1,1] para [0,100]
         """
         scaled = {}
         for partido, coord in partidos2d.items():
@@ -63,7 +63,7 @@ class JsonAnaliseGenerator:
         analisador_temporal = analise.AnalisadorTemporal(casa_legislativa)
         analisador_temporal.get_analises()
         return analisador_temporal
-    
+
     @staticmethod
     def inicia_dicionario(key,lista):
         if key not in lista:
@@ -80,7 +80,7 @@ class JsonAnaliseGenerator:
                 xs[partido].append([periodo, round(partidos2d[partido][0],2)])
                 ys[partido].append([periodo, round(partidos2d[partido][1],2)])
 
-   
+
     def _json_partidos(self,analise,analises_len):
         """
         constroi o json dos partidos
@@ -90,6 +90,7 @@ class JsonAnaliseGenerator:
         ys = {}
         partidos = Set()
         scaler = GraphScaler()
+        cores = CorPartido()
         periodo = 0
         analises = analise.analises_periodo
         constante_escala_tamanho = 26 # quanto maior, maior serão as bolhas.
@@ -105,7 +106,7 @@ class JsonAnaliseGenerator:
         json_partidos = []
         for nome_partido in partidos:
             partido = models.Partido.objects.get(nome=nome_partido)
-            json_partido = {"nome": nome_partido,"numero":partido.numero,"cor":"#000000","tamanho":tamanhos[nome_partido],"x":xs[nome_partido]\
+            json_partido = {"nome": nome_partido,"numero":partido.numero,"cor":cores.cor(partido),"tamanho":tamanhos[nome_partido],"x":xs[nome_partido]\
             ,"y":ys[nome_partido]}
             json_partidos.append(json_partido)
         return json_partidos
@@ -125,7 +126,7 @@ class JsonAnaliseGenerator:
         """Retorna JSON para ser usado no gráfico"""
         encoder.FLOAT_REPR = lambda o:format(o,'.2f')
         return json.dumps(self.get_json_dic(casa_legislativa),separators=(",",":"))
-    
+
     def get_json_dic(self,casa_legislativa):
         """Retorna o dicionario usado para gerar o JSON"""
         analise = JsonAnaliseGenerator._get_analises(casa_legislativa)
@@ -133,7 +134,7 @@ class JsonAnaliseGenerator:
         analises_len = len(analises)
         json_periodos = self._json_periodos(analises,analises_len)
         json_partidos = self._json_partidos(analise,analises_len)
-        return {"periodos":json_periodos,"partidos":json_partidos} 
+        return {"periodos":json_periodos,"partidos":json_partidos}
 
 
 class CorPartido:
@@ -174,22 +175,22 @@ class GeradorGrafico:
         import numpy
         """Apresenta o gráfico da análise na tela.
 
-		O gráfico é gerado utilizando o matplotlib. 
+		O gráfico é gerado utilizando o matplotlib.
 		O primeiro componente principal no eixo x e o segundo no eixo y.
-        
+
         Argumentos:
             escala: afeta tamanho das circunferências
             print_nome: se False imprime números dos partidos, se True imprime nomes dos partidos
         """
 
-        dados = self.analise.coordenadas 
+        dados = self.analise.coordenadas
 
         if not self.analise.coordenadas:
             dados = self.analisep.artidos_2d()
 
         fig = figure(1)
         fig.clf()
-    
+
         cores_partidos = {'PT'   :'#FF0000',
                       'PSOL' :'#FFFF00',
                       'PV'   :'#00CC00',
