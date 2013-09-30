@@ -3806,16 +3806,6 @@ port+.pager{margin-top: 40px;}
 
 
 /* RADAR PARLAMENTAR - PERSONALIZAÇÕES */
-#legenda-cmsp {
-    float:right;
-    text-align: center;
-    margin-right:-20px;
-    width:101px;
-}
-#legenda-cmsp ul {
-    text-align: left;
-}
-
 .votoAbertoDesc {
     text-align: justify;
     overflow: hidden;
