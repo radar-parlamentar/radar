@@ -29,16 +29,20 @@ Plot = (function ($) {
         //d3.json("/static/files/partidos.json", _plot_data);
     }
 
+    function space_to_underline(name) {
+      return name.replace(/\s+/g,'_');
+    }
+    
     function x(d) { return d.x; } // income (per capta) from original json
     function y(d) { return d.y; } // life expectancy from original json
-    function tamanho(d) { return d.tamanho; } // population from original json
+    function tamanho(d) { return 1; d.tamanho; } // population from original json
     function cor(d) { return d.cor; } // based on region from original json
-    function nome(d) { return d.nome; } // name from original json
+    function nome(d) { return space_to_underline(d.nome); } // name from original json
     function numero(d) { return d.numero; } // new parameter to json
 
     //Create Gradient Fill for each circle
     function gradiente(svg,id,color) {
-        if (color == "#000000") color = "#1F77B4";
+        if (color === "#000000") color = "#1F77B4";
         var identificador = "gradient-" + id;
         var gradient = svg.append("svg:defs")
                 .append("svg:radialGradient")
@@ -181,7 +185,7 @@ Plot = (function ($) {
             .attr("id","parties")
 
         var dados = interpolateData(1)
-            .filter(function(d){ return d.tamanho;});
+            .filter(function(d){ return tamanho(d);});
 
         var parties = main.selectAll(".partie")
             .data(dados)
@@ -321,7 +325,7 @@ Plot = (function ($) {
             periodo_atual = period;
             
             var dados = interpolateData(period)
-                .filter(function(d){ return d.tamanho;});
+                .filter(function(d){ return tamanho(d);});
 
             var main = svg.select("#parties");
 
@@ -351,7 +355,7 @@ Plot = (function ($) {
                 .text(function(d){ return numero(d);});
 
             parties.exit().remove();
-            
+           
             label.text(periodos[Math.round(period)].nome);
             quantidade_votacoes = periodos[Math.round(period)].quantidade_votacoes
             total_label.text(quantidade_votacoes + " votações");
@@ -361,12 +365,12 @@ Plot = (function ($) {
         function interpolateData(year) {
             return partidos.map(function(d) {
                 return {
-                    nome: d.nome,
-                    numero: d.numero,
-                    cor: d.cor,
-                    tamanho: interpolateValues(d.tamanho, year),
-                    x: interpolateValues(d.x, year),
-                    y: interpolateValues(d.y, year)
+                    nome: nome(d),
+                    numero: numero(d),
+                    cor: cor(d),
+                    tamanho: tamanho(d), //interpolateValues(d.tamanho, year),
+                    x: interpolateValues(x(d), year),
+                    y: interpolateValues(y(d), year)
                 };
             });
         }
