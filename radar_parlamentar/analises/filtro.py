@@ -17,8 +17,10 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
 
+from __future__ import unicode_literals
+from modelagem import models
+import re
 class Temas():
 
     dicionario = {}   
@@ -68,3 +70,33 @@ class Temas():
                 palavras.append(e)
 
         return palavras
+
+class Filtro_Proposicao():
+
+    def filtra_proposicao(*args):
+    	proposicao = models.Proposicao.objects.all()
+	a = 0
+	lista_siglas = []
+	lista_palavras = []
+	lista_siglas = args[1]
+	lista_palavras = args[2]
+	lista_proposicao = []	
+
+	for r in lista_siglas:
+		sigla = r
+		for p in proposicao:
+			if(sigla == p.sigla):
+				for e in lista_palavras:
+					
+					palavra = e
+					if(re.search(palavra,p.descricao)!= None):
+						print 'Descricao:' + p.descricao + '\n'
+    						print 'Ementa:' + p.ementa + '\n'
+						lista_proposicao.append(p.descricao)
+						lista_proposicao.append(p.ementa)
+
+					else:
+						print 'palavra: ' + palavra + ' nao encontrada na descricao: ' + p.descricao + '\n' 
+
+	
+	return lista_proposicao

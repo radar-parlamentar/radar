@@ -122,6 +122,47 @@ class AnaliseTest(TestCase):
         self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], 0.70406584, 4)
         self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], -0.41347063, 4)        
 
+class Filtro_ProposicaoTest(TestCase):
+	
+    def test_filtro_proposicao(self):
+	lista_teste = []
+	lista_teste2 = []
+	obj_filtro = filtro.Filtro_Proposicao() 
+	obj_filtro1 = filtro.Filtro_Proposicao()
+	palavra_proposicao = models.Proposicao()
+	palavra_proposicao1 = models.Proposicao()
+	palavra_proposicao.sigla = 'PTB'
+	sigla = 'PTB'
+	palavra_proposicao.descricao = 'Discussao da legalizacao do aborto'
+	palavra_proposicao1.descricao = 'Estudo de caso para viabilidade do VLP'
+	palavra_proposicao1.sigla = 'PM'
+	sigla1 = 'PM'
+	palavra_proposicao.save()
+	palavra_proposicao1.save()
+	
+	self.assertTrue(palavra_proposicao.descricao in obj_filtro.filtra_proposicao([sigla],['aborto']))
+	self.assertTrue(palavra_proposicao1.descricao in obj_filtro1.filtra_proposicao([sigla1],['viabilidade']))
+		
+
+    def test_filtro_proposicao1(self):
+	lista_teste = []
+	lista_teste2 = []
+	palavra_proposicao = models.Proposicao()
+	obj_filtro = filtro.Filtro_Proposicao() 
+	obj_filtro1 = filtro.Filtro_Proposicao()
+	palavra_proposicao1 = models.Proposicao()
+	palavra_proposicao.sigla = 'PTB'
+	sigla = 'PTB'
+	palavra_proposicao.descricao = 'Discussao da legalizacao do aborto'
+	palavra_proposicao1.descricao = 'Estudo de caso para viabilidade do VLP'
+	palavra_proposicao1.sigla = 'PM'
+	sigla1 = 'PM'
+	palavra_proposicao.save()
+	palavra_proposicao1.save()
+	
+	self.assertFalse(palavra_proposicao.descricao in obj_filtro.filtra_proposicao([sigla],['musica']))
+	self.assertFalse(palavra_proposicao1.descricao in obj_filtro1.filtra_proposicao([sigla1],['futebol']))
+		
 
 
 class GraficoTest(TestCase):

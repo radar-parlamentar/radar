@@ -433,33 +433,6 @@ class Proposicao(models.Model):
     def __unicode__(self):
         return "[%s] %s" % (self.nome(), self.ementa)
     
-    def filtra_proposicao(*args):
-    	proposicao = Proposicao.objects.all()
-	a = 0
-	lista_siglas = []
-	lista_palavras = []
-	lista_siglas = args[1]
-	lista_palavras = args[2]
-	lista_proposicao = []	
-
-	for r in lista_siglas:
-		sigla = r
-		for p in proposicao:
-			if(sigla == p.sigla):
-				for e in lista_palavras:
-					
-					palavra = e
-					if(re.search(palavra,p.descricao)!= None):
-						print 'Descricao:' + p.descricao + '\n'
-    						print 'Ementa:' + p.ementa + '\n'
-						lista_proposicao.append(p.descricao)
-						lista_proposicao.append(p.ementa)
-
-					else:
-						print 'palavra: ' + palavra + ' nao encontrada na descricao: ' + p.descricao + '\n' 
-
-	
-	return lista_proposicao
 	 
 
 
