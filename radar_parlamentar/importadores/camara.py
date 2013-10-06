@@ -65,15 +65,15 @@ class Url(object):
         return tree
 
     def read(self,url):
+        text = ''
         try:
             request = urllib2.Request(url)
+            text = urllib2.urlopen(request).read()
         except urllib2.URLError:
             logger.info("erro na URL")
-            return None
         except urllib2.HTTPError:
             logger.info("erro HTTP")
-            return None
-        return urllib2.urlopen(request).read()
+        return text
 
 class Camaraws:
     """Acesso aos Web Services da Câmara dos Deputados"""
