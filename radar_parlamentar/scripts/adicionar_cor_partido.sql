@@ -1,5 +1,8 @@
 alter table modelagem_partido add cor varchar(7);
 
+update modelagem_partido set cor = '#d7bf1f', numero = 51 where nome='PEN';
+
+update modelagem_partido set cor = '#000000'  where numero = 0;
 update modelagem_partido set cor = '#15c5ff'  where numero = 10;
 update modelagem_partido set cor = '#203487'  where numero = 11;
 update modelagem_partido set cor = '#6c85b1'  where numero = 12;
@@ -32,5 +35,4 @@ update modelagem_partido set cor = '#da251c'  where numero = 65;
 update modelagem_partido set cor = '#2ba138'  where numero = 70;
 update modelagem_partido set cor = '#226d2a'  where numero = 56;
 update modelagem_partido set cor = '#114d12'  where numero = 71;
-update modelagem_partido set cor = '#d7bf1f'  where numero = 51;
 update modelagem_partido set cor = '#094196'  where numero = 26;
