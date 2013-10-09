@@ -136,7 +136,7 @@ class Partido(models.Model):
 
     @classmethod
     def _from_regex(cls, idx, key):
-        PARTIDO_REGEX = '([a-zA-Z]*) *([0-9]*) *(#+[0-F]*)'
+        PARTIDO_REGEX = '([a-zA-Z]*) *([0-9]*) *(#+[0-f]*)'
         f = open(cls.LISTA_PARTIDOS)
         for line in f:
             res = re.search(PARTIDO_REGEX, line)
