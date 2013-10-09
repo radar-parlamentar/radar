@@ -27,6 +27,7 @@ import Queue
 import glob
 from mock import Mock
 import xml.etree.ElementTree as etree
+import urlparse
 
 # constantes relativas ao código florestal
 ID = '17338'
@@ -41,22 +42,6 @@ MOCK_PROPOSICAO = glob.glob(os.path.join(MOCK_PATH,'proposicao_*'))
 MOCK_PROPOSICOES = glob.glob(os.path.join(MOCK_PATH,'proposicoes_*'))
 MOCK_VOTACOES = glob.glob(os.path.join(MOCK_PATH,'votacoes_*'))
 
-def verificar_xml(nome,lista_xmls):
-    for xml in lista_xmls:
-        if nome == os.path.basename(xml):
-            with open(xml) as arquivo_xml:
-                return etree.fromstring(arquivo_xml.read())
-    raise ValueError
-
-def mock_obter_proposicao(id_prop):
-    return verificar_xml('proposicao_'+str(id_prop),MOCK_PROPOSICAO)
-
-def mock_listar_proposicoes(sigla,ano):
-    return verificar_xml('proposicoes_'+sigla+str(ano),MOCK_PROPOSICOES)
-
-def mock_obter_votacoes(sigla,num,ano):
-    return verificar_xml('votacoes_'+sigla+str(num)+str(ano), MOCK_VOTACOES)
-
 class ProposicoesParserTest(TestCase):
 
     def test_parse(self):
@@ -67,6 +52,62 @@ class ProposicoesParserTest(TestCase):
         self.assertTrue(codigo_florestal in votadas)
 
 
+def mock_url_read(url):
+    """
+    funcao que dubla o metodo Url.toXML
+    Compara a url com as urls dos serviços de Camaraws. Se forem iguais, 
+    checa os parametros e carrega o xml
+    se nao encontrar nada retorna None
+    """
+    try:
+        resultado = comparar_proposicao(url)
+        if resultado is None:
+            resultado = comparar_votacoes(url)
+            if resultado is None:
+                resultado = comparar_proposicoes(url)
+    except ValueError:
+        return None
+    return resultado
+
+def comparar_proposicao(url):
+    proposicao = urlparse.urlparse(camara.Camaraws.URL_PROPOSICAO)
+    url_parseado = urlparse.urlparse(url)
+    if comparar_urls(url_parseado,proposicao):
+        idProp = urlparse.parse_qs(url_parseado.query)['idProp'][0]
+        return mock_obter_proposicao(idProp)
+    return None
+
+def comparar_proposicoes(url):
+    proposicoes = urlparse.urlparse(camara.Camaraws.URL_LISTAR_PROPOSICOES)
+    url_parseado = urlparse.urlparse(url)
+    if comparar_urls(url_parseado,proposicoes):
+        parametros = urlparse.parse_qs(url_parseado.query)
+        sigla = parametros['sigla'][0]
+        ano = parametros['ano'][0]
+        return mock_listar_proposicoes(sigla,ano)
+    return None
+
+def comparar_votacoes(url):
+    votacoes = urlparse.urlparse(camara.Camaraws.URL_VOTACOES)
+    url_parseado = urlparse.urlparse(url)
+    if comparar_urls(url_parseado,votacoes):
+        parametros = urlparse.parse_qs(url_parseado.query)
+        tipo = parametros['tipo'][0]
+        numero = parametros['numero'][0]
+        ano = parametros['ano'][0]
+        return mock_obter_votacoes(tipo,numero,ano)
+    return None
+
+def comparar_urls(url1,url2):
+    """
+        compara duas urls pelo seu scheme, netloc e path não considera parameters ou querys.
+        estrutura da url: 
+            scheme://netloc/path;parameters?query#fragment
+    """
+    if [url1.scheme,url1.netloc,url1.path] == [url2.scheme,url2.netloc,url2.path]:
+        return True
+    return False
+
 class CamaraTest(TestCase):
     """Testes do módulo camara"""
 
@@ -76,6 +117,7 @@ class CamaraTest(TestCase):
         votadasParser = camara.ProposicoesParser(VOTADAS_FILE_PATH)
         votadas = votadasParser.parse()        
         importer = camara.ImportadorCamara(votadas)
+        #dublando a camara
         camaraWS = camara.Camaraws()
         camaraWS.obter_proposicao = Mock(side_effect=mock_obter_proposicao)
         camaraWS.listar_proposicoes = Mock(side_effect=mock_listar_proposicoes)
@@ -86,26 +128,28 @@ class CamaraTest(TestCase):
     def tearDownClass(cls):
         from util_test import flush_db
         flush_db(cls)
-
+    
+    def setUp(self):
+        #dublando a classe url
+        url = camara.Url()
+        url.toXml = Mock(side_effect=mock_url_read) 
+        self.camaraws = camara.Camaraws(url)
 
     def test_obter_proposicao(self):
 
-        camaraws = camara.Camaraws()
-        codigo_florestal_xml = camaraws.obter_proposicao(ID)
+        codigo_florestal_xml = self.camaraws.obter_proposicao(ID)
         nome = codigo_florestal_xml.find('nomeProposicao').text
         self.assertEquals(nome, NOME)
 
     def test_obter_votacoes(self):
 
-        camaraws = camara.Camaraws()
-        codigo_florestal_xml = camaraws.obter_votacoes(SIGLA, NUM, ANO)
+        codigo_florestal_xml = self.camaraws.obter_votacoes(SIGLA, NUM, ANO)
         data_vot_encontrada = codigo_florestal_xml.find('Votacoes').find('Votacao').get('Data')
         self.assertEquals(data_vot_encontrada, '11/5/2011')
 
     def test_listar_proposicoes(self):
 
-        camaraws = camara.Camaraws()
-        pecs_2011_xml = camaraws.listar_proposicoes('PEC', '2011')
+        pecs_2011_xml = self.camaraws.listar_proposicoes('PEC', '2011')
         pecs_elements = pecs_2011_xml.findall('proposicao')
         self.assertEquals(len(pecs_elements), 135)
         # 135 obtido por conferência manual com:
@@ -114,10 +158,9 @@ class CamaraTest(TestCase):
     def test_prop_nao_existe(self):
 
         id_que_nao_existe = 'id_que_nao_existe'
-        camaraws = camara.Camaraws()
         caught = False
         try:
-            camaraws.obter_proposicao(id_que_nao_existe)
+            self.camaraws.obter_proposicao(id_que_nao_existe)
         except ValueError as e:
             self.assertEquals(e.message, 'Proposicao %s nao encontrada' % id_que_nao_existe)
             caught = True
@@ -128,10 +171,9 @@ class CamaraTest(TestCase):
         sigla = 'PCC'
         num = '1500'
         ano = '1876'
-        camaraws = camara.Camaraws()
         caught = False
         try:
-            camaraws.obter_votacoes(sigla, num, ano)
+            self.camaraws.obter_votacoes(sigla, num, ano)
         except ValueError as e:
             self.assertEquals(e.message, 'Votacoes da proposicao %s %s/%s nao encontrada' % (sigla, num, ano))
             caught = True
@@ -141,9 +183,8 @@ class CamaraTest(TestCase):
 
         sigla = 'PEC'
         ano = '3013'
-        camaraws = camara.Camaraws()
         try:
-            camaraws.listar_proposicoes(sigla, ano)
+            self.camaraws.listar_proposicoes(sigla, ano)
         except ValueError as e:
             self.assertEquals(e.message, 'Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
             caught = True
@@ -199,8 +240,7 @@ class CamaraTest(TestCase):
 
     def test_listar_siglas(self):
 
-        camaraws = camara.Camaraws()
-        siglas = camaraws.listar_siglas()
+        siglas = self.camaraws.listar_siglas()
         self.assertTrue('PL' in siglas)
         self.assertTrue('PEC' in siglas)
         self.assertTrue('MPV' in siglas)
@@ -242,9 +282,32 @@ class SeparadorDeListaTest(TestCase):
         self.assertEquals(listas[2], [7])
 
 
+def verificar_xml(nome,lista_xmls):
+    """verifica se existe um arquivo com determinado nome, dentro de uma lista de arquivos"""
+    for xml in lista_xmls:
+        if nome == os.path.basename(xml):
+            with open(xml) as arquivo_xml:
+                return etree.fromstring(arquivo_xml.read())
+    raise ValueError
+
+def mock_obter_proposicao(id_prop):
+    """mock do método obter_proposicao de camaraWS. 
+        Recebe o id da proposição e retorna um xml"""
+    return verificar_xml('proposicao_'+str(id_prop),MOCK_PROPOSICAO)
+
+def mock_listar_proposicoes(sigla,ano):
+    """mock do método listar_proposicoes de camaraWS. 
+        Recebe a sigla e o ano da proposicao e retorna um xml"""
+    return verificar_xml('proposicoes_'+sigla+str(ano),MOCK_PROPOSICOES)
+
+def mock_obter_votacoes(sigla,num,ano):
+    """mock do método obter_votacoes de camaraWS. 
+        Recebe a sigla, o numero e o ano e retorna um xml"""
+    return verificar_xml('votacoes_'+sigla+str(num)+str(ano), MOCK_VOTACOES)
 
 class ProposicoesFinderTest(TestCase):
     def setUp(self):
+        #dublando a camaraws
         self.camaraws = camara.Camaraws()
         self.camaraws.listar_proposicoes = Mock(side_effect=mock_listar_proposicoes)
         self.camaraws.obter_proposicao = Mock(side_effect=mock_obter_proposicao)
@@ -272,6 +335,7 @@ class ProposicoesFinderTest(TestCase):
 
 class VerificadorDeProposicoesTest(TestCase):
     def setUp(self):
+        #dublando a camaraws
         self.camaraws = camara.Camaraws()
         self.camaraws.obter_votacoes = Mock(side_effect=mock_obter_votacoes)
 
@@ -285,7 +349,7 @@ class VerificadorDeProposicoesTest(TestCase):
         props_queue.put(prop_sem_votacao)
         
         votadas_queue = Queue.Queue()    
-        verificador = camara.VerificadorDeProposicoes(props_queue, votadas_queue, False)
+        verificador = camara.VerificadorDeProposicoes( props_queue, votadas_queue, False, camaraws = self.camaraws)
         verificador.verifica_se_tem_votacoes()
 
         props_queue.join() # aguarda até que a fila seja toda processada

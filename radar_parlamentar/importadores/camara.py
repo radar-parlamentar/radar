@@ -53,12 +53,36 @@ NUM_THREADS = 16
 
 logger = logging.getLogger("radar")
 
+class Url(object):
+    """Classe que abre urls"""
+    def toXml(self,url):
+        try:
+            xml = self.read(url)
+            tree = etree.fromstring(xml)
+        except etree.ParseError:
+            logger.info("erro no Parse do XML")
+            return None
+        return tree
+
+    def read(self,url):
+        text = ''
+        try:
+            request = urllib2.Request(url)
+            text = urllib2.urlopen(request).read()
+        except urllib2.URLError:
+            logger.info("erro na URL")
+        except urllib2.HTTPError:
+            logger.info("erro HTTP")
+        return text
+
 class Camaraws:
     """Acesso aos Web Services da Câmara dos Deputados"""
 
     URL_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?idProp=%s'
     URL_VOTACOES = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?tipo=%s&numero=%s&ano=%s'
     URL_LISTAR_PROPOSICOES = 'http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=%s&numero=&ano=%s&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao='
+    def __init__(self,url = Url()):
+        self.url = url
 
     def obter_proposicao(self, id_prop):
         """Obtém detalhes de uma proposição
@@ -74,15 +98,8 @@ class Camaraws:
             ValueError -- quando proposição não existe
         """
         url = Camaraws.URL_PROPOSICAO % id_prop
-        try:
-            request = urllib2.Request(url)
-            xml = urllib2.urlopen(request).read()
-        except urllib2.URLError:
-            raise ValueError('Proposicao %s nao encontrada' % id_prop)
-
-        try:
-            tree = etree.fromstring(xml)
-        except etree.ParseError:
+        tree = self.url.toXml(url)
+        if tree is None:
             raise ValueError('Proposicao %s nao encontrada' % id_prop)
         return tree
 
@@ -101,16 +118,9 @@ class Camaraws:
         """
 
         url  = Camaraws.URL_VOTACOES % (sigla, num, ano)
-        try:
-            request = urllib2.Request(url)
-            xml = urllib2.urlopen(request).read()
-        except urllib2.URLError:
+        tree = self.url.toXml(url)
+        if tree is None:
             raise ValueError('Votacoes da proposicao %s %s/%s nao encontrada' % (sigla, num, ano))
-
-        try:
-            tree = etree.fromstring(xml)
-        except etree.ParseError:
-            raise ValueError('Votacoes da proposcaão %s %s/%s nao encontrada' % (sigla, num, ano))
         return tree
 
     def listar_proposicoes(self, sigla, ano):
@@ -129,14 +139,8 @@ class Camaraws:
             que ocorre quando não há resultados para os critérios da busca
         """
         url = Camaraws.URL_LISTAR_PROPOSICOES % (sigla, ano)
-        try:
-            request = urllib2.Request(url)
-            xml = urllib2.urlopen(request).read()
-        except urllib2.URLError:
-            raise ValueError('Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
-        try:
-            tree = etree.fromstring(xml)
-        except etree.ParseError:
+        tree = self.url.toXml(url)
+        if tree is None:
             raise ValueError('Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
         return tree
 
@@ -262,10 +266,11 @@ class ProposicoesFinder:
 class VerificadorDeProposicoes:
     """Verifica se um conjunto de proposições possui votações"""
     
-    def __init__(self, props_queue, output_queue, verbose):
+    def __init__(self, props_queue, output_queue, verbose, camaraws = Camaraws()):
         self.props_queue = props_queue
         self.output_queue = output_queue
         self.verbose = verbose
+        self.camaraws = camaraws
         
     def verifica_se_tem_votacoes(self):
         """Coloca na fila de saída proposições que possuem votações.
@@ -273,7 +278,7 @@ class VerificadorDeProposicoes:
         """
         while not self.props_queue.empty():
             prop = self.props_queue.get()
-            verificador = VerificadorDeProposicao(prop['sigla'], prop['num'], prop['ano'])
+            verificador = VerificadorDeProposicao(prop['sigla'], prop['num'], prop['ano'],camaraws = self.camaraws)
             if verificador.verifica_se_tem_votacoes():
                 self.output_queue.put(prop)
                 if self.verbose:
