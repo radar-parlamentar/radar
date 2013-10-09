@@ -75,6 +75,7 @@ PERIODOS = (
 )
 
 SEM_PARTIDO = 'Sem partido'
+COR_PRETA = '#000000'
 
 class Partido(models.Model):
     """Partido político.
@@ -82,6 +83,7 @@ class Partido(models.Model):
     Atributos:
         nome -- string; ex: 'PT'
         numero -- int; ex: '13'
+	cor -- string; ex: #FFFFFF
 
     Métodos da classe:
         from_nome(nome): retorna objeto do tipo Partido
@@ -94,6 +96,7 @@ class Partido(models.Model):
 
     nome = models.CharField(max_length=12)
     numero = models.IntegerField()
+    cor = models.CharField(max_length=7)
 
     @classmethod
     def from_nome(cls, nome):
@@ -125,6 +128,7 @@ class Partido(models.Model):
             partido = Partido()
             partido.nome = SEM_PARTIDO
             partido.numero = 0
+	    partido.cor = COR_PRETA
             partido.save()
         else:
             partido = lista[0]
@@ -132,7 +136,7 @@ class Partido(models.Model):
 
     @classmethod
     def _from_regex(cls, idx, key):
-        PARTIDO_REGEX = '([a-zA-Z]*) *([0-9]*)'
+        PARTIDO_REGEX = '([a-zA-Z]*) *([0-9]*) *(#+[0-F]*)'
         f = open(cls.LISTA_PARTIDOS)
         for line in f:
             res = re.search(PARTIDO_REGEX, line)
@@ -140,12 +144,13 @@ class Partido(models.Model):
                 partido = Partido()
                 partido.nome = res.group(1)
                 partido.numero = int(res.group(2))
+                partido.cor = res.group(3)
                 partido.save()
                 return partido
         return None
 
     def __unicode__(self):
-        return '%s-%s' % (self.nome, self.numero)
+        return '%s-%s-%s' % (self.nome, self.numero, self.cor)
 
 
 class CasaLegislativa(models.Model):
