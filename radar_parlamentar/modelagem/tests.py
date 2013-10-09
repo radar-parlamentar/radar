@@ -40,13 +40,22 @@ class ModelsTest(TestCase):
     def test_partido(self):
         pt = models.Partido.from_nome('PT')
         self.assertEquals(pt.numero, 13)
+	self.assertEquals(pt.cor, '#FF0000')
         psdb = models.Partido.from_numero(45)
         self.assertEquals(psdb.nome, 'PSDB')
+	self.assertEquals(psdb.cor, '#0059AB')
+	
         
     def test_partido_from_nome_None(self):
         nome = None
         partido = models.Partido.from_nome(nome)
         self.assertIsNone(partido)
+
+    def test_get_sem_partido(self):
+	partido = models.Partido.get_sem_partido()
+	self.assertEquals(partido.nome, 'Sem partido')
+        self.assertEquals(partido.numero, 0)
+	self.assertEquals(partido.cor,'#000000')
 
     def test_casa_legislativa_partidos(self):
         conv = models.CasaLegislativa.objects.get(nome_curto='conv')
@@ -114,10 +123,12 @@ class ModelsTest(TestCase):
        	partidoTest1 = models.Partido()
     	partidoTest1.nome = 'PA'
     	partidoTest1.numero = '01'
+	partidoTest1.cor = '#FFFAAA'
         partidoTest1.save()
         partidoTest2 = models.Partido()
     	partidoTest2.nome = 'PB'
     	partidoTest2.numero = '02'
+	partidoTest1.cor = '#FFFFFF'
         partidoTest2.save()
          
         parlamentarTest1 = models.Parlamentar()
