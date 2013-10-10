@@ -52,62 +52,6 @@ class ProposicoesParserTest(TestCase):
         self.assertTrue(codigo_florestal in votadas)
 
 
-def mock_url_read(url):
-    """
-    funcao que dubla o metodo Url.toXML
-    Compara a url com as urls dos serviços de Camaraws. Se forem iguais, 
-    checa os parametros e carrega o xml
-    se nao encontrar nada retorna None
-    """
-    try:
-        resultado = comparar_proposicao(url)
-        if resultado is None:
-            resultado = comparar_votacoes(url)
-            if resultado is None:
-                resultado = comparar_proposicoes(url)
-    except ValueError:
-        return None
-    return resultado
-
-def comparar_proposicao(url):
-    proposicao = urlparse.urlparse(camara.Camaraws.URL_PROPOSICAO)
-    url_parseado = urlparse.urlparse(url)
-    if comparar_urls(url_parseado,proposicao):
-        idProp = urlparse.parse_qs(url_parseado.query)['idProp'][0]
-        return mock_obter_proposicao(idProp)
-    return None
-
-def comparar_proposicoes(url):
-    proposicoes = urlparse.urlparse(camara.Camaraws.URL_LISTAR_PROPOSICOES)
-    url_parseado = urlparse.urlparse(url)
-    if comparar_urls(url_parseado,proposicoes):
-        parametros = urlparse.parse_qs(url_parseado.query)
-        sigla = parametros['sigla'][0]
-        ano = parametros['ano'][0]
-        return mock_listar_proposicoes(sigla,ano)
-    return None
-
-def comparar_votacoes(url):
-    votacoes = urlparse.urlparse(camara.Camaraws.URL_VOTACOES)
-    url_parseado = urlparse.urlparse(url)
-    if comparar_urls(url_parseado,votacoes):
-        parametros = urlparse.parse_qs(url_parseado.query)
-        tipo = parametros['tipo'][0]
-        numero = parametros['numero'][0]
-        ano = parametros['ano'][0]
-        return mock_obter_votacoes(tipo,numero,ano)
-    return None
-
-def comparar_urls(url1,url2):
-    """
-        compara duas urls pelo seu scheme, netloc e path não considera parameters ou querys.
-        estrutura da url: 
-            scheme://netloc/path;parameters?query#fragment
-    """
-    if [url1.scheme,url1.netloc,url1.path] == [url2.scheme,url2.netloc,url2.path]:
-        return True
-    return False
-
 class CamaraTest(TestCase):
     """Testes do módulo camara"""
 
@@ -130,10 +74,7 @@ class CamaraTest(TestCase):
         flush_db(cls)
     
     def setUp(self):
-        #dublando a classe url
-        url = camara.Url()
-        url.toXml = Mock(side_effect=mock_url_read) 
-        self.camaraws = camara.Camaraws(url)
+        self.camaraws = camara.Camaraws()
 
     def test_obter_proposicao(self):
 
