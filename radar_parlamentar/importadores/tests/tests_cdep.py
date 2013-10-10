@@ -245,6 +245,9 @@ class CamaraTest(TestCase):
         self.assertTrue('PEC' in siglas)
         self.assertTrue('MPV' in siglas)
 
+class CamaraIntegrationTest(CamaraTest):
+    def setUp(self):
+        self.camaraws = camara.Camaraws()
 
 class SeparadorDeListaTest(TestCase):
     
