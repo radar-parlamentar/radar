@@ -252,6 +252,9 @@ Plot = (function ($) {
                 if (periodo_atual < periodo_max) {
                     periodo_de = periodo_atual;
                     periodo_para = Math.floor(periodo_atual + 1);
+                    if (periodo_para > periodo_max){
+                        periodo_para = periodo_max
+                    }
                     tweenYear();
                     svg.transition()
                         .duration(1000)
@@ -288,6 +291,9 @@ Plot = (function ($) {
                 if (periodo_atual > periodo_min) {
                     periodo_de = periodo_atual;
                     periodo_para = Math.floor(periodo_atual - 1);
+                    if (periodo_para < periodo_min){
+                        periodo_para = periodo_min;
+                    }
                     tweenYear();
                     svg.transition()
                         .duration(1000)
@@ -355,7 +361,6 @@ Plot = (function ($) {
                 .text(function(d){ return numero(d);});
 
             parties.exit().remove();
-           
             label.text(periodos[Math.round(period)].nome);
             quantidade_votacoes = periodos[Math.round(period)].quantidade_votacoes
             total_label.text(quantidade_votacoes + " votações");

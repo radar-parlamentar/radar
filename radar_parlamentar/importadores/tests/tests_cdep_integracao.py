@@ -21,12 +21,13 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from importadores import camara
+from importadores.tests.mocks_cdep import mock_obter_proposicao,mock_listar_proposicoes, mock_obter_votacoes
 from modelagem import models
-import os
 import Queue
-import glob
 from mock import Mock
 import xml.etree.ElementTree as etree
+import urlparse
+
 
 # constantes relativas ao código florestal
 ID = '17338'
@@ -36,36 +37,6 @@ ANO = '1999'
 NOME = 'PL 1876/1999'
 
 VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
-MOCK_PATH = os.path.join(camara.RESOURCES_FOLDER,'mocks')
-MOCK_PROPOSICAO = glob.glob(os.path.join(MOCK_PATH,'proposicao_*'))
-MOCK_PROPOSICOES = glob.glob(os.path.join(MOCK_PATH,'proposicoes_*'))
-MOCK_VOTACOES = glob.glob(os.path.join(MOCK_PATH,'votacoes_*'))
-
-def verificar_xml(nome,lista_xmls):
-    for xml in lista_xmls:
-        if nome == os.path.basename(xml):
-            with open(xml) as arquivo_xml:
-                return etree.fromstring(arquivo_xml.read())
-    raise ValueError
-
-def mock_obter_proposicao(id_prop):
-    return verificar_xml('proposicao_'+str(id_prop),MOCK_PROPOSICAO)
-
-def mock_listar_proposicoes(sigla,ano):
-    return verificar_xml('proposicoes_'+sigla+str(ano),MOCK_PROPOSICOES)
-
-def mock_obter_votacoes(sigla,num,ano):
-    return verificar_xml('votacoes_'+sigla+str(num)+str(ano), MOCK_VOTACOES)
-
-class ProposicoesParserTest(TestCase):
-
-    def test_parse(self):
-        VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
-        votadasParser = camara.ProposicoesParser(VOTADAS_FILE_PATH)
-        votadas = votadasParser.parse()        
-        codigo_florestal =  {'ano': ANO, 'id': ID, 'num': NUM, 'sigla': SIGLA}
-        self.assertTrue(codigo_florestal in votadas)
-
 
 class CamaraTest(TestCase):
     """Testes do módulo camara"""
@@ -76,9 +47,10 @@ class CamaraTest(TestCase):
         votadasParser = camara.ProposicoesParser(VOTADAS_FILE_PATH)
         votadas = votadasParser.parse()        
         importer = camara.ImportadorCamara(votadas)
+        #dublando a camara
         camaraWS = camara.Camaraws()
-        camaraWS.obter_proposicao = Mock(side_effect=mock_obter_proposicao)
         camaraWS.listar_proposicoes = Mock(side_effect=mock_listar_proposicoes)
+        camaraWS.obter_proposicao = Mock(side_effect=mock_obter_proposicao)
         camaraWS.obter_votacoes = Mock(side_effect=mock_obter_votacoes)
         importer.importar(camaraWS)
 
@@ -86,26 +58,25 @@ class CamaraTest(TestCase):
     def tearDownClass(cls):
         from util_test import flush_db
         flush_db(cls)
-
+    
+    def setUp(self):
+        self.camaraws = camara.Camaraws()
 
     def test_obter_proposicao(self):
 
-        camaraws = camara.Camaraws()
-        codigo_florestal_xml = camaraws.obter_proposicao(ID)
+        codigo_florestal_xml = self.camaraws.obter_proposicao(ID)
         nome = codigo_florestal_xml.find('nomeProposicao').text
         self.assertEquals(nome, NOME)
 
     def test_obter_votacoes(self):
 
-        camaraws = camara.Camaraws()
-        codigo_florestal_xml = camaraws.obter_votacoes(SIGLA, NUM, ANO)
+        codigo_florestal_xml = self.camaraws.obter_votacoes(SIGLA, NUM, ANO)
         data_vot_encontrada = codigo_florestal_xml.find('Votacoes').find('Votacao').get('Data')
         self.assertEquals(data_vot_encontrada, '11/5/2011')
 
     def test_listar_proposicoes(self):
 
-        camaraws = camara.Camaraws()
-        pecs_2011_xml = camaraws.listar_proposicoes('PEC', '2011')
+        pecs_2011_xml = self.camaraws.listar_proposicoes('PEC', '2011')
         pecs_elements = pecs_2011_xml.findall('proposicao')
         self.assertEquals(len(pecs_elements), 135)
         # 135 obtido por conferência manual com:
@@ -114,10 +85,9 @@ class CamaraTest(TestCase):
     def test_prop_nao_existe(self):
 
         id_que_nao_existe = 'id_que_nao_existe'
-        camaraws = camara.Camaraws()
         caught = False
         try:
-            camaraws.obter_proposicao(id_que_nao_existe)
+            self.camaraws.obter_proposicao(id_que_nao_existe)
         except ValueError as e:
             self.assertEquals(e.message, 'Proposicao %s nao encontrada' % id_que_nao_existe)
             caught = True
@@ -128,10 +98,9 @@ class CamaraTest(TestCase):
         sigla = 'PCC'
         num = '1500'
         ano = '1876'
-        camaraws = camara.Camaraws()
         caught = False
         try:
-            camaraws.obter_votacoes(sigla, num, ano)
+            self.camaraws.obter_votacoes(sigla, num, ano)
         except ValueError as e:
             self.assertEquals(e.message, 'Votacoes da proposicao %s %s/%s nao encontrada' % (sigla, num, ano))
             caught = True
@@ -141,9 +110,8 @@ class CamaraTest(TestCase):
 
         sigla = 'PEC'
         ano = '3013'
-        camaraws = camara.Camaraws()
         try:
-            camaraws.listar_proposicoes(sigla, ano)
+            self.camaraws.listar_proposicoes(sigla, ano)
         except ValueError as e:
             self.assertEquals(e.message, 'Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
             caught = True
@@ -199,101 +167,8 @@ class CamaraTest(TestCase):
 
     def test_listar_siglas(self):
 
-        camaraws = camara.Camaraws()
-        siglas = camaraws.listar_siglas()
+        siglas = self.camaraws.listar_siglas()
         self.assertTrue('PL' in siglas)
         self.assertTrue('PEC' in siglas)
         self.assertTrue('MPV' in siglas)
 
-
-class SeparadorDeListaTest(TestCase):
-    
-    def test_separa_lista(self):
-
-        lista = [1, 2, 3, 4, 5, 6]
-        
-        separador = camara.SeparadorDeLista(1)
-        listas = separador.separa_lista_em_varias_listas(lista)
-        self.assertEquals(len(listas), 1)
-        self.assertEquals(listas[0], lista)
-
-        separador = camara.SeparadorDeLista(2)
-        listas = separador.separa_lista_em_varias_listas(lista)
-        self.assertEquals(len(listas), 2)
-        self.assertEquals(listas[0], [1, 2, 3])
-        self.assertEquals(listas[1], [4, 5, 6])
-
-        separador = camara.SeparadorDeLista(3)
-        listas = separador.separa_lista_em_varias_listas(lista)
-        self.assertEquals(len(listas), 3)
-        self.assertEquals(listas[0], [1, 2])
-        self.assertEquals(listas[1], [3, 4])
-        self.assertEquals(listas[2], [5, 6])
-
-    def test_separa_lista_quando_nao_eh_multiplo(self):
-
-        lista = [1, 2, 3, 4, 5, 6, 7]
-        
-        separador = camara.SeparadorDeLista(3)
-        listas = separador.separa_lista_em_varias_listas(lista)
-        self.assertEquals(len(listas), 3)
-        self.assertEquals(listas[0], [1, 2, 3])
-        self.assertEquals(listas[1], [4, 5, 6])
-        self.assertEquals(listas[2], [7])
-
-
-
-class ProposicoesFinderTest(TestCase):
-    def setUp(self):
-        self.camaraws = camara.Camaraws()
-        self.camaraws.listar_proposicoes = Mock(side_effect=mock_listar_proposicoes)
-        self.camaraws.obter_proposicao = Mock(side_effect=mock_obter_proposicao)
-        self.camaraws.obter_votacoes = Mock(side_effect=mock_obter_votacoes)
-
-    def test_find_props_existem(self):
-
-        ANO_MIN = 2012
-        ANO_MAX = 2012
-        IDS_QUE_EXISTEM = ['564446', '564313', '564126'] # proposições de 2012
-        IDS_QUE_NAO_EXISTEM = ['382651', '382650'] # proposições de 2007
-        FILE_NAME = 'ids_que_existem_test.txt'
-
-        finder = camara.ProposicoesFinder(False) # False to verbose
-        ids = finder.find_props_que_existem(ANO_MIN, ANO_MAX, FILE_NAME,camaraws=self.camaraws)
-
-        for idp in IDS_QUE_EXISTEM:
-            self.assertTrue(idp in ids)
-
-        for idp in IDS_QUE_NAO_EXISTEM:
-            self.assertFalse(idp in ids)
-
-        os.system('rm %s' % FILE_NAME)
-
-
-class VerificadorDeProposicoesTest(TestCase):
-    def setUp(self):
-        self.camaraws = camara.Camaraws()
-        self.camaraws.obter_votacoes = Mock(side_effect=mock_obter_votacoes)
-
-    def test_verifica_se_tem_votacoes(self):
-        
-        prop_com_votacao = {'id': '17338', 'sigla': 'PL', 'num': '1876', 'ano': '1999'}
-        prop_sem_votacao = {'id': '192074', 'sigla': 'PL', 'num': '1433', 'ano': '1988'}
-
-        props_queue = Queue.Queue()
-        props_queue.put(prop_com_votacao)
-        props_queue.put(prop_sem_votacao)
-        
-        votadas_queue = Queue.Queue()    
-        verificador = camara.VerificadorDeProposicoes(props_queue, votadas_queue, False)
-        verificador.verifica_se_tem_votacoes()
-
-        props_queue.join() # aguarda até que a fila seja toda processada
-        votadas = []        
-        while not votadas_queue.empty():
-            prop = votadas_queue.get()            
-            votadas.append(prop)
-            
-        self.assertEquals(len(votadas), 1)
-        self.assertEquals(votadas[0], prop_com_votacao)
-        
