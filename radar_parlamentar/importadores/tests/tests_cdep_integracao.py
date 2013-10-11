@@ -21,10 +21,9 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from importadores import camara
+from importadores.tests.mocks_cdep import mock_obter_proposicao,mock_listar_proposicoes, mock_obter_votacoes
 from modelagem import models
-import os
 import Queue
-import glob
 from mock import Mock
 import xml.etree.ElementTree as etree
 import urlparse
@@ -38,11 +37,6 @@ ANO = '1999'
 NOME = 'PL 1876/1999'
 
 VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
-MOCK_PATH = os.path.join(camara.RESOURCES_FOLDER,'mocks')
-MOCK_PROPOSICAO = glob.glob(os.path.join(MOCK_PATH,'proposicao_*'))
-MOCK_PROPOSICOES = glob.glob(os.path.join(MOCK_PATH,'proposicoes_*'))
-MOCK_VOTACOES = glob.glob(os.path.join(MOCK_PATH,'votacoes_*'))
-
 
 class CamaraTest(TestCase):
     """Testes do módulo camara"""
@@ -55,6 +49,9 @@ class CamaraTest(TestCase):
         importer = camara.ImportadorCamara(votadas)
         #dublando a camara
         camaraWS = camara.Camaraws()
+        camaraWS.listar_proposicoes = Mock(side_effect=mock_listar_proposicoes)
+        camaraWS.obter_proposicao = Mock(side_effect=mock_obter_proposicao)
+        camaraWS.obter_votacoes = Mock(side_effect=mock_obter_votacoes)
         importer.importar(camaraWS)
 
     @classmethod
@@ -174,5 +171,4 @@ class CamaraTest(TestCase):
         self.assertTrue('PL' in siglas)
         self.assertTrue('PEC' in siglas)
         self.assertTrue('MPV' in siglas)
-
 

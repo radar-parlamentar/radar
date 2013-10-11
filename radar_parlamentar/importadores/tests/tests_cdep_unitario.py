@@ -21,12 +21,12 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from importadores import camara
+from importadores.tests.mocks_cdep import mock_obter_proposicao,mock_listar_proposicoes, mock_obter_votacoes
 from modelagem import models
-import os
 import Queue
-import glob
 from mock import Mock
 import xml.etree.ElementTree as etree
+import os
 
 # constantes relativas ao código florestal
 ID = '17338'
@@ -36,10 +36,6 @@ ANO = '1999'
 NOME = 'PL 1876/1999'
 
 VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
-MOCK_PATH = os.path.join(camara.RESOURCES_FOLDER,'mocks')
-MOCK_PROPOSICAO = glob.glob(os.path.join(MOCK_PATH,'proposicao_*'))
-MOCK_PROPOSICOES = glob.glob(os.path.join(MOCK_PATH,'proposicoes_*'))
-MOCK_VOTACOES = glob.glob(os.path.join(MOCK_PATH,'votacoes_*'))
 
 class ProposicoesParserTest(TestCase):
 
@@ -140,27 +136,4 @@ class VerificadorDeProposicoesTest(TestCase):
             
         self.assertEquals(len(votadas), 1)
         self.assertEquals(votadas[0], prop_com_votacao)
-
-def verificar_xml(nome,lista_xmls):
-    """verifica se existe um arquivo com determinado nome, dentro de uma lista de arquivos"""
-    for xml in lista_xmls:
-        if nome == os.path.basename(xml):
-            with open(xml) as arquivo_xml:
-                return etree.fromstring(arquivo_xml.read())
-    raise ValueError
-
-def mock_obter_proposicao(id_prop):
-    """mock do método obter_proposicao de camaraWS. 
-        Recebe o id da proposição e retorna um xml"""
-    return verificar_xml('proposicao_'+str(id_prop),MOCK_PROPOSICAO)
-
-def mock_listar_proposicoes(sigla,ano):
-    """mock do método listar_proposicoes de camaraWS. 
-        Recebe a sigla e o ano da proposicao e retorna um xml"""
-    return verificar_xml('proposicoes_'+sigla+str(ano),MOCK_PROPOSICOES)
-
-def mock_obter_votacoes(sigla,num,ano):
-    """mock do método obter_votacoes de camaraWS. 
-        Recebe a sigla, o numero e o ano e retorna um xml"""
-    return verificar_xml('votacoes_'+sigla+str(num)+str(ano), MOCK_VOTACOES)
 
