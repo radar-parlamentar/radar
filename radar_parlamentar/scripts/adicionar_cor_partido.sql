@@ -1,3 +1,18 @@
+/*
+  Este Script refere-se ao commit de código: fb7510d9a7d83fad27e8214b1282891eecbe498c
+  Acrescentado a cor no objeto partido.
+  Atribuido cor preta (#000000) aos sem partido.
+  Criado teste unitario test_get_sem_partido.
+  Alteração do teste unitario test_partido.
+
+  O script adiciona as cores de cada partido no banco de dados
+
+  As últimas alterações foram feitas em 11/10/2013 nos arquivos:
+  radar_parlamentar/radar_parlamentar/modelagem/models.py
+  radar_parlamentar/radar_parlamentar/modelagem/test.py
+  
+ */
+
 alter table modelagem_partido add cor varchar(7);
 
 update modelagem_partido set cor = '#d7bf1f', numero = 51 where nome='PEN';
