@@ -23,10 +23,7 @@ from django.test import TestCase
 from importadores import camara
 from importadores.tests.mocks_cdep import mock_obter_proposicao,mock_listar_proposicoes, mock_obter_votacoes
 from modelagem import models
-import Queue
 from mock import Mock
-import xml.etree.ElementTree as etree
-import urlparse
 
 
 # constantes relativas ao código florestal
@@ -63,19 +60,16 @@ class CamaraTest(TestCase):
         self.camaraws = camara.Camaraws()
 
     def test_obter_proposicao(self):
-
         codigo_florestal_xml = self.camaraws.obter_proposicao(ID)
         nome = codigo_florestal_xml.find('nomeProposicao').text
         self.assertEquals(nome, NOME)
 
     def test_obter_votacoes(self):
-
         codigo_florestal_xml = self.camaraws.obter_votacoes(SIGLA, NUM, ANO)
         data_vot_encontrada = codigo_florestal_xml.find('Votacoes').find('Votacao').get('Data')
         self.assertEquals(data_vot_encontrada, '11/5/2011')
 
     def test_listar_proposicoes(self):
-
         pecs_2011_xml = self.camaraws.listar_proposicoes('PEC', '2011')
         pecs_elements = pecs_2011_xml.findall('proposicao')
         self.assertEquals(len(pecs_elements), 135)
@@ -83,7 +77,6 @@ class CamaraTest(TestCase):
         # http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=PEC&numero=&ano=2011&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=
 
     def test_prop_nao_existe(self):
-
         id_que_nao_existe = 'id_que_nao_existe'
         caught = False
         try:
@@ -94,7 +87,6 @@ class CamaraTest(TestCase):
         self.assertTrue(caught)
 
     def test_votacoes_nao_existe(self):
-
         sigla = 'PCC'
         num = '1500'
         ano = '1876'
@@ -119,12 +111,10 @@ class CamaraTest(TestCase):
 
 
     def test_casa_legislativa(self):
-
         camara = models.CasaLegislativa.objects.get(nome_curto='cdep')
         self.assertEquals(camara.nome, 'Câmara dos Deputados')
 
     def test_prop_cod_florestal(self):
-
         votadasParser = camara.ProposicoesParser(VOTADAS_FILE_PATH)
         votadas = votadasParser.parse()        
         importer = camara.ImportadorCamara(votadas)
@@ -138,7 +128,6 @@ class CamaraTest(TestCase):
         self.assertEquals(prop_cod_flor.data_apresentacao.year, data.year)
 
     def test_votacoes_cod_florestal(self):
-
         votacoes = models.Votacao.objects.filter(proposicao__id_prop=ID)
         self.assertEquals(len(votacoes), 5)
 
@@ -156,7 +145,6 @@ class CamaraTest(TestCase):
 #        self.assertEquals(vot.data.minute, data.minute)
 
     def test_votos_cod_florestal(self):
-
         votacao = models.Votacao.objects.filter(proposicao__id_prop=ID)[0]
         voto1 = [ v for v in votacao.votos() if v.legislatura.parlamentar.nome == 'Mara Gabrilli' ][0]
         voto2 = [ v for v in votacao.votos() if v.legislatura.parlamentar.nome == 'Carlos Roberto' ][0]
@@ -166,7 +154,6 @@ class CamaraTest(TestCase):
         self.assertEquals(voto2.legislatura.localidade, 'SP')
 
     def test_listar_siglas(self):
-
         siglas = self.camaraws.listar_siglas()
         self.assertTrue('PL' in siglas)
         self.assertTrue('PEC' in siglas)
