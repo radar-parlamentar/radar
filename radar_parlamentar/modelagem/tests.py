@@ -36,15 +36,13 @@ class ModelsTest(TestCase):
         from util_test import flush_db
         flush_db(cls)
 
-
     def test_partido(self):
         pt = models.Partido.from_nome('PT')
         self.assertEquals(pt.numero, 13)
-	self.assertEquals(pt.cor, '#FF0000')
+        self.assertEquals(pt.cor, '#FF0000')
         psdb = models.Partido.from_numero(45)
         self.assertEquals(psdb.nome, 'PSDB')
-	self.assertEquals(psdb.cor, '#0059AB')
-	
+        self.assertEquals(psdb.cor, '#0059AB')
         
     def test_partido_from_nome_None(self):
         nome = None
@@ -52,10 +50,10 @@ class ModelsTest(TestCase):
         self.assertIsNone(partido)
 
     def test_get_sem_partido(self):
-	partido = models.Partido.get_sem_partido()
-	self.assertEquals(partido.nome, 'Sem partido')
+        partido = models.Partido.get_sem_partido()
+        self.assertEquals(partido.nome, 'Sem partido')
         self.assertEquals(partido.numero, 0)
-	self.assertEquals(partido.cor,'#000000')
+        self.assertEquals(partido.cor,'#000000')
 
     def test_casa_legislativa_partidos(self):
         conv = models.CasaLegislativa.objects.get(nome_curto='conv')
@@ -121,25 +119,25 @@ class ModelsTest(TestCase):
     def test_deleta_casa(self):
 
        	partidoTest1 = models.Partido()
-    	partidoTest1.nome = 'PA'
-    	partidoTest1.numero = '01'
-	partidoTest1.cor = '#FFFAAA'
+        partidoTest1.nome = 'PA'
+        partidoTest1.numero = '01'
+        partidoTest1.cor = '#FFFAAA'
         partidoTest1.save()
         partidoTest2 = models.Partido()
-    	partidoTest2.nome = 'PB'
-    	partidoTest2.numero = '02'
-	partidoTest1.cor = '#FFFFFF'
+        partidoTest2.nome = 'PB'
+        partidoTest2.numero = '02'
+        partidoTest1.cor = '#FFFFFF'
         partidoTest2.save()
          
         parlamentarTest1 = models.Parlamentar()
-    	parlamentarTest1.id_parlamentar = ''
-    	parlamentarTest1.nome ='Pierre'
-    	parlamentarTest1.genero = ''
+        parlamentarTest1.id_parlamentar = ''
+        parlamentarTest1.nome ='Pierre'
+        parlamentarTest1.genero = ''
         parlamentarTest1.save()
         parlamentarTest2 = models.Parlamentar()
-    	parlamentarTest2.id_parlamentar = ''
-    	parlamentarTest2.nome = 'Napoleao'
-    	parlamentarTest2.genero = ''
+        parlamentarTest2.id_parlamentar = ''
+        parlamentarTest2.nome = 'Napoleao'
+        parlamentarTest2.genero = ''
         parlamentarTest2.save()
     	
         casa_legislativaTest1 = models.CasaLegislativa()

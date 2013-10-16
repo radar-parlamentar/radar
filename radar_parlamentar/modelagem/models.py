@@ -83,7 +83,7 @@ class Partido(models.Model):
     Atributos:
         nome -- string; ex: 'PT'
         numero -- int; ex: '13'
-	cor -- string; ex: #FFFFFF
+        cor -- string; ex: #FFFFFF
 
     Métodos da classe:
         from_nome(nome): retorna objeto do tipo Partido
@@ -128,7 +128,7 @@ class Partido(models.Model):
             partido = Partido()
             partido.nome = SEM_PARTIDO
             partido.numero = 0
-	    partido.cor = COR_PRETA
+            partido.cor = COR_PRETA
             partido.save()
         else:
             partido = lista[0]
@@ -136,7 +136,7 @@ class Partido(models.Model):
 
     @classmethod
     def _from_regex(cls, idx, key):
-        PARTIDO_REGEX = '([a-zA-Z]*) *([0-9]*) *(#+[0-f]*)'
+        PARTIDO_REGEX = '([a-zA-Z]*) *([0-9]{2}) *(#+[0-f]{6})'
         f = open(cls.LISTA_PARTIDOS)
         for line in f:
             res = re.search(PARTIDO_REGEX, line)
