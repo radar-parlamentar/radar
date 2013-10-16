@@ -22,10 +22,8 @@ from __future__ import unicode_literals
 from django.test import TestCase
 from importadores import camara
 from importadores.tests.mocks_cdep import mock_obter_proposicao,mock_listar_proposicoes, mock_obter_votacoes
-from modelagem import models
 import Queue
 from mock import Mock
-import xml.etree.ElementTree as etree
 import os
 
 # constantes relativas ao código florestal
@@ -82,6 +80,7 @@ class SeparadorDeListaTest(TestCase):
         self.assertEquals(listas[2], [7])
 
 class ProposicoesFinderTest(TestCase):
+    
     def setUp(self):
         #dublando a camaraws
         self.camaraws = camara.Camaraws()
