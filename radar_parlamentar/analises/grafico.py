@@ -90,7 +90,6 @@ class JsonAnaliseGenerator:
         ys = {}
         partidos = Set()
         scaler = GraphScaler()
-        cores = CorPartido()
         periodo = 0
         analises = analise.analises_periodo
         constante_escala_tamanho = 26 # quanto maior, maior serão as bolhas.
@@ -106,7 +105,7 @@ class JsonAnaliseGenerator:
         json_partidos = []
         for nome_partido in partidos:
             partido = models.Partido.objects.get(nome=nome_partido)
-            json_partido = {"nome": nome_partido,"numero":partido.numero,"cor":cores.cor(partido),"tamanho":tamanhos[nome_partido],"x":xs[nome_partido]\
+            json_partido = {"nome": nome_partido,"numero":partido.numero,"cor":partido.cor,"tamanho":tamanhos[nome_partido],"x":xs[nome_partido]\
             ,"y":ys[nome_partido]}
             json_partidos.append(json_partido)
         return json_partidos
@@ -137,32 +136,6 @@ class JsonAnaliseGenerator:
         return {"periodos":json_periodos,"partidos":json_partidos}
 
 
-class CorPartido:
-    """Associa uma cor a um partido"""
-    cores_partidos = {'PT'   :'#FF0000',
-                      'PSOL' :'#FFFF00',
-                      'PV'   :'#00CC00',
-                      'DEM'  :'#002664',
-                      'PSDB' :'#0059AB',
-                      'PSD'  :'#80c341',
-                      'PMDB' :'#CC0000',
-                      'PR'   :'#110274',
-                      'PSC'  :'#25b84a',
-                      'PSB'  :'#ff8d00',
-                      'PP'   :'#203487',
-                      'PCdoB':'#da251c',
-                      'PTB'  :'#1f1a17',
-                      'PPS'  :'#fea801',
-                      'PDT'  :'#6c85b1',
-                      'PRB'  :'#67a91e'}
-    @staticmethod
-    def cor(partido):
-        """Recebe um objeto tipo partido e retorna uma cor. Retorna #000000 (preto) se não estiver na lista."""
-        try:
-            return CorPartido.cores_partidos[partido.nome]
-        except KeyError:
-            return "#000000"
-
 class GeradorGrafico:
     """Gera imagem com o gráfico estático da análise utilizando matplotlib"""
 
@@ -191,27 +164,10 @@ class GeradorGrafico:
         fig = figure(1)
         fig.clf()
 
-        cores_partidos = {'PT'   :'#FF0000',
-                      'PSOL' :'#FFFF00',
-                      'PV'   :'#00CC00',
-                      'DEM'  :'#002664',
-                      'PSDB' :'#0059AB',
-                      'PSD'  :'#80c341',
-                      'PMDB' :'#CC0000',
-                      'PR'   :'#110274',
-                      'PSC'  :'#25b84a',
-                      'PSB'  :'#ff8d00',
-                      'PP'   :'#203487',
-                      'PCdoB':'#da251c',
-                      'PTB'  :'#1f1a17',
-                      'PPS'  :'#fea801',
-                      'PDT'  :'#6c85b1',
-                      'PRB'  :'#67a91e'}
-
         lista_cores_partidos = []
         for partido in self.analise.partidos:
-            if partido.nome in cores_partidos:
-                lista_cores_partidos.append(cores_partidos[partido.nome])
+            if partido.cor:
+                lista_cores_partidos.append(partido.cor)
             else:
                 lista_cores_partidos.append((1,1,1))
 

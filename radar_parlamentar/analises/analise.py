@@ -452,7 +452,7 @@ class AnalisadorTemporal:
         self.json += '],' # fecha lista de períodos
         self.json += '"partidos":['
         for partido in self.casa_legislativa.partidos():
-            dict_partido = {"nome":partido.nome ,"numero":partido.numero,"cor":grafico.CorPartido.cor(partido)}
+            dict_partido = {"nome":partido.nome ,"numero":partido.numero,"cor":partido.cor}
             dict_partido["t"] =  []
             dict_partido["r"] =  []
             dict_partido["x"] =  []
