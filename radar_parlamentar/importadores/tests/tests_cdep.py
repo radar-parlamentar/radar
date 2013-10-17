@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # coding=utf8
 
-# Copyright (C) 2012, Leonardo Leite, Diego Rabatone
+# Copyright (C) 2012, 2013, Leonardo Leite, Diego Rabatone, Eduardo Hideo
 #
 # This file is part of Radar Parlamentar.
 #
@@ -24,6 +24,7 @@ from importadores import camara
 from importadores.tests.mocks_cdep import mock_obter_proposicao,mock_listar_proposicoes, mock_obter_votacoes
 import Queue
 from mock import Mock
+from modelagem import models
 import os
 
 # constantes relativas ao código florestal
@@ -135,4 +136,72 @@ class VerificadorDeProposicoesTest(TestCase):
             
         self.assertEquals(len(votadas), 1)
         self.assertEquals(votadas[0], prop_com_votacao)
+        
+
+class CamaraTest(TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        # vamos importar apenas as votações das proposições em votadas_test.txt
+        votadasParser = camara.ProposicoesParser(VOTADAS_FILE_PATH)
+        votadas = votadasParser.parse()        
+        importer = camara.ImportadorCamara(votadas)
+        #dublando a camara
+        camaraWS = camara.Camaraws()
+        camaraWS.listar_proposicoes = Mock(side_effect=mock_listar_proposicoes)
+        camaraWS.obter_proposicao = Mock(side_effect=mock_obter_proposicao)
+        camaraWS.obter_votacoes = Mock(side_effect=mock_obter_votacoes)
+        importer.importar(camaraWS)
+
+    @classmethod
+    def tearDownClass(cls):
+        from util_test import flush_db
+        flush_db(cls)
+
+    def test_casa_legislativa(self):
+        camara = models.CasaLegislativa.objects.get(nome_curto='cdep')
+        self.assertEquals(camara.nome, 'Câmara dos Deputados')
+
+    def test_prop_cod_florestal(self):
+        votadasParser = camara.ProposicoesParser(VOTADAS_FILE_PATH)
+        votadas = votadasParser.parse()        
+        importer = camara.ImportadorCamara(votadas)
+        data = importer._converte_data('19/10/1999')
+
+        prop_cod_flor = models.Proposicao.objects.get(id_prop=ID)
+        self.assertEquals(prop_cod_flor.nome(), NOME)
+        self.assertEquals(prop_cod_flor.situacao, 'Tranformada no(a) Lei Ordinária 12651/2012')
+        self.assertEquals(prop_cod_flor.data_apresentacao.day, data.day)
+        self.assertEquals(prop_cod_flor.data_apresentacao.month, data.month)
+        self.assertEquals(prop_cod_flor.data_apresentacao.year, data.year)
+
+    def test_votacoes_cod_florestal(self):
+        votacoes = models.Votacao.objects.filter(proposicao__id_prop=ID)
+        self.assertEquals(len(votacoes), 5)
+
+        vot = votacoes[0]
+        self.assertTrue('REQUERIMENTO DE RETIRADA DE PAUTA' in vot.descricao)
+
+        importer = camara.ImportadorCamara(votacoes)
+        data = importer._converte_data('24/5/2011', '20:52')
+        vot = votacoes[1]
+        self.assertEquals(vot.data.day, data.day)
+        self.assertEquals(vot.data.month, data.month)
+        self.assertEquals(vot.data.year, data.year)
+        # vot.data está sem hora e minuto
+#         self.assertEquals(vot.data.hour, data.hour)
+#         self.assertEquals(vot.data.minute, data.minute)
+
+    def test_votos_cod_florestal(self):
+        votacao = models.Votacao.objects.filter(proposicao__id_prop=ID)[0]
+        voto1 = [ v for v in votacao.votos() if v.legislatura.parlamentar.nome == 'Mara Gabrilli' ][0]
+        voto2 = [ v for v in votacao.votos() if v.legislatura.parlamentar.nome == 'Carlos Roberto' ][0]
+        self.assertEquals(voto1.opcao, models.SIM)
+        self.assertEquals(voto2.opcao, models.NAO)
+        self.assertEquals(voto1.legislatura.partido.nome, 'PSDB')
+        self.assertEquals(voto2.legislatura.localidade, 'SP')
+
+
+
+
 
