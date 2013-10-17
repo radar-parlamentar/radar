@@ -20,7 +20,6 @@
 
 from __future__ import unicode_literals
 from django.test import TestCase
-from importadores import camara
 from importadores import convencao
 from modelagem import models
 import os

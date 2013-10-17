@@ -59,14 +59,17 @@ class ImportadorConvencao:
         girondinos = models.Partido()
         girondinos.nome = GIRONDINOS
         girondinos.numero = 27
+        girondinos.cor = '#008000'
         girondinos.save()
         jacobinos = models.Partido()
         jacobinos.nome = JACOBINOS
         jacobinos.numero = 42
+        jacobinos.cor = '#FF0000'
         jacobinos.save()
         monarquistas = models.Partido()
         monarquistas.nome = MONARQUISTAS
         monarquistas.numero = 79
+        monarquistas.cor = '#800080'
         monarquistas.save()
         self.partidos = {girondinos, jacobinos, monarquistas}
 
