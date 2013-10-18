@@ -73,15 +73,34 @@ class Temas():
 
 class Filtro_Proposicao():
 
-    def filtra_proposicao(*args):
-    	proposicao = models.Proposicao.objects.all()
-	a = 0
-	lista_siglas = []
-	lista_palavras = []
-	lista_siglas = args[1]
-	lista_palavras = args[2]
-	lista_proposicao = []	
+    def imprimeDadosProposicao(proposicao):
+        
 
+    def valida_proposicao(lista_proposicoes):
+        proposicoes_validas = []
+        for proposicao in lista_proposicoes:
+            if isOK(proposicao):
+                proposicoes_validas.append(proposicao)
+        return proposicoes_validas
+
+    def busca_proposicao(lista_proposicoes, lista_palavras_chave):
+        lista_resultado_proposicoes = []
+        for proposicao in lista_proposicoes:
+            for palavra_chave in lista_palavras_chave:
+                #procura uma substring dentro de uma string
+                if(re.search(palavra_chave, proposicao.descricao)!= None):
+                    lista_resultado_proposicoes.append(proposicao)
+                    break
+        return lista_resultado_proposicoes
+
+    def filtra_proposicao(lista_proposicoes, lista_palavras):
+    	proposicao = models.Proposicao.objects.all()
+        lista_proposicoes_validas = valida_proposicao(lista_proposicoes)
+        resultado = busca_proposicao(lista_proposicoes_validas, lista_palavras)
+        if resultado == None:
+            print 'Não foi encontrado resultado!' 
+        else:
+            print 'Descricao:' + resultado[].descricao + '\n'
 	for r in lista_siglas:
 		sigla = r
 		for p in proposicao:
@@ -89,9 +108,10 @@ class Filtro_Proposicao():
 				for e in lista_palavras:
 					
 					palavra = e
-					if(re.search(palavra,p.descricao)!= None):
+					if(busca_proposicao()):
 						print 'Descricao:' + p.descricao + '\n'
     						print 'Ementa:' + p.ementa + '\n'
+						print 'Indexacao' + p.indexao
 						lista_proposicao.append(p.descricao)
 						lista_proposicao.append(p.ementa)
 
