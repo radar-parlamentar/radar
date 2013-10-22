@@ -40,10 +40,10 @@ end
 #    debug             true
 #    collectstatic     'build_static --noinput'
 #    database do
-#      database 'radarparlamentar'
-#      adapter  'mysql'
-#      username 'radarparlamentar'
-#      password '!!!'
+#      database  'radarparlamentar'
+#      adapter   'mysql'
+#      username  'radarparlamentar'
+#      password  node['radar']['database_user_password']
 #    end
 #  end
 #
