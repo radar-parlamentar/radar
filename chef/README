@@ -1,0 +1,8 @@
+
+Em $HOME copie todos os arquivos desta pasta.
+Execute install_chef.sh
+Edite chef-solo/node.json para configurar as senhas.
+Edite chef-solo/solo.rb para configurar adequadamente os atributos 
+ * cookbook_path (deve apontar para a pasta cookbooks) e 
+ * json_attribs (deve apontar para node.json).
+Execute "sudo chef-solo -c chef-solo/solo.rb"
