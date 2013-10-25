@@ -73,50 +73,51 @@ class Temas():
 
 class Filtro_Proposicao():
 
-    def imprimeDadosProposicao(proposicao):
-        
+    '''def imprimeDadosDeProposicoes(lista_proposicoes):
+        proposicao = None
+        for proposicao in lista_proposicoes
+            print 'Descricao:' + proposicao.descricao + '\n'
+            print 'Ementa:' + proposicao.ementa + '\n'''
 
-    def valida_proposicao(lista_proposicoes):
+    def valida_proposicoes(self, lista_proposicoes):
         proposicoes_validas = []
         for proposicao in lista_proposicoes:
-            if isOK(proposicao):
+            if proposicao != None:
                 proposicoes_validas.append(proposicao)
         return proposicoes_validas
 
-    def busca_proposicao(lista_proposicoes, lista_palavras_chave):
-        lista_resultado_proposicoes = []
-        for proposicao in lista_proposicoes:
-            for palavra_chave in lista_palavras_chave:
-                #procura uma substring dentro de uma string
-                if(re.search(palavra_chave, proposicao.descricao)!= None):
-                    lista_resultado_proposicoes.append(proposicao)
-                    break
-        return lista_resultado_proposicoes
+    def palavra_existe_em_proposicao(self, proposicao, lista_palavras_chave):
+        for palavra_chave in lista_palavras_chave:
+            #procura uma substring dentro de uma string
+            if(re.search(palavra_chave.upper(), proposicao.descricao.upper())!= None):
+                return True		                    
+        return False
 
-    def filtra_proposicao(lista_proposicoes, lista_palavras):
-    	proposicao = models.Proposicao.objects.all()
+    def verifica_proposicoes_no_banco(self, lista_proposicoes):
+        proposicoes_validas = self.valida_proposicoes(lista_proposicoes)
+        resultado = []
+        proposicoes_persistidas = models.Proposicao.objects.all()
+        for proposicao in proposicoes_validas:
+            if proposicao in proposicoes_persistidas:
+                resultado.append(proposicao)
+        return resultado
+
+    def filtra_proposicao(self, lista_proposicoes, lista_palavras):
+        resultado = []
+        proposicoes_validas = verifica_proposicoes_no_banco(lista_proposicoes)
+        for proposicao in proposicoes_validas:
+            if(palavra_existe_em_proposicao(proposicao, lista_palavras)):
+                resultado.append(proposicao)
+        imprimeDadosDeProposicoes(resultado)			
+        return resultado
+
+    	'''proposicao = models.Proposicao.objects.filter(descricao = ).filter()
         lista_proposicoes_validas = valida_proposicao(lista_proposicoes)
-        resultado = busca_proposicao(lista_proposicoes_validas, lista_palavras)
+        resultado = []
+        for proposicao in lista_proposicoes_validas:
+            if(busca_palavras(proposicao, lista_palavras))
+                resultado.append(proposicao)
         if resultado == None:
             print 'Não foi encontrado resultado!' 
         else:
-            print 'Descricao:' + resultado[].descricao + '\n'
-	for r in lista_siglas:
-		sigla = r
-		for p in proposicao:
-			if(sigla == p.sigla):
-				for e in lista_palavras:
-					
-					palavra = e
-					if(busca_proposicao()):
-						print 'Descricao:' + p.descricao + '\n'
-    						print 'Ementa:' + p.ementa + '\n'
-						print 'Indexacao' + p.indexao
-						lista_proposicao.append(p.descricao)
-						lista_proposicao.append(p.ementa)
-
-					else:
-						print 'palavra: ' + palavra + ' nao encontrada na descricao: ' + p.descricao + '\n' 
-
-	
-	return lista_proposicao
+            imprimeDadosProposicao(resultado)'''
