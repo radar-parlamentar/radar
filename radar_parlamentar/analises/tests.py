@@ -123,8 +123,60 @@ class AnaliseTest(TestCase):
         self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], -0.41347063, 4)        
 
 class Filtro_ProposicaoTest(TestCase):
-	
-    def test_filtro_proposicao(self):
+    
+    def test_valida_proposicoes(self):
+        proposicao_valida = models.Proposicao()
+        proposicao_invalida = None
+        lista_proposicoes = []
+        lista_proposicoes.append(proposicao_valida)
+        lista_proposicoes.append(proposicao_invalida)
+        filtro_proposicao = filtro.Filtro_Proposicao()
+        proposicoes_validas = filtro_proposicao.valida_proposicoes(lista_proposicoes)
+        self.assertEquals(1, len(proposicoes_validas))
+        self.assertEquals(proposicao_valida, proposicoes_validas[0])
+
+    def test_valida_proposicoes_invalidas(self):
+        proposicao_invalida = None
+        lista_proposicoes = []
+        filtro_proposicao = filtro.Filtro_Proposicao()
+        proposicoes_validas = filtro_proposicao.valida_proposicoes(lista_proposicoes)
+        self.assertEquals(0, len(proposicoes_validas))
+
+    def test_palavra_existe_em_proposicao(self):
+        proposicao = models.Proposicao()
+        proposicao.descricao = 'Discussao da legalizacao do aborto no Brasil'
+        palavrasChave = ['partido', 'politico', 'legalizacao do aborto']
+        filtro_proposicao = filtro.Filtro_Proposicao()        
+        self.assertTrue(filtro_proposicao.palavra_existe_em_proposicao(proposicao, palavrasChave))
+
+    def test_palavra_inexistente_em_proposicao(self):
+        proposicao = models.Proposicao()
+        proposicao.descricao = 'Discussao da legalizacao do aborto'
+        palavrasChave = ['floresta', 'casa', 'circo']
+        filtro_proposicao = filtro.Filtro_Proposicao()        
+        self.assertFalse(filtro_proposicao.palavra_existe_em_proposicao(proposicao, palavrasChave))
+
+    def test_verifica_proposicoes_no_banco_invalidas(self):
+        lista_proposicoes = []
+        proposicao1 = models.Proposicao()
+        proposicao1.descricao = 'Discussao da legalizacao do aborto no Brasil'
+        proposicao2 = models.Proposicao()
+        proposicao2.descricao = 'Estudo de caso para viabilidade do VLP'
+        lista_proposicoes.append(proposicao1)
+        lista_proposicoes.append(proposicao2)
+        filtro_proposicao = filtro.Filtro_Proposicao()
+        resultado = filtro_proposicao.verifica_proposicoes_no_banco(lista_proposicoes)
+	self.assertEquals(0, len(resultado))
+
+    def test_verifica_proposicoes_no_banco_validas(self):
+        lista_proposicoes = []
+        proposicao = models.Proposicao.objects.filter(id=1)
+        lista_proposicoes.append(proposicao)
+        filtro_proposicao = filtro.Filtro_Proposicao()
+        resultado = filtro_proposicao.verifica_proposicoes_no_banco(lista_proposicoes)
+	self.assertEquals(1, len(resultado))
+
+    '''def test_filtro_proposicao(self):
 	lista_teste = []
 	lista_teste2 = []
 	obj_filtro = filtro.Filtro_Proposicao() 
@@ -161,7 +213,7 @@ class Filtro_ProposicaoTest(TestCase):
 	palavra_proposicao1.save()
 	
 	self.assertFalse(palavra_proposicao.descricao in obj_filtro.filtra_proposicao([sigla],['musica']))
-	self.assertFalse(palavra_proposicao1.descricao in obj_filtro1.filtra_proposicao([sigla1],['futebol']))
+	self.assertFalse(palavra_proposicao1.descricao in obj_filtro1.filtra_proposicao([sigla1],['futebol']))'''
 		
 
 
