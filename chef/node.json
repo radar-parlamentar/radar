@@ -1,0 +1,13 @@
+{
+  "mysql": {
+    "server_root_password": "123mudar",
+    "server_repl_password": "123mudar",
+    "server_debian_password": "123mudar"
+  },
+  "radar" : {
+    "database_user_password" : "123mudar"
+  },
+  "run_list" : [
+    "recipe[radar]"
+  ]
+}

@@ -86,7 +86,7 @@ radarpca <- function(rcobject, minvotes = 20, lop = 0.025, scale = FALSE , cente
   #          para todos terem variância igual a 1.
   # center -- Define se antes da PCA vai centralizar as votações
   #           subtraindo-se a média.
-  # Obs.: os argumentos minvotes possuem análogos no wnominate.
+  # Obs.: os argumentos minvotes e lop possuem análogos no wnominate.
   t.inicio <- proc.time()
   resultado <- list()
   resultado$minvotes <- minvotes

@@ -406,10 +406,11 @@ class AnalisadorTemporal:
         
         # determina área máxima:
         maior_soma_dos_tamanhos_dos_partidos = max([ analise.soma_dos_tamanhos_dos_partidos for analise in self.analises_periodo ])
+        logger.info("maior soma dos tamanhos dos partidos = %f",maior_soma_dos_tamanhos_dos_partidos)
         self.area_total = maior_soma_dos_tamanhos_dos_partidos
 
 
-    def _cria_json(self,constante_escala_tamanho=45):
+    def _cria_json(self,constante_escala_tamanho=50):
         """Uma vez que a análise temporal está feita, este método cria o json. """
 
         self.json = '{"geral":{"CasaLegislativa":{'
@@ -419,10 +420,10 @@ class AnalisadorTemporal:
         self.json += '"local":"' + self.casa_legislativa.local + '",'
         self.json += '"atualizacao":"' + unicode(self.casa_legislativa.atualizacao) + '"'
         self.json += "}," # fecha casa legislativa
-        escala = constante_escala_tamanho**2 / max(1,self.area_total)
-        escala_20px = 20**2 * (1/max(1,escala)) # numero de parlamentares representado
+        escala = constante_escala_tamanho**2. / max(1,self.area_total)
+        escala_20px = 20**2. * (1./max(1,escala)) # numero de parlamentares representado
                                                 # por um circulo de raio 20 pixels.
-        self.json += '"escala_tamanho":' + str(round(escala_20px,1)) + ','
+        self.json += '"escala_tamanho":' + str(round(escala_20px,5)) + ','
         self.json += '"filtro_partidos":null,'
         self.json += '"filtro_votacoes":null},' # fecha bloco "geral"
         self.json += '"periodos":['
@@ -432,11 +433,17 @@ class AnalisadorTemporal:
             self.json += '"nome":"' + ap.periodo.string + '",'
             var_explicada = round((ap.pca_partido.eigen[0] + ap.pca_partido.eigen[1])/ap.pca_partido.eigen.sum() * 100,1)
             self.json += '"var_explicada":' + str(var_explicada) + ","
-            self.json += '"cp1":{"theta":' + str(round(ap.theta,0)%180) + ','
+            try:
+                self.json += '"cp1":{"theta":' + str(round(ap.theta,0)%180) + ','
+            except AttributeError:
+                self.json += '"cp1":{"theta":0,'           
             var_explicada = round(ap.pca_partido.eigen[0]/ap.pca_partido.eigen.sum() * 100,1)
             self.json += '"var_explicada":' + str(var_explicada) + ","
             self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[0,:]**2]) + "}," # fecha cp1
-            self.json += '"cp2":{"theta":' + str(round(ap.theta,0)%180 + 90) + ','
+            try:
+                self.json += '"cp2":{"theta":' + str(round(ap.theta,0)%180 + 90) + ','
+            except AttributeError:
+                self.json += '"cp2":{"theta":0,'
             var_explicada = str(round(ap.pca_partido.eigen[1]/ap.pca_partido.eigen.sum() * 100,1))
             self.json += '"var_explicada":' + str(var_explicada) + ","
             self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[1,:]**2]) + "}," # fecha cp2
@@ -458,7 +465,7 @@ class AnalisadorTemporal:
             dict_partido["x"] =  []
             dict_partido["y"] =  []
             dict_partido["p"] =  []
-            for ap in self.analisadores_periodo:
+            for ap in self.analises_periodo:
                 scaler = grafico.GraphScaler()
                 mapa = scaler.scale(ap.coordenadas)
                 dict_partido["x"].append(round(mapa[partido.nome][0],2))
