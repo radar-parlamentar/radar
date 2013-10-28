@@ -33,16 +33,21 @@ Plot = (function ($) {
       return name.replace(/\s+/g,'_');
     }
     
-    function x(d) { return d.x; } // income (per capta) from original json
-    function y(d) { return d.y; } // life expectancy from original json
-    function tamanho(d) { return 1; d.tamanho; } // population from original json
-    function cor(d) { return d.cor; } // based on region from original json
-    function nome(d) { return space_to_underline(d.nome); } // name from original json
-    function numero(d) { return d.numero; } // new parameter to json
+    function x(d) { return d.x; } 
+    function y(d) { return d.y; } 
+    function tamanho(d) { return 1; } // era d.tamanho; // tamanho da bancada
+    function raio(d) { return d.r; }
+    function presenca(d) { return d.p; }
+    function cor(d) { return d.cor; } 
+    function nome(d) { return space_to_underline(d.nome); } 
+    function numero(d) { return d.numero; } 
 
-    //Create Gradient Fill for each circle
+    // Creates a "radialGradient"* for each circle
+    // and returns the id of the just created gradient.
+    // * the "Gradient Fill" is a SVG element
     function gradiente(svg,id,color) {
-        if (color === "#000000") color = "#1F77B4";
+        DEFAULT_COLOR = "#1F77B4";
+        if (color === "#000000") color = DEFAULT_COLOR;
         var identificador = "gradient-" + id;
         var gradient = svg.append("svg:defs")
                 .append("svg:radialGradient")
@@ -73,8 +78,7 @@ Plot = (function ($) {
     // Various scales. These domains make assumptions of data, naturally.
     var xScale = d3.scale.linear().domain([0, 100]).range([0, width]),
         yScale = d3.scale.linear().domain([0, 100]).range([height, 0]),
-        radiusScale = d3.scale.sqrt().domain([0, 9]).range([0, 40]),
-        colorScale = d3.scale.category10();
+        radiusScale = d3.scale.linear().domain([0, 1]).range([0, 20]);
 
     var periodo_min = null,
         periodo_max = null,
@@ -86,18 +90,18 @@ Plot = (function ($) {
         list_partidos = [],
         list_periodos = [];
 
-    // Function that draw the chart
+    // Function that draws the chart
     function _plot_data(dados) {
         // Inicialmente remove o spinner de loading
         $("#loading").remove();
 
-        // Create the SVG container and set the origin.
+        // Creates the SVG container and sets the origin.
         var svg_base = d3.select("#animacao").append("svg")
             .attr("width", width + margin.left + margin.right + 200)
             .attr("height", height + margin.top + margin.bottom)
             .style("position", "relative");
 
-        var date_base = svg_base.append("g")
+        var grupo_controle_periodos = svg_base.append("g")
             .attr("transform", "translate(" + (width + margin.left + 100) + "," + (margin.top + 34) + ")");
 
         var svg = svg_base.append("g")
@@ -142,14 +146,14 @@ Plot = (function ($) {
         first_total = periodos[periodo_min].quantidade_votacoes;
 
         // Add the year label; the value is set on transition.
-        var label = date_base.append("text")
+        var label = grupo_controle_periodos.append("text")
             .attr("class", "year label")
             .attr("text-anchor", "end")
             .attr("y", '0')
             .attr("x", '0')
             .text(first_label);
 
-        var total_label = date_base.append("text")
+        var total_label = grupo_controle_periodos.append("text")
             .attr("class", "total_label")
             .attr("text-anchor", "end")
             .attr("y", "16")
@@ -159,14 +163,14 @@ Plot = (function ($) {
         // Add an overlay for the year label.
         var l_box = label.node().getBBox();
 
-        var previous_period = date_base.append("text")
+        var previous_period = grupo_controle_periodos.append("text")
             .attr("id", "previous_period")
             .attr("class", "previous")
             .attr("y", '-6')
             .attr("x", -(l_box.width + 20) )
             .text("<");
 
-        var next_period = date_base.append("text")
+        var next_period = grupo_controle_periodos.append("text")
             .attr("id", "next_period")
             .attr("class", "next")
             .attr("y", '-6')
@@ -197,7 +201,7 @@ Plot = (function ($) {
         parties.append("circle")
             .attr("class", "partie_circle")
             .attr("id", function(d) { return "circle-" + nome(d); })
-            .attr("r", function(d) { return radiusScale(tamanho(d)); })
+            .attr("r", function(d) { return radiusScale(tamanho(d)); }) // TODO trocar pra raio(d)
             .style("fill", function(d) { return gradiente(svg, nome(d), cor(d)); });
 
         // Add a title.
