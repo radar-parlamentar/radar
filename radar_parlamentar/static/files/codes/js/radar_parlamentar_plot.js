@@ -1,6 +1,6 @@
 /*##############################################################################
-#       Copyright (C) 2013  Diego Rabatone Oliveira, Leonardo Leite            #
-#                      <diraol(at)diraol(dot)eng(dot)br>                       #
+#       Copyright (C) 2013  Diego Rabatone Oliveira, Leonardo Leite,           #
+#                           Saulo Trento                                       #
 #                                                                              #
 #    This program is free software: you can redistribute it and/or modify      #
 # it under the terms of the GNU Affero General Public License as published by  #
@@ -18,12 +18,8 @@
 
 Plot = (function ($) {
 
-    function initialize(dataPath){
-        _load(dataPath);
-    }
-
     // Function to load the data and draw the chart
-    function _load(nome_curto_casa_legislativa) {
+    function initialize(nome_curto_casa_legislativa) {
         d3.json("/analises/analise/" + nome_curto_casa_legislativa + "/json_pca", _plot_data);
         //para testes com arquivo hardcoded
         //d3.json("/static/files/partidos.json", _plot_data);
@@ -72,8 +68,12 @@ Plot = (function ($) {
 
     // Chart dimensions.
     var margin = {top: 20, right: 20, bottom: 20, left: 20},
-        width = 670 - margin.right - margin.left;
-        height = 670 - margin.top - margin.bottom;
+        width_graph = 670,
+        height_graph = 670,
+        width = width_graph - margin.right - margin.left,
+        height = height_graph - margin.top - margin.bottom,
+        space_between_graph_and_control = 60,
+        height_of_control = 80;
 
     // Various scales. These domains make assumptions of data, naturally.
     var xScale = d3.scale.linear().domain([0, 100]).range([0, width]),
@@ -98,23 +98,25 @@ Plot = (function ($) {
         // Creates the SVG container and sets the origin.
         var svg_base = d3.select("#animacao").append("svg")
             .attr("width", width + margin.left + margin.right + 200)
-            .attr("height", height + margin.top + margin.bottom)
+            .attr("height", height + margin.top + margin.bottom + space_between_graph_and_control)
             .style("position", "relative");
 
         var grupo_controle_periodos = svg_base.append("g")
-            .attr("transform", "translate(" + (width + margin.left + 100) + "," + (margin.top + 34) + ")");
+	    .attr("width", width)
+	    .attr("height", height_of_control)
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+//            .attr("transform", "translate(" + (width + margin.left + 100) + "," + (margin.top + 34) + ")");
 
-        var svg = svg_base.append("g")
+        var grupo_grafico = svg_base.append("g")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .attr("transform", "translate(" + margin.left + "," + (margin.top + space_between_graph_and_control ) + ")");
 
         //Adicionando o fundo do radar
-        var fundo = svg.append("g")
-            .attr("class","radar")
+        var fundo = grupo_grafico.append("g")
             .attr("transform","translate(" + width/2 + "," + height/2 + ")");
 
-        raio_fundo = (width > height) ? height/2 : width/2;
+        raio_fundo = Math.min(width,height)/2;
 
         fundo.append("circle")
             .attr("class", "radar_background")
@@ -139,26 +141,25 @@ Plot = (function ($) {
 
         for (item in chaves_periodos) { lista_periodos.push( parseInt( chaves_periodos[item] ) ); };
 
-        periodo_min = d3.min(lista_periodos);
-        periodo_max = d3.max(lista_periodos);
+        [periodo_min, periodo_max] = d3.extent(lista_periodos);
 
-        first_label = periodos[periodo_min].nome;
-        first_total = periodos[periodo_min].quantidade_votacoes;
+        nome_periodo = periodos[periodo_min].nome;
+        quantidade_votacoes_do_periodo = periodos[periodo_min].quantidade_votacoes;
 
-        // Add the year label; the value is set on transition.
+        // Add period label
         var label = grupo_controle_periodos.append("text")
             .attr("class", "year label")
-            .attr("text-anchor", "end")
-            .attr("y", '0')
-            .attr("x", '0')
-            .text(first_label);
+            .attr("text-anchor", "middle")
+            .attr("y", 30 )
+            .attr("x", width/2)
+            .text(nome_periodo);
 
         var total_label = grupo_controle_periodos.append("text")
             .attr("class", "total_label")
-            .attr("text-anchor", "end")
-            .attr("y", "16")
-            .attr("x", '0')
-            .text("Votações analisadas no período: " + first_total + " votações")
+            .attr("text-anchor", "middle")
+            .attr("y", "48")
+            .attr("x", width/2);
+//            .text("Votações analisadas no período: " + quantidade_votacoes_do_periodo + " votações");
 
         // Add an overlay for the year label.
         var l_box = label.node().getBBox();
@@ -166,15 +167,17 @@ Plot = (function ($) {
         var previous_period = grupo_controle_periodos.append("text")
             .attr("id", "previous_period")
             .attr("class", "previous")
-            .attr("y", '-6')
-            .attr("x", -(l_box.width + 20) )
+            .attr("text-anchor", "middle")
+            .attr("y", 20)
+            .attr("x", 10)
             .text("<");
 
         var next_period = grupo_controle_periodos.append("text")
             .attr("id", "next_period")
             .attr("class", "next")
-            .attr("y", '-6')
-            .attr("x", '0' )
+            .attr("text-anchor", "middle")
+            .attr("y", 20)
+            .attr("x", width-10 )
             .text(">");
         
         // adicionando controladores de movimentação de período 
@@ -185,7 +188,7 @@ Plot = (function ($) {
         var bisect = d3.bisector(function(d) { return d[0]; });
 
         // Add a partie. Initialize the date at 1800, and set the colors.
-        var main = svg.append("g")
+        var main = grupo_grafico.append("g")
             .attr("id","parties")
 
         var dados = interpolateData(1)
@@ -202,7 +205,7 @@ Plot = (function ($) {
             .attr("class", "partie_circle")
             .attr("id", function(d) { return "circle-" + nome(d); })
             .attr("r", function(d) { return radiusScale(tamanho(d)); }) // TODO trocar pra raio(d)
-            .style("fill", function(d) { return gradiente(svg, nome(d), cor(d)); });
+            .style("fill", function(d) { return gradiente(grupo_grafico, nome(d), cor(d)); });
 
         // Add a title.
         parties.append("title")
@@ -232,7 +235,7 @@ Plot = (function ($) {
             periodo_para = periodo_max;
 
             // Começa a transição inicial ao entrar na página
-            svg.transition()
+            grupo_grafico.transition()
                 .duration(10000)
                 .ease("linear")
                 .tween("year", tweenYear)
@@ -249,7 +252,7 @@ Plot = (function ($) {
                 .on("click", move_next_period);
 
             // Cancel the current transition, if any.
-            svg.transition().duration(0);
+            grupo_grafico.transition().duration(0);
             
             // Função que gera o movimento para o próximo período
             function move_next_period() {
@@ -260,7 +263,7 @@ Plot = (function ($) {
                         periodo_para = periodo_max
                     }
                     tweenYear();
-                    svg.transition()
+                    grupo_grafico.transition()
                         .duration(1000)
                         .ease("linear")
                         .tween("year", tweenYear)
@@ -289,7 +292,7 @@ Plot = (function ($) {
                 .on("click", move_previous);
 
             // Cancel the current transition, if any.
-            svg.transition().duration(0);
+            grupo_grafico.transition().duration(0);
 
             function move_previous() {
                 if (periodo_atual > periodo_min) {
@@ -299,7 +302,7 @@ Plot = (function ($) {
                         periodo_para = periodo_min;
                     }
                     tweenYear();
-                    svg.transition()
+                    grupo_grafico.transition()
                         .duration(1000)
                         .ease("linear")
                         .tween("year", tweenYear)
@@ -319,7 +322,7 @@ Plot = (function ($) {
         }
         
         function sortAll() {
-            var partidos = svg.selectAll(".partie")
+            var partidos = grupo_grafico.selectAll(".partie")
             partidos.sort(order);
         }
 
@@ -337,7 +340,7 @@ Plot = (function ($) {
             var dados = interpolateData(period)
                 .filter(function(d){ return tamanho(d);});
 
-            var main = svg.select("#parties");
+            var main = grupo_grafico.select("#parties");
 
             var parties = main.selectAll(".partie")
                 .data(dados)
@@ -353,7 +356,7 @@ Plot = (function ($) {
                 .attr("class", "partie_circle")
                 .attr("id", function(d) { return "circle-" + nome(d); })
                 .attr("r", function(d) { return radiusScale(tamanho(d)); })
-                .style("fill", function(d) { return gradiente(svg, nome(d), cor(d)); });
+                .style("fill", function(d) { return gradiente(grupo_grafico, nome(d), cor(d)); });
 
             // Add a title.
             partie.append("title")
