@@ -260,7 +260,6 @@ Plot = (function ($) {
                     if (periodo_para > periodo_max){
                         periodo_para = periodo_max
                     }
-                    tweenYear();
                     grupo_grafico.transition()
                         .duration(1000)
                         .ease("linear")
@@ -296,7 +295,6 @@ Plot = (function ($) {
                 if (periodo_atual > periodo_min) {
                     periodo_de = periodo_atual;
                     periodo_para = Math.floor(periodo_atual - 1);
-                    tweenYear();
                     grupo_grafico.transition()
                         .duration(1000)
                         .ease("linear")
