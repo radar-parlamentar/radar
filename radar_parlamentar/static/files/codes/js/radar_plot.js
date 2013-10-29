@@ -171,15 +171,15 @@ Plot = (function ($) {
         var grupo_main = grupo_grafico.append("g")
             .attr("id","parties")
 
-        var parties = grupo_main.selectAll(".partie") // TODO partie deveria ser party
+        var parties = grupo_main.selectAll(".party") 
             .data(partidos_no_periodo)
         .enter().append("g")
-            .attr("class","partie")
+            .attr("class","party")
             .attr("id", function(d){return "group-"+nome(d);})
             .attr("transform", function(d) { return "translate(" + xScale(x(d)) +"," +  yScale(y(d)) + ")";});
 
         parties.append("circle")
-            .attr("class", "partie_circle")
+            .attr("class", "party_circle")
             .attr("id", function(d) { return "circle-" + nome(d); })
             .attr("r", function(d) { return raio(d); }) 
             .style("fill", function(d) { return gradiente(grupo_grafico, nome(d), cor(d)); });
@@ -295,7 +295,7 @@ Plot = (function ($) {
         }
         
         function sortAll() {
-            var partidos = grupo_grafico.selectAll(".partie")
+            var partidos = grupo_grafico.selectAll(".party")
             partidos.sort(order);
         }
 
@@ -316,27 +316,27 @@ Plot = (function ($) {
 
             var main = grupo_grafico.select("#parties");
 
-            var parties = main.selectAll(".partie")
+            var parties = main.selectAll(".party")
                 .data(dados)
                 .attr("transform", function(d) { return "translate(" + xScale(x(d)) +"," +  yScale(y(d)) + ")";});
 
-            var partie = parties.enter()
+            var party = parties.enter()
                 .append("g")
-                .attr("class","partie")
+                .attr("class","party")
                 .attr("id", function(d){return "group-"+nome(d);})
                 .attr("transform", function(d) { return "translate(" + xScale(x(d)) +"," +  yScale(y(d)) + ")";});
               
-            partie.append("circle")
-                .attr("class", "partie_circle")
+            party.append("circle")
+                .attr("class", "party_circle")
                 .attr("id", function(d) { return "circle-" + nome(d); })
                 .attr("r", function(d) { return radiusScale(tamanho(d)); })
                 .style("fill", function(d) { return gradiente(grupo_grafico, nome(d), cor(d)); });
 
             // Add a title.
-            partie.append("title")
+            party.append("title")
                 .text(function(d) { return nome(d); });
 
-            partie.append("text")
+            party.append("text")
                 .attr("dx", "-8")
                 .attr("dy", "3")
                 .text(function(d){ return numero(d);});
