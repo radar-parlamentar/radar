@@ -82,13 +82,13 @@ Plot = (function ($) {
     var xScale = d3.scale.linear().domain([-100, 100]).range([0, width]),
         yScale = d3.scale.linear().domain([-100, 100]).range([height, 0]);
 
-    var periodo_min = null,
-        periodo_max = null,
-        periodo_de = 1,
-        periodo_para = null,
-        periodo_atual = 1,
-        partidos = null,
-        periodos = null;
+    var periodo_min,
+        periodo_max,
+        periodo_de,
+        periodo_para,
+        periodo_atual,
+        partidos,
+        periodos;
 
     // Function that draws the chart
     function plot_data(dados) {
@@ -118,7 +118,9 @@ Plot = (function ($) {
         periodos = dados.periodos;
         periodo_min = 0;
         periodo_max = periodos.length-1;
-        periodo_atual = periodo_max;
+        periodo_atual = periodo_min;
+        periodo_para = periodo_atual;
+        periodo_de = periodo_atual;
 
         var nome_periodo = periodos[periodo_atual].nome,
             nvotacoes = periodos[periodo_atual].nvotacoes;
@@ -137,8 +139,7 @@ Plot = (function ($) {
             .attr("x", width/2)
             .text("Votações analisadas no período: " + nvotacoes + " votações");
 
-        // TODO rename to "go_to_previous"
-        var previous_period = grupo_controle_periodos.append("text")
+        var go_to_previous = grupo_controle_periodos.append("text")
             .attr("id", "previous_period")
             .attr("class", "previous")
             .attr("text-anchor", "middle")
@@ -146,8 +147,7 @@ Plot = (function ($) {
             .attr("x", 10)
             .text("<");
 
-        // TODO rename to "go_to_next"
-        var next_period = grupo_controle_periodos.append("text")
+        var go_to_next = grupo_controle_periodos.append("text")
             .attr("id", "next_period")
             .attr("class", "next")
             .attr("text-anchor", "middle")
@@ -158,30 +158,28 @@ Plot = (function ($) {
         // adicionando controladores de movimentação de período 
 //         TODO
 //        interactPrevious();
-//        interactNext();
+        configure_go_to_next();
 
         // bisector searches for a value in a sorted array.
         var bisect = d3.bisector(function(d) { return d[0]; });
 
-        var partidos_no_periodo = get_partidos_no_periodo(periodo_atual)
+        var partidos_no_periodo = get_partidos_no_tempo(0)
             .filter(function(d){ return d.t > 0;});
-
-        console.log(partidos_no_periodo.length)
 
         var grupo_main = grupo_grafico.append("g")
             .attr("id","parties")
 
         var parties = grupo_main.selectAll(".party") 
-            .data(partidos_no_periodo)
+            .data(partidos_no_periodo, function(d) { return d.nome })
         .enter().append("g")
             .attr("class","party")
             .attr("id", function(d){return "group-"+nome(d);})
-            .attr("transform", function(d) { return "translate(" + xScale(x(d)) +"," +  yScale(y(d)) + ")";});
+            .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_atual]) +"," +  yScale(d.y[periodo_atual]) + ")";});
 
         parties.append("circle")
             .attr("class", "party_circle")
             .attr("id", function(d) { return "circle-" + nome(d); })
-            .attr("r", function(d) { return raio(d); }) 
+            .attr("r", function(d) { return d.r[periodo_atual]; }) 
             .style("fill", function(d) { return gradiente(grupo_grafico, nome(d), cor(d)); });
 
         parties.append("text")
@@ -216,19 +214,20 @@ Plot = (function ($) {
             grupo_grafico.transition()
                 .duration(10000)
                 .ease("linear")
-                .tween("year", tweenYear)
+                .tween("year", tweenPeriod)
                 .each("end", sortAll);
         }
 
         // ############## Funções de controle de mudanças de estado ###########
         
         // Função que controla mudança de estado para o estado seguinte
-        function interactNext() {
-            next_period
+        function configure_go_to_next() {
+            go_to_next
                 .on("mouseover", mouseover_next)
                 .on("mouseout", mouseout_next)
                 .on("click", move_next_period);
 
+            // TODO ver se dar pra remover ou mover pra move_next_period
             // Cancel the current transition, if any.
             grupo_grafico.transition().duration(0);
             
@@ -236,28 +235,31 @@ Plot = (function ($) {
             function move_next_period() {
                 if (periodo_atual < periodo_max) {
                     periodo_de = periodo_atual;
-                    periodo_para = Math.floor(periodo_atual + 1);
-                    if (periodo_para > periodo_max){
-                        periodo_para = periodo_max
-                    }
-                    grupo_grafico.transition()
-                        .duration(1000)
-                        .ease("linear")
-                        .tween("year", tweenYear)
-                        .each("end", sortAll);
+                    periodo_para = Math.floor(periodo_atual + 1); 
+                    periodo_atual += 1;
 
-                    if (periodo_para == periodo_max) next_period.classed("active", false);
+                    parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
+                    parties.transition()
+                            .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_para]) +"," +  yScale(d.y[periodo_para]) + ")" });
+
+//                    grupo_grafico.select('.party').transition()
+//                    grupo_grafico.transition()
+//                        .duration(1000)
+//                        .ease("linear")
+//                        .tween("year", tweenPeriod)
+//                        .each("end", sortAll);
+                    if (periodo_para == periodo_max) go_to_next.classed("active", false);
                 }
             }
 
             // Função que controla o mouse over, indicando que o elemento está ativo
             function mouseover_next() {
-                if (periodo_atual < periodo_max) next_period.classed("active", true);
+                if (periodo_atual < periodo_max) go_to_next.classed("active", true);
             }
 
             // Função que controla o mouse out, indicando que o elemento não está mais ativo
             function mouseout_next() {
-                if (periodo_atual < periodo_max) next_period.classed("active", false);
+                if (periodo_atual < periodo_max) go_to_next.classed("active", false);
             }
         }
 
@@ -278,7 +280,7 @@ Plot = (function ($) {
                     grupo_grafico.transition()
                         .duration(1000)
                         .ease("linear")
-                        .tween("year", tweenYear)
+                        .tween("year", tweenPeriod)
                         .each("end", sortAll);
 
                     if (periodo_para == periodo_min) previous_period.classed("active", false);
@@ -302,24 +304,29 @@ Plot = (function ($) {
         // Tween == interpolar
         // Tweens the entire chart by first tweening the year, and then the data.
         // For the interpolated data, the parties and label are redrawn.
-        function tweenYear() {
-            var year = d3.interpolateNumber(periodo_de, periodo_para);
-            return function(t) { displayPeriod(year(t)); };
+        function tweenPeriod() {
+            return function(t) { displayPeriod(t); };
         }
 
         // Updates the display to show the specified period.
-        function displayPeriod(period) {
+        // the received period is fractional
+        function displayPeriod(t) {
+
+            var interpolador = d3.interpolateNumber(periodo_de, periodo_para);
+            var period = interpolador(t)
             periodo_atual = period;
             
-            var dados = get_partidos_no_periodo(period)
-                .filter(function(d){ return tamanho(d);});
+            var partidos_no_tempo = get_partidos_no_tempo(t)
+                .filter(function(d){ return tamanho(d) > 0;});
 
-            var main = grupo_grafico.select("#parties");
+            var grupo_main = grupo_grafico.select("#parties");
 
-            var parties = main.selectAll(".party")
-                .data(dados)
+            // atualiza os partidos existentes
+            var parties = grupo_main.selectAll(".party")
+                .data(partidos_no_tempo, function(d) { return d.nome })
                 .attr("transform", function(d) { return "translate(" + xScale(x(d)) +"," +  yScale(y(d)) + ")";});
 
+            // acrescenta novos partidos
             var party = parties.enter()
                 .append("g")
                 .attr("class","party")
@@ -329,17 +336,17 @@ Plot = (function ($) {
             party.append("circle")
                 .attr("class", "party_circle")
                 .attr("id", function(d) { return "circle-" + nome(d); })
-                .attr("r", function(d) { return radiusScale(tamanho(d)); })
+                .attr("r", function(d) { return raio(d); })
                 .style("fill", function(d) { return gradiente(grupo_grafico, nome(d), cor(d)); });
-
-            // Add a title.
-            party.append("title")
-                .text(function(d) { return nome(d); });
 
             party.append("text")
                 .attr("dx", "-8")
                 .attr("dy", "3")
                 .text(function(d){ return numero(d);});
+
+            // faz o nome do partido aparecer como tooltip qd se passa o mouse em cima do círculo
+            party.append("title")
+                .text(function(d) { return nome(d); });
 
             parties.exit().remove();
             label_periodo.text(periodos[Math.round(period)].nome);
@@ -348,20 +355,48 @@ Plot = (function ($) {
         }
 
         // Retorna o partido com x, y, tamanho e raio para o período especificado
-        function get_partidos_no_periodo(period) {
+        function get_partidos_no_tempo(t) {
             return partidos.map(function(d) {
+                var interpoladorR = d3.interpolateNumber(raio(d)[periodo_de], raio(d)[periodo_para]),
+                    interpoladorX = d3.interpolateNumber(x(d)[periodo_de], x(d)[periodo_para]),
+                    interpoladorY = d3.interpolateNumber(y(d)[periodo_de], y(d)[periodo_para]);
+                var interpolador = d3.interpolateNumber(periodo_de, periodo_para);
+                var period = interpolador(t);
+                console.log(period);
                 return {
                     nome: nome(d),
                     numero: numero(d),
                     cor: cor(d),
-                    t: tamanho(d)[period], // tamanho(d) é lista de tamanhos
-                    r: raio(d)[period], // raio(d) é lista de raios
-                    x: x(d)[period], // x(d) é a lista de x's
-                    y: y(d)[period]
+                    t: tamanho(d)[periodo_para], // tamanho(d) é lista de tamanhos
+                    r: raio(d),
+                    x: x(d),
+                    y: y(d)
+//                    r: interpoladorR(t),
+//                    x: interpoladorX(t),
+//                    y: interpoladorY(t)
+//                    r: raio(d)[period], // raio(d) é lista de raios
+//                    x: x(d)[period],
+//                    y: y(d)[period]
+//                    r: raio(d)[periodo_para],
+//                    x: interpolateValues(x(d), period),
+//                    y: interpolateValues(y(d), period)
                 };
             });
         }
+
+        // Finds (and possibly interpolates) the value for the specified year.
+        function interpolateValues(values, period) {
+            var i = bisect.left(values, period),
+                a = values[i];
+            if (i > 0) {
+                var b = values[i - 1],
+                    t = (period - a[0]) / (b[0] - a[0]);
+                return a[1] * (1 - t) + b[1] * t;
+            }
+            return a[1];
+        }
     }
+
 
     function addBackground(grupo_grafico) {
         var fundo = grupo_grafico.append("g")
