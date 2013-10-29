@@ -34,7 +34,7 @@ Plot = (function ($) {
     
     function x(d) { return d.x; } 
     function y(d) { return d.y; } 
-    function tamanho(d) { return 1; } // era d.tamanho; // tamanho da bancada
+    function tamanho(d) { return d.t; } // era d.t
     function raio(d) { return d.r; }
     function presenca(d) { return d.p; }
     function cor(d) { return d.cor; } 
@@ -80,8 +80,7 @@ Plot = (function ($) {
 
     // Various scales. These domains make assumptions of data, naturally.
     var xScale = d3.scale.linear().domain([-100, 100]).range([0, width]),
-        yScale = d3.scale.linear().domain([-100, 100]).range([height, 0]),
-        radiusScale = d3.scale.linear().domain([0, 1]).range([0, 20]);
+        yScale = d3.scale.linear().domain([-100, 100]).range([height, 0]);
 
     var periodo_min = null,
         periodo_max = null,
@@ -165,7 +164,9 @@ Plot = (function ($) {
         var bisect = d3.bisector(function(d) { return d[0]; });
 
         var partidos_no_periodo = get_partidos_no_periodo(periodo_atual)
-            .filter(function(d){ return tamanho(d) > 0;});
+            .filter(function(d){ return d.t > 0;});
+
+        console.log(partidos_no_periodo.length)
 
         var grupo_main = grupo_grafico.append("g")
             .attr("id","parties")
@@ -180,7 +181,7 @@ Plot = (function ($) {
         parties.append("circle")
             .attr("class", "partie_circle")
             .attr("id", function(d) { return "circle-" + nome(d); })
-            .attr("r", function(d) { return radiusScale(tamanho(d)); }) // TODO trocar pra raio(d)
+            .attr("r", function(d) { return raio(d); }) 
             .style("fill", function(d) { return gradiente(grupo_grafico, nome(d), cor(d)); });
 
         parties.append("text")
@@ -346,14 +347,15 @@ Plot = (function ($) {
             label_nvotacoes.text(quantidade_votacoes + " votações");
         }
 
-        // Retorna o partido com x e y para o período especificado
+        // Retorna o partido com x, y, tamanho e raio para o período especificado
         function get_partidos_no_periodo(period) {
             return partidos.map(function(d) {
                 return {
                     nome: nome(d),
                     numero: numero(d),
                     cor: cor(d),
-                    tamanho: tamanho(d), 
+                    t: tamanho(d)[period], // tamanho(d) é lista de tamanhos
+                    r: raio(d)[period], // raio(d) é lista de raios
                     x: x(d)[period], // x(d) é a lista de x's
                     y: y(d)[period]
                 };
@@ -371,7 +373,7 @@ Plot = (function ($) {
             .attr("class", "radar_background")
             .attr("r", raio_fundo);
 
-        raio = 10;
+        var raio = 10;
         while (raio < raio_fundo) {
             fundo.append("circle")
                 .attr("class", "raio_radar")
