@@ -1,9 +1,61 @@
 {
-  "periodos":{
-    "1":"1o sem. 1788",
-    "2":"2o sem. 1788",
-    "3":"1o sem. 1789"
-  },
+"periodos" : 
+    [    
+        {
+        "nvotacoes":17,
+        "nome":"1o Semestre 1788",
+        "var_explicada":85.3,
+        "cp1":
+            {
+            "theta":23.1,
+            "var_explicada":73.0,
+            "composicao":null
+            },
+        "cp2":
+            {
+            "theta":-66.9,
+            "var_explicada":12.3,
+            "composicao":null
+            },
+        "votacoes": null
+        },
+        {
+        "nvotacoes":30,
+        "nome":"2o Semestre 1788",
+        "var_explicada":87,
+        "cp1":
+            {
+            "theta":0,
+            "var_explicada":63.0,
+            "composicao":null
+            },
+        "cp2":
+            {
+            "theta":-36.9,
+            "var_explicada":22.3,
+            "composicao":null
+            },
+        "votacoes": null
+        },
+        {
+        "nvotacoes":2,
+        "nome":"1o Semestre 1789",
+        "var_explicada":93.3,
+        "cp1":
+            {
+            "theta":23.1,
+            "var_explicada":80.0,
+            "composicao":null
+            },
+        "cp2":
+            {
+            "theta":-66.9,
+            "var_explicada":10.3,
+            "composicao":null
+            },
+        "votacoes": null
+        }
+    ],
   "partidos":[
     {
       "nome":"Monarquistas",

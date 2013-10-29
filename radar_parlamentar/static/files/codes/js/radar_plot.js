@@ -24,8 +24,8 @@ Plot = (function ($) {
     function initialize(nome_curto_casa_legislativa) {
         //d3.json("/analises/analise/" + nome_curto_casa_legislativa + "/json_pca", _plot_data);
         //para testes com arquivo hardcoded
-        d3.json("/static/files/partidos.json", plot_data);
-//        d3.json("/static/files/exemplo_hackathon.json", plot_data);
+//        d3.json("/static/files/partidos.json", plot_data);
+        d3.json("/static/files/exemplo_hackathon.json", plot_data);
     }
 
     function space_to_underline(name) {
@@ -79,8 +79,8 @@ Plot = (function ($) {
         height_of_control = 80;
 
     // Various scales. These domains make assumptions of data, naturally.
-    var xScale = d3.scale.linear().domain([0, 100]).range([0, width]),
-        yScale = d3.scale.linear().domain([0, 100]).range([height, 0]),
+    var xScale = d3.scale.linear().domain([-100, 100]).range([0, width]),
+        yScale = d3.scale.linear().domain([-100, 100]).range([height, 0]),
         radiusScale = d3.scale.linear().domain([0, 1]).range([0, 20]);
 
     var periodo_min = null,
@@ -114,40 +114,31 @@ Plot = (function ($) {
 
         addBackground(grupo_grafico);
 
+        // setando variáveis já declaradas
         partidos = dados.partidos;
         periodos = dados.periodos;
+        periodo_min = 0;
+        periodo_max = periodos.length-1;
+        periodo_atual = periodo_min;
 
-        //Carregando os períodos extremos dos dados
-        var chaves_periodos = d3.keys(periodos),
-            lista_periodos = [];
+        var nome_periodo = periodos[periodo_atual].nome,
+            nvotacoes = periodos[periodo_atual].nvotacoes;
 
-        for (item in chaves_periodos) { lista_periodos.push( parseInt( chaves_periodos[item] ) ); };
-
-        periodo_min_max = d3.extent(lista_periodos);
-        periodo_min = periodo_min_max[0]
-        periodo_max = periodo_min_max[1]
-
-        nome_periodo = periodos[periodo_min].nome;
-        quantidade_votacoes_do_periodo = periodos[periodo_min].quantidade_votacoes;
-
-        // Add period label
-        var label = grupo_controle_periodos.append("text")
+        var label_periodo = grupo_controle_periodos.append("text")
             .attr("class", "year label")
             .attr("text-anchor", "middle")
             .attr("y", 30 )
             .attr("x", width/2)
             .text(nome_periodo);
 
-        var total_label = grupo_controle_periodos.append("text")
+        var label_nvotacoes = grupo_controle_periodos.append("text")
             .attr("class", "total_label")
             .attr("text-anchor", "middle")
             .attr("y", "48")
-            .attr("x", width/2);
-//            .text("Votações analisadas no período: " + quantidade_votacoes_do_periodo + " votações");
+            .attr("x", width/2)
+            .text("Votações analisadas no período: " + nvotacoes + " votações");
 
-        // Add an overlay for the year label.
-        var l_box = label.node().getBBox();
-
+        // TODO rename to "go_to_previous"
         var previous_period = grupo_controle_periodos.append("text")
             .attr("id", "previous_period")
             .attr("class", "previous")
@@ -156,6 +147,7 @@ Plot = (function ($) {
             .attr("x", 10)
             .text("<");
 
+        // TODO rename to "go_to_next"
         var next_period = grupo_controle_periodos.append("text")
             .attr("id", "next_period")
             .attr("class", "next")
@@ -165,21 +157,21 @@ Plot = (function ($) {
             .text(">");
         
         // adicionando controladores de movimentação de período 
-        interactPrevious();
-        interactNext();
+//         TODO
+//        interactPrevious();
+//        interactNext();
 
-        // A bisector since many nation's data is sparsely-defined.
+        // bisector searches for a value in a sorted array.
         var bisect = d3.bisector(function(d) { return d[0]; });
 
-        // Add a partie. Initialize the date at 1800, and set the colors.
-        var main = grupo_grafico.append("g")
+        var partidos_no_periodo = get_partidos_no_periodo(periodo_atual)
+            .filter(function(d){ return tamanho(d) > 0;});
+
+        var grupo_main = grupo_grafico.append("g")
             .attr("id","parties")
 
-        var dados = interpolateData(1)
-            .filter(function(d){ return tamanho(d);});
-
-        var parties = main.selectAll(".partie")
-            .data(dados)
+        var parties = grupo_main.selectAll(".partie") // TODO partie deveria ser party
+            .data(partidos_no_periodo)
         .enter().append("g")
             .attr("class","partie")
             .attr("id", function(d){return "group-"+nome(d);})
@@ -191,19 +183,20 @@ Plot = (function ($) {
             .attr("r", function(d) { return radiusScale(tamanho(d)); }) // TODO trocar pra raio(d)
             .style("fill", function(d) { return gradiente(grupo_grafico, nome(d), cor(d)); });
 
-        // Add a title.
-        parties.append("title")
-            .text(function(d) { return nome(d); });
-
         parties.append("text")
             .attr("dx", "-8")
             .attr("dy", "3")
             .text(function(d){ return numero(d);});
+ 
+        // faz o nome do partido aparecer como tooltip qd se passa o mouse em cima do círculo
+        parties.append("title")
+            .text(function(d) { return nome(d); });
 
         parties.sort(order);
 
         // Primeira animação
-        startFirst();
+//      TODO
+//        startFirst();
 
         // Defines a sort order so that the smallest parties are drawn on top.
         function order(a, b) {
@@ -317,7 +310,7 @@ Plot = (function ($) {
         function displayPeriod(period) {
             periodo_atual = period;
             
-            var dados = interpolateData(period)
+            var dados = get_partidos_no_periodo(period)
                 .filter(function(d){ return tamanho(d);});
 
             var main = grupo_grafico.select("#parties");
@@ -348,35 +341,23 @@ Plot = (function ($) {
                 .text(function(d){ return numero(d);});
 
             parties.exit().remove();
-            label.text(periodos[Math.round(period)].nome);
+            label_periodo.text(periodos[Math.round(period)].nome);
             quantidade_votacoes = periodos[Math.round(period)].quantidade_votacoes
-            total_label.text(quantidade_votacoes + " votações");
+            label_nvotacoes.text(quantidade_votacoes + " votações");
         }
 
-        // Interpolates the dataset for the given (fractional) year.
-        function interpolateData(year) {
+        // Retorna o partido com x e y para o período especificado
+        function get_partidos_no_periodo(period) {
             return partidos.map(function(d) {
                 return {
                     nome: nome(d),
                     numero: numero(d),
                     cor: cor(d),
-                    tamanho: tamanho(d), //interpolateValues(d.tamanho, year),
-                    x: interpolateValues(x(d), year),
-                    y: interpolateValues(y(d), year)
+                    tamanho: tamanho(d), 
+                    x: x(d)[period], // x(d) é a lista de x's
+                    y: y(d)[period]
                 };
             });
-        }
-
-        // Finds (and possibly interpolates) the value for the specified year.
-        function interpolateValues(values, year) {
-            var i = bisect.left(values, year),
-                a = values[i];
-            if (i > 0) {
-                var b = values[i - 1],
-                    t = (year - a[0]) / (b[0] - a[0]);
-                return a[1] * (1 - t) + b[1] * t;
-            }
-            return a[1];
         }
     }
 
