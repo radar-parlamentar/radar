@@ -118,7 +118,7 @@ Plot = (function ($) {
         periodos = dados.periodos;
         periodo_min = 0;
         periodo_max = periodos.length-1;
-        periodo_atual = periodo_min;
+        periodo_atual = periodo_max;
 
         var nome_periodo = periodos[periodo_atual].nome,
             nvotacoes = periodos[periodo_atual].nvotacoes;
