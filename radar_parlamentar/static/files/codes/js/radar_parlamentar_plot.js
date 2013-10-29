@@ -86,9 +86,7 @@ Plot = (function ($) {
         periodo_para = null,
         periodo_atual = 1,
         partidos = null,
-        periodos = null,
-        list_partidos = [],
-        list_periodos = [];
+        periodos = null;
 
     // Function that draws the chart
     function _plot_data(dados) {
@@ -132,8 +130,6 @@ Plot = (function ($) {
 
         partidos = dados.partidos;
         periodos = dados.periodos;
-        list_partidos = [];
-        list_periodos = [];
 
         //Carregando os períodos extremos dos dados
         var chaves_periodos = d3.keys(periodos),
@@ -141,7 +137,9 @@ Plot = (function ($) {
 
         for (item in chaves_periodos) { lista_periodos.push( parseInt( chaves_periodos[item] ) ); };
 
-        [periodo_min, periodo_max] = d3.extent(lista_periodos);
+        periodo_min_max = d3.extent(lista_periodos);
+        periodo_min = periodo_min_max[0]
+        periodo_max = periodo_min_max[1]
 
         nome_periodo = periodos[periodo_min].nome;
         quantidade_votacoes_do_periodo = periodos[periodo_min].quantidade_votacoes;
@@ -298,9 +296,6 @@ Plot = (function ($) {
                 if (periodo_atual > periodo_min) {
                     periodo_de = periodo_atual;
                     periodo_para = Math.floor(periodo_atual - 1);
-                    if (periodo_para < periodo_min){
-                        periodo_para = periodo_min;
-                    }
                     tweenYear();
                     grupo_grafico.transition()
                         .duration(1000)
@@ -326,6 +321,7 @@ Plot = (function ($) {
             partidos.sort(order);
         }
 
+        // Tween == interpolar
         // Tweens the entire chart by first tweening the year, and then the data.
         // For the interpolated data, the parties and label are redrawn.
         function tweenYear() {
@@ -389,7 +385,7 @@ Plot = (function ($) {
 
         // Finds (and possibly interpolates) the value for the specified year.
         function interpolateValues(values, year) {
-            var i = bisect.left(values, year, 0, values.length - 1),
+            var i = bisect.left(values, year),
                 a = values[i];
             if (i > 0) {
                 var b = values[i - 1],
