@@ -24,7 +24,8 @@ Plot = (function ($) {
     function initialize(nome_curto_casa_legislativa) {
         //d3.json("/analises/analise/" + nome_curto_casa_legislativa + "/json_pca", _plot_data);
         //para testes com arquivo hardcoded
-        d3.json("/static/files/partidos.json", _plot_data);
+        d3.json("/static/files/partidos.json", plot_data);
+//        d3.json("/static/files/exemplo_hackathon.json", plot_data);
     }
 
     function space_to_underline(name) {
@@ -42,7 +43,7 @@ Plot = (function ($) {
 
     // Creates a "radialGradient"* for each circle
     // and returns the id of the just created gradient.
-    // * the "Gradient Fill" is a SVG element
+    // * the "radialGradient" is a SVG element
     function gradiente(svg,id,color) {
         DEFAULT_COLOR = "#1F77B4";
         if (color === "#000000") color = DEFAULT_COLOR;
@@ -91,7 +92,7 @@ Plot = (function ($) {
         periodos = null;
 
     // Function that draws the chart
-    function _plot_data(dados) {
+    function plot_data(dados) {
         // Inicialmente remove o spinner de loading
         $("#loading").remove();
 
@@ -105,30 +106,13 @@ Plot = (function ($) {
 	    .attr("width", width)
 	    .attr("height", height_of_control)
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-//            .attr("transform", "translate(" + (width + margin.left + 100) + "," + (margin.top + 34) + ")");
 
         var grupo_grafico = svg_base.append("g")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .attr("transform", "translate(" + margin.left + "," + (margin.top + space_between_graph_and_control ) + ")");
 
-        //Adicionando o fundo do radar
-        var fundo = grupo_grafico.append("g")
-            .attr("transform","translate(" + width/2 + "," + height/2 + ")");
-
-        raio_fundo = Math.min(width,height)/2;
-
-        fundo.append("circle")
-            .attr("class", "radar_background")
-            .attr("r", raio_fundo);
-
-        raio = 10;
-        while (raio < raio_fundo) {
-            fundo.append("circle")
-                .attr("class", "raio_radar")
-                .attr("r",raio);
-            raio = raio + 40;
-        }
+        addBackground(grupo_grafico);
 
         partidos = dados.partidos;
         periodos = dados.periodos;
@@ -262,7 +246,6 @@ Plot = (function ($) {
                     if (periodo_para > periodo_max){
                         periodo_para = periodo_max
                     }
-                    tweenYear();
                     grupo_grafico.transition()
                         .duration(1000)
                         .ease("linear")
@@ -298,7 +281,6 @@ Plot = (function ($) {
                 if (periodo_atual > periodo_min) {
                     periodo_de = periodo_atual;
                     periodo_para = Math.floor(periodo_atual - 1);
-                    tweenYear();
                     grupo_grafico.transition()
                         .duration(1000)
                         .ease("linear")
@@ -395,6 +377,25 @@ Plot = (function ($) {
                 return a[1] * (1 - t) + b[1] * t;
             }
             return a[1];
+        }
+    }
+
+    function addBackground(grupo_grafico) {
+        var fundo = grupo_grafico.append("g")
+            .attr("transform","translate(" + width/2 + "," + height/2 + ")");
+
+        raio_fundo = Math.min(width,height)/2;
+
+        fundo.append("circle")
+            .attr("class", "radar_background")
+            .attr("r", raio_fundo);
+
+        raio = 10;
+        while (raio < raio_fundo) {
+            fundo.append("circle")
+                .attr("class", "raio_radar")
+                .attr("r",raio);
+            raio = raio + 40;
         }
     }
 
