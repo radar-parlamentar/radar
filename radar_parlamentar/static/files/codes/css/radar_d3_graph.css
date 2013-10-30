@@ -38,6 +38,10 @@
   cursor: pointer;
 }
 
+.parlamentar_circle {
+  cursor: pointer;
+}
+
 .axis path, .axis line {
   fill: none;
   stroke: #000;

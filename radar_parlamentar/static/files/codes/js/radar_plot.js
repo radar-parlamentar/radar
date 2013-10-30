@@ -104,7 +104,8 @@ Plot = (function ($) {
             .attr("height", height_of_control)
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        var grupo_grafico = svg_base.append("g")
+         grupo_grafico = svg_base.append("g")
+            .attr("id", "grupo_grafico")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .attr("transform", "translate(" + margin.left + "," + (margin.top + space_between_graph_and_control ) + ")");
@@ -240,27 +241,24 @@ Plot = (function ($) {
             circles.exit().transition().duration(TEMPO_ANIMACAO).attr("r",0).remove();
             parties.exit().transition().duration(TEMPO_ANIMACAO).remove();
 
-            // TODO: fazer sumir parlamentares quando implode. é o intuito do código abaixo, que não funciona.
-            partidos_no_periodo.forEach(function(partido) {
-                var parlamentares_a_implodir = grupo_grafico.selectAll('.parlamentar_circle.partido_' + nome(partido) );
+            // Tratar parlamentares (pontos), um partido por vez:
+            partidos.forEach(function(partido) {
+                if (jQuery.inArray(partido,partidos_explodidos) == -1)
+                    var parlamentares_no_periodo = []; // não é para ter dados de parlamentares se o partido não estiver explodido.
+                else
+                    var parlamentares_no_periodo = get_parlamentares_no_periodo(partido, periodo_atual);
 
-                parlamentares_a_implodir.transition().duration(TEMPO_ANIMACAO)
-                    .attr("cx", xScale(partido.x[periodo_atual]))
-                    .attr("cy", yScale(partido.y[periodo_atual])).remove();
-            })
+                // DATA-JOIN dos parlamentares deste partido:
+                var parlamentares = grupo_grafico.selectAll('.parlamentar_circle.partido_' + nome(partido))
+                    .data(parlamentares_no_periodo, function(d) { return nome(d) });
 
-            partidos_explodidos.forEach(function(partido) {
-                var parlamentares_no_periodo = get_parlamentares_no_periodo(partido, periodo_atual);
-                var parlamentares = grupo_grafico.selectAll('.parlamentar_circle.partido_' + nome(partido)).data(parlamentares_no_periodo, function(d) { return nome(d) });
-                
                 parlamentares.transition()
                              .duration(TEMPO_ANIMACAO)
                              .attr("cx", function(d) { return xScale(d.x[periodo_para]); })
                              .attr("cy", function(d) { return yScale(d.y[periodo_para]); });
 
                 var new_parlamentares = parlamentares.enter().append("circle")
-                    .attr("class","parlamentar_circle")
-                    .attr("class","partido_" + nome(partido))
+                    .attr("class",["parlamentar_circle partido_" + nome(partido)] )
                     .attr("id", function(d) { return "point-" + nome(d); })
                     .attr("r", RAIO_PARLAMENTAR)
                     .attr("fill", cor(partido))
@@ -274,14 +272,14 @@ Plot = (function ($) {
                                      .transition().duration(TEMPO_ANIMACAO)
                                                   .attr("cx", function(d) { return xScale(d.x[periodo_atual]); })
                                                   .attr("cy", function(d) { return yScale(d.y[periodo_atual]); });
-                    // se estou explodindo este partido, nao vai ter ninguem no exit, por isso comentado abaixo. (?)
-//                    parlamentares.exit()
-//                        .attr("cx", function(d) { return xScale(d.x[periodo_atual]); })
-//                        .attr("cy", function(d) { return yScale(d.y[periodo_atual]); })
-//                        .transition().duration(TEMPO_ANIMACAO)
-//                                     .attr("cx", xScale(partido.x[periodo_atual]))
-//                                     .attr("cy", yScale(partido.y[periodo_atual]))
-//                        .remove();
+
+                    parlamentares.exit()
+                        .attr("cx", function(d) { return xScale(d.x[periodo_atual]); })
+                        .attr("cy", function(d) { return yScale(d.y[periodo_atual]); })
+                        .transition().duration(TEMPO_ANIMACAO)
+                                     .attr("cx", xScale(partido.x[periodo_atual]))
+                                     .attr("cy", yScale(partido.y[periodo_atual]))
+                        .remove();
                 } else {
                     new_parlamentares.attr("cx", function (d) { return xScale(d.x[periodo_para]); })
                                      .attr("cy", function (d) { return yScale(d.y[periodo_para]); })
@@ -292,8 +290,6 @@ Plot = (function ($) {
 
                     parlamentares.exit().transition().duration(TEMPO_ANIMACAO).attr("r",0).remove();
                 }
-                
-                
             });            
             
             label_periodo.text(periodos[periodo_atual].nome);
@@ -358,6 +354,7 @@ Plot = (function ($) {
             return partidos.filter(function(d){ return d.t[period] > 0 && jQuery.inArray(d,partidos_explodidos) == -1;});
         }
         
+        // Retorna o json de parlamentares do partido, do qual foram excluídos parlamentares ausentes no dado period.
         function get_parlamentares_no_periodo(partido, period) {
             return partido.parlamentares.filter(function (d) {return d.x[periodo_atual] !== null; })
         }
