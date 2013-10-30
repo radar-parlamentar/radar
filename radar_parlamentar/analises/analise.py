@@ -41,7 +41,7 @@ class MatrizDeVotacoesBuilder:
         self.matriz_presencas = numpy.zeros((len(self.partidos), len(self.votacoes)))
         self._dic_partido_votos = {}
         
-    def gera_matriz(self):
+    def gera_matriz_por_partido(self):
         """Cria os 'vetores de votação' para cada partido. 
     
         O 'vetor' usa um número entre -1 (não) e 1 (sim) para representar a "posição média"
@@ -131,8 +131,8 @@ class AnalisadorPeriodo:
         self.theta = 0 # em graus, eventual rotação feita por self.espelha_ou_roda()
         
         # calculados por self._inicializa_vetores():
-        self.vetores_votacao = []     
-        self.vetores_presenca = [] 
+        self.vetores_votacao_por_partido = []     
+        self.vetores_presenca_por_partido = [] 
         self.tamanhos_partidos = {}
         self.presencas_partidos = {}
         self.soma_dos_tamanhos_dos_partidos = 0
@@ -153,8 +153,8 @@ class AnalisadorPeriodo:
 
     def _inicializa_vetores(self):
         matrizesBuilder = MatrizDeVotacoesBuilder(self.votacoes, self.partidos)
-        self.vetores_votacao = matrizesBuilder.gera_matriz()
-        self.vetores_presenca = matrizesBuilder.matriz_presencas
+        self.vetores_votacao_por_partido = matrizesBuilder.gera_matriz_por_partido()
+        self.vetores_presenca_por_partido = matrizesBuilder.matriz_presencas
         tamanhosBuilder = TamanhoPartidoBuilder(self.partidos, self.casa_legislativa)
         self.tamanhos_partidos = tamanhosBuilder.gera_dic_tamanho_partidos()
         # Presencas dos partidos está quebrado:
@@ -169,10 +169,10 @@ class AnalisadorPeriodo:
         e o valor de cada chave é um vetor com as n dimensões da análise pca
         """
         if not self.pca_partido:
-            if self.vetores_votacao == None or len(self.vetores_votacao) == 0:
+            if self.vetores_votacao_por_partido == None or len(self.vetores_votacao_por_partido) == 0:
                 self._inicializa_vetores()
             ipnn = self._lista_de_indices_de_partidos_naos_nulos()
-            matriz = self.vetores_votacao
+            matriz = self.vetores_votacao_por_partido
             matriz = matriz[ipnn,:] # exclui partidos de tamanho zero
             matriz = matriz - matriz.mean(axis=0) # centraliza dados
             self.pca_partido = pca.PCA(matriz,fraction=1) # faz o pca
