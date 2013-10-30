@@ -72,7 +72,8 @@ Plot = (function ($) {
         height = height_graph - margin.top - margin.bottom,
         space_between_graph_and_control = 60,
         height_of_control = 80;
-    var TEMPO_ANIMACAO = 500;
+    var TEMPO_ANIMACAO = 500,
+        RAIO_PARLAMENTAR = 6;
 
     // Various scales. These domains make assumptions of data, naturally.
     var xScale = d3.scale.linear().domain([-100, 100]).range([0, width]),
@@ -238,11 +239,19 @@ Plot = (function ($) {
             
             circles.exit().transition().duration(TEMPO_ANIMACAO).attr("r",0).remove();
             parties.exit().transition().duration(TEMPO_ANIMACAO).remove();
-            
+
+            // TODO: fazer sumir parlamentares quando implode. é o intuito do código abaixo, que não funciona.
+            partidos_no_periodo.forEach(function(partido) {
+                var parlamentares_a_implodir = grupo_grafico.selectAll('.parlamentar_circle.partido_' + nome(partido) );
+
+                parlamentares_a_implodir.transition().duration(TEMPO_ANIMACAO)
+                    .attr("cx", xScale(partido.x[periodo_atual]))
+                    .attr("cy", yScale(partido.y[periodo_atual])).remove();
+            })
+
             partidos_explodidos.forEach(function(partido) {
-                
                 var parlamentares_no_periodo = get_parlamentares_no_periodo(partido, periodo_atual);
-                var parlamentares = grupo_grafico.selectAll('.parlamentar_circle').data(parlamentares_no_periodo, function(d) { return nome(d) });
+                var parlamentares = grupo_grafico.selectAll('.parlamentar_circle.partido_' + nome(partido)).data(parlamentares_no_periodo, function(d) { return nome(d) });
                 
                 parlamentares.transition()
                              .duration(TEMPO_ANIMACAO)
@@ -251,10 +260,13 @@ Plot = (function ($) {
 
                 var new_parlamentares = parlamentares.enter().append("circle")
                     .attr("class","parlamentar_circle")
+                    .attr("class","partido_" + nome(partido))
                     .attr("id", function(d) { return "point-" + nome(d); })
-                    .attr("r", 10)
+                    .attr("r", RAIO_PARLAMENTAR)
                     .attr("fill", cor(partido))
-                    .attr("title", function(d) { return nome(d); });
+                    .on("click", function(d) { return implode_partido(partido); });
+
+                new_parlamentares.append("title").text(function(d) { return d.nome; });
                     
                 if (explodindo) {
                     new_parlamentares.attr("cx", xScale(partido.x[periodo_atual]))
@@ -262,9 +274,23 @@ Plot = (function ($) {
                                      .transition().duration(TEMPO_ANIMACAO)
                                                   .attr("cx", function(d) { return xScale(d.x[periodo_atual]); })
                                                   .attr("cy", function(d) { return yScale(d.y[periodo_atual]); });
+                    // se estou explodindo este partido, nao vai ter ninguem no exit, por isso comentado abaixo. (?)
+//                    parlamentares.exit()
+//                        .attr("cx", function(d) { return xScale(d.x[periodo_atual]); })
+//                        .attr("cy", function(d) { return yScale(d.y[periodo_atual]); })
+//                        .transition().duration(TEMPO_ANIMACAO)
+//                                     .attr("cx", xScale(partido.x[periodo_atual]))
+//                                     .attr("cy", yScale(partido.y[periodo_atual]))
+//                        .remove();
                 } else {
                     new_parlamentares.attr("cx", function (d) { return xScale(d.x[periodo_para]); })
-                                     .attr("cy", function (d) { return yScale(d.y[periodo_para]); });
+                                     .attr("cy", function (d) { return yScale(d.y[periodo_para]); })
+                                     .attr("r",0);
+                    new_parlamentares.transition()
+                                     .duration(TEMPO_ANIMACAO)
+                                     .attr("r", RAIO_PARLAMENTAR);
+
+                    parlamentares.exit().transition().duration(TEMPO_ANIMACAO).attr("r",0).remove();
                 }
                 
                 
@@ -306,6 +332,21 @@ Plot = (function ($) {
             atualiza_grafico(true);
         }
         
+        function implode_partido(partido) { //partido é o json do partido
+            remove_from_array(partidos_explodidos,partido);
+            atualiza_grafico(true);
+        }
+
+        // remove o elemento de valor el da array lista, e retorna a lista modificada
+        function remove_from_array(lista,el) {
+            for(var i = lista.length - 1; i >= 0; i--) {
+                if(lista[i] === el) {
+                    lista.splice(i, 1);
+                }
+            }
+            return lista;
+        }
+
         // Defines a sort order so that the smallest parties are drawn on top.
         function order(a, b) {
             if (a == null || b == null) console.log(parties, a, b);
