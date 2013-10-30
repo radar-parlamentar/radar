@@ -189,10 +189,17 @@ Plot = (function ($) {
         }
         
         function change_period() {
+            atualiza_grafico(false);
+        }
+        
+        // atualiza partidos e deputados no gráfico de acordo com o período atual
+        // explodindo: true quando estamos atualizando o gráfico por causa de uma explosão de partido
+        // (explosão de partido é quando se clica no partido para ver seus parlamentares)
+        function atualiza_grafico(explodindo) {
             partidos_no_periodo = get_partidos_no_periodo(periodo_atual);
 
-            parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
-            circles = grupo_grafico.selectAll('.party_circle').data(partidos_no_periodo, function(d) { return d.nome });
+            var parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
+            var circles = grupo_grafico.selectAll('.party_circle').data(partidos_no_periodo, function(d) { return d.nome });
 
             parties.transition()
                 .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_para]) +"," +  yScale(d.y[periodo_para]) + ")" })
@@ -228,9 +235,40 @@ Plot = (function ($) {
                 .duration(TEMPO_ANIMACAO);
             new_circles.transition()
                 .attr("r", function(d) { return d.r[periodo_atual]; });
-
+            
             circles.exit().transition().duration(TEMPO_ANIMACAO).attr("r",0).remove();
             parties.exit().transition().duration(TEMPO_ANIMACAO).remove();
+            
+            partidos_explodidos.forEach(function(partido) {
+                
+                var parlamentares_no_periodo = get_parlamentares_no_periodo(partido, periodo_atual);
+                var parlamentares = grupo_grafico.selectAll('.parlamentar_circle').data(parlamentares_no_periodo, function(d) { return nome(d) });
+                
+                parlamentares.transition()
+                             .duration(TEMPO_ANIMACAO)
+                             .attr("cx", function(d) { return xScale(d.x[periodo_para]); })
+                             .attr("cy", function(d) { return yScale(d.y[periodo_para]); });
+
+                var new_parlamentares = parlamentares.enter().append("circle")
+                    .attr("class","parlamentar_circle")
+                    .attr("id", function(d) { return "point-" + nome(d); })
+                    .attr("r", 10)
+                    .attr("fill", cor(partido))
+                    .attr("title", function(d) { return nome(d); });
+                    
+                if (explodindo) {
+                    new_parlamentares.attr("cx", xScale(partido.x[periodo_atual]))
+                                     .attr("cy", yScale(partido.y[periodo_atual]))
+                                     .transition().duration(TEMPO_ANIMACAO)
+                                                  .attr("cx", function(d) { return xScale(d.x[periodo_atual]); })
+                                                  .attr("cy", function(d) { return yScale(d.y[periodo_atual]); });
+                } else {
+                    new_parlamentares.attr("cx", function (d) { return xScale(d.x[periodo_para]); })
+                                     .attr("cy", function (d) { return yScale(d.y[periodo_para]); });
+                }
+                
+                
+            });            
             
             label_periodo.text(periodos[periodo_atual].nome);
             quantidade_votacoes = periodos[periodo_atual].nvotacoes;
@@ -264,8 +302,8 @@ Plot = (function ($) {
         }
 
         function explode_partido(partido) { //partido é o json do partido
-            partidos_explodidos.push(partido.nome);
-            change_period();
+            partidos_explodidos.push(partido);
+            atualiza_grafico(true);
         }
         
         // Defines a sort order so that the smallest parties are drawn on top.
@@ -276,7 +314,11 @@ Plot = (function ($) {
 
         // Retorna partidos excluindo partidos ausentes no período e partidos explodidos
         function get_partidos_no_periodo(period) {
-            return partidos.filter(function(d){ return d.t[period] > 0 && jQuery.inArray(nome(d),partidos_explodidos) == -1;})
+            return partidos.filter(function(d){ return d.t[period] > 0 && jQuery.inArray(d,partidos_explodidos) == -1;});
+        }
+        
+        function get_parlamentares_no_periodo(partido, period) {
+            return partido.parlamentares.filter(function (d) {return d.x[periodo_atual] !== null; })
         }
     }
 
