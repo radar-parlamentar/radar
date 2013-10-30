@@ -29,7 +29,7 @@ Plot = (function ($) {
     }
 
     function space_to_underline(name) {
-      return name.replace(/\s+/g,'_');
+        return name.replace(/\s+/g,'_');
     }
     
     function x(d) { return d.x; } 
@@ -40,7 +40,7 @@ Plot = (function ($) {
     function cor(d) { return d.cor; } 
     function nome(d) { return space_to_underline(d.nome); } 
     function numero(d) { return d.numero; } 
-
+    
     // Creates a "radialGradient"* for each circle
     // and returns the id of the just created gradient.
     // * the "radialGradient" is a SVG element
@@ -49,26 +49,26 @@ Plot = (function ($) {
         if (color === "#000000") color = DEFAULT_COLOR;
         var identificador = "gradient-" + id;
         var gradient = svg.append("svg:defs")
-                .append("svg:radialGradient")
-                    .attr("id", identificador)
-                    .attr("x1", "0%")
-                    .attr("y1", "0%")
-                    .attr("x2", "100%")
-                    .attr("y2", "100%")
-                    .attr("spreadMethod", "pad");
-
+            .append("svg:radialGradient")
+            .attr("id", identificador)
+            .attr("x1", "0%")
+            .attr("y1", "0%")
+            .attr("x2", "100%")
+            .attr("y2", "100%")
+            .attr("spreadMethod", "pad");
+        
         gradient.append("svg:stop")
             .attr("offset", "0%")
             .attr("stop-color", color)
             .attr("stop-opacity", 0.5);
-
+        
         gradient.append("svg:stop")
             .attr("offset", "70%")
             .attr("stop-color", color)
             .attr("stop-opacity", 1);
         return "url(#" + identificador + ")";
     }
-
+    
     // Chart dimensions.
     var margin = {top: 20, right: 20, bottom: 20, left: 20},
         width_graph = 670,
@@ -77,7 +77,7 @@ Plot = (function ($) {
         height = height_graph - margin.top - margin.bottom,
         space_between_graph_and_control = 60,
         height_of_control = 80;
-    var tempo_animacao = 500;
+    var TEMPO_ANIMACAO = 500;
 
     // Various scales. These domains make assumptions of data, naturally.
     var xScale = d3.scale.linear().domain([-100, 100]).range([0, width]),
@@ -103,9 +103,9 @@ Plot = (function ($) {
             .style("position", "relative");
 
         var grupo_controle_periodos = svg_base.append("g")
-	    .attr("width", width)
-	    .attr("height", height_of_control)
-	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .attr("width", width)
+            .attr("height", height_of_control)
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         var grupo_grafico = svg_base.append("g")
             .attr("width", width + margin.left + margin.right)
@@ -156,10 +156,8 @@ Plot = (function ($) {
             .attr("x", width-10 )
             .text(">");
         
-        // adicionando controladores de movimentação de período 
-//         TODO
-//        interactPrevious();
         configure_go_to_next();
+        configure_go_to_previous();
 
         // bisector searches for a value in a sorted array.
         var bisect = d3.bisector(function(d) { return d[0]; });
@@ -205,17 +203,8 @@ Plot = (function ($) {
 
         // Primeira animação automática
         function startFirst() {
-            // Seta períodos inicial e final de interpolação como
-            //      período mínimo e máximo, respectivamente.
-            periodo_de = periodo_min;
-            periodo_para = periodo_max;
-
+            // TODO
             // Começa a transição inicial ao entrar na página
-            grupo_grafico.transition()
-                .duration(10000)
-                .ease("linear")
-                .tween("year", tweenPeriod)
-                .each("end", sortAll);
         }
 
         // ############## Funções de controle de mudanças de estado ###########
@@ -226,78 +215,57 @@ Plot = (function ($) {
                 .on("mouseover", mouseover_next)
                 .on("mouseout", mouseout_next)
                 .on("click", change_to_next_period);
-
-            // TODO ver se dar pra remover ou mover pra move_next_period
-            // Cancel the current transition, if any.
-            //grupo_grafico.transition().duration(0);
         }
 
         // Função que controla a mudança de estado para o estado anterior
-        function interactPrevious() {
-            previous_period
-                .on("mouseover", mouseover)
-                .on("mouseout", mouseout)
-                .on("click", move_previous);
-
-            // Cancel the current transition, if any.
-            grupo_grafico.transition().duration(0);
-
-            function move_previous() {
-                if (periodo_atual > periodo_min) {
-                    periodo_de = periodo_atual;
-                    periodo_para = Math.floor(periodo_atual - 1);
-                    grupo_grafico.transition()
-                        .duration(1000)
-                        .ease("linear")
-                        .tween("year", tweenPeriod)
-                        .each("end", sortAll);
-
-                    if (periodo_para == periodo_min) previous_period.classed("active", false);
-                }
-            }
-
-            function mouseover() {
-                if (periodo_atual > periodo_min) previous_period.classed("active", true);
-            }
-
-            function mouseout() {
-                if (periodo_atual > periodo_min) previous_period.classed("active", false);
-            }
+        function configure_go_to_previous() {
+            go_to_previous
+                .on("mouseover", mouseover_previous)
+                .on("mouseout", mouseout_previous)
+                .on("click", change_to_previous_period);
         }
         
         function change_to_next_period() {
-        	increment = 1;
-        	periodo_de = periodo_atual;
+            periodo_de = periodo_atual;
             periodo_para = periodo_atual + 1;
-        	if (periodo_para > periodo_max)
-        		periodo_para = periodo_max;
+            if (periodo_para > periodo_max)
+                periodo_para = periodo_max;
             periodo_atual = periodo_para;
-        	change_period();
+            change_period();
+        }
+
+        function change_to_previous_period() {
+            periodo_de = periodo_atual;
+            periodo_para = periodo_atual - 1;
+            if (periodo_para < periodo_min)
+                periodo_para = periodo_min;
+            periodo_atual = periodo_para;
+            change_period();
         }
         
         function change_period() {
-            
             partidos_no_periodo = get_partidos_no_periodo(periodo_atual);
 
             parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
             circles = grupo_grafico.selectAll('.party_circle').data(partidos_no_periodo, function(d) { return d.nome });
 
             parties.transition()
-                    .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_para]) +"," +  yScale(d.y[periodo_para]) + ")" })
-            .duration(tempo_animacao)
-                    .each("end", sortAll);
-		    circles.transition()
-		        .attr("r", function(d) { return d.r[periodo_para]})
-			.duration(tempo_animacao);
+                .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_para]) +"," +  yScale(d.y[periodo_para]) + ")" })
+                .duration(TEMPO_ANIMACAO)
+                .each("end", sortAll);
+            
+            circles.transition()
+                .attr("r", function(d) { return d.r[periodo_para]})
+                .duration(TEMPO_ANIMACAO);
 
-		    var new_parties = parties.enter().append("g")
-		        .attr("class","party")
+            var new_parties = parties.enter().append("g")
+                .attr("class","party")
                 .attr("id",function(d){return "group-"+nome(d);})
                 .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_atual]) +"," +  yScale(d.y[periodo_atual]) + ")";})
                 .attr("opacity",0.00001)
-
-           new_parties.append("title")
-    			.text(function(d) { return nome(d); });
+            
+            new_parties.append("title")
+                .text(function(d) { return nome(d); });
     
             var new_circles = new_parties.append("circle")
                 .attr("class","party_circle")
@@ -310,11 +278,11 @@ Plot = (function ($) {
                 .attr("dy",3)
                 .text(function(d) { return numero(d); });
 
-            new_parties.transition().attr("opacity",1).duration(tempo_animacao);
+            new_parties.transition().attr("opacity",1).duration(TEMPO_ANIMACAO);
             new_circles.transition().attr("r", function(d) { return d.r[periodo_atual]; });
 
-            circles.exit().transition().duration(tempo_animacao).attr("r",0).remove();
-            parties.exit().transition().duration(tempo_animacao).remove();
+            circles.exit().transition().duration(TEMPO_ANIMACAO).attr("r",0).remove();
+            parties.exit().transition().duration(TEMPO_ANIMACAO).remove();
             
             label_periodo.text(periodos[periodo_atual].nome);
             quantidade_votacoes = periodos[periodo_atual].nvotacoes;
@@ -324,16 +292,21 @@ Plot = (function ($) {
             if (periodo_para == periodo_min) go_to_previous.classed("active", false);
         }
 
-        // Função que controla o mouse over, indicando que o elemento está ativo
         function mouseover_next() {
             if (periodo_atual < periodo_max) go_to_next.classed("active", true);
         }
 
-        // Função que controla o mouse out, indicando que o elemento não está mais ativo
         function mouseout_next() {
-            if (periodo_atual < periodo_max) go_to_next.classed("active", false);
+            go_to_next.classed("active", false);
         }
 
+        function mouseover_previous() {
+            if (periodo_atual > periodo_min) go_to_previous.classed("active", true);
+        }
+
+        function mouseout_previous() {
+            go_to_previous.classed("active", false);
+        }
         
         function sortAll() {
             var partidos = grupo_grafico.selectAll(".party")
