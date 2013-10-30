@@ -264,7 +264,7 @@ Plot = (function ($) {
         // Defines a sort order so that the smallest parties are drawn on top.
         function order(a, b) {
             if (a == null || b == null) console.log(parties, a, b);
-            return b.t - a.t;
+            return b.t[periodo_atual] - a.t[periodo_atual];
         }        
 
         // Retorna partidos excluindo partidos ausentes no período
