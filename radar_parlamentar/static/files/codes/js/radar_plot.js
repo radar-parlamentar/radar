@@ -237,7 +237,7 @@ Plot = (function ($) {
                     periodo_de = periodo_atual;
                     periodo_para = periodo_atual + 1;
                     periodo_atual += 1;
-		    partidos_no_periodo = get_partidos_no_tempo(periodo_atual);
+                    partidos_no_periodo = get_partidos_no_tempo(periodo_atual);
 
                     parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
                     circles = grupo_grafico.selectAll('.party_circle').data(partidos_no_periodo, function(d) { return d.nome });
@@ -247,15 +247,19 @@ Plot = (function ($) {
                             .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_para]) +"," +  yScale(d.y[periodo_para]) + ")" })
 		            .duration(tempo_animacao)
                             .each("end", sortAll);
-		    circles.transition()
-		        .attr("r", function(d) { return d.r[periodo_para]})
-			.duration(tempo_animacao);
+				    circles.transition()
+				        .attr("r", function(d) { return d.r[periodo_para]})
+					.duration(tempo_animacao);
 
-		    var new_parties = parties.enter().append("g")
-		        .attr("class","party")
+				    var new_parties = parties.enter().append("g")
+				        .attr("class","party")
                         .attr("id",function(d){return "group-"+nome(d);})
                         .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_atual]) +"," +  yScale(d.y[periodo_atual]) + ")";})
-                        .attr("opacity",0.00001);
+                        .attr("opacity",0.00001)
+
+                   new_parties.append("title")
+	        			.text(function(d) { return nome(d); });
+		    
 
                     var new_circles = new_parties.append("circle")
                         .attr("class","party_circle")
