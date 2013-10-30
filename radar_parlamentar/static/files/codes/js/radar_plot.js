@@ -84,7 +84,8 @@ Plot = (function ($) {
         periodo_para,
         periodo_atual,
         partidos,
-        periodos;
+        periodos,
+        partidos_explodidos = [];
 
     // Function that draws the chart
     function plot_data(dados) {
@@ -263,7 +264,8 @@ Plot = (function ($) {
         }
 
         function explode_partido(partido) { //partido é o json do partido
-            alert("explodindo partido" + partido.nome);
+            partidos_explodidos.push(partido.nome);
+            change_period();
         }
         
         // Defines a sort order so that the smallest parties are drawn on top.
@@ -272,11 +274,10 @@ Plot = (function ($) {
             return b.t[periodo_atual] - a.t[periodo_atual];
         }        
 
-        // Retorna partidos excluindo partidos ausentes no período
+        // Retorna partidos excluindo partidos ausentes no período e partidos explodidos
         function get_partidos_no_periodo(period) {
-            return partidos.filter(function(d){ return d.t[period] > 0;});
+            return partidos.filter(function(d){ return d.t[period] > 0 && jQuery.inArray(nome(d),partidos_explodidos) == -1;})
         }
-
     }
 
     function addBackground(grupo_grafico) {
