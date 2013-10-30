@@ -206,6 +206,7 @@ Plot = (function ($) {
                 .attr("id",function(d){return "group-"+nome(d);})
                 .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_atual]) +"," +  yScale(d.y[periodo_atual]) + ")";})
                 .attr("opacity",0.00001)
+                .on("click", function(d) { return explode_partido(d); });
             
             new_parties.append("title")
                 .text(function(d) { return nome(d); });
@@ -259,6 +260,10 @@ Plot = (function ($) {
         function sortAll() {
             var partidos = grupo_grafico.selectAll(".party")
             partidos.sort(order);
+        }
+
+        function explode_partido(partido) { //partido é o json do partido
+            alert("explodindo partido" + partido.nome);
         }
         
         // Defines a sort order so that the smallest parties are drawn on top.
