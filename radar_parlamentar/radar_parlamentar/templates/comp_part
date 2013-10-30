@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Gênero
+{% endblock title %}
+
+{% block extrascripts %}
+    <link rel="stylesheet" href="/static/files/codes/css/radar_d3_graph.css" type="text/css" />
+{% endblock extrascripts %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block headerImgClass %}
+    about
+{% endblock headerImgClass %}
+
+{% block nomepagina %}
+    Gênero e Participação
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Entenda visualmente participação de mulheres e homens na política
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}
+    <li><a href="/index/">Home</a> &raquo;</li>
+    <li><a href="/genero/">Gênero</a> &raquo;</li>
+    <li><a href="/genero/perfil/partido/comparacao/">Comparação Perfis Partidários</a></li>
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <h3> Câmara dos(as) Deputados(as)</h3>
+    <article id="descricao" class="inwrap">
+        O objetivo deste projeto é fazer uma análise gráfica da participação de deputadas e deputados na Câmara Federal.<br/>
+        É propósito observar as participações feminina e masculina na casa legislativa, seja do ponto de vista quantitativo, seja do ponto de vista qualitativo.<br/>
+        <h4 style="margin-bottom:5px;">O que é este gráfico?</h4>
+        <aside id="como-funciona" style="margin: 0 90px 10px 20px; padding: 10px; background-color: rgba(220,220,220,0.7); -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">
+            Trata-se de uma visualização de dados em que é possível observar o percentual de deputadas e deputados dos partidos em um ano da sua escolha. Ao passar o mouse em cima de cada barra, de cada ano, é possivel observar os números absolutos.
+        </aside>
+        Veja os percentuais ao longo do tempo e tire suas próprias conclusões.<br/>
+    
+        Quantidade de legislaturas consideradas nesta análise: <b>{{num_votacao}}</b> votações.<br/><br/>
+        Os dados da {{casa_legislativa.nome}} utilizados para análise estão disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (dados atualizados em {{casa_legislativa.atualizacao}}).<br/>    
+
+        <!--div id="form">
+            <label for="periodos" ACCESSKEY="P">Período</label> <select id="periodos">
+            </select>
+            <button id="animar">Animar</button>
+            <br/><br/>
+        </div-->
+
+
+        <aside id="legenda" class="list">
+            <b>LEGENDA</b>
+            <ul class="legenda">
+                {% for partido in partidos %}
+                    <li class="botao_partido" id="list_cor_{{partido.numero}}">{{partido.numero}} | {{partido.nome}}</li>
+                {% endfor %}
+            </ul>
+        </aside>
+        <figure id="animacao"><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
+    </article>
+        <div style="clear:right"/>
+{% endblock content %}
+
+{% block extrajsend %}
+    {% if request.get_host == '127.0.0.1:8000' or request.get_host == 'localhost:8000' %}
+        <script src="/static/files/codes/js/d3.min.js"></script>
+    {% else %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js"></script>
+        <script type="text/javascript">
+          if (typeof d3 === 'undefined') {
+            var e = document.createElement('script');
+                e.src = '/static/files/codes/js/d3.min.js';
+                e.type='text/javascript';
+            document.getElementsByTagName("head")[0].appendChild(e);
+          }
+        </script>
+    {% endif %}
+    <script src="/static/files/codes/js/radar_parlamentar_plot.js"></script>
+{% endblock extrajsend %}
+
+{% block extrascriptsend %}
+    menuActive("analises");
+  $(document).ready(function() {
+    Plot.initialize('{{casa_legislativa.nome_curto}}')
+  });
+{% endblock extrascriptsend %}
