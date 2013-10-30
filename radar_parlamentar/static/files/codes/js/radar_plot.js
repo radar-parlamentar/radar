@@ -164,7 +164,7 @@ Plot = (function ($) {
         // bisector searches for a value in a sorted array.
         var bisect = d3.bisector(function(d) { return d[0]; });
 
-        var partidos_no_periodo = get_partidos_no_tempo(0);
+        var partidos_no_periodo = get_partidos_no_periodo(0);
 
         var grupo_main = grupo_grafico.append("g")
             .attr("id","parties")
@@ -237,7 +237,7 @@ Plot = (function ($) {
                     periodo_de = periodo_atual;
                     periodo_para = periodo_atual + 1;
                     periodo_atual += 1;
-                    partidos_no_periodo = get_partidos_no_tempo(periodo_atual);
+                    partidos_no_periodo = get_partidos_no_periodo(periodo_atual);
 
                     parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
                     circles = grupo_grafico.selectAll('.party_circle').data(partidos_no_periodo, function(d) { return d.nome });
@@ -277,6 +277,10 @@ Plot = (function ($) {
 
                     circles.exit().transition().duration(tempo_animacao).attr("r",0).remove();
                     parties.exit().transition().duration(tempo_animacao).remove();
+                    
+                    label_periodo.text(periodos[periodo_atual].nome);
+                    quantidade_votacoes = periodos[periodo_atual].nvotacoes;
+                    label_nvotacoes.text(quantidade_votacoes + " votações");                    
                     
                     if (periodo_para == periodo_max) go_to_next.classed("active", false);
                 }
@@ -346,7 +350,7 @@ Plot = (function ($) {
             var period = interpolador(t)
             periodo_atual = period;
             
-            var partidos_no_tempo = get_partidos_no_tempo(t);
+            var partidos_no_tempo = get_partidos_no_periodo(t);
 
             var grupo_main = grupo_grafico.select("#parties");
 
@@ -383,21 +387,9 @@ Plot = (function ($) {
             label_nvotacoes.text(quantidade_votacoes + " votações");
         }
 
-        // Retorna o partido com x, y, tamanho e raio para o período especificado
-        function get_partidos_no_tempo(t) {
-            return partidos.map(function(d) {
-                var interpolador = d3.interpolateNumber(periodo_de, periodo_para);
-                var period = interpolador(t);
-                return {
-                    nome: nome(d),
-                    numero: numero(d),
-                    cor: cor(d),
-                    t: tamanho(d)[periodo_para], // tamanho(d) é lista de tamanhos
-                    r: raio(d),
-                    x: x(d),
-                    y: y(d)
-                };
-            }).filter(function(d){ return tamanho(d) > 0;});
+        // Retorna partidos excluindo partidos ausentes no período
+        function get_partidos_no_periodo(period) {
+            return partidos.filter(function(d){ return tamanho(d)[period] > 0;});
         }
 
         // Finds (and possibly interpolates) the value for the specified year.
