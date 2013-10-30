@@ -225,76 +225,11 @@ Plot = (function ($) {
             go_to_next
                 .on("mouseover", mouseover_next)
                 .on("mouseout", mouseout_next)
-                .on("click", move_next_period);
+                .on("click", change_to_next_period);
 
             // TODO ver se dar pra remover ou mover pra move_next_period
             // Cancel the current transition, if any.
-            grupo_grafico.transition().duration(0);
-            
-            // Função que gera o movimento para o próximo período
-            function move_next_period() {
-                if (periodo_atual < periodo_max) {
-                    periodo_de = periodo_atual;
-                    periodo_para = periodo_atual + 1;
-                    periodo_atual += 1;
-                    partidos_no_periodo = get_partidos_no_periodo(periodo_atual);
-
-                    parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
-                    circles = grupo_grafico.selectAll('.party_circle').data(partidos_no_periodo, function(d) { return d.nome });
-
-
-                    parties.transition()
-                            .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_para]) +"," +  yScale(d.y[periodo_para]) + ")" })
-		            .duration(tempo_animacao)
-                            .each("end", sortAll);
-				    circles.transition()
-				        .attr("r", function(d) { return d.r[periodo_para]})
-					.duration(tempo_animacao);
-
-				    var new_parties = parties.enter().append("g")
-				        .attr("class","party")
-                        .attr("id",function(d){return "group-"+nome(d);})
-                        .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_atual]) +"," +  yScale(d.y[periodo_atual]) + ")";})
-                        .attr("opacity",0.00001)
-
-                   new_parties.append("title")
-	        			.text(function(d) { return nome(d); });
-		    
-
-                    var new_circles = new_parties.append("circle")
-                        .attr("class","party_circle")
-                        .attr("id", function(d) { return "circle-" + nome(d); })
-                        .attr("r", 0)
-                        .attr("fill", function(d) {return gradiente(grupo_grafico, nome(d), cor(d)); });
-
-                    new_parties.append("text")
-                        .attr("text-anchor","middle")
-                        .attr("dy",3)
-                        .text(function(d) { return numero(d); });
-
-                    new_parties.transition().attr("opacity",1).duration(tempo_animacao);
-                    new_circles.transition().attr("r", function(d) { return d.r[periodo_atual]; });
-
-                    circles.exit().transition().duration(tempo_animacao).attr("r",0).remove();
-                    parties.exit().transition().duration(tempo_animacao).remove();
-                    
-                    label_periodo.text(periodos[periodo_atual].nome);
-                    quantidade_votacoes = periodos[periodo_atual].nvotacoes;
-                    label_nvotacoes.text(quantidade_votacoes + " votações");                    
-                    
-                    if (periodo_para == periodo_max) go_to_next.classed("active", false);
-                }
-            }
-
-            // Função que controla o mouse over, indicando que o elemento está ativo
-            function mouseover_next() {
-                if (periodo_atual < periodo_max) go_to_next.classed("active", true);
-            }
-
-            // Função que controla o mouse out, indicando que o elemento não está mais ativo
-            function mouseout_next() {
-                if (periodo_atual < periodo_max) go_to_next.classed("active", false);
-            }
+            //grupo_grafico.transition().duration(0);
         }
 
         // Função que controla a mudança de estado para o estado anterior
@@ -330,61 +265,79 @@ Plot = (function ($) {
             }
         }
         
+        function change_to_next_period() {
+        	increment = 1;
+        	periodo_de = periodo_atual;
+            periodo_para = periodo_atual + 1;
+        	if (periodo_para > periodo_max)
+        		periodo_para = periodo_max;
+            periodo_atual = periodo_para;
+        	change_period();
+        }
+        
+        function change_period() {
+            
+            partidos_no_periodo = get_partidos_no_periodo(periodo_atual);
+
+            parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
+            circles = grupo_grafico.selectAll('.party_circle').data(partidos_no_periodo, function(d) { return d.nome });
+
+            parties.transition()
+                    .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_para]) +"," +  yScale(d.y[periodo_para]) + ")" })
+            .duration(tempo_animacao)
+                    .each("end", sortAll);
+		    circles.transition()
+		        .attr("r", function(d) { return d.r[periodo_para]})
+			.duration(tempo_animacao);
+
+		    var new_parties = parties.enter().append("g")
+		        .attr("class","party")
+                .attr("id",function(d){return "group-"+nome(d);})
+                .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_atual]) +"," +  yScale(d.y[periodo_atual]) + ")";})
+                .attr("opacity",0.00001)
+
+           new_parties.append("title")
+    			.text(function(d) { return nome(d); });
+    
+            var new_circles = new_parties.append("circle")
+                .attr("class","party_circle")
+                .attr("id", function(d) { return "circle-" + nome(d); })
+                .attr("r", 0)
+                .attr("fill", function(d) {return gradiente(grupo_grafico, nome(d), cor(d)); });
+
+            new_parties.append("text")
+                .attr("text-anchor","middle")
+                .attr("dy",3)
+                .text(function(d) { return numero(d); });
+
+            new_parties.transition().attr("opacity",1).duration(tempo_animacao);
+            new_circles.transition().attr("r", function(d) { return d.r[periodo_atual]; });
+
+            circles.exit().transition().duration(tempo_animacao).attr("r",0).remove();
+            parties.exit().transition().duration(tempo_animacao).remove();
+            
+            label_periodo.text(periodos[periodo_atual].nome);
+            quantidade_votacoes = periodos[periodo_atual].nvotacoes;
+            label_nvotacoes.text(quantidade_votacoes + " votações");                    
+            
+            if (periodo_para == periodo_max) go_to_next.classed("active", false);
+            if (periodo_para == periodo_min) go_to_previous.classed("active", false);
+        }
+
+        // Função que controla o mouse over, indicando que o elemento está ativo
+        function mouseover_next() {
+            if (periodo_atual < periodo_max) go_to_next.classed("active", true);
+        }
+
+        // Função que controla o mouse out, indicando que o elemento não está mais ativo
+        function mouseout_next() {
+            if (periodo_atual < periodo_max) go_to_next.classed("active", false);
+        }
+
+        
         function sortAll() {
             var partidos = grupo_grafico.selectAll(".party")
             partidos.sort(order);
-        }
-
-        // Tween == interpolar
-        // Tweens the entire chart by first tweening the year, and then the data.
-        // For the interpolated data, the parties and label are redrawn.
-        function tweenPeriod() {
-            return function(t) { displayPeriod(t); };
-        }
-
-        // Updates the display to show the specified period.
-        // the received period is fractional
-        function displayPeriod(t) {
-
-            var interpolador = d3.interpolateNumber(periodo_de, periodo_para);
-            var period = interpolador(t)
-            periodo_atual = period;
-            
-            var partidos_no_tempo = get_partidos_no_periodo(t);
-
-            var grupo_main = grupo_grafico.select("#parties");
-
-            // atualiza os partidos existentes
-            var parties = grupo_main.selectAll(".party")
-                .data(partidos_no_tempo, function(d) { return d.nome })
-                .attr("transform", function(d) { return "translate(" + xScale(x(d)) +"," +  yScale(y(d)) + ")";});
-
-            // acrescenta novos partidos
-            var party = parties.enter()
-                .append("g")
-                .attr("class","party")
-                .attr("id", function(d){return "group-"+nome(d);})
-                .attr("transform", function(d) { return "translate(" + xScale(x(d)) +"," +  yScale(y(d)) + ")";});
-              
-            party.append("circle")
-                .attr("class", "party_circle")
-                .attr("id", function(d) { return "circle-" + nome(d); })
-                .attr("r", function(d) { return raio(d); })
-                .style("fill", function(d) { return gradiente(grupo_grafico, nome(d), cor(d)); });
-
-            party.append("text")
-                .attr("dx", "-8")
-                .attr("dy", "3")
-                .text(function(d){ return numero(d);});
-
-            // faz o nome do partido aparecer como tooltip qd se passa o mouse em cima do círculo
-            party.append("title")
-                .text(function(d) { return nome(d); });
-
-            parties.exit().remove();
-            label_periodo.text(periodos[Math.round(period)].nome);
-            quantidade_votacoes = periodos[Math.round(period)].quantidade_votacoes
-            label_nvotacoes.text(quantidade_votacoes + " votações");
         }
 
         // Retorna partidos excluindo partidos ausentes no período
@@ -392,17 +345,6 @@ Plot = (function ($) {
             return partidos.filter(function(d){ return tamanho(d)[period] > 0;});
         }
 
-        // Finds (and possibly interpolates) the value for the specified year.
-        function interpolateValues(values, period) {
-            var i = bisect.left(values, period),
-                a = values[i];
-            if (i > 0) {
-                var b = values[i - 1],
-                    t = (period - a[0]) / (b[0] - a[0]);
-                return a[1] * (1 - t) + b[1] * t;
-            }
-            return a[1];
-        }
     }
 
 
