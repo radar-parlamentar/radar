@@ -25,7 +25,7 @@ Plot = (function ($) {
         //d3.json("/analises/analise/" + nome_curto_casa_legislativa + "/json_pca", _plot_data);
         //para testes com arquivo hardcoded
 //        d3.json("/static/files/partidos.json", plot_data);
-        d3.json("/static/files/exemplo_hackathon.json", plot_data);
+        d3.json("/static/files/deputados.json", plot_data);
     }
 
     function space_to_underline(name) {
@@ -52,7 +52,7 @@ Plot = (function ($) {
             .attr("y2", "100%")
             .attr("spreadMethod", "pad");
         
-        gradient.append("svg:stop")<
+        gradient.append("svg:stop")
             .attr("offset", "0%")
             .attr("stop-color", color)
             .attr("stop-opacity", 0.5);
