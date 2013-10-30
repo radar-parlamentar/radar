@@ -77,6 +77,7 @@ Plot = (function ($) {
         height = height_graph - margin.top - margin.bottom,
         space_between_graph_and_control = 60,
         height_of_control = 80;
+    var tempo_animacao = 500;
 
     // Various scales. These domains make assumptions of data, naturally.
     var xScale = d3.scale.linear().domain([-100, 100]).range([0, width]),
@@ -163,8 +164,7 @@ Plot = (function ($) {
         // bisector searches for a value in a sorted array.
         var bisect = d3.bisector(function(d) { return d[0]; });
 
-        var partidos_no_periodo = get_partidos_no_tempo(0)
-            .filter(function(d){ return d.t > 0;});
+        var partidos_no_periodo = get_partidos_no_tempo(0);
 
         var grupo_main = grupo_grafico.append("g")
             .attr("id","parties")
@@ -183,8 +183,8 @@ Plot = (function ($) {
             .style("fill", function(d) { return gradiente(grupo_grafico, nome(d), cor(d)); });
 
         parties.append("text")
-            .attr("dx", "-8")
-            .attr("dy", "3")
+            .attr("text-anchor","middle")
+            .attr("dy",3)
             .text(function(d){ return numero(d);});
  
         // faz o nome do partido aparecer como tooltip qd se passa o mouse em cima do círculo
@@ -235,19 +235,45 @@ Plot = (function ($) {
             function move_next_period() {
                 if (periodo_atual < periodo_max) {
                     periodo_de = periodo_atual;
-                    periodo_para = Math.floor(periodo_atual + 1); 
+                    periodo_para = periodo_atual + 1;
                     periodo_atual += 1;
+		    partidos_no_periodo = get_partidos_no_tempo(periodo_atual);
 
                     parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
-                    parties.transition()
-                            .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_para]) +"," +  yScale(d.y[periodo_para]) + ")" });
+                    circles = grupo_grafico.selectAll('.party_circle').data(partidos_no_periodo, function(d) { return d.nome });
 
-//                    grupo_grafico.select('.party').transition()
-//                    grupo_grafico.transition()
-//                        .duration(1000)
-//                        .ease("linear")
-//                        .tween("year", tweenPeriod)
-//                        .each("end", sortAll);
+
+                    parties.transition()
+                            .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_para]) +"," +  yScale(d.y[periodo_para]) + ")" })
+		            .duration(tempo_animacao)
+                            .each("end", sortAll);
+		    circles.transition()
+		        .attr("r", function(d) { return d.r[periodo_para]})
+			.duration(tempo_animacao);
+
+		    var new_parties = parties.enter().append("g")
+		        .attr("class","party")
+                        .attr("id",function(d){return "group-"+nome(d);})
+                        .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_atual]) +"," +  yScale(d.y[periodo_atual]) + ")";})
+                        .attr("opacity",0.00001);
+
+                    var new_circles = new_parties.append("circle")
+                        .attr("class","party_circle")
+                        .attr("id", function(d) { return "circle-" + nome(d); })
+                        .attr("r", 0)
+                        .attr("fill", function(d) {return gradiente(grupo_grafico, nome(d), cor(d)); });
+
+                    new_parties.append("text")
+                        .attr("text-anchor","middle")
+                        .attr("dy",3)
+                        .text(function(d) { return numero(d); });
+
+                    new_parties.transition().attr("opacity",1).duration(tempo_animacao);
+                    new_circles.transition().attr("r", function(d) { return d.r[periodo_atual]; });
+
+                    circles.exit().transition().duration(tempo_animacao).attr("r",0).remove();
+                    parties.exit().transition().duration(tempo_animacao).remove();
+                    
                     if (periodo_para == periodo_max) go_to_next.classed("active", false);
                 }
             }
@@ -316,8 +342,7 @@ Plot = (function ($) {
             var period = interpolador(t)
             periodo_atual = period;
             
-            var partidos_no_tempo = get_partidos_no_tempo(t)
-                .filter(function(d){ return tamanho(d) > 0;});
+            var partidos_no_tempo = get_partidos_no_tempo(t);
 
             var grupo_main = grupo_grafico.select("#parties");
 
@@ -357,12 +382,8 @@ Plot = (function ($) {
         // Retorna o partido com x, y, tamanho e raio para o período especificado
         function get_partidos_no_tempo(t) {
             return partidos.map(function(d) {
-                var interpoladorR = d3.interpolateNumber(raio(d)[periodo_de], raio(d)[periodo_para]),
-                    interpoladorX = d3.interpolateNumber(x(d)[periodo_de], x(d)[periodo_para]),
-                    interpoladorY = d3.interpolateNumber(y(d)[periodo_de], y(d)[periodo_para]);
                 var interpolador = d3.interpolateNumber(periodo_de, periodo_para);
                 var period = interpolador(t);
-                console.log(period);
                 return {
                     nome: nome(d),
                     numero: numero(d),
@@ -371,17 +392,8 @@ Plot = (function ($) {
                     r: raio(d),
                     x: x(d),
                     y: y(d)
-//                    r: interpoladorR(t),
-//                    x: interpoladorX(t),
-//                    y: interpoladorY(t)
-//                    r: raio(d)[period], // raio(d) é lista de raios
-//                    x: x(d)[period],
-//                    y: y(d)[period]
-//                    r: raio(d)[periodo_para],
-//                    x: interpolateValues(x(d), period),
-//                    y: interpolateValues(y(d), period)
                 };
-            });
+            }).filter(function(d){ return tamanho(d) > 0;});
         }
 
         // Finds (and possibly interpolates) the value for the specified year.
