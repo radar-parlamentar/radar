@@ -32,12 +32,7 @@ Plot = (function ($) {
         return name.replace(/\s+/g,'_');
     }
     
-    function x(d) { return d.x; } 
-    function y(d) { return d.y; } 
-    function tamanho(d) { return d.t; } // era d.t
-    function raio(d) { return d.r; }
-    function presenca(d) { return d.p; }
-    function cor(d) { return d.cor; } 
+    function cor(d) { return d.cor; }    
     function nome(d) { return space_to_underline(d.nome); } 
     function numero(d) { return d.numero; } 
     
@@ -57,7 +52,7 @@ Plot = (function ($) {
             .attr("y2", "100%")
             .attr("spreadMethod", "pad");
         
-        gradient.append("svg:stop")
+        gradient.append("svg:stop")<
             .attr("offset", "0%")
             .attr("stop-color", color)
             .attr("stop-opacity", 0.5);
@@ -114,31 +109,17 @@ Plot = (function ($) {
 
         addBackground(grupo_grafico);
 
-        // setando variáveis já declaradas
-        partidos = dados.partidos;
-        periodos = dados.periodos;
-        periodo_min = 0;
-        periodo_max = periodos.length-1;
-        periodo_atual = periodo_min;
-        periodo_para = periodo_atual;
-        periodo_de = periodo_atual;
-
-        var nome_periodo = periodos[periodo_atual].nome,
-            nvotacoes = periodos[periodo_atual].nvotacoes;
-
         var label_periodo = grupo_controle_periodos.append("text")
             .attr("class", "year label")
             .attr("text-anchor", "middle")
             .attr("y", 30 )
             .attr("x", width/2)
-            .text(nome_periodo);
 
         var label_nvotacoes = grupo_controle_periodos.append("text")
             .attr("class", "total_label")
             .attr("text-anchor", "middle")
             .attr("y", "48")
             .attr("x", width/2)
-            .text("Votações analisadas no período: " + nvotacoes + " votações");
 
         var go_to_previous = grupo_controle_periodos.append("text")
             .attr("id", "previous_period")
@@ -156,56 +137,19 @@ Plot = (function ($) {
             .attr("x", width-10 )
             .text(">");
         
+        // setando variáveis já declaradas
+        partidos = dados.partidos;
+        periodos = dados.periodos;
+        periodo_min = 0;
+        periodo_max = periodos.length-1;
+        periodo_atual = periodo_min;
+        periodo_para = periodo_atual;
+        periodo_de = periodo_atual;        
+        
         configure_go_to_next();
         configure_go_to_previous();
 
-        // bisector searches for a value in a sorted array.
-        var bisect = d3.bisector(function(d) { return d[0]; });
-
-        var partidos_no_periodo = get_partidos_no_periodo(0);
-
-        var grupo_main = grupo_grafico.append("g")
-            .attr("id","parties")
-
-        var parties = grupo_main.selectAll(".party") 
-            .data(partidos_no_periodo, function(d) { return d.nome })
-        .enter().append("g")
-            .attr("class","party")
-            .attr("id", function(d){return "group-"+nome(d);})
-            .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_atual]) +"," +  yScale(d.y[periodo_atual]) + ")";});
-
-        parties.append("circle")
-            .attr("class", "party_circle")
-            .attr("id", function(d) { return "circle-" + nome(d); })
-            .attr("r", function(d) { return d.r[periodo_atual]; }) 
-            .style("fill", function(d) { return gradiente(grupo_grafico, nome(d), cor(d)); });
-
-        parties.append("text")
-            .attr("text-anchor","middle")
-            .attr("dy",3)
-            .text(function(d){ return numero(d);});
- 
-        // faz o nome do partido aparecer como tooltip qd se passa o mouse em cima do círculo
-        parties.append("title")
-            .text(function(d) { return nome(d); });
-
-        parties.sort(order);
-
-        // Primeira animação
-//      TODO
-//        startFirst();
-
-        // Defines a sort order so that the smallest parties are drawn on top.
-        function order(a, b) {
-            if (a == null || b == null) console.log(parties, a, b);
-            return tamanho(b) - tamanho(a);
-        }
-
-        // Primeira animação automática
-        function startFirst() {
-            // TODO
-            // Começa a transição inicial ao entrar na página
-        }
+        change_period();
 
         // ############## Funções de controle de mudanças de estado ###########
         
@@ -251,8 +195,7 @@ Plot = (function ($) {
 
             parties.transition()
                 .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_para]) +"," +  yScale(d.y[periodo_para]) + ")" })
-                .duration(TEMPO_ANIMACAO)
-                .each("end", sortAll);
+                .duration(TEMPO_ANIMACAO);
             
             circles.transition()
                 .attr("r", function(d) { return d.r[periodo_para]})
@@ -278,15 +221,20 @@ Plot = (function ($) {
                 .attr("dy",3)
                 .text(function(d) { return numero(d); });
 
-            new_parties.transition().attr("opacity",1).duration(TEMPO_ANIMACAO);
-            new_circles.transition().attr("r", function(d) { return d.r[periodo_atual]; });
+            new_parties.transition()
+                .attr("opacity",1)
+                .duration(TEMPO_ANIMACAO);
+            new_circles.transition()
+                .attr("r", function(d) { return d.r[periodo_atual]; });
 
             circles.exit().transition().duration(TEMPO_ANIMACAO).attr("r",0).remove();
             parties.exit().transition().duration(TEMPO_ANIMACAO).remove();
             
             label_periodo.text(periodos[periodo_atual].nome);
             quantidade_votacoes = periodos[periodo_atual].nvotacoes;
-            label_nvotacoes.text(quantidade_votacoes + " votações");                    
+            label_nvotacoes.text(quantidade_votacoes + " votações"); 
+            
+            sortAll();
             
             if (periodo_para == periodo_max) go_to_next.classed("active", false);
             if (periodo_para == periodo_min) go_to_previous.classed("active", false);
@@ -312,14 +260,19 @@ Plot = (function ($) {
             var partidos = grupo_grafico.selectAll(".party")
             partidos.sort(order);
         }
+        
+        // Defines a sort order so that the smallest parties are drawn on top.
+        function order(a, b) {
+            if (a == null || b == null) console.log(parties, a, b);
+            return b.t - a.t;
+        }        
 
         // Retorna partidos excluindo partidos ausentes no período
         function get_partidos_no_periodo(period) {
-            return partidos.filter(function(d){ return tamanho(d)[period] > 0;});
+            return partidos.filter(function(d){ return d.t[period] > 0;});
         }
 
     }
-
 
     function addBackground(grupo_grafico) {
         var fundo = grupo_grafico.append("g")
