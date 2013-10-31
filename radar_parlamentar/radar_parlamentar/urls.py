@@ -24,6 +24,12 @@ urlpatterns = patterns('',
     url(r'^sim-voto-aberto/$', 'radar_parlamentar.views.votoaberto'),
     url(r'^importadores/$', 'radar_parlamentar.views.importadores'),
     url(r'^grafico_alternativo/$', 'radar_parlamentar.views.grafico_alternativo'),
+    url(r'^genero/termos$', 'radar_parlamentar.views.genero_termos'),
+    url(r'^genero/matriz$', 'radar_parlamentar.views.genero_matriz'),
+    url(r'^genero/historia$', 'radar_parlamentar.views.genero_historia'),
+
+    url(r'^genero/perfil/legislaturas$',
+        'radar_parlamentar.views.genero_perfil_legis'),
 
     #Serivço que retorna conteúdo para plotar o mapa
     url(r'^analises/analise/(?P<nome_curto_casa_legislativa>\w*)/$', 'analises.views.analise'),
