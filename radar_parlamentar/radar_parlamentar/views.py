@@ -28,6 +28,9 @@ def importadores(request):
 def grafico_alternativo(request):
     return render_to_response('grafico_alternativo.html', {}, context_instance=RequestContext(request))
 
+def genero(request):
+    return render_to_response('genero.html', {}, context_instance=RequestContext(request))
+
 def genero_termos(request):
     return render_to_response('genero_termos.html', {}, context_instance=RequestContext(request))
 
