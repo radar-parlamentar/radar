@@ -9,7 +9,7 @@ d3.csv("/static/files/codes/js/genero_historia_base.csv", function(error, data) 
 	anos = [];
 	pula = true;
 	data.forEach(function(d) {
-		if (pula) anos.push(d.Legislatura);
+		if (pula) anos.push(d.Ano);
 		pula = !pula;
 	});
 
@@ -41,7 +41,7 @@ d3.csv("/static/files/codes/js/genero_historia_base.csv", function(error, data) 
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   color.domain(d3.keys(data[0]).filter(function(key) {
-	  if (key !== "Duracao" && key !== "Legislatura") return true;
+	  if (key == "Masculino" || key == "Feminino") return true;
 	  else return false;
   }));
 
@@ -53,8 +53,8 @@ d3.csv("/static/files/codes/js/genero_historia_base.csv", function(error, data) 
 
   data.sort(function(a, b) { return b.ages[0].y1 - a.ages[0].y1; });
 
-//x.domain(data.map(function(d) { return d.Legislatura; }));
-	x.domain(d3.extent(data, function(d) { return d.Legislatura; }));
+//x.domain(data.map(function(d) { return d.Ano; }));
+	x.domain(d3.extent(data, function(d) { return d.Ano; }));
 
   svg.append("g")
       .attr("class", "x axis")
@@ -71,20 +71,40 @@ d3.csv("/static/files/codes/js/genero_historia_base.csv", function(error, data) 
       .attr("class", "y axis")
       .call(yAxis);
 
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    r = "<strong>Legislatura:</strong> <span style='color:yellow'>"  + d.Legislatura + "</span></br>";
+    r += "<strong>Homens:</strong> <span style='color:yellow'>" + d.Masculino + "</span></br>";
+    r += "<strong>Mulheres:</strong> <span style='color:yellow'>" + d.Feminino + "</span></br>";
+    return r;
+  })
+
+svg.call(tip);
+
   var state = svg.selectAll(".state")
       .data(data)
     .enter().append("g")
       .attr("class", "state")
-      .attr("transform", function(d) { return "translate(" + x(d.Legislatura) + ",0)"; });
+      .attr("transform", function(d) { return "translate(" + x(d.Ano) + ",0)"; })
+       .on('mouseover', tip.show)
+      .on('mouseout', tip.hide);
 
   state.selectAll("rect")
       .data(function(d) { return d.ages; })
     .enter().append("rect")
       .attr("x", x.range()[0])
+      .attr("class", function(d){return "barra"+d.name;})
       .attr("width", function(d){return (parseInt(d.dur))*4;})
       .attr("y", function(d) { return y(d.y1); })
-      .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-      .style("fill", function(d) { return color(d.name); });
+      .attr("height", function(d) { return y(d.y0) - y(d.y1); });
+      //.style("fill", function(d) { return color(d.name); });
+
+
+
+
+
 
 //  var legend = svg.select(".state:last-child").selectAll(".legend")
 //      .data(function(d) { return d.ages; })
