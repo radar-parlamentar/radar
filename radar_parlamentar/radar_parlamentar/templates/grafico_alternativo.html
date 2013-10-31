@@ -184,8 +184,8 @@ function inicializa_papel() {
 	bola.tamanho = partido.t;
 	bola.p = partido.p;
         // inicializando no período zero, que é referência de posições.
-        x = k*partido.x[0];
-        y = k*partido.y[0];
+        x = k*(partido.x[0]+100)/2;
+        y = k*(partido.y[0]+100)/2;
         r = kt*partido.r[0];;
         bola.push(
             // uma bola é um set que contem o circulo, o texto (nome do partido), e o texto da legenda ao lado.

@@ -70,24 +70,24 @@ class JsonAnaliseGenerator:
         
         for ap in self.analise_temporal.analises_periodo:
             self.json += '{' # abre periodo
-            self.json += '"nvotacoes":' + str(ap.periodo.quantidade_votacoes) + ','
+            self.json += '"nvotacoes":' + str(ap.num_votacoes) + ','
             self.json += '"nome":"' + ap.periodo.string + '",'
-            var_explicada = round((ap.pca_partido.eigen[0] + ap.pca_partido.eigen[1])/ap.pca_partido.eigen.sum() * 100,1)
+            var_explicada = round((ap.pca.eigen[0] + ap.pca.eigen[1])/ap.pca.eigen.sum() * 100,1)
             self.json += '"var_explicada":' + str(var_explicada) + ","
             try:
                 self.json += '"cp1":{"theta":' + str(round(ap.theta,0)%180) + ','
             except AttributeError:
                 self.json += '"cp1":{"theta":0,'           
-            var_explicada = round(ap.pca_partido.eigen[0]/ap.pca_partido.eigen.sum() * 100,1)
+            var_explicada = round(ap.pca.eigen[0]/ap.pca.eigen.sum() * 100,1)
             self.json += '"var_explicada":' + str(var_explicada) + ","
-            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[0,:]**2]) + "}," # fecha cp1
+            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca.Vt[0,:]**2]) + "}," # fecha cp1
             try:
                 self.json += '"cp2":{"theta":' + str(round(ap.theta,0)%180 + 90) + ','
             except AttributeError:
                 self.json += '"cp2":{"theta":0,'
-            var_explicada = str(round(ap.pca_partido.eigen[1]/ap.pca_partido.eigen.sum() * 100,1))
+            var_explicada = str(round(ap.pca.eigen[1]/ap.pca.eigen.sum() * 100,1))
             self.json += '"var_explicada":' + str(var_explicada) + ","
-            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[1,:]**2]) + "}," # fecha cp2
+            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca.Vt[1,:]**2]) + "}," # fecha cp2
             self.json += '"votacoes":' # deve trazer a lista de votacoes do periodo
                                         # na mesma ordem apresentada nos vetores
                                         # composicao das componentes principais.
@@ -109,10 +109,15 @@ class JsonAnaliseGenerator:
             dict_partido["p"] =  []
             for ap in self.analise_temporal.analises_periodo:
                 scaler = GraphScaler()
-                mapa = scaler.scale(ap.coordenadas)
-                dict_partido["x"].append(round(mapa[partido.nome][0],2))
-                dict_partido["y"].append(round(mapa[partido.nome][1],2))
-                t = ap.tamanhos_partidos[partido.nome]
+                mapa = scaler.scale(ap.coordenadas_partidos)
+                try:
+                    print mapa
+                    dict_partido["x"].append(round(mapa[partido][0],2))
+                    dict_partido["y"].append(round(mapa[partido][1],2))
+                except KeyError:
+                    dict_partido["x"].append(0.)
+                    dict_partido["y"].append(0.)
+                t = ap.tamanhos_partidos[partido]
                 dict_partido["t"].append(t)
                 r = sqrt(t*escala)
                 dict_partido["r"].append(round(r,1))

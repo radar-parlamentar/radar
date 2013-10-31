@@ -34,8 +34,8 @@ import copy
 logger = logging.getLogger("radar")
 
 class AnalisadorTemporal:
-    """Um objeto da classe AnalisadorTemporal é um envelope para um conjunto de
-    objetos do tipo AnalisadorPeriodo.
+    """O AnalisadorTemporal cria objetos do tipo AnaliseTemporal, o qual
+    contém uma lista de objetos AnalisePeriodo.
 
     Uma análise de um período é uma análise de componentes principais dos
     votos de um dado período, por exemplo do ano de 2010. Para fazer um gráfico
@@ -128,18 +128,21 @@ class AnalisadorPeriodo:
         self.theta = 0 # em graus, eventual rotação feita por self.espelha_ou_roda()
         
         # calculados por self._inicializa_vetores():
-        self.vetores_votacao_por_partido = []
-        self.vetores_presenca_por_partido = []
         self.vetores_votacao = []
+        self.vetores_presencas = []
+#        self.vetores_votacao_por_partido = []
+#        self.vetores_presenca_por_partido = []
         self.tamanhos_partidos = {}
-        self.presencas_partidos = {}
+        self.coordenadas_partidos = {}
         self.soma_dos_tamanhos_dos_partidos = 0
+        self.partido_do_parlamentar = []
+        self.presencas_legislaturas = {} # legislatura.id => {True,False}, sendo True se estava presente no periodo.
         
         self.pca_legislaturas = None 
         self.coordenadas_legislaturas = {} 
 
     def _inicializa_votacoes(self):
-        """Pega votações do banco de dados e seta a lista self.votacoes"""
+        """Pega votações deste período no banco de dados e seta a lista self.votacoes"""
         if self.ini == None and self.fim == None:
             self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa) 
         if self.ini == None and self.fim != None:
@@ -149,66 +152,34 @@ class AnalisadorPeriodo:
         if self.ini != None and self.fim != None:
             self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa).filter(data__gte=self.ini, data__lte=self.fim)
 
+    def analisa(self):
+        """Retorna instância de AnalisePeriodo"""
+        self._calcula_legislaturas_2d()
+        self._calcula_centroides_partidos()
+        analisePeriodo = AnalisePeriodo()
+        analisePeriodo.casa_legislativa = self.casa_legislativa
+        analisePeriodo.periodo = self.periodo
+        analisePeriodo.partidos = self.partidos
+        analisePeriodo.votacoes = self.votacoes
+        analisePeriodo.num_votacoes = self.num_votacoes
+        analisePeriodo.pca = self.pca
+        analisePeriodo.tamanhos_partidos = self.tamanhos_partidos
+        analisePeriodo.soma_dos_tamanhos_dos_partidos = self.soma_dos_tamanhos_dos_partidos
+        analisePeriodo.coordenadas_legislaturas = self.coordenadas_legislaturas
+        analisePeriodo.coordenadas_partidos = self.coordenadas_partidos
+        return analisePeriodo
+
     def _inicializa_vetores(self):
         matrizesBuilder = MatrizesDeDadosBuilder(self.votacoes, self.partidos, self.legislaturas)
         matrizesBuilder.gera_matrizes()
         self.vetores_votacao = matrizesBuilder.matriz_votacoes
+        self.vetores_presencas = matrizesBuilder.matriz_presencas
         self.vetores_votacao_por_partido = matrizesBuilder.matriz_votacoes_por_partido
         self.vetores_presenca_por_partido = matrizesBuilder.matriz_presencas_por_partido
+        self.partido_do_parlamentar = matrizesBuilder.partido_do_parlamentar
         tamanhosBuilder = TamanhoPartidoBuilder(self.partidos, self.casa_legislativa)
         self.tamanhos_partidos = tamanhosBuilder.gera_dic_tamanho_partidos()
-        # Presencas dos partidos está quebrado:
-        self.presencas_partidos = {}
         self.soma_dos_tamanhos_dos_partidos = tamanhosBuilder.soma_dos_tamanhos_dos_partidos 
-
-    def _pca_legislaturas(self):
-        """Roda a análise de componentes principais por legislatura.
-
-        Guarda o resultado em self.pca
-        Retorna um dicionário no qual as chaves são os ids das legislaturas
-        e o valor de cada chave é um vetor com as n dimensões da análise pca
-        """
-        if not self.pca_legislaturas:
-            if not self.vetores_votacao_por_partido:
-                self._inicializa_vetores()
-            ipnn = self._lista_de_indices_de_partidos_naos_nulos()
-            matriz = self.vetores_votacao_por_partido
-            matriz = matriz[ipnn,:] # exclui partidos de tamanho zero
-            matriz = matriz - matriz.mean(axis=0) # centraliza dados
-            self.pca_partido = pca.PCA(matriz,fraction=1) # faz o pca
-            self._preenche_pca_de_partidos_nulos(ipnn)
-            logger.info("PCA terminada com sucesso. ini=%s, fim=%s" % (str(self.ini),str(self.fim)))
-        # Criar dicionario a ser retornado:
-        dicionario = {}
-        for partido, vetor in zip(self.partidos, self.pca_partido.U):
-            dicionario[partido.nome] = vetor
-        return dicionario
-    
-    def _lista_de_indices_de_partidos_naos_nulos(self):
-        ipnn = [] 
-        ip = -1
-        for p in self.partidos:
-            ip += 1
-            if self.tamanhos_partidos[p.nome] != 0:
-                ipnn.append(ip)
-        return ipnn
-    
-    def _preenche_pca_de_partidos_nulos(self, ipnn):
-        """Recupera partidos de tamanho nulo, atribuindo zero em todas as dimensões no espaço das componentes principais"""
-        U2 = self.pca_partido.U.copy() # Salvar resultado da pca em U2
-        self.pca_partido.U = numpy.zeros((len(self.partidos), self.num_votacoes))
-        ip = -1
-        ipnn2 = -1
-        for p in self.partidos:
-            ip += 1
-            if ip in ipnn: # Se este partido for um partido não nulo
-                ipnn2 += 1
-                cpmaximo = U2.shape[1]
-                # colocar nesta linha os valores que eu salvei antes em U2
-                self.pca_partido.U[ip,0:cpmaximo] = U2[ipnn2,:]
-            else:
-                self.pca_partido.U[ip,:] = numpy.zeros((1,self.num_votacoes))
-        
 
     def _calcula_legislaturas_2d(self):
         """Retorna mapa com as coordenadas das legislaturas no plano 2D formado
@@ -226,26 +197,83 @@ class AnalisadorPeriodo:
                 for partido in self.coordenadas_legislaturas.keys():
                     self.coordenadas_legislaturas[partido] = [(self.coordenadas_legislaturas[partido])[0], 0.]
             else: # Zero votações no período. Os partidos são todos iguais. Tudo zero.
-                for partido in self.coordenadas_legislaturas.keys():
-                    self.coordenadas_legislaturas[partido] = [ 0. , 0. ]
+                for legislatura in self.coordenadas_legislaturas.keys():
+                    self.coordenadas_legislaturas[legislatura] = [ 0. , 0. ]
         return self.coordenadas_legislaturas
-    
-    def analisa(self):
-        """Retorna instância de AnalisePeriodo"""
-        self._calcula_legislaturas_2d()
-        analisePeriodo = AnalisePeriodo()
-        analisePeriodo.casa_legislativa = self.casa_legislativa
-        analisePeriodo.periodo = self.periodo
-        analisePeriodo.partidos = self.partidos
-        analisePeriodo.votacoes = self.votacoes
-        analisePeriodo.num_votacoes = self.num_votacoes
-        analisePeriodo.tamanhos_partidos = self.tamanhos_partidos
-        analisePeriodo.presencas_partidos = self.presencas_partidos        
-        analisePeriodo.soma_dos_tamanhos_dos_partidos = self.soma_dos_tamanhos_dos_partidos
-        analisePeriodo.pca_partido = self.pca_partido
-        analisePeriodo.coordenadas_legislaturas = self.coordenadas_legislaturas
-        return analisePeriodo
 
+    def _pca_legislaturas(self):
+        """Roda a análise de componentes principais por legislatura.
+
+        Retorna um dicionário no qual as chaves são os ids das legislaturas
+        e o valor de cada chave é um vetor com as n dimensões da análise pca
+        """
+        if not self.pca_legislaturas:
+            if not self.vetores_votacao:
+                self._inicializa_vetores()
+            ilnn = self._lista_de_indices_de_legislaturas_nao_nulas()
+            matriz = self.vetores_votacao
+            matriz = matriz[ilnn,:] # exclui legislaturas ausentes em todas as votações do período
+            matriz = matriz - matriz.mean(axis=0) # centraliza dados
+            self.pca = pca.PCA(matriz,fraction=1) # faz o pca
+            self._preenche_pca_de_legislaturas_nulas(ilnn)
+            logger.info("PCA terminada com sucesso. ini=%s, fim=%s" % (str(self.ini),str(self.fim)))
+        # Criar dicionario a ser retornado:
+        dicionario = {}
+        for legislatura, vetor in zip(self.legislaturas, self.pca.U):
+            dicionario[legislatura.id] = vetor
+        # TODO: se o parlamentar estava ausente, trocar o valor por [null,null]
+        return dicionario
+    
+    def _lista_de_indices_de_legislaturas_nao_nulas(self):
+        return self.vetores_presencas.sum(axis=1).nonzero()[0].tolist()
+
+    def _preenche_pca_de_legislaturas_nulas(self, ilnn):
+        """Recupera legislaturas ausentes no período, atribuindo zero em todas as dimensões no espaço das componentes principais"""
+        U2 = self.pca.U.copy() # Salvar resultado da pca em U2
+        matriz_de_nans = numpy.zeros((len(self.legislaturas), self.num_votacoes)) * numpy.nan
+        self.pca.U = matriz_de_nans
+#        self.pca.U = numpy.array(map(lambda l:map(lambda e:None, l), matriz_de_zeros))
+        il = -1
+        ilnn2 = -1
+        for l in self.legislaturas:
+            il += 1
+            if il in ilnn: # Se esta legislatura for não nula
+                ilnn2 += 1
+                cpmaximo = U2.shape[1]
+                # colocar nesta linha os valores que eu salvei antes em U2
+                self.pca.U[il,0:cpmaximo] = U2[ilnn2,:]
+                # aproveitar para preencher presencas_legislaturas (legislatura.id => True / False)
+                self.presencas_legislaturas[l.id] = True
+            else:
+                self.pca.U[il,:] = numpy.zeros((1,self.num_votacoes))
+                self.presencas_legislaturas[l.id] = False
+
+    def _calcula_centroides_partidos(self):
+        centroides_dos_partidos = numpy.zeros((len(self.partidos), 2))
+        ip = -1
+        matriz_2cp = self.pca.U[:,0:2]
+        for p in self.partidos:
+            ip += 1
+            indices_deste_partido = []
+            il = -1
+            for l in self.legislaturas:
+                il += 1
+                if self.partido_do_parlamentar[il] == self.partidos[ip].nome:
+                    indices_deste_partido.append(il)
+            coordenadas_medias = self._media_sem_nans(matriz_2cp[indices_deste_partido,:])
+            tamanho_partido = len(self.vetores_presencas[indices_deste_partido,:].sum(axis=1).nonzero()[0])
+            self.tamanhos_partidos[self.partidos[ip]] = tamanho_partido
+            self.coordenadas_partidos[self.partidos[ip]] = coordenadas_medias
+            
+    def _media_sem_nans(self, array_numpy):
+        """ Retorna média por colunas de uma array numpy, desconsiderando os nans.
+        """
+        mdat = numpy.ma.masked_array(array_numpy,numpy.isnan(array_numpy))
+        mm = numpy.mean(mdat,axis=0)
+        return mm.filled(numpy.nan)
+
+            
+    
 
 # TODO testar matriz_votacoes
 class MatrizesDeDadosBuilder:
@@ -258,7 +286,7 @@ class MatrizesDeDadosBuilder:
         self.matriz_presencas = numpy.zeros((len(self.legislaturas), len(self.votacoes)))
         self.matriz_votacoes_por_partido =  numpy.zeros((len(self.partidos), len(self.votacoes)))
         self.matriz_presencas_por_partido = numpy.zeros((len(self.partidos), len(self.votacoes)))
-        self.partido_do_parlamentar = numpy.zeros((len(self.legislaturas), 1)) # lista de partidos, um por legislatura
+        self.partido_do_parlamentar = [] # array de partido.nome's, um por legislatura
         self._dic_partido_votos = {} # chave eh nome do partido, e valor eh VotoPartido
         self._dic_legislaturas_votos = {} # legislatura.id => voto.opcao
 
@@ -301,6 +329,7 @@ class MatrizesDeDadosBuilder:
         il = -1 # indice legislatura
         for legislatura in self.legislaturas:
             il += 1
+            self.partido_do_parlamentar.append(legislatura.partido.nome)
             if self._dic_legislaturas_votos.has_key(legislatura.id):
                 opcao = self._dic_legislaturas_votos[legislatura.id]
                 self.matriz_votacoes[il][iv] = self._opcao_to_double(opcao)
@@ -360,7 +389,7 @@ class Rotacionador:
         self.analisePeriodo = analisePeriodo
         self.analisePeriodoReferencia = analisePeriodoReferencia
     
-    def _energia(self,dados_fixos,dados_meus,graus=0,espelho=0):
+    def _energia(self,dados_fixos,dados_meus,graus=0,espelho=0,por_partido=True):
         """Calcula energia envolvida no movimento entre dois instantes (fixo e meu), onde o meu é rodado (entre 0 e 360 graus), e primeiro eixo multiplicado por -1 se espelho=1. Ver pdf intitulado "Solução Analítica para o Problema de Rotação dos Eixos de Representação dos Partidos no Radar Parlamentar" (algoritmo_rotacao.pdf)."""
         e = 0
         dados_meus = dados_meus.copy()
@@ -371,8 +400,12 @@ class Rotacionador:
             for partido, coords in dados_meus.items():
                 dados_meus[partido] = numpy.dot( coords,self._matrot(graus) )
 
-        for p in self.analisePeriodo.partidos:
-            e += numpy.dot( dados_fixos[p.nome] - dados_meus[p.nome],  dados_fixos[p.nome] - dados_meus[p.nome] ) * self.analisePeriodo.tamanhos_partidos[p.nome]
+        if por_partido:
+            for p in dados_meus:
+                e += numpy.dot( dados_fixos[p] - dados_meus[p],  dados_fixos[p] - dados_meus[p] ) # * self.analisePeriodo.tamanhos_partidos[p.nome] 
+        else:
+            for l in dados_meus:
+                e += numpy.dot( dados_fixos[l.id] - dados_meus[l.id],  dados_fixos[l.id] - dados_meus[l.id] )  * self.analisePeriodo.presencas_legislaturas[l.id] 
         return e
 
     def _polar(self,x, y, deg=0):		# radian if deg=0; degree if deg=1
@@ -394,53 +427,61 @@ class Rotacionador:
         s = numpy.sin(rad)
         return numpy.array([[c,-s],[s,c]])
 
-    def espelha_ou_roda(self):
-        """Retorna nova AnalisePeriodo com coordenadas rotacionadas"""
+    def espelha_ou_roda(self, por_partido = True, so_espelha = True):
+        """Retorna nova AnalisePeriodo com coordenadas rotacionadas
+        se por_partido == True, a operacao minimiza o quanto os partidos caminharam
+        se por_partido == False, minimiza o quanto os parlamentares em si caminham
+        se so_espelha == True, nao se faz rotacao, apenas espelha as componentes se necessario.
+        """
+        dados_meus = self.analisePeriodo.coordenadas_partidos if por_partido else self.analisePeriodo.coordenadas_legislaturas
+        dados_fixos = self.analisePeriodoReferencia.coordenadas_partidos if por_partido else self.analisePeriodoReferencia.coordenadas_legislaturas
         epsilon = 0.001
-        dados_meus = self.analisePeriodo.coordenadas
-        dados_fixos = self.analisePeriodoReferencia.coordenadas
 
-        numerador = 0;
-        denominador = 0;
-        for partido, coords in dados_meus.items():
-            meu_polar = self._polar(coords[0],coords[1],0)
-            alheio_polar = self._polar(dados_fixos[partido][0],dados_fixos[partido][1],0)
-            numerador += self.analisePeriodo.tamanhos_partidos[partido] * meu_polar[0] * alheio_polar[0] * numpy.sin(alheio_polar[1])
-            denominador += self.analisePeriodo.tamanhos_partidos[partido] * meu_polar[0] * alheio_polar[0] * numpy.cos(alheio_polar[1])
-        if denominador < epsilon and denominador > -epsilon:
-            teta1 = 90
-            teta2 = 270
+        if not so_espelha:
+            numerador = 0;
+            denominador = 0;
+            for partido, coords in dados_meus.items():
+                meu_polar = self._polar(coords[0],coords[1],0)
+                alheio_polar = self._polar(dados_fixos[partido][0],dados_fixos[partido][1],0)
+                numerador += self.analisePeriodo.tamanhos_partidos[partido] * meu_polar[0] * alheio_polar[0] * numpy.sin(alheio_polar[1])
+                denominador += self.analisePeriodo.tamanhos_partidos[partido] * meu_polar[0] * alheio_polar[0] * numpy.cos(alheio_polar[1])
+            if denominador < epsilon and denominador > -epsilon:
+                teta1 = 90
+                teta2 = 270
+            else:
+                teta1 = numpy.arctan(numerador/denominador) * 180 / 3.141592
+                teta2 = teta1 + 180
         else:
-            teta1 = numpy.arctan(numerador/denominador) * 180 / 3.141592
-            teta2 = teta1 + 180
+            teta1=0
+            teta2=180
 
         ex = numpy.array([self._energia(dados_fixos,dados_meus,graus=teta1,espelho=0),self._energia(dados_fixos,dados_meus,graus=teta2,espelho=0),self._energia(dados_fixos,dados_meus,graus=teta1,espelho=1), self._energia(dados_fixos,dados_meus,graus=teta2,espelho=1) ])
         print ex
         
+        dados_partidos = self.analisePeriodo.coordenadas_partidos
+        dados_legislaturas = self.analisePeriodo.coordenadas_legislaturas
+
         ganhou = ex.argmin()
         campeao = [0,0]
         if ganhou >= 2: # espelhar
             campeao[0] = 1
-            for partido, coords in dados_meus.items():
-                dados_meus[partido] = numpy.dot( coords, numpy.array([[-1.,0.],[0.,1.]]) )
+            for partido, coords in dados_partidos.items():
+                dados_partidos[partido] = numpy.dot( coords, numpy.array([[-1.,0.],[0.,1.]]) )
+            for legislatura, coords in dados_legislaturas.items():
+                dados_legislaturas[legislatura] = numpy.dot( coords, numpy.array([[-1.,0.],[0.,1.]]) )
         if ganhou == 0 or ganhou == 2: # girar de teta1
             campeao[1] = teta1
         else:
             campeao[1] = teta2
-        for partido, coords in dados_meus.items():
-            dados_meus[partido] = numpy.dot( coords, self._matrot(campeao[1]) )
+        for partido, coords in dados_partidos.items():
+            dados_partidos[partido] = numpy.dot( coords, self._matrot(campeao[1]) )
+        for legislatura, coords in dados_legislaturas.items():
+            dados_legislaturas[legislatura] = numpy.dot( coords, self._matrot(campeao[1]) )
 
-        self.coordenadas = dados_meus; # altera coordenadas originais da instância.
         self.theta = campeao[1]
         
         analiseRotacionada = copy.copy(self.analisePeriodo)
-        analiseRotacionada.coordenadas = dados_meus
+        analiseRotacionada.coordenadas_partidos = dados_partidos
+        analiseRotacionada.coordenadas_legislaturas = dados_legislaturas
+
         return analiseRotacionada
-
-
-
-
-
-
-
-

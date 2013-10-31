@@ -36,6 +36,8 @@ class AnalisePeriodo:
         self.votacoes = []
         self.num_votacoes = 0
 
+        self.pca = None
+
         self.tamanhos_partidos = {} # partido.nome => int
         self.soma_dos_tamanhos_dos_partidos = 0
         self.coordenadas_partidos = {} # partdo.nome = [x,y]
