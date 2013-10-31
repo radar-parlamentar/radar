@@ -46,6 +46,7 @@ class AnaliseTest(TestCase):
         self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
         self.partidos = AnaliseTest.importer.partidos
         self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa__nome_curto='conv')
+        self.legislaturas = models.Legislatura.objects.filter(casa_legislativa__nome_curto='conv').distinct()
 
     def test_casa(self):
         """Testa se casa legislativa foi corretamente recuperada do banco"""
@@ -70,12 +71,13 @@ class AnaliseTest(TestCase):
         vetor_jacobinos =    [mean([1, 1, 1]), mean([-1, -1, -1]), mean([-1, -1, -1]), mean([1, 0 -1]), mean([1, 1, 1]), mean([1, 1, 1]), mean([1, 1, 1]), mean([0, -1, -1])]
         vetor_monarquistas = [mean([-1, -1, -1]), mean([1, 1, 1]), mean([1, 1, 1]), mean([1, -1]), mean([-1, -1, -1]), mean([1, 1]), mean([1,  1]), mean([1, 1])]
         MATRIZ_VOTACAO_ESPERADA = numpy.matrix([vetor_girondinos, vetor_jacobinos, vetor_monarquistas])
-        builder = analise.MatrizDeVotacoesBuilder(self.votacoes, self.partidos)
-        matriz_votacao_por_partido = builder.gera_matriz_por_partido()
+        builder = analise.MatrizDeVotacoesBuilder(self.votacoes, self.partidos, self.legislaturas)
+        builder.gera_matrizes()
+        matriz_votacao_por_partido = builder.matriz_votacoes_por_partido
         self.assertTrue((matriz_votacao_por_partido == MATRIZ_VOTACAO_ESPERADA).all()) 
 
     def test_partidos_2d(self):
-        analisador = analise.AnalisadorPeriodo(self.casa_legislativa, partidos=self.partidos)
+        analisador = analise.AnalisadorPeriodo(self.casa_legislativa)
         analisePeriodo = analisador.analisa()
         grafico = analisePeriodo.coordenadas
         self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.49321534, 4)
@@ -87,9 +89,9 @@ class AnaliseTest(TestCase):
         
     def test_rotacao(self):
         periodos = self.casa_legislativa.periodos(models.SEMESTRE)
-        analisador1 = analise.AnalisadorPeriodo(self.casa_legislativa, periodo=periodos[0], partidos=self.partidos)
+        analisador1 = analise.AnalisadorPeriodo(self.casa_legislativa, periodo=periodos[0])
         analise_do_periodo1 = analisador1.analisa()
-        analisador2 = analise.AnalisadorPeriodo(self.casa_legislativa, periodo=periodos[1], partidos=self.partidos)
+        analisador2 = analise.AnalisadorPeriodo(self.casa_legislativa, periodo=periodos[1])
         analise_do_periodo2 = analisador2.analisa()
         rotacionador = analise.Rotacionador(analise_do_periodo2, analise_do_periodo1)
         analise_rotacionada = rotacionador.espelha_ou_roda()

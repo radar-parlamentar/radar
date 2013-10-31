@@ -29,33 +29,43 @@ import numpy
 import pca
 import json
 import copy
+import time # timetrack
 
 logger = logging.getLogger("radar")
 
 class MatrizDeVotacoesBuilder:
     
-    def __init__(self, votacoes, partidos):
+    def __init__(self, votacoes, partidos, legislaturas):
         self.votacoes = votacoes
         self.partidos = partidos
-        self.matriz_votacoes =  numpy.zeros((len(self.partidos), len(self.votacoes)))
+        self.legislaturas = legislaturas
+        self.matriz_votacoes =  numpy.zeros((len(self.legislaturas), len(self.votacoes)))
+        self.matriz_votacoes_por_partido =  numpy.zeros((len(self.partidos), len(self.votacoes)))
         self.matriz_presencas = numpy.zeros((len(self.partidos), len(self.votacoes)))
+        self.partido_do_parlamentar = numpy.zeros((len(self.legislaturas), 1)) # lista de partidos, um por legislatura
         self._dic_partido_votos = {}
-        
-    def gera_matriz_por_partido(self):
-        """Cria os 'vetores de votação' para cada partido. 
+        self._dic_legislaturas_votos = {}
+    tempo_total1 = 0.
+    def gera_matrizes(self):
+        """Cria três matrizes: de votações (por deputado), de votações agregadas por partido,
+        e de presenças dos partidos.
+
+        As matrizes de votações têm valores entre -1 e 1. Quando por deputado, os valores
+        possíveis são -1, 0 e 1, e quando agregado por partido a faixa é contínua.
     
-        O 'vetor' usa um número entre -1 (não) e 1 (sim) para representar a "posição média"
-        do partido em cada votação, tendo N dimensões correspondentes às N votações.
-        Aproveita para calcular presença dos parlamentares.
-    
-        Retorna a 'matriz de votações', em que cada linha é um vetor de votações de um partido 
-                A ordenação das linhas segue a ordem de self.partidos
+        As linhas indexam os partidos em matriz_votacoes_por_partido e matriz_presencas
+        e indexam os legislaturas em matriz_votacoes. As colunas indexam as votações.
+        A ordenação das linhas segue a ordem de self.partidos ou self.legislaturas,
+        e a ordenação das colunas segue a ordem de self.votacoes.
         """
         iv = -1 # índice votação
+        global tempo_total1 # timetrack
+        tempo_total1 = 0. # timetrack
         for votacao in self.votacoes:
             iv += 1
             self._agrega_votos(votacao)
             self._preenche_matrizes(votacao, iv)
+        logger.info(str(tempo_total1) + " s. tempo total 1, preenche dicionario") # timetrack
         return self.matriz_votacoes  
     
     def _agrega_votos(self, votacao):
@@ -68,19 +78,40 @@ class MatrizDeVotacoesBuilder:
             nome_partido = voto.legislatura.partido.nome
             voto_partido = self._dic_partido_votos[nome_partido]
             voto_partido.add(voto.opcao) 
+            tempo_inicial = time.time() # timetrack
+            self._dic_legislaturas_votos[str(voto.legislatura)] = self._opcao_to_double(voto.opcao)
+            global tempo_total1 # timetrack
+            tempo_total1 = tempo_total1 + time.time()-tempo_inicial # timetrack
             
     def _preenche_matrizes(self, votacao, iv):
+        il = -1 # indice legislatura
+        for legislatura in self.legislaturas:
+            il += 1
+            nome_legislatura = str(legislatura)
+            if self._dic_legislaturas_votos.has_key(nome_legislatura):
+                self.matriz_votacoes[il][iv] = self._dic_legislaturas_votos[nome_legislatura]
+            else:
+                self.matriz_votacoes[il][iv] = 0.
+
         ip = -1 # índice partido 
         for partido in self.partidos:
             ip += 1
             if self._dic_partido_votos.has_key(partido.nome):
                 voto_partido = self._dic_partido_votos[partido.nome] 
-                self.matriz_votacoes[ip][iv] = voto_partido.voto_medio() 
+                self.matriz_votacoes_por_partido[ip][iv] = voto_partido.voto_medio() 
                 self.matriz_presencas[ip][iv] = voto_partido.total()
             else:
-                self.matriz_votacoes[ip][iv] = 0
-                self.matriz_presencas[ip][iv] = 0
+                self.matriz_votacoes_por_partido[ip][iv] = 0.
+                self.matriz_presencas[ip][iv] = 0.
     
+
+    def _opcao_to_double(self, opcao):
+        if opcao == 'SIM':
+            return 1.
+        if opcao == 'NAO':
+            return -1.
+        return 0.
+
 class TamanhoPartidoBuilder:
     
     def __init__(self, partidos, casa_legislativa):
@@ -104,24 +135,22 @@ class TamanhoPartidoBuilder:
 
 class AnalisadorPeriodo:
 
-    def __init__(self, casa_legislativa, periodo=None, votacoes=None, partidos=None):
+    def __init__(self, casa_legislativa, periodo=None, votacoes=None):
         """Argumentos:
             casa_legislativa -- objeto do tipo CasaLegislativa; somente votações desta casa serão analisados.
             periodo -- objeto do tipo PeriodoCasaLegislativa; 
                        sem periodo, a análise é feita sobre todas as votações.
             votacoes -- lista de objetos do tipo Votacao para serem usados na análise
                         se não for especificado, procura votações na base de dados de acordo data_inicio e data_fim.
-            partidos -- lista de objetos do tipo Partido para serem usados na análise;
-                        se não for especificado, usa todos os partidos no banco de dados.
+            Não é possível filtrar por partido, sempre são usados todos (exceto os de tamanho nulo no período).
         """
         # TODO que acontece se algum partido for ausente neste período?
         self.casa_legislativa = casa_legislativa
         self.periodo = periodo
         self.ini = periodo.ini if periodo != None else None
         self.fim = periodo.fim if periodo != None else None
-        self.partidos = partidos
-        if not partidos:
-            self.partidos = self.casa_legislativa.partidos()
+        self.partidos = self.casa_legislativa.partidos()
+        self.legislaturas = self.casa_legislativa.legislaturas()
         self.votacoes = votacoes
         if not self.votacoes: 
             self._inicializa_votacoes()
@@ -131,8 +160,9 @@ class AnalisadorPeriodo:
         self.theta = 0 # em graus, eventual rotação feita por self.espelha_ou_roda()
         
         # calculados por self._inicializa_vetores():
-        self.vetores_votacao_por_partido = []     
-        self.vetores_presenca_por_partido = [] 
+        self.vetores_votacao_por_partido = []
+        self.vetores_presenca_por_partido = []
+        self.vetores_votacao = []
         self.tamanhos_partidos = {}
         self.presencas_partidos = {}
         self.soma_dos_tamanhos_dos_partidos = 0
@@ -152,8 +182,10 @@ class AnalisadorPeriodo:
             self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa).filter(data__gte=self.ini, data__lte=self.fim)
 
     def _inicializa_vetores(self):
-        matrizesBuilder = MatrizDeVotacoesBuilder(self.votacoes, self.partidos)
-        self.vetores_votacao_por_partido = matrizesBuilder.gera_matriz_por_partido()
+        matrizesBuilder = MatrizDeVotacoesBuilder(self.votacoes, self.partidos, self.legislaturas)
+        matrizesBuilder.gera_matrizes()
+        self.vetores_votacao = matrizesBuilder.matriz_votacoes
+        self.vetores_votacao_por_partido = matrizesBuilder.matriz_votacoes_por_partido
         self.vetores_presenca_por_partido = matrizesBuilder.matriz_presencas
         tamanhosBuilder = TamanhoPartidoBuilder(self.partidos, self.casa_legislativa)
         self.tamanhos_partidos = tamanhosBuilder.gera_dic_tamanho_partidos()
@@ -363,13 +395,12 @@ class AnalisadorTemporal:
         self.area_total = 1
         self.analises_periodo = [] 
         self.votacoes = []
-        self.partidos = []
         self.json = ""
 
 
     def get_json(self):
         self._faz_analises()
-        self._cria_json()
+        self._cria_json(constante_escala_tamanho = 50)
         return self.json
 
     # deprecated (serve para o json antigo funcionar)
@@ -386,11 +417,7 @@ class AnalisadorTemporal:
                 votacoes = None
             else:
                 votacoes = self.votacoes
-            if len(self.partidos) == 0: # FUNFA?
-                partidos = None
-            else:
-                partidos = self.partidos
-            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, votacoes, partidos)
+            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, votacoes)
             if analisadorPeriodo.votacoes:
                 logger.info("O periodo possui %d votações." % len(analisadorPeriodo.votacoes))
                 analisePeriodo = analisadorPeriodo.analisa()
@@ -410,7 +437,7 @@ class AnalisadorTemporal:
         self.area_total = maior_soma_dos_tamanhos_dos_partidos
 
 
-    def _cria_json(self,constante_escala_tamanho=50):
+    def _cria_json(self,constante_escala_tamanho):
         """Uma vez que a análise temporal está feita, este método cria o json. """
 
         self.json = '{"geral":{"CasaLegislativa":{'

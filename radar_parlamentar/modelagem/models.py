@@ -191,6 +191,10 @@ class CasaLegislativa(models.Model):
         """Retorna os partidos existentes nesta casa legislativa"""
         return Partido.objects.filter(legislatura__casa_legislativa=self).distinct()
 
+    def legislaturas(self):
+        """Retorna as legislaturas existentes nesta casa legislativa"""
+        return Legislatura.objects.filter(casa_legislativa=self).distinct()
+
     def periodos(self, periodicidade, numero_minimo_de_votacoes=0):
         """Retorna todos os períodos em que houve votações nesta casa legislativa.
 
