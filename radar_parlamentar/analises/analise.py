@@ -112,9 +112,7 @@ class AnalisadorPeriodo:
                        sem periodo, a análise é feita sobre todas as votações.
             votacoes -- lista de objetos do tipo Votacao para serem usados na análise
                         se não for especificado, procura votações na base de dados de acordo data_inicio e data_fim.
-            Não é possível filtrar por partido, sempre são usados todos (exceto os de tamanho nulo no período).
         """
-        # TODO que acontece se algum partido for ausente neste período?
         self.casa_legislativa = casa_legislativa
         self.periodo = periodo
         self.ini = periodo.ini if periodo != None else None
@@ -156,7 +154,7 @@ class AnalisadorPeriodo:
         matrizesBuilder.gera_matrizes()
         self.vetores_votacao = matrizesBuilder.matriz_votacoes
         self.vetores_votacao_por_partido = matrizesBuilder.matriz_votacoes_por_partido
-        self.vetores_presenca_por_partido = matrizesBuilder.matriz_presencas
+        self.vetores_presenca_por_partido = matrizesBuilder.matriz_presencas_por_partido
         tamanhosBuilder = TamanhoPartidoBuilder(self.partidos, self.casa_legislativa)
         self.tamanhos_partidos = tamanhosBuilder.gera_dic_tamanho_partidos()
         # Presencas dos partidos está quebrado:
@@ -260,17 +258,19 @@ class MatrizesDeDadosBuilder:
         self.partidos = partidos
         self.legislaturas = legislaturas
         self.matriz_votacoes =  numpy.zeros((len(self.legislaturas), len(self.votacoes)))
+        self.matriz_presencas = numpy.zeros((len(self.legislaturas), len(self.votacoes)))
         self.matriz_votacoes_por_partido =  numpy.zeros((len(self.partidos), len(self.votacoes)))
-        self.matriz_presencas = numpy.zeros((len(self.partidos), len(self.votacoes)))
+        self.matriz_presencas_por_partido = numpy.zeros((len(self.partidos), len(self.votacoes)))
         self.partido_do_parlamentar = numpy.zeros((len(self.legislaturas), 1)) # lista de partidos, um por legislatura
         self._dic_partido_votos = {} # chave eh nome do partido, e valor eh VotoPartido
-        self._dic_legislaturas_votos = {} # chave eh id da legislatura e valor eh { -1, 0, 1 }
+        self._dic_legislaturas_votos = {} # legislatura.id => voto.opcao
 
     def gera_matrizes(self):
-        """Cria três matrizes: 
-            matriz_votacoes -- de votações (por deputado), 
+        """Cria quatro matrizes: 
+            matriz_votacoes -- de votações (por legislaturas), 
+            matriz_presencas -- presenças de legislaturas
             matriz_votacoes_por_partido -- de votações agregadas por partido,
-            matriz_presencas -- e de presenças dos partidos.
+            matriz_presencas_por_partido -- presenças dos partidos.
 
         As matrizes de votações têm valores entre -1 e 1. Quando por deputado, os valores
         possíveis são -1, 0 e 1, e quando agregado por partido a faixa é contínua.
@@ -300,16 +300,22 @@ class MatrizesDeDadosBuilder:
             voto_partido = self._dic_partido_votos[nome_partido]
             opcao = voto.opcao
             voto_partido.add(opcao) 
-            self._dic_legislaturas_votos[voto.legislatura.id] = self._opcao_to_double(opcao)
+            self._dic_legislaturas_votos[voto.legislatura.id] = opcao
             
     def _preenche_matriz_por_legislatura(self, votacao, iv):
         il = -1 # indice legislatura
         for legislatura in self.legislaturas:
             il += 1
             if self._dic_legislaturas_votos.has_key(legislatura.id):
-                self.matriz_votacoes[il][iv] = self._dic_legislaturas_votos[legislatura.id]
+                opcao = self._dic_legislaturas_votos[legislatura.id]
+                self.matriz_votacoes[il][iv] = self._opcao_to_double(opcao)
+                if (opcao == models.AUSENTE):
+                    self.matriz_presencas[il][iv] = 0.
+                else:
+                    self.matriz_presencas[il][iv] = 1.
             else:
                 self.matriz_votacoes[il][iv] = 0.
+                self.matriz_presencas[il][iv] = 0.
 
     def _preenche_matrizes_por_partido(self, votacao, iv):
         ip = -1 # índice partido 
@@ -318,10 +324,10 @@ class MatrizesDeDadosBuilder:
             if self._dic_partido_votos.has_key(partido.nome):
                 voto_partido = self._dic_partido_votos[partido.nome] 
                 self.matriz_votacoes_por_partido[ip][iv] = voto_partido.voto_medio() 
-                self.matriz_presencas[ip][iv] = voto_partido.total()
+                self.matriz_presencas_por_partido[ip][iv] = voto_partido.total()
             else:
                 self.matriz_votacoes_por_partido[ip][iv] = 0.
-                self.matriz_presencas[ip][iv] = 0.
+                self.matriz_presencas_por_partido[ip][iv] = 0.
 
     def _opcao_to_double(self, opcao):
         if opcao == 'SIM':
