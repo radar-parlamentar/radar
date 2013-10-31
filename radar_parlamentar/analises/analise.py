@@ -135,8 +135,8 @@ class AnalisadorPeriodo:
         self.presencas_partidos = {}
         self.soma_dos_tamanhos_dos_partidos = 0
         
-        self.pca_partido = None # É calculado por self._pca_partido()
-        self.coordenadas = {} # É o produto final da análise realizada por esta classe
+        self.pca_legislaturas = None 
+        self.coordenadas_legislaturas = {} 
 
     def _inicializa_votacoes(self):
         """Pega votações do banco de dados e seta a lista self.votacoes"""
@@ -161,15 +161,15 @@ class AnalisadorPeriodo:
         self.presencas_partidos = {}
         self.soma_dos_tamanhos_dos_partidos = tamanhosBuilder.soma_dos_tamanhos_dos_partidos 
 
-    def _pca_partido(self):
-        """Roda a análise de componentes principais por partido.
+    def _pca_legislaturas(self):
+        """Roda a análise de componentes principais por legislatura.
 
         Guarda o resultado em self.pca
-        Retorna um dicionário no qual as chaves são as siglas dos partidos
+        Retorna um dicionário no qual as chaves são os ids das legislaturas
         e o valor de cada chave é um vetor com as n dimensões da análise pca
         """
-        if not self.pca_partido:
-            if self.vetores_votacao_por_partido == None or len(self.vetores_votacao_por_partido) == 0:
+        if not self.pca_legislaturas:
+            if not self.vetores_votacao_por_partido:
                 self._inicializa_vetores()
             ipnn = self._lista_de_indices_de_partidos_naos_nulos()
             matriz = self.vetores_votacao_por_partido
@@ -210,32 +210,29 @@ class AnalisadorPeriodo:
                 self.pca_partido.U[ip,:] = numpy.zeros((1,self.num_votacoes))
         
 
-    def _calcula_partidos_2d(self):
-        """Retorna mapa com as coordenadas dos partidos no plano 2D formado
-        pelas duas primeiras componentes principais. Para isso é preciso
-        fazer uma análise de componentes principais (pca); se esta já tiver
-        sido feita, o método apenas retorna o resultado já previamente salvo
-        na variável self.coordenadas. Caso contrário a análise é feita.
-
-        A chave do mapa é o nome do partido (string) e o valor é uma lista 
+    def _calcula_legislaturas_2d(self):
+        """Retorna mapa com as coordenadas das legislaturas no plano 2D formado
+        pelas duas primeiras componentes principais. 
+        
+        A chave do mapa é o id da legislatura (int) e o valor é uma lista 
         de duas posições [x,y].
         """
-        if not self.analise_ja_feita: # A análise pca ainda tem que ser feita.
-            self.coordenadas = self._pca_partido() # Fazer análise pca.
+        if not self.analise_ja_feita: 
+            self.coordenadas_legislaturas = self._pca_legislaturas() 
             if self.num_votacoes > 1:
-                for partido in self.coordenadas.keys():
-                    self.coordenadas[partido] = (self.coordenadas[partido])[0:2]
+                for partido in self.coordenadas_legislaturas.keys():
+                    self.coordenadas_legislaturas[partido] = (self.coordenadas_legislaturas[partido])[0:2]
             elif self.num_votacoes == 1: # se só tem 1 votação, só tem 1 C.P. Jogar tudo zero na segunda CP.
-                for partido in self.coordenadas.keys():
-                    self.coordenadas[partido] = [(self.coordenadas[partido])[0], 0.]
+                for partido in self.coordenadas_legislaturas.keys():
+                    self.coordenadas_legislaturas[partido] = [(self.coordenadas_legislaturas[partido])[0], 0.]
             else: # Zero votações no período. Os partidos são todos iguais. Tudo zero.
-                for partido in self.coordenadas.keys():
-                    self.coordenadas[partido] = [ 0. , 0. ]
-        return self.coordenadas
+                for partido in self.coordenadas_legislaturas.keys():
+                    self.coordenadas_legislaturas[partido] = [ 0. , 0. ]
+        return self.coordenadas_legislaturas
     
     def analisa(self):
-        """Retorna AnalisePeriodo"""
-        self._calcula_partidos_2d()
+        """Retorna instância de AnalisePeriodo"""
+        self._calcula_legislaturas_2d()
         analisePeriodo = AnalisePeriodo()
         analisePeriodo.casa_legislativa = self.casa_legislativa
         analisePeriodo.periodo = self.periodo
@@ -246,7 +243,7 @@ class AnalisadorPeriodo:
         analisePeriodo.presencas_partidos = self.presencas_partidos        
         analisePeriodo.soma_dos_tamanhos_dos_partidos = self.soma_dos_tamanhos_dos_partidos
         analisePeriodo.pca_partido = self.pca_partido
-        analisePeriodo.coordenadas = self.coordenadas
+        analisePeriodo.coordenadas_legislaturas = self.coordenadas_legislaturas
         return analisePeriodo
 
 
@@ -269,8 +266,6 @@ class MatrizesDeDadosBuilder:
         """Cria quatro matrizes: 
             matriz_votacoes -- de votações (por legislaturas), 
             matriz_presencas -- presenças de legislaturas
-            matriz_votacoes_por_partido -- de votações agregadas por partido,
-            matriz_presencas_por_partido -- presenças dos partidos.
 
         As matrizes de votações têm valores entre -1 e 1. Quando por deputado, os valores
         possíveis são -1, 0 e 1, e quando agregado por partido a faixa é contínua.
