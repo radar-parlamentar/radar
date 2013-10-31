@@ -98,8 +98,11 @@ class JsonAnaliseGenerator:
         self.json += '"partidos":['
         for partido in casa_legislativa.partidos():
             self.json += self._dict_partido(partido) +  ','
-        self.json = self.json[0:-1] # apaga última vírgula
+        self.json = self._sem_ultima_virgula(self.json[0:-1]) 
         self.json += '] }' # fecha lista de partidos e fecha json
+
+    def _sem_ultima_virgula(self, json):
+        return json[0:-1]
         
     def _dict_partido(self, partido):
         dict_partido = {"nome":partido.nome ,"numero":partido.numero,"cor":partido.cor}
@@ -122,8 +125,15 @@ class JsonAnaliseGenerator:
             r = sqrt(t*self.escala_periodo)
             dict_partido["r"].append(round(r,1))
             dict_partido["parlamentares"] = []
+            legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(partido=partido)
+            for leg in legislaturas:
+                dict_partido["parlamentares"].append(self._dict_parlamentar(leg))
         return json.dumps(dict_partido)
     
+    def _dict_parlamentar(self, legislatura):
+        nome = legislatura.parlamentar.nome
+        dict_parlamentar = {"nome":nome}
+        return json.dumps(dict_parlamentar)
 
 class GraphScaler:
 
