@@ -35,105 +35,112 @@ import analise
 
 logger = logging.getLogger("radar")
 
+
+class JsonAnaliseGenerator:
+    """Classe que gera o Json da Analise"""
+    
+    def __init__(self, analise_temporal):
+        self.CONSTANTE_ESCALA_TAMANHO = 120
+        self.analise_temporal = analise_temporal
+        self.json = None
+        
+    def get_json(self):
+        if not self.json:
+            self._cria_json()
+        return self.json
+    
+    def _cria_json(self):
+        
+        casa_legislativa = self.analise_temporal.casa_legislativa
+
+        self.json = '{"geral":{"CasaLegislativa":{'
+        self.json += '"nome":"' + casa_legislativa.nome + '",'
+        self.json += '"nome_curto":"' + casa_legislativa.nome_curto + '",'
+        self.json += '"esfera":"' + casa_legislativa.esfera + '",'
+        self.json += '"local":"' + casa_legislativa.local + '",'
+        self.json += '"atualizacao":"' + unicode(casa_legislativa.atualizacao) + '"'
+        self.json += "}," # fecha casa legislativa
+        escala = self.CONSTANTE_ESCALA_TAMANHO**2. / max(1,self.analise_temporal.area_total)
+        escala_20px = 20**2. * (1./max(1,escala)) # numero de parlamentares representado
+                                                # por um circulo de raio 20 pixels.
+        self.json += '"escala_tamanho":' + str(round(escala_20px,5)) + ','
+        self.json += '"filtro_partidos":null,'
+        self.json += '"filtro_votacoes":null},' # fecha bloco "geral"
+        self.json += '"periodos":['
+        
+        for ap in self.analise_temporal.analises_periodo:
+            self.json += '{' # abre periodo
+            self.json += '"nvotacoes":' + str(ap.periodo.quantidade_votacoes) + ','
+            self.json += '"nome":"' + ap.periodo.string + '",'
+            var_explicada = round((ap.pca_partido.eigen[0] + ap.pca_partido.eigen[1])/ap.pca_partido.eigen.sum() * 100,1)
+            self.json += '"var_explicada":' + str(var_explicada) + ","
+            try:
+                self.json += '"cp1":{"theta":' + str(round(ap.theta,0)%180) + ','
+            except AttributeError:
+                self.json += '"cp1":{"theta":0,'           
+            var_explicada = round(ap.pca_partido.eigen[0]/ap.pca_partido.eigen.sum() * 100,1)
+            self.json += '"var_explicada":' + str(var_explicada) + ","
+            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[0,:]**2]) + "}," # fecha cp1
+            try:
+                self.json += '"cp2":{"theta":' + str(round(ap.theta,0)%180 + 90) + ','
+            except AttributeError:
+                self.json += '"cp2":{"theta":0,'
+            var_explicada = str(round(ap.pca_partido.eigen[1]/ap.pca_partido.eigen.sum() * 100,1))
+            self.json += '"var_explicada":' + str(var_explicada) + ","
+            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[1,:]**2]) + "}," # fecha cp2
+            self.json += '"votacoes":' # deve trazer a lista de votacoes do periodo
+                                        # na mesma ordem apresentada nos vetores
+                                        # composicao das componentes principais.
+            lista_votacoes = []
+            for votacao in ap.votacoes:
+                lista_votacoes.append({"id":unicode(votacao).replace('"',"'")})
+            self.json += json.dumps(lista_votacoes)
+            self.json += ' },' # fecha lista de votações e fecha período
+            
+        self.json = self.json[0:-1] # apaga última vírgula
+        self.json += '],' # fecha lista de períodos
+        self.json += '"partidos":['
+        for partido in casa_legislativa.partidos():
+            dict_partido = {"nome":partido.nome ,"numero":partido.numero,"cor":partido.cor}
+            dict_partido["t"] =  []
+            dict_partido["r"] =  []
+            dict_partido["x"] =  []
+            dict_partido["y"] =  []
+            dict_partido["p"] =  []
+            for ap in self.analise_temporal.analises_periodo:
+                scaler = GraphScaler()
+                mapa = scaler.scale(ap.coordenadas)
+                dict_partido["x"].append(round(mapa[partido.nome][0],2))
+                dict_partido["y"].append(round(mapa[partido.nome][1],2))
+                t = ap.tamanhos_partidos[partido.nome]
+                dict_partido["t"].append(t)
+                r = sqrt(t*escala)
+                dict_partido["r"].append(round(r,1))
+                # TODO: linha abaixo comentada até corrigir presencas_partidos:
+                #p = ap.presencas_partidos[partido.nome] * 100
+                # substituída pela linha abaixo:
+                p = 100
+                dict_partido["p"].append(round(p,1))
+                dict_partido["parlamentares"] = []
+            self.json += json.dumps(dict_partido) + ','
+        self.json = self.json[0:-1] # apaga última vírgula
+        self.json += '] }' # fecha lista de partidos e fecha json
+    
+
 class GraphScaler:
 
     def scale(self, partidos2d):
         """Recebe mapa de coordenadas de partidos (saída de analise.partidos_2d()
-        e altera a escala dos valores de [-1,1] para [0,100]
+        e altera a escala dos valores de [-1,1] para [-100,100]
         """
         scaled = {}
         for partido, coord in partidos2d.items():
             x, y = coord[0], coord[1]
             if x < -1 or x > 1 or y < -1 or y > 1:
                 raise ValueError("Value should be in [-1,1]")
-            scaled[partido] = [x*50+50, y*50+50]
+            scaled[partido] = [x*100, y*100]
         return scaled
 
-
-class JsonAnaliseGenerator:
-    """
-    Classe que gera o Json da Analise
-    """
-
-    @staticmethod
-    def _get_analises(casa_legislativa):
-        """
-        importa os dados da analise
-        """
-        analisador_temporal = analise.AnalisadorTemporal(casa_legislativa)
-        analisador_temporal.get_analises()
-        return analisador_temporal
-
-    @staticmethod
-    def inicia_dicionario(key,lista):
-        if key not in lista:
-            lista[key] = []
-
-    def _json_partidos_config(self,partidos2d,partidos, tamanhos,escala_tamanhos,analises_len,periodo,analisador,xs,ys):
-            """preenche a lista de tamanhos, xs e ys para serem utilizadas no json dos partidos"""
-            for p in partidos:
-                JsonAnaliseGenerator.inicia_dicionario(p,tamanhos)
-                JsonAnaliseGenerator.inicia_dicionario(p,xs)
-                JsonAnaliseGenerator.inicia_dicionario(p,ys)
-            for partido in partidos2d.keys():
-                tamanhos[partido].append([periodo, round(analisador.tamanhos_partidos[partido]/escala_tamanhos,1)])
-                xs[partido].append([periodo, round(partidos2d[partido][0],2)])
-                ys[partido].append([periodo, round(partidos2d[partido][1],2)])
-
-
-    def _json_partidos(self,analise,analises_len):
-        """
-        constroi o json dos partidos
-        """
-        tamanhos = {}
-        xs = {}
-        ys = {}
-        partidos = Set()
-        scaler = GraphScaler()
-        periodo = 0
-        analises = analise.analises_periodo
-        constante_escala_tamanho = 26 # quanto maior, maior serão as bolhas.
-        escala_tamanhos = sqrt(analise.area_total) / constante_escala_tamanho
-        if escala_tamanhos < 0.0001: # quero evitar divisões por zero
-            logger.info("Atenção: Fator de escala fixado em 1, pois %f seria muito baixo." %escala_tamanhos)
-            escala_tamanhos = 1
-        for analise in analises:
-            periodo +=1
-            partidos2d = scaler.scale(analise.coordenadas)
-            partidos.update(set(partidos2d.keys()))
-            self._json_partidos_config(partidos2d,partidos, tamanhos,escala_tamanhos,analises_len,periodo,analise,xs,ys)
-        json_partidos = []
-        for nome_partido in partidos:
-            partido = models.Partido.objects.get(nome=nome_partido)
-            json_partido = {"nome": nome_partido,"numero":partido.numero,"cor":partido.cor,"tamanho":tamanhos[nome_partido],"x":xs[nome_partido]\
-            ,"y":ys[nome_partido]}
-            json_partidos.append(json_partido)
-        return json_partidos
-
-    def _json_periodos(self,analises,analises_len):
-        """
-        constroi o json dos periodos
-        """
-        periodo = 0
-        json_periodos = {}
-        for analisador in analises:
-            periodo += 1
-            json_periodos[str(periodo)] = {"nome":unicode(analisador.periodo),"quantidade_votacoes":analisador.num_votacoes}
-        return json_periodos
-
-    def get_json(self, casa_legislativa):
-        """Retorna JSON para ser usado no gráfico"""
-        encoder.FLOAT_REPR = lambda o:format(o,'.2f')
-        return json.dumps(self.get_json_dic(casa_legislativa),separators=(",",":"))
-
-    def get_json_dic(self,casa_legislativa):
-        """Retorna o dicionario usado para gerar o JSON"""
-        analise = JsonAnaliseGenerator._get_analises(casa_legislativa)
-        analises = analise.analises_periodo
-        analises_len = len(analises)
-        json_periodos = self._json_periodos(analises,analises_len)
-        json_partidos = self._json_partidos(analise,analises_len)
-        return {"periodos":json_periodos,"partidos":json_partidos}
 
 
 class GeradorGrafico:

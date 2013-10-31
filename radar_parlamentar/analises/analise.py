@@ -21,7 +21,7 @@
 
 from __future__ import unicode_literals
 from math import hypot, atan2, pi
-from models import AnalisePeriodo
+from models import AnalisePeriodo, AnaliseTemporal
 from modelagem import models
 import grafico
 import logging
@@ -33,105 +33,156 @@ import copy
 
 logger = logging.getLogger("radar")
 
-class MatrizesDeDadosBuilder:
-    
-    def __init__(self, votacoes, partidos, legislaturas):
-        self.votacoes = votacoes
-        self.partidos = partidos
-        self.legislaturas = legislaturas
-        self.matriz_votacoes =  numpy.zeros((len(self.legislaturas), len(self.votacoes)))
-        self.matriz_votacoes_por_partido =  numpy.zeros((len(self.partidos), len(self.votacoes)))
-        self.matriz_presencas = numpy.zeros((len(self.partidos), len(self.votacoes)))
-        self.partido_do_parlamentar = numpy.zeros((len(self.legislaturas), 1)) # lista de partidos, um por legislatura
-        self._dic_partido_votos = {} # chave eh nome do partido, e valor eh VotoPartido
-        self._dic_legislaturas_votos = {} # chave eh id da legislatura e valor eh { -1, 0, 1 }
+class AnalisadorTemporal:
+    """Um objeto da classe AnalisadorTemporal é um envelope para um conjunto de
+    objetos do tipo AnalisadorPeriodo.
 
-    def gera_matrizes(self):
-        """Cria três matrizes: de votações (por deputado), de votações agregadas por partido,
-        e de presenças dos partidos.
+    Uma análise de um período é uma análise de componentes principais dos
+    votos de um dado período, por exemplo do ano de 2010. Para fazer um gráfico
+    animado, é preciso fazer análises de dois ou mais períodos consecutivos, 
+    por exemplo 2010, 2011 e 2012, e rotacionar adequadamente os resultados 
+    para que os partidos globalmente caminhem o mínimo possível de um lado para
+    o outro (vide algoritmo de rotação).
 
-        As matrizes de votações têm valores entre -1 e 1. Quando por deputado, os valores
-        possíveis são -1, 0 e 1, e quando agregado por partido a faixa é contínua.
-    
-        As linhas indexam os partidos em matriz_votacoes_por_partido e matriz_presencas
-        e indexam os legislaturas em matriz_votacoes. As colunas indexam as votações.
-        A ordenação das linhas segue a ordem de self.partidos ou self.legislaturas,
-        e a ordenação das colunas segue a ordem de self.votacoes.
-        """
-        iv = -1 # índice votação
-        for votacao in self.votacoes:
-            iv += 1
-            self._agrega_votos(votacao)
-            self._preenche_matriz_por_legislatura(votacao, iv)
-            self._preenche_matrizes_por_partido(votacao, iv)
-        return self.matriz_votacoes  
-    
-    def _agrega_votos(self, votacao):
-        self._dic_partido_votos = {}
-        for partido in self.partidos:
-            self._dic_partido_votos[partido.nome] = models.VotoPartido(partido.nome)
-        # com o "select_related" fazemos uma query eager
-        votos = votacao.voto_set.select_related('legislatura__partido', 'opcao', 'legislatura__id').all() 
-        
-        for voto in votos:
-            nome_partido = voto.legislatura.partido.nome
-            voto_partido = self._dic_partido_votos[nome_partido]
-            opcao = voto.opcao
-            voto_partido.add(opcao) 
-            self._dic_legislaturas_votos[voto.legislatura.id] = self._opcao_to_double(opcao)
-            
-    def _preenche_matriz_por_legislatura(self, votacao, iv):
-        il = -1 # indice legislatura
-        for legislatura in self.legislaturas:
-            il += 1
-            if self._dic_legislaturas_votos.has_key(legislatura.id):
-                self.matriz_votacoes[il][iv] = self._dic_legislaturas_votos[legislatura.id]
-            else:
-                self.matriz_votacoes[il][iv] = 0.
+    A classe AnalisadorTemporal tem métodos para criar os objetos AnalisadorPeriodo e
+    fazer as análises.
 
-    def _preenche_matrizes_por_partido(self, votacao, iv):
-        ip = -1 # índice partido 
-        for partido in self.partidos:
-            ip += 1
-            if self._dic_partido_votos.has_key(partido.nome):
-                voto_partido = self._dic_partido_votos[partido.nome] 
-                self.matriz_votacoes_por_partido[ip][iv] = voto_partido.voto_medio() 
-                self.matriz_presencas[ip][iv] = voto_partido.total()
-            else:
-                self.matriz_votacoes_por_partido[ip][iv] = 0.
-                self.matriz_presencas[ip][iv] = 0.
+    Atributos:
+        data_inicio e data_fim -- strings no formato 'aaaa-mm-dd'.
+        analises_periodo -- lista de objetos da classe AnalisePeriodo
+    """
+    def __init__(self, casa_legislativa, periodicidade=models.BIENIO, votacoes=[]):
 
-    def _opcao_to_double(self, opcao):
-        if opcao == 'SIM':
-            return 1.
-        if opcao == 'NAO':
-            return -1.
-        return 0.
-
-class TamanhoPartidoBuilder:
-    
-    def __init__(self, partidos, casa_legislativa):
-        self.partidos = partidos
         self.casa_legislativa = casa_legislativa
-        self.tamanhos = {}
-        self.soma_dos_tamanhos_dos_partidos = 0
+        self.periodos = self.casa_legislativa.periodos(periodicidade)
+
+        self.ini = self.periodos[0].ini
+        self.fim = self.periodos[len(self.periodos)-1].fim
         
-    def gera_dic_tamanho_partidos(self):
-        for partido in self.partidos:
-            tamanho = models.Legislatura.objects.filter(casa_legislativa=self.casa_legislativa, partido=partido).count()
-            self.tamanhos[partido.nome] = tamanho
-        self._calcula_soma_dos_tamanhos()
-        return self.tamanhos
-    
-    def _calcula_soma_dos_tamanhos(self):
-        """Calcula um valor proporcional à soma das áreas dos partidos, para usar 
-        no fator de escala de exibição do gráfico de bolhas
-        """
-        self.soma_dos_tamanhos_dos_partidos = sum(self.tamanhos.values())
+        self.periodicidade = periodicidade
+        self.area_total = 1
+        self.analises_periodo = [] 
+        self.votacoes = []
+        self.json = ""
+
+
+    def get_json(self):
+        self._faz_analises()
+        self._cria_json(constante_escala_tamanho = 50)
+        return self.json
+
+    def get_analises(self):
+        if not self.analises_periodo:
+            self._faz_analises()
+        analise_temporal = AnaliseTemporal()
+        analise_temporal.casa_legislativa = self.casa_legislativa
+        analise_temporal.periodicidade = self.periodicidade
+        analise_temporal.area_total = self.area_total
+        analise_temporal.analises_periodo = self.analises_periodo
+        analise_temporal.votacoes = self.votacoes
+        return analise_temporal
+            
+    def _faz_analises(self):
+        """Método da classe AnalisadorTemporal que cria os objetos AnalisadorPeriodo e faz as análises."""
+        for periodo in self.periodos:
+            logger.info("Analisando periodo %s a %s." % (str(periodo.ini),str(periodo.fim)) )
+            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, self.votacoes)
+            if analisadorPeriodo.votacoes:
+                logger.info("O periodo possui %d votações." % len(analisadorPeriodo.votacoes))
+                analisePeriodo = analisadorPeriodo.analisa()
+                self.analises_periodo.append(analisePeriodo)
+            else:
+                logger.info("O periodo não possui nenhuma votação.")
+
+        # Rotaciona/espelha cada análise baseado em sua análise anterior
+        for i in range(1,len(self.analises_periodo)): # a partir da segunda analise
+            rotacionador = Rotacionador(self.analises_periodo[i], self.analises_periodo[i-1])
+            analiseRotacionada = rotacionador.espelha_ou_roda()
+            self.analises_periodo[i] = analiseRotacionada 
+        
+        # determina área máxima:
+        maior_soma_dos_tamanhos_dos_partidos = max([ analise.soma_dos_tamanhos_dos_partidos for analise in self.analises_periodo ])
+        logger.info("maior soma dos tamanhos dos partidos = %f",maior_soma_dos_tamanhos_dos_partidos)
+        self.area_total = maior_soma_dos_tamanhos_dos_partidos
+
+
+    def _cria_json(self,constante_escala_tamanho):
+        """Uma vez que a análise temporal está feita, este método cria o json. """
+
+        self.json = '{"geral":{"CasaLegislativa":{'
+        self.json += '"nome":"' + self.casa_legislativa.nome + '",'
+        self.json += '"nome_curto":"' + self.casa_legislativa.nome_curto + '",'
+        self.json += '"esfera":"' + self.casa_legislativa.esfera + '",'
+        self.json += '"local":"' + self.casa_legislativa.local + '",'
+        self.json += '"atualizacao":"' + unicode(self.casa_legislativa.atualizacao) + '"'
+        self.json += "}," # fecha casa legislativa
+        escala = constante_escala_tamanho**2. / max(1,self.area_total)
+        escala_20px = 20**2. * (1./max(1,escala)) # numero de parlamentares representado
+                                                # por um circulo de raio 20 pixels.
+        self.json += '"escala_tamanho":' + str(round(escala_20px,5)) + ','
+        self.json += '"filtro_partidos":null,'
+        self.json += '"filtro_votacoes":null},' # fecha bloco "geral"
+        self.json += '"periodos":['
+        for ap in self.analises_periodo:
+            self.json += '{' # abre periodo
+            self.json += '"nvotacoes":' + str(ap.periodo.quantidade_votacoes) + ','
+            self.json += '"nome":"' + ap.periodo.string + '",'
+            var_explicada = round((ap.pca_partido.eigen[0] + ap.pca_partido.eigen[1])/ap.pca_partido.eigen.sum() * 100,1)
+            self.json += '"var_explicada":' + str(var_explicada) + ","
+            try:
+                self.json += '"cp1":{"theta":' + str(round(ap.theta,0)%180) + ','
+            except AttributeError:
+                self.json += '"cp1":{"theta":0,'           
+            var_explicada = round(ap.pca_partido.eigen[0]/ap.pca_partido.eigen.sum() * 100,1)
+            self.json += '"var_explicada":' + str(var_explicada) + ","
+            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[0,:]**2]) + "}," # fecha cp1
+            try:
+                self.json += '"cp2":{"theta":' + str(round(ap.theta,0)%180 + 90) + ','
+            except AttributeError:
+                self.json += '"cp2":{"theta":0,'
+            var_explicada = str(round(ap.pca_partido.eigen[1]/ap.pca_partido.eigen.sum() * 100,1))
+            self.json += '"var_explicada":' + str(var_explicada) + ","
+            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[1,:]**2]) + "}," # fecha cp2
+            self.json += '"votacoes":' # deve trazer a lista de votacoes do periodo
+                                        # na mesma ordem apresentada nos vetores
+                                        # composicao das componentes principais.
+            lista_votacoes = []
+            for votacao in ap.votacoes:
+                lista_votacoes.append({"id":unicode(votacao).replace('"',"'")})
+            self.json += json.dumps(lista_votacoes)
+            self.json += ' },' # fecha lista de votações e fecha período
+        self.json = self.json[0:-1] # apaga última vírgula
+        self.json += '],' # fecha lista de períodos
+        self.json += '"partidos":['
+        for partido in self.casa_legislativa.partidos():
+            dict_partido = {"nome":partido.nome ,"numero":partido.numero,"cor":partido.cor}
+            dict_partido["t"] =  []
+            dict_partido["r"] =  []
+            dict_partido["x"] =  []
+            dict_partido["y"] =  []
+            dict_partido["p"] =  []
+            for ap in self.analises_periodo:
+                scaler = grafico.GraphScaler()
+                mapa = scaler.scale(ap.coordenadas)
+                dict_partido["x"].append(round(mapa[partido.nome][0],2))
+                dict_partido["y"].append(round(mapa[partido.nome][1],2))
+                t = ap.tamanhos_partidos[partido.nome]
+                dict_partido["t"].append(t)
+                r = numpy.sqrt(t*escala)
+                dict_partido["r"].append(round(r,1))
+                # linha abaixo comentada até corrigir presencas_partidos:
+                #p = ap.presencas_partidos[partido.nome] * 100
+                # substituída pela linha abaixo:
+                p = 100
+                dict_partido["p"].append(round(p,1))
+                dict_partido["parlamentares"]=None
+            self.json += json.dumps(dict_partido) + ','
+        self.json = self.json[0:-1] # apaga última vírgula
+        self.json += '] }' # fecha lista de partidos e fecha json
 
 class AnalisadorPeriodo:
 
-    def __init__(self, casa_legislativa, periodo=None, votacoes=None):
+    def __init__(self, casa_legislativa, periodo=None, votacoes=[]):
         """Argumentos:
             casa_legislativa -- objeto do tipo CasaLegislativa; somente votações desta casa serão analisados.
             periodo -- objeto do tipo PeriodoCasaLegislativa; 
@@ -276,6 +327,107 @@ class AnalisadorPeriodo:
         analisePeriodo.pca_partido = self.pca_partido
         analisePeriodo.coordenadas = self.coordenadas
         return analisePeriodo
+
+
+# TODO testar matriz_votacoes
+class MatrizesDeDadosBuilder:
+    
+    def __init__(self, votacoes, partidos, legislaturas):
+        self.votacoes = votacoes
+        self.partidos = partidos
+        self.legislaturas = legislaturas
+        self.matriz_votacoes =  numpy.zeros((len(self.legislaturas), len(self.votacoes)))
+        self.matriz_votacoes_por_partido =  numpy.zeros((len(self.partidos), len(self.votacoes)))
+        self.matriz_presencas = numpy.zeros((len(self.partidos), len(self.votacoes)))
+        self.partido_do_parlamentar = numpy.zeros((len(self.legislaturas), 1)) # lista de partidos, um por legislatura
+        self._dic_partido_votos = {} # chave eh nome do partido, e valor eh VotoPartido
+        self._dic_legislaturas_votos = {} # chave eh id da legislatura e valor eh { -1, 0, 1 }
+
+    def gera_matrizes(self):
+        """Cria três matrizes: 
+            matriz_votacoes -- de votações (por deputado), 
+            matriz_votacoes_por_partido -- de votações agregadas por partido,
+            matriz_presencas -- e de presenças dos partidos.
+
+        As matrizes de votações têm valores entre -1 e 1. Quando por deputado, os valores
+        possíveis são -1, 0 e 1, e quando agregado por partido a faixa é contínua.
+    
+        As linhas indexam os partidos em matriz_votacoes_por_partido e matriz_presencas
+        e indexam os legislaturas em matriz_votacoes. As colunas indexam as votações.
+        A ordenação das linhas segue a ordem de self.partidos ou self.legislaturas,
+        e a ordenação das colunas segue a ordem de self.votacoes.
+        """
+        iv = -1 # índice votação
+        for votacao in self.votacoes:
+            iv += 1
+            self._agrega_votos(votacao)
+            self._preenche_matriz_por_legislatura(votacao, iv)
+            self._preenche_matrizes_por_partido(votacao, iv)
+        return self.matriz_votacoes  
+    
+    def _agrega_votos(self, votacao):
+        self._dic_partido_votos = {}
+        for partido in self.partidos:
+            self._dic_partido_votos[partido.nome] = models.VotoPartido(partido.nome)
+        # com o "select_related" fazemos uma query eager
+        votos = votacao.voto_set.select_related('legislatura__partido', 'opcao', 'legislatura__id').all() 
+        
+        for voto in votos:
+            nome_partido = voto.legislatura.partido.nome
+            voto_partido = self._dic_partido_votos[nome_partido]
+            opcao = voto.opcao
+            voto_partido.add(opcao) 
+            self._dic_legislaturas_votos[voto.legislatura.id] = self._opcao_to_double(opcao)
+            
+    def _preenche_matriz_por_legislatura(self, votacao, iv):
+        il = -1 # indice legislatura
+        for legislatura in self.legislaturas:
+            il += 1
+            if self._dic_legislaturas_votos.has_key(legislatura.id):
+                self.matriz_votacoes[il][iv] = self._dic_legislaturas_votos[legislatura.id]
+            else:
+                self.matriz_votacoes[il][iv] = 0.
+
+    def _preenche_matrizes_por_partido(self, votacao, iv):
+        ip = -1 # índice partido 
+        for partido in self.partidos:
+            ip += 1
+            if self._dic_partido_votos.has_key(partido.nome):
+                voto_partido = self._dic_partido_votos[partido.nome] 
+                self.matriz_votacoes_por_partido[ip][iv] = voto_partido.voto_medio() 
+                self.matriz_presencas[ip][iv] = voto_partido.total()
+            else:
+                self.matriz_votacoes_por_partido[ip][iv] = 0.
+                self.matriz_presencas[ip][iv] = 0.
+
+    def _opcao_to_double(self, opcao):
+        if opcao == 'SIM':
+            return 1.
+        if opcao == 'NAO':
+            return -1.
+        return 0.
+
+class TamanhoPartidoBuilder:
+    
+    def __init__(self, partidos, casa_legislativa):
+        self.partidos = partidos
+        self.casa_legislativa = casa_legislativa
+        self.tamanhos = {}
+        self.soma_dos_tamanhos_dos_partidos = 0
+        
+    def gera_dic_tamanho_partidos(self):
+        for partido in self.partidos:
+            tamanho = models.Legislatura.objects.filter(casa_legislativa=self.casa_legislativa, partido=partido).count()
+            self.tamanhos[partido.nome] = tamanho
+        self._calcula_soma_dos_tamanhos()
+        return self.tamanhos
+    
+    def _calcula_soma_dos_tamanhos(self):
+        """Calcula um valor proporcional à soma das áreas dos partidos, para usar 
+        no fator de escala de exibição do gráfico de bolhas
+        """
+        self.soma_dos_tamanhos_dos_partidos = sum(self.tamanhos.values())
+
     
     
 class Rotacionador:
@@ -361,151 +513,6 @@ class Rotacionador:
         analiseRotacionada.coordenadas = dados_meus
         return analiseRotacionada
 
-class AnalisadorTemporal:
-    """Um objeto da classe AnalisadorTemporal é um envelope para um conjunto de
-    objetos do tipo AnalisadorPeriodo.
-
-    Uma análise de um período é uma análise de componentes principais dos
-    votos de um dado período, por exemplo do ano de 2010. Para fazer um gráfico
-    animado, é preciso fazer análises de dois ou mais períodos consecutivos, 
-    por exemplo 2010, 2011 e 2012, e rotacionar adequadamente os resultados 
-    para que os partidos globalmente caminhem o mínimo possível de um lado para
-    o outro (vide algoritmo de rotação).
-
-    A classe AnalisadorTemporal tem métodos para criar os objetos AnalisadorPeriodo e
-    fazer as análises.
-
-    Atributos:
-        data_inicio e data_fim -- strings no formato 'aaaa-mm-dd'.
-        analises_periodo -- lista de objetos da classe AnalisePeriodo
-    """
-    def __init__(self, casa_legislativa, periodicidade=models.BIENIO, votacoes=[]):
-
-        self.casa_legislativa = casa_legislativa
-        self.periodos = self.casa_legislativa.periodos(periodicidade)
-
-        self.ini = self.periodos[0].ini
-        self.fim = self.periodos[len(self.periodos)-1].fim
-        
-        self.periodicidade = periodicidade
-        self.area_total = 1
-        self.analises_periodo = [] 
-        self.votacoes = []
-        self.json = ""
-
-
-    def get_json(self):
-        self._faz_analises()
-        self._cria_json(constante_escala_tamanho = 50)
-        return self.json
-
-    # deprecated (serve para o json antigo funcionar)
-    # Este método poderá ser apagado quando o json antigo não for mais usado (ou seja, quando o método get_json da classe JsonAnaliseGenerator do módulo gráfico não for mais usado).
-    def get_analises(self):
-        self._faz_analises()
-        return self.analises_periodo
-            
-    def _faz_analises(self):
-        """Método da classe AnalisadorTemporal que cria os objetos AnalisadorPeriodo e faz as análises."""
-        for periodo in self.periodos:
-            logger.info("Analisando periodo %s a %s." % (str(periodo.ini),str(periodo.fim)) )
-            if len(self.votacoes) == 0: # FUNFA?
-                votacoes = None
-            else:
-                votacoes = self.votacoes
-            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, votacoes)
-            if analisadorPeriodo.votacoes:
-                logger.info("O periodo possui %d votações." % len(analisadorPeriodo.votacoes))
-                analisePeriodo = analisadorPeriodo.analisa()
-                self.analises_periodo.append(analisePeriodo)
-            else:
-                logger.info("O periodo não possui nenhuma votação.")
-
-        # Rotaciona/espelha cada análise baseado em sua análise anterior
-        for i in range(1,len(self.analises_periodo)): # a partir da segunda analise
-            rotacionador = Rotacionador(self.analises_periodo[i], self.analises_periodo[i-1])
-            analiseRotacionada = rotacionador.espelha_ou_roda()
-            self.analises_periodo[i] = analiseRotacionada 
-        
-        # determina área máxima:
-        maior_soma_dos_tamanhos_dos_partidos = max([ analise.soma_dos_tamanhos_dos_partidos for analise in self.analises_periodo ])
-        logger.info("maior soma dos tamanhos dos partidos = %f",maior_soma_dos_tamanhos_dos_partidos)
-        self.area_total = maior_soma_dos_tamanhos_dos_partidos
-
-
-    def _cria_json(self,constante_escala_tamanho):
-        """Uma vez que a análise temporal está feita, este método cria o json. """
-
-        self.json = '{"geral":{"CasaLegislativa":{'
-        self.json += '"nome":"' + self.casa_legislativa.nome + '",'
-        self.json += '"nome_curto":"' + self.casa_legislativa.nome_curto + '",'
-        self.json += '"esfera":"' + self.casa_legislativa.esfera + '",'
-        self.json += '"local":"' + self.casa_legislativa.local + '",'
-        self.json += '"atualizacao":"' + unicode(self.casa_legislativa.atualizacao) + '"'
-        self.json += "}," # fecha casa legislativa
-        escala = constante_escala_tamanho**2. / max(1,self.area_total)
-        escala_20px = 20**2. * (1./max(1,escala)) # numero de parlamentares representado
-                                                # por um circulo de raio 20 pixels.
-        self.json += '"escala_tamanho":' + str(round(escala_20px,5)) + ','
-        self.json += '"filtro_partidos":null,'
-        self.json += '"filtro_votacoes":null},' # fecha bloco "geral"
-        self.json += '"periodos":['
-        for ap in self.analises_periodo:
-            self.json += '{' # abre periodo
-            self.json += '"nvotacoes":' + str(ap.periodo.quantidade_votacoes) + ','
-            self.json += '"nome":"' + ap.periodo.string + '",'
-            var_explicada = round((ap.pca_partido.eigen[0] + ap.pca_partido.eigen[1])/ap.pca_partido.eigen.sum() * 100,1)
-            self.json += '"var_explicada":' + str(var_explicada) + ","
-            try:
-                self.json += '"cp1":{"theta":' + str(round(ap.theta,0)%180) + ','
-            except AttributeError:
-                self.json += '"cp1":{"theta":0,'           
-            var_explicada = round(ap.pca_partido.eigen[0]/ap.pca_partido.eigen.sum() * 100,1)
-            self.json += '"var_explicada":' + str(var_explicada) + ","
-            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[0,:]**2]) + "}," # fecha cp1
-            try:
-                self.json += '"cp2":{"theta":' + str(round(ap.theta,0)%180 + 90) + ','
-            except AttributeError:
-                self.json += '"cp2":{"theta":0,'
-            var_explicada = str(round(ap.pca_partido.eigen[1]/ap.pca_partido.eigen.sum() * 100,1))
-            self.json += '"var_explicada":' + str(var_explicada) + ","
-            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[1,:]**2]) + "}," # fecha cp2
-            self.json += '"votacoes":' # deve trazer a lista de votacoes do periodo
-                                        # na mesma ordem apresentada nos vetores
-                                        # composicao das componentes principais.
-            lista_votacoes = []
-            for votacao in ap.votacoes:
-                lista_votacoes.append({"id":unicode(votacao).replace('"',"'")})
-            self.json += json.dumps(lista_votacoes)
-            self.json += ' },' # fecha lista de votações e fecha período
-        self.json = self.json[0:-1] # apaga última vírgula
-        self.json += '],' # fecha lista de períodos
-        self.json += '"partidos":['
-        for partido in self.casa_legislativa.partidos():
-            dict_partido = {"nome":partido.nome ,"numero":partido.numero,"cor":partido.cor}
-            dict_partido["t"] =  []
-            dict_partido["r"] =  []
-            dict_partido["x"] =  []
-            dict_partido["y"] =  []
-            dict_partido["p"] =  []
-            for ap in self.analises_periodo:
-                scaler = grafico.GraphScaler()
-                mapa = scaler.scale(ap.coordenadas)
-                dict_partido["x"].append(round(mapa[partido.nome][0],2))
-                dict_partido["y"].append(round(mapa[partido.nome][1],2))
-                t = ap.tamanhos_partidos[partido.nome]
-                dict_partido["t"].append(t)
-                r = numpy.sqrt(t*escala)
-                dict_partido["r"].append(round(r,1))
-                # linha abaixo comentada até corrigir presencas_partidos:
-                #p = ap.presencas_partidos[partido.nome] * 100
-                # substituída pela linha abaixo:
-                p = 100
-                dict_partido["p"].append(round(p,1))
-                dict_partido["parlamentares"]=None
-            self.json += json.dumps(dict_partido) + ','
-        self.json = self.json[0:-1] # apaga última vírgula
-        self.json += '] }' # fecha lista de partidos e fecha json
 
 
 

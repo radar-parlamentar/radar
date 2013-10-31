@@ -44,21 +44,13 @@ def analise(request, nome_curto_casa_legislativa):
             )
 
 @cache_page(60 * 0.1)
-def json_analise(request,nome_curto_casa_legislativa):
-    """Retorna (novo) JSON com dados da análise solicitada."""
-    casa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
-    at = AnalisadorTemporal(casa,periodicidade=models.BIENIO,votacoes=[])
-    # O argumento votacoes passado em branco irá utilizar todas as votações.
-    # Se for uma lista de votações, serão consideras apenas estas.
-    json = at.get_json()
-    return HttpResponse(json, mimetype='application/json')
-
-@cache_page(60 * 0.1)
-def json_pca(request, nome_curto_casa_legislativa):
+def json_analise(request, nome_curto_casa_legislativa):
     """Retorna o JSON com as coordenadas do gráfico PCA"""
     casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
-    gen = JsonAnaliseGenerator()
-    json = gen.get_json(casa_legislativa)
+    analisador = AnalisadorTemporal(casa_legislativa)
+    analise_temporal = analisador.get_analises()
+    gen = JsonAnaliseGenerator(analise_temporal)
+    json = gen.get_json()
     return HttpResponse(json, mimetype='application/json')
 
 # ?????

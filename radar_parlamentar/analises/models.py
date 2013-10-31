@@ -17,6 +17,16 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
+class AnaliseTemporal:
+    
+    def __init__(self):
+        self.casa_legislativa = None
+        self.periodicidade = None
+        self.area_total = 1
+        self.analises_periodo = [] 
+        self.votacoes = []
+
+
 class AnalisePeriodo:
     
     def __init__(self):
