@@ -75,9 +75,13 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
+	  masc = parseInt(d.Masculino);
+	  feme = parseInt(d.Feminino);
+	  porcenM = Math.round((masc / (masc + feme))*10000)/100;
+	  porcenF = Math.round((feme / (masc + feme))*10000)/100;
     r = "<strong>Legislatura:</strong> <span style='color:yellow'>"  + d.Legislatura + "</span></br>";
-    r += "<strong>Homens:</strong> <span style='color:yellow'>" + d.Masculino + "</span></br>";
-    r += "<strong>Mulheres:</strong> <span style='color:yellow'>" + d.Feminino + "</span></br>";
+    r += "<strong>Homens:</strong> <span style='color:yellow'>" + d.Masculino + " ("+porcenM+"%)</span></br>";
+    r += "<strong>Mulheres:</strong> <span style='color:yellow'>" + d.Feminino + " ("+porcenF+"%)</span></br>";
     return r;
   })
 
