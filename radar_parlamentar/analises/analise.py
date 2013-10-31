@@ -52,26 +52,23 @@ class AnalisadorTemporal:
         analises_periodo -- lista de objetos da classe AnalisePeriodo
     """
     def __init__(self, casa_legislativa, periodicidade=models.BIENIO, votacoes=[]):
-
         self.casa_legislativa = casa_legislativa
         self.periodos = self.casa_legislativa.periodos(periodicidade)
-
         self.ini = self.periodos[0].ini
         self.fim = self.periodos[len(self.periodos)-1].fim
-        
         self.periodicidade = periodicidade
         self.area_total = 1
         self.analises_periodo = [] 
         self.votacoes = []
         self.json = ""
 
-
     def get_json(self):
         self._faz_analises()
         self._cria_json(constante_escala_tamanho = 50)
         return self.json
 
-    def get_analises(self):
+    def get_analise_temporal(self):
+        """Retorna instância de AnaliseTemporal"""
         if not self.analises_periodo:
             self._faz_analises()
         analise_temporal = AnaliseTemporal()
@@ -105,80 +102,6 @@ class AnalisadorTemporal:
         logger.info("maior soma dos tamanhos dos partidos = %f",maior_soma_dos_tamanhos_dos_partidos)
         self.area_total = maior_soma_dos_tamanhos_dos_partidos
 
-
-    def _cria_json(self,constante_escala_tamanho):
-        """Uma vez que a análise temporal está feita, este método cria o json. """
-
-        self.json = '{"geral":{"CasaLegislativa":{'
-        self.json += '"nome":"' + self.casa_legislativa.nome + '",'
-        self.json += '"nome_curto":"' + self.casa_legislativa.nome_curto + '",'
-        self.json += '"esfera":"' + self.casa_legislativa.esfera + '",'
-        self.json += '"local":"' + self.casa_legislativa.local + '",'
-        self.json += '"atualizacao":"' + unicode(self.casa_legislativa.atualizacao) + '"'
-        self.json += "}," # fecha casa legislativa
-        escala = constante_escala_tamanho**2. / max(1,self.area_total)
-        escala_20px = 20**2. * (1./max(1,escala)) # numero de parlamentares representado
-                                                # por um circulo de raio 20 pixels.
-        self.json += '"escala_tamanho":' + str(round(escala_20px,5)) + ','
-        self.json += '"filtro_partidos":null,'
-        self.json += '"filtro_votacoes":null},' # fecha bloco "geral"
-        self.json += '"periodos":['
-        for ap in self.analises_periodo:
-            self.json += '{' # abre periodo
-            self.json += '"nvotacoes":' + str(ap.periodo.quantidade_votacoes) + ','
-            self.json += '"nome":"' + ap.periodo.string + '",'
-            var_explicada = round((ap.pca_partido.eigen[0] + ap.pca_partido.eigen[1])/ap.pca_partido.eigen.sum() * 100,1)
-            self.json += '"var_explicada":' + str(var_explicada) + ","
-            try:
-                self.json += '"cp1":{"theta":' + str(round(ap.theta,0)%180) + ','
-            except AttributeError:
-                self.json += '"cp1":{"theta":0,'           
-            var_explicada = round(ap.pca_partido.eigen[0]/ap.pca_partido.eigen.sum() * 100,1)
-            self.json += '"var_explicada":' + str(var_explicada) + ","
-            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[0,:]**2]) + "}," # fecha cp1
-            try:
-                self.json += '"cp2":{"theta":' + str(round(ap.theta,0)%180 + 90) + ','
-            except AttributeError:
-                self.json += '"cp2":{"theta":0,'
-            var_explicada = str(round(ap.pca_partido.eigen[1]/ap.pca_partido.eigen.sum() * 100,1))
-            self.json += '"var_explicada":' + str(var_explicada) + ","
-            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca_partido.Vt[1,:]**2]) + "}," # fecha cp2
-            self.json += '"votacoes":' # deve trazer a lista de votacoes do periodo
-                                        # na mesma ordem apresentada nos vetores
-                                        # composicao das componentes principais.
-            lista_votacoes = []
-            for votacao in ap.votacoes:
-                lista_votacoes.append({"id":unicode(votacao).replace('"',"'")})
-            self.json += json.dumps(lista_votacoes)
-            self.json += ' },' # fecha lista de votações e fecha período
-        self.json = self.json[0:-1] # apaga última vírgula
-        self.json += '],' # fecha lista de períodos
-        self.json += '"partidos":['
-        for partido in self.casa_legislativa.partidos():
-            dict_partido = {"nome":partido.nome ,"numero":partido.numero,"cor":partido.cor}
-            dict_partido["t"] =  []
-            dict_partido["r"] =  []
-            dict_partido["x"] =  []
-            dict_partido["y"] =  []
-            dict_partido["p"] =  []
-            for ap in self.analises_periodo:
-                scaler = grafico.GraphScaler()
-                mapa = scaler.scale(ap.coordenadas)
-                dict_partido["x"].append(round(mapa[partido.nome][0],2))
-                dict_partido["y"].append(round(mapa[partido.nome][1],2))
-                t = ap.tamanhos_partidos[partido.nome]
-                dict_partido["t"].append(t)
-                r = numpy.sqrt(t*escala)
-                dict_partido["r"].append(round(r,1))
-                # linha abaixo comentada até corrigir presencas_partidos:
-                #p = ap.presencas_partidos[partido.nome] * 100
-                # substituída pela linha abaixo:
-                p = 100
-                dict_partido["p"].append(round(p,1))
-                dict_partido["parlamentares"]=None
-            self.json += json.dumps(dict_partido) + ','
-        self.json = self.json[0:-1] # apaga última vírgula
-        self.json += '] }' # fecha lista de partidos e fecha json
 
 class AnalisadorPeriodo:
 
@@ -412,12 +335,12 @@ class TamanhoPartidoBuilder:
     def __init__(self, partidos, casa_legislativa):
         self.partidos = partidos
         self.casa_legislativa = casa_legislativa
-        self.tamanhos = {}
+        self.tamanhos = {} # nome partido => tamanho
         self.soma_dos_tamanhos_dos_partidos = 0
         
     def gera_dic_tamanho_partidos(self):
         for partido in self.partidos:
-            tamanho = models.Legislatura.objects.filter(casa_legislativa=self.casa_legislativa, partido=partido).count()
+            tamanho = models.Legislatura.objects.filter(casa_legislativa=self.casa_legislativa, partido=partido).count() 
             self.tamanhos[partido.nome] = tamanho
         self._calcula_soma_dos_tamanhos()
         return self.tamanhos

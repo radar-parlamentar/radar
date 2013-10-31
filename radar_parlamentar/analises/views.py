@@ -48,7 +48,7 @@ def json_analise(request, nome_curto_casa_legislativa):
     """Retorna o JSON com as coordenadas do gráfico PCA"""
     casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
     analisador = AnalisadorTemporal(casa_legislativa)
-    analise_temporal = analisador.get_analises()
+    analise_temporal = analisador.get_analise_temporal()
     gen = JsonAnaliseGenerator(analise_temporal)
     json = gen.get_json()
     return HttpResponse(json, mimetype='application/json')
