@@ -1,0 +1,1367 @@
+{
+"geral":
+    {
+    "CasaLegislativa":
+        {
+        "nome":"Convenção Nacional Francesa",
+        "nome_curto":"conv",
+        "esfera":"teste",
+        "local":"",
+        "atualizacao":""
+        },
+    "escala_tamanho":11.84,
+    "filtro_partidos":null,
+    "filtro_votacoes":null
+    },
+"periodos":
+    [    
+        {
+        "nvotacoes":17,
+        "nome":"1o Semestre 1788",
+        "var_explicada":85.3,
+        "cp1":
+            {
+            "theta":23.1,
+            "var_explicada":73.0,
+            "composicao":null
+            },
+        "cp2":
+            {
+            "theta":-66.9,
+            "var_explicada":12.3,
+            "composicao":null
+            },
+        "votacoes": null
+        },
+        {
+        "nvotacoes":30,
+        "nome":"2o Semestre 1788",
+        "var_explicada":87,
+        "cp1":
+            {
+            "theta":0,
+            "var_explicada":63.0,
+            "composicao":null
+            },
+        "cp2":
+            {
+            "theta":-36.9,
+            "var_explicada":22.3,
+            "composicao":null
+            },
+        "votacoes": null
+        },
+        {
+        "nvotacoes":2,
+        "nome":"1o Semestre 1789",
+        "var_explicada":93.3,
+        "cp1":
+            {
+            "theta":23.1,
+            "var_explicada":80.0,
+            "composicao":null
+            },
+        "cp2":
+            {
+            "theta":-66.9,
+            "var_explicada":10.3,
+            "composicao":null
+            },
+        "votacoes": null
+        }
+    ],
+"partidos":
+    [
+        {
+        "nome":"Monarquistas",
+        "numero":79,
+        "cor":"#A81450",        
+        "t":[16,9,0],
+        "r":[23.2, 17.4, 0.0],
+        "x":[61.2, 52.1, 12.1],
+        "y":[-14.0, 98.1, 74.0],
+        "p":[56, 100, 0],
+        "parlamentares":
+            [
+                {"nome":"Sr.Oaguai",
+                 "x":[-26.3, 86.0, 39.8],
+                 "y":[-63.2, -14.9, -30.7]
+                },
+                {"nome":"Sr.Vusari",
+                 "x":[null, -66.4, -66.4],
+                 "y":[null,  24.8, 10]
+                },
+                {"nome":"Sr.Uakiko",
+                 "x":[39.5, 88.0, 87.2],
+                 "y":[80.2, -76.4,  4.6]
+                },
+                {"nome":"Sr.Yubogi",
+                 "x":[16.8, -81.0, 82.9],
+                 "y":[-73.1, -91.8, -54.3]
+                },
+                {"nome":"Sr.Dueaou",
+                 "x":[-4.1, 88.4, -14.5],
+                 "y":[10.9, 21.8, 92.8]
+                }
+            ]
+        },
+        {
+        "nome":"Jacobinos",
+        "numero":42,
+        "cor":"#1421CC",
+        "t":[36,49,49],
+        "r":[34.9, 40.7, 40.7],
+        "x":[-61.2, 22.1, 56.0],
+        "y":[14.0, 8.1, -20.0],
+        "p":[56, 100, 100],
+        "parlamentares":
+            [
+                {"nome":"Sr. Dawiyo Jacobo",
+                 "x":[36.3, 72.3, -16.8],
+                 "y":[20.0, 17.1, 84.0]
+                },
+                {"nome":"Sr. Xivope Jacobo",
+                 "x":[50.7, 75.1, 40.4],
+                 "y":[33.7, 64.2, 60.7]
+                },
+                {"nome":"Sr. Aawive Jacobo",
+                 "x":[45.5, 73.7, 43.9],
+                 "y":[-39.3, 18.6, -37.1]
+                },
+                {"nome":"Sr. Eaqeoo Jacobo",
+                 "x":[-57.6, 27.8,  1.4],
+                 "y":[-21.0, 24.1, -68.8]
+                },
+                {"nome":"Sr. Keyaca Jacobo",
+                 "x":[-19.1, -74.3, -2.4],
+                 "y":[55.2, 94.1, -14.4]
+                },
+                {"nome":"Sr. Wonaka Jacobo",
+                 "x":[-59.8, -92.2, -27.9],
+                 "y":[55.3, 56.6,  2.9]
+                },
+                {"nome":"Sr. Jibare Jacobo",
+                 "x":[-11.7, -38.6, -14.3],
+                 "y":[79.8, 18.3, 40.2]
+                },
+                {"nome":"Sr. Janeee Jacobo",
+                 "x":[75.1, 85.8, 13.0],
+                 "y":[-87.7, -84.5, -41.9]
+                }
+            ]
+        },
+        {
+        "nome":"Girondinos",
+        "numero":27,
+        "cor":"#42A116",
+        "t":[270,260,290],
+        "r":[0.0, 11.6, 29.0],
+        "x":[61.2, 52.1, -30.0],
+        "y":[-14.0, 95.1, -30.0],
+        "p":[30, 90, 10],
+        "parlamentares":
+            [
+                {"nome":"Sr. Zumudi G.",
+                 "x":[17.8, 80.2, null],
+                 "y":[55.0, 72.5, null]
+                },
+                {"nome":"Sr. Rasaha G.",
+                 "x":[100.0, 96.6, 59.0],
+                 "y":[72.8, 91.0, 68.2]
+                },
+                {"nome":"Sr. Miqote G.",
+                 "x":[-74.1, -95.7, null],
+                 "y":[30.5, 62.6, null]
+                },
+                {"nome":"Sr. Noxuoa G.",
+                 "x":[null, 13.7, null],
+                 "y":[null, 15.6, null]
+                },
+                {"nome":"Sr. Meviou G.",
+                 "x":[null, null, -55.2],
+                 "y":[null, null, -63.8]
+                },
+                {"nome":"Sr. Oiaeeo G.",
+                 "x":[-26.1, -47.7, null],
+                 "y":[28.1, 28.5, null]
+                },
+                {"nome":"Sr. Xaviza G.",
+                 "x":[-48.6, null, null],
+                 "y":[15.5, null, null]
+                },
+                {"nome":"Sr. Eedawi G.",
+                 "x":[46.7,  5.0, 16.1],
+                 "y":[-99.8, -88.0, -84.1]
+                },
+                {"nome":"Sr. Gibuyi G.",
+                 "x":[null, null, null],
+                 "y":[null, null, null]
+                },
+                {"nome":"Sr. Yuoage G.",
+                 "x":[18.2, null, null],
+                 "y":[-5.4, null, null]
+                },
+                {"nome":"Sr. Eoeeqo G.",
+                 "x":[17.6, null, 70.9],
+                 "y":[-89.1, null, -99.5]
+                },
+                {"nome":"Sr. Qeviju G.",
+                 "x":[-70.6, -85.1, -87.7],
+                 "y":[81.5, 79.8, 86.3]
+                },
+                {"nome":"Sr. Eeleyi G.",
+                 "x":[85.5, null, null],
+                 "y":[ 6.8, null, null]
+                },
+                {"nome":"Sr. Faheli G.",
+                 "x":[null, -67.6, -93.2],
+                 "y":[null, 77.9, 86.5]
+                },
+                {"nome":"Sr. Oigiqo G.",
+                 "x":[null, -100.0, -64.2],
+                 "y":[null, -48.1, -43.9]
+                },
+                {"nome":"Sr. Docomo G.",
+                 "x":[null, -66.1, 23.7],
+                 "y":[null, -6.5, -59.8]
+                },
+                {"nome":"Sr. Powuoa G.",
+                 "x":[63.1, 30.0, 48.1],
+                 "y":[61.9, 54.3, 99.2]
+                },
+                {"nome":"Sr. Banavu G.",
+                 "x":[-84.3, null, -91.0],
+                 "y":[97.7, null, 77.3]
+                },
+                {"nome":"Sr. Dakuua G.",
+                 "x":[53.5, 46.5, null],
+                 "y":[-59.3, -52.1, null]
+                },
+                {"nome":"Sr. Jameyu G.",
+                 "x":[-26.0, null, null],
+                 "y":[-13.2, null, null]
+                },
+                {"nome":"Sr. Ooradu G.",
+                 "x":[-100.0, -94.6, -86.2],
+                 "y":[62.5, 42.1, 79.1]
+                },
+                {"nome":"Sr. Qeeima G.",
+                 "x":[-63.7, null, -63.5],
+                 "y":[-100.0, null, -96.0]
+                },
+                {"nome":"Sr. Iicuwu G.",
+                 "x":[16.0, 24.6, -0.2],
+                 "y":[-60.5, -47.8, -91.5]
+                },
+                {"nome":"Sr. Soqabe G.",
+                 "x":[null, -54.1, -59.3],
+                 "y":[null,  0.7, 14.7]
+                },
+                {"nome":"Sr. Lagahi G.",
+                 "x":[null, 31.4, 15.7],
+                 "y":[null, 33.4, 17.8]
+                },
+                {"nome":"Sr. Sageru G.",
+                 "x":[17.7, null, 41.7],
+                 "y":[-2.3, null, -23.0]
+                },
+                {"nome":"Sr. Maeoma G.",
+                 "x":[-20.2, -52.1, -23.2],
+                 "y":[41.1, 86.4, 55.5]
+                },
+                {"nome":"Sr. Oooiqo G.",
+                 "x":[null, null, null],
+                 "y":[null, null, null]
+                },
+                {"nome":"Sr. Uerivu G.",
+                 "x":[44.1, 16.1, 51.0],
+                 "y":[14.0, 15.1, 30.7]
+                },
+                {"nome":"Sr. Qiqisi G.",
+                 "x":[-36.7, -46.9, -14.1],
+                 "y":[10.5,  8.0, -12.3]
+                },
+                {"nome":"Sr. Yueasa G.",
+                 "x":[61.7, 75.9, 76.9],
+                 "y":[-64.9, -59.6, -60.6]
+                },
+                {"nome":"Sr. Gatelo G.",
+                 "x":[49.6, null, -5.1],
+                 "y":[10.8, null,  7.5]
+                },
+                {"nome":"Sr. Vixete G.",
+                 "x":[-35.1, null, null],
+                 "y":[43.0, null, null]
+                },
+                {"nome":"Sr. Euziwi G.",
+                 "x":[53.4, 52.9, 100.0],
+                 "y":[70.0, 42.4, 64.0]
+                },
+                {"nome":"Sr. Rieida G.",
+                 "x":[null, null, null],
+                 "y":[null, null, null]
+                },
+                {"nome":"Sr. Zimufi G.",
+                 "x":[null, 87.8, 73.7],
+                 "y":[null, 25.8, 35.5]
+                },
+                {"nome":"Sr. Xutiyi G.",
+                 "x":[100.0, 100.0, 86.0],
+                 "y":[-0.6, 26.3, -12.7]
+                },
+                {"nome":"Sr. Bifafa G.",
+                 "x":[null, -97.5, -85.0],
+                 "y":[null, -74.5, -63.8]
+                },
+                {"nome":"Sr. Wuheoo G.",
+                 "x":[-56.4, null, -60.0],
+                 "y":[-75.7, null, -89.6]
+                },
+                {"nome":"Sr. Sobuyu G.",
+                 "x":[23.9, null, -26.8],
+                 "y":[-85.2, null, -52.4]
+                },
+                {"nome":"Sr. Moauou G.",
+                 "x":[72.8, null, 64.4],
+                 "y":[42.0, null, 68.2]
+                },
+                {"nome":"Sr. Zekitu G.",
+                 "x":[-53.9, -58.1, -24.2],
+                 "y":[-15.8, -0.7, -28.6]
+                },
+                {"nome":"Sr. Xatooa G.",
+                 "x":[-100.0, -100.0, -78.8],
+                 "y":[-72.6, -71.7, -91.6]
+                },
+                {"nome":"Sr. Fahicu G.",
+                 "x":[ 1.5, null, 40.2],
+                 "y":[-56.9, null, -64.2]
+                },
+                {"nome":"Sr. Xicuie G.",
+                 "x":[null, null, -60.3],
+                 "y":[null, null, -32.4]
+                },
+                {"nome":"Sr. Oeboio G.",
+                 "x":[10.1, null, 57.3],
+                 "y":[-96.0, null, -76.3]
+                },
+                {"nome":"Sr. Uurasa G.",
+                 "x":[null, null, null],
+                 "y":[null, null, null]
+                },
+                {"nome":"Sr. Cejopo G.",
+                 "x":[-92.1, -70.2, -48.4],
+                 "y":[36.2, 46.7, -4.0]
+                },
+                {"nome":"Sr. Uahena G.",
+                 "x":[-38.3, -9.4, null],
+                 "y":[-62.9, -53.4, null]
+                },
+                {"nome":"Sr. Rayago G.",
+                 "x":[-37.2, -5.9, -33.6],
+                 "y":[-68.2, -59.5, -82.2]
+                },
+                {"nome":"Sr. Uodaca G.",
+                 "x":[-9.7, null, -63.9],
+                 "y":[66.3, null, 49.8]
+                },
+                {"nome":"Sr. Feiegu G.",
+                 "x":[null, null, null],
+                 "y":[null, null, null]
+                },
+                {"nome":"Sr. Zagebo G.",
+                 "x":[11.3, null,  1.3],
+                 "y":[63.3, null, 16.3]
+                },
+                {"nome":"Sr. Hiviie G.",
+                 "x":[-27.3, -11.3, -42.4],
+                 "y":[84.1, 73.2, 100.0]
+                },
+                {"nome":"Sr. Quyigo G.",
+                 "x":[null, null, 15.8],
+                 "y":[null, null, -59.5]
+                },
+                {"nome":"Sr. Runodu G.",
+                 "x":[67.4, null, null],
+                 "y":[46.3, null, null]
+                },
+                {"nome":"Sr. Eeauqu G.",
+                 "x":[-10.9, 25.3, 16.0],
+                 "y":[12.8, 36.7, 26.9]
+                },
+                {"nome":"Sr. Sokeve G.",
+                 "x":[null, -63.9, -73.3],
+                 "y":[null, 100.0, 70.3]
+                },
+                {"nome":"Sr. Zeqoka G.",
+                 "x":[68.7, 63.0, 70.2],
+                 "y":[100.0, 55.6, 26.7]
+                },
+                {"nome":"Sr. Yejaqa G.",
+                 "x":[null, -82.0, null],
+                 "y":[null, 14.4, null]
+                },
+                {"nome":"Sr. Jooihe G.",
+                 "x":[-99.5, -83.8, -98.0],
+                 "y":[50.0, -6.7, 54.0]
+                },
+                {"nome":"Sr. Aouixu G.",
+                 "x":[ 7.1, null, -36.1],
+                 "y":[-51.9, null, -28.4]
+                },
+                {"nome":"Sr. Yozoio G.",
+                 "x":[17.9,  8.2,  9.9],
+                 "y":[-95.0, -70.9, -30.3]
+                },
+                {"nome":"Sr. Cozeze G.",
+                 "x":[-38.5, -49.8, -54.9],
+                 "y":[-35.1, -21.1, -33.0]
+                },
+                {"nome":"Sr. Xobeso G.",
+                 "x":[72.4, null, 61.5],
+                 "y":[-28.1, null, 22.9]
+                },
+                {"nome":"Sr. Eamaxa G.",
+                 "x":[-39.3, -57.5, null],
+                 "y":[-65.4, -78.9, null]
+                },
+                {"nome":"Sr. Kanizu G.",
+                 "x":[-67.3, -100.0, null],
+                 "y":[ 8.5, -21.3, null]
+                },
+                {"nome":"Sr. Sovetu G.",
+                 "x":[-23.8, -9.8, null],
+                 "y":[100.0, 93.5, null]
+                },
+                {"nome":"Sr. Zevoya G.",
+                 "x":[-3.6, -33.3, -41.7],
+                 "y":[19.6,  5.0, 19.3]
+                },
+                {"nome":"Sr. Goweta G.",
+                 "x":[null, -54.1, -16.3],
+                 "y":[null, 38.3, 40.4]
+                },
+                {"nome":"Sr. Bueopo G.",
+                 "x":[71.5, 55.0, 77.6],
+                 "y":[-72.1, -73.2, -13.3]
+                },
+                {"nome":"Sr. Iajawa G.",
+                 "x":[null, null, null],
+                 "y":[null, null, null]
+                },
+                {"nome":"Sr. Basowi G.",
+                 "x":[57.0, null, 100.0],
+                 "y":[ 0.9, null, -14.4]
+                },
+                {"nome":"Sr. Gonoia G.",
+                 "x":[-60.2, -97.5, -81.4],
+                 "y":[100.0, 92.2, 98.5]
+                },
+                {"nome":"Sr. Huxiwu G.",
+                 "x":[19.0,  7.2,  5.9],
+                 "y":[-56.4, -46.9, -23.5]
+                },
+                {"nome":"Sr. Puyofo G.",
+                 "x":[13.7,  1.5, 17.0],
+                 "y":[46.4, 38.4, 81.1]
+                },
+                {"nome":"Sr. Kigowu G.",
+                 "x":[-80.2, -55.8, -56.8],
+                 "y":[-19.2, -0.2, -25.1]
+                },
+                {"nome":"Sr. Rakese G.",
+                 "x":[-1.0, null, 10.1],
+                 "y":[10.3, null, 36.0]
+                },
+                {"nome":"Sr. Woaoli G.",
+                 "x":[73.2, 79.1, 89.4],
+                 "y":[89.4, 75.8, 73.3]
+                },
+                {"nome":"Sr. Rusiva G.",
+                 "x":[-94.2, -83.0, -92.3],
+                 "y":[55.6, 65.3, 66.4]
+                },
+                {"nome":"Sr. Zizine G.",
+                 "x":[null, -92.6, -100.0],
+                 "y":[null, -82.3, -96.3]
+                },
+                {"nome":"Sr. Gupipu G.",
+                 "x":[-49.1, -19.1, null],
+                 "y":[-13.1,  8.2, null]
+                },
+                {"nome":"Sr. Eisivo G.",
+                 "x":[ 2.8,  2.2, 24.3],
+                 "y":[-51.3, -48.6, -56.6]
+                },
+                {"nome":"Sr. Kilafu G.",
+                 "x":[-33.5, -23.2, null],
+                 "y":[-15.0,  0.0, null]
+                },
+                {"nome":"Sr. Baaivo G.",
+                 "x":[-100.0, -87.9, null],
+                 "y":[57.6, 80.8, null]
+                },
+                {"nome":"Sr. Xuneci G.",
+                 "x":[null, 32.5, -13.9],
+                 "y":[null, 65.5, 75.8]
+                },
+                {"nome":"Sr. Lunire G.",
+                 "x":[-1.9, 33.0, 18.6],
+                 "y":[37.1, 68.1, 57.9]
+                },
+                {"nome":"Sr. Jagale G.",
+                 "x":[-14.4, -58.3, -72.4],
+                 "y":[11.0,  6.1,  9.2]
+                },
+                {"nome":"Sr. Aadeea G.",
+                 "x":[-64.5, null, null],
+                 "y":[-34.3, null, null]
+                },
+                {"nome":"Sr. Auluta G.",
+                 "x":[null,  9.9, null],
+                 "y":[null, 81.7, null]
+                },
+                {"nome":"Sr. Ioxupe G.",
+                 "x":[37.7, 39.2, 25.4],
+                 "y":[55.7, 24.2, 25.3]
+                },
+                {"nome":"Sr. Oaoege G.",
+                 "x":[null, 42.4, 73.4],
+                 "y":[null, -21.4, -24.0]
+                },
+                {"nome":"Sr. Qileno G.",
+                 "x":[null, -46.2, -53.4],
+                 "y":[null, 79.6, 78.9]
+                },
+                {"nome":"Sr. Logane G.",
+                 "x":[null, null, 20.2],
+                 "y":[null, null, -25.5]
+                },
+                {"nome":"Sr. Sepabu G.",
+                 "x":[81.8, 100.0, 100.0],
+                 "y":[53.0, 80.6, 86.5]
+                },
+                {"nome":"Sr. Jalapa G.",
+                 "x":[null, null, -62.2],
+                 "y":[null, null, 14.9]
+                },
+                {"nome":"Sr. Wihogu G.",
+                 "x":[null, 13.5, 20.5],
+                 "y":[null, 57.7, 66.2]
+                },
+                {"nome":"Sr. Vizaii G.",
+                 "x":[16.2, null,  0.1],
+                 "y":[27.4, null, 34.9]
+                },
+                {"nome":"Sr. Cenuse G.",
+                 "x":[-86.3, -86.3, null],
+                 "y":[66.0, 61.2, null]
+                },
+                {"nome":"Sr. Hueiku G.",
+                 "x":[13.0, null, -51.3],
+                 "y":[41.8, null, 75.9]
+                },
+                {"nome":"Sr. Aauijo G.",
+                 "x":[22.7, 14.5, 45.5],
+                 "y":[-51.8, -91.2, -96.6]
+                },
+                {"nome":"Sr. Gozaua G.",
+                 "x":[-18.8, -10.7, -44.2],
+                 "y":[13.6, 61.4, -23.8]
+                },
+                {"nome":"Sr. Lobuti G.",
+                 "x":[95.7, 100.0, null],
+                 "y":[82.6, 56.7, null]
+                },
+                {"nome":"Sr. Oozunu G.",
+                 "x":[null, -44.5, -50.0],
+                 "y":[null, 32.0, -1.4]
+                },
+                {"nome":"Sr. Digera G.",
+                 "x":[-78.6, null, -47.8],
+                 "y":[-85.3, null, -88.3]
+                },
+                {"nome":"Sr. Pewomu G.",
+                 "x":[-88.8, -47.3, -21.0],
+                 "y":[-64.0, -65.0, -81.3]
+                },
+                {"nome":"Sr. Iaeama G.",
+                 "x":[74.6, 87.8, 86.7],
+                 "y":[ 2.0, -19.3,  0.1]
+                },
+                {"nome":"Sr. Bapevu G.",
+                 "x":[41.7, 59.9, null],
+                 "y":[-5.7, 19.4, null]
+                },
+                {"nome":"Sr. Siluka G.",
+                 "x":[82.6, 68.2, null],
+                 "y":[17.0, -9.0, null]
+                },
+                {"nome":"Sr. Oefiya G.",
+                 "x":[null, 42.6, -3.7],
+                 "y":[null, -36.6, 35.2]
+                },
+                {"nome":"Sr. Fojieu G.",
+                 "x":[-34.3,  7.5,  7.8],
+                 "y":[53.7, 41.3, 80.0]
+                },
+                {"nome":"Sr. Quvupi G.",
+                 "x":[55.2, null, 37.8],
+                 "y":[47.5, null, 69.9]
+                },
+                {"nome":"Sr. Kikoea G.",
+                 "x":[95.8, null, 43.5],
+                 "y":[-75.6, null, -100.0]
+                },
+                {"nome":"Sr. Iuvigo G.",
+                 "x":[null, -95.1, -71.0],
+                 "y":[null, -15.5, -15.6]
+                },
+                {"nome":"Sr. Puzuka G.",
+                 "x":[-63.9, null, -30.7],
+                 "y":[ 6.1, null, -27.0]
+                },
+                {"nome":"Sr. Yujijo G.",
+                 "x":[-32.9, -0.8, -22.8],
+                 "y":[-39.9, -40.4, -55.7]
+                },
+                {"nome":"Sr. Gafehu G.",
+                 "x":[28.7, 69.4, 42.0],
+                 "y":[41.6, 64.9, 55.1]
+                },
+                {"nome":"Sr. Yoziya G.",
+                 "x":[-100.0, -67.7, null],
+                 "y":[18.7, -0.2, null]
+                },
+                {"nome":"Sr. Puhiwo G.",
+                 "x":[14.6, null, 39.6],
+                 "y":[80.9, null, 72.2]
+                },
+                {"nome":"Sr. Veliso G.",
+                 "x":[100.0, null, 87.1],
+                 "y":[-61.4, null, -49.8]
+                },
+                {"nome":"Sr. Nicuwi G.",
+                 "x":[49.0, 66.3, null],
+                 "y":[ 0.6, -35.9, null]
+                },
+                {"nome":"Sr. Zagoju G.",
+                 "x":[64.0, 48.7, 54.3],
+                 "y":[-37.9, -87.3, -81.8]
+                },
+                {"nome":"Sr. Xakuko G.",
+                 "x":[100.0, 87.7, 100.0],
+                 "y":[51.3, 31.6, 67.3]
+                },
+                {"nome":"Sr. Guoasi G.",
+                 "x":[90.8, 31.0, 63.2],
+                 "y":[100.0, 100.0, 100.0]
+                },
+                {"nome":"Sr. Witoua G.",
+                 "x":[null, null, null],
+                 "y":[null, null, null]
+                },
+                {"nome":"Sr. Aikali G.",
+                 "x":[54.2, 92.2, 82.7],
+                 "y":[72.9, 52.7, 75.3]
+                },
+                {"nome":"Sr. Bonala G.",
+                 "x":[21.8, 36.3, -4.4],
+                 "y":[43.8, 59.2, 88.7]
+                },
+                {"nome":"Sr. Aeeubi G.",
+                 "x":[83.0, null, 69.7],
+                 "y":[-23.5, null, -12.0]
+                },
+                {"nome":"Sr. Labouo G.",
+                 "x":[38.5,  4.0, 47.6],
+                 "y":[32.5, 44.9, 10.6]
+                },
+                {"nome":"Sr. Woheiu G.",
+                 "x":[-29.5, null, null],
+                 "y":[67.1, null, null]
+                },
+                {"nome":"Sr. Xutera G.",
+                 "x":[69.2, null, 84.3],
+                 "y":[21.1, null, 10.4]
+                },
+                {"nome":"Sr. Oezaiu G.",
+                 "x":[-92.0, -67.7, -97.6],
+                 "y":[-48.5, -45.9, -41.1]
+                },
+                {"nome":"Sr. Aiauiu G.",
+                 "x":[-51.5, -11.1, -69.2],
+                 "y":[-54.2, -26.8, -38.2]
+                },
+                {"nome":"Sr. Badoce G.",
+                 "x":[null, -90.4, -88.1],
+                 "y":[null, 33.3, 24.4]
+                },
+                {"nome":"Sr. Auzamo G.",
+                 "x":[-34.2, null, null],
+                 "y":[-70.7, null, null]
+                },
+                {"nome":"Sr. Nugeya G.",
+                 "x":[-36.9, -45.0, null],
+                 "y":[64.4, 67.9, null]
+                },
+                {"nome":"Sr. Nuxiho G.",
+                 "x":[null, -34.4, null],
+                 "y":[null, 24.8, null]
+                },
+                {"nome":"Sr. Kehape G.",
+                 "x":[100.0, 67.1, null],
+                 "y":[-13.0, -2.0, null]
+                },
+                {"nome":"Sr. Dikaoo G.",
+                 "x":[-83.1, -66.9, -47.3],
+                 "y":[-100.0, -63.9, -100.0]
+                },
+                {"nome":"Sr. Netiuu G.",
+                 "x":[-3.6, -57.3, null],
+                 "y":[-5.3, -6.6, null]
+                },
+                {"nome":"Sr. Jateve G.",
+                 "x":[-52.1, -56.0, -80.9],
+                 "y":[-50.5, -74.6, -72.8]
+                },
+                {"nome":"Sr. Laiexe G.",
+                 "x":[43.4, 84.8, 38.4],
+                 "y":[-51.1, -55.9, -67.6]
+                },
+                {"nome":"Sr. Riwixi G.",
+                 "x":[-23.6, -64.2, null],
+                 "y":[-44.9, -20.8, null]
+                },
+                {"nome":"Sr. Pefeni G.",
+                 "x":[-32.4, null, -29.5],
+                 "y":[-19.0, null, 21.6]
+                },
+                {"nome":"Sr. Uokapa G.",
+                 "x":[74.7, null, null],
+                 "y":[-64.8, null, null]
+                },
+                {"nome":"Sr. Nipuri G.",
+                 "x":[25.9, 62.5, 55.2],
+                 "y":[31.9, -11.0, -11.0]
+                },
+                {"nome":"Sr. Ceaiii G.",
+                 "x":[-49.9, null, null],
+                 "y":[59.3, null, null]
+                },
+                {"nome":"Sr. Liyahi G.",
+                 "x":[69.0, 100.0, 77.6],
+                 "y":[-67.7, -40.1, -36.2]
+                },
+                {"nome":"Sr. Caxewo G.",
+                 "x":[16.9,  8.4, null],
+                 "y":[73.3, 91.7, null]
+                },
+                {"nome":"Sr. Nopile G.",
+                 "x":[null, 68.0, null],
+                 "y":[null, 100.0, null]
+                },
+                {"nome":"Sr. Wajipo G.",
+                 "x":[null,  5.6, null],
+                 "y":[null, -85.5, null]
+                },
+                {"nome":"Sr. Vaouiu G.",
+                 "x":[18.0, null, 21.9],
+                 "y":[-4.9, null, -58.3]
+                },
+                {"nome":"Sr. Gulucu G.",
+                 "x":[42.1,  1.4, null],
+                 "y":[64.8, 56.8, null]
+                },
+                {"nome":"Sr. Ioieuo G.",
+                 "x":[null, -92.3, -100.0],
+                 "y":[null, 84.9, 100.0]
+                },
+                {"nome":"Sr. Serila G.",
+                 "x":[null, null, -100.0],
+                 "y":[null, null,  5.0]
+                },
+                {"nome":"Sr. Bezomo G.",
+                 "x":[-77.2, -58.1, -21.8],
+                 "y":[39.2, 44.0, 70.5]
+                },
+                {"nome":"Sr. Muziyo G.",
+                 "x":[-24.3, -27.7, -35.5],
+                 "y":[-25.2, -35.5,  4.9]
+                },
+                {"nome":"Sr. Oaruci G.",
+                 "x":[null, null, 21.5],
+                 "y":[null, null, 100.0]
+                },
+                {"nome":"Sr. Wawufa G.",
+                 "x":[-36.5, null, -62.5],
+                 "y":[99.0, null, 100.0]
+                },
+                {"nome":"Sr. Biseki G.",
+                 "x":[-6.8, null, -5.0],
+                 "y":[45.7, null, 98.6]
+                },
+                {"nome":"Sr. Yusoxa G.",
+                 "x":[70.9, 74.3, 73.2],
+                 "y":[81.8, 50.0, 39.8]
+                },
+                {"nome":"Sr. Kaluja G.",
+                 "x":[null, null, null],
+                 "y":[null, null, null]
+                },
+                {"nome":"Sr. Quruma G.",
+                 "x":[ 4.9,  4.5, -14.9],
+                 "y":[55.5, 87.1, 72.7]
+                },
+                {"nome":"Sr. Kagovu G.",
+                 "x":[-100.0, -77.0, -79.9],
+                 "y":[44.8, 48.9, 43.3]
+                },
+                {"nome":"Sr. Koeaxu G.",
+                 "x":[-52.2, null, -56.5],
+                 "y":[51.5, null, 56.8]
+                },
+                {"nome":"Sr. Ioaexi G.",
+                 "x":[79.4, 100.0, 100.0],
+                 "y":[99.5, 47.2, 100.0]
+                },
+                {"nome":"Sr. Vonuni G.",
+                 "x":[-17.5, null, null],
+                 "y":[ 0.8, null, null]
+                },
+                {"nome":"Sr. Eakieo G.",
+                 "x":[-86.3, -77.1, null],
+                 "y":[24.6,  0.1, null]
+                },
+                {"nome":"Sr. Aexojo G.",
+                 "x":[-60.6, -53.2, -100.0],
+                 "y":[-76.8, -36.8, -86.9]
+                },
+                {"nome":"Sr. Ciuodi G.",
+                 "x":[null, null, -66.5],
+                 "y":[null, null, 54.7]
+                },
+                {"nome":"Sr. Meoeiu G.",
+                 "x":[-22.5, -42.3, -13.9],
+                 "y":[ 4.2, -13.7,  1.2]
+                },
+                {"nome":"Sr. Paxana G.",
+                 "x":[100.0, 46.5, 77.5],
+                 "y":[60.8, 91.2, 68.9]
+                },
+                {"nome":"Sr. Qozegu G.",
+                 "x":[-34.2, null, -8.4],
+                 "y":[57.6, null, 52.6]
+                },
+                {"nome":"Sr. Foburu G.",
+                 "x":[49.3, 66.2, 38.6],
+                 "y":[-6.5, -20.5, -24.2]
+                },
+                {"nome":"Sr. Nufesa G.",
+                 "x":[-81.5, -75.0, -92.6],
+                 "y":[48.7, 99.5, 71.5]
+                },
+                {"nome":"Sr. Baziaa G.",
+                 "x":[null, 31.9, 31.1],
+                 "y":[null, -4.2, -22.1]
+                },
+                {"nome":"Sr. Joyohe G.",
+                 "x":[null, -69.8, -72.2],
+                 "y":[null, 100.0, 71.4]
+                },
+                {"nome":"Sr. Recibo G.",
+                 "x":[24.3, -8.1, -35.4],
+                 "y":[-92.1, -100.0, -82.9]
+                },
+                {"nome":"Sr. Logalo G.",
+                 "x":[-86.3, null, -98.7],
+                 "y":[100.0, null, 83.8]
+                },
+                {"nome":"Sr. Hajihe G.",
+                 "x":[null, -62.8, null],
+                 "y":[null,  8.0, null]
+                },
+                {"nome":"Sr. Aetoeu G.",
+                 "x":[-21.5, null, -53.8],
+                 "y":[94.5, null, 75.9]
+                },
+                {"nome":"Sr. Jexave G.",
+                 "x":[null, 23.8, null],
+                 "y":[null, -55.6, null]
+                },
+                {"nome":"Sr. Aowabi G.",
+                 "x":[-45.3, -58.4, null],
+                 "y":[21.8,  1.6, null]
+                },
+                {"nome":"Sr. Houoja G.",
+                 "x":[null, 37.2, 46.1],
+                 "y":[null, -8.1, -4.6]
+                },
+                {"nome":"Sr. Ponazi G.",
+                 "x":[null, null, null],
+                 "y":[null, null, null]
+                },
+                {"nome":"Sr. Aumiwo G.",
+                 "x":[-26.1, -28.7, null],
+                 "y":[-86.8, -79.8, null]
+                },
+                {"nome":"Sr. Aiyeki G.",
+                 "x":[null, null, 40.6],
+                 "y":[null, null, -39.3]
+                },
+                {"nome":"Sr. Wetuni G.",
+                 "x":[63.2, 59.8, 84.8],
+                 "y":[79.4, 74.7, 100.0]
+                },
+                {"nome":"Sr. Jeoufo G.",
+                 "x":[-92.6, null, -76.2],
+                 "y":[-10.2, null, -34.2]
+                },
+                {"nome":"Sr. Sijaje G.",
+                 "x":[60.5, 80.1, null],
+                 "y":[-60.1, -76.5, null]
+                },
+                {"nome":"Sr. Tayaho G.",
+                 "x":[-64.1, -93.9, null],
+                 "y":[84.0, 52.0, null]
+                },
+                {"nome":"Sr. Ruuiio G.",
+                 "x":[-60.8, null, -58.9],
+                 "y":[21.4, null, -9.2]
+                },
+                {"nome":"Sr. Oicopo G.",
+                 "x":[null, 100.0, null],
+                 "y":[null, 53.7, null]
+                },
+                {"nome":"Sr. Bovuiu G.",
+                 "x":[18.2, 42.7, null],
+                 "y":[62.5, 64.8, null]
+                },
+                {"nome":"Sr. Qoyooe G.",
+                 "x":[null, 36.4, -37.4],
+                 "y":[null, -24.3, -13.3]
+                },
+                {"nome":"Sr. Giwala G.",
+                 "x":[19.0, 21.5, 25.2],
+                 "y":[-27.2, 23.3, -51.8]
+                },
+                {"nome":"Sr. Yeeeto G.",
+                 "x":[26.3, -9.1, null],
+                 "y":[ 5.0, 35.7, null]
+                },
+                {"nome":"Sr. Waieiu G.",
+                 "x":[36.5, 75.9, 28.4],
+                 "y":[-93.6, -100.0, -100.0]
+                },
+                {"nome":"Sr. Niwoui G.",
+                 "x":[21.7, null, 28.3],
+                 "y":[22.8, null, 61.8]
+                },
+                {"nome":"Sr. Cudaea G.",
+                 "x":[93.2, 79.6, null],
+                 "y":[-72.2, -100.0, null]
+                },
+                {"nome":"Sr. Gemopa G.",
+                 "x":[-2.4, 12.2, -2.5],
+                 "y":[32.3, 54.7, 75.0]
+                },
+                {"nome":"Sr. Meyioe G.",
+                 "x":[-56.1, -77.9, -62.3],
+                 "y":[-31.1, -47.0, -82.7]
+                },
+                {"nome":"Sr. Micobi G.",
+                 "x":[-66.2, null, -97.4],
+                 "y":[-30.2, null, -79.9]
+                },
+                {"nome":"Sr. Nifuwe G.",
+                 "x":[null, null, 53.4],
+                 "y":[null, null, -8.6]
+                },
+                {"nome":"Sr. Piyiau G.",
+                 "x":[null, 45.1, 16.6],
+                 "y":[null, 70.9, 38.6]
+                },
+                {"nome":"Sr. Vuuowo G.",
+                 "x":[null, null, 21.3],
+                 "y":[null, null, -33.8]
+                },
+                {"nome":"Sr. Posiwu G.",
+                 "x":[-83.2, -46.9, -75.9],
+                 "y":[79.3, 89.6, 72.6]
+                },
+                {"nome":"Sr. Dukiyo G.",
+                 "x":[72.6, 31.7, null],
+                 "y":[-37.1, -25.5, null]
+                },
+                {"nome":"Sr. Renawi G.",
+                 "x":[null, 94.6, 96.2],
+                 "y":[null, -59.5, -28.9]
+                },
+                {"nome":"Sr. Sujuye G.",
+                 "x":[-43.7, null, -54.9],
+                 "y":[92.5, null, 57.2]
+                },
+                {"nome":"Sr. Higequ G.",
+                 "x":[null, 58.1, 70.0],
+                 "y":[null, 14.9, 13.9]
+                },
+                {"nome":"Sr. Gagequ G.",
+                 "x":[69.5, 85.3, 46.4],
+                 "y":[-19.5, -53.4, -68.9]
+                },
+                {"nome":"Sr. Xabure G.",
+                 "x":[-45.2, -61.1, null],
+                 "y":[69.3, 48.8, null]
+                },
+                {"nome":"Sr. Feianu G.",
+                 "x":[null, 19.4, 14.8],
+                 "y":[null, 56.5, 40.1]
+                },
+                {"nome":"Sr. Wadiie G.",
+                 "x":[74.7, null, null],
+                 "y":[63.5, null, null]
+                },
+                {"nome":"Sr. Eomeue G.",
+                 "x":[65.8, 52.8, 65.3],
+                 "y":[62.0, 71.6, 79.4]
+                },
+                {"nome":"Sr. Qiyuea G.",
+                 "x":[87.7, 65.8, 66.7],
+                 "y":[100.0, 59.9, 69.3]
+                },
+                {"nome":"Sr. Eioami G.",
+                 "x":[-67.7, -31.5, -40.6],
+                 "y":[19.8, 90.8, 61.4]
+                },
+                {"nome":"Sr. Rotuna G.",
+                 "x":[null, -71.7, -58.1],
+                 "y":[null, 33.1, 17.4]
+                },
+                {"nome":"Sr. Lozeje G.",
+                 "x":[-47.8, -35.2, null],
+                 "y":[81.1, 54.3, null]
+                },
+                {"nome":"Sr. Yiwipa G.",
+                 "x":[-80.2, -43.9, null],
+                 "y":[-51.6, -61.2, null]
+                },
+                {"nome":"Sr. Quqoxi G.",
+                 "x":[76.5, 51.5, 71.2],
+                 "y":[ 7.9, 18.6, 35.4]
+                },
+                {"nome":"Sr. Miuora G.",
+                 "x":[null, -28.9, -15.4],
+                 "y":[null, 59.4, 44.2]
+                },
+                {"nome":"Sr. Nufuci G.",
+                 "x":[-30.7, -14.0, -25.6],
+                 "y":[18.4, -10.4, 27.1]
+                },
+                {"nome":"Sr. Bioiva G.",
+                 "x":[-100.0, -100.0, -100.0],
+                 "y":[74.6, 33.9, 34.8]
+                },
+                {"nome":"Sr. Rosuqa G.",
+                 "x":[-7.0, -23.3, -21.0],
+                 "y":[-100.0, -100.0, -100.0]
+                },
+                {"nome":"Sr. Doqeea G.",
+                 "x":[36.9, null,  3.7],
+                 "y":[-65.4, null, -29.6]
+                },
+                {"nome":"Sr. Eoyuca G.",
+                 "x":[-54.5, -84.4, -38.4],
+                 "y":[-77.2, -16.6, -73.3]
+                },
+                {"nome":"Sr. Wodieu G.",
+                 "x":[ 6.5, 48.1, 77.0],
+                 "y":[-65.7, -100.0, -89.4]
+                },
+                {"nome":"Sr. Eequwe G.",
+                 "x":[100.0, 78.7, 76.0],
+                 "y":[-83.9, -40.8, -58.4]
+                },
+                {"nome":"Sr. Vatuve G.",
+                 "x":[-95.4, -54.3, -87.9],
+                 "y":[-78.3, -79.7, -100.0]
+                },
+                {"nome":"Sr. Lacora G.",
+                 "x":[-62.1, -58.7, -32.0],
+                 "y":[ 8.9, 37.7,  3.6]
+                },
+                {"nome":"Sr. Oabuze G.",
+                 "x":[null, -8.6, null],
+                 "y":[null, 52.9, null]
+                },
+                {"nome":"Sr. Ooaoya G.",
+                 "x":[ 4.1,  5.8, 26.7],
+                 "y":[-96.9, -48.2, -87.8]
+                },
+                {"nome":"Sr. Mexewe G.",
+                 "x":[99.1, 56.5, null],
+                 "y":[58.7, 24.2, null]
+                },
+                {"nome":"Sr. Aamudo G.",
+                 "x":[100.0, null, 82.1],
+                 "y":[-53.9, null, -81.7]
+                },
+                {"nome":"Sr. Beooyu G.",
+                 "x":[37.7, 82.0, 10.2],
+                 "y":[-83.5, -89.0, -86.7]
+                },
+                {"nome":"Sr. Xahano G.",
+                 "x":[null, -82.0, -95.1],
+                 "y":[null, 46.0, 40.9]
+                },
+                {"nome":"Sr. Qezesi G.",
+                 "x":[-49.3, -46.6, null],
+                 "y":[-54.6, -64.6, null]
+                },
+                {"nome":"Sr. Yezefo G.",
+                 "x":[-100.0, null, -87.5],
+                 "y":[64.0, null, 12.9]
+                },
+                {"nome":"Sr. Tokece G.",
+                 "x":[65.3, 80.8, 77.3],
+                 "y":[14.3,  8.9, 33.1]
+                },
+                {"nome":"Sr. Oumida G.",
+                 "x":[null, 10.7, null],
+                 "y":[null, -10.3, null]
+                },
+                {"nome":"Sr. Qibumo G.",
+                 "x":[29.6, 21.8, null],
+                 "y":[72.8, 75.9, null]
+                },
+                {"nome":"Sr. Xiliye G.",
+                 "x":[-79.3, -100.0, -85.5],
+                 "y":[-55.5, -25.6, -38.8]
+                },
+                {"nome":"Sr. Iisuba G.",
+                 "x":[71.0, 90.0, 57.8],
+                 "y":[-87.5, -97.5, -100.0]
+                },
+                {"nome":"Sr. Futiaa G.",
+                 "x":[null, null, 22.9],
+                 "y":[null, null, 93.4]
+                },
+                {"nome":"Sr. Aibima G.",
+                 "x":[-39.0, -55.0, -59.1],
+                 "y":[70.9, 99.6, 100.0]
+                },
+                {"nome":"Sr. Maxovo G.",
+                 "x":[-84.6, -97.3, -93.8],
+                 "y":[63.2, 70.8, 73.1]
+                },
+                {"nome":"Sr. Nikeau G.",
+                 "x":[null, null, null],
+                 "y":[null, null, null]
+                },
+                {"nome":"Sr. Vimuzo G.",
+                 "x":[11.5, null, null],
+                 "y":[19.4, null, null]
+                },
+                {"nome":"Sr. Vozuza G.",
+                 "x":[null, null,  3.0],
+                 "y":[null, null, 66.0]
+                },
+                {"nome":"Sr. Gamiju G.",
+                 "x":[82.3, null, null],
+                 "y":[19.1, null, null]
+                },
+                {"nome":"Sr. Qecieu G.",
+                 "x":[-49.8, -27.9, null],
+                 "y":[-77.5, -25.5, null]
+                },
+                {"nome":"Sr. Nixozi G.",
+                 "x":[43.9, 47.8, null],
+                 "y":[77.4, 82.2, null]
+                },
+                {"nome":"Sr. Airime G.",
+                 "x":[70.4, null, 75.9],
+                 "y":[55.2, null, -7.1]
+                },
+                {"nome":"Sr. Kuhafa G.",
+                 "x":[34.0, null, -7.5],
+                 "y":[83.0, null, 84.9]
+                },
+                {"nome":"Sr. Japiio G.",
+                 "x":[null, null, null],
+                 "y":[null, null, null]
+                },
+                {"nome":"Sr. Ieoara G.",
+                 "x":[null, null, 55.3],
+                 "y":[null, null, -46.1]
+                },
+                {"nome":"Sr. Yuyehu G.",
+                 "x":[-100.0, -62.6, -65.7],
+                 "y":[-54.9, -62.0, -47.0]
+                },
+                {"nome":"Sr. Ueseyo G.",
+                 "x":[-56.3, -48.0, -65.3],
+                 "y":[-80.8, -100.0, -39.4]
+                },
+                {"nome":"Sr. Sumuii G.",
+                 "x":[null, -24.6, -65.8],
+                 "y":[null, 12.6, -1.3]
+                },
+                {"nome":"Sr. Gijanu G.",
+                 "x":[null, -6.9, -29.1],
+                 "y":[null, 87.3, 63.0]
+                },
+                {"nome":"Sr. Zuxuui G.",
+                 "x":[-68.0, -40.9, -56.6],
+                 "y":[-71.2, -96.3, -100.0]
+                },
+                {"nome":"Sr. Iumoao G.",
+                 "x":[null, null, -21.2],
+                 "y":[null, null, -83.9]
+                },
+                {"nome":"Sr. Tauone G.",
+                 "x":[null, 50.9, null],
+                 "y":[null, 37.7, null]
+                },
+                {"nome":"Sr. Qohivi G.",
+                 "x":[-100.0, null, -100.0],
+                 "y":[18.6, null, 72.5]
+                },
+                {"nome":"Sr. Kibizo G.",
+                 "x":[-0.4, 28.4, -3.3],
+                 "y":[-34.8, -54.5, -21.8]
+                },
+                {"nome":"Sr. Zodase G.",
+                 "x":[62.3, null, null],
+                 "y":[77.2, null, null]
+                },
+                {"nome":"Sr. Aauouo G.",
+                 "x":[null, -67.7, null],
+                 "y":[null, -1.1, null]
+                },
+                {"nome":"Sr. Fuiobo G.",
+                 "x":[null, null, 63.9],
+                 "y":[null, null, -87.9]
+                },
+                {"nome":"Sr. Tugila G.",
+                 "x":[-11.0, -14.8, -15.2],
+                 "y":[100.0, 82.1, 56.5]
+                },
+                {"nome":"Sr. Uutipo G.",
+                 "x":[-7.3, 42.3, 23.1],
+                 "y":[82.8, 55.7, 82.3]
+                },
+                {"nome":"Sr. Uioocu G.",
+                 "x":[-86.3, -73.1, null],
+                 "y":[-4.5, -15.4, null]
+                },
+                {"nome":"Sr. Qeviqu G.",
+                 "x":[92.5, 100.0, 72.7],
+                 "y":[-78.9, -77.3, -92.7]
+                },
+                {"nome":"Sr. Xewexu G.",
+                 "x":[null, -50.4, -71.3],
+                 "y":[null, -48.7, -25.9]
+                },
+                {"nome":"Sr. Vuyeua G.",
+                 "x":[null, 22.0, -40.2],
+                 "y":[null, 31.2,  5.6]
+                },
+                {"nome":"Sr. Rihose G.",
+                 "x":[12.1, null, null],
+                 "y":[24.1, null, null]
+                },
+                {"nome":"Sr. Duxiru G.",
+                 "x":[ 9.3, null, 14.7],
+                 "y":[-39.0, null, -8.4]
+                },
+                {"nome":"Sr. Uinuxi G.",
+                 "x":[null, -67.5, -100.0],
+                 "y":[null, 10.9, 42.8]
+                },
+                {"nome":"Sr. Yoxexu G.",
+                 "x":[100.0, 67.0, 64.9],
+                 "y":[-78.9, -90.9, -100.0]
+                },
+                {"nome":"Sr. Mucire G.",
+                 "x":[-20.0, -62.7, null],
+                 "y":[-88.0, -68.8, null]
+                },
+                {"nome":"Sr. Daaipu G.",
+                 "x":[78.5, null, null],
+                 "y":[43.8, null, null]
+                },
+                {"nome":"Sr. Mavogu G.",
+                 "x":[46.4, 32.4, 64.1],
+                 "y":[-70.0, -22.6, -29.8]
+                },
+                {"nome":"Sr. Faxoni G.",
+                 "x":[null, -77.5, -76.5],
+                 "y":[null, -57.5, -38.6]
+                },
+                {"nome":"Sr. Ziuoqo G.",
+                 "x":[null, -76.3, -88.1],
+                 "y":[null, 97.2, 100.0]
+                },
+                {"nome":"Sr. Nicelo G.",
+                 "x":[82.0, 91.5, 81.7],
+                 "y":[-39.2,  4.7, 10.4]
+                },
+                {"nome":"Sr. Vajaea G.",
+                 "x":[null, null, 77.0],
+                 "y":[null, null, 100.0]
+                },
+                {"nome":"Sr. Qacaje G.",
+                 "x":[53.7, 30.7, null],
+                 "y":[-82.8, -91.6, null]
+                },
+                {"nome":"Sr. Bosaci G.",
+                 "x":[-41.0, -35.5, null],
+                 "y":[-27.8, -57.4, null]
+                },
+                {"nome":"Sr. Oufaqa G.",
+                 "x":[44.1, null, 74.7],
+                 "y":[62.3, null, 40.8]
+                },
+                {"nome":"Sr. Uatipe G.",
+                 "x":[100.0, null, 100.0],
+                 "y":[-50.7, null, -2.3]
+                },
+                {"nome":"Sr. Reyeeo G.",
+                 "x":[-45.5, -85.6, -100.0],
+                 "y":[-11.0, -22.0, -57.6]
+                },
+                {"nome":"Sr. Vejovo G.",
+                 "x":[null, null, null],
+                 "y":[null, null, null]
+                },
+                {"nome":"Sr. Eivebi G.",
+                 "x":[-13.5, null, -48.7],
+                 "y":[-47.3, null, -87.6]
+                },
+                {"nome":"Sr. Giripu G.",
+                 "x":[-37.0, -46.3, -52.8],
+                 "y":[-94.2, -90.0, -94.1]
+                },
+                {"nome":"Sr. Xugeuo G.",
+                 "x":[-36.2, -61.0, -35.3],
+                 "y":[78.2, 42.7, 70.2]
+                },
+                {"nome":"Sr. Qofuxe G.",
+                 "x":[null, 12.9, -1.4],
+                 "y":[null, 87.0, 92.9]
+                },
+                {"nome":"Sr. Uaboaa G.",
+                 "x":[null, 22.7, 56.7],
+                 "y":[null, -14.6, -35.9]
+                },
+                {"nome":"Sr. Qabaao G.",
+                 "x":[42.2, 62.6, 60.2],
+                 "y":[ 3.2, -7.5, -20.7]
+                },
+                {"nome":"Sr. Taxeca G.",
+                 "x":[-46.3, -69.0, null],
+                 "y":[54.2, 18.6, null]
+                }
+            ]
+        }
+    ]
+}

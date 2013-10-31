@@ -25,7 +25,7 @@ Plot = (function ($) {
         //d3.json("/analises/analise/" + nome_curto_casa_legislativa + "/json_pca", _plot_data);
         //para testes com arquivo hardcoded
 //        d3.json("/static/files/partidos.json", plot_data);
-        d3.json("/static/files/deputados.json", plot_data);
+        d3.json("/static/files/deputados_grande.json", plot_data);
     }
 
     function space_to_underline(name) {

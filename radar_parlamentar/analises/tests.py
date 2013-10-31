@@ -71,7 +71,7 @@ class AnaliseTest(TestCase):
         vetor_jacobinos =    [mean([1, 1, 1]), mean([-1, -1, -1]), mean([-1, -1, -1]), mean([1, 0 -1]), mean([1, 1, 1]), mean([1, 1, 1]), mean([1, 1, 1]), mean([0, -1, -1])]
         vetor_monarquistas = [mean([-1, -1, -1]), mean([1, 1, 1]), mean([1, 1, 1]), mean([1, -1]), mean([-1, -1, -1]), mean([1, 1]), mean([1,  1]), mean([1, 1])]
         MATRIZ_VOTACAO_ESPERADA = numpy.matrix([vetor_girondinos, vetor_jacobinos, vetor_monarquistas])
-        builder = analise.MatrizDeVotacoesBuilder(self.votacoes, self.partidos, self.legislaturas)
+        builder = analise.MatrizesDeDadosBuilder(self.votacoes, self.partidos, self.legislaturas)
         builder.gera_matrizes()
         matriz_votacao_por_partido = builder.matriz_votacoes_por_partido
         self.assertTrue((matriz_votacao_por_partido == MATRIZ_VOTACAO_ESPERADA).all()) 

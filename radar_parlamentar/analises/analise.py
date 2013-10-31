@@ -29,11 +29,11 @@ import numpy
 import pca
 import json
 import copy
-import time # timetrack
+#import time # timetrack
 
 logger = logging.getLogger("radar")
 
-class MatrizDeVotacoesBuilder:
+class MatrizesDeDadosBuilder:
     
     def __init__(self, votacoes, partidos, legislaturas):
         self.votacoes = votacoes
@@ -43,9 +43,9 @@ class MatrizDeVotacoesBuilder:
         self.matriz_votacoes_por_partido =  numpy.zeros((len(self.partidos), len(self.votacoes)))
         self.matriz_presencas = numpy.zeros((len(self.partidos), len(self.votacoes)))
         self.partido_do_parlamentar = numpy.zeros((len(self.legislaturas), 1)) # lista de partidos, um por legislatura
-        self._dic_partido_votos = {}
-        self._dic_legislaturas_votos = {}
-    tempo_total1 = 0.
+        self._dic_partido_votos = {} # chave eh nome do partido, e valor eh VotoPartido
+        self._dic_legislaturas_votos = {} # chave eh id da legislatura e valor eh { -1, 0, 1 }
+
     def gera_matrizes(self):
         """Cria três matrizes: de votações (por deputado), de votações agregadas por partido,
         e de presenças dos partidos.
@@ -59,13 +59,11 @@ class MatrizDeVotacoesBuilder:
         e a ordenação das colunas segue a ordem de self.votacoes.
         """
         iv = -1 # índice votação
-        global tempo_total1 # timetrack
-        tempo_total1 = 0. # timetrack
         for votacao in self.votacoes:
             iv += 1
             self._agrega_votos(votacao)
-            self._preenche_matrizes(votacao, iv)
-        logger.info(str(tempo_total1) + " s. tempo total 1, preenche dicionario") # timetrack
+            self._preenche_matriz_por_legislatura(votacao, iv)
+            self._preenche_matrizes_por_partido(votacao, iv)
         return self.matriz_votacoes  
     
     def _agrega_votos(self, votacao):
@@ -73,26 +71,25 @@ class MatrizDeVotacoesBuilder:
         for partido in self.partidos:
             self._dic_partido_votos[partido.nome] = models.VotoPartido(partido.nome)
         # com o "select_related" fazemos uma query eager
-        votos = votacao.voto_set.select_related('legislatura__partido', 'opcao').all() 
+        votos = votacao.voto_set.select_related('legislatura__partido', 'opcao', 'legislatura__id').all() 
+        
         for voto in votos:
             nome_partido = voto.legislatura.partido.nome
             voto_partido = self._dic_partido_votos[nome_partido]
-            voto_partido.add(voto.opcao) 
-            tempo_inicial = time.time() # timetrack
-            self._dic_legislaturas_votos[str(voto.legislatura)] = self._opcao_to_double(voto.opcao)
-            global tempo_total1 # timetrack
-            tempo_total1 = tempo_total1 + time.time()-tempo_inicial # timetrack
+            opcao = voto.opcao
+            voto_partido.add(opcao) 
+            self._dic_legislaturas_votos[voto.legislatura.id] = self._opcao_to_double(opcao)
             
-    def _preenche_matrizes(self, votacao, iv):
+    def _preenche_matriz_por_legislatura(self, votacao, iv):
         il = -1 # indice legislatura
         for legislatura in self.legislaturas:
             il += 1
-            nome_legislatura = str(legislatura)
-            if self._dic_legislaturas_votos.has_key(nome_legislatura):
-                self.matriz_votacoes[il][iv] = self._dic_legislaturas_votos[nome_legislatura]
+            if self._dic_legislaturas_votos.has_key(legislatura.id):
+                self.matriz_votacoes[il][iv] = self._dic_legislaturas_votos[legislatura.id]
             else:
                 self.matriz_votacoes[il][iv] = 0.
 
+    def _preenche_matrizes_por_partido(self, votacao, iv):
         ip = -1 # índice partido 
         for partido in self.partidos:
             ip += 1
@@ -103,7 +100,6 @@ class MatrizDeVotacoesBuilder:
             else:
                 self.matriz_votacoes_por_partido[ip][iv] = 0.
                 self.matriz_presencas[ip][iv] = 0.
-    
 
     def _opcao_to_double(self, opcao):
         if opcao == 'SIM':
@@ -182,7 +178,7 @@ class AnalisadorPeriodo:
             self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa).filter(data__gte=self.ini, data__lte=self.fim)
 
     def _inicializa_vetores(self):
-        matrizesBuilder = MatrizDeVotacoesBuilder(self.votacoes, self.partidos, self.legislaturas)
+        matrizesBuilder = MatrizesDeDadosBuilder(self.votacoes, self.partidos, self.legislaturas)
         matrizesBuilder.gera_matrizes()
         self.vetores_votacao = matrizesBuilder.matriz_votacoes
         self.vetores_votacao_por_partido = matrizesBuilder.matriz_votacoes_por_partido
