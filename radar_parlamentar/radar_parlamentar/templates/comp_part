@@ -26,7 +26,7 @@
 {% block breadcrumbs %}
     <li><a href="/index/">Home</a> &raquo;</li>
     <li><a href="/genero/">Gênero</a> &raquo;</li>
-    <li><a href="/genero/perfil/legislaturas/">Perfil Legislaturas</a></li>
+    <li><a href="/genero/perfil/partido/comparacao/">Comparação Perfis Partidários</a></li>
 {% endblock breadcrumbs %}
 
 {% block content %}
@@ -36,7 +36,7 @@
         É propósito observar as participações feminina e masculina na casa legislativa, seja do ponto de vista quantitativo, seja do ponto de vista qualitativo.<br/>
         <h4 style="margin-bottom:5px;">O que é este gráfico?</h4>
         <aside id="como-funciona" style="margin: 0 90px 10px 20px; padding: 10px; background-color: rgba(220,220,220,0.7); -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">
-            Trata-se de uma visualização de dados em que é possível observar o percentual de deputadas e deputados, por ano, em você determina o período que deseja. Ao passar o mouse em cima de cada barra, de cada ano, é possivel observar os números absolutos.
+            Trata-se de uma visualização de dados em que é possível observar o percentual de deputadas e deputados dos partidos em um ano da sua escolha. Ao passar o mouse em cima de cada barra, de cada ano, é possivel observar os números absolutos.
         </aside>
         Veja os percentuais ao longo do tempo e tire suas próprias conclusões.<br/>
     
