@@ -195,11 +195,8 @@ body {
         </div>
         <aside id="legenda" class="list">
             <b>LEGENDA</b>
-            <ul class="legenda">
-                {% for partido in partidos %}
-                    <li class="botao_partido" id="list_cor_{{partido.numero}}">{{partido.numero}} | {{partido.nome}}</li>
-                {% endfor %}
-            </ul>
+            <div style="width: 15px; height: 15px; display:block; position: relative; float: left; background-color: #aaa; top: 15px;" ></div> Masculina<br/><br/>
+            <div style="width: 15px; height: 15px; display:block; position: relative; float: left; background-color: #850000; top: 5px;"></div> Feminina
         </aside>
         <figure id="animacao"><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
     </article>
