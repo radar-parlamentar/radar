@@ -159,9 +159,10 @@ def jsonMatrix_gera_links_partidos_termos():
             if termoNome in PARTIDOS[partidoNome]:
                 matrix['links'].append({'source':t,'target':p,'value': PARTIDOS[partidoNome][termoNome]})
 
-def principal():
-
-    lista_proposicoes = converte_csv_para_json('pl')
+def principal(fonte=None):
+    if not fonte:
+        fonte = 'pl'
+    lista_proposicoes = converte_csv_para_json(pl)
     lista_proposicoes = multiple_null_remove(lista_proposicoes)
     lista_proposicoes = proposicoes_indexadas(lista_proposicoes)
     partidos_das_proposicoes(lista_proposicoes)
