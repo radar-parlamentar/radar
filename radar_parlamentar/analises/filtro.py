@@ -73,11 +73,21 @@ class Temas():
 
 class Filtro_Proposicao():
 
-    '''def imprimeDadosDeProposicoes(lista_proposicoes):
-        proposicao = None
-        for proposicao in lista_proposicoes
-            print 'Descricao:' + proposicao.descricao + '\n'
-            print 'Ementa:' + proposicao.ementa + '\n'''
+    def recupera_proposicoes(self, casa_legislativa):
+        return models.Proposicao.objects.filter(casa_legislativa_id = casa_legislativa.id)
+
+    def filtra_proposicoes_com_votacoes(proposicoes, votacoes):
+        proposicoes_com_votacoes = []
+        for proposicao in proposicoes:
+            
+
+    def filtra_proposicoes(self, casa_legislativa, periodo_casa_legislativa, palavras_chave):
+        proposicoes = self.recupera_proposicoes(casa_legislativa)
+        votacoes = models.Votacao.por_casa_legislativa(casa_legislativa, periodo_casa_legislativa.ini, periodo_casa_legislativa.fim)
+
+        proposicoes_com_votacoes = filtra_proposicoes_com_votacoes(proposicoes, votacoes)
+
+        return None
 
     def valida_proposicoes(self, lista_proposicoes):
         proposicoes_validas = []
