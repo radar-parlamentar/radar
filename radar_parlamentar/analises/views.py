@@ -43,7 +43,7 @@ def analise(request, nome_curto_casa_legislativa):
                 context_instance=RequestContext(request)
             )
 
-@cache_page(60 * 0.1)
+@cache_page(60 * 60 * 12)
 def json_analise(request, nome_curto_casa_legislativa):
     """Retorna o JSON com as coordenadas do gráfico PCA"""
     casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
@@ -53,6 +53,3 @@ def json_analise(request, nome_curto_casa_legislativa):
     json = gen.get_json()
     return HttpResponse(json, mimetype='application/json')
 
-# ?????
-def senf(request):
-        return render_to_response('senf.html')

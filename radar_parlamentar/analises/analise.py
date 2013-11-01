@@ -130,13 +130,12 @@ class AnalisadorPeriodo:
         # calculados por self._inicializa_vetores():
         self.vetores_votacao = []
         self.vetores_presencas = []
-#        self.vetores_votacao_por_partido = []
-#        self.vetores_presenca_por_partido = []
         self.tamanhos_partidos = {}
         self.coordenadas_partidos = {}
         self.soma_dos_tamanhos_dos_partidos = 0
-        self.partido_do_parlamentar = []
+        self.partido_do_parlamentar = [] # array de partido.nome's, um por legislatura
         self.presencas_legislaturas = {} # legislatura.id => {True,False}, sendo True se estava presente no periodo.
+        self.legislaturas_por_partido = {} # partido.nome => lista das legislaturas do partido (independente de periodo).
         
         self.pca_legislaturas = None 
         self.coordenadas_legislaturas = {} 
@@ -167,6 +166,7 @@ class AnalisadorPeriodo:
         analisePeriodo.soma_dos_tamanhos_dos_partidos = self.soma_dos_tamanhos_dos_partidos
         analisePeriodo.coordenadas_legislaturas = self.coordenadas_legislaturas
         analisePeriodo.coordenadas_partidos = self.coordenadas_partidos
+        analisePeriodo.legislaturas_por_partido = self.legislaturas_por_partido
         return analisePeriodo
 
     def _inicializa_vetores(self):
@@ -177,9 +177,6 @@ class AnalisadorPeriodo:
         self.vetores_votacao_por_partido = matrizesBuilder.matriz_votacoes_por_partido
         self.vetores_presenca_por_partido = matrizesBuilder.matriz_presencas_por_partido
         self.partido_do_parlamentar = matrizesBuilder.partido_do_parlamentar
-        tamanhosBuilder = TamanhoPartidoBuilder(self.partidos, self.casa_legislativa)
-        self.tamanhos_partidos = tamanhosBuilder.gera_dic_tamanho_partidos()
-        self.soma_dos_tamanhos_dos_partidos = tamanhosBuilder.soma_dos_tamanhos_dos_partidos 
 
     def _calcula_legislaturas_2d(self):
         """Retorna mapa com as coordenadas das legislaturas no plano 2D formado
@@ -263,6 +260,8 @@ class AnalisadorPeriodo:
             coordenadas_medias = self._media_sem_nans(matriz_2cp[indices_deste_partido,:])
             tamanho_partido = len(self.vetores_presencas[indices_deste_partido,:].sum(axis=1).nonzero()[0])
             self.tamanhos_partidos[self.partidos[ip]] = tamanho_partido
+            self.legislaturas_por_partido[self.partidos[ip].nome] = [self.legislaturas[x] for x in indices_deste_partido]
+            self.soma_dos_tamanhos_dos_partidos = sum(self.tamanhos_partidos.values())
             self.coordenadas_partidos[self.partidos[ip]] = coordenadas_medias
             
     def _media_sem_nans(self, array_numpy):
@@ -271,8 +270,6 @@ class AnalisadorPeriodo:
         mdat = numpy.ma.masked_array(array_numpy,numpy.isnan(array_numpy))
         mm = numpy.mean(mdat,axis=0)
         return mm.filled(numpy.nan)
-
-            
     
 
 # TODO testar matriz_votacoes
@@ -360,28 +357,6 @@ class MatrizesDeDadosBuilder:
             return -1.
         return 0.
 
-class TamanhoPartidoBuilder:
-    
-    def __init__(self, partidos, casa_legislativa):
-        self.partidos = partidos
-        self.casa_legislativa = casa_legislativa
-        self.tamanhos = {} # nome partido => tamanho
-        self.soma_dos_tamanhos_dos_partidos = 0
-        
-    def gera_dic_tamanho_partidos(self):
-        for partido in self.partidos:
-            tamanho = models.Legislatura.objects.filter(casa_legislativa=self.casa_legislativa, partido=partido).count() 
-            self.tamanhos[partido.nome] = tamanho
-        self._calcula_soma_dos_tamanhos()
-        return self.tamanhos
-    
-    def _calcula_soma_dos_tamanhos(self):
-        """Calcula um valor proporcional à soma das áreas dos partidos, para usar 
-        no fator de escala de exibição do gráfico de bolhas
-        """
-        self.soma_dos_tamanhos_dos_partidos = sum(self.tamanhos.values())
-
-    
     
 class Rotacionador:
     
