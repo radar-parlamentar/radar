@@ -95,11 +95,14 @@ class JsonAnaliseGenerator:
             
         self.json = self.json[0:-1] # apaga última vírgula
         self.json += '],' # fecha lista de períodos
-        self.json += '"partidos":['
-        for partido in casa_legislativa.partidos():
-            self.json += self._dict_partido(partido) +  ','
-        self.json = self._sem_ultima_virgula(self.json[0:-1]) 
-        self.json += '] }' # fecha lista de partidos e fecha json
+        self.json += '"partidos":' + self._list_partidos()
+        self.json += ' }' 
+
+    def _list_partidos(self):
+        list_partidos = []
+        for partido in self.analise_temporal.casa_legislativa.partidos():
+            list_partidos.append(self._dict_partido(partido))
+        return json.dumps(list_partidos)
 
     def _sem_ultima_virgula(self, json):
         return json[0:-1]
@@ -110,7 +113,6 @@ class JsonAnaliseGenerator:
         dict_partido["r"] =  []
         dict_partido["x"] =  []
         dict_partido["y"] =  []
-        dict_partido["p"] =  []
         for ap in self.analise_temporal.analises_periodo:
             scaler = GraphScaler()
             coordenadas = scaler.scale(ap.coordenadas_partidos)
@@ -124,16 +126,28 @@ class JsonAnaliseGenerator:
             dict_partido["t"].append(t)
             r = sqrt(t*self.escala_periodo)
             dict_partido["r"].append(round(r,1))
-            dict_partido["parlamentares"] = []
-            legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(partido=partido)
-            for leg in legislaturas:
-                dict_partido["parlamentares"].append(self._dict_parlamentar(leg))
-        return json.dumps(dict_partido)
+        dict_partido["parlamentares"] = []
+        legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(partido=partido)
+        for leg in legislaturas:
+            dict_partido["parlamentares"].append(self._dict_parlamentar(leg))
+        return dict_partido
     
     def _dict_parlamentar(self, legislatura):
+        leg_id = legislatura.id
         nome = legislatura.parlamentar.nome
         dict_parlamentar = {"nome":nome}
-        return json.dumps(dict_parlamentar)
+        dict_parlamentar["x"] =  []
+        dict_parlamentar["y"] =  []     
+        for ap in self.analise_temporal.analises_periodo:
+            scaler = GraphScaler()
+            coordenadas = scaler.scale(ap.coordenadas_legislaturas)
+            try:
+                dict_parlamentar["x"].append(round(coordenadas[leg_id][0],2))
+                dict_parlamentar["y"].append(round(coordenadas[leg_id][1],2))
+            except KeyError:
+                dict_parlamentar["x"].append(None)
+                dict_parlamentar["y"].append(None)
+        return dict_parlamentar
 
 class GraphScaler:
 
