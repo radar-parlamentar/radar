@@ -49,7 +49,7 @@ class AnalisadorTemporal:
         data_inicio e data_fim -- strings no formato 'aaaa-mm-dd'.
         analises_periodo -- lista de objetos da classe AnalisePeriodo
     """
-    def __init__(self, casa_legislativa, periodicidade=models.ANO, votacoes=[]):
+    def __init__(self, casa_legislativa, periodicidade=models.BIENIO, votacoes=[]):
         self.casa_legislativa = casa_legislativa
         self.periodos = self.casa_legislativa.periodos(periodicidade)
         self.ini = self.periodos[0].ini
@@ -90,10 +90,12 @@ class AnalisadorTemporal:
                 logger.info("O periodo não possui nenhuma votação.")
 
         # Rotaciona/espelha cada análise baseado em sua análise anterior
+        logger.info("Rotacionando...")
         for i in range(1,len(self.analises_periodo)): # a partir da segunda analise
             rotacionador = Rotacionador(self.analises_periodo[i], self.analises_periodo[i-1])
             analiseRotacionada = rotacionador.espelha_ou_roda()
-            self.analises_periodo[i] = analiseRotacionada 
+            self.analises_periodo[i] = analiseRotacionada
+        logger.info("Rotacionado") 
         
         # determina área máxima:
         maior_soma_dos_tamanhos_dos_partidos = max([ analise.soma_dos_tamanhos_dos_partidos for analise in self.analises_periodo ])

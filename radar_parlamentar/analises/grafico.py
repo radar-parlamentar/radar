@@ -43,12 +43,12 @@ class JsonAnaliseGenerator:
         
     def get_json(self):
         if not self.json:
+            logger.info('Gerando json...')
             self._cria_json()
+            logger.info('json gerado')
         return self.json
     
     def _cria_json(self):
-        
-        logger.info('Gerando json')
         casa_legislativa = self.analise_temporal.casa_legislativa
 
         self.json = '{"geral":{"CasaLegislativa":{'
