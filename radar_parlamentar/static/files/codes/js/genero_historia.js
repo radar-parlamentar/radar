@@ -21,6 +21,8 @@ d3.csv("/static/files/codes/js/genero_historia_base.csv", function(error, data) 
 	var color = d3.scale.ordinal()
 	    .range(["#850000", "#aaaaaa", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
+    $("#loading").remove();
+    
 	var xAxis = d3.svg.axis()
 	    .scale(x)
 	    .orient("bottom")
@@ -104,10 +106,6 @@ svg.call(tip);
       .attr("y", function(d) { return y(d.y1); })
       .attr("height", function(d) { return y(d.y0) - y(d.y1); });
       //.style("fill", function(d) { return color(d.name); });
-
-
-
-
 
 
 //  var legend = svg.select(".state:last-child").selectAll(".legend")

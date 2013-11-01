@@ -33,6 +33,7 @@ function desenhar(legislatura){
 		    .orient("left")
 		    .tickFormat(d3.format(".0%"));
 
+        $("#loading").remove();
 		var svg = d3.select("#animacao").append("svg")
 		    .attr("width", width + margin.left + margin.right)
 		    .attr("height", height + margin.top + margin.bottom)
