@@ -28,6 +28,7 @@ from __future__ import unicode_literals
 import json
 import logging
 from math import sqrt
+import time
 
 logger = logging.getLogger("radar")
 
@@ -130,23 +131,29 @@ class JsonAnaliseGenerator:
             r = sqrt(t*self.escala_periodo)
             dict_partido["r"].append(round(r,1))
         dict_partido["parlamentares"] = []
-        #legislaturas = self.analise_temporal.analises_periodo[0].legislaturas_por_partido[partido.nome]
-        legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(partido=partido).select_related('id', 'partido__nome')
+        legislaturas = self.analise_temporal.analises_periodo[0].legislaturas_por_partido[partido.nome]
+        #legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(partido=partido).select_related('id', 'partido__nome')
         for leg in legislaturas:
+            start = time.time()
             dict_partido["parlamentares"].append(self._dict_parlamentar(leg))
-            logger.info('leg added in dict_partidos')
+            end = time.time()
+            logger.info('leg added in dict_partidos in ' + (end - start))
         return dict_partido
     
     def _dict_parlamentar(self, legislatura):
+        start = time.time()
         leg_id = legislatura.id
         nome = legislatura.parlamentar.nome
+        end = time.time()
+        logger.info('id and nome accessed in ' + (end - start))
         dict_parlamentar = {"nome":nome, "id":leg_id}
         dict_parlamentar["x"] =  []
-        dict_parlamentar["y"] =  []     
+        dict_parlamentar["y"] =  [] 
+        start = time.time()    
         for ap in self.analise_temporal.analises_periodo:
-            scaler = GraphScaler()
-            coordenadas = scaler.scale(ap.coordenadas_legislaturas)
-            if coordenadas.has_key(leg_id):
+            if ap.coordenadas_legislaturas.has_key(leg_id):
+                scaler = GraphScaler()
+                coordenadas = scaler.scale(ap.coordenadas_legislaturas)
                 x = coordenadas[leg_id][0]
                 y = coordenadas[leg_id][1]
                 dict_parlamentar["x"].append(round(x,2))
@@ -156,6 +163,8 @@ class JsonAnaliseGenerator:
             else:
                 dict_parlamentar["x"].append(None)
                 dict_parlamentar["y"].append(None)
+            end = time.time()
+            logger.info('ap loop in ' + (end - start))
         return dict_parlamentar
 
     
