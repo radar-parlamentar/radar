@@ -319,8 +319,8 @@ Plot = (function ($) {
         }
         
         function sortAll() {
-            var partidos = grupo_grafico.selectAll(".party")
-            partidos.sort(order);
+            var circunferencias = grupo_grafico.selectAll(".party, .parlamentar_circle")
+            circunferencias.sort(order);
         }
 
         function explode_partido(partido) { //partido é o json do partido
@@ -346,8 +346,17 @@ Plot = (function ($) {
         // Defines a sort order so that the smallest parties are drawn on top.
         function order(a, b) {
             if (a == null || b == null) console.log(parties, a, b);
+            if (is_parlamentar(a))
+                return 1
+            if (is_parlamentar(b))
+                return -1
             return b.t[periodo_atual] - a.t[periodo_atual];
         }        
+        
+        function is_parlamentar(d) {
+            // bem hacker ^^
+            return (typeof d.cor === "undefined")
+        }
 
         // Retorna partidos excluindo partidos ausentes no período e partidos explodidos
         function get_partidos_no_periodo(period) {
