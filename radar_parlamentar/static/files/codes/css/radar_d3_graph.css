@@ -25,6 +25,7 @@
 
 .radar_background {
     fill: rgba(230,230,230,0.6);
+    stroke: rgba(230,230,230,1);
 }
 
 .raio_radar {

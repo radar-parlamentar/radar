@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Faça sua Análise - {{casa_legislativa.nome}}
+{% endblock title %}
+
+{% block extrascripts %}
+    <link rel="stylesheet" href="/static/files/codes/css/radar_d3_graph.css" type="text/css" />
+{% endblock extrascripts %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block headerImgClass %}
+    about
+{% endblock headerImgClass %}
+
+{% block nomepagina %}
+    Faça sua Análise
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Entenda visualmente afinidades partidárias das casas legislativas
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}
+    <li><a href="/index/">Home</a> &raquo;</li>
+    <li><a href="/analises/">Análises</a> &raquo;</li>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+
+<style>
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+</style>
+
+    <h3> {{casa_legislativa.nome}}</h3>
+    <article id="descricao" class="inwrap">
+        Aqui é apresentada a animação das análises realizadas com as votações da {{casa_legislativa.nome}}.<br/>
+        <h4 style="margin-bottom:5px;">Como Funciona?</h4>
+        <aside id="como-funciona" style="margin: 0 90px 10px 20px; padding: 10px; background-color: rgba(220,220,220,0.7); -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">
+            A análise, realizada em períodos de dois anos, inicia-se no primeiro período disponibilizado pela casa legislativa e é animada para os períodos seguintes.<br/>
+            No lado superior direito da visualização é possível observar o período de análise que está sendo mostrado, e o logo abaixo o número de votações nominais utilizadas para a análise do mesmo.<br/>
+            Para visualizar um determinado período passe o mouse sobre o período, na horizontal.<br/>
+            À direita do gráfico, você encontra a legenda com o número dos partidos e a sigla da legenda.<br/>
+            O tamanho de cada partido no gráfico representa a quantidade de parlamentares que cada partido possui.
+        </aside>
+        Veja as movimentações e tire suas próprias conclusões.<br/>
+        Quantidade de votações considerada nesta análise: <b>{{num_votacao}}</b> votações.<br/><br/>
+        Os dados da {{casa_legislativa.nome}} utilizados para análise estão disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (dados atualizados em {{casa_legislativa.atualizacao}}).<br/>    
+        <!--div id="form">
+            <label for="periodos" ACCESSKEY="P">Período</label> <select id="periodos">
+            </select>
+            <button id="animar">Animar</button>
+            <br/><br/>
+        </div-->
+        <aside id="legenda" class="list">
+            <b>LEGENDA</b>
+            <ul class="legenda">
+                {% for partido in partidos %}
+                    <li class="botao_partido" id="list_cor_{{partido.numero}}">{{partido.numero}} | {{partido.nome}}</li>
+                {% endfor %}
+            </ul>
+        </aside>
+        <figure id="animacao"><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
+    </article>
+        <div style="clear:right"/>
+{% endblock content %}
+
+{% block extrajsend %}
+    {% if request.get_host == '127.0.0.1:8000' or request.get_host == 'localhost:8000' %}
+        <script src="/static/files/codes/js/d3.min.js"></script>
+    {% else %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js"></script>
+        <script type="text/javascript">
+          if (typeof d3 === 'undefined') {
+            var e = document.createElement('script');
+                e.src = '/static/files/codes/js/d3.min.js';
+                e.type='text/javascript';
+            document.getElementsByTagName("head")[0].appendChild(e);
+          }
+        </script>
+    {% endif %}
+    <script src="/static/files/codes/js/genero_termos.js"></script>
+{% endblock extrajsend %}
+
+{% block extrascriptsend %}
+    menuActive("analises");
+  $(document).ready(function() {
+    Plot.initialize('{{casa_legislativa.nome_curto}}')
+  });
+{% endblock extrascriptsend %}
+

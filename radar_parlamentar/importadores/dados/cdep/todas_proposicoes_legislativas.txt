@@ -1,0 +1,2 @@
+Arquivos com todas as proposições legislativas da Câmara dos Deputados, pelo menos até 31/10/2013, podem ser encontrados em:
+* https://github.com/diraol/dadosPublicos/tree/master/camara_dos_deputados
