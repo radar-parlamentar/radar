@@ -130,9 +130,11 @@ class JsonAnaliseGenerator:
             r = sqrt(t*self.escala_periodo)
             dict_partido["r"].append(round(r,1))
         dict_partido["parlamentares"] = []
-        legislaturas = self.analise_temporal.analises_periodo[0].legislaturas_por_partido[partido.nome]
+        #legislaturas = self.analise_temporal.analises_periodo[0].legislaturas_por_partido[partido.nome]
+        legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(partido=partido).select_related('id', 'partido__nome')
         for leg in legislaturas:
             dict_partido["parlamentares"].append(self._dict_parlamentar(leg))
+            logger.info('leg added in dict_partidos')
         return dict_partido
     
     def _dict_parlamentar(self, legislatura):
@@ -144,14 +146,14 @@ class JsonAnaliseGenerator:
         for ap in self.analise_temporal.analises_periodo:
             scaler = GraphScaler()
             coordenadas = scaler.scale(ap.coordenadas_legislaturas)
-            try:
+            if coordenadas.has_key(leg_id):
                 x = coordenadas[leg_id][0]
                 y = coordenadas[leg_id][1]
                 dict_parlamentar["x"].append(round(x,2))
                 dict_parlamentar["y"].append(round(y,2))
                 r2 = x**2 + y**2
                 self.max_r2 = max(self.max_r2, r2)
-            except KeyError:
+            else:
                 dict_parlamentar["x"].append(None)
                 dict_parlamentar["y"].append(None)
         return dict_parlamentar

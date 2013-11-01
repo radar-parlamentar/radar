@@ -23,11 +23,9 @@ from __future__ import unicode_literals
 from math import hypot, atan2, pi
 from models import AnalisePeriodo, AnaliseTemporal
 from modelagem import models
-import grafico
 import logging
 import numpy
 import pca
-import json
 import copy
 #import time # timetrack
 
