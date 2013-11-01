@@ -1,0 +1,2 @@
+Arquivos com todas as biografias de deputadas e deputados da Câmara dos Deputados, pelo menos até 31/10/2013, podem ser encontrados em:
+* https://github.com/diraol/dadosPublicos/tree/master/camara_dos_deputados
