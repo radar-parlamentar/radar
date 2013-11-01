@@ -37,6 +37,7 @@ class JsonAnaliseGenerator:
     
     def __init__(self, analise_temporal):
         self.CONSTANTE_ESCALA_TAMANHO = 120
+        self.CONSTANTE_ESCALA_POSICAO = 100
         self.analise_temporal = analise_temporal
         self.escala_periodo = None
         self.json = None
@@ -152,10 +153,8 @@ class JsonAnaliseGenerator:
         start = time.time()    
         for ap in self.analise_temporal.analises_periodo:
             if ap.coordenadas_legislaturas.has_key(leg_id):
-                scaler = GraphScaler()
-                coordenadas = scaler.scale(ap.coordenadas_legislaturas)
-                x = coordenadas[leg_id][0]
-                y = coordenadas[leg_id][1]
+                x = ap.coordenadas_legislaturas[leg_id][0] * self.CONSTANTE_ESCALA_POSICAO
+                y = ap.coordenadas_legislaturas[leg_id][1] * self.CONSTANTE_ESCALA_POSICAO
                 dict_parlamentar["x"].append(round(x,2))
                 dict_parlamentar["y"].append(round(y,2))
                 r2 = x**2 + y**2
@@ -168,23 +167,6 @@ class JsonAnaliseGenerator:
         return dict_parlamentar
 
     
-
-class GraphScaler:
-
-    def scale(self, partidos2d):
-        """Recebe mapa de coordenadas de partidos (saída de analise.partidos_2d()
-        e altera a escala dos valores de [-1,1] para [-100,100]
-        """
-        scaled = {}
-        for partido, coord in partidos2d.items():
-            x, y = coord[0], coord[1]
-            if x < -1 or x > 1 or y < -1 or y > 1:
-                raise ValueError("Value should be in [-1,1]")
-            scaled[partido] = [x*100, y*100]
-        return scaled
-
-
-
 class GeradorGrafico:
     """Gera imagem com o gráfico estático da análise utilizando matplotlib"""
 
