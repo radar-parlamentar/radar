@@ -25,9 +25,9 @@ dado que os cálculos do PCA já foram realizados
 """
 
 from __future__ import unicode_literals
-from numpy import sqrt
 import json
 import logging
+from math import sqrt
 
 logger = logging.getLogger("radar")
 
@@ -39,6 +39,7 @@ class JsonAnaliseGenerator:
         self.analise_temporal = analise_temporal
         self.escala_periodo = None
         self.json = None
+        self.max_r2 = 0
         
     def get_json(self):
         if not self.json:
@@ -96,6 +97,7 @@ class JsonAnaliseGenerator:
         self.json = self.json[0:-1] # apaga última vírgula
         self.json += '],' # fecha lista de períodos
         self.json += '"partidos":' + self._list_partidos()
+        self.json += ', "max_raio":' + str(round(sqrt(self.max_r2), 1))
         self.json += ' }' 
 
     def _list_partidos(self):
@@ -142,12 +144,18 @@ class JsonAnaliseGenerator:
             scaler = GraphScaler()
             coordenadas = scaler.scale(ap.coordenadas_legislaturas)
             try:
-                dict_parlamentar["x"].append(round(coordenadas[leg_id][0],2))
-                dict_parlamentar["y"].append(round(coordenadas[leg_id][1],2))
+                x = coordenadas[leg_id][0]
+                y = coordenadas[leg_id][1]
+                dict_parlamentar["x"].append(round(x,2))
+                dict_parlamentar["y"].append(round(y,2))
+                r2 = x**2 + y**2
+                self.max_r2 = max(self.max_r2, r2)
             except KeyError:
                 dict_parlamentar["x"].append(None)
                 dict_parlamentar["y"].append(None)
         return dict_parlamentar
+
+    
 
 class GraphScaler:
 

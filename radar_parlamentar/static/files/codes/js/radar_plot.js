@@ -76,8 +76,8 @@ Plot = (function ($) {
         RAIO_PARLAMENTAR = 6;
 
     // Various scales. These domains make assumptions of data, naturally.
-    var xScale = d3.scale.linear().domain([-100, 100]).range([0, width]),
-        yScale = d3.scale.linear().domain([-100, 100]).range([height, 0]);
+    var xScale = d3.scale.linear().range([0, width]),
+        yScale = d3.scale.linear().range([height, 0]);
 
     var periodo_min,
         periodo_max,
@@ -93,6 +93,11 @@ Plot = (function ($) {
         // Inicialmente remove o spinner de loading
         $("#loading").remove();
 
+        r = dados.max_raio
+        console.log(r)
+        xScale.domain([-r, r])
+        yScale.domain([-r, r])
+        
         // Creates the SVG container and sets the origin.
         var svg_base = d3.select("#animacao").append("svg")
             .attr("width", width + margin.left + margin.right + 200)
