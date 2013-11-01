@@ -49,7 +49,7 @@ class AnalisadorTemporal:
         data_inicio e data_fim -- strings no formato 'aaaa-mm-dd'.
         analises_periodo -- lista de objetos da classe AnalisePeriodo
     """
-    def __init__(self, casa_legislativa, periodicidade=models.BIENIO, votacoes=[]):
+    def __init__(self, casa_legislativa, periodicidade=models.ANO, votacoes=[]):
         self.casa_legislativa = casa_legislativa
         self.periodos = self.casa_legislativa.periodos(periodicidade)
         self.ini = self.periodos[0].ini
@@ -244,7 +244,6 @@ class AnalisadorPeriodo:
                 self.presencas_legislaturas[l.id] = False
 
     def _calcula_centroides_partidos(self):
-        centroides_dos_partidos = numpy.zeros((len(self.partidos), 2))
         ip = -1
         matriz_2cp = self.pca.U[:,0:2]
         for p in self.partidos:
@@ -400,7 +399,7 @@ class Rotacionador:
         s = numpy.sin(rad)
         return numpy.array([[c,-s],[s,c]])
 
-    def espelha_ou_roda(self, por_partido = True, so_espelha = True):
+    def espelha_ou_roda(self, por_partido = False, so_espelha = True):
         """Retorna nova AnalisePeriodo com coordenadas rotacionadas
         se por_partido == True, a operacao minimiza o quanto os partidos caminharam
         se por_partido == False, minimiza o quanto os parlamentares em si caminham
