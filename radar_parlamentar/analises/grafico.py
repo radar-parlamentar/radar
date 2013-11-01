@@ -119,11 +119,11 @@ class JsonAnaliseGenerator:
         dict_partido["x"] =  []
         dict_partido["y"] =  []
         for ap in self.analise_temporal.analises_periodo:
-            scaler = GraphScaler()
-            coordenadas = scaler.scale(ap.coordenadas_partidos)
             try:
-                dict_partido["x"].append(round(coordenadas[partido][0],2))
-                dict_partido["y"].append(round(coordenadas[partido][1],2))
+                x = round(ap.coordenadas_partidos[partido][0]) * self.CONSTANTE_ESCALA_POSICAO
+                y = round(ap.coordenadas_partidos[partido][1]) * self.CONSTANTE_ESCALA_POSICAO
+                dict_partido["x"].append(x)
+                dict_partido["y"].append(y)
             except KeyError:
                 dict_partido["x"].append(0.)
                 dict_partido["y"].append(0.)
@@ -167,6 +167,10 @@ class JsonAnaliseGenerator:
         return dict_parlamentar
 
     
+
+
+
+
 class GeradorGrafico:
     """Gera imagem com o gráfico estático da análise utilizando matplotlib"""
 
