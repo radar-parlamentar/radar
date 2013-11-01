@@ -250,7 +250,7 @@ Plot = (function ($) {
 
                 // DATA-JOIN dos parlamentares deste partido:
                 var parlamentares = grupo_grafico.selectAll('.parlamentar_circle.partido_' + nome(partido))
-                    .data(parlamentares_no_periodo, function(d) { return nome(d) });
+                    .data(parlamentares_no_periodo, function(d) { return d.id });
 
                 parlamentares.transition()
                              .duration(TEMPO_ANIMACAO)

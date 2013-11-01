@@ -135,7 +135,7 @@ class JsonAnaliseGenerator:
     def _dict_parlamentar(self, legislatura):
         leg_id = legislatura.id
         nome = legislatura.parlamentar.nome
-        dict_parlamentar = {"nome":nome}
+        dict_parlamentar = {"nome":nome, "id":leg_id}
         dict_parlamentar["x"] =  []
         dict_parlamentar["y"] =  []     
         for ap in self.analise_temporal.analises_periodo:
