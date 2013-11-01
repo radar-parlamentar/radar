@@ -1,6 +1,5 @@
 function desenhar(partido){
 	
-	console.log(partido);
 
 	d3.json("/static/files/codes/js/genero_historia_partidos.json", function(error, data) {
 
@@ -22,6 +21,7 @@ function desenhar(partido){
 		var color = d3.scale.ordinal()
 		    .range(["#850000", "#aaaaaa", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
+        $("#loading").remove();
 		var xAxis = d3.svg.axis()
 		    .scale(x)
 		    .orient("bottom")
@@ -69,8 +69,7 @@ function desenhar(partido){
 		.style("text-anchor", "end")
 		//.attr("dx", "-1.8em")
 		//.attr("dy", ".5em")
-		.attr("transform", function(d){ return "rotate(-45)"})
-	      ;
+		.attr("transform", function(d){ return "rotate(-45)"});
 
 	  svg.append("g")
 	      .attr("class", "y axis")

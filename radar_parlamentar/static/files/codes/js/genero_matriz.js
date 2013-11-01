@@ -12,8 +12,10 @@ var margin = {top: 80, right: 0, bottom: 10, left: 80},
     height = width / n_partidos * n_termos;
 
 var x = d3.scale.ordinal().rangeBands([0, width]),
-    z = d3.scale.linear().domain([0, 4]).clamp(true),
-    c = d3.scale.category10().domain(d3.range(10));
+    z = d3.scale.pow().domain([5, 50]).clamp(true).nice(),
+    c = d3.scale.category20().domain(d3.range(50));
+
+    $("#loading").remove();
 
 var svg = d3.select("#animacao").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -33,7 +35,6 @@ var svg = d3.select("#animacao").append("svg")
 
   // Convert links to matrix; count character occurrences.
   miserables.links.forEach(function(link) {
-	  console.log(link.source, link.target);
     matrix[link.source][link.target].z += link.value;
     //matrix[link.target][link.source].z += link.value;
     //matrix[link.source][link.source].z += link.value;
@@ -54,7 +55,7 @@ var svg = d3.select("#animacao").append("svg")
   x.domain(lista_partidos);
 
   svg.append("rect")
-      .attr("class", "background")
+      .attr("class", "matrix-background")
       .attr("width", width)
       .attr("height", height);
 

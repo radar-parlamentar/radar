@@ -31,13 +31,13 @@ def grafico_alternativo(request):
 def genero(request):
     return render_to_response('genero.html', {}, context_instance=RequestContext(request))
 
-def genero_termos(request):
-    return render_to_response('genero_termos.html', {}, context_instance=RequestContext(request))
+def genero_termos_nuvem(request):
+    return render_to_response('genero_termos_nuvem.html', {}, context_instance=RequestContext(request))
 
 def genero_matriz(request):
     return render_to_response('genero_matriz.html', {}, context_instance=RequestContext(request))
 
-def genero_historia(request):
+def genero_historia_legislaturas(request):
     return render_to_response('genero_historia.html', {}, context_instance=RequestContext(request))
 
 def genero_historia_partidos(request):
