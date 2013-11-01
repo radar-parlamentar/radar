@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Faça sua Análise - {{casa_legislativa.nome}}
+    Gênero
 {% endblock title %}
 
 {% block extrascripts %}
@@ -16,26 +16,23 @@
 {% endblock headerImgClass %}
 
 {% block nomepagina %}
-    Faça sua Análise
+    Gênero e Participação
 {% endblock nomepagina %}
 
 {% block pagedesc %}
-    Entenda visualmente afinidades partidárias das casas legislativas
+    Entenda visualmente participação de mulheres e homens na política
 {% endblock pagedesc %}
 
 {% block breadcrumbs %}
     <li><a href="/index/">Home</a> &raquo;</li>
-    <li><a href="/analises/">Análises</a> &raquo;</li>
+    <li><a href="/genero/">Gênero</a> &raquo;</li>
+    <li><a href="/genero/perfil/partidos">Perfil dos Partidos</a></li>
 {% endblock breadcrumbs %}
 
 {% block content %}
 
 
 <style>
-
-body {
-  font: 13px sans-serif;
-}
 
 .axis path,
 .axis line {
@@ -48,12 +45,10 @@ body {
   fill: steelblue;
 }
 
-
 .legend line {
   stroke: #000;
   shape-rendering: crispEdges;
 }
-
 
 .d3-tip {
   line-height: 1;
@@ -98,9 +93,6 @@ body {
 .barraF:hover {
   fill: #440000;
 }
-
-
-
 
 .typeahead,
 .tt-query,
@@ -168,9 +160,9 @@ body {
 
 </style>
 
-    <h3> {{casa_legislativa.nome}}</h3>
+    <h3>Perfil dos Partidos</h3>
     <article id="descricao" class="inwrap">
-        Aqui é apresentada a animação das análises realizadas com as votações da {{casa_legislativa.nome}}.<br/>
+        Aqui é apresentada a animação das análises realizadas com as votações da.<br/>
         <h4 style="margin-bottom:5px;">Como Funciona?</h4>
 	<!--
         <aside id="como-funciona" style="margin: 0 90px 10px 20px; padding: 10px; background-color: rgba(220,220,220,0.7); -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">
