@@ -160,22 +160,22 @@
 
 </style>
 
+
+
+
+{% block content %}
     <h3>Perfil dos Partidos</h3>
     <article id="descricao" class="inwrap">
-        Aqui é apresentada a animação das análises realizadas com as votações da.<br/>
-        <h4 style="margin-bottom:5px;">Como Funciona?</h4>
-	<!--
+        O objetivo deste projeto é fazer uma análise gráfica da participação de deputadas e deputados na Câmara Federal.<br/>
+        É propósito observar as participações feminina e masculina na casa legislativa, seja do ponto de vista quantitativo, seja do ponto de vista qualitativo.<br/>
+        <h4 style="margin-bottom:5px;">O que é este gráfico?</h4>
         <aside id="como-funciona" style="margin: 0 90px 10px 20px; padding: 10px; background-color: rgba(220,220,220,0.7); -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">
-            A análise, realizada em períodos de dois anos, inicia-se no primeiro período disponibilizado pela casa legislativa e é animada para os períodos seguintes.<br/>
-            No lado superior direito da visualização é possível observar o período de análise que está sendo mostrado, e o logo abaixo o número de votações nominais utilizadas para a análise do mesmo.<br/>
-            Para visualizar um determinado período passe o mouse sobre o período, na horizontal.<br/>
-            À direita do gráfico, você encontra a legenda com o número dos partidos e a sigla da legenda.<br/>
-            O tamanho de cada partido no gráfico representa a quantidade de parlamentares que cada partido possui.
+            Trata-se de uma visualização de dados em que é possível observar o percentual de deputadas e deputados de um determinado partido (a sua escolha), por ano, ao longo do tempo e no período de existência daquele partido. Ao passar o mouse em cima de cada barra, de cada ano, é possivel observar os números absolutos.
         </aside>
--->
-        Veja as movimentações e tire suas próprias conclusões.<br/>
-        Quantidade de votações considerada nesta análise: <b>{{num_votacao}}</b> votações.<br/><br/>
-        Os dados da {{casa_legislativa.nome}} utilizados para análise estão disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (dados atualizados em {{casa_legislativa.atualizacao}}).<br/>    
+        Veja os percentuais ao longo do tempo e tire suas próprias conclusões.<br/>
+    
+        Quantidade de partidos considerados nesta análise: <b75</b> partidos.<br/><br/>
+        Os dados da Câmara dos Deputados utilizados para análise estão disponíveis para <a href="https://github.com/leonardofl/radar_parlamentar/">download aqui</a>.<br/> 
         <!--div id="form">
             <label for="periodos" ACCESSKEY="P">Período</label> <select id="periodos">
             </select>
