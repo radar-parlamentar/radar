@@ -28,6 +28,8 @@ urlpatterns = patterns('',
     url(r'^genero/termos$', 'radar_parlamentar.views.genero_termos'),
     url(r'^genero/matriz$', 'radar_parlamentar.views.genero_matriz'),
     url(r'^genero/historia$', 'radar_parlamentar.views.genero_historia'),
+    url(r'^genero/historia_partidos$', 'radar_parlamentar.views.genero_historia_partidos'),
+    url(r'^genero/comparativo_partidos$', 'radar_parlamentar.views.genero_comparativo_partidos'),
 
     url(r'^genero/perfil/legislaturas$',
         'radar_parlamentar.views.genero_perfil_legis'),

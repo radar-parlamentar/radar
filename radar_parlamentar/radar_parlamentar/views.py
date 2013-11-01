@@ -40,6 +40,12 @@ def genero_matriz(request):
 def genero_historia(request):
     return render_to_response('genero_historia.html', {}, context_instance=RequestContext(request))
 
+def genero_historia_partidos(request):
+    return render_to_response('genero_historia_partidos.html', {}, context_instance=RequestContext(request))
+
+def genero_comparativo_partidos(request):
+    return render_to_response('genero_comparativo_partidos.html', {}, context_instance=RequestContext(request))
+
 def genero_perfil_legis(request):
     return render_to_response('perfil_legis.html', {}, context_instance=RequestContext(request))
 
