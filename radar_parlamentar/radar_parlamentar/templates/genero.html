@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}
+    o grupo PoliGNU
+{% endblock title %}
+
+{% block extrascripts %}
+{% endblock extrascripts %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block headerImgClass %}
+    about
+{% endblock headerImgClass %}
+
+{% block nomepagina %}
+    Gênero e Participação
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Entenda visualmente participação de mulheres e homens na política
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}
+    <li><a href="/index">Home</a> &raquo;</li>
+    <li><a href="/genero">Gênero e Participação</a></li>
+{% endblock breadcrumbs %}
+
+{% block content %}
+        <div class="promoMsg">
+            <h2>
+                O projeto Gênero & Participação tem por objetivo fazer uma análise gráfica da participação de mulheres e homens na Câmara Federal. Isto é, pode-se observar as participações feminina e masculina na casa legislativa, seja do ponto de vista quantitativo, seja do ponto de vista qualitativo. Do ponto de vista quantitativo é possível observar ao longo do tempo o percentual de mulheres e homens no total de legislaturas, bem como nas bancadas partidárias. Do ponto de vista qualitativo são detectadas as temáticas mais frequentes das proposições e estabelece-se a relação delas com partidos e com legisladoras(es).
+            </h2>
+        </div>
+        
+        <div class="stHead"><h4>Visualizações</h4></div>
+
+        <section class="cols caseStd">
+            <div class="half">
+                <h3><a href="/genero/perfil/legislaturas/">Perfil das Legislaturas</a></h3>
+                <div class="inwrap">
+                    <a href="/genero/perfil/legislaturas/">
+                        <img src="/static/assets/cdep.png" class="border" height="190" width="200" alt="Case Studies" />
+                    </a>
+                    <p>
+                        Trata-se de uma visualização de dados em que é possível observar o percentual de deputadas e deputados nas <b>legislaturas</b> ao longo do tempo.
+                    </p>
+                    <a href="/genero/perfil/legislaturas/" class="btn">Faça sua Análise</a>
+                </div><!-- end of .inwrap -->
+            </div><!-- end of .half -->
+            
+            <div class="half">
+                <h3><a href="/genero/perfil/partido/">Perfil dos Partidos</a></h3>
+                <div class="inwrap">
+                    <a href="/genero/perfil/partido/">
+                        <img src="/static/assets/cmsp.png" class="border" height="190" width="200" alt="Case Studies" />
+                    </a>
+                    <p>
+                        Trata-se de uma visualização de dados em que é possível observar o percentual de deputadas e deputados de um <b>determinado partido</b> (a sua escolha) ao longo do tempo.
+                    </p>
+                    <a href="/genero/perfil/partido/" class="btn">Faça sua Análise</a>
+                </div><!-- end of .inwrap -->
+            </div><!-- end of .half -->
+
+            <div class="half">
+                <h3><a href="/genero/perfil/partido/comparacao/">Comparação Perfis Partidários</a></h3>
+                <div class="inwrap">
+                    <a href="/genero/perfil/partido/comparacao/">
+                        <img src="/static/assets/sen.png" class="border" height="190" width="200" alt="Case Studies" />
+                    </a>
+                    <p>
+                        Trata-se de uma visualização de dados em que é possível observar o percentual de deputadas e deputados dos <b>diversos partidos</b> em um determinado ano (a sua escolha).
+                    </p>
+                    <a href="/genero/perfil/partido/comparacao/" class="btn">Faça sua Análise</a>
+                </div><!-- end of .inwrap -->
+            </div><!-- end of .half -->
+            
+            <div class="half">
+                <h3><a href="/genero/tematica/nuvem/">Análise: Temáticas</a></h3>
+                <div class="inwrap">
+                    <a href="/genero/tematica/nuvem/">
+                        <img src="/static/assets/sen.png" class="border" height="190" width="200" alt="Case Studies" />
+                    </a>
+                    <p>
+                        Trata-se de uma visualização de dados do tipo nuvem de palavras em que é possível observar as 30 temáticas mais frequentes por legislador(a) ou por partido.
+                    </p>
+                    <a href="/genero/tematica/nuvem/" class="btn">Faça sua Análise</a>
+                </div><!-- end of .inwrap -->
+            </div><!-- end of .half --> 
+            
+            <div class="half">
+                <h3><a href="/genero/tematica/partido/">Análise: Temáticas por Partido</a></h3>
+                <div class="inwrap">
+                    <a href="/genero/tematica/partido/">
+                        <img src="/static/assets/sen.png" class="border" height="190" width="200" alt="Case Studies" />
+                    </a>
+                    <p>
+                        Trata-se de uma visualização de dados matricial em que é possível observar a frequência maior ou menor que certa temática nas proposições, de acordo com os diversos partidos.
+                    </p>
+                    <a href="/genero/tematica/partido/" class="btn">Faça sua Análise</a>
+                </div><!-- end of .inwrap -->
+            </div><!-- end of .half --> 
+        
+            <div class="half">
+                <h3><a href="/genero/tematica/legislador/">Análise: Temáticas por Legislador(a)</a></h3>
+                <div class="inwrap">
+                    <a href="/genero/tematica/legislador/">
+                        <img src="/static/assets/sen.png" class="border" height="190" width="200" alt="Case Studies" />
+                    </a>
+                    <p>
+                        Trata-se de uma visualização de dados "cluster dendrogram" em que é possível observar as 5 temáticas mais frequentes para cada legislador(a).
+                    </p>
+                    <a href="/genero/tematica/legislador/" class="btn">Faça sua Análise</a>
+                </div><!-- end of .inwrap -->
+            </div><!-- end of .half --> 
+        </section><!-- end of .cols -->
+
+{% endblock content %}
+{% block extrascriptsend %}
+    menuActive("sobre_nos");
+{% endblock extrascriptsend %}
