@@ -44,6 +44,7 @@ class AnalisePeriodo:
 
         self.presencas_parlamentares = {} # legislatura.id => boolean        
         self.coordenadas_legislaturas = {} # legislatura.id = [x,y]
+        self.legislaturas_por_partido = {} # partido.nome => lista das legislaturas do partido (independente de periodo).
         
     
 
