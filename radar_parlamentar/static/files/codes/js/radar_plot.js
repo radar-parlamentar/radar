@@ -264,7 +264,7 @@ Plot = (function ($) {
                     .attr("fill", cor(partido))
                     .on("click", function(d) { return implode_partido(partido); });
 
-                new_parlamentares.append("title").text(function(d) { return d.nome; });
+                new_parlamentares.append("title").text(function(d) { return d.nome + ' - ' + partido.nome; });
                     
                 if (explodindo) {
                     new_parlamentares.attr("cx", xScale(partido.x[periodo_atual]))
