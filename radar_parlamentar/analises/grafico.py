@@ -27,7 +27,7 @@ dado que os cálculos do PCA já foram realizados
 from __future__ import unicode_literals
 import json
 import logging
-from math import sqrt
+from math import sqrt, isnan
 from django import db # para debugar numero de queries, usando
                       # db.reset_queries() e print len(db.connection.queries)
 import time
@@ -133,11 +133,16 @@ class JsonAnaliseGenerator:
             scaler = GraphScaler()
             coordenadas = scaler.scale(ap.coordenadas_partidos)
             try:
-                x = coordenadas[partido][0]
-                y = coordenadas[partido][1]
-                dict_partido["x"].append(round(x,2))
-                dict_partido["y"].append(round(y,2))
-                r2_partido = x**2 + y**2
+                x = round(coordenadas[partido][0],2)
+                y = round(coordenadas[partido][1],2)
+                if not isnan(x):
+                    dict_partido["x"].append(round(x,2))
+                    dict_partido["y"].append(round(y,2))
+                    r2_partido = x**2 + y**2
+                else:
+                    dict_partido["x"].append(0.)
+                    dict_partido["y"].append(0.)                
+                    r2_partido = 0
                 self.max_r2_partidos = max(self.max_r2_partidos, r2_partido)
             except KeyError:
                 x = 0.
@@ -167,9 +172,16 @@ class JsonAnaliseGenerator:
             if coordenadas.has_key(leg_id):
                 x = coordenadas[leg_id][0]
                 y = coordenadas[leg_id][1]
-                dict_parlamentar["x"].append(round(x,2))
-                dict_parlamentar["y"].append(round(y,2))
-                r2 = x**2 + y**2
+                if not isnan(x):
+                    x = round(x,2)
+                    y = round(y,2)
+                    r2 = x**2 + y**2
+                else:
+                    x = None
+                    y = None
+                    r2 = 0
+                dict_parlamentar["x"].append(x)
+                dict_parlamentar["y"].append(y)
                 self.max_r2 = max(self.max_r2, r2)
             else:
                 dict_parlamentar["x"].append(None)

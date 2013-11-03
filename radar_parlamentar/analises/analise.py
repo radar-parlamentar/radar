@@ -218,14 +218,13 @@ class AnalisadorPeriodo:
         dicionario = {}
         for legislatura, vetor in zip(self.legislaturas, self.pca.U):
             dicionario[legislatura.id] = vetor
-        # TODO: se o parlamentar estava ausente, trocar o valor por [null,null]
         return dicionario
     
     def _lista_de_indices_de_legislaturas_nao_nulas(self):
         return self.vetores_presencas.sum(axis=1).nonzero()[0].tolist()
 
     def _preenche_pca_de_legislaturas_nulas(self, ilnn):
-        """Recupera legislaturas ausentes no período, atribuindo zero em todas as dimensões no espaço das componentes principais"""
+        """Recupera legislaturas ausentes no período, atribuindo NaN em todas as dimensões no espaço das componentes principais"""
         U2 = self.pca.U.copy() # Salvar resultado da pca em U2
         matriz_de_nans = numpy.zeros((len(self.legislaturas), self.num_votacoes)) * numpy.nan
         self.pca.U = matriz_de_nans
@@ -242,7 +241,7 @@ class AnalisadorPeriodo:
                 # aproveitar para preencher presencas_legislaturas (legislatura.id => True / False)
                 self.presencas_legislaturas[l.id] = True
             else:
-                self.pca.U[il,:] = numpy.zeros((1,self.num_votacoes))
+                self.pca.U[il,:] = numpy.zeros((1,self.num_votacoes))*numpy.NaN
                 self.presencas_legislaturas[l.id] = False
 
     def _calcula_centroides_partidos(self):
