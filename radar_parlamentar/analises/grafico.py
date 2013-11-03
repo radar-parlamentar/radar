@@ -28,6 +28,9 @@ from __future__ import unicode_literals
 import json
 import logging
 from math import sqrt
+from django import db # para debugar numero de queries, usando
+                      # db.reset_queries() e print len(db.connection.queries)
+import time
 
 logger = logging.getLogger("radar")
 
@@ -40,6 +43,7 @@ class JsonAnaliseGenerator:
         self.escala_periodo = None
         self.json = None
         self.max_r2 = 0
+        self.max_r2_partidos = 0
         
     def get_json(self):
         if not self.json:
@@ -97,8 +101,16 @@ class JsonAnaliseGenerator:
             
         self.json = self.json[0:-1] # apaga última vírgula
         self.json += '],' # fecha lista de períodos
+        db.reset_queries()
+        print 'comecando lista de partidos'
+        ttotal1 = time.time()
         self.json += '"partidos":' + self._list_partidos()
+        print 'queries para fazer lista de partidos = ' + str(len(db.connection.queries))
+        for q in db.connection.queries:
+            print q
+        print 'tempo na lista de partidos = ' + str(time.time() - ttotal1) + ' s.' 
         self.json += ', "max_raio":' + str(round(sqrt(self.max_r2), 1))
+        self.json += ', "max_raio_partidos":' + str(round(sqrt(self.max_r2_partidos), 1))
         self.json += ' }' 
 
     def _list_partidos(self):
@@ -121,9 +133,15 @@ class JsonAnaliseGenerator:
             scaler = GraphScaler()
             coordenadas = scaler.scale(ap.coordenadas_partidos)
             try:
-                dict_partido["x"].append(round(coordenadas[partido][0],2))
-                dict_partido["y"].append(round(coordenadas[partido][1],2))
+                x = coordenadas[partido][0]
+                y = coordenadas[partido][1]
+                dict_partido["x"].append(round(x,2))
+                dict_partido["y"].append(round(y,2))
+                r2_partido = x**2 + y**2
+                self.max_r2_partidos = max(self.max_r2_partidos, r2_partido)
             except KeyError:
+                x = 0.
+                y = 0.
                 dict_partido["x"].append(0.)
                 dict_partido["y"].append(0.)
             t = ap.tamanhos_partidos[partido]
@@ -131,8 +149,8 @@ class JsonAnaliseGenerator:
             r = sqrt(t*self.escala_periodo)
             dict_partido["r"].append(round(r,1))
         dict_partido["parlamentares"] = []
-        legislaturas = self.analise_temporal.analises_periodo[0].legislaturas_por_partido[partido.nome]
-        #legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(partido=partido).select_related('id', 'partido__nome')
+        #legislaturas = self.analise_temporal.analises_periodo[0].legislaturas_por_partido[partido.nome]
+        legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(partido=partido).select_related('id', 'partido__nome','parlamentar__nome')
         for leg in legislaturas:
             dict_partido["parlamentares"].append(self._dict_parlamentar(leg))
         return dict_partido
@@ -169,8 +187,8 @@ class GraphScaler:
         scaled = {}
         for partido, coord in partidos2d.items():
             x, y = coord[0], coord[1]
-            if x < -1 or x > 1 or y < -1 or y > 1:
-                raise ValueError("Value should be in [-1,1]")
+#            if x < -1 or x > 1 or y < -1 or y > 1:
+#                raise ValueError("Value should be in [-1,1]")
             scaled[partido] = [x*100, y*100]
         return scaled
 
