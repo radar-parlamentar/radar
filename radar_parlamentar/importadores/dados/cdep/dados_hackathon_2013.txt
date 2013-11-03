@@ -1,0 +1,4 @@
+Os dados recebidos da Câmara dos Deputados e que foram usados no projeto se encontram no seguinte endereço, destinado especialmente ao armazenamento de dados brutos:
+* https://github.com/diraol/dadosPublicos/tree/master/camara_dos_deputados
+
+

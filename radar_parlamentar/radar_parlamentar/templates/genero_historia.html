@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Gênero
+{% endblock title %}
+
+{% block extrascripts %}
+    <link rel="stylesheet" href="/static/files/codes/css/radar_d3_graph.css" type="text/css" />
+{% endblock extrascripts %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block headerImgClass %}
+    about
+{% endblock headerImgClass %}
+
+{% block nomepagina %}
+    Gênero e Participação
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Entenda visualmente participação de mulheres e homens na política
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}
+    <li><a href="/index/">Home</a> &raquo;</li>
+    <li><a href="/genero/">Gênero</a> &raquo;</li>
+    <li><a href="/genero/perfil/legislaturas">Perfil das Legislaturas</a></li>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+<style>
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+
+.legend line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+  width: 200px;
+  text-align: center;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+.barraMasculino {
+  fill: #aaaaaa;
+}
+.barraMasculino:hover {
+  fill: #777777 ;
+}
+.barraFeminino {
+  fill: #850000;
+}
+.barraFeminino:hover {
+  fill: #440000;
+}
+
+</style>
+
+    <h3>Perfil das Legislaturas</h3>
+    <article id="descricao" class="inwrap">
+        Trata-se de uma visualização de dados em que é possível observar o percentual de deputadas e deputados nas legislaturas ao longo do tempo.<br/>
+        <h4 style="margin-bottom:5px;">Como Funciona?</h4>
+        <aside id="como-funciona" style="margin: 0 90px 10px 20px; padding: 10px; background-color: rgba(220,220,220,0.7); -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">O Gráfico mostra, desde o primeiro parlamento, o percentual de hoomens e mulheres que legislaram na casa.<br/>
+        Cada barra representa uma legislatura. A parte em cinza representa o percentual de homens da legislatura e a parte vermelha o percentual de mulheres.<br/>
+        Ao colocar o mouse sobre uma legislatura será mostrado o período da legislatura e os valores absolutos de homens e mulheres da legislatura.</aside>
+        <!--div id="form">
+            <label for="periodos" ACCESSKEY="P">Período</label> <select id="periodos">
+            </select>
+            <button id="animar">Animar</button>
+            <br/><br/>
+        </div-->
+        <aside id="legenda" class="list">
+            <b>LEGENDA</b>
+        </aside>
+        <figure id="animacao"><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
+    </article>
+        <div style="clear:right"/>
+{% endblock content %}
+
+{% block extrajsend %}
+    {% if request.get_host == '127.0.0.1:8000' or request.get_host == 'localhost:8000' %}
+        <script src="/static/files/codes/js/d3.min.js"></script>
+        <script src="/static/files/codes/js/d3-tip.js"></script>
+    {% else %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js"></script>
+        <script src="/static/files/codes/js/d3-tip.js"></script>
+        <script type="text/javascript">
+          if (typeof d3 === 'undefined') {
+            var e = document.createElement('script');
+                e.src = '/static/files/codes/js/d3.min.js';
+                e.type='text/javascript';
+            document.getElementsByTagName("head")[0].appendChild(e);
+          }
+        </script>
+    {% endif %}
+    <script src="/static/files/codes/js/genero_historia.js"></script>
+{% endblock extrajsend %}
+
+{% block extrascriptsend %}
+    menuActive("genero");
+  $(document).ready(function() {
+  });
+{% endblock extrascriptsend %}
+

@@ -1,0 +1,2 @@
+Arquivos com os termos do TECAD (Base de termos de indexação de proposições), pelo menos até 31/10/2013, podem ser encontrados em:
+* https://github.com/diraol/dadosPublicos/tree/master/camara_dos_deputados
