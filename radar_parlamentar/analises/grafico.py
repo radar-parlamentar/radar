@@ -29,13 +29,12 @@ import json
 import logging
 from math import sqrt, isnan
 from django import db # para debugar numero de queries, usando
-                      # db.reset_queries() e print len(db.connection.queries)
+                        # db.reset_queries() e print len(db.connection.queries)
 import time
 
 logger = logging.getLogger("radar")
 
 class JsonAnaliseGenerator:
-    """Classe que gera o Json da Analise"""
     
     def __init__(self, analise_temporal):
         self.CONSTANTE_ESCALA_TAMANHO = 120
@@ -53,23 +52,37 @@ class JsonAnaliseGenerator:
         return self.json
     
     def _cria_json(self):
-        casa_legislativa = self.analise_temporal.casa_legislativa
-        
-        self.json = '{"geral":{"CasaLegislativa":{'
-        self.json += '"nome":"' + casa_legislativa.nome + '",'
-        self.json += '"nome_curto":"' + casa_legislativa.nome_curto + '",'
-        self.json += '"esfera":"' + casa_legislativa.esfera + '",'
-        self.json += '"local":"' + casa_legislativa.local + '",'
-        self.json += '"atualizacao":"' + unicode(casa_legislativa.atualizacao) + '"'
-        self.json += "}," # fecha casa legislativa
+        dict_analise = {}
+        dict_analise['geral'] = self._dict_geral()
+        dict_analise['periodos'] = self._list_periodos()
+        dict_analise['partidos'] = self._list_partidos_instrumented()
+        max_raio = round(sqrt(self.max_r2), 1)
+        max_raio_partidos = round(sqrt(self.max_r2_partidos), 1)
+        dict_analise['max_raio'] = max_raio
+        dict_analise['max_raio_partidos'] = max_raio_partidos
+        self.json = json.dumps(dict_analise) 
+    
+    def _dict_geral(self):
+        dict_geral = {}
         self.escala_periodo = self.CONSTANTE_ESCALA_TAMANHO**2. / max(1,self.analise_temporal.area_total)
         escala_20px = 20**2. * (1./max(1,self.escala_periodo)) # numero de parlamentares representado
-                                                # por um circulo de raio 20 pixels.
-        self.json += '"escala_tamanho":' + str(round(escala_20px,5)) + ','
-        self.json += '"filtro_partidos":null,'
-        self.json += '"filtro_votacoes":null},' # fecha bloco "geral"
-        self.json += '"periodos":'
-        
+        dict_geral['escala_tamanho'] = round(escala_20px,5)
+        dict_geral['escala_tamanho'] = None
+        dict_geral['filtro_votacoes'] = None
+        dict_geral['CasaLegislativa'] = self._dict_casa_legislativa()
+        return dict_geral
+    
+    def _dict_casa_legislativa(self):
+        casa_legislativa = self.analise_temporal.casa_legislativa        
+        dict_casa = {}
+        dict_casa['nome'] = casa_legislativa.nome
+        dict_casa['nome_curto'] = casa_legislativa.nome_curto
+        dict_casa['esfera'] = casa_legislativa.esfera
+        dict_casa['local'] = casa_legislativa.local
+        dict_casa['atualizacao'] = unicode(casa_legislativa.atualizacao)
+        return dict_casa        
+    
+    def _list_periodos(self):
         list_aps = []
         for ap in self.analise_temporal.analises_periodo:
             dict_ap = {}
@@ -77,31 +90,19 @@ class JsonAnaliseGenerator:
             dict_ap['nvotacoes'] = ap.num_votacoes
             dict_ap['nome'] = ap.periodo.string
             dict_ap['var_explicada'] = var_explicada
-            dict_ap['cp1'] = self._cp1(ap)
-            dict_ap['cp2'] = self._cp2(ap)
-            dict_ap['votacoes'] = self._votacoes_do_periodo(ap)
+            dict_ap['cp1'] = self._dict_cp1(ap)
+            dict_ap['cp2'] = self._dict_cp2(ap)
+            dict_ap['votacoes'] = self._list_votacoes_do_periodo(ap)
             list_aps.append(dict_ap)
-        self.json += json.dumps(list_aps)
-
-        db.reset_queries()
-        print 'comecando lista de partidos'
-        ttotal1 = time.time()
-        self.json += ', "partidos":' + self._list_partidos()
-        print 'queries para fazer lista de partidos = ' + str(len(db.connection.queries))
-        for q in db.connection.queries:
-            print q
-        print 'tempo na lista de partidos = ' + str(time.time() - ttotal1) + ' s.' 
-        self.json += ', "max_raio":' + str(round(sqrt(self.max_r2), 1))
-        self.json += ', "max_raio_partidos":' + str(round(sqrt(self.max_r2_partidos), 1))
-        self.json += ' }' 
-    
-    def _cp1(self, ap):
-        return self._cp(ap, 0)
-
-    def _cp2(self, ap):
-        return self._cp(ap, 1)
+        return list_aps
         
-    def _cp(self, ap, idx):
+    def _dict_cp1(self, ap):
+        return self._dict_cp(ap, 0)
+
+    def _dict_cp2(self, ap):
+        return self._dict_cp(ap, 1)
+        
+    def _dict_cp(self, ap, idx):
         """ap -- AnalisePeriodo; idx == 0 para cp1 and idx == 1 para cp2"""
         dict_cp = {}
         try:
@@ -117,7 +118,7 @@ class JsonAnaliseGenerator:
         # o JsonGenerator não deveria entender dessas cosias.
         return dict_cp 
     
-    def _votacoes_do_periodo(self, ap):
+    def _list_votacoes_do_periodo(self, ap):
         list_votacoes = []
         for votacao in ap.votacoes:
             dict_votacao = {}
@@ -125,17 +126,24 @@ class JsonAnaliseGenerator:
             list_votacoes.append(dict_votacao)
         return list_votacoes
         
+    def _list_partidos_instrumented(self):
+        db.reset_queries()
+        print 'comecando lista de partidos'
+        ttotal1 = time.time()
+        list_partidos = self._list_partidos()
+        print 'queries para fazer lista de partidos = ' + str(len(db.connection.queries))
+        for q in db.connection.queries:
+            print q
+        print 'tempo na lista de partidos = ' + str(time.time() - ttotal1) + ' s.'
+        return list_partidos        
             
     def _list_partidos(self):
         list_partidos = []
         partidos = self.analise_temporal.casa_legislativa.partidos().select_related('nome','numero','cor')
         for partido in partidos: #  self.analise_temporal.analises_periodo[0].partidos:
             list_partidos.append(self._dict_partido(partido))
-        return json.dumps(list_partidos)
+        return list_partidos
 
-    def _sem_ultima_virgula(self, json):
-        return json[0:-1]
-        
     def _dict_partido(self, partido):
         dict_partido = {"nome":partido.nome ,"numero":partido.numero,"cor":partido.cor}
         dict_partido["t"] =  []
@@ -212,8 +220,8 @@ class GraphScaler:
         scaled = {}
         for partido, coord in partidos2d.items():
             x, y = coord[0], coord[1]
-#            if x < -1 or x > 1 or y < -1 or y > 1:
-#                raise ValueError("Value should be in [-1,1]")
+            if x < -1 or x > 1 or y < -1 or y > 1:
+                raise ValueError("Value should be in [-1,1]")
             scaled[partido] = [x*100, y*100]
         return scaled
 
