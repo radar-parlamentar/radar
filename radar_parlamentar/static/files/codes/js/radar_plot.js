@@ -25,7 +25,7 @@ Plot = (function ($) {
         d3.json("/analises/json_analise/" + nome_curto_casa_legislativa, plot_data);
         //para testes com arquivo hardcoded
 //        d3.json("/static/files/partidos.json", plot_data);
-//        d3.json("/static/files/deputados_grande.json", plot_data);
+//        d3.json("/static/files/cdep.json", plot_data);
     }
 
     function space_to_underline(name) {
@@ -42,6 +42,8 @@ Plot = (function ($) {
     function gradiente(svg,id,color) {
         DEFAULT_COLOR = "#1F77B4";
         if (color === "#000000") color = DEFAULT_COLOR;
+        pct_white = 70;
+        center_color = shadeColor(color,pct_white); 
         var identificador = "gradient-" + id;
         var gradient = svg.append("svg:defs")
             .append("svg:radialGradient")
@@ -54,8 +56,8 @@ Plot = (function ($) {
         
         gradient.append("svg:stop")
             .attr("offset", "0%")
-            .attr("stop-color", color)
-            .attr("stop-opacity", 0.5);
+            .attr("stop-color", center_color)
+            .attr("stop-opacity", 1);
         
         gradient.append("svg:stop")
             .attr("offset", "70%")
@@ -64,6 +66,28 @@ Plot = (function ($) {
         return "url(#" + identificador + ")";
     }
     
+    // Add white to the color. from http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color
+    function shadeColor(color, percent) {
+
+        var R = parseInt(color.substring(1,3),16);
+        var G = parseInt(color.substring(3,5),16);
+        var B = parseInt(color.substring(5,7),16);
+
+        R = parseInt(R * (100 + percent) / 100);
+        G = parseInt(G * (100 + percent) / 100);
+        B = parseInt(B * (100 + percent) / 100);
+
+        R = (R<255)?R:255;  
+        G = (G<255)?G:255;  
+        B = (B<255)?B:255;  
+
+        var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
+        var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
+        var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+
+        return "#"+RR+GG+BB;
+    }
+
     // Chart dimensions.
     var margin = {top: 20, right: 20, bottom: 20, left: 20},
         width_graph = 670,
@@ -72,12 +96,14 @@ Plot = (function ($) {
         height = height_graph - margin.top - margin.bottom,
         space_between_graph_and_control = 60,
         height_of_control = 80;
-    var TEMPO_ANIMACAO = 500,
+    var TEMPO_ANIMACAO = 1500,
         RAIO_PARLAMENTAR = 6;
 
-    // Various scales. These domains make assumptions of data, naturally.
-    var xScale = d3.scale.linear().range([0, width]),
-        yScale = d3.scale.linear().range([height, 0]);
+    // Scales
+    var xScale = d3.scale.linear().range([0, width]), // scale for members
+        yScale = d3.scale.linear().range([height, 0]),
+        xScalePart = d3.scale.linear().range([0, width]), // scale for parties
+        yScalePart = d3.scale.linear().range([height, 0]);
 
     var periodo_min,
         periodo_max,
@@ -94,9 +120,14 @@ Plot = (function ($) {
         $("#loading").remove();
 
         r = dados.max_raio
+        r_partidos = dados.max_raio_partidos
         console.log(r)
         xScale.domain([-r, r])
         yScale.domain([-r, r])
+//        xScalePart.domain([-r_partidos, r_partidos])
+//        yScalePart.domain([-r_partidos, r_partidos])
+        xScalePart.domain([-r, r])
+        yScalePart.domain([-r, r])
         
         // Creates the SVG container and sets the origin.
         var svg_base = d3.select("#animacao").append("svg")
@@ -159,6 +190,43 @@ Plot = (function ($) {
 
         change_period();
 
+        var escala_quadratica = false;
+
+        var alternador_escalas = grupo_controle_periodos.append("text")
+            .attr("id", "alterna_escalas")
+            .attr("class", "alterna_escala")
+            .attr("text-anchor", "middle")
+            .attr("y", 70)
+            .attr("x", width-20 )
+            .text("Zoom In")
+            .on("click", alternar_escalas);
+
+        function alternar_escalas() {
+            if (escala_quadratica==false) {
+                xScale = d3.scale.sqrt();
+                yScale = d3.scale.sqrt();
+                xScalePart = d3.scale.sqrt();
+                yScalePart = d3.scale.sqrt();
+                escala_quadratica = true;
+                alternador_escalas.text("Zoom Out");
+            }
+            else {
+                xScale = d3.scale.linear();
+                yScale = d3.scale.linear();
+                xScalePart = d3.scale.linear();
+                yScalePart = d3.scale.linear();
+                escala_quadratica = false;
+                alternador_escalas.text("Zoom In");
+            }
+            xScale.range([0, width]).domain([-r, r]); // scale for members
+            yScale.range([height, 0]).domain([-r, r]);
+            xScalePart.range([0, width]).domain([-r, r]); // scale for parties
+            yScalePart.range([height, 0]).domain([-r, r]);
+            atualiza_grafico(true);
+        }
+
+
+
         // ############## Funções de controle de mudanças de estado ###########
         
         // Função que controla mudança de estado para o estado seguinte
@@ -198,7 +266,7 @@ Plot = (function ($) {
         function change_period() {
             atualiza_grafico(false);
         }
-        
+
         // atualiza partidos e deputados no gráfico de acordo com o período atual
         // explodindo: true quando estamos atualizando o gráfico por causa de uma explosão de partido
         // (explosão de partido é quando se clica no partido para ver seus parlamentares)
@@ -209,7 +277,7 @@ Plot = (function ($) {
             var circles = grupo_grafico.selectAll('.party_circle').data(partidos_no_periodo, function(d) { return d.nome });
 
             parties.transition()
-                .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_para]) +"," +  yScale(d.y[periodo_para]) + ")" })
+                .attr("transform", function(d) { return "translate(" + xScalePart(d.x[periodo_para]) +"," +  yScalePart(d.y[periodo_para]) + ")" })
                 .duration(TEMPO_ANIMACAO);
             
             circles.transition()
@@ -219,7 +287,7 @@ Plot = (function ($) {
             var new_parties = parties.enter().append("g")
                 .attr("class","party")
                 .attr("id",function(d){return "group-"+nome(d);})
-                .attr("transform", function(d) { return "translate(" + xScale(d.x[periodo_atual]) +"," +  yScale(d.y[periodo_atual]) + ")";})
+                .attr("transform", function(d) { return "translate(" + xScalePart(d.x[periodo_atual]) +"," +  yScalePart(d.y[periodo_atual]) + ")";})
                 .attr("opacity",0.00001)
                 .on("click", function(d) { return explode_partido(d); });
             
@@ -235,7 +303,7 @@ Plot = (function ($) {
             new_parties.append("text")
                 .attr("text-anchor","middle")
                 .attr("dy",3)
-                .text(function(d) { return numero(d); });
+                .text(function(d) { return nome(d); });
 
             new_parties.transition()
                 .attr("opacity",1)

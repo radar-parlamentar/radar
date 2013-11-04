@@ -28,9 +28,20 @@
     stroke: rgba(230,230,230,1);
 }
 
+.alterna_escala {
+  font: 700 16px "Helvetica Neue";
+  fill: #bbb;
+}
+
+.alterna_escala:hover {
+  font: 700 20px "Helvetica Neue";
+  fill: #99c;
+  cursor: pointer;
+}
+
 .raio_radar {
     fill: none;
-    stroke: rgba(230,230,230,0.9);
+    stroke: rgba(230,230,230,1);
 }
 
 .party {
@@ -38,8 +49,22 @@
   cursor: pointer;
 }
 
+.party:hover .party_circle {
+  opacity: 1
+}
+
+.party_circle {
+  opacity: 0.6
+}
+
 .parlamentar_circle {
   cursor: pointer;
+  opacity: 0.6
+}
+
+.parlamentar_circle:hover {
+  cursor: pointer;
+  opacity: 1
 }
 
 .axis path, .axis line {
