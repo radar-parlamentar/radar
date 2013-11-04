@@ -14,7 +14,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-#
+#TemasTest
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -213,15 +213,15 @@ class JsonAnaliseGenerator:
 
 class GraphScaler:
 
-    def scale(self, partidos2d):
-        """Recebe mapa de coordenadas de partidos (saída de analise.partidos_2d()
-        e altera a escala dos valores de [-1,1] para [-100,100]
+    def scale(self, coords):
+        """Changes X,Y scale from [-1,1] to [-100,100]
+        coords -- key => [x, y]
         """
         scaled = {}
-        for partido, coord in partidos2d.items():
+        for key, coord in coords.items():
             x, y = coord[0], coord[1]
             if x < -1 or x > 1 or y < -1 or y > 1:
                 raise ValueError("Value should be in [-1,1]")
-            scaled[partido] = [x*100, y*100]
+            scaled[key] = [x*100, y*100]
         return scaled
 
