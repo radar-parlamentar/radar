@@ -50,7 +50,6 @@ class AnaliseTest(TestCase):
 
     def test_casa(self):
         """Testa se casa legislativa foi corretamente recuperada do banco"""
-
         self.assertAlmostEqual(self.casa_legislativa.nome, 'Convenção Nacional Francesa')
         
     def test_tamanho_partidos(self):
@@ -240,33 +239,6 @@ class TemasTest(TestCase):
     def test_recuperacao_erro(self):
         with self.assertRaises(ValueError):
             self.dici.recuperar_palavras_por_sinonimo(None)
-
-############################
-# Testes não automatizados #
-############################
-
-class GraficoTestManual():
-
-    def importa_dados(self):
-        if not models.CasaLegislativa.objects.filter(nome_curto='conv').exists():
-            importer = convencao.ImportadorConvencao()
-            importer.importar()
-        self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
-        g = models.Partido.objects.get(nome=convencao.GIRONDINOS)
-        j = models.Partido.objects.get(nome=convencao.JACOBINOS)
-        m = models.Partido.objects.get(nome=convencao.MONARQUISTAS)
-        self.partidos = [g, j, m]
-
-    def testa_geracao_figura(self):
-        self.importa_dados()
-        an = analise.AnalisadorPeriodo(self.casa_legislativa, partidos=self.partidos)
-        an.partidos_2d()
-        gen = GeradorGrafico(an)
-        gen.figura()
-
-def main():
-    test = GraficoTest()
-    test.testa_geracao_figura()
 
 
             
