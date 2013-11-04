@@ -54,7 +54,7 @@ class JsonAnaliseGenerator:
     
     def _cria_json(self):
         casa_legislativa = self.analise_temporal.casa_legislativa
-
+        
         self.json = '{"geral":{"CasaLegislativa":{'
         self.json += '"nome":"' + casa_legislativa.nome + '",'
         self.json += '"nome_curto":"' + casa_legislativa.nome_curto + '",'
@@ -68,43 +68,25 @@ class JsonAnaliseGenerator:
         self.json += '"escala_tamanho":' + str(round(escala_20px,5)) + ','
         self.json += '"filtro_partidos":null,'
         self.json += '"filtro_votacoes":null},' # fecha bloco "geral"
-        self.json += '"periodos":['
+        self.json += '"periodos":'
         
+        list_aps = []
         for ap in self.analise_temporal.analises_periodo:
-            self.json += '{' # abre periodo
-            self.json += '"nvotacoes":' + str(ap.num_votacoes) + ','
-            self.json += '"nome":"' + ap.periodo.string + '",'
+            dict_ap = {}
             var_explicada = round((ap.pca.eigen[0] + ap.pca.eigen[1])/ap.pca.eigen.sum() * 100,1)
-            self.json += '"var_explicada":' + str(var_explicada) + ","
-            try:
-                self.json += '"cp1":{"theta":' + str(round(ap.theta,0)%180) + ','
-            except AttributeError:
-                self.json += '"cp1":{"theta":0,'           
-            var_explicada = round(ap.pca.eigen[0]/ap.pca.eigen.sum() * 100,1)
-            self.json += '"var_explicada":' + str(var_explicada) + ","
-            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca.Vt[0,:]**2]) + "}," # fecha cp1
-            try:
-                self.json += '"cp2":{"theta":' + str(round(ap.theta,0)%180 + 90) + ','
-            except AttributeError:
-                self.json += '"cp2":{"theta":0,'
-            var_explicada = str(round(ap.pca.eigen[1]/ap.pca.eigen.sum() * 100,1))
-            self.json += '"var_explicada":' + str(var_explicada) + ","
-            self.json += '"composicao":' + str([round(el,2) for el in 100*ap.pca.Vt[1,:]**2]) + "}," # fecha cp2
-            self.json += '"votacoes":' # deve trazer a lista de votacoes do periodo
-                                        # na mesma ordem apresentada nos vetores
-                                        # composicao das componentes principais.
-            lista_votacoes = []
-            for votacao in ap.votacoes:
-                lista_votacoes.append({"id":unicode(votacao).replace('"',"'")})
-            self.json += json.dumps(lista_votacoes)
-            self.json += ' },' # fecha lista de votações e fecha período
-            
-        self.json = self.json[0:-1] # apaga última vírgula
-        self.json += '],' # fecha lista de períodos
+            dict_ap['nvotacoes'] = ap.num_votacoes
+            dict_ap['nome'] = ap.periodo.string
+            dict_ap['var_explicada'] = var_explicada
+            dict_ap['cp1'] = self._cp1(ap)
+            dict_ap['cp2'] = self._cp2(ap)
+            dict_ap['votacoes'] = self._votacoes_do_periodo(ap)
+            list_aps.append(dict_ap)
+        self.json += json.dumps(list_aps)
+
         db.reset_queries()
         print 'comecando lista de partidos'
         ttotal1 = time.time()
-        self.json += '"partidos":' + self._list_partidos()
+        self.json += ', "partidos":' + self._list_partidos()
         print 'queries para fazer lista de partidos = ' + str(len(db.connection.queries))
         for q in db.connection.queries:
             print q
@@ -112,7 +94,38 @@ class JsonAnaliseGenerator:
         self.json += ', "max_raio":' + str(round(sqrt(self.max_r2), 1))
         self.json += ', "max_raio_partidos":' + str(round(sqrt(self.max_r2_partidos), 1))
         self.json += ' }' 
+    
+    def _cp1(self, ap):
+        return self._cp(ap, 0)
 
+    def _cp2(self, ap):
+        return self._cp(ap, 1)
+        
+    def _cp(self, ap, idx):
+        """ap -- AnalisePeriodo; idx == 0 para cp1 and idx == 1 para cp2"""
+        dict_cp = {}
+        try:
+            theta = round(ap.theta,0) % 180 + 90*idx
+        except AttributeError:
+            theta = 0
+        var_explicada = round(ap.pca.eigen[idx]/ap.pca.eigen.sum() * 100,1)
+        composicao = [round(el,2) for el in 100*ap.pca.Vt[idx,:]**2]
+        dict_cp['theta'] = theta
+        dict_cp['var_explicada'] = var_explicada
+        dict_cp['composicao'] = composicao
+        # TODO estas contas complicadas já deveriam ter sido feitas pela análise...
+        # o JsonGenerator não deveria entender dessas cosias.
+        return dict_cp 
+    
+    def _votacoes_do_periodo(self, ap):
+        list_votacoes = []
+        for votacao in ap.votacoes:
+            dict_votacao = {}
+            dict_votacao['id'] = unicode(votacao).replace('"',"'")
+            list_votacoes.append(dict_votacao)
+        return list_votacoes
+        
+            
     def _list_partidos(self):
         list_partidos = []
         partidos = self.analise_temporal.casa_legislativa.partidos().select_related('nome','numero','cor')
