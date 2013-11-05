@@ -22,10 +22,10 @@ Plot = (function ($) {
 
     // Function to load the data and draw the chart
     function initialize(nome_curto_casa_legislativa) {
-//        d3.json("/analises/json_analise/" + nome_curto_casa_legislativa, plot_data);
+        d3.json("/analises/json_analise/" + nome_curto_casa_legislativa, plot_data);
         //para testes com arquivo hardcoded
 //        d3.json("/static/files/partidos.json", plot_data);
-        d3.json("/static/files/cdep.json", plot_data);
+//        d3.json("/static/files/cdep.json", plot_data);
     }
 
     function space_to_underline(name) {
