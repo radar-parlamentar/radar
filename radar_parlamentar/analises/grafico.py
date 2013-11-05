@@ -110,7 +110,7 @@ class JsonAnaliseGenerator:
         except AttributeError:
             theta = 0
         var_explicada = round(ap.pca.eigen[idx]/ap.pca.eigen.sum() * 100,1)
-        if ap.pca.Vt:
+        if ap.pca.Vt != None:
             composicao = [round(el,2) for el in 100*ap.pca.Vt[idx,:]**2]
             dict_cp['composicao'] = composicao
         dict_cp['theta'] = theta
@@ -171,7 +171,7 @@ class JsonAnaliseGenerator:
                 y = 0.
                 dict_partido["x"].append(0.)
                 dict_partido["y"].append(0.)
-            t = ap.tamanhos_partidos[partido.nome]
+            t = ap.tamanhos_partidos[partido]
             dict_partido["t"].append(t)
             r = sqrt(t*self.escala_periodo)
             dict_partido["r"].append(round(r,1))

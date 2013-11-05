@@ -163,7 +163,7 @@ class Partido(models.Model):
         return None
 
     def __unicode__(self):
-        return '%s-%s-%s' % (self.nome, self.numero, self.cor)
+        return '%s-%s' % (self.nome, self.numero)
 
 
 class CasaLegislativa(models.Model):

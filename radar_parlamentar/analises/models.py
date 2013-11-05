@@ -40,10 +40,11 @@ class AnalisePeriodo:
 
         self.tamanhos_partidos = {} # partido.nome => int
         self.soma_dos_tamanhos_dos_partidos = 0
-        self.coordenadas_partidos = {} # partdo.nome = [x,y]
+        self.coordenadas_partidos = {} # partdo => [x,y]
+        # TODO coordenadas_partidos should be partido.nome => [x,y]
 
         self.presencas_parlamentares = {} # legislatura.id => boolean        
-        self.coordenadas_legislaturas = {} # legislatura.id = [x,y]
+        self.coordenadas_legislaturas = {} # legislatura.id => [x,y]
         self.legislaturas_por_partido = {} # partido.nome => lista das legislaturas do partido (independente de periodo).
         
     
