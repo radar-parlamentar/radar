@@ -1,7 +1,7 @@
 /*
-  Atribuido cor preta (#000000) ao PMDB.
+  Atribuido cor laranja (#FF5B00) ao PMDB.
  */
 
 
-update modelagem_partido set cor = '#FFC559'  where numero = 15;
+update modelagem_partido set cor = '#FF5B00'  where numero = 15;
 
