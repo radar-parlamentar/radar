@@ -28,7 +28,7 @@ urlpatterns = patterns('',
     #Páginas do Projeto Gênero do Hackathon da Câmara dos Deputados em 2013
     url(r'^genero/$', 'radar_parlamentar.views.genero'),
     url(r'^genero/tematica/partido/$', 'radar_parlamentar.views.genero_matriz'),
-    url(r'^genero/perfil/partido/$', 'radar_parlamentar.views.genero_historia_partidos'),
+    url(r'^genero/perfil/partido/$', 'radar_parlamentar.views.genero_perfil_partido'),
     url(r'^genero/perfil/partido/comparacao/$','radar_parlamentar.views.genero_comparativo_partidos'),
     url(r'^genero/perfil/legislaturas/$','radar_parlamentar.views.genero_historia_legislaturas'),
     #url(r'^genero/termos/nuvem/$', 'radar_parlamentar.views.genero_termos_nuvem'),
