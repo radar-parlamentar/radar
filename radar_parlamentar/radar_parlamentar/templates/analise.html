@@ -32,8 +32,8 @@
 {% block content %}
     <h3> {{casa_legislativa.nome}}</h3>
     <article id="descricao" class="inwrap">
-        Quantidade de votações considerada nesta análise: <b>{{num_votacao}}</b> votações.<br/><br/>
-        Os dados da {{casa_legislativa.nome}} utilizados para análise estão disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (dados atualizados em {{casa_legislativa.atualizacao}}).<br/>    
+        <b>{{num_votacao}} votações</b> consideradas nesta análise.<br/><br/>
+        Dados utilizados nesta análise disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (atualizados em {{casa_legislativa.atualizacao}}).<br/>    
         <aside id="legenda" class="list">
             <ul class="legenda">
                 {% for partido in partidos %}
