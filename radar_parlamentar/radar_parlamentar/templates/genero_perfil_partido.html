@@ -169,24 +169,13 @@
         </aside>
         Veja os percentuais ao longo do tempo e tire suas próprias conclusões.<br/>
     
-        Quantidade de partidos considerados nesta análise: <b></b>75</b> partidos.<br/><br/>
+        Quantidade de partidos considerados nesta análise: <b>75</b> partidos.<br/><br/>
         Os dados da Câmara dos Deputados utilizados para análise estão disponíveis para <a href="https://github.com/leonardofl/radar_parlamentar/">download aqui</a>.<br/> 
-        <!--div id="form">
-            <label for="periodos" ACCESSKEY="P">Período</label> <select id="periodos">
-            </select>
-            <button id="animar">Animar</button>
-            <br/><br/>
-        </div-->
 	<div class="demo">
           <input class="typeahead" type="text" placeholder="Partido">
         </div>
         <aside id="legenda" class="list">
             <b>LEGENDA</b>
-            <ul class="legenda">
-                {% for partido in partidos %}
-                    <li class="botao_partido" id="list_cor_{{partido.numero}}">{{partido.numero}} | {{partido.nome}}</li>
-                {% endfor %}
-            </ul>
         </aside>
         <figure id="animacao"><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
     </article>
