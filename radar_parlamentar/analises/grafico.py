@@ -110,10 +110,11 @@ class JsonAnaliseGenerator:
         except AttributeError:
             theta = 0
         var_explicada = round(ap.pca.eigen[idx]/ap.pca.eigen.sum() * 100,1)
-        composicao = [round(el,2) for el in 100*ap.pca.Vt[idx,:]**2]
+        if ap.pca.Vt:
+            composicao = [round(el,2) for el in 100*ap.pca.Vt[idx,:]**2]
+            dict_cp['composicao'] = composicao
         dict_cp['theta'] = theta
         dict_cp['var_explicada'] = var_explicada
-        dict_cp['composicao'] = composicao
         # TODO estas contas complicadas já deveriam ter sido feitas pela análise...
         # o JsonGenerator não deveria entender dessas cosias.
         return dict_cp 
@@ -170,7 +171,7 @@ class JsonAnaliseGenerator:
                 y = 0.
                 dict_partido["x"].append(0.)
                 dict_partido["y"].append(0.)
-            t = ap.tamanhos_partidos[partido]
+            t = ap.tamanhos_partidos[partido.nome]
             dict_partido["t"].append(t)
             r = sqrt(t*self.escala_periodo)
             dict_partido["r"].append(round(r,1))

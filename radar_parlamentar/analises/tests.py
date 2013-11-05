@@ -20,14 +20,97 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from analises import filtro
+from analises import analise
+from analises import grafico
 from modelagem import models
-
+from models import AnalisePeriodo, AnaliseTemporal
+from importadores import convencao
+from random import random
+import numpy
+import json
 
 # tests AnalisePeriodo
 
 # tests AnaliseTemporal
 
 # Tests JsonAnaliseGenerator
+
+class JsonAnaliseGeneratorTest(TestCase):
+    # TODO some complicated calculus performed in JsonAnaliseGeneratorTest
+    # should be done by a new class, possibly in grafico module.
+    # This test is not complete, it could test more json elements.
+
+    @classmethod
+    def setUpClass(cls):
+        cls.importer = convencao.ImportadorConvencao()
+        cls.importer.importar()
+            
+    def setUp(self):
+        
+        self.casa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        
+        self.analiseTemporal = AnaliseTemporal()
+        self.analiseTemporal.casa_legislativa = self.casa
+        self.analiseTemporal.periodicidade = models.BIENIO
+        self.analiseTemporal.area_total = 1
+        self.analiseTemporal.analises_periodo = []
+        
+        ap1 = AnalisePeriodo()
+        periodos = models.CasaLegislativa.periodos(self.casa, models.BIENIO, 0)
+        ap1.casa_legislativa = None
+        ap1.periodo = periodos[0]
+        ap1.partidos = [ p for p in JsonAnaliseGeneratorTest.importer.partidos ]
+        ap1.votacoes = []
+        ap1.num_votacoes = 0
+        ap1.tamanhos_partidos = {convencao.JACOBINOS : 3, convencao.GIRONDINOS : 3, convencao.MONARQUISTAS : 3} 
+        ap1.soma_dos_tamanhos_dos_partidos = 3*3
+        ap1.pca = PCAStub()
+        ap1.coordenadas_partidos = {}
+        ap1.coordenadas_partidos[convencao.JACOBINOS] = [-0.4,0.3]
+        ap1.coordenadas_partidos[convencao.GIRONDINOS] = [0.9,-0.3]
+        ap1.coordenadas_partidos[convencao.MONARQUISTAS] = [0.2,0.1]
+        ap1.legislaturas_por_partido = JsonAnaliseGeneratorTest.importer.legs
+        ap1.coordenadas_legislaturas = {} # legislatura.id => [x,y]
+        for p, legs in ap1.legislaturas_por_partido.items():
+            for leg in legs:
+                ap1.coordenadas_legislaturas[leg.id] = [random(), random()] 
+        self.analiseTemporal.analises_periodo.append(ap1)
+
+    def test_json(self):
+        gen = grafico.JsonAnaliseGenerator(self.analiseTemporal)
+        generated_json = gen.get_json()
+        dict_analise = json.loads(generated_json)
+        dict_casa = dict_analise['geral']['CasaLegislativa']
+        self.assertEquals(dict_casa['nome_curto'], self.casa.nome_curto)  
+        list_periodos = dict_analise['periodos']
+        self.assertEquals(len(list_periodos), 1)
+        dict_periodo = list_periodos[0]
+        self.assertTrue('1989' in dict_periodo['nome'])
+        list_partidos = dict_analise['partidos']
+        self.assertEquals(len(list_partidos), 3)
+        dict_partido = list_partidos[0]
+        toutes_les_parties = [convencao.JACOBINOS, convencao.GIRONDINOS, convencao.MONARQUISTAS]
+        self.assertTrue(dict_partido['nome'] in toutes_les_parties)
+        list_tamanhos = dict_partido['t']
+        self.assertEquals(list_tamanhos[0], 3)
+        list_parlamentares = dict_partido['parlamentares']
+        self.assertEquals(len(list_parlamentares), 3)
+        dict_parlamentar = list_parlamentares[0] 
+        list_xs = dict_parlamentar['x']
+        x = list_xs[0]
+        self.assertTrue(x >= 0 and x <= 100)
+        
+class PCAStub:
+    # TODO self.Vt should be properly stubbed
+    
+    def __init__(self):
+        self.eigen = numpy.zeros(4)
+        self.eigen[0] = 0.6
+        self.eigen[1] = 0.3
+        self.eigen[2] = 0.05
+        self.eigen[3] = 0.05
+        self.Vt = None
+
 
 # Testes filtro
 
