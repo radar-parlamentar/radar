@@ -22,10 +22,10 @@ Plot = (function ($) {
 
     // Function to load the data and draw the chart
     function initialize(nome_curto_casa_legislativa) {
-        d3.json("/analises/json_analise/" + nome_curto_casa_legislativa, plot_data);
+//        d3.json("/analises/json_analise/" + nome_curto_casa_legislativa, plot_data);
         //para testes com arquivo hardcoded
 //        d3.json("/static/files/partidos.json", plot_data);
-//        d3.json("/static/files/cdep.json", plot_data);
+        d3.json("/static/files/cdep.json", plot_data);
     }
 
     function space_to_underline(name) {
@@ -99,6 +99,23 @@ Plot = (function ($) {
     var TEMPO_ANIMACAO = 1500,
         RAIO_PARLAMENTAR = 6;
 
+    // Variables related to the background of concentrical circles
+    var radius = 10;
+    var dist_between_radiusses = 40;
+    var full_radius = Math.min(width,height)/2;
+    var bg_radius_array = [radius];
+    var bg_radius_index = [0];
+    var i = 1;
+    radius = radius + dist_between_radiusses;
+    while (radius < full_radius) {
+//        fundo.append("circle")
+//            .attr("class", "background_radius")
+//            .attr("r",radius);
+        bg_radius_array.push(radius);
+        bg_radius_index.push(i++);
+        radius = radius + dist_between_radiusses;
+    }
+
     // Scales
     var xScale = d3.scale.linear().range([0, width]), // scale for members
         yScale = d3.scale.linear().range([height, 0]),
@@ -121,7 +138,6 @@ Plot = (function ($) {
 
         r = dados.max_raio
         r_partidos = dados.max_raio_partidos
-        console.log(r)
         xScale.domain([-r, r])
         yScale.domain([-r, r])
 //        xScalePart.domain([-r_partidos, r_partidos])
@@ -146,7 +162,12 @@ Plot = (function ($) {
             .attr("height", height + margin.top + margin.bottom)
             .attr("transform", "translate(" + margin.left + "," + (margin.top + space_between_graph_and_control ) + ")");
 
-        addBackground(grupo_grafico);
+        var bg_group = grupo_grafico.append("g")
+            .attr("transform","translate(" + width/2 + "," + height/2 + ")")
+            .attr("id","bg_group");
+
+        createBackground(full_radius);
+        transitionBackground("linear");
 
         var label_periodo = grupo_controle_periodos.append("text")
             .attr("class", "year label")
@@ -209,6 +230,7 @@ Plot = (function ($) {
                 yScalePart = d3.scale.sqrt();
                 escala_quadratica = true;
                 alternador_escalas.text("Zoom Out");
+                transitionBackground("quadratic");
             }
             else {
                 xScale = d3.scale.linear();
@@ -217,6 +239,7 @@ Plot = (function ($) {
                 yScalePart = d3.scale.linear();
                 escala_quadratica = false;
                 alternador_escalas.text("Zoom In");
+                transitionBackground("linear");
             }
             xScale.range([0, width]).domain([-r, r]); // scale for members
             yScale.range([height, 0]).domain([-r, r]);
@@ -303,7 +326,7 @@ Plot = (function ($) {
             new_parties.append("text")
                 .attr("text-anchor","middle")
                 .attr("dy",3)
-                .text(function(d) { return nome(d); });
+                .text(function(d) { return d.nome; });
 
             new_parties.transition()
                 .attr("opacity",1)
@@ -442,23 +465,36 @@ Plot = (function ($) {
         }
     }
 
-    function addBackground(grupo_grafico) {
-        var fundo = grupo_grafico.append("g")
-            .attr("transform","translate(" + width/2 + "," + height/2 + ")");
+    function createBackground(full_radius) {
+        background = grupo_grafico.append("g")
+            .attr("transform","translate(" + width/2 + "," + height/2 + ")")
+            .attr("id","background");
+        background.append("circle")
+            .attr("class","outer_background_radius")
+            .attr("r",full_radius);
+    }
 
-        raio_fundo = Math.min(width,height)/2;
-
-        fundo.append("circle")
-            .attr("class", "radar_background")
-            .attr("r", raio_fundo);
-
-        var raio = 10;
-        while (raio < raio_fundo) {
-            fundo.append("circle")
-                .attr("class", "raio_radar")
-                .attr("r",raio);
-            raio = raio + 40;
+    function transitionBackground(type_of_scale) {
+        // type_of_scale should be a string, either "linear" or "quadratic"                
+        var local_radius_array = bg_radius_array; // fallback to linear scale.
+        if (type_of_scale == "linear") {
+            var local_radius_array = bg_radius_array;
         }
+        else if (type_of_scale == "quadratic") {
+            var local_radius_array = bg_radius_array.map(function(d) {return Math.sqrt(d/full_radius)*full_radius });
+        }
+        // DATA-JOIN
+        var bg_circles = background.selectAll('.background_radius').data(bg_radius_index);
+
+        // TRANSITION
+        bg_circles.transition()
+            .duration(TEMPO_ANIMACAO)
+            .attr("r", function(d) { return local_radius_array[d]});
+
+        // ENTER
+        var new_circles = bg_circles.enter().append("circle")
+            .attr("class","background_radius")
+            .attr("r", function(d) { return local_radius_array[d]});
     }
 
     return {

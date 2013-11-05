@@ -23,9 +23,15 @@
   height: 506px;
 }
 
-.radar_background {
-    fill: rgba(230,230,230,0.6);
-    stroke: rgba(230,230,230,1);
+.outer_background_radius {
+    fill: rgba(240,240,240,0.6);
+    stroke-width: 3;
+    stroke: rgba(210,210,210,1);
+}
+
+.background_radius {
+    fill: none;
+    stroke: rgba(210,210,210,1);
 }
 
 .alterna_escala {
@@ -37,11 +43,6 @@
   font: 700 20px "Helvetica Neue";
   fill: #99c;
   cursor: pointer;
-}
-
-.raio_radar {
-    fill: none;
-    stroke: rgba(230,230,230,1);
 }
 
 .party {
