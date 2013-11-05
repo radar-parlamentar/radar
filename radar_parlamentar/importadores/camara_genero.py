@@ -162,7 +162,7 @@ def jsonMatrix_gera_links_partidos_termos():
 def principal(fonte=None):
     if not fonte:
         fonte = 'pl'
-    lista_proposicoes = converte_csv_para_json(pl)
+    lista_proposicoes = converte_csv_para_json(fonte)
     lista_proposicoes = multiple_null_remove(lista_proposicoes)
     lista_proposicoes = proposicoes_indexadas(lista_proposicoes)
     partidos_das_proposicoes(lista_proposicoes)
