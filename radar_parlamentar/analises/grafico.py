@@ -41,8 +41,8 @@ class JsonAnaliseGenerator:
         self.analise_temporal = analise_temporal
         self.escala_periodo = None
         self.json = None
-        self.max_r2 = 0
-        self.max_r2_partidos = 0
+        self.max_parlamentar_radius_calculator = MaxRadiusCalculator()
+        self.max_partido_radius_calculator = MaxRadiusCalculator()
         
     def get_json(self):
         if not self.json:
@@ -56,10 +56,8 @@ class JsonAnaliseGenerator:
         dict_analise['geral'] = self._dict_geral()
         dict_analise['periodos'] = self._list_periodos()
         dict_analise['partidos'] = self._list_partidos_instrumented()
-        max_raio = round(sqrt(self.max_r2), 1)
-        max_raio_partidos = round(sqrt(self.max_r2_partidos), 1)
-        dict_analise['max_raio'] = max_raio
-        dict_analise['max_raio_partidos'] = max_raio_partidos
+        dict_analise['max_raio'] = self.max_parlamentar_radius_calculator.max_r()
+        dict_analise['max_raio_partidos'] = self.max_partido_radius_calculator.max_r()
         self.json = json.dumps(dict_analise) 
     
     def _dict_geral(self):
@@ -157,18 +155,14 @@ class JsonAnaliseGenerator:
             try:
                 x = round(coordenadas[partido][0],2)
                 y = round(coordenadas[partido][1],2)
+                self.max_partido_radius_calculator.add_point(x, y)
                 if not isnan(x):
                     dict_partido["x"].append(round(x,2))
                     dict_partido["y"].append(round(y,2))
-                    r2_partido = x**2 + y**2
                 else:
                     dict_partido["x"].append(0.)
                     dict_partido["y"].append(0.)                
-                    r2_partido = 0
-                self.max_r2_partidos = max(self.max_r2_partidos, r2_partido)
             except KeyError:
-                x = 0.
-                y = 0.
                 dict_partido["x"].append(0.)
                 dict_partido["y"].append(0.)
             t = ap.tamanhos_partidos[partido]
@@ -194,23 +188,37 @@ class JsonAnaliseGenerator:
             if coordenadas.has_key(leg_id):
                 x = coordenadas[leg_id][0]
                 y = coordenadas[leg_id][1]
+                self.max_parlamentar_radius_calculator.add_point(x, y)
                 if not isnan(x):
                     x = round(x,2)
                     y = round(y,2)
-                    r2 = x**2 + y**2
                 else:
                     x = None
                     y = None
-                    r2 = 0
                 dict_parlamentar["x"].append(x)
                 dict_parlamentar["y"].append(y)
-                self.max_r2 = max(self.max_r2, r2)
             else:
                 dict_parlamentar["x"].append(None)
                 dict_parlamentar["y"].append(None)
         return dict_parlamentar
 
+
+class MaxRadiusCalculator:
     
+    def __init__(self):
+        self.max_r2 = 0
+    
+    def add_point(self, x, y):
+        if self._valid(x) and self._valid(y):
+            r2 = x**2 + y**2
+            self.max_r2 = max(self.max_r2, r2)
+            
+    def _valid(self, value):
+        return value != None and not isnan(value) 
+    
+    def max_r(self):
+        return round(sqrt(self.max_r2), 1)
+            
 
 class GraphScaler:
 

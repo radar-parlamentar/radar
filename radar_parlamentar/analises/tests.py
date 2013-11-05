@@ -69,6 +69,7 @@ class AnalisadorPeriodoTest(TestCase):
 # tests AnalisadorTemporal
 # ......
 
+# grafico tests
 
 class JsonAnaliseGeneratorTest(TestCase):
     # TODO some complicated calculus performed in JsonAnaliseGeneratorTest
@@ -159,7 +160,21 @@ class PCAStub:
         self.Vt = None
 
 
-# Testes filtro
+class MaxRadiusCalculatorTest(TestCase):
+    
+    def test_max_radius_calculator(self):
+        calc = grafico.MaxRadiusCalculator()
+        self.assertEquals(calc.max_r(), 0)
+        calc.add_point(4, 3)
+        self.assertEquals(calc.max_r(), 5)
+        calc.add_point(1, 2)
+        self.assertEquals(calc.max_r(), 5)
+        calc.add_point(1, None)
+        self.assertEquals(calc.max_r(), 5)
+        calc.add_point(10, 3)
+        self.assertAlmostEquals(calc.max_r(), 10.44, 1)
+
+# filtro tests
 
 class Filtro_ProposicaoTest(TestCase):
     
