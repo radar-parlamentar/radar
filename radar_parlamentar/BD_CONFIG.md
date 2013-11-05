@@ -14,7 +14,8 @@ Deve-se criar um usuário "root" e o banco dentro do próprio MySQL.
 	mysql>CREATE DATABASE radar;
 	mysql>quit
 
-Edite o arquivo settings/development.py e insira a senha do seu usuário do mysql (pode ser o root).
+Edite o arquivo settings/development.py* e insira a senha do seu usuário do mysql (pode ser o root).
+* confira settings/README.md
 	
 Para criar as tabelas do Radar Parlamentar:
 
