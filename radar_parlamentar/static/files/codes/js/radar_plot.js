@@ -147,7 +147,7 @@ Plot = (function ($) {
         
         // Creates the SVG container and sets the origin.
         var svg_base = d3.select("#animacao").append("svg")
-            .attr("width", width + margin.left + margin.right + 200)
+            .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom + space_between_graph_and_control)
             .style("position", "relative");
 
@@ -173,13 +173,13 @@ Plot = (function ($) {
             .attr("class", "year label")
             .attr("text-anchor", "middle")
             .attr("y", 30 )
-            .attr("x", width/2)
+            .attr("x", width/2);
 
         var label_nvotacoes = grupo_controle_periodos.append("text")
             .attr("class", "total_label")
             .attr("text-anchor", "middle")
             .attr("y", "48")
-            .attr("x", width/2)
+            .attr("x", width/2);
 
         var go_to_previous = grupo_controle_periodos.append("text")
             .attr("id", "previous_period")
@@ -298,6 +298,11 @@ Plot = (function ($) {
 
             var parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
             var circles = grupo_grafico.selectAll('.party_circle').data(partidos_no_periodo, function(d) { return d.nome });
+            var legend = d3.selectAll('.legend');
+
+            var partidos_legenda = partidos.filter(function(d){ return d.t[periodo_atual] > 0 });
+            var legend_items = legend.selectAll('.legend_item')
+                .data(partidos_legenda, function(d) {return d.nome});
 
             parties.transition()
                 .attr("transform", function(d) { return "translate(" + xScalePart(d.x[periodo_para]) +"," +  yScalePart(d.y[periodo_para]) + ")" })
@@ -333,6 +338,13 @@ Plot = (function ($) {
                 .duration(TEMPO_ANIMACAO);
             new_circles.transition()
                 .attr("r", function(d) { return d.r[periodo_atual]; });
+
+            var new_legend_items = legend_items.enter().append("li")
+                .attr("class","legend_item")
+                .text(function(d) {return d.numero + " | " + d.nome + " (" + d.t[periodo_atual] + ")"})
+                .on("mouseover", function(d) { d3.selectAll("#circle-"+nome(d)).attr("class","parlamentar_circle_hover"); })
+                .on("mouseout", function(d) { d3.selectAll("#circle-"+nome(d)).attr("class","parlamentar_circle"); });
+            legend_items.exit().remove();
             
             circles.exit().transition().duration(TEMPO_ANIMACAO).attr("r",0).remove();
             parties.exit().transition().duration(TEMPO_ANIMACAO).remove();

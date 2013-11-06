@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 {% block title %}
@@ -41,7 +42,9 @@
                 {% endfor %}
             </ul>
         </aside>
+        <div style="width:700px">
         <figure id="animacao"><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
+        </div>
     </article>
         <div style="clear:right"/>
 {% endblock content %}
@@ -60,7 +63,7 @@
           }
         </script>
     {% endif %}
-    <script src="/static/files/codes/js/radar_plot.js"></script>
+    <script src="/static/files/codes/js/radar_plot.js"></script>log(d); 
 {% endblock extrajsend %}
 
 {% block extrascriptsend %}
