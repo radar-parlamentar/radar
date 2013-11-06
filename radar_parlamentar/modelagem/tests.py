@@ -97,7 +97,8 @@ class ModelsTest(TestCase):
 
     def test_casa_legislativa_periodos_sem_lista_votacoes(self):
         casa_nova = models.CasaLegislativa(nome="Casa Nova")
-        self.assertRaises(ValueError, casa_nova.periodos,models.ANO)
+        periodos = casa_nova.periodos(models.ANO)
+        self.assertEquals(len(periodos), 0)
 
 
     def test_should_find_legislatura(self):

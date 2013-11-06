@@ -209,7 +209,7 @@ class CasaLegislativa(models.Model):
         """
         votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self)]
         if not votacao_datas:
-            raise ValueError("Não existe votacoes no banco para casa %s" % self)
+            return []
         data_inicial = min(votacao_datas)
         data_final = max(votacao_datas)
         return PeriodoCasaLegislativa.lista_de_periodos(self,data_inicial,data_final,periodicidade,numero_minimo_de_votacoes)
