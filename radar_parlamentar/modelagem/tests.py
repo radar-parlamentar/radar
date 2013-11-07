@@ -105,6 +105,7 @@ class PeriodosRetrieverTest(TestCase):
 
     # TODO testar para municipal se 2010 e 2011 não serão quebrados em dois períodos; não deveria!
 
+#     não deveria estar passando:
 #     def test_periodo_federal_nao_deve_conter_votacoes_de_dois_mandatos(self):
 #         self._test_periodo_nao_deve_conter_votacoes_de_dois_mandatos(2010, 2011, FEDERAL)
 # 
@@ -121,7 +122,6 @@ class PeriodosRetrieverTest(TestCase):
         datas_originais = {} # votacao.id => data
         esfera_original = self.conv.esfera
         self.conv.esfera = esfera
-        # provavelmente tem q salvar no banco de dados
         for i in range(0, half):
             v = votacoes[i]
             datas_originais[v.id] = v.data
