@@ -364,7 +364,7 @@ class Rotacionador:
         self.analisePeriodo = analisePeriodo
         self.analisePeriodoReferencia = analisePeriodoReferencia
     
-    def _energia(self,dados_fixos,dados_meus,graus=0,espelho=0,por_partido=True):
+    def _energia(self,dados_fixos,dados_meus,por_partido,graus=0,espelho=0):
         """Calcula energia envolvida no movimento entre dois instantes (fixo e meu), onde o meu é rodado (entre 0 e 360 graus), e primeiro eixo multiplicado por -1 se espelho=1. Ver pdf intitulado "Solução Analítica para o Problema de Rotação dos Eixos de Representação dos Partidos no Radar Parlamentar" (algoritmo_rotacao.pdf)."""
         e = 0
         dados_meus = dados_meus.copy()
@@ -377,10 +377,10 @@ class Rotacionador:
 
         if por_partido:
             for p in dados_meus:
-                e += numpy.dot( dados_fixos[p] - dados_meus[p],  dados_fixos[p] - dados_meus[p] ) # * self.analisePeriodo.tamanhos_partidos[p.nome] 
+                e += self._zero_if_nan(numpy.dot( dados_fixos[p] - dados_meus[p],  dados_fixos[p] - dados_meus[p] ) * self.analisePeriodo.tamanhos_partidos[p] )
         else:
             for l in dados_meus:
-                e += numpy.dot( dados_fixos[l.id] - dados_meus[l.id],  dados_fixos[l.id] - dados_meus[l.id] )  * self.analisePeriodo.presencas_legislaturas[l.id] 
+                e += self._zero_if_nan(numpy.dot( dados_fixos[l] - dados_meus[l],  dados_fixos[l] - dados_meus[l] ))
         return e
 
     def _polar(self,x, y, deg=0):		# radian if deg=0; degree if deg=1
@@ -402,6 +402,10 @@ class Rotacionador:
         s = numpy.sin(rad)
         return numpy.array([[c,-s],[s,c]])
 
+    def _zero_if_nan(self,x):
+        x = x if not numpy.isnan(x) else 0
+        return x
+
     def espelha_ou_roda(self, por_partido = True, so_espelha = True):
         """Retorna nova AnalisePeriodo com coordenadas rotacionadas
         se por_partido == True, a operacao minimiza o quanto os partidos caminharam
@@ -412,14 +416,16 @@ class Rotacionador:
         dados_fixos = self.analisePeriodoReferencia.coordenadas_partidos if por_partido else self.analisePeriodoReferencia.coordenadas_legislaturas
         epsilon = 0.001
 
+        print "Calculando teta1 e teta2..."
         if not so_espelha:
             numerador = 0;
             denominador = 0;
-            for partido, coords in dados_meus.items():
+            for key, coords in dados_meus.items():
                 meu_polar = self._polar(coords[0],coords[1],0)
-                alheio_polar = self._polar(dados_fixos[partido][0],dados_fixos[partido][1],0)
-                numerador += self.analisePeriodo.tamanhos_partidos[partido] * meu_polar[0] * alheio_polar[0] * numpy.sin(alheio_polar[1])
-                denominador += self.analisePeriodo.tamanhos_partidos[partido] * meu_polar[0] * alheio_polar[0] * numpy.cos(alheio_polar[1])
+                alheio_polar = self._polar(dados_fixos[key][0],dados_fixos[key][1],0)
+                tamanho = self.analisePeriodo.tamanhos_partidos[key] if por_partido else 1
+                numerador += self._zero_if_nan(tamanho * meu_polar[0] * alheio_polar[0] * numpy.sin(alheio_polar[1]))
+                denominador += self._zero_if_nan(tamanho * meu_polar[0] * alheio_polar[0] * numpy.cos(alheio_polar[1]))
             if denominador < epsilon and denominador > -epsilon:
                 teta1 = 90
                 teta2 = 270
@@ -429,8 +435,9 @@ class Rotacionador:
         else:
             teta1=0
             teta2=180
+        print "teta 1 = "  + str(teta1) + "; teta2 = " + str(teta2)
 
-        ex = numpy.array([self._energia(dados_fixos,dados_meus,graus=teta1,espelho=0),self._energia(dados_fixos,dados_meus,graus=teta2,espelho=0),self._energia(dados_fixos,dados_meus,graus=teta1,espelho=1), self._energia(dados_fixos,dados_meus,graus=teta2,espelho=1) ])
+        ex = numpy.array([self._energia(dados_fixos,dados_meus,por_partido,graus=teta1,espelho=0),self._energia(dados_fixos,dados_meus,por_partido,graus=teta2,espelho=0),self._energia(dados_fixos,dados_meus,por_partido,graus=teta1,espelho=1), self._energia(dados_fixos,dados_meus,por_partido,graus=teta2,espelho=1) ])
         print ex
         
         dados_partidos = self.analisePeriodo.coordenadas_partidos
@@ -454,6 +461,7 @@ class Rotacionador:
             dados_legislaturas[legislatura] = numpy.dot( coords, self._matrot(campeao[1]) )
 
         self.theta = campeao[1]
+        print "campeao = [espelha,theta] = " + str(campeao)
         
         analiseRotacionada = copy.copy(self.analisePeriodo)
         analiseRotacionada.coordenadas_partidos = dados_partidos

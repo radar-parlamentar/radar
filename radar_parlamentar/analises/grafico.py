@@ -131,8 +131,6 @@ class JsonAnaliseGenerator:
         ttotal1 = time.time()
         list_partidos = self._list_partidos()
         print 'queries para fazer lista de partidos = ' + str(len(db.connection.queries))
-        for q in db.connection.queries:
-            print q
         print 'tempo na lista de partidos = ' + str(time.time() - ttotal1) + ' s.'
         return list_partidos        
             

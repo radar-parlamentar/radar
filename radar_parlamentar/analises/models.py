@@ -38,7 +38,7 @@ class AnalisePeriodo:
 
         self.pca = None
 
-        self.tamanhos_partidos = {} # partido.nome => int
+        self.tamanhos_partidos = {} # partido => int
         self.soma_dos_tamanhos_dos_partidos = 0
         self.coordenadas_partidos = {} # partdo => [x,y]
         # TODO coordenadas_partidos should be partido.nome => [x,y]
