@@ -20,11 +20,12 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from importadores import convencao
-from datetime import date
+import datetime 
 import models
 import utils
 from util_test import flush_db
 from django.utils.dateparse import parse_datetime
+from modelagem.models import MUNICIPAL, FEDERAL, ESTADUAL
 
 class MandatoListsTest(TestCase):
     
@@ -99,13 +100,27 @@ class PeriodosRetrieverTest(TestCase):
         self.assertEqual(periodos[0].string, '1989 1o Semestre')
         self.assertEqual(periodos[1].string, '1989 2o Semestre')
 
-#    Em andamento
     def test_periodo_municipal_nao_deve_conter_votacoes_de_dois_mandatos(self):
-        DATA_EM_UM_MANDATO = parse_datetime('2008-02-02 0:0:0')
-        DATA_EM_OUTRO_MANDATO = parse_datetime('2009-10-10 0:0:0')
+        self._test_periodo_nao_deve_conter_votacoes_de_dois_mandatos(2008, 2009, MUNICIPAL)
+
+    # TODO testar para municipal se 2010 e 2011 não serão quebrados em dois períodos; não deveria!
+
+#     def test_periodo_federal_nao_deve_conter_votacoes_de_dois_mandatos(self):
+#         self._test_periodo_nao_deve_conter_votacoes_de_dois_mandatos(2010, 2011, FEDERAL)
+# 
+#     def test_periodo_estadual_nao_deve_conter_votacoes_de_dois_mandatos(self):
+#         self._test_periodo_nao_deve_conter_votacoes_de_dois_mandatos(2010, 2011, ESTADUAL)
+
+    # TODO testar para federal/estadual se 2012 e 2013 não serão quebrados em dois períodos; não deveria!
+
+    def _test_periodo_nao_deve_conter_votacoes_de_dois_mandatos(self, ano_ini, ano_fim, esfera):
+        DATA_EM_UM_MANDATO = datetime.date(ano_ini, 02, 02)
+        DATA_EM_OUTRO_MANDATO = datetime.date(ano_fim, 10, 02)
         votacoes = models.Votacao.objects.all()
         half = len(votacoes) / 2
         datas_originais = {} # votacao.id => data
+        esfera_original = self.conv.esfera
+        self.conv.esfera = esfera
         # provavelmente tem q salvar no banco de dados
         for i in range(0, half):
             v = votacoes[i]
@@ -120,11 +135,13 @@ class PeriodosRetrieverTest(TestCase):
         retriever = utils.PeriodosRetriever(self.conv, models.BIENIO)
         periodos = retriever.get_periodos()
         self.assertEquals(len(periodos), 2)
-        #restoring original dates
+        #restoring original data
+        self.conv.esfera = esfera_original
+        self.conv.save() 
         for v in votacoes:
             v.data = datas_originais[v.id]
             v.save()
-        
+                    
     def test_casa_legislativa_periodos_sem_lista_votacoes(self):
         casa_nova = models.CasaLegislativa(nome="Casa Nova")
         retriever = utils.PeriodosRetriever(casa_nova, models.ANO)
@@ -172,7 +189,7 @@ class ModelsTest(TestCase):
         self.assertTrue(convencao.MONARQUISTAS in nomes)
 
     def test_should_find_legislatura(self):
-        dt = date(1989, 07, 14)
+        dt = datetime.date(1989, 07, 14)
         try:
             leg = models.Legislatura.find(dt, 'Pierre')
             self.assertTrue(leg != None)
@@ -180,7 +197,7 @@ class ModelsTest(TestCase):
             self.fail('Legislatura não encontrada')
             
     def test_should_not_find_legislatura(self):
-        dt = date(1900, 07, 14)
+        dt = datetime.date(1900, 07, 14)
         try:
             models.Legislatura.find(dt, 'Pierre')
             self.fail('Legislatura não deveria ter sido encontrada')
