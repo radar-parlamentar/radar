@@ -80,7 +80,7 @@ class PeriodosRetriever:
         if (self.ini_date == None):
             # TODO a query abaixo poderia usar um ORDER BY
             votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa)]
-            if votacao_datas:
+            if not votacao_datas:
                 return []
             self.ini_date = min(votacao_datas)
             self.end_date = max(votacao_datas)
@@ -106,11 +106,11 @@ class PeriodosRetriever:
             data_inicial = data_final + datetime.timedelta(days=1)
             delta_que_falta = data_fim - data_final
             dias_que_faltam = delta_que_falta.days
-        periodos_aceitos = PeriodoCasaLegislativa._filtra_periodos_com_minimo_de_votos(periodos_candidatos, self.numero_minimo_de_votacoes)
+        periodos_aceitos = self._filtra_periodos_com_minimo_de_votos(periodos_candidatos)
         return periodos_aceitos
 
-    def _filtra_periodos_com_minimo_de_votos(self, periodos_candidatos, numero_minimo_de_votacoes):
-        return [ p for p in periodos_candidatos if p.quantidade_votacoes >= numero_minimo_de_votacoes ]
+    def _filtra_periodos_com_minimo_de_votos(self, periodos_candidatos):
+        return [ p for p in periodos_candidatos if p.quantidade_votacoes >= self.numero_minimo_de_votacoes ]
 
     def _periodo_to_delta(self):
         delta_numero = {QUADRIENIO:47,BIENIO:23,ANO:11,MES:0,SEMESTRE:5}
