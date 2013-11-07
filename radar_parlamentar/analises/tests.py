@@ -23,6 +23,7 @@ from analises import filtro
 from analises import analise
 from analises import grafico
 from modelagem import models
+from modelagem import utils
 from models import AnalisePeriodo, AnaliseTemporal
 from importadores import convencao
 from random import random
@@ -104,7 +105,8 @@ class JsonAnaliseGeneratorTest(TestCase):
         self.analiseTemporal.analises_periodo = []
         
         ap1 = AnalisePeriodo()
-        periodos = models.CasaLegislativa.periodos(self.casa, models.BIENIO, 0)
+        periodos_retriever = utils.PeriodosRetriever(self.casa, models.BIENIO)
+        periodos = periodos_retriever.get_periodos()
         ap1.casa_legislativa = None
         ap1.periodo = periodos[0]
         ap1.partidos = [ self.girondinos, self.jacobinos, self.monarquistas ]

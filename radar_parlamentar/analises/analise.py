@@ -23,6 +23,7 @@ from __future__ import unicode_literals
 from math import hypot, atan2, pi
 from models import AnalisePeriodo, AnaliseTemporal
 from modelagem import models
+from modelagem import utils
 import logging
 import numpy
 import pca
@@ -51,7 +52,8 @@ class AnalisadorTemporal:
     """
     def __init__(self, casa_legislativa, periodicidade=models.BIENIO, votacoes=[]):
         self.casa_legislativa = casa_legislativa
-        self.periodos = self.casa_legislativa.periodos(periodicidade)
+        retriever = utils.PeriodosRetriever(self.casa_legislativa, periodicidade)
+        self.periodos = retriever.get_periodos()
         self.ini = self.periodos[0].ini
         self.fim = self.periodos[len(self.periodos)-1].fim
         self.periodicidade = periodicidade
