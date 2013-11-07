@@ -206,6 +206,10 @@ class CasaLegislativa(models.Model):
 
         Retorna:
             Uma lista de objetos do tipo PeriodoCasaLegislativa.
+            É garantido que cada período esteja inteiramente dentro de um período de mandato.
+            Períodos de mandatos do municipal são grupos de 4 anos começando em 2009 + i*4, i \in Z 
+            Períodos de mandatos do federal/estadual são grupos de 4 anos começando em 2011 + i*4, i \in Z
+            WARNING: Brazil dependent code! 
         """
         votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self)]
         if not votacao_datas:
@@ -291,14 +295,21 @@ class PeriodoCasaLegislativa(object):
           inicio, fim: objetos datetime.
           periodicidade: uma constante em PERIODOS (ex. ANO, SEMESTRE).
           numero_minimo_de_votacoes: periodos com menos votações são excluídos da lista.
+        Retorna:
+            Uma lista de objetos do tipo PeriodoCasaLegislativa.
         Detalhes:
-          Se a data de início for por exemplo 15/08/1999 e a periodicidade for quadrianual,
-          bianual, anual, ou semestral, o primeiro período irá começar em 01/01/1999. Se
-          a periodicidade for mensal com a mesma data de início, o primeiro período irá
-          começar em 01/08/1999. Analogamente todos os períodos anuais terminam em 31 de
-          dezembro e assim por diante, seguindo o calendário. Nunca será retornado um
-          período com datas "quebradas" na lista.
-    """
+        1) Se a data de início for por exemplo 15/08/1999 e a periodicidade for quadrianual,
+            bianual, anual, ou semestral, o primeiro período irá começar em 01/01/1999. Se
+            a periodicidade for mensal com a mesma data de início, o primeiro período irá 
+            começar em 01/08/1999. Analogamente todos os períodos anuais terminam em 31 de
+            dezembro e assim por diante, seguindo o calendário. Nunca será retornado um
+            período com datas "quebradas" na lista.
+        2) É garantido que cada período esteja inteiramente dentro de um período de mandato.
+            Períodos de mandatos do municipal são grupos de 4 anos começando em 2009 + i*4, i \in Z 
+            Períodos de mandatos do federal/estadual são grupos de 4 anos começando em 2011 + i*4, i \in Z
+            WARNING: Brazil dependent code! 
+          
+        """
         data_inicial = PeriodoCasaLegislativa._inicio(inicio,periodicidade)
         data_fim = PeriodoCasaLegislativa._fim(fim,periodicidade)
         valor_delta = PeriodoCasaLegislativa.delta_para_numero(periodicidade)
@@ -315,16 +326,17 @@ class PeriodoCasaLegislativa(object):
             # ir ate ultimo dia do mes:
             dia_final = monthrange(data_final.year,data_final.month)[1]
             data_final = data_final.replace(day=dia_final)
-            periodos_candidatos.append(PeriodoCasaLegislativa(data_inicial,data_final,casa_legislativa.num_votacao(data_inicial,data_final)))
+            periodo = PeriodoCasaLegislativa(data_inicial,data_final,casa_legislativa.num_votacao(data_inicial,data_final))
+            periodos_candidatos.append(periodo)
             data_inicial = data_final + datetime.timedelta(days=1)
             delta_que_falta = data_fim - data_final
             dias_que_faltam = delta_que_falta.days
-        # filtrar periodos com poucas votações
-        periodos_aceitos = []
-        for periodo in periodos_candidatos:
-            if periodo.quantidade_votacoes >= numero_minimo_de_votacoes:
-                periodos_aceitos.append(periodo)
+        periodos_aceitos = PeriodoCasaLegislativa._filtra_periodos_com_minimo_de_votos(periodos_candidatos, numero_minimo_de_votacoes)
         return periodos_aceitos
+
+    @staticmethod
+    def _filtra_periodos_com_minimo_de_votos(periodos_candidatos, numero_minimo_de_votacoes):
+        return [ p for p in periodos_candidatos if p.quantidade_votacoes >= numero_minimo_de_votacoes ]
 
     @staticmethod
     def delta_para_numero(delta):
@@ -457,7 +469,6 @@ class Proposicao(models.Model):
 
     def __unicode__(self):
         return "[%s] %s" % (self.nome(), self.ementa)
-
 
 class Votacao(models.Model):
     """Votação em planário.

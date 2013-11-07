@@ -22,7 +22,29 @@ from django.test import TestCase
 from importadores import convencao
 from datetime import date
 import models
-import pdb
+import utils
+from util_test import flush_db
+from django.utils.dateparse import parse_datetime
+
+class MandatoLists(TestCase):
+    
+    def test_get_mandatos_municipais(self):
+        ini_date = parse_datetime('2008-10-10 0:0:0')
+        fim_date = parse_datetime('2013-10-10 0:0:0')
+        mandato_lists = utils.MandatoLists()
+        mandatos = mandato_lists.get_mandatos_municipais(ini_date, fim_date) 
+        self.assertEquals(len(mandatos), 3)
+        self.assertEquals(str(mandatos[0]), '2005-01-01 00:00:00')
+        self.assertEquals(str(mandatos[1]), '2009-01-01 00:00:00')
+        self.assertEquals(str(mandatos[2]), '2013-01-01 00:00:00')
+        
+    def test_get_mandatos_municipais_soh_um(self):
+        ini_date = parse_datetime('2009-10-10 0:0:0')
+        fim_date = parse_datetime('2012-10-10 0:0:0')
+        mandato_lists = utils.MandatoLists()
+        mandatos = mandato_lists.get_mandatos_municipais(ini_date, fim_date) 
+        self.assertEquals(len(mandatos), 1)
+        self.assertEquals(str(mandatos[0]), '2009-01-01 00:00:00')
 
 class ModelsTest(TestCase):
 
@@ -33,7 +55,6 @@ class ModelsTest(TestCase):
     
     @classmethod
     def tearDownClass(cls):
-        from util_test import flush_db
         flush_db(cls)
 
     def test_partido(self):
@@ -95,6 +116,21 @@ class ModelsTest(TestCase):
         periodos = conv.periodos(models.MES,numero_minimo_de_votacoes=1)
         self.assertEqual(len(periodos),2)
 
+#    Em andamento
+#     def test_periodo_municipal_nao_deve_conter_votacoes_de_dois_mandatos(self):
+#         DATA_EM_UM_MANDATO = parse_datetime('2008-02-02 0:0:0')
+#         DATA_EM_OUTRO_MANDATO = parse_datetime('2009-10-10 0:0:0')
+#         votacoes = models.Votacao.objects.all()
+#         half = len(votacoes) / 2
+#         for i in range(0, half):
+#             votacoes[i].data = DATA_EM_UM_MANDATO
+#         for i in range(half, len(votacoes)):
+#             votacoes[i].data = DATA_EM_OUTRO_MANDATO
+#         conv = models.CasaLegislativa.objects.get(nome_curto='conv')
+#         periodos = conv.periodos(models.BIENIO)
+#         self.assertEquals(len(periodos), 2)
+        
+        
     def test_casa_legislativa_periodos_sem_lista_votacoes(self):
         casa_nova = models.CasaLegislativa(nome="Casa Nova")
         periodos = casa_nova.periodos(models.ANO)
