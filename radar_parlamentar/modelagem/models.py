@@ -19,11 +19,9 @@
 
 from __future__ import unicode_literals
 from django.db import models
-from calendar import monthrange
 import re
 import logging
 import os
-import datetime
 
 logger = logging.getLogger("radar")
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -194,29 +192,6 @@ class CasaLegislativa(models.Model):
     def legislaturas(self):
         """Retorna as legislaturas existentes nesta casa legislativa"""
         return Legislatura.objects.filter(casa_legislativa=self).distinct()
-
-    def periodos(self, periodicidade, numero_minimo_de_votacoes=0):
-        """Retorna todos os períodos em que houve votações nesta casa legislativa.
-
-        Argumentos:
-            periodicidade: Aceita as constantes em models.PERIODOS (ANO, SEMESTRE, etc)
-            numero_minimo_de_votacoes: Para filtrar (remover) períodos não significativos;
-                    se período não tiver pelo menos este número de votações, é excluído.
-                    Valor default é 1.
-
-        Retorna:
-            Uma lista de objetos do tipo PeriodoCasaLegislativa.
-            É garantido que cada período esteja inteiramente dentro de um período de mandato.
-            Períodos de mandatos do municipal são grupos de 4 anos começando em 2009 + i*4, i \in Z 
-            Períodos de mandatos do federal/estadual são grupos de 4 anos começando em 2011 + i*4, i \in Z
-            WARNING: Brazil dependent code! 
-        """
-        votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self)]
-        if not votacao_datas:
-            return []
-        data_inicial = min(votacao_datas)
-        data_final = max(votacao_datas)
-        return PeriodoCasaLegislativa.lista_de_periodos(self,data_inicial,data_final,periodicidade,numero_minimo_de_votacoes)
 
     def num_votacao(self,data_inicial=None,data_final=None):
         """retorna a quantidade de votacao numa casa legislativa"""

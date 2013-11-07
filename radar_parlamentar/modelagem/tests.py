@@ -26,7 +26,7 @@ import utils
 from util_test import flush_db
 from django.utils.dateparse import parse_datetime
 
-class MandatoLists(TestCase):
+class MandatoListsTest(TestCase):
     
     def test_get_mandatos_municipais(self):
         ini_date = parse_datetime('2008-10-10 0:0:0')
@@ -34,9 +34,12 @@ class MandatoLists(TestCase):
         mandato_lists = utils.MandatoLists()
         mandatos = mandato_lists.get_mandatos_municipais(ini_date, fim_date) 
         self.assertEquals(len(mandatos), 3)
-        self.assertEquals(str(mandatos[0]), '2005-01-01 00:00:00')
-        self.assertEquals(str(mandatos[1]), '2009-01-01 00:00:00')
-        self.assertEquals(str(mandatos[2]), '2013-01-01 00:00:00')
+        self.assertEquals(mandatos[0].year, 2005)
+        self.assertEquals(mandatos[1].year, 2009)
+        self.assertEquals(mandatos[2].year, 2013)
+        for mandato in mandatos:
+            self.assertEquals(mandato.day, 1)
+            self.assertEquals(mandato.month, 1)
         
     def test_get_mandatos_municipais_soh_um(self):
         ini_date = parse_datetime('2009-10-10 0:0:0')
@@ -44,9 +47,10 @@ class MandatoLists(TestCase):
         mandato_lists = utils.MandatoLists()
         mandatos = mandato_lists.get_mandatos_municipais(ini_date, fim_date) 
         self.assertEquals(len(mandatos), 1)
-        self.assertEquals(str(mandatos[0]), '2009-01-01 00:00:00')
-
-class ModelsTest(TestCase):
+        self.assertEquals(mandatos[0].year, 2009)
+        
+        
+class PeriodosRetrieverTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -56,38 +60,11 @@ class ModelsTest(TestCase):
     @classmethod
     def tearDownClass(cls):
         flush_db(cls)
-
-    def test_partido(self):
-        pt = models.Partido.from_nome('PT')
-        self.assertEquals(pt.numero, 13)
-        self.assertEquals(pt.cor, '#FF0000')
-        psdb = models.Partido.from_numero(45)
-        self.assertEquals(psdb.nome, 'PSDB')
-        self.assertEquals(psdb.cor, '#0059AB')
         
-    def test_partido_from_nome_None(self):
-        nome = None
-        partido = models.Partido.from_nome(nome)
-        self.assertIsNone(partido)
-
-    def test_get_sem_partido(self):
-        partido = models.Partido.get_sem_partido()
-        self.assertEquals(partido.nome, 'Sem partido')
-        self.assertEquals(partido.numero, 0)
-        self.assertEquals(partido.cor,'#000000')
-
-    def test_casa_legislativa_partidos(self):
-        conv = models.CasaLegislativa.objects.get(nome_curto='conv')
-        partidos = conv.partidos()
-        self.assertEquals(len(partidos), 3)
-        nomes = [ p.nome for p in partidos ]
-        self.assertTrue(convencao.JACOBINOS in nomes)
-        self.assertTrue(convencao.GIRONDINOS in nomes)
-        self.assertTrue(convencao.MONARQUISTAS in nomes)
-
     def test_casa_legislativa_periodos(self):
         conv = models.CasaLegislativa.objects.get(nome_curto='conv')
-        periodos = conv.periodos(models.ANO)
+        retriever = utils.PeriodosRetriever(conv, models.ANO)
+        periodos = retriever.get_periodos()
         self.assertEquals(len(periodos), 1)
         self.assertEqual(periodos[0].string, '1989')
         self.assertEqual(periodos[0].quantidade_votacoes,8)
@@ -133,9 +110,49 @@ class ModelsTest(TestCase):
         
     def test_casa_legislativa_periodos_sem_lista_votacoes(self):
         casa_nova = models.CasaLegislativa(nome="Casa Nova")
-        periodos = casa_nova.periodos(models.ANO)
+        retriever = utils.PeriodosRetriever(casa_nova, models.ANO)
+        periodos = retriever.get_periodos()
         self.assertEquals(len(periodos), 0)
+        
 
+class ModelsTest(TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        importer = convencao.ImportadorConvencao()
+        importer.importar()
+    
+    @classmethod
+    def tearDownClass(cls):
+        flush_db(cls)
+
+    def test_partido(self):
+        pt = models.Partido.from_nome('PT')
+        self.assertEquals(pt.numero, 13)
+        self.assertEquals(pt.cor, '#FF0000')
+        psdb = models.Partido.from_numero(45)
+        self.assertEquals(psdb.nome, 'PSDB')
+        self.assertEquals(psdb.cor, '#0059AB')
+        
+    def test_partido_from_nome_None(self):
+        nome = None
+        partido = models.Partido.from_nome(nome)
+        self.assertIsNone(partido)
+
+    def test_get_sem_partido(self):
+        partido = models.Partido.get_sem_partido()
+        self.assertEquals(partido.nome, 'Sem partido')
+        self.assertEquals(partido.numero, 0)
+        self.assertEquals(partido.cor,'#000000')
+
+    def test_casa_legislativa_partidos(self):
+        conv = models.CasaLegislativa.objects.get(nome_curto='conv')
+        partidos = conv.partidos()
+        self.assertEquals(len(partidos), 3)
+        nomes = [ p.nome for p in partidos ]
+        self.assertTrue(convencao.JACOBINOS in nomes)
+        self.assertTrue(convencao.GIRONDINOS in nomes)
+        self.assertTrue(convencao.MONARQUISTAS in nomes)
 
     def test_should_find_legislatura(self):
         dt = date(1989, 07, 14)
