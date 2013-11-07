@@ -406,7 +406,7 @@ class Rotacionador:
         x = x if not numpy.isnan(x) else 0
         return x
 
-    def espelha_ou_roda(self, por_partido = True, so_espelha = True):
+    def espelha_ou_roda(self, por_partido = False, so_espelha = True):
         """Retorna nova AnalisePeriodo com coordenadas rotacionadas
         se por_partido == True, a operacao minimiza o quanto os partidos caminharam
         se por_partido == False, minimiza o quanto os parlamentares em si caminham
