@@ -235,29 +235,8 @@ class PeriodoCasaLegislativa(object):
         self.string = unicode(self)
 
     def __unicode__(self):
-        if not self.string: # se string ainda é vazia, setá-la.
-            data_string = ''
-#            data_string = str(self.ini.year) # sempre começa com o ano
-            delta = self.fim - self.ini
-            if delta.days < 35: # período é de um mês
-                meses = ['','Jan', 'Fev', 'Mar', 'Abr', 'Maio', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
-                data_string += str(self.ini.year)
-                data_string +=" "+str(meses[self.ini.month])
-            elif delta.days < 200: # periodo é de um semestre
-                data_string += str(self.ini.year)
-                if self.ini.month < 6:
-                    data_string += " 1o Semestre"
-                else:
-                    data_string += " 2o Semestre"
-            elif delta.days < 370: # periodo é de um ano
-                data_string += str(self.ini.year)
-            elif delta.days < 750: # periodo é um biênio
-                data_string += str(self.ini.year) + " e "
-                data_string += str(self.fim.year)
-            elif delta.days <1500: # periodo é um quadriênio
-                data_string += str(self.ini.year) + " a "
-                data_string += str(self.fim.year)
-            self.string = data_string
+        if not self.string: 
+            self._build_string()
         return self.string
 
     @staticmethod
@@ -347,6 +326,29 @@ class PeriodoCasaLegislativa(object):
         dia_fim = monthrange(ano_fim,mes_fim)[1]
         return datetime.date(ano_fim,mes_fim,dia_fim)
 
+    def _build_string(self):
+        data_string = ''
+#       data_string = str(self.ini.year) # sempre começa com o ano
+        delta = self.fim - self.ini
+        if delta.days < 35: # período é de um mês
+            meses = ['','Jan', 'Fev', 'Mar', 'Abr', 'Maio', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+            data_string += str(self.ini.year)
+            data_string +=" "+str(meses[self.ini.month])
+        elif delta.days < 200: # periodo é de um semestre
+            data_string += str(self.ini.year)
+            if self.ini.month < 6:
+                data_string += " 1o Semestre"
+            else:
+                data_string += " 2o Semestre"
+        elif delta.days < 370: # periodo é de um ano
+            data_string += str(self.ini.year)
+        elif delta.days < 750: # periodo é um biênio
+            data_string += str(self.ini.year) + " e "
+            data_string += str(self.fim.year)
+        elif delta.days <1500: # periodo é um quadriênio
+            data_string += str(self.ini.year) + " a "
+            data_string += str(self.fim.year)
+        self.string = data_string
 
 class Parlamentar(models.Model):
     """Um parlamentar.
