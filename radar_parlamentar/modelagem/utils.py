@@ -92,7 +92,7 @@ class PeriodosRetriever:
             quantidade_votacoes = self.casa_legislativa.num_votacao(data_inicial, data_final)
             periodo = PeriodoCasaLegislativa(data_inicial, data_final, quantidade_votacoes)
             periodos_candidatos.append(periodo)
-            data_final = data_inicial_prox_periodo
+            data_inicial = data_inicial_prox_periodo
         periodos_aceitos = self._filtra_periodos_com_minimo_de_votos(periodos_candidatos)
         return periodos_aceitos
 
@@ -105,12 +105,12 @@ class PeriodosRetriever:
         dia_inicial = 1
         # mês
         if self.periodicidade == MES:
-            mes_inicial = self.data_primeira_votacao.month
+            mes_inicial = self.data_da_primeira_votacao.month
         elif self.periodicidade in [ANO,BIENIO,QUADRIENIO]:
             mes_inicial = 1
         elif self.periodicidade == SEMESTRE:
-            primeiro_de_julho = datetime.date(self.data_primeira_votacao.year, 7, 1)
-            if (self.data_primeira_votacao < primeiro_de_julho):
+            primeiro_de_julho = datetime.date(self.data_da_primeira_votacao.year, 7, 1)
+            if (self.data_da_primeira_votacao < primeiro_de_julho):
                 mes_inicial = 1
             else:
                 mes_inicial = 7
@@ -139,8 +139,16 @@ class PeriodosRetriever:
             elif data_inicio_periodo.month == 7:
                 mes_inicial = 1        
         # ano
-        if self.periodicidade in [SEMESTRE, MES]:
-            ano_inicial = data_inicio_periodo.year
+        if self.periodicidade == MES:
+            if data_inicio_periodo.month < 12:
+                ano_inicial = data_inicio_periodo.year
+            else:
+                ano_inicial = data_inicio_periodo.year + 1
+        elif self.periodicidade == SEMESTRE:
+            if data_inicio_periodo.month < 7:
+                ano_inicial = data_inicio_periodo.year
+            else:
+                ano_inicial = data_inicio_periodo.year + 1
         elif self.periodicidade == ANO:
             ano_inicial = data_inicio_periodo.year + 1
         elif self.periodicidade == BIENIO:
