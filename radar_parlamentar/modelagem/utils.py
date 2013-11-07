@@ -85,17 +85,14 @@ class PeriodosRetriever:
             self.data_da_primeira_votacao = min(votacao_datas)
             self.data_da_ultima_votacao = max(votacao_datas)
         data_inicial = self._inicio_primeiro_periodo()
-        data_fim = self._fim_ultimo_periodo()
         periodos_candidatos = []
-        dias_que_faltam = 1
-        while dias_que_faltam > 0:
-            data_final = self._fim_periodo(data_inicial)
-            quantidade_votacoes = self.casa_legislativa.num_votacao(data_inicial,data_final)
+        while data_inicial < self.data_da_ultima_votacao:
+            data_inicial_prox_periodo = self._data_inicio_prox_periodo(data_inicial)
+            data_final = data_inicial_prox_periodo - datetime.timedelta(days=1)
+            quantidade_votacoes = self.casa_legislativa.num_votacao(data_inicial, data_final)
             periodo = PeriodoCasaLegislativa(data_inicial, data_final, quantidade_votacoes)
             periodos_candidatos.append(periodo)
-            data_inicial = data_final + datetime.timedelta(days=1)
-            delta_que_falta = data_fim - data_final
-            dias_que_faltam = delta_que_falta.days
+            data_final = data_inicial_prox_periodo
         periodos_aceitos = self._filtra_periodos_com_minimo_de_votos(periodos_candidatos)
         return periodos_aceitos
 
@@ -126,6 +123,32 @@ class PeriodosRetriever:
             i += 1
         inicio_primeiro_periodo = datetime.date(ano_inicial, mes_inicial, dia_inicial)
         return inicio_primeiro_periodo
+
+    def _data_inicio_prox_periodo(self, data_inicio_periodo):
+        # TODO tb extrair e fazer testes
+        # dia
+        dia_inicial = 1
+        # mês
+        if self.periodicidade == MES:
+            mes_inicial = data_inicio_periodo.month + 1
+        elif self.periodicidade in [ANO,BIENIO,QUADRIENIO]:
+            mes_inicial = 1
+        elif self.periodicidade == SEMESTRE:
+            if data_inicio_periodo.month == 1:
+                mes_inicial = 7
+            elif data_inicio_periodo.month == 7:
+                mes_inicial = 1        
+        # ano
+        if self.periodicidade in [SEMESTRE, MES]:
+            ano_inicial = data_inicio_periodo.year
+        elif self.periodicidade == ANO:
+            ano_inicial = data_inicio_periodo.year + 1
+        elif self.periodicidade == BIENIO:
+            ano_inicial = data_inicio_periodo.year + 2
+        elif self.periodicidade == QUADRIENIO:
+            ano_inicial = data_inicio_periodo.year + 4
+        fim_periodo = datetime.date(ano_inicial, mes_inicial, dia_inicial)
+        return fim_periodo
 
     
     
