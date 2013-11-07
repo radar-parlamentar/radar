@@ -100,20 +100,30 @@ class PeriodosRetrieverTest(TestCase):
         self.assertEqual(periodos[1].string, '1989 2o Semestre')
 
 #    Em andamento
-#     def test_periodo_municipal_nao_deve_conter_votacoes_de_dois_mandatos(self):
-#         DATA_EM_UM_MANDATO = parse_datetime('2008-02-02 0:0:0')
-#         DATA_EM_OUTRO_MANDATO = parse_datetime('2009-10-10 0:0:0')
-#         votacoes = models.Votacao.objects.all()
-#         half = len(votacoes) / 2
-#         # provavelmente tem q salvar no banco de dados
-#         for i in range(0, half):
-#             votacoes[i].data = DATA_EM_UM_MANDATO
-#         for i in range(half, len(votacoes)):
-#             votacoes[i].data = DATA_EM_OUTRO_MANDATO
-#         retriever = utils.PeriodosRetriever(self.conv, models.BIENIO)
-#         periodos = retriever.get_periodos()
-#         self.assertEquals(len(periodos), 2)
-        
+    def test_periodo_municipal_nao_deve_conter_votacoes_de_dois_mandatos(self):
+        DATA_EM_UM_MANDATO = parse_datetime('2008-02-02 0:0:0')
+        DATA_EM_OUTRO_MANDATO = parse_datetime('2009-10-10 0:0:0')
+        votacoes = models.Votacao.objects.all()
+        half = len(votacoes) / 2
+        datas_originais = {} # votacao.id => data
+        # provavelmente tem q salvar no banco de dados
+        for i in range(0, half):
+            v = votacoes[i]
+            datas_originais[v.id] = v.data
+            v.data = DATA_EM_UM_MANDATO
+            v.save()
+        for i in range(half, len(votacoes)):
+            v = votacoes[i]
+            datas_originais[v.id] = v.data
+            v.data = DATA_EM_OUTRO_MANDATO
+            v.save()
+        retriever = utils.PeriodosRetriever(self.conv, models.BIENIO)
+        periodos = retriever.get_periodos()
+        self.assertEquals(len(periodos), 2)
+        #restoring original dates
+        for v in votacoes:
+            v.data = datas_originais[v.id]
+            v.save()
         
     def test_casa_legislativa_periodos_sem_lista_votacoes(self):
         casa_nova = models.CasaLegislativa(nome="Casa Nova")
