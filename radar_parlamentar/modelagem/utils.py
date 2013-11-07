@@ -69,21 +69,21 @@ class PeriodosRetriever:
             WARNING: Brazil dependent code! 
     """
     
-    def __init__(self, casa_legislativa, periodicidade, ini_date=None, end_date=None, numero_minimo_de_votacoes=1):
+    def __init__(self, casa_legislativa, periodicidade, data_da_primeira_votacao=None, data_da_ultima_votacao=None, numero_minimo_de_votacoes=1):
         self.casa_legislativa = casa_legislativa
         self.periodicidade = periodicidade
-        self.ini_date = ini_date
-        self.end_date = end_date
+        self.data_da_primeira_votacao = data_da_primeira_votacao
+        self.data_da_ultima_votacao = data_da_ultima_votacao
         self.numero_minimo_de_votacoes = numero_minimo_de_votacoes
     
     def get_periodos(self):
-        if (self.ini_date == None):
+        if (self.data_da_primeira_votacao == None):
             # TODO a query abaixo poderia usar um ORDER BY
             votacao_datas = [votacao.data for votacao in Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa)]
             if not votacao_datas:
                 return []
-            self.ini_date = min(votacao_datas)
-            self.end_date = max(votacao_datas)
+            self.data_da_primeira_votacao = min(votacao_datas)
+            self.data_da_ultima_votacao = max(votacao_datas)
         data_inicial = self._inicio_primeiro_periodo()
         data_fim = self._fim_ultimo_periodo()
         periodos_candidatos = []
@@ -103,62 +103,31 @@ class PeriodosRetriever:
         return [ p for p in periodos_candidatos if p.quantidade_votacoes >= self.numero_minimo_de_votacoes ]
     
     def _inicio_primeiro_periodo(self):
-        # extrair e fazer teste de unidade só pra esse método
-        data_primeira_votacao = self.ini_date
+        # TODO extrair e fazer teste de unidade só pra esse método
         # dia
         dia_inicial = 1
         # mês
         if self.periodicidade == MES:
-            mes_inicial = data_primeira_votacao.month
+            mes_inicial = self.data_primeira_votacao.month
         elif self.periodicidade in [ANO,BIENIO,QUADRIENIO]:
             mes_inicial = 1
         elif self.periodicidade == SEMESTRE:
-            primeiro_de_julho = datetime.date(data_primeira_votacao.year, 7, 1)
-            if (data_primeira_votacao < primeiro_de_julho):
+            primeiro_de_julho = datetime.date(self.data_primeira_votacao.year, 7, 1)
+            if (self.data_primeira_votacao < primeiro_de_julho):
                 mes_inicial = 1
             else:
                 mes_inicial = 7
         # ano
         mandatos_lists = MandatoLists()
-        mandatos = mandatos_lists.get_mandatos_municipais()
+        mandatos = mandatos_lists.get_mandatos_municipais(self.data_da_primeira_votacao, self.data_da_ultima_votacao)
         i = 0
-        while mandatos[i] < data_primeira_votacao:   
-            ano_inicial = mandatos[0]
-        return datetime.date(ano_inicial,mes_inicial,dia_inicial)
+        while i < len(mandatos) and mandatos[i] < self.data_da_primeira_votacao:   
+            ano_inicial = mandatos[i].year
+            i += 1
+        inicio_primeiro_periodo = datetime.date(ano_inicial, mes_inicial, dia_inicial)
+        return inicio_primeiro_periodo
 
-    def _fim_ultimo_periodo(self):
-        ano_fim = self.end_date.year
-        if self.periodicidade == MES:
-            mes_fim = self.end_date.month
-        elif self.periodicidade == SEMESTRE:
-            if self.end_date.month <= 6:
-                mes_fim = 6
-            else:
-                mes_fim = 12
-        else:
-            mes_fim = 12
-        dia_fim = monthrange(ano_fim,mes_fim)[1]
-        return datetime.date(ano_fim,mes_fim,dia_fim)
     
-    def _fim_periodo(self, inicio_periodo):
-        delta = self._periodo_to_delta()
-        mes = self.ini_date.month
-        ano = self.ini_date.year
-        mes = mes + delta
-        while mes > 12:
-            mes = mes - 12
-            ano = ano + 1
-        print 'ano: ', ano
-        data_final = self.end_date.replace(month=mes,year=ano)
-        # ir ate ultimo dia do mes:
-        dia_final = monthrange(data_final.year, data_final.month)[1]
-        data_final = data_final.replace(day=dia_final)  
-        return data_final      
-    
-    def _periodo_to_delta(self):
-        delta_numero = {QUADRIENIO:47,BIENIO:23,ANO:11,MES:0,SEMESTRE:5}
-        delta = delta_numero[self.periodicidade]
-        return delta
     
     
     
