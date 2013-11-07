@@ -58,6 +58,11 @@
   opacity: 0.6
 }
 
+.party_circle.hover {
+  cursor: pointer;
+  opacity: 1
+}
+
 .parlamentar_circle {
   cursor: pointer;
   opacity: 0.6
@@ -66,6 +71,10 @@
 .parlamentar_circle:hover {
   cursor: pointer;
   opacity: 1
+}
+
+.legend_item {
+  cursor: pointer;
 }
 
 .axis path, .axis line {

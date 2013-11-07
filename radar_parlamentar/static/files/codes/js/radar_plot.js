@@ -156,7 +156,7 @@ Plot = (function ($) {
             .attr("height", height_of_control)
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-         grupo_grafico = svg_base.append("g")
+        grupo_grafico = svg_base.append("g")
             .attr("id", "grupo_grafico")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -165,6 +165,8 @@ Plot = (function ($) {
         var bg_group = grupo_grafico.append("g")
             .attr("transform","translate(" + width/2 + "," + height/2 + ")")
             .attr("id","bg_group");
+
+        legend = d3.selectAll('.legend');
 
         createBackground(full_radius);
         transitionBackground("linear");
@@ -205,7 +207,7 @@ Plot = (function ($) {
         periodo_atual = periodo_min;
         periodo_para = periodo_atual;
         periodo_de = periodo_atual;        
-        
+
         configure_go_to_next();
         configure_go_to_previous();
 
@@ -218,7 +220,7 @@ Plot = (function ($) {
             .attr("class", "alterna_escala")
             .attr("text-anchor", "middle")
             .attr("y", 70)
-            .attr("x", width-20 )
+            .attr("x", width-40 )
             .text("Zoom In")
             .on("click", alternar_escalas);
 
@@ -294,21 +296,32 @@ Plot = (function ($) {
         // explodindo: true quando estamos atualizando o gráfico por causa de uma explosão de partido
         // (explosão de partido é quando se clica no partido para ver seus parlamentares)
         function atualiza_grafico(explodindo) {
-            partidos_no_periodo = get_partidos_no_periodo(periodo_atual);
+            // Legend
+            var partidos_legenda = get_partidos_no_periodo(periodo_atual);
+
+            var legend_items = legend.selectAll('.legend_item')
+                .data(partidos_legenda, function(d) {return d.nome});
+            legend_items.transition()
+                .text(function(d) {return d.numero + " | " + d.nome + " (" + d.t[periodo_atual] + ")"})
+                .duration(TEMPO_ANIMACAO);
+            var new_legend_items = legend_items.enter().append("li")
+                .attr("class","legend_item")
+                .text(function(d) {return d.numero + " | " + d.nome + " (" + d.t[periodo_atual] + ")"})
+                .on("mouseover", function(d) { d3.selectAll("#circle-"+nome(d)).classed("hover",true); })
+                .on("mouseout", function(d) { d3.selectAll("#circle-"+nome(d)).classed("hover",false); });
+            legend_items.exit().remove();
+
+            // Circles that represent the parties
+            partidos_no_periodo = get_partidos_nao_explodidos_no_periodo(periodo_atual);
 
             var parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
             var circles = grupo_grafico.selectAll('.party_circle').data(partidos_no_periodo, function(d) { return d.nome });
-            var legend = d3.selectAll('.legend');
-
-            var partidos_legenda = partidos.filter(function(d){ return d.t[periodo_atual] > 0 });
-            var legend_items = legend.selectAll('.legend_item')
-                .data(partidos_legenda, function(d) {return d.nome});
 
             parties.transition()
                 .attr("transform", function(d) { return "translate(" + xScalePart(d.x[periodo_para]) +"," +  yScalePart(d.y[periodo_para]) + ")" })
                 .duration(TEMPO_ANIMACAO);
             
-            circles.transition()
+            parties.selectAll(".party_circle").transition()
                 .attr("r", function(d) { return d.r[periodo_para]})
                 .duration(TEMPO_ANIMACAO);
 
@@ -336,21 +349,16 @@ Plot = (function ($) {
             new_parties.transition()
                 .attr("opacity",1)
                 .duration(TEMPO_ANIMACAO);
-            new_circles.transition()
-                .attr("r", function(d) { return d.r[periodo_atual]; });
 
-            var new_legend_items = legend_items.enter().append("li")
-                .attr("class","legend_item")
-                .text(function(d) {return d.numero + " | " + d.nome + " (" + d.t[periodo_atual] + ")"})
-                .on("mouseover", function(d) { d3.selectAll("#circle-"+nome(d)).attr("class","parlamentar_circle_hover"); })
-                .on("mouseout", function(d) { d3.selectAll("#circle-"+nome(d)).attr("class","parlamentar_circle"); });
-            legend_items.exit().remove();
+            new_circles.transition().duration(TEMPO_ANIMACAO)
+                .attr("r", function(d) { return d.r[periodo_atual]; });
             
             circles.exit().transition().duration(TEMPO_ANIMACAO).attr("r",0).remove();
-            parties.exit().transition().duration(TEMPO_ANIMACAO).remove();
+            var parties_vao_sair = parties.exit().transition().duration(TEMPO_ANIMACAO);
+            parties_vao_sair.remove();
 
-            // Tratar parlamentares (pontos), um partido por vez:
-            partidos.forEach(function(partido) {
+            // Parlamentares (represented by dots), treating one party at a time in this loop:
+            partidos_legenda.forEach(function(partido) {
                 if (jQuery.inArray(partido,partidos_explodidos) == -1)
                     var parlamentares_no_periodo = []; // não é para ter dados de parlamentares se o partido não estiver explodido.
                 else
@@ -427,8 +435,10 @@ Plot = (function ($) {
         }
         
         function sortAll() {
-            var circunferencias = grupo_grafico.selectAll(".party, .parlamentar_circle")
+            var circunferencias = grupo_grafico.selectAll(".party, .parlamentar_circle");
             circunferencias.sort(order);
+            var legend_entries = legend.selectAll(".legend_item");
+            legend_entries.sort(order);
         }
 
         function explode_partido(partido) { //partido é o json do partido
@@ -459,15 +469,20 @@ Plot = (function ($) {
             if (is_parlamentar(b))
                 return -1
             return b.t[periodo_atual] - a.t[periodo_atual];
-        }        
+        }
         
         function is_parlamentar(d) {
             // bem hacker ^^
             return (typeof d.cor === "undefined")
         }
 
-        // Retorna partidos excluindo partidos ausentes no período e partidos explodidos
+        // Retorna partidos excluindo partidos ausentes no período
         function get_partidos_no_periodo(period) {
+            return partidos.filter(function(d){ return d.t[period] > 0;});
+        }
+
+        // Retorna partidos excluindo partidos ausentes no período e partidos explodidos
+        function get_partidos_nao_explodidos_no_periodo(period) {
             return partidos.filter(function(d){ return d.t[period] > 0 && jQuery.inArray(d,partidos_explodidos) == -1;});
         }
         
