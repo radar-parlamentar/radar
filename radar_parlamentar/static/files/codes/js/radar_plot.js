@@ -273,21 +273,22 @@ Plot = (function ($) {
         }
         
         function change_to_next_period() {
-            periodo_de = periodo_atual;
-            periodo_para = periodo_atual + 1;
-            if (periodo_para > periodo_max)
-                periodo_para = periodo_max;
-            periodo_atual = periodo_para;
-            change_period();
+            if (periodo_atual < periodo_max) { 
+                periodo_de = periodo_atual;
+                periodo_para = periodo_atual + 1;
+                periodo_atual = periodo_para;
+                change_period();
+            }
         }
 
         function change_to_previous_period() {
-            periodo_de = periodo_atual;
-            periodo_para = periodo_atual - 1;
-            if (periodo_para < periodo_min)
+            if (periodo_atual > periodo_min) {
+                periodo_de = periodo_atual;
+                periodo_para = periodo_atual - 1;
                 periodo_para = periodo_min;
-            periodo_atual = periodo_para;
-            change_period();
+                periodo_atual = periodo_para;
+                change_period();
+            }
         }
         
         function change_period() {
