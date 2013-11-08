@@ -25,7 +25,7 @@ import models
 import utils
 from util_test import flush_db
 from django.utils.dateparse import parse_datetime
-from modelagem.models import MUNICIPAL, FEDERAL, ESTADUAL
+from modelagem.models import MUNICIPAL, FEDERAL, ESTADUAL, BIENIO
 
 class MandatoListsTest(TestCase):
     
@@ -101,7 +101,13 @@ class PeriodosRetrieverTest(TestCase):
         self.assertEqual(periodos[1].string, '1989 2o Semestre')
 
     def test_periodo_municipal_nao_deve_conter_votacoes_de_dois_mandatos(self):
-        self._test_periodo_nao_deve_conter_votacoes_de_dois_mandatos(2008, 2009, MUNICIPAL)
+        self._test_periodos_em_duas_datas(2008, 2009, MUNICIPAL, BIENIO, 2)
+        
+    def test_periodo_municipal_deve_estar_em_um_mandato(self):
+        self._test_periodos_em_duas_datas(2009, 2010, MUNICIPAL, BIENIO, 1)
+
+    def test_inicio_de_periodo_municipal_deve_coincidir_com_inicio_mandato(self):
+        self._test_periodos_em_duas_datas(2010, 2011, MUNICIPAL, BIENIO, 2)
 
     # TODO testar para municipal se 2010 e 2011 não serão quebrados em dois períodos; não deveria!
 
@@ -114,9 +120,9 @@ class PeriodosRetrieverTest(TestCase):
 
     # TODO testar para federal/estadual se 2012 e 2013 não serão quebrados em dois períodos; não deveria!
 
-    def _test_periodo_nao_deve_conter_votacoes_de_dois_mandatos(self, ano_ini, ano_fim, esfera):
-        DATA_EM_UM_MANDATO = datetime.date(ano_ini, 02, 02)
-        DATA_EM_OUTRO_MANDATO = datetime.date(ano_fim, 10, 02)
+    def _test_periodos_em_duas_datas(self, ano_ini, ano_fim, esfera, periodicidade, expected_periodos_len):
+        UMA_DATA = datetime.date(ano_ini, 02, 02)
+        OUTRA_DATA = datetime.date(ano_fim, 10, 02)
         votacoes = models.Votacao.objects.all()
         half = len(votacoes) / 2
         datas_originais = {} # votacao.id => data
@@ -125,23 +131,25 @@ class PeriodosRetrieverTest(TestCase):
         for i in range(0, half):
             v = votacoes[i]
             datas_originais[v.id] = v.data
-            v.data = DATA_EM_UM_MANDATO
+            v.data = UMA_DATA
             v.save()
         for i in range(half, len(votacoes)):
             v = votacoes[i]
             datas_originais[v.id] = v.data
-            v.data = DATA_EM_OUTRO_MANDATO
+            v.data = OUTRA_DATA
             v.save()
-        retriever = utils.PeriodosRetriever(self.conv, models.BIENIO)
+        retriever = utils.PeriodosRetriever(self.conv, periodicidade)
         periodos = retriever.get_periodos()
-        self.assertEquals(len(periodos), 2)
-        #restoring original data
+        self.assertEquals(len(periodos), expected_periodos_len)
+        self._restore(esfera_original, votacoes, datas_originais)
+            
+    def _restore(self, esfera_original, votacoes, datas_originais):
         self.conv.esfera = esfera_original
         self.conv.save() 
         for v in votacoes:
             v.data = datas_originais[v.id]
             v.save()
-                    
+                                
     def test_casa_legislativa_periodos_sem_lista_votacoes(self):
         casa_nova = models.CasaLegislativa(nome="Casa Nova")
         retriever = utils.PeriodosRetriever(casa_nova, models.ANO)

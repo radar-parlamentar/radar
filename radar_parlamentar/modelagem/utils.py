@@ -46,26 +46,25 @@ class MandatoLists:
     
     
 class PeriodosRetriever:
-    """Recupera os períodos com um mínimo de votações de uma casa legislativa entre inicio e fim
+    """Recupera os períodos com um mínimo de votações de uma casa legislativa 
+        entre data_da_primeira_votacao e data_da_ultima_votacao
         
         Argumentos:        
-          casa_legislativa: um objeto CasaLegislativa. Necessário para acrescentar a cada
-              objeto PeriodoCasaLegislativa da lista o número de votações que houve no mesmo.
-          periodicidade: uma constante em PERIODOS (ex. ANO, SEMESTRE).
-          inicio, fim: objetos datetime. Se não especificados, utiliza todo o histórico da casa
-          numero_minimo_de_votacoes: periodos com menos votações são excluídos da lista. default é 1.
+          casa_legislativa -- um objeto CasaLegislativa. 
+          periodicidade -- uma constante em PERIODOS (ex. ANO, SEMESTRE).
+          data_da_primeira_votacao, data_da_ultima_votacao: 
+              objetos datetime. Se não especificados, utiliza todo o histórico da casa.
+          numero_minimo_de_votacoes -- periodos com menos votações são excluídos da lista. Default é 1.
         Retorna:
             Uma lista de objetos do tipo PeriodoCasaLegislativa.
         Detalhes:
-        1) Se a data de início for por exemplo 15/08/1999 e a periodicidade for quadrianual,
-            bianual, anual, ou semestral, o primeiro período irá começar em 01/01/1999. Se
-            a periodicidade for mensal com a mesma data de início, o primeiro período irá 
-            começar em 01/08/1999. Analogamente todos os períodos anuais terminam em 31 de
-            dezembro e assim por diante, seguindo o calendário. Nunca será retornado um
-            período com datas "quebradas" na lista.
-        2) É garantido que cada período esteja inteiramente dentro de um período de mandato.
-            Períodos de mandatos do municipal são grupos de 4 anos começando em 2009 + i*4, i \in Z 
-            Períodos de mandatos do federal/estadual são grupos de 4 anos começando em 2011 + i*4, i \in Z
+        1) Períodos anual, biênio e quadriênio sempre começam em 1 de janeiro.
+            Período semestral começa em 1 de janeiro ou 1 de julho.
+            Período bimestral começa no primeiro dia do mês inicial do período.
+        2) O início do primeiro período sempre coincidi com um início de um mandato.
+            Assim, é garantido que cada período esteja inteiramente dentro de um mandato.
+            Mandatos municipais são grupos de 4 anos começando em 2009 + i*4, i \in Z 
+            Mandatos federais/estaduais são grupos de 4 anos começando em 2011 + i*4, i \in Z
             WARNING: Brazil dependent code! 
     """
     
@@ -155,8 +154,8 @@ class PeriodosRetriever:
             ano_inicial = data_inicio_periodo.year + 2
         elif self.periodicidade == QUADRIENIO:
             ano_inicial = data_inicio_periodo.year + 4
-        fim_periodo = datetime.date(ano_inicial, mes_inicial, dia_inicial)
-        return fim_periodo
+        inicio_prox_periodo = datetime.date(ano_inicial, mes_inicial, dia_inicial)
+        return inicio_prox_periodo
 
     
     
