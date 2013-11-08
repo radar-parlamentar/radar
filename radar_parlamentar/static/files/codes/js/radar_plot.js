@@ -183,21 +183,23 @@ Plot = (function ($) {
             .attr("y", "48")
             .attr("x", width/2);
 
-        var go_to_previous = grupo_controle_periodos.append("text")
+        var go_to_previous = grupo_controle_periodos.append("image")
+            .attr("xlink:href", "/static/assets/arrow_left.svg")
             .attr("id", "previous_period")
             .attr("class", "previous")
-            .attr("text-anchor", "middle")
-            .attr("y", 20)
+            .attr("y", 0)
             .attr("x", 10)
-            .text("<");
-
-        var go_to_next = grupo_controle_periodos.append("text")
+            .attr("width", 113)
+            .attr("height", 113);
+            
+        var go_to_next = grupo_controle_periodos.append("image")
+            .attr("xlink:href", "/static/assets/arrow_right.svg")
             .attr("id", "next_period")
             .attr("class", "next")
-            .attr("text-anchor", "middle")
-            .attr("y", 20)
-            .attr("x", width-10 )
-            .text(">");
+            .attr("y", 0)
+            .attr("x", width-113-10)
+            .attr("width", 113)
+            .attr("height", 113);
         
         // setando variáveis já declaradas
         partidos = dados.partidos;
@@ -219,7 +221,7 @@ Plot = (function ($) {
             .attr("id", "alterna_escalas")
             .attr("class", "alterna_escala")
             .attr("text-anchor", "middle")
-            .attr("y", 70)
+            .attr("y", 130)
             .attr("x", width-40 )
             .text("Zoom In")
             .on("click", alternar_escalas);
