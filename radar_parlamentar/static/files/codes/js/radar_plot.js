@@ -307,8 +307,8 @@ Plot = (function ($) {
             var new_legend_items = legend_items.enter().append("li")
                 .attr("class","legend_item")
                 .text(function(d) {return d.numero + " | " + d.nome + " (" + d.t[periodo_atual] + ")"})
-                .on("mouseover", function(d) { d3.selectAll("#circle-"+nome(d)).classed("hover",true); })
-                .on("mouseout", function(d) { d3.selectAll("#circle-"+nome(d)).classed("hover",false); });
+                .on("mouseover", function(d) { d3.selectAll("#circle-"+nome(d)).classed("hover",true); d3.selectAll('.partido_' + nome(d)).attr("class",["parlamentar_circle_hover partido_" + nome(d)] ); })
+                .on("mouseout", function(d) { d3.selectAll("#circle-"+nome(d)).classed("hover",false); d3.selectAll('.partido_' + nome(d)).attr("class",["parlamentar_circle partido_" + nome(d)] ); });
             legend_items.exit().remove();
 
             // Circles that represent the parties

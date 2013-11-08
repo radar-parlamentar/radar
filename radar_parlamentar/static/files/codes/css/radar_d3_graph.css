@@ -68,6 +68,13 @@
   opacity: 0.6
 }
 
+.parlamentar_circle_hover {
+  stroke-width: 0.5;
+  stroke: #111;
+  cursor: pointer;
+  opacity: 1
+}
+
 .parlamentar_circle:hover {
   cursor: pointer;
   opacity: 1
