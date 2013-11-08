@@ -11,8 +11,8 @@ function desenhar(legislatura){
 			data.push(elementos)
 		}
 
-		var margin = {top: 20, right: 100, bottom: 100, left: 60},
-		    width = 960 - margin.left - margin.right,
+		var margin = {top: 20, right:30, bottom: 50, left: 50},
+		    width = 900 - margin.left - margin.right,
 		    height = 500 - margin.top - margin.bottom;
 
 		var x = d3.scale.ordinal()

@@ -191,12 +191,12 @@ body {
 	<div class="demo">
           <input class="typeahead" type="text" placeholder="Legislatura">
         </div>
-        <aside id="legenda" class="list">
-            <b>LEGENDA</b>
-            <div style="width: 15px; height: 15px; display:block; position: relative; float: left; background-color: #aaa; top: 15px;" ></div> Masculina<br/><br/>
-            <div style="width: 15px; height: 15px; display:block; position: relative; float: left; background-color: #850000; top: 5px;"></div> Feminina
+        <aside id="legenda_" class="list" style="float: right;">
+            <b>LEGENDA</b><br/>
+            <div style="width: 10px; height: 10px; display:block; position: relative; float: left; background-color: #aaa; top: 4px; margin-right: 2px;" ></div>Homens<br/>
+            <div style="width: 10px; height: 10px; display:block; position: relative; float: left; background-color: #850000; top: 4px; margin-right: 2px;"></div>Mulheres
         </aside>
-        <figure id="animacao"><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
+        <figure id="animacao" style="width: 900px; margin: 0;" ><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
     </article>
         <div style="clear:right"/>
 {% endblock content %}

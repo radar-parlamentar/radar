@@ -1,8 +1,8 @@
 
 d3.csv("/static/files/codes/js/genero_historia_base.csv", function(error, data) {
 
-	var margin = {top: 20, right: 100, bottom: 50, left: 50},
-	    width = 960 - margin.left - margin.right,
+	var margin = {top: 20, right: 30, bottom: 50, left: 50},
+	    width = 900 - margin.left - margin.right,
 	    height = 500 - margin.top - margin.bottom;
 
 	//anos = ["1826","1900","1950","2000", "2011"];

@@ -57,7 +57,8 @@
         É propósito observar as participações feminina e masculina na casa legislativa, seja do ponto de vista quantitativo, seja do ponto de vista qualitativo.<br/>
         <h4 style="margin-bottom:5px;">O que é este gráfico?</h4>
         <aside id="como-funciona" style="margin: 0 90px 10px 20px; padding: 10px; background-color: rgba(220,220,220,0.7); -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">
-            Trata-se de uma visualização de dados matricial em que as colunas representam os partidos e as palavras mais frequentes são as linhas. A intensidade da cor representa a quantidade de proposições que o partido fez utilizando aquela palavra temática. Quanto mais proposições, mais intensa é a cor. Quanto menos proposições, menos intensa é a cor.
+            Trata-se de uma visualização de dados matricial em que as colunas representam os partidos e as palavras mais frequentes são as linhas. A intensidade da cor representa a quantidade de proposições que o partido fez utilizando aquela palavra temática. Quanto mais proposições, mais intensa é a cor. Quanto menos proposições, menos intensa é a cor.<br/>
+            Futuramente esta visualização mostrará também a mesma informação com o recorte de gênero por partido. Ela ainda não foi possível por de dados suficientemente estruturados.
         </aside>
         Analise as frequências de temas por partido e tire suas próprias conclusões.<br/>
     
@@ -66,12 +67,6 @@
         Os dados da Câmara dos Deputados utilizados para análise estão disponíveis para <a href="https://github.com/leonardofl/radar_parlamentar/">download aqui</a>.<br/>    
     
         <aside id="legenda" class="list">
-            <b>LEGENDA</b>
-            <ul class="legenda">
-                {% for partido in partidos %}
-                    <li class="botao_partido" id="list_cor_{{partido.numero}}">{{partido.numero}} | {{partido.nome}}</li>
-                {% endfor %}
-            </ul>
         </aside>
         <figure id="animacao"><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
     </article>
