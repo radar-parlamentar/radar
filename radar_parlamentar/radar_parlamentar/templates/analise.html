@@ -40,11 +40,28 @@
                 {% for partido in partidos %}
                     <li class="botao_partido" id="list_cor_{{partido.numero}}">{{partido.numero}} | {{partido.nome}}</li>
                 {% endfor %}
+        <b>Clique sobre os partidos</b> para explodi-los e ver os parlamentares!</br>
+        <aside id="legenda" class="list" style="width:300px">
+            <p align="left"><b>LEGENDA</b></p>
+            <ul class="legend">
             </ul>
         </aside>
         <div style="width:700px">
         <figure id="animacao"><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
         </div>
+
+        <aside id="como-funciona" style="margin: 0 90px 10px 20px; padding: 10px; background-color: rgba(220,220,220,0.7); -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">
+            <h4>Entenda o gráfico</h4>
+            <p>Quanto mais próximo dois parlamentares estão no gráfico, mais parecido eles votaram no período exibido.</br>
+            O centro da circunferência de um partido é o "centróide" de seus parlamentares.</br>
+            Os eixos não possuem significados, apenas as distâncias.</br>
+            A animação entre dois períodos é só um efeito bacana, o que vale é a "foto" de cada período.</br>
+            A movimentação de um parlamentar ao longo do tempo em relação plano de fundo não possue significado,
+            o que vale é a sua distância em relação aos outros parlamentares.</br>
+            Os cálculos são feitos utilizando uma técnica de análise de dados chamada de Análise de Componentes Principais.  
+            </p>
+        </aside>
+        
     </article>
         <div style="clear:right"/>
 {% endblock content %}
