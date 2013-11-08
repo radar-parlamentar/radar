@@ -18,7 +18,8 @@
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals
-from models import *
+from models import MUNICIPAL, ESTADUAL, FEDERAL, MES, SEMESTRE, ANO, BIENIO, QUADRIENIO
+from models import Votacao, PeriodoCasaLegislativa
 import datetime
 
 class MandatoLists:
@@ -119,7 +120,8 @@ class PeriodosRetriever:
                 mes_inicial = 7
         # ano
         mandatos_lists = MandatoLists()
-        mandatos = mandatos_lists.get_mandatos_municipais(self.data_da_primeira_votacao, self.data_da_ultima_votacao)
+        esfera = self.casa_legislativa.esfera
+        mandatos = mandatos_lists.get_mandatos(esfera, self.data_da_primeira_votacao, self.data_da_ultima_votacao)
         i = 0
         while i < len(mandatos) and mandatos[i] < self.data_da_primeira_votacao:   
             ano_inicial = mandatos[i].year
@@ -134,6 +136,8 @@ class PeriodosRetriever:
         # mês
         if self.periodicidade == MES:
             mes_inicial = data_inicio_periodo.month + 1
+            if mes_inicial == 13:
+                mes_inicial = 1
         elif self.periodicidade in [ANO,BIENIO,QUADRIENIO]:
             mes_inicial = 1
         elif self.periodicidade == SEMESTRE:

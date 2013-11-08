@@ -128,15 +128,17 @@ class PeriodosRetrieverTest(TestCase):
     def test_inicio_de_periodo_municipal_deve_coincidir_com_inicio_mandato(self):
         self._test_periodos_em_duas_datas(2010, 2011, MUNICIPAL, BIENIO, 2)
 
-
-#     não deveria estar passando:
     def test_periodo_federal_nao_deve_conter_votacoes_de_dois_mandatos(self):
         self._test_periodos_em_duas_datas(2010, 2011, FEDERAL, BIENIO, 2)
-# 
-#     def test_periodo_estadual_nao_deve_conter_votacoes_de_dois_mandatos(self):
-#         self._test_periodo_nao_deve_conter_votacoes_de_dois_mandatos(2010, 2011, ESTADUAL)
+        
+    def test_periodo_estadual_nao_deve_conter_votacoes_de_dois_mandatos(self):
+        self._test_periodos_em_duas_datas(2010, 2011, ESTADUAL, BIENIO, 2)
 
-    # TODO testar para federal/estadual se 2012 e 2013 não serão quebrados em dois períodos; não deveria!
+    def test_periodo_federal_deve_estar_em_um_mandato(self):
+        self._test_periodos_em_duas_datas(2011, 2012, FEDERAL, BIENIO, 1)
+
+    def test_inicio_de_periodo_federal_deve_coincidir_com_inicio_mandato(self):
+        self._test_periodos_em_duas_datas(2012, 2013, FEDERAL, BIENIO, 2)
 
     def _test_periodos_em_duas_datas(self, ano_ini, ano_fim, esfera, periodicidade, expected_periodos_len):
         UMA_DATA = datetime.date(ano_ini, 02, 02)
