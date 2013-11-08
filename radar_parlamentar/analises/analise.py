@@ -62,12 +62,6 @@ class AnalisadorTemporal:
         self.votacoes = []
         self.json = ""
 
-    # TODO delete
-    def get_json(self):
-        self._faz_analises()
-        self._cria_json(constante_escala_tamanho = 50)
-        return self.json
-
     def get_analise_temporal(self):
         """Retorna instância de AnaliseTemporal"""
         if not self.analises_periodo:
