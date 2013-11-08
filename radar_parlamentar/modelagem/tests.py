@@ -30,10 +30,10 @@ from modelagem.models import MUNICIPAL, FEDERAL, ESTADUAL, BIENIO
 class MandatoListsTest(TestCase):
     
     def test_get_mandatos_municipais(self):
-        ini_date = parse_datetime('2008-10-10 0:0:0')
-        fim_date = parse_datetime('2013-10-10 0:0:0')
+        ini_date = datetime.date(2008, 10, 10)
+        fim_date = datetime.date(2013, 10, 10)
         mandato_lists = utils.MandatoLists()
-        mandatos = mandato_lists.get_mandatos_municipais(ini_date, fim_date) 
+        mandatos = mandato_lists.get_mandatos(MUNICIPAL, ini_date, fim_date) 
         self.assertEquals(len(mandatos), 3)
         self.assertEquals(mandatos[0].year, 2005)
         self.assertEquals(mandatos[1].year, 2009)
@@ -46,9 +46,28 @@ class MandatoListsTest(TestCase):
         ini_date = parse_datetime('2009-10-10 0:0:0')
         fim_date = parse_datetime('2012-10-10 0:0:0')
         mandato_lists = utils.MandatoLists()
-        mandatos = mandato_lists.get_mandatos_municipais(ini_date, fim_date) 
+        mandatos = mandato_lists.get_mandatos(MUNICIPAL, ini_date, fim_date) 
         self.assertEquals(len(mandatos), 1)
         self.assertEquals(mandatos[0].year, 2009)
+
+    def test_get_mandatos_federais(self):
+        self._test_get_mandatos_federais_ou_estaduais(FEDERAL)
+
+    def test_get_mandatos_estaduais(self):
+        self._test_get_mandatos_federais_ou_estaduais(ESTADUAL)
+        
+    def _test_get_mandatos_federais_ou_estaduais(self, esfera):
+        ini_date = datetime.date(2008, 10, 10)
+        fim_date = datetime.date(2015, 10, 10)
+        mandato_lists = utils.MandatoLists()
+        mandatos = mandato_lists.get_mandatos(esfera, ini_date, fim_date) 
+        self.assertEquals(len(mandatos), 3)
+        self.assertEquals(mandatos[0].year, 2007)
+        self.assertEquals(mandatos[1].year, 2011)
+        self.assertEquals(mandatos[2].year, 2015)
+        for mandato in mandatos:
+            self.assertEquals(mandato.day, 1)
+            self.assertEquals(mandato.month, 1)    
         
         
 class PeriodosRetrieverTest(TestCase):
@@ -109,11 +128,10 @@ class PeriodosRetrieverTest(TestCase):
     def test_inicio_de_periodo_municipal_deve_coincidir_com_inicio_mandato(self):
         self._test_periodos_em_duas_datas(2010, 2011, MUNICIPAL, BIENIO, 2)
 
-    # TODO testar para municipal se 2010 e 2011 não serão quebrados em dois períodos; não deveria!
 
 #     não deveria estar passando:
-#     def test_periodo_federal_nao_deve_conter_votacoes_de_dois_mandatos(self):
-#         self._test_periodo_nao_deve_conter_votacoes_de_dois_mandatos(2010, 2011, FEDERAL)
+    def test_periodo_federal_nao_deve_conter_votacoes_de_dois_mandatos(self):
+        self._test_periodos_em_duas_datas(2010, 2011, FEDERAL, BIENIO, 2)
 # 
 #     def test_periodo_estadual_nao_deve_conter_votacoes_de_dois_mandatos(self):
 #         self._test_periodo_nao_deve_conter_votacoes_de_dois_mandatos(2010, 2011, ESTADUAL)

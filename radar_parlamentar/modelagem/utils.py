@@ -19,13 +19,11 @@
 
 from __future__ import unicode_literals
 from models import *
-from models import MES
 import datetime
-from calendar import monthrange
 
 class MandatoLists:
 
-    def get_mandatos_municipais(self, ini_date, end_date):
+    def get_mandatos(self, esfera, ini_date, end_date):
         """Retorna datas do início de cada mandato no período compreendido entre ini_date e end_date
             Argumentos:
                 ini_date, end_date -- tipo date
@@ -33,8 +31,13 @@ class MandatoLists:
                 lista do tipo date
             Obs: início de cada mandato é sempre em 1 de janeiro
         """
-        ANO_INICIO_DE_ALGUM_MANDATO = 2009
-        ANO_DE_REFERENCIA = ANO_INICIO_DE_ALGUM_MANDATO-4*500 # suficientemente no passado 
+        if esfera == MUNICIPAL:
+            return self._get_mandatos(ini_date, end_date, 2009)
+        elif esfera in [ESTADUAL, FEDERAL]:
+            return self._get_mandatos(ini_date, end_date, 2011)
+
+    def _get_mandatos(self, ini_date, end_date, ano_inicio_de_algum_mandato):
+        ANO_DE_REFERENCIA = ano_inicio_de_algum_mandato-4*500 # suficientemente no passado 
         defasagem = (abs(ANO_DE_REFERENCIA - ini_date.year)) % 4
         y = ini_date.year - defasagem 
         mandatos = []
@@ -43,6 +46,7 @@ class MandatoLists:
             mandatos.append(date_ini_mandato)
             y += 4
         return mandatos
+    
     
     
 class PeriodosRetriever:
