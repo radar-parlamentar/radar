@@ -62,6 +62,7 @@ class AnalisadorTemporal:
         self.votacoes = []
         self.json = ""
 
+    # TODO delete
     def get_json(self):
         self._faz_analises()
         self._cria_json(constante_escala_tamanho = 50)

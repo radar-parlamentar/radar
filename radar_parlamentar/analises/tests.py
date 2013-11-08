@@ -66,9 +66,56 @@ class AnalisadorPeriodoTest(TestCase):
         self.assertAlmostEqual(coordenadas[self.monarquistas][0], 0.440, 2)
         self.assertAlmostEqual(coordenadas[self.monarquistas][1], 0.079, 2)
         
-
+        
 # tests AnalisadorTemporal
 # ......
+
+class AnalisadorTemporalTest(TestCase):
+    
+    @classmethod
+    def setUpClass(cls):
+        cls.importer = convencao.ImportadorConvencao()
+        cls.importer.importar()
+
+    @classmethod
+    def tearDownClass(cls):
+        from util_test import flush_db
+        flush_db(cls)
+        
+    def setUp(self):
+        self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        self.partidos = AnalisadorTemporalTest.importer.partidos
+        self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa__nome_curto='conv')
+        self.legislaturas = models.Legislatura.objects.filter(casa_legislativa__nome_curto='conv').distinct()
+        for partido in self.partidos:
+            if partido.nome == convencao.GIRONDINOS:
+                self.girondinos = partido
+            if partido.nome == convencao.JACOBINOS:
+                self.jacobinos = partido
+            if partido.nome == convencao.MONARQUISTAS:
+                self.monarquistas = partido        
+        
+    def test_analisador_temporal(self):
+        analisador_temporal = analise.AnalisadorTemporal(self.casa_legislativa, models.SEMESTRE)
+        analise_temporal = analisador_temporal.get_analise_temporal()
+        analises = analise_temporal.analises_periodo
+        self.assertEqual(len(analises), 2)
+        # primeiro semestre
+        coordenadas = analises[0].coordenadas_partidos
+        self.assertAlmostEqual(coordenadas[self.girondinos][0], -0.11788123, 4)
+        self.assertAlmostEqual(coordenadas[self.girondinos][1], -0.29647299, 4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][0], -0.30596818, 4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][1], 0.19860293, 4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][0], 0.42384941, 4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][1], 0.09787006, 4)
+        # segundo semestre
+        coordenadas = analises[0].coordenadas_partidos
+        self.assertAlmostEqual(coordenadas[self.girondinos][0], -0.11788123, 4)
+        self.assertAlmostEqual(coordenadas[self.girondinos][1], -0.29647299, 4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][0], -0.30596818, 4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][1], 0.19860293, 4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][0],  0.42384941, 4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][1], 0.09787006, 4)                
 
 # grafico tests
 
