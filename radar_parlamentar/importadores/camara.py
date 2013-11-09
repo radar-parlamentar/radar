@@ -84,7 +84,54 @@ class Camaraws:
     def __init__(self,url = Url()):
         self.url = url
 
-    def obter_proposicao(self, id_prop):
+    def _montar_url_consulta_camara(self,base, **kwargs):
+        URL_PROPOSICAO_POR_ID = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?'
+        URL_VOTACOES = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?'
+        URL_LISTAR_PROPOSICOES = 'http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?'
+        retorno = ""
+        required = []
+        parametros_de_consulta = []
+
+        if base == "listar_proposicoes":
+            # http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/proposicoes-1/listarproposicoes
+            retorno = URL_LISTAR_PROPOSICOES
+            required = ["sigla", "ano"]
+            parametros_de_consulta = ["sigla", "numero", "ano", "datapresentacaoini", "datapresentacaofim", "autor", "partenomeautor", "siglapartidoautor", "siglaufautor", "generoautor", "codestado", "codorgaoestado", "emtramitacao"]
+            parametros_de_retorno = ["id", "nome", "tipoproposicao", "numero", "ano", "orgaonumerador", "dataapresentacao", "ementa", "explicacaoementa", "regime", "apreciacao", "qtdeautores", "autor1", "ultimodespacho", "situacao", "proposicaoprincipal"]
+
+        elif base == "obter_proposicao_por_id":
+            #http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/proposicoes-1/obterproposicao
+            retorno = URL_PROPOSICAO_POR_ID
+            required = ["idprop"]
+            parametros_de_consulta = ["idprop"]
+            parametros_de_retorno = ["id", "nome", "tipoProposicao", "numero", "ano", "orgaoNumerador", "dataApresentacao", "ementa", "explicacaoEmenta", "regime", "apreciacao", "qtdeAutores", "autor1", "ultimoDespacho", "situacao", "proposicaoPrincipal"]
+
+        elif base == "obter_votacao_proposicao":
+            #http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/proposicoes-1/obtervotacaoproposicao
+            retorno = URL_VOTACOES
+            required = ["tipo", "numero", "ano"]
+            parametros_de_consulta = ["tipo", "numero", "ano"]
+            parametros_de_retorno = ["sigla", "numero", "ano", "votacoes"]
+
+        for par in kwargs.keys():
+            if type(par) == str:
+                kwargs[par] = kwargs[par].lower()
+
+        for par in required:
+            if par not in kwargs.keys():
+                return None
+
+        for par in parametros_de_consulta:
+            if par in kwargs.keys():
+                retorno += str(par)+"="+str(kwargs[par])+"&"
+            else:
+                retorno += str(par)+"=&"
+
+        retorno = retorno.rstrip("&")
+
+        return retorno
+
+    def obter_proposicao_por_id(self, id_prop):
         """Obtém detalhes de uma proposição
 
         Argumentos:
@@ -97,13 +144,14 @@ class Camaraws:
         Exceções:
             ValueError -- quando proposição não existe
         """
-        url = Camaraws.URL_PROPOSICAO % id_prop
+        parametros = { 'idprop': id_prop}
+        url = self._montar_url_consulta_camara('obter_proposicao_por_id', **parametros)
         tree = self.url.toXml(url)
         if tree is None:
             raise ValueError('Proposicao %s nao encontrada' % id_prop)
         return tree
 
-    def obter_votacoes(self, sigla, num, ano):
+    def obter_votacoes(self, sigla, num, ano, **kwargs):
         """Obtém votacões de uma proposição
 
         Argumentos:
@@ -116,17 +164,19 @@ class Camaraws:
         Exceções:
             ValueError -- quando proposição não existe ou não possui votações
         """
-
-        url  = Camaraws.URL_VOTACOES % (sigla, num, ano)
+        parametros = {'tipo':sigla, 'numero':num, 'ano':ano}
+        if kwargs:
+            parametros.update(kwargs)
+        url = self._montar_url_consulta_camara('obter_votacao_proposicao', **parametros)
         tree = self.url.toXml(url)
         if tree is None:
             raise ValueError('Votacoes da proposicao %s %s/%s nao encontrada' % (sigla, num, ano))
         return tree
 
-    def listar_proposicoes(self, sigla, ano):
+    def listar_proposicoes(self, sigla, ano, **kwargs):
         """Busca proposições de acordo com ano e sigla desejada
 
-        Argumentos:
+        Argumentos obrigatórios:
         sigla, ano -- strings que caracterizam as proposições buscadas
 
         Retorna:
@@ -138,7 +188,11 @@ class Camaraws:
             ValueError -- quando o web service não retorna um XML,
             que ocorre quando não há resultados para os critérios da busca
         """
-        url = Camaraws.URL_LISTAR_PROPOSICOES % (sigla, ano)
+        parametros = {'sigla':sigla, 'ano':ano}
+        if kwargs:
+            parametros.update(kwargs)
+        print (parametros)
+        url = self._montar_url_consulta_camara('listar_proposicoes', **parametros)
         tree = self.url.toXml(url)
         if tree is None:
             raise ValueError('Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
@@ -188,7 +242,7 @@ class ProposicoesFinder:
 
         Resultado é salvo no arquivo IDS_FILE_PATH (dados/cdep/ids_que_existem.txt).
         Cada linha possui o formato "id: sigla num/ano".
-        
+
         Retorna lista dos ids que existem
         """
 
@@ -227,7 +281,7 @@ class ProposicoesFinder:
 
         A proposições verificadas são as listadas em IDS_FILE_PATH (dados/cdep/ids_que_existem.txt).
         O resultado é salvo em VOTADAS_FILE_PATH (dados/cdep/votadas.txt).
-        
+
         Retorna as proposições com votações (no formato de ProposicoesParser)
         """
         if self.verbose:
@@ -241,44 +295,44 @@ class ProposicoesFinder:
         for prop in props:
             props_queue.put(prop)
         votadas_queue = Queue.Queue()
-        
+
         for i in range(0, NUM_THREADS):
-            verificador = VerificadorDeProposicoes(props_queue, votadas_queue, verbose)
-            thread = VerificadorDeProposicoesThread(verificador)
+            verificador = VerificadorDeProposicoesVotadas(props_queue, votadas_queue, verbose)
+            thread = VerificadorDeProposicoesVotadasThread(verificador)
             thread.setDaemon(True)
             thread.start()
-        
+
         props_queue.join() # aguarda até que a fila seja toda processada
         votadas = []
-        with codecs.open(VOTADAS_FILE_PATH, 'a', 'utf-8') as f:            
+        with codecs.open(VOTADAS_FILE_PATH, 'a', 'utf-8') as f:
             f.write('# Arquivo gerado pela classe ProposicoesFinder\n')
             f.write('# para achar as proposições da camara dos deputados\n')
             f.write('# que possuem votacoes.\n')
             f.write('# id  : proposicao\n')
             f.write('#-----------\n')
             while not votadas_queue.empty():
-                prop = votadas_queue.get()            
+                prop = votadas_queue.get()
                 nome_prop = '%s %s/%s' % (prop['sigla'], prop['num'], prop['ano'])
                 f.write('%s: %s\n' %(prop['id'], nome_prop))
                 votadas.append(prop)
-        return votadas        
+        return votadas
 
-class VerificadorDeProposicoes:
+class VerificadorDeProposicoesVotadas:
     """Verifica se um conjunto de proposições possui votações"""
-    
+
     def __init__(self, props_queue, output_queue, verbose, camaraws = Camaraws()):
         self.props_queue = props_queue
         self.output_queue = output_queue
         self.verbose = verbose
         self.camaraws = camaraws
-        
+
     def verifica_se_tem_votacoes(self):
         """Coloca na fila de saída proposições que possuem votações.
         Proposições testadas são retiradas da fila de entrada
         """
         while not self.props_queue.empty():
             prop = self.props_queue.get()
-            verificador = VerificadorDeProposicao(prop['sigla'], prop['num'], prop['ano'],camaraws = self.camaraws)
+            verificador = VerificadorDeProposicaoVotada(prop['sigla'], prop['num'], prop['ano'],camaraws = self.camaraws)
             if verificador.verifica_se_tem_votacoes():
                 self.output_queue.put(prop)
                 if self.verbose:
@@ -290,9 +344,9 @@ class VerificadorDeProposicoes:
                     sys.stdout.flush()
             self.props_queue.task_done()
 
-class VerificadorDeProposicao:
+class VerificadorDeProposicaoVotada:
     """Verifica se uma proposição possui votações"""
-    
+
     def __init__(self, sigla, num, ano, camaraws = Camaraws()):
         self.sigla = sigla
         self.num = num
@@ -307,24 +361,23 @@ class VerificadorDeProposicao:
         except ValueError:
             return False
 
-class VerificadorDeProposicoesThread(threading.Thread):
+class VerificadorDeProposicoesVotadasThread(threading.Thread):
 
     def __init__(self, verificador):
         threading.Thread.__init__(self)
         self.verificador = verificador
-        
+
     def run(self):
         self.verificador.verifica_se_tem_votacoes()
 
-
 class ProposicoesParser:
-    
+
     def __init__(self, votadas_file_path):
         self.votadas_file_path = votadas_file_path
-    
+
     def parse(self):
         """Parse do arquivo self.votadas_file_path.
-        
+
         Retorna:
         Uma lista com a identificação das proposições encontradas no txt.
         Cada posição da lista é um dicionário com chaves \in {id, sigla, num, ano}.
@@ -338,6 +391,11 @@ class ProposicoesParser:
                 if res:
                     proposicoes.append({'id':res.group(1), 'sigla':res.group(2), 'num':res.group(3), 'ano':res.group(4)})
         return proposicoes
+
+    def parse_from_list(list_props):
+        proposicoes = []
+        for prop in list_props:
+            proposicoes.append('')
 
 
 LOCK_TO_CREATE_CASA = threading.Lock()
@@ -399,7 +457,7 @@ class ImportadorCamara:
             # try again
             time.sleep(1)
             query = models.Proposicao.objects.filter(id_prop=id_prop, casa_legislativa=self.camara_dos_deputados)
-            
+
         if query:
             prop = query[0]
         else:
@@ -411,7 +469,7 @@ class ImportadorCamara:
             prop.ementa = prop_xml.find('Ementa').text.strip()
             prop.descricao = prop_xml.find('ExplicacaoEmenta').text.strip()
             prop.indexacao = prop_xml.find('Indexacao').text.strip()
-            #prop.autores = prop_xml.find('Autor').text.strip()
+            prop.autor_principal = prop_xml.find('Autor').text.strip()
             date_str = prop_xml.find('DataApresentacao').text.strip()
             prop.data_apresentacao = self._converte_data(date_str)
             prop.situacao =prop_xml.find('Situacao').text.strip()
@@ -569,30 +627,30 @@ class ImportadorCamara:
             logger.info('Importando votações da PROPOSIÇÃO %s: %s %s/%s' % (id_prop, sigla, num, ano))
 
             try:
-                prop_xml = camaraws.obter_proposicao(id_prop)
+                prop_xml = camaraws.obter_proposicao_por_id(id_prop)
                 prop = self._prop_from_xml(prop_xml, id_prop)
                 vots_xml = camaraws.obter_votacoes(sigla, num, ano)
-    
+
                 for child in vots_xml.find('Votacoes'):
                     self._votacao_from_xml(child, prop)
-    
+
                 self.importadas += 1
                 self._progresso()
             except ValueError as e:
                 logger.error('%s' % e)
-        
+
         logger.info('### Fim da Importação das Votações das Proposições da Câmara dos Deputados.')
 
 
 class SeparadorDeLista:
-    
+
     def __init__(self, numero_de_listas):
         self.numero_de_listas = numero_de_listas
-    
+
     def separa_lista_em_varias_listas(self, lista):
         lista_de_listas = []
         start = 0;
-        chunk_size = (int) ( math.ceil( 1.0 * len(lista) / self.numero_de_listas ) ) 
+        chunk_size = (int) ( math.ceil( 1.0 * len(lista) / self.numero_de_listas ) )
         while start<len(lista):
             end = start+chunk_size
             if (end > len(lista)):
@@ -606,13 +664,48 @@ class ImportadorCamaraThread(threading.Thread):
     def __init__(self, importer):
         threading.Thread.__init__(self)
         self.importer = importer
-        
+
     def run(self):
         self.importer.importar()
-        
+
 def wait_threads(threads):
     for t in threads:
-        t.join()    
+        t.join()
+
+def lista_proposicoes_de_mulheres():
+    camaraws = Camaraws()
+    propFinder = ProposicoesFinder()
+    importador = ImportadorCamara([''])
+    importador.camara_dos_deputados = importador._gera_casa_legislativa()
+    ano_min = 2012
+    ano_max = 2013
+    proposicoes = {}
+    percentuais_fem = {}
+    contagem_proposicoes = {}
+
+    for ano in range(ano_min, ano_max + 1):
+        proposicoes[ano] = {}
+        contagem_proposicoes[ano] = {}
+        proposicoes[ano]['F'] = []
+        proposicoes[ano]['M'] = []
+        contagem_proposicoes[ano]['F'] = []
+        contagem_proposicoes[ano]['M'] = []
+        contagem_proposicoes[ano]['somatotal'] =[]
+
+        for gen in ['F','M']:
+            prop_ano_gen = propFinder._parse_nomes_lista_proposicoes(camaraws.listar_proposicoes('PL',str(ano),**{'generoautor':gen}))
+            for prop in prop_ano_gen:
+                prop_xml = camaraws.obter_proposicao_por_id(prop[0])
+                proposicoes[ano][gen].append(importador._prop_from_xml(prop_xml,prop[0]))
+
+        contagem_proposicoes[ano]['mulheres'] = len(proposicoes[ano]['F'])
+        contagem_proposicoes[ano]['homens'] = len(proposicoes[ano]['M'])
+        contagem_proposicoes[ano]['somatotal'] = len(proposicoes[ano]['F']) + len(proposicoes[ano]['M'])
+
+        percentuais_fem[ano] = 100 * float(contagem_proposicoes[ano]['F']) / float(contagem_proposicoes[ano]['somatotal'])
+
+
+    return {'proposicoes': proposicoes, 'contagem': contagem_proposicoes, 'percentuais_fem': percentuais_fem}
 
 def main():
 
@@ -629,6 +722,4 @@ def main():
         thread.start()
     wait_threads(threads)
     logger.info('IMPORTACAO DE DADOS DA CAMARA DOS DEPUTADOS FINALIZADA')
-    
-    
-    
+
