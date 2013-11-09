@@ -18,6 +18,12 @@
 
 // Versão para o hackathon cdep 2013
 
+d3.selection.prototype.moveToFront = function() {
+  return this.each(function(){
+    this.parentNode.appendChild(this);
+  });
+};
+
 Plot = (function ($) {
 
     // Function to load the data and draw the chart
@@ -423,12 +429,14 @@ Plot = (function ($) {
 
         function mouseover_legend(party) {
             d3.selectAll("#circle-"+nome(party)).classed("hover",true);
+            d3.selectAll("#group-"+nome(party)).moveToFront();
             d3.selectAll('.partido_' + nome(party)).attr("class",["parlamentar_circle_hover partido_" + nome(party)] );
         }
         
         function mouseout_legend(party) {
             d3.selectAll("#circle-"+nome(party)).classed("hover",false);
             d3.selectAll('.partido_' + nome(party)).attr("class",["parlamentar_circle partido_" + nome(party)] );
+            sortAll();
         }
 
         function mouseover_next() {
@@ -488,6 +496,13 @@ Plot = (function ($) {
             // bem hacker ^^
             return (typeof d.cor === "undefined")
         }
+
+//        function moveToFront(party) {
+//            return this.each(function(){
+//                this.parentNode.appendChild(this);
+//            });
+//        }
+
 
         // Retorna partidos excluindo partidos ausentes no período
         function get_partidos_no_periodo(period) {
