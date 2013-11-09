@@ -191,7 +191,7 @@ Plot = (function ($) {
             .attr("x", 10)
             .attr("width", 113)
             .attr("height", 113);
-            
+
         var go_to_next = grupo_controle_periodos.append("image")
             .attr("xlink:href", "/static/assets/arrow_right.svg")
             .attr("id", "next_period")
@@ -310,8 +310,8 @@ Plot = (function ($) {
             var new_legend_items = legend_items.enter().append("li")
                 .attr("class","legend_item")
                 .text(function(d) {return d.numero + " | " + d.nome + " (" + d.t[periodo_atual] + ")"})
-                .on("mouseover", function(d) { d3.selectAll("#circle-"+nome(d)).classed("hover",true); d3.selectAll('.partido_' + nome(d)).attr("class",["parlamentar_circle_hover partido_" + nome(d)] ); })
-                .on("mouseout", function(d) { d3.selectAll("#circle-"+nome(d)).classed("hover",false); d3.selectAll('.partido_' + nome(d)).attr("class",["parlamentar_circle partido_" + nome(d)] ); });
+                .on("mouseover", function(d) { mouseover_legend(d); })
+                .on("mouseout", function(d) { mouseout_legend(d); });
             legend_items.exit().remove();
 
             // Circles that represent the parties
@@ -419,6 +419,16 @@ Plot = (function ($) {
             
             if (periodo_para == periodo_max) go_to_next.classed("active", false);
             if (periodo_para == periodo_min) go_to_previous.classed("active", false);
+        }
+
+        function mouseover_legend(party) {
+            d3.selectAll("#circle-"+nome(party)).classed("hover",true);
+            d3.selectAll('.partido_' + nome(party)).attr("class",["parlamentar_circle_hover partido_" + nome(party)] );
+        }
+        
+        function mouseout_legend(party) {
+            d3.selectAll("#circle-"+nome(party)).classed("hover",false);
+            d3.selectAll('.partido_' + nome(party)).attr("class",["parlamentar_circle partido_" + nome(party)] );
         }
 
         function mouseover_next() {
