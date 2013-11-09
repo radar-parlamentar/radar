@@ -290,7 +290,6 @@ Plot = (function ($) {
             if (periodo_atual > periodo_min) {
                 periodo_de = periodo_atual;
                 periodo_para = periodo_atual - 1;
-                periodo_para = periodo_min;
                 periodo_atual = periodo_para;
                 change_period();
             }
