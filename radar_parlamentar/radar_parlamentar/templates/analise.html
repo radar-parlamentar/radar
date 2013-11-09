@@ -69,8 +69,10 @@
 {% block extrajsend %}
     {% if request.get_host == '127.0.0.1:8000' or request.get_host == 'localhost:8000' %}
         <script src="/static/files/codes/js/d3.min.js"></script>
+        <script src="/static/files/codes/js/d3-tip.js"></script>
     {% else %}
         <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js"></script>
+        <script src="/static/files/codes/js/d3-tip.js"></script>
         <script type="text/javascript">
           if (typeof d3 === 'undefined') {
             var e = document.createElement('script');

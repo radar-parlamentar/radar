@@ -102,7 +102,7 @@ Plot = (function ($) {
         height = height_graph - margin.top - margin.bottom,
         space_between_graph_and_control = 60,
         height_of_control = 80;
-    var TEMPO_ANIMACAO = 1500,
+    var TEMPO_ANIMACAO = 500,
         RAIO_PARLAMENTAR = 6;
 
     // Variables related to the background of concentrical circles
@@ -259,7 +259,6 @@ Plot = (function ($) {
         }
 
 
-
         // ############## Funções de controle de mudanças de estado ###########
         
         // Função que controla mudança de estado para o estado seguinte
@@ -315,9 +314,11 @@ Plot = (function ($) {
                 .duration(TEMPO_ANIMACAO);
             var new_legend_items = legend_items.enter().append("li")
                 .attr("class","legend_item")
+                .attr("id", function(d) { return "legend-"+nome(d); })
                 .text(function(d) {return d.numero + " | " + d.nome + " (" + d.t[periodo_atual] + ")"})
                 .on("mouseover", function(d) { mouseover_legend(d); })
-                .on("mouseout", function(d) { mouseout_legend(d); });
+                .on("mouseout", function(d) { mouseout_legend(d); })
+                .on("click", function(d) { click_legend(d); });
             legend_items.exit().remove();
 
             // Circles that represent the parties
@@ -325,6 +326,17 @@ Plot = (function ($) {
 
             var parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
             var circles = grupo_grafico.selectAll('.party_circle').data(partidos_no_periodo, function(d) { return d.nome });
+
+            party_tip = d3.tip()
+                .attr('class', 'd3-tip')
+                .offset([-10,0])
+                .html(function(d) { 
+                    r = "<strong><span style='color:" + d.cor + ";text-shadow: -1px 0 #333, 0 1px #333, 1px 0 #333, 0 -1px #333'>" + d.numero + " - </span>" + d.nome + "</strong></br>";
+                    r += "<strong>Parlamentares:</strong> <span style='color:yellow'>" + d.t[periodo_atual] + "</span></br>";
+                    r += "<span style='color:yellow'><strong>Clique para expandir!</strong></span>";
+                    return r;
+                });
+
 
             parties.transition()
                 .attr("transform", function(d) { return "translate(" + xScalePart(d.x[periodo_para]) +"," +  yScalePart(d.y[periodo_para]) + ")" })
@@ -334,15 +346,21 @@ Plot = (function ($) {
                 .attr("r", function(d) { return d.r[periodo_para]})
                 .duration(TEMPO_ANIMACAO);
 
+            grupo_grafico.call(party_tip);
+
             var new_parties = parties.enter().append("g")
                 .attr("class","party")
                 .attr("id",function(d){return "group-"+nome(d);})
                 .attr("transform", function(d) { return "translate(" + xScalePart(d.x[periodo_atual]) +"," +  yScalePart(d.y[periodo_atual]) + ")";})
                 .attr("opacity",0.00001)
+                .on("mouseover", function(d) { return mouseover_party(d); })
+//                .on("mouseover", party_tip.show)
+                .on("mouseout", function(d) { return mouseout_party(d); })
                 .on("click", function(d) { return explode_partido(d); });
-            
-            new_parties.append("title")
-                .text(function(d) { return nome(d); });
+
+            // title is used for the browser tooltip
+//            new_parties.append("title")
+//                .text(function(d) { return nome(d); });
     
             var new_circles = new_parties.append("circle")
                 .attr("class","party_circle")
@@ -430,13 +448,33 @@ Plot = (function ($) {
         function mouseover_legend(party) {
             d3.selectAll("#circle-"+nome(party)).classed("hover",true);
             d3.selectAll("#group-"+nome(party)).moveToFront();
+            d3.selectAll("#legend-"+nome(party)).classed("active",true);
             d3.selectAll('.partido_' + nome(party)).attr("class",["parlamentar_circle_hover partido_" + nome(party)] );
         }
         
         function mouseout_legend(party) {
             d3.selectAll("#circle-"+nome(party)).classed("hover",false);
+            d3.selectAll("#legend-"+nome(party)).classed("active",false);
             d3.selectAll('.partido_' + nome(party)).attr("class",["parlamentar_circle partido_" + nome(party)] );
             sortAll();
+        }
+
+        function click_legend(party) {
+            return;
+        }
+
+        function mouseover_party(party) {
+            var circulo = d3.selectAll("#circle-"+nome(party)).classed("hover",true);
+//            d3.selectAll("#group-"+nome(party)).moveToFront(); // 
+            d3.selectAll("#legend-"+nome(party)).classed("active",true);
+            party_tip.show(party);
+        }
+        
+        function mouseout_party(party) {
+            d3.selectAll("#circle-"+nome(party)).classed("hover",false);
+            d3.selectAll("#legend-"+nome(party)).classed("active",false);
+            party_tip.hide();
+//            sortAll();
         }
 
         function mouseover_next() {
@@ -463,6 +501,7 @@ Plot = (function ($) {
         }
 
         function explode_partido(partido) { //partido é o json do partido
+            party_tip.hide();
             partidos_explodidos.push(partido);
             atualiza_grafico(true);
         }
