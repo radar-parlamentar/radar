@@ -440,8 +440,8 @@ Plot = (function ($) {
             
             sortAll();
             
-            if (periodo_para == periodo_max) go_to_next.classed("active", false);
-            if (periodo_para == periodo_min) go_to_previous.classed("active", false);
+            if (periodo_para == periodo_max) mouseout_next();
+            if (periodo_para == periodo_min) mouseout_previous();
         }
 
         function mouseover_legend(party) {
@@ -477,19 +477,31 @@ Plot = (function ($) {
         }
 
         function mouseover_next() {
-            if (periodo_atual < periodo_max) go_to_next.classed("active", true);
+            if (periodo_atual < periodo_max) {
+                go_to_next.classed("active", true);
+                go_to_next.transition()
+                    .attr("xlink:href", "/static/assets/arrow_right_focused.svg")
+            }
         }
 
         function mouseout_next() {
             go_to_next.classed("active", false);
+            go_to_next.transition()
+                .attr("xlink:href", "/static/assets/arrow_right.svg")
         }
 
         function mouseover_previous() {
-            if (periodo_atual > periodo_min) go_to_previous.classed("active", true);
+            if (periodo_atual > periodo_min) { 
+                go_to_previous.classed("active", true);
+                go_to_previous.transition()
+                    .attr("xlink:href", "/static/assets/arrow_left_focused.svg")
+            }
         }
 
         function mouseout_previous() {
             go_to_previous.classed("active", false);
+            go_to_previous.transition()
+                .attr("xlink:href", "/static/assets/arrow_left.svg")            
         }
         
         function sortAll() {
