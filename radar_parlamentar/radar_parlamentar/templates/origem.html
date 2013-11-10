@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    A origem do Radar Parlamentar
+    História do Radar Parlamentar
 {% endblock title %}
 
 {% block extrascripts %}
@@ -15,7 +15,7 @@
 {% endblock headerImgClass %}
 
 {% block nomepagina %}
-    A Origem
+    História do Projeto
 {% endblock nomepagina %}
 
 {% block pagedesc %}
@@ -25,86 +25,43 @@
 
 {% block breadcrumbs %}
     <li><a href="/index">Home</a> &raquo;</li>
-    <li><a href="/origem">A Origem</a></li>
+    <li><a href="/origem">História do Projeto</a></li>
 {% endblock breadcrumbs %}
 
 {% block content %}
     <article class="aboutDesc">
         <p>
-            A disponibilização pela Câmara dos Deputados de <a href="http://www2.camara.gov.br/transparencia/dados-abertos">dados abertos</a> na Internet sob a forma de <a href="http://en.wikipedia.org/wiki/Web_service">webservices</a> sobre as votações das proposições que ali tramitam inspirou Leonardo Leite, integrante do <a href="http://polignu.org/">PoliGNU</a>, a vasculhar e analisar esses dados, criando o projeto CamaraWS no início de 2012.
-        </p>
-        <figure>
-            <img src="/static/assets/pca.jpg" class="border" height="220" width="350" alt="About Us" />
-            <figcaption>
-                Resultado gráfico da análise das votações na câmara dos deputados
-           </figcaption>
-        </figure>
-        <p>
-            Normalmente, espera-se que um eleitor escolha seu voto com base em sua afinidade ideológica com o partido, mas o que realmente afetará a vida do eleitor é a forma como os parlamentares votarão. E como as votações não necessariamente ocorrem de acordo com as ideologias pregadas pelos partidos, é importante para o eleitor acompanhar como efetivamente seu partido está votando.
+            A disponibilização pela Câmara dos Deputados de <a href="http://www2.camara.gov.br/transparencia/dados-abertos">dados abertos</a> na Internet sob a forma de webservices sobre as votações das proposições que ali tramitam inspirou Leonardo Leite a vasculhar e analisar esses dados, criando o projeto no início de 2012. Tratava-se de uma análise de similaridade dos partidos dois a dois, expressa como uma porcentagem.
         </p>
         <p>
-            É comum as votações acabarem sendo determinadas muito mais em função das alianças efetuadas entre os partidos políticos. Dessa forma, o primeiro objetivo do grupo foi realizar análises automatizadas dos dados abertos oferecidos pela Câmara dos Deputados para tornar possível ao eleitor esse acompanhamento.
+            <strong>DADOS ABERTOS</strong>
         </p>
         <p>
-            DADOS ABERTOS
+            De acordo com a <a href="http://www.w3c.br/Home/WebHome">W3C</a>, dados abertos governamentais são a publicação e a disseminação de informações do setor público na internet, compartilhadas em formato bruto e aberto, de modo a permitir sua reutilização em aplicações digitais desenvolvidas pela sociedade. Uma vez que os dados abertos estão publicados, e podem ser processados por aplicações desenvolvidas por diversos interessados, proporciona-se a criação de múltiplos pontos de vista sobre aqueles dados publicados de forma bruta.
         </p>
-        <p>
-            De acordo com a <a href="http://www.w3c.br/Home/WebHome">W3C</a>, dados abertos governamentais são a publicação e a disseminação de informações do setor público na Web, compartilhadas em formato bruto e aberto, de modo a permitir sua reutilização em aplicações digitais desenvolvidas pela sociedade. Uma vez que os dados abertos estão publicados, e podem ser processados por aplicações desenvolvidas por diversos interessados, proporciona-se a criação de múltiplos pontos de vista sobre aqueles dados publicados de forma bruta.
-        </p>
-        <figure>
-            <img src="/static/assets/dinamico.png" class="border" height="220" width="350" alt="About Us" />
-           <figcaption>
-                Mapa Dinâmico de semelhança de partidos
-           </figcaption>
-        </figure>
         <p>
         Com base nesses princípios, a Câmara liberou um conjunto de dados abertos acessíveis por web services que incluem os resultados das votações realizadas na câmara, sendo descrito o voto de cada parlamentar na votação.
         </p>
         <p>
-            ANÁLISE GRÁFICA
+          Depois disso, outras casas legislativas disponibilizaram seus dados de votações, seguindo determinação da Lei de Acesso a Informação. Os dados do Senado e da Câmara Municipal de São Paulo já foram integrados ao <strong>Radar Parlamentar</strong>.
         </p>
         <p>
-            Após algum tratamento algébrico, conseguiu-se obter resultados – sob a forma de tabelas - das semelhanças entre votações de partidos, dois a dois. Porém, pensando em tornar mais acessível e completa a leitura desses dados, trabalhou-se para que isso fosse mostrado de uma forma gráfica.
+            <strong>O GRÁFICO: ANÁLISE DE COMPONENTES PRINCIPAIS</strong>
         </p>
         <p>
-            Como as análises haviam sido feitas comparando partidos dois a dois, o desafio era representar todas as semelhanças em um mesmo gráfico. Saulo Trento, outro membro do PoliGNU, passou a colaborar bastante com o projeto, especialmente com a parte de representação gráfica. Assim, optou-se por utilizar o <a href="http://en.wikipedia.org/wiki/Principal_component_analysis">PCA</a> - uma técnica de análise exploratória de dados, utilizada, por exemplo, em data minning para a extração de significado de grandes quantidade de dados, em cuja situação a análise manual seria inviável.
+            Como as análises haviam sido feitas em forma de tabela, comparando partidos dois a dois, o desafio era representar todas as semelhanças em um mesmo gráfico. Saulo Trento passou a colaborar bastante com o projeto, introduzindo uma método baseado em análise de componentes principais (PCA).
+            </p>
+        <p>
+          A PCA é uma técnica de análise exploratória de dados utilizada, por exemplo, em data minning para a extração de significado de grandes quantidade de dados, em cuja situação a análise manual seria inviável. Através dessa técnica é possível gerar os gráficos em duas dimensões característicos do <strong>Radar Parlamentar</strong>.
         </p>
         <p>
-            ANIMAÇÃO
-        </p>
-        <figure>
-            <img src="/static/assets/cs2.jpg" class="border" height="220" width="350" alt="About Us" />
-            <figcaption>
-                Análise da Câmara Municipal de São Paulo
-            </figcaption>
-        </figure>
+          De forma simplificada, os eixos x e y são as combinações lineares ortogonais das votações que melhor explicam a variância entre as votações dos parlamentares. Para uma explicação formal, a <a href="https://github.com/leonardofl/radar_parlamentar/raw/8d54db1df3830144892b93e799f86b5c46c00576/doc/radar_parlamentar.pdf">documentação (pdf)</a>.
+          </p>
         <p>
-            Neste gráfico animado de bolhas, os eixos x e y são as combinações lineares ortogonais das votações na câmara que melhor explicam a variância entre as votações dos partidos. O gráfico mostra no "eixo" temporal a evolução ano a ano. Estão incluídos apenas partidos que tinham no mínimo 4 parlamentares em 2011.
+            <strong>DADOS PÚBLICOS E CÓDIGO ABERTO</strong>
         </p>
         <p>
-            Além das análises mostradas, aqueles que quiserem realizar suas próprias análises dos dados da câmara podem fazer isso facilmente usando <a href="http://polignu.org/projeto/camaraws/">outras ferramentas do projeto que foram desenvolvidas</a>. Em particular, foram baixadas todas as proposições e votações do webservice para um banco de dados local em formato SQLite, disponível no <a href="https://github.com/leonardofl/camaraws">repositório do projeto</a> (em resultados/camara.db), juntamente com os módulos em Python que permitem acessá-lo para fazer análises como as já demonstradas.
-        </p>
-        <p>
-            1o HACKATHON DA CÂMARA MUNICIPAL DE SÃO PAULO E O RADAR PARLAMENTAR
-        </p>
-        <p>
-            Com a entrada em vigor da <a href="http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2011/Lei/L12527.htm">Lei de Acesso a informações Púbicas</a> recentemente, diversos órgãos públicos vêm respondendo positivamente no sentido de melhor dispor seus dados aos cidadãos/cidadãs.
-            Nesse movimento recente, fundamental para o amadurecimento da democracia brasileira, a Câmara Municipal de São Paulo (CMSP) lançou em 12 de maio de 2012 seu <a href="http://www.camara.sp.gov.br/index.php?option=com_content&view=article&id=9488&Itemid=219">1o Hackathon</a>, uma maratona hacker que visa estimular a elaboração de aplicativos que facilitem a leitura e o entendimento dos Dados Abertos da CMSP.
-        </p>
-        <figure>
-            <img src="/static/assets/nomes.png" class="border" height="220" width="350" alt="About Us" />
-            <figcaption>
-                Resultado da votação para novo nome do projeto CamarWS
-            </figcaption>
-        </figure>
-        <p>
-            Paralelo a isso, o Senado Federal também está em processo de disponibilização de dados de suas votações, e uma ferramenta para o Senado deve surgir no futuro. Devido à ampliação iminente do escopo do projeto, outros membros do grupo, como Diego Rabatone, Guilherme Januário e Haydée Svab, também passaram a colaborar mais intensamente com o projeto, que foi rebatizado pela comunidade PoliGNU como <a href="http://radarparlamentar.polignu.org">Radar Parlamentar</a> - a enquete contou com 40 votos em 3 dias.
-        </p>
-        <p>
-            Pelas análises realizadas, notou-se que partidos aliados realmente são "comprometidos" com a bancada partidária, ou seja, o voto parece ser realmente mais partidário do que individual. Outra observação pertinente é que as alianças do partido parecem prevalecer sobre suas supostas ideologias.
-        </p>
-        <p>
-            É importante o desenvolvimento de aplicações pela sociedade civil que mostrem o potencial da utilização de dados públicos abertos para  incentivar os órgãos públicos a liberarem outros conjuntos de dados abertos, construindo cada vez mais uma relação saudável de transparência e controle social entre governos e sociedade.
+            Além das análises mostradas, aqueles que quiserem realizar suas próprias análises dos dados podem fazer isso facilmente usando <a href="http://polignu.org/projeto/camaraws/">outras ferramentas do projeto que foram desenvolvidas</a>. Entendemos ser de fundamental importância que o código fonte das análises seja aberto, tanto quanto os dados utilizados são públicos. Dessa forma, qualquer um pode verificar os resultados e compreender plenamente o método utilizado para obter os gráficos.
         </p>
     </article>
 {% endblock content %}
