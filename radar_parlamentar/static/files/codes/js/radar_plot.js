@@ -148,14 +148,14 @@ Plot = (function ($) {
         // Inicialmente remove o spinner de loading
         $("#loading").remove();
 
-        r = dados.max_raio
-        r_partidos = dados.max_raio_partidos
-        xScale.domain([-r, r])
-        yScale.domain([-r, r])
+        var r_maximo = dados.max_raio
+        var r_partidos = dados.max_raio_partidos
+        xScale.domain([-r_maximo, r_maximo])
+        yScale.domain([-r_maximo, r_maximo])
 //        xScalePart.domain([-r_partidos, r_partidos])
 //        yScalePart.domain([-r_partidos, r_partidos])
-        xScalePart.domain([-r, r])
-        yScalePart.domain([-r, r])
+        xScalePart.domain([-r_maximo, r_maximo])
+        yScalePart.domain([-r_maximo, r_maximo])
         
         // Creates the SVG container and sets the origin.
         var svg_base = d3.select("#animacao").append("svg")
@@ -257,10 +257,14 @@ Plot = (function ($) {
                 alternador_escalas.text("Zoom In");
                 transitionBackground("linear");
             }
-            xScale.range([0, width]).domain([-r, r]); // scale for members
-            yScale.range([height, 0]).domain([-r, r]);
-            xScalePart.range([0, width]).domain([-r, r]); // scale for parties
-            yScalePart.range([height, 0]).domain([-r, r]);
+            xScale.range([0, width]).domain([-r_maximo, r_maximo]); // scale for members
+            yScale.range([height, 0]).domain([-r_maximo, r_maximo]);
+            xScalePart.range([0, width]).domain([-r_maximo, r_maximo]); // scale for parties
+            yScalePart.range([height, 0]).domain([-r_maximo, r_maximo]);
+            console.log(width);
+            console.log(r_maximo);
+            console.log(xScale);
+            console.log(xScale(10));
             atualiza_grafico(true);
         }
 
@@ -328,7 +332,6 @@ Plot = (function ($) {
 
             // Circles that represent the parties
             partidos_no_periodo = get_partidos_nao_explodidos_no_periodo(periodo_atual);
-
             var parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
             var circles = grupo_grafico.selectAll('.party_circle').data(partidos_no_periodo, function(d) { return d.nome });
 
@@ -351,7 +354,7 @@ Plot = (function ($) {
                 .attr("r", function(d) { return d.r[periodo_para]})
                 .duration(TEMPO_ANIMACAO);
 
-            grupo_grafico.call(party_tip);
+            svg_base.call(party_tip);
 
             var new_parties = parties.enter().append("g")
                 .attr("class","party")
