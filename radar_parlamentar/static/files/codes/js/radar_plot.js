@@ -41,6 +41,12 @@ Plot = (function ($) {
     function cor(d) { return d.cor; }    
     function nome(d) { return space_to_underline(d.nome); } 
     function numero(d) { return d.numero; } 
+    function descreve_parlamentar(parlamentar, partido) {
+        if (parlamentar.localidade)
+            return parlamentar.nome + ' - ' + parlamentar.localidade + '/' + partido.nome;
+        else
+            return parlamentar.nome + ' - ' +  partido.nome;
+    }
     
     // Creates a "radialGradient"* for each circle
     // and returns the id of the just created gradient.
@@ -406,7 +412,8 @@ Plot = (function ($) {
                     .attr("fill", cor(partido))
                     .on("click", function(d) { return implode_partido(partido); });
 
-                new_parlamentares.append("title").text(function(d) { return d.nome + ' - ' + partido.nome; });
+                new_parlamentares.append("title")
+                    .text(function(d) { return descreve_parlamentar(d, partido); });
                     
                 if (explodindo) {
                     new_parlamentares.attr("cx", xScale(partido.x[periodo_atual]))

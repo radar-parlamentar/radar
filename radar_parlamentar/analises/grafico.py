@@ -169,7 +169,7 @@ class JsonAnaliseGenerator:
             dict_partido["r"].append(round(r,1))
         dict_partido["parlamentares"] = []
         #legislaturas = self.analise_temporal.analises_periodo[0].legislaturas_por_partido[partido.nome]
-        legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(partido=partido).select_related('id', 'partido__nome','parlamentar__nome')
+        legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(partido=partido).select_related('id', 'localidade', 'partido__nome','parlamentar__nome')
         for leg in legislaturas:
             dict_partido["parlamentares"].append(self._dict_parlamentar(leg))
         return dict_partido
@@ -177,7 +177,8 @@ class JsonAnaliseGenerator:
     def _dict_parlamentar(self, legislatura):
         leg_id = legislatura.id
         nome = legislatura.parlamentar.nome
-        dict_parlamentar = {"nome":nome, "id":leg_id}
+        localidade = legislatura.localidade
+        dict_parlamentar = {"nome":nome, "id":leg_id, "localidade":localidade}
         dict_parlamentar["x"] =  []
         dict_parlamentar["y"] =  []     
         for ap in self.analise_temporal.analises_periodo:
