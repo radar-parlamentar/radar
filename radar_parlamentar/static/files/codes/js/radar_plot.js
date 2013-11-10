@@ -400,6 +400,16 @@ Plot = (function ($) {
             new_circles.transition().duration(TEMPO_ANIMACAO)
                 .attr("r", function(d) { return d.r[periodo_atual]; });
             
+            // tirar os parlamentares eventualmente explodidos que pertencam a partidos que estejam saindo de cena:
+            partidos_ou_parlamentares_no_periodo = get_partidos_no_periodo(periodo_atual);
+            var parties2 = grupo_grafico.selectAll('.party').data(partidos_ou_parlamentares_no_periodo, function(d) { return d.nome });
+            var parties_vao_sair2 = parties2.exit();
+            var partidos_ausentes = get_partidos_ausentes_no_periodo(periodo_atual);
+            partidos_ausentes.forEach(function(vai_sair){
+                parlam_vai_sair = grupo_grafico.selectAll(".partido_" + nome(vai_sair));
+                parlam_vai_sair.remove();
+            })
+
             circles.exit().transition().duration(TEMPO_ANIMACAO).attr("r",0).remove();
             var parties_vao_sair = parties.exit().transition().duration(TEMPO_ANIMACAO);
             parties_vao_sair.remove();
@@ -613,6 +623,10 @@ Plot = (function ($) {
         // Retorna partidos excluindo partidos ausentes no período
         function get_partidos_no_periodo(period) {
             return partidos.filter(function(d){ return d.t[period] > 0;});
+        }
+
+        function get_partidos_ausentes_no_periodo(period) {
+            return partidos.filter(function(d){ return d.t[period] == 0;});
         }
 
         // Retorna partidos excluindo partidos ausentes no período e partidos explodidos
