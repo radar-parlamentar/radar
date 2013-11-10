@@ -5,790 +5,426 @@
             "name": "M", 
             "children": [
                 {
-                    "name": "menor", 
-                    "size": 784
-                }, 
-                {
                     "name": "crian\u00e7a", 
-                    "size": 1279
-                }, 
-                {
-                    "name": "\u00e1rea", 
-                    "size": 782
+                    "size": 1069
                 }, 
                 {
                     "name": "regulamenta\u00e7\u00e3o", 
-                    "size": 1285
-                }, 
-                {
-                    "name": "deficiente", 
-                    "size": 792
+                    "size": 1268
                 }, 
                 {
                     "name": "brasileiro", 
-                    "size": 1408
-                }, 
-                {
-                    "name": "exerc\u00edcio", 
-                    "size": 835
-                }, 
-                {
-                    "name": "policial", 
-                    "size": 814
-                }, 
-                {
-                    "name": "defini\u00e7\u00e3o", 
-                    "size": 1321
-                }, 
-                {
-                    "name": "adolescente", 
-                    "size": 1042
+                    "size": 1388
                 }, 
                 {
                     "name": "munic\u00edpios", 
-                    "size": 1050
-                }, 
-                {
-                    "name": "municipal", 
-                    "size": 780
-                }, 
-                {
-                    "name": "concess\u00e3o", 
-                    "size": 2891
-                }, 
-                {
-                    "name": "militar", 
-                    "size": 1344
-                }, 
-                {
-                    "name": "administra\u00e7\u00e3o", 
-                    "size": 1778
-                }, 
-                {
-                    "name": "justi\u00e7a", 
-                    "size": 841
-                }, 
-                {
-                    "name": "cr\u00e9dito", 
-                    "size": 980
-                }, 
-                {
-                    "name": "fixa\u00e7\u00e3o", 
-                    "size": 2626
-                }, 
-                {
-                    "name": "limita\u00e7\u00e3o", 
-                    "size": 1429
-                }, 
-                {
-                    "name": "processo", 
-                    "size": 1759
-                }, 
-                {
-                    "name": "recebimento", 
-                    "size": 912
-                }, 
-                {
-                    "name": "social", 
-                    "size": 3076
-                }, 
-                {
-                    "name": "objetivo", 
-                    "size": 950
-                }, 
-                {
-                    "name": "plano", 
-                    "size": 700
-                }, 
-                {
-                    "name": "financeiros", 
-                    "size": 744
-                }, 
-                {
-                    "name": "crime", 
-                    "size": 2245
-                }, 
-                {
-                    "name": "aquisi\u00e7\u00e3o", 
-                    "size": 1355
-                }, 
-                {
-                    "name": "judicial", 
-                    "size": 1788
-                }, 
-                {
-                    "name": "renda", 
-                    "size": 2054
-                }, 
-                {
-                    "name": "informa\u00e7\u00f5es", 
-                    "size": 771
-                }, 
-                {
-                    "name": "exig\u00eancia", 
-                    "size": 2681
-                }, 
-                {
-                    "name": "sal\u00e1rio", 
-                    "size": 767
-                }, 
-                {
-                    "name": "pagamento", 
-                    "size": 2990
-                }, 
-                {
-                    "name": "cobran\u00e7a", 
-                    "size": 1025
-                }, 
-                {
-                    "name": "bens", 
-                    "size": 1035
-                }, 
-                {
-                    "name": "defici\u00eancia", 
-                    "size": 889
-                }, 
-                {
-                    "name": "ve\u00edculo", 
-                    "size": 1271
-                }, 
-                {
-                    "name": "legisla\u00e7\u00e3o", 
-                    "size": 2106
-                }, 
-                {
-                    "name": "servi\u00e7o", 
-                    "size": 3494
-                }, 
-                {
-                    "name": "comprova\u00e7\u00e3o", 
-                    "size": 1307
-                }, 
-                {
-                    "name": "proibi\u00e7\u00e3o", 
-                    "size": 3814
-                }, 
-                {
-                    "name": "fiscaliza\u00e7\u00e3o", 
-                    "size": 1143
-                }, 
-                {
-                    "name": "inclus\u00e3o", 
-                    "size": 2969
-                }, 
-                {
-                    "name": "atendimento", 
-                    "size": 1229
-                }, 
-                {
-                    "name": "revoga\u00e7\u00e3o", 
-                    "size": 718
-                }, 
-                {
-                    "name": "altera\u00e7\u00e3o", 
-                    "size": 15345
-                }, 
-                {
-                    "name": "rural", 
-                    "size": 2248
-                }, 
-                {
-                    "name": "infrator", 
-                    "size": 1810
-                }, 
-                {
-                    "name": "uni\u00e3o", 
-                    "size": 1176
-                }, 
-                {
-                    "name": "comercial", 
-                    "size": 1145
-                }, 
-                {
-                    "name": "prote\u00e7\u00e3o", 
-                    "size": 900
-                }, 
-                {
-                    "name": "televis\u00e3o", 
-                    "size": 909
-                }, 
-                {
-                    "name": "rodovia", 
-                    "size": 798
-                }, 
-                {
-                    "name": "\u00f3rg\u00e3o", 
-                    "size": 756
-                }, 
-                {
-                    "name": "programa", 
-                    "size": 1718
-                }, 
-                {
-                    "name": "propriedade", 
-                    "size": 726
-                }, 
-                {
-                    "name": "autoriza\u00e7\u00e3o", 
-                    "size": 4569
-                }, 
-                {
-                    "name": "candidato", 
-                    "size": 712
-                }, 
-                {
-                    "name": "divulga\u00e7\u00e3o", 
-                    "size": 1032
-                }, 
-                {
-                    "name": "doen\u00e7a", 
-                    "size": 940
-                }, 
-                {
-                    "name": "cargo", 
-                    "size": 698
-                }, 
-                {
-                    "name": "curso", 
-                    "size": 1297
-                }, 
-                {
-                    "name": "participa\u00e7\u00e3o", 
-                    "size": 986
-                }, 
-                {
-                    "name": "minist\u00e9rio", 
-                    "size": 894
-                }, 
-                {
-                    "name": "institui\u00e7\u00e3o", 
-                    "size": 1890
-                }, 
-                {
-                    "name": "habilita\u00e7\u00e3o", 
-                    "size": 699
-                }, 
-                {
-                    "name": "penalidade", 
-                    "size": 2174
-                }, 
-                {
-                    "name": "em", 
-                    "size": 697
-                }, 
-                {
-                    "name": "fornecimento", 
-                    "size": 701
-                }, 
-                {
-                    "name": "telefone", 
-                    "size": 861
-                }, 
-                {
-                    "name": "c\u00f3digo", 
-                    "size": 4025
-                }, 
-                {
-                    "name": "infra\u00e7\u00e3o", 
-                    "size": 886
-                }, 
-                {
-                    "name": "automotor", 
-                    "size": 1201
-                }, 
-                {
-                    "name": "previd\u00eancia", 
-                    "size": 800
-                }, 
-                {
-                    "name": "fiscal", 
-                    "size": 1755
-                }, 
-                {
-                    "name": "contribui\u00e7\u00e3o", 
-                    "size": 1373
-                }, 
-                {
-                    "name": "incentivo", 
-                    "size": 1089
-                }, 
-                {
-                    "name": "pol\u00edcia", 
-                    "size": 725
-                }, 
-                {
-                    "name": "dia", 
-                    "size": 795
-                }, 
-                {
-                    "name": "portadora", 
-                    "size": 783
-                }, 
-                {
-                    "name": "estatuto", 
-                    "size": 1226
-                }, 
-                {
-                    "name": "executivo", 
-                    "size": 1269
-                }, 
-                {
-                    "name": "eleitoral", 
-                    "size": 1367
-                }, 
-                {
-                    "name": "sa\u00fade", 
-                    "size": 1620
-                }, 
-                {
-                    "name": "trabalhador", 
-                    "size": 2139
-                }, 
-                {
-                    "name": "dispositivos", 
-                    "size": 691
-                }, 
-                {
-                    "name": "p\u00fablica", 
-                    "size": 3137
-                }, 
-                {
-                    "name": "trabalho", 
-                    "size": 3056
-                }, 
-                {
-                    "name": "autoridade", 
-                    "size": 711
-                }, 
-                {
-                    "name": "equipamentos", 
-                    "size": 755
-                }, 
-                {
-                    "name": "suspens\u00e3o", 
-                    "size": 696
-                }, 
-                {
-                    "name": "limite", 
-                    "size": 1077
-                }, 
-                {
-                    "name": "exclus\u00e3o", 
-                    "size": 787
-                }, 
-                {
-                    "name": "possibilidade", 
-                    "size": 724
-                }, 
-                {
-                    "name": "f\u00edsica", 
-                    "size": 1102
-                }, 
-                {
-                    "name": "execu\u00e7\u00e3o", 
-                    "size": 972
-                }, 
-                {
-                    "name": "a\u00e7\u00e3o", 
-                    "size": 699
-                }, 
-                {
-                    "name": "aus\u00eancia", 
-                    "size": 764
-                }, 
-                {
-                    "name": "benef\u00edcio", 
-                    "size": 1160
-                }, 
-                {
-                    "name": "utiliza\u00e7\u00e3o", 
-                    "size": 3500
-                }, 
-                {
-                    "name": "seguran\u00e7a", 
-                    "size": 1579
-                }, 
-                {
-                    "name": "isen\u00e7\u00e3o", 
-                    "size": 1797
-                }, 
-                {
-                    "name": "acesso", 
-                    "size": 841
-                }, 
-                {
-                    "name": "dispensa", 
-                    "size": 771
-                }, 
-                {
-                    "name": "constru\u00e7\u00e3o", 
-                    "size": 692
-                }, 
-                {
-                    "name": "inexist\u00eancia", 
-                    "size": 735
-                }, 
-                {
-                    "name": "empregador", 
-                    "size": 707
-                }, 
-                {
-                    "name": "apresenta\u00e7\u00e3o", 
-                    "size": 824
-                }, 
-                {
-                    "name": "aumento", 
-                    "size": 1527
-                }, 
-                {
-                    "name": "contrato", 
-                    "size": 1363
-                }, 
-                {
-                    "name": "venda", 
-                    "size": 994
-                }, 
-                {
-                    "name": "aplica\u00e7\u00e3o", 
-                    "size": 1599
-                }, 
-                {
-                    "name": "declara\u00e7\u00e3o", 
-                    "size": 695
-                }, 
-                {
-                    "name": "hospital", 
-                    "size": 772
-                }, 
-                {
-                    "name": "trabalhista", 
-                    "size": 1082
-                }, 
-                {
-                    "name": "propaganda", 
-                    "size": 765
-                }, 
-                {
-                    "name": "produto", 
-                    "size": 2198
-                }, 
-                {
-                    "name": "comercializa\u00e7\u00e3o", 
-                    "size": 844
-                }, 
-                {
-                    "name": "empregado", 
-                    "size": 1609
-                }, 
-                {
-                    "name": "responsabilidade", 
-                    "size": 1768
-                }, 
-                {
-                    "name": "material", 
-                    "size": 756
-                }, 
-                {
-                    "name": "particular", 
-                    "size": 771
-                }, 
-                {
-                    "name": "pena", 
-                    "size": 1568
-                }, 
-                {
-                    "name": "instala\u00e7\u00e3o", 
-                    "size": 948
-                }, 
-                {
-                    "name": "meio", 
-                    "size": 836
-                }, 
-                {
-                    "name": "identifica\u00e7\u00e3o", 
-                    "size": 761
+                    "size": 1042
                 }, 
                 {
                     "name": "financiamento", 
-                    "size": 1139
+                    "size": 1025
                 }, 
                 {
-                    "name": "distribui\u00e7\u00e3o", 
-                    "size": 735
-                }, 
-                {
-                    "name": "percentual", 
-                    "size": 1329
-                }, 
-                {
-                    "name": "financeira", 
-                    "size": 1178
-                }, 
-                {
-                    "name": "destina\u00e7\u00e3o", 
-                    "size": 1334
-                }, 
-                {
-                    "name": "escola", 
-                    "size": 1266
-                }, 
-                {
-                    "name": "redu\u00e7\u00e3o", 
-                    "size": 1678
-                }, 
-                {
-                    "name": "empresa", 
-                    "size": 4330
-                }, 
-                {
-                    "name": "jur\u00eddica", 
-                    "size": 1092
-                }, 
-                {
-                    "name": "estados", 
-                    "size": 1206
-                }, 
-                {
-                    "name": "tribut\u00e1ria", 
-                    "size": 802
-                }, 
-                {
-                    "name": "controle", 
-                    "size": 729
-                }, 
-                {
-                    "name": "multa", 
-                    "size": 2064
-                }, 
-                {
-                    "name": "universidade", 
-                    "size": 747
-                }, 
-                {
-                    "name": "compet\u00eancia", 
-                    "size": 1274
-                }, 
-                {
-                    "name": "desenvolvimento", 
-                    "size": 929
-                }, 
-                {
-                    "name": "energia", 
-                    "size": 780
-                }, 
-                {
-                    "name": "publico", 
-                    "size": 924
-                }, 
-                {
-                    "name": "presta\u00e7\u00e3o", 
-                    "size": 1390
-                }, 
-                {
-                    "name": "conta", 
-                    "size": 718
-                }, 
-                {
-                    "name": "escolar", 
-                    "size": 1034
-                }, 
-                {
-                    "name": "servidor", 
-                    "size": 967
-                }, 
-                {
-                    "name": "(clt)", 
-                    "size": 701
-                }, 
-                {
-                    "name": "despesa", 
-                    "size": 923
-                }, 
-                {
-                    "name": "munic\u00edpio", 
-                    "size": 788
-                }, 
-                {
-                    "name": "dedu\u00e7\u00e3o", 
-                    "size": 824
-                }, 
-                {
-                    "name": "profissional", 
-                    "size": 3109
-                }, 
-                {
-                    "name": "penal", 
-                    "size": 2415
-                }, 
-                {
-                    "name": "regime", 
-                    "size": 737
-                }, 
-                {
-                    "name": "im\u00f3vel", 
-                    "size": 707
-                }, 
-                {
-                    "name": "direitos", 
-                    "size": 2015
-                }, 
-                {
-                    "name": "exigencia", 
-                    "size": 798
-                }, 
-                {
-                    "name": "exame", 
-                    "size": 865
-                }, 
-                {
-                    "name": "garantia", 
-                    "size": 2424
-                }, 
-                {
-                    "name": "determinado", 
-                    "size": 707
-                }, 
-                {
-                    "name": "contrata\u00e7\u00e3o", 
-                    "size": 800
-                }, 
-                {
-                    "name": "sistema", 
-                    "size": 899
-                }, 
-                {
-                    "name": "recursos", 
-                    "size": 2611
+                    "name": "concess\u00e3o", 
+                    "size": 2798
                 }, 
                 {
                     "name": "assist\u00eancia", 
-                    "size": 1167
+                    "size": 945
                 }, 
                 {
-                    "name": "(df)", 
-                    "size": 732
+                    "name": "limita\u00e7\u00e3o", 
+                    "size": 1396
                 }, 
                 {
-                    "name": "educa\u00e7\u00e3o", 
-                    "size": 1790
+                    "name": "processo", 
+                    "size": 1436
                 }, 
                 {
-                    "name": "m\u00e9dico", 
-                    "size": 997
+                    "name": "recebimento", 
+                    "size": 885
                 }, 
                 {
-                    "name": "federal", 
-                    "size": 6856
+                    "name": "social", 
+                    "size": 2399
                 }, 
                 {
-                    "name": "consumidor", 
-                    "size": 1610
+                    "name": "objetivo", 
+                    "size": 919
                 }, 
                 {
-                    "name": "crit\u00e9rios", 
-                    "size": 1503
+                    "name": "escola", 
+                    "size": 991
                 }, 
                 {
-                    "name": "defesa", 
-                    "size": 1051
+                    "name": "aquisi\u00e7\u00e3o", 
+                    "size": 1315
                 }, 
                 {
-                    "name": "transporte", 
-                    "size": 2547
+                    "name": "judicial", 
+                    "size": 1344
                 }, 
                 {
-                    "name": "remunera\u00e7\u00e3o", 
-                    "size": 718
+                    "name": "exig\u00eancia", 
+                    "size": 2630
                 }, 
                 {
-                    "name": "tr\u00e2nsito", 
-                    "size": 2095
+                    "name": "pagamento", 
+                    "size": 2778
                 }, 
                 {
-                    "name": "projeto", 
-                    "size": 713
+                    "name": "bens", 
+                    "size": 820
                 }, 
                 {
-                    "name": "manuten\u00e7\u00e3o", 
-                    "size": 985
+                    "name": "ve\u00edculo", 
+                    "size": 1170
                 }, 
                 {
-                    "name": "direito", 
-                    "size": 740
+                    "name": "servi\u00e7o", 
+                    "size": 2901
                 }, 
                 {
-                    "name": "cria\u00e7\u00e3o", 
-                    "size": 3901
+                    "name": "comprova\u00e7\u00e3o", 
+                    "size": 1290
                 }, 
                 {
-                    "name": "entidade", 
-                    "size": 913
+                    "name": "rural", 
+                    "size": 1128
                 }, 
                 {
-                    "name": "competencia", 
-                    "size": 800
+                    "name": "infrator", 
+                    "size": 1800
                 }, 
                 {
-                    "name": "imposto", 
-                    "size": 1891
+                    "name": "comercial", 
+                    "size": 1061
                 }, 
                 {
-                    "name": "conselho", 
-                    "size": 1512
+                    "name": "prote\u00e7\u00e3o", 
+                    "size": 830
                 }, 
                 {
-                    "name": "informa\u00e7\u00e3o", 
-                    "size": 992
+                    "name": "legisla\u00e7\u00e3o", 
+                    "size": 2063
                 }, 
                 {
-                    "name": "p\u00fablico", 
-                    "size": 3412
+                    "name": "divulga\u00e7\u00e3o", 
+                    "size": 999
                 }, 
                 {
-                    "name": "produ\u00e7\u00e3o", 
-                    "size": 866
+                    "name": "curso", 
+                    "size": 1041
                 }, 
                 {
-                    "name": "estudante", 
-                    "size": 692
-                }, 
-                {
-                    "name": "superior", 
-                    "size": 1196
-                }, 
-                {
-                    "name": "receita", 
-                    "size": 696
+                    "name": "participa\u00e7\u00e3o", 
+                    "size": 933
                 }, 
                 {
                     "name": "ensino", 
-                    "size": 3179
+                    "size": 1857
                 }, 
                 {
-                    "name": "local", 
-                    "size": 942
+                    "name": "penalidade", 
+                    "size": 2135
                 }, 
                 {
-                    "name": "p\u00fablicos", 
-                    "size": 721
+                    "name": "c\u00f3digo", 
+                    "size": 3896
                 }, 
                 {
-                    "name": "realiza\u00e7\u00e3o", 
-                    "size": 1678
+                    "name": "produto", 
+                    "size": 1719
                 }, 
                 {
-                    "name": "benefici\u00e1rio", 
-                    "size": 754
+                    "name": "automotor", 
+                    "size": 1179
                 }, 
                 {
-                    "name": "fundo", 
+                    "name": "fiscal", 
+                    "size": 1506
+                }, 
+                {
+                    "name": "estatuto", 
+                    "size": 1200
+                }, 
+                {
+                    "name": "executivo", 
+                    "size": 1235
+                }, 
+                {
+                    "name": "sa\u00fade", 
+                    "size": 1293
+                }, 
+                {
+                    "name": "trabalhador", 
+                    "size": 1901
+                }, 
+                {
+                    "name": "trabalho", 
+                    "size": 1955
+                }, 
+                {
+                    "name": "limite", 
+                    "size": 1046
+                }, 
+                {
+                    "name": "f\u00edsica", 
+                    "size": 1065
+                }, 
+                {
+                    "name": "execu\u00e7\u00e3o", 
+                    "size": 859
+                }, 
+                {
+                    "name": "benef\u00edcio", 
+                    "size": 1048
+                }, 
+                {
+                    "name": "seguran\u00e7a", 
+                    "size": 1295
+                }, 
+                {
+                    "name": "acesso", 
+                    "size": 821
+                }, 
+                {
+                    "name": "uni\u00e3o", 
+                    "size": 1090
+                }, 
+                {
+                    "name": "inclus\u00e3o", 
+                    "size": 2917
+                }, 
+                {
+                    "name": "contrato", 
+                    "size": 1216
+                }, 
+                {
+                    "name": "programa", 
+                    "size": 1555
+                }, 
+                {
+                    "name": "venda", 
+                    "size": 945
+                }, 
+                {
+                    "name": "aplica\u00e7\u00e3o", 
+                    "size": 1508
+                }, 
+                {
+                    "name": "aumento", 
+                    "size": 1508
+                }, 
+                {
+                    "name": "trabalhista", 
+                    "size": 913
+                }, 
+                {
+                    "name": "contribui\u00e7\u00e3o", 
+                    "size": 1157
+                }, 
+                {
+                    "name": "comercializa\u00e7\u00e3o", 
+                    "size": 828
+                }, 
+                {
+                    "name": "infra\u00e7\u00e3o", 
+                    "size": 814
+                }, 
+                {
+                    "name": "empregado", 
+                    "size": 1500
+                }, 
+                {
+                    "name": "responsabilidade", 
+                    "size": 1537
+                }, 
+                {
+                    "name": "pena", 
+                    "size": 1284
+                }, 
+                {
+                    "name": "instala\u00e7\u00e3o", 
+                    "size": 924
+                }, 
+                {
+                    "name": "percentual", 
+                    "size": 1312
+                }, 
+                {
+                    "name": "financeira", 
+                    "size": 1012
+                }, 
+                {
+                    "name": "destina\u00e7\u00e3o", 
+                    "size": 1303
+                }, 
+                {
+                    "name": "redu\u00e7\u00e3o", 
+                    "size": 1635
+                }, 
+                {
+                    "name": "empresa", 
+                    "size": 3399
+                }, 
+                {
+                    "name": "fiscaliza\u00e7\u00e3o", 
+                    "size": 1091
+                }, 
+                {
+                    "name": "atendimento", 
+                    "size": 1145
+                }, 
+                {
+                    "name": "jur\u00eddica", 
+                    "size": 1050
+                }, 
+                {
+                    "name": "incentivo", 
+                    "size": 1013
+                }, 
+                {
+                    "name": "multa", 
+                    "size": 2024
+                }, 
+                {
+                    "name": "compet\u00eancia", 
+                    "size": 1207
+                }, 
+                {
+                    "name": "isen\u00e7\u00e3o", 
+                    "size": 1748
+                }, 
+                {
+                    "name": "defini\u00e7\u00e3o", 
+                    "size": 1218
+                }, 
+                {
+                    "name": "presta\u00e7\u00e3o", 
+                    "size": 1337
+                }, 
+                {
+                    "name": "estados", 
+                    "size": 1162
+                }, 
+                {
+                    "name": "renda", 
+                    "size": 1862
+                }, 
+                {
+                    "name": "escolar", 
+                    "size": 878
+                }, 
+                {
+                    "name": "despesa", 
                     "size": 898
                 }, 
                 {
-                    "name": "aposentadoria", 
-                    "size": 829
+                    "name": "profissional", 
+                    "size": 2242
+                }, 
+                {
+                    "name": "penal", 
+                    "size": 1799
+                }, 
+                {
+                    "name": "direitos", 
+                    "size": 1814
+                }, 
+                {
+                    "name": "garantia", 
+                    "size": 2319
+                }, 
+                {
+                    "name": "recursos", 
+                    "size": 2099
+                }, 
+                {
+                    "name": "crime", 
+                    "size": 1825
+                }, 
+                {
+                    "name": "administra\u00e7\u00e3o", 
+                    "size": 1336
+                }, 
+                {
+                    "name": "educa\u00e7\u00e3o", 
+                    "size": 1336
+                }, 
+                {
+                    "name": "m\u00e9dico", 
+                    "size": 841
+                }, 
+                {
+                    "name": "consumidor", 
+                    "size": 1271
+                }, 
+                {
+                    "name": "crit\u00e9rios", 
+                    "size": 1472
+                }, 
+                {
+                    "name": "cobran\u00e7a", 
+                    "size": 986
+                }, 
+                {
+                    "name": "defesa", 
+                    "size": 972
+                }, 
+                {
+                    "name": "transporte", 
+                    "size": 1624
+                }, 
+                {
+                    "name": "tr\u00e2nsito", 
+                    "size": 1507
+                }, 
+                {
+                    "name": "realiza\u00e7\u00e3o", 
+                    "size": 1614
+                }, 
+                {
+                    "name": "entidade", 
+                    "size": 835
+                }, 
+                {
+                    "name": "imposto", 
+                    "size": 1637
+                }, 
+                {
+                    "name": "conselho", 
+                    "size": 1094
+                }, 
+                {
+                    "name": "informa\u00e7\u00e3o", 
+                    "size": 950
+                }, 
+                {
+                    "name": "p\u00fablica", 
+                    "size": 2690
+                }, 
+                {
+                    "name": "p\u00fablico", 
+                    "size": 2866
+                }, 
+                {
+                    "name": "superior", 
+                    "size": 995
+                }, 
+                {
+                    "name": "servidor", 
+                    "size": 885
+                }, 
+                {
+                    "name": "local", 
+                    "size": 917
+                }, 
+                {
+                    "name": "manuten\u00e7\u00e3o", 
+                    "size": 964
                 }
             ]
-        } 
+        }
     ]
 }
