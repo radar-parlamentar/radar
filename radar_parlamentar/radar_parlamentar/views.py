@@ -36,6 +36,9 @@ def genero_termos_nuvem(request):
 def genero_matriz(request):
     return render_to_response('genero_matriz.html', {}, context_instance=RequestContext(request))
 
+def genero_treemap(request):
+    return render_to_response('genero_treemap.html', {}, context_instance=RequestContext(request))
+
 def genero_historia_legislaturas(request):
     return render_to_response('genero_historia.html', {}, context_instance=RequestContext(request))
 
