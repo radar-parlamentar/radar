@@ -31,10 +31,9 @@ urlpatterns = patterns('',
     url(r'^genero/perfil/partido/$', 'radar_parlamentar.views.genero_perfil_partido'),
     url(r'^genero/perfil/partido/comparacao/$','radar_parlamentar.views.genero_comparativo_partidos'),
     url(r'^genero/perfil/legislaturas/$','radar_parlamentar.views.genero_historia_legislaturas'),
-    url(r'^genero/tematica/nuvem/$', 'radar_parlamentar.views.genero_futuro'),
     url(r'^genero/tematica/treemap/$', 'radar_parlamentar.views.genero_treemap'),
     url(r'^genero/tematica/legislador/$', 'radar_parlamentar.views.genero_futuro'),
-    #url(r'^genero/termos/nuvem/$', 'radar_parlamentar.views.genero_termos_nuvem'),
+    url(r'^genero/tematica/nuvem/$', 'radar_parlamentar.views.genero_termos_nuvem'),
     #url(r'^genero/tematica/legislador/$', 'radar_parlamentar.views.genero_arvore_legislador'),
 
     #Serivço que retorna conteúdo para plotar o mapa
