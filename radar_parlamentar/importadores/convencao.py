@@ -234,12 +234,21 @@ class ImportadorConvencao:
 
         votos_monarquistas = [models.SIM, models.AUSENTE, models.SIM]
         self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas) 
-        
+    
+    # votação com atributos diferentes para teste
     def _gera_votacao8(self):
         
         NUM = '8'
         DESCRICAO = 'Guerra contra a Inglaterra'
-        prop = self._gera_proposicao(NUM, DESCRICAO)
+        prop = models.Proposicao()    
+        prop.id_prop = NUM
+        prop.sigla = 'PL'
+        prop.numero = NUM
+        prop.ementa = 'ementa da batalha'
+        prop.descricao = 'descricao da guerra'
+        prop.casa_legislativa = self.casa
+        prop.indexacao = 'indexacao'
+        prop.save()
         votacao = self._gera_votacao(NUM, DESCRICAO, DATA_NO_SEGUNDO_SEMESTRE, prop)
 
         votos_girondinos = [models.NAO, models.NAO, models.NAO]
@@ -250,7 +259,7 @@ class ImportadorConvencao:
 
         votos_monarquistas = [models.SIM, models.AUSENTE, models.SIM]
         self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas) 
-                        
+
     def importar(self):
         self.casa = self._gera_casa_legislativa()
         self._gera_partidos()

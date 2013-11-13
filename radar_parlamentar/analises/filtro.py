@@ -89,54 +89,35 @@ class FiltroProposicao():
             if len(self.recupera_votacoes_da_proposicao(proposicao, votacoes)) > 0:
                 proposicoes_com_votacoes.append(proposicao)
         return proposicoes_com_votacoes 
+    
+    def palavra_existe_em_proposicao(self, proposicao, votacoes, palavra_chave):
+        #procura uma substring dentro de uma string
+        if((re.search(palavra_chave.upper(), proposicao.descricao.upper())!= None) or (re.search(palavra_chave.upper(), proposicao.ementa.upper())!= None) or (re.search(palavra_chave.upper(), proposicao.indexacao.upper())!= None)):
+            return True
+
+        for votacao in votacoes:
+            if(re.search(palavra_chave.upper(), votacao.descricao.upper())!= None):
+                return True
+        return False	 
+
+    def filtra_proposicoes_por_palavras_chave(self, proposicao, votacoes, lista_palavras_chave):
+        votacoes_da_proposicao = self.recupera_votacoes_da_proposicao(proposicao, votacoes)
+        for palavra_chave in lista_palavras_chave:
+            if(self.palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)):
+                return True
+        return False
+
 
     def filtra_proposicoes(self, casa_legislativa, periodo_casa_legislativa, palavras_chave):
+        proposicoes_com_palavras_chave = []
+
         proposicoes = self.recupera_proposicoes(casa_legislativa)
         votacoes = models.Votacao.por_casa_legislativa(casa_legislativa, periodo_casa_legislativa.ini, periodo_casa_legislativa.fim)
 
         proposicoes_com_votacoes = filtra_proposicoes_com_votacoes(proposicoes, votacoes)
 
-        return None
+	for proposicao in proposicoes_com_votacoes:
+            if self.filtra_proposicoes_por_palavras_chave(proposicao, votacoes, palavras_chave):
+                proposicoes_com_palavras_chave.append(proposicao)
 
-    '''def valida_proposicoes(self, lista_proposicoes):
-        proposicoes_validas = []
-        for proposicao in lista_proposicoes:
-            if proposicao != None:
-                proposicoes_validas.append(proposicao)
-        return proposicoes_validas
-
-    def palavra_existe_em_proposicao(self, proposicao, lista_palavras_chave):
-        for palavra_chave in lista_palavras_chave:
-            #procura uma substring dentro de uma string
-            if(re.search(palavra_chave.upper(), proposicao.descricao.upper())!= None):
-                return True		                    
-        return False
-
-    def verifica_proposicoes_no_banco(self, lista_proposicoes):
-        proposicoes_validas = self.valida_proposicoes(lista_proposicoes)
-        resultado = []
-        proposicoes_persistidas = models.Proposicao.objects.all()
-        for proposicao in proposicoes_validas:
-            if proposicao in proposicoes_persistidas:
-                resultado.append(proposicao)
-        return resultado
-
-    def filtra_proposicao(self, lista_proposicoes, lista_palavras):
-        resultado = []
-        proposicoes_validas = verifica_proposicoes_no_banco(lista_proposicoes)
-        for proposicao in proposicoes_validas:
-            if(palavra_existe_em_proposicao(proposicao, lista_palavras)):
-                resultado.append(proposicao)
-        imprimeDadosDeProposicoes(resultado)			
-        return resultado
-
-        proposicao = models.Proposicao.objects.filter(descricao = ).filter()
-        lista_proposicoes_validas = valida_proposicao(lista_proposicoes)
-        resultado = []
-        for proposicao in lista_proposicoes_validas:
-            if(busca_palavras(proposicao, lista_palavras))
-                resultado.append(proposicao)
-        if resultado == None:
-            print 'Não foi encontrado resultado!' 
-        else:
-            imprimeDadosProposicao(resultado)'''
+        return proposicaoes_com_palavras_chave
