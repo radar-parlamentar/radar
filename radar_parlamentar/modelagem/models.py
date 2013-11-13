@@ -77,6 +77,19 @@ PERIODOS = (
 SEM_PARTIDO = 'Sem partido'
 COR_PRETA = '#000000'
 
+class Indexadores(models.Model):
+    """Termos utilizados na indexação de proposições
+
+    Atributos:
+        termo -- string; ex: "mulher" ou "partido político"
+        principal -- bool; identifica se o termo é o principal de uma linha de sinônimos, o termo a ser usado.
+    """
+    termo = models.CharField(max_length=120)
+    principal = models.BooleanField()
+
+    def __unicode__(self):
+        return '%s-%s-%s' % (self.nome, self.numero, self.cor)
+
 class Partido(models.Model):
     """Partido político.
 
@@ -170,6 +183,7 @@ class CasaLegislativa(models.Model):
     local = models.CharField(max_length=100)
     atualizacao = models.DateField(blank=True, null=True)
 
+
     def __unicode__(self):
         return self.nome
 
@@ -214,9 +228,9 @@ class CasaLegislativa(models.Model):
             Argumentos:
                 nome_casa - Nome da casa a ser deletada"""
         try:
-            try: 
+            try:
                 CasaLegislativa.objects.get(nome_curto=nome_casa_curto).delete()
-       
+
             except CasaLegislativa.DoesNotExist:
                 print 'Casa legislativa ' + nome_casa_curto + ' não existe'
         except:
@@ -267,7 +281,7 @@ class PeriodoCasaLegislativa(object):
     def lista_de_periodos(casa_legislativa,inicio,fim,periodicidade,numero_minimo_de_votacoes=0):
         """ Retorna uma lista de objetos da classe PeriodoCasaLegislativa.
 
-        Argumentos:        
+        Argumentos:
           casa_legislativa: um objeto CasaLegislativa. Necessário para acrescentar a cada
               objeto PeriodoCasaLegislativa da lista o número de votações que houve no mesmo.
           inicio, fim: objetos datetime.
@@ -276,7 +290,7 @@ class PeriodoCasaLegislativa(object):
         Detalhes:
           Se a data de início for por exemplo 15/08/1999 e a periodicidade for quadrianual,
           bianual, anual, ou semestral, o primeiro período irá começar em 01/01/1999. Se
-          a periodicidade for mensal com a mesma data de início, o primeiro período irá 
+          a periodicidade for mensal com a mesma data de início, o primeiro período irá
           começar em 01/08/1999. Analogamente todos os períodos anuais terminam em 31 de
           dezembro e assim por diante, seguindo o calendário. Nunca será retornado um
           período com datas "quebradas" na lista.
@@ -314,7 +328,7 @@ class PeriodoCasaLegislativa(object):
         delta_numero = {QUADRIENIO:47,BIENIO:23,ANO:11,MES:0,SEMESTRE:5}
         valor = delta_numero[delta]
         return valor
-    
+
     @staticmethod
     def _inicio(data_inicial,delta):
         """define a data inicial de uma lista de periodos"""
@@ -370,7 +384,7 @@ class Legislatura(models.Model):
         inicio, fim -- datas indicando o período
         partido -- objeto do tipo Partido
         localidade -- string; ex 'SP', 'RJ' se for no senado ou câmara dos deputados
-        
+
     Métodos:
         find -- busca legislatura por data e parlamentar
     """
@@ -394,10 +408,10 @@ class Legislatura(models.Model):
         # Assumimos que uma pessoa não pode assumir duas legislaturas em um dado período!
         legs = Legislatura.objects.filter(parlamentar__nome=nome_parlamentar)
         for leg in legs:
-            if data >= leg.inicio and data <= leg.fim :  
+            if data >= leg.inicio and data <= leg.fim :
                 return leg
         raise ValueError('Não achei legislatura para %s em %s' % (nome_parlamentar, data))
-    
+
     def __unicode__(self):
         return "%s - %s@%s [%s, %s]" % (self.parlamentar, self.partido, self.casa_legislativa.nome_curto, self.inicio, self.fim)
 
@@ -430,19 +444,15 @@ class Proposicao(models.Model):
     data_apresentacao = models.DateField(null=True)
     situacao = models.TextField(blank=True)
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
-    autores = models.ManyToManyField(Parlamentar, null=True)
+    autor_principal = models.TextField(blank=True)
+    #TOOD: autor_principal = models.ForeignKey(Parlamentar, null=True, related_name='Autor principal')
+    autores = models.ManyToManyField(Parlamentar, null=True, related_name='demais_autores')
 
     def nome(self):
         return "%s %s/%s" % (self.sigla, self.numero, self.ano)
 
     def __unicode__(self):
         return "[%s] %s" % (self.nome(), self.ementa)
-    
-	 
-
-
-
-
 
 
 class Votacao(models.Model):
@@ -503,9 +513,6 @@ class Votacao(models.Model):
             return "[%s] %s" % (self.data, self.descricao)
         else:
             return self.descricao
-
-    
-
 
 
 class Voto(models.Model):

@@ -1,0 +1,490 @@
+{
+    "name": "flare", 
+    "children": [
+        {
+            "name": "F", 
+            "children": [
+                {
+                    "name": "infrator", 
+                    "size": 158
+                }, 
+                {
+                    "name": "isen\u00e7\u00e3o", 
+                    "size": 112
+                }, 
+                {
+                    "name": "seguran\u00e7a", 
+                    "size": 78
+                }, 
+                {
+                    "name": "comemora\u00e7\u00e3o", 
+                    "size": 92
+                }, 
+                {
+                    "name": "crian\u00e7a", 
+                    "size": 169
+                }, 
+                {
+                    "name": "hospital", 
+                    "size": 64
+                }, 
+                {
+                    "name": "uni\u00e3o", 
+                    "size": 89
+                }, 
+                {
+                    "name": "regulamenta\u00e7\u00e3o", 
+                    "size": 108
+                }, 
+                {
+                    "name": "defini\u00e7\u00e3o", 
+                    "size": 79
+                }, 
+                {
+                    "name": "prote\u00e7\u00e3o", 
+                    "size": 75
+                }, 
+                {
+                    "name": "presta\u00e7\u00e3o", 
+                    "size": 97
+                }, 
+                {
+                    "name": "brasileiro", 
+                    "size": 78
+                }, 
+                {
+                    "name": "exerc\u00edcio", 
+                    "size": 67
+                }, 
+                {
+                    "name": "idoso", 
+                    "size": 90
+                }, 
+                {
+                    "name": "\u00f3rg\u00e3o", 
+                    "size": 68
+                }, 
+                {
+                    "name": "estados", 
+                    "size": 88
+                }, 
+                {
+                    "name": "renda", 
+                    "size": 146
+                }, 
+                {
+                    "name": "(clt)", 
+                    "size": 66
+                }, 
+                {
+                    "name": "inclus\u00e3o", 
+                    "size": 258
+                }, 
+                {
+                    "name": "contrato", 
+                    "size": 92
+                }, 
+                {
+                    "name": "adolescente", 
+                    "size": 134
+                }, 
+                {
+                    "name": "escolar", 
+                    "size": 75
+                }, 
+                {
+                    "name": "programa", 
+                    "size": 155
+                }, 
+                {
+                    "name": "munic\u00edpios", 
+                    "size": 92
+                }, 
+                {
+                    "name": "aplica\u00e7\u00e3o", 
+                    "size": 104
+                }, 
+                {
+                    "name": "divulga\u00e7\u00e3o", 
+                    "size": 84
+                }, 
+                {
+                    "name": "aumento", 
+                    "size": 132
+                }, 
+                {
+                    "name": "financiamento", 
+                    "size": 67
+                }, 
+                {
+                    "name": "concess\u00e3o", 
+                    "size": 198
+                }, 
+                {
+                    "name": "profissional", 
+                    "size": 176
+                }, 
+                {
+                    "name": "trabalhista", 
+                    "size": 88
+                }, 
+                {
+                    "name": "penal", 
+                    "size": 154
+                }, 
+                {
+                    "name": "direitos", 
+                    "size": 165
+                }, 
+                {
+                    "name": "contribui\u00e7\u00e3o", 
+                    "size": 66
+                }, 
+                {
+                    "name": "menor", 
+                    "size": 75
+                }, 
+                {
+                    "name": "doen\u00e7a", 
+                    "size": 89
+                }, 
+                {
+                    "name": "dia", 
+                    "size": 109
+                }, 
+                {
+                    "name": "curso", 
+                    "size": 73
+                }, 
+                {
+                    "name": "exame", 
+                    "size": 72
+                }, 
+                {
+                    "name": "participa\u00e7\u00e3o", 
+                    "size": 80
+                }, 
+                {
+                    "name": "minist\u00e9rio", 
+                    "size": 91
+                }, 
+                {
+                    "name": "garantia", 
+                    "size": 244
+                }, 
+                {
+                    "name": "ensino", 
+                    "size": 180
+                }, 
+                {
+                    "name": "penalidade", 
+                    "size": 170
+                }, 
+                {
+                    "name": "mulher", 
+                    "size": 166
+                }, 
+                {
+                    "name": "recursos", 
+                    "size": 183
+                }, 
+                {
+                    "name": "empregado", 
+                    "size": 121
+                }, 
+                {
+                    "name": "assist\u00eancia", 
+                    "size": 112
+                }, 
+                {
+                    "name": "crime", 
+                    "size": 157
+                }, 
+                {
+                    "name": "administra\u00e7\u00e3o", 
+                    "size": 107
+                }, 
+                {
+                    "name": "educa\u00e7\u00e3o", 
+                    "size": 157
+                }, 
+                {
+                    "name": "m\u00e9dico", 
+                    "size": 85
+                }, 
+                {
+                    "name": "c\u00f3digo", 
+                    "size": 261
+                }, 
+                {
+                    "name": "limita\u00e7\u00e3o", 
+                    "size": 81
+                }, 
+                {
+                    "name": "consumidor", 
+                    "size": 70
+                }, 
+                {
+                    "name": "processo", 
+                    "size": 130
+                }, 
+                {
+                    "name": "crit\u00e9rios", 
+                    "size": 115
+                }, 
+                {
+                    "name": "empresa", 
+                    "size": 231
+                }, 
+                {
+                    "name": "responsabilidade", 
+                    "size": 110
+                }, 
+                {
+                    "name": "previd\u00eancia", 
+                    "size": 71
+                }, 
+                {
+                    "name": "fiscal", 
+                    "size": 94
+                }, 
+                {
+                    "name": "transporte", 
+                    "size": 101
+                }, 
+                {
+                    "name": "(sus)", 
+                    "size": 77
+                }, 
+                {
+                    "name": "remunera\u00e7\u00e3o", 
+                    "size": 64
+                }, 
+                {
+                    "name": "produto", 
+                    "size": 115
+                }, 
+                {
+                    "name": "tr\u00e2nsito", 
+                    "size": 81
+                }, 
+                {
+                    "name": "social", 
+                    "size": 234
+                }, 
+                {
+                    "name": "sistema", 
+                    "size": 68
+                }, 
+                {
+                    "name": "pena", 
+                    "size": 97
+                }, 
+                {
+                    "name": "estatuto", 
+                    "size": 126
+                }, 
+                {
+                    "name": "portadora", 
+                    "size": 101
+                }, 
+                {
+                    "name": "manuten\u00e7\u00e3o", 
+                    "size": 65
+                }, 
+                {
+                    "name": "aquisi\u00e7\u00e3o", 
+                    "size": 77
+                }, 
+                {
+                    "name": "judicial", 
+                    "size": 111
+                }, 
+                {
+                    "name": "sa\u00fade", 
+                    "size": 127
+                }, 
+                {
+                    "name": "preven\u00e7\u00e3o", 
+                    "size": 69
+                }, 
+                {
+                    "name": "trabalhador", 
+                    "size": 154
+                }, 
+                {
+                    "name": "informa\u00e7\u00f5es", 
+                    "size": 65
+                }, 
+                {
+                    "name": "trabalho", 
+                    "size": 169
+                }, 
+                {
+                    "name": "distribui\u00e7\u00e3o", 
+                    "size": 66
+                }, 
+                {
+                    "name": "exig\u00eancia", 
+                    "size": 217
+                }, 
+                {
+                    "name": "idade", 
+                    "size": 73
+                }, 
+                {
+                    "name": "percentual", 
+                    "size": 138
+                }, 
+                {
+                    "name": "financeira", 
+                    "size": 66
+                }, 
+                {
+                    "name": "sal\u00e1rio", 
+                    "size": 65
+                }, 
+                {
+                    "name": "destina\u00e7\u00e3o", 
+                    "size": 106
+                }, 
+                {
+                    "name": "imposto", 
+                    "size": 103
+                }, 
+                {
+                    "name": "conselho", 
+                    "size": 117
+                }, 
+                {
+                    "name": "pagamento", 
+                    "size": 170
+                }, 
+                {
+                    "name": "informa\u00e7\u00e3o", 
+                    "size": 70
+                }, 
+                {
+                    "name": "escola", 
+                    "size": 80
+                }, 
+                {
+                    "name": "p\u00fablica", 
+                    "size": 219
+                }, 
+                {
+                    "name": "p\u00fablico", 
+                    "size": 278
+                }, 
+                {
+                    "name": "viol\u00eancia", 
+                    "size": 68
+                }, 
+                {
+                    "name": "per\u00edodo", 
+                    "size": 69
+                }, 
+                {
+                    "name": "v\u00edtima", 
+                    "size": 89
+                }, 
+                {
+                    "name": "redu\u00e7\u00e3o", 
+                    "size": 103
+                }, 
+                {
+                    "name": "superior", 
+                    "size": 88
+                }, 
+                {
+                    "name": "defici\u00eancia", 
+                    "size": 115
+                }, 
+                {
+                    "name": "atendimento", 
+                    "size": 94
+                }, 
+                {
+                    "name": "sexual", 
+                    "size": 64
+                }, 
+                {
+                    "name": "legisla\u00e7\u00e3o", 
+                    "size": 144
+                }, 
+                {
+                    "name": "incentivo", 
+                    "size": 71
+                }, 
+                {
+                    "name": "servidor", 
+                    "size": 83
+                }, 
+                {
+                    "name": "servi\u00e7o", 
+                    "size": 208
+                }, 
+                {
+                    "name": "familiar", 
+                    "size": 67
+                }, 
+                {
+                    "name": "p\u00fablicos", 
+                    "size": 65
+                }, 
+                {
+                    "name": "comprova\u00e7\u00e3o", 
+                    "size": 100
+                }, 
+                {
+                    "name": "limite", 
+                    "size": 94
+                }, 
+                {
+                    "name": "multa", 
+                    "size": 121
+                }, 
+                {
+                    "name": "realiza\u00e7\u00e3o", 
+                    "size": 124
+                }, 
+                {
+                    "name": "benefici\u00e1rio", 
+                    "size": 85
+                }, 
+                {
+                    "name": "f\u00edsica", 
+                    "size": 69
+                }, 
+                {
+                    "name": "executivo", 
+                    "size": 66
+                }, 
+                {
+                    "name": "compet\u00eancia", 
+                    "size": 95
+                }, 
+                {
+                    "name": "desenvolvimento", 
+                    "size": 66
+                }, 
+                {
+                    "name": "fundo", 
+                    "size": 84
+                }, 
+                {
+                    "name": "rural", 
+                    "size": 72
+                }, 
+                {
+                    "name": "benef\u00edcio", 
+                    "size": 115
+                }, 
+                {
+                    "name": "identifica\u00e7\u00e3o", 
+                    "size": 65
+                }
+            ]
+        }
+    ]
+}
