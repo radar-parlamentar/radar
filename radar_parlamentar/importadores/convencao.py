@@ -263,6 +263,7 @@ class ImportadorConvencao:
         self._gera_votacao6()
         self._gera_votacao7()
         self._gera_votacao8()
+        self._gera_proposicao('9', 'Legalizacao da maconha')
     
 def main():
 

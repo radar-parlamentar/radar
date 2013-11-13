@@ -123,7 +123,7 @@ class AnaliseTest(TestCase):
         self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], 0.70406584, 4)
         self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], -0.41347063, 4)        
 
-class Filtro_ProposicaoTest(TestCase):
+class FiltroProposicaoTest(TestCase):
     
     @classmethod
     def setUpClass(cls):
@@ -139,9 +139,31 @@ class Filtro_ProposicaoTest(TestCase):
         casa_legislativa = models.CasaLegislativa()
         casa_legislativa.id = 1
 
-        filtro_proposicao = filtro.Filtro_Proposicao()
+        filtro_proposicao = filtro.FiltroProposicao()
         proposicoes = filtro_proposicao.recupera_proposicoes(casa_legislativa)
-        self.assertEquals(8, len(proposicoes))
+        self.assertEquals(9, len(proposicoes))
+
+    def test_recupera_votacoes_da_proposicao(self):
+        proposicao = models.Proposicao()
+        proposicao.id = 1;
+        votacoes = models.Votacao.objects.all()
+        filtro_proposicao = filtro.FiltroProposicao()
+        votacoes_da_proposicao = filtro_proposicao.recupera_votacoes_da_proposicao(proposicao, votacoes)        
+        self.assertEquals(1, len(votacoes_da_proposicao))
+
+    def test_filtra_proposicoes_com_votacoes(self):
+        proposicoes = models.Proposicao.objects.filter(casa_legislativa_id = 1)
+        votacoes = models.Votacao.objects.all()
+        filtro_proposicao = filtro.FiltroProposicao()
+        proposicoes_com_votacoes = filtro_proposicao.filtra_proposicoes_com_votacoes(proposicoes, votacoes)
+        self.assertEquals(8, len(proposicoes_com_votacoes))
+
+    def test_filtra_proposicoes_sem_votacoes(self):
+        proposicoes = models.Proposicao.objects.filter(casa_legislativa_id = 1)
+        votacoes = models.Votacao.objects.all()
+        filtro_proposicao = filtro.FiltroProposicao()
+        proposicoes_com_votacoes = filtro_proposicao.filtra_proposicoes_com_votacoes(proposicoes, votacoes)
+        self.assertEquals(8, len(proposicoes_com_votacoes))
 
 
 class GraficoTest(TestCase):

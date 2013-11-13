@@ -71,15 +71,24 @@ class Temas():
 
         return palavras
 
-class Filtro_Proposicao():
+class FiltroProposicao():
 
     def recupera_proposicoes(self, casa_legislativa):
         return models.Proposicao.objects.filter(casa_legislativa_id = casa_legislativa.id)
 
-    def filtra_proposicoes_com_votacoes(proposicoes, votacoes):
+    def recupera_votacoes_da_proposicao(self,proposicao, votacoes):
+        votacoes_da_proposicao = []
+        for votacao in votacoes:
+            if votacao.proposicao_id == proposicao.id:
+                votacoes_da_proposicao.append(votacao)
+        return votacoes_da_proposicao        
+
+    def filtra_proposicoes_com_votacoes(self, proposicoes, votacoes):
         proposicoes_com_votacoes = []
         for proposicao in proposicoes:
-            
+            if len(self.recupera_votacoes_da_proposicao(proposicao, votacoes)) > 0:
+                proposicoes_com_votacoes.append(proposicao)
+        return proposicoes_com_votacoes 
 
     def filtra_proposicoes(self, casa_legislativa, periodo_casa_legislativa, palavras_chave):
         proposicoes = self.recupera_proposicoes(casa_legislativa)
@@ -89,7 +98,7 @@ class Filtro_Proposicao():
 
         return None
 
-    def valida_proposicoes(self, lista_proposicoes):
+    '''def valida_proposicoes(self, lista_proposicoes):
         proposicoes_validas = []
         for proposicao in lista_proposicoes:
             if proposicao != None:
@@ -121,7 +130,7 @@ class Filtro_Proposicao():
         imprimeDadosDeProposicoes(resultado)			
         return resultado
 
-    	'''proposicao = models.Proposicao.objects.filter(descricao = ).filter()
+        proposicao = models.Proposicao.objects.filter(descricao = ).filter()
         lista_proposicoes_validas = valida_proposicao(lista_proposicoes)
         resultado = []
         for proposicao in lista_proposicoes_validas:
