@@ -23,18 +23,71 @@
   height: 506px;
 }
 
-.radar_background {
-    fill: rgba(230,230,230,0.6);
-    stroke: rgba(230,230,230,1);
+.outer_background_radius {
+    fill: rgba(240,240,240,0.6);
+    stroke-width: 3;
+    stroke: rgba(210,210,210,1);
 }
 
-.raio_radar {
+.background_radius {
     fill: none;
-    stroke: rgba(230,230,230,0.9);
+    stroke: rgba(210,210,210,1);
 }
 
-.partie {
+.alterna_escala {
+  font: 700 16px "Helvetica Neue";
+  fill: #d17fa3;
+}
+
+.alterna_escala:hover {
+  font: 700 20px "Helvetica Neue";
+  fill: #99c;
+  cursor: pointer;
+}
+
+.party {
   stroke: rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
+.party:hover .party_circle {
+  opacity: 1
+}
+
+.party_circle {
+  opacity: 0.6
+}
+
+.party_circle.hover {
+  cursor: pointer;
+  opacity: 1
+}
+
+.parlamentar_circle {
+  cursor: pointer;
+  opacity: 0.6
+}
+
+.parlamentar_circle_hover {
+  stroke-width: 0.5;
+  stroke: #111;
+  cursor: pointer;
+  opacity: 1
+}
+
+.parlamentar_circle:hover {
+  cursor: pointer;
+  opacity: 1
+}
+
+.legend_item {
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.legend_item.active {
+  font-weight: bold;
+  color: #f22;
 }
 
 .axis path, .axis line {
@@ -93,4 +146,36 @@
 }
 #legenda ul {
     text-align: left;
+}
+
+/* d3-tip */
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+/*  width: 200px; */
+  text-align: center;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
 }

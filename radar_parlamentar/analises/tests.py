@@ -19,20 +19,22 @@
 
 from __future__ import unicode_literals
 from django.test import TestCase
+
 from django.utils.dateparse import parse_datetime
+
+from analises import filtro
 from analises import analise
 from analises import grafico
-from analises import filtro
-from grafico import GeradorGrafico
-from importadores import convencao
 from modelagem import models
+from modelagem import utils
+from models import AnalisePeriodo, AnaliseTemporal
+from importadores import convencao
+from random import random
 import numpy
+import json
 
-def mean(v):
-    return 1.0 * sum(v) / len(v)
+class AnalisadorPeriodoTest(TestCase):
     
-class AnaliseTest(TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.importer = convencao.ImportadorConvencao()
@@ -42,86 +44,81 @@ class AnaliseTest(TestCase):
     def tearDownClass(cls):
         from util_test import flush_db
         flush_db(cls)
-
+        
     def setUp(self):
         self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
-        self.partidos = AnaliseTest.importer.partidos
+        self.partidos = AnalisadorPeriodoTest.importer.partidos
         self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa__nome_curto='conv')
-
-    def test_casa(self):
-        """Testa se casa legislativa foi corretamente recuperada do banco"""
-
-        self.assertAlmostEqual(self.casa_legislativa.nome, 'Convenção Nacional Francesa')
+        self.legislaturas = models.Legislatura.objects.filter(casa_legislativa__nome_curto='conv').distinct()
+        for partido in self.partidos:
+            if partido.nome == convencao.GIRONDINOS:
+                self.girondinos = partido
+            if partido.nome == convencao.JACOBINOS:
+                self.jacobinos = partido
+            if partido.nome == convencao.MONARQUISTAS:
+                self.monarquistas = partido
         
-    def test_tamanho_partidos(self):
-        builder = analise.TamanhoPartidoBuilder(self.partidos, self.casa_legislativa)
-        tamanhos = builder.gera_dic_tamanho_partidos()
-        tamanho_jacobinos = tamanhos[convencao.JACOBINOS]
-        tamanho_girondinos = tamanhos[convencao.GIRONDINOS]
-        tamanho_monarquistas = tamanhos[convencao.MONARQUISTAS]
-        tamanho = convencao.PARLAMENTARES_POR_PARTIDO
-        self.assertEqual(tamanho_jacobinos, tamanho)
-        self.assertEqual(tamanho_girondinos, tamanho)
-        self.assertEqual(tamanho_monarquistas, tamanho)
-        soma = 3*tamanho
-        self.assertEqual(builder.soma_dos_tamanhos_dos_partidos, soma)
+    def test_coordenadas_partidos(self):
+        analisador = analise.AnalisadorPeriodo(self.casa_legislativa)
+        analise_periodo = analisador.analisa()
+        coordenadas = analise_periodo.coordenadas_partidos
+        self.assertAlmostEqual(coordenadas[self.girondinos][0], -0.152, 2)
+        self.assertAlmostEqual(coordenadas[self.girondinos][1], -0.261, 2)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][0], -0.287, 2)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][1], 0.181, 2)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][0], 0.440, 2)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][1], 0.079, 2)
         
-    def test_matriz_votacao(self):
-        vetor_girondinos =   [mean([1, 0, -1]), mean([-1, -1, -1]), mean([-1, -1, 1]), mean([1, 1, 1]), mean([1, 1, 0]), mean([1, 1, 1]), mean([1, 1, 0]), mean([-1, -1, -1])]
-        vetor_jacobinos =    [mean([1, 1, 1]), mean([-1, -1, -1]), mean([-1, -1, -1]), mean([1, 0 -1]), mean([1, 1, 1]), mean([1, 1, 1]), mean([1, 1, 1]), mean([0, -1, -1])]
-        vetor_monarquistas = [mean([-1, -1, -1]), mean([1, 1, 1]), mean([1, 1, 1]), mean([1, -1]), mean([-1, -1, -1]), mean([1, 1]), mean([1,  1]), mean([1, 1])]
-        MATRIZ_VOTACAO_ESPERADA = numpy.matrix([vetor_girondinos, vetor_jacobinos, vetor_monarquistas])
-        builder = analise.MatrizDeVotacoesBuilder(self.votacoes, self.partidos)
-        matriz_votacao = builder.gera_matriz()
-        self.assertTrue((matriz_votacao == MATRIZ_VOTACAO_ESPERADA).all()) 
-
-    def test_partidos_2d(self):
-        analisador = analise.AnalisadorPeriodo(self.casa_legislativa, partidos=self.partidos)
-        analisePeriodo = analisador.analisa()
-        grafico = analisePeriodo.coordenadas
-        self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.49321534, 4)
-        self.assertAlmostEqual(grafico[convencao.JACOBINOS][1], -0.65069601, 4)
-        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][0], 0.81012694, 4)
-        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][1], -0.10178901, 4)
-        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], -0.31691161, 4)
-        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], 0.75248502, 4)
         
-    def test_rotacao(self):
-        periodos = self.casa_legislativa.periodos(models.SEMESTRE)
-        analisador1 = analise.AnalisadorPeriodo(self.casa_legislativa, periodo=periodos[0], partidos=self.partidos)
-        analise_do_periodo1 = analisador1.analisa()
-        analisador2 = analise.AnalisadorPeriodo(self.casa_legislativa, periodo=periodos[1], partidos=self.partidos)
-        analise_do_periodo2 = analisador2.analisa()
-        rotacionador = analise.Rotacionador(analise_do_periodo2, analise_do_periodo1)
-        analise_rotacionada = rotacionador.espelha_ou_roda()
-        grafico = analise_rotacionada.coordenadas
-        self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.71010899, 4)
-        self.assertAlmostEqual(grafico[convencao.JACOBINOS][1], -0.40300359, 4)
-        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][0], 0.00604315, 4)
-        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][1], 0.81647422, 4)
-        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], 0.70406584, 4)
-        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], -0.41347063, 4)
+# tests AnalisadorTemporal
+# ......
 
+class AnalisadorTemporalTest(TestCase):
+    
+    @classmethod
+    def setUpClass(cls):
+        cls.importer = convencao.ImportadorConvencao()
+        cls.importer.importar()
+
+    @classmethod
+    def tearDownClass(cls):
+        from util_test import flush_db
+        flush_db(cls)
+        
+    def setUp(self):
+        self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        self.partidos = AnalisadorTemporalTest.importer.partidos
+        self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa__nome_curto='conv')
+        self.legislaturas = models.Legislatura.objects.filter(casa_legislativa__nome_curto='conv').distinct()
+        for partido in self.partidos:
+            if partido.nome == convencao.GIRONDINOS:
+                self.girondinos = partido
+            if partido.nome == convencao.JACOBINOS:
+                self.jacobinos = partido
+            if partido.nome == convencao.MONARQUISTAS:
+                self.monarquistas = partido        
+        
     def test_analisador_temporal(self):
-        analisadorTemporal = analise.AnalisadorTemporal(self.casa_legislativa, models.SEMESTRE, self.votacoes)
-        analises = analisadorTemporal.get_analises()
+        analisador_temporal = analise.AnalisadorTemporal(self.casa_legislativa, models.SEMESTRE)
+        analise_temporal = analisador_temporal.get_analise_temporal()
+        analises = analise_temporal.analises_periodo
         self.assertEqual(len(analises), 2)
         # primeiro semestre
-        grafico = analises[0].coordenadas
-        self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.55767883, 4)
-        self.assertAlmostEqual(grafico[convencao.JACOBINOS][1], 0.5963732, 4)
-        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][0], 0.79531375, 4)
-        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][1], 0.18477743, 4)
-        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], -0.23763493, 4)
-        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], -0.78115063, 4)
+        coordenadas = analises[0].coordenadas_partidos
+        self.assertAlmostEqual(coordenadas[self.girondinos][0], -0.11788123, 4)
+        self.assertAlmostEqual(coordenadas[self.girondinos][1], -0.29647299, 4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][0], -0.30596818, 4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][1], 0.19860293, 4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][0], 0.42384941, 4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][1], 0.09787006, 4)
         # segundo semestre
-        grafico = analises[1].coordenadas
-        self.assertAlmostEqual(grafico[convencao.JACOBINOS][0], -0.71010899, 4)
-        self.assertAlmostEqual(grafico[convencao.JACOBINOS][1], -0.40300359, 4)
-        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][0], 0.00604315, 4)
-        self.assertAlmostEqual(grafico[convencao.MONARQUISTAS][1], 0.81647422, 4)
-        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][0], 0.70406584, 4)
-        self.assertAlmostEqual(grafico[convencao.GIRONDINOS][1], -0.41347063, 4)        
+        coordenadas = analises[0].coordenadas_partidos
+        self.assertAlmostEqual(coordenadas[self.girondinos][0], -0.11788123, 4)
+        self.assertAlmostEqual(coordenadas[self.girondinos][1], -0.29647299, 4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][0], -0.30596818, 4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][1], 0.19860293, 4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][0],  0.42384941, 4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][1], 0.09787006, 4)                
 
 class FiltroProposicaoTest(TestCase):
     
@@ -228,40 +225,112 @@ class FiltroProposicaoTest(TestCase):
         filtro_proposicao = filtro.FiltroProposicao()
         filtra_proposicoes_por_palavras_chave = filtro_proposicao.filtra_proposicoes_por_palavras_chave(proposicao, votacoes, lista_palavras_chave)
         self.assertFalse(filtra_proposicoes_por_palavras_chave)      
-        
 
+# grafico tests
 
-class GraficoTest(TestCase):
+class JsonAnaliseGeneratorTest(TestCase):
+    # TODO some complicated calculus performed in JsonAnaliseGeneratorTest
+    # should be done by a new class, possibly in grafico module.
+    # This test is not complete, it could test more json elements.
+
     @classmethod
     def setUpClass(cls):
         cls.importer = convencao.ImportadorConvencao()
         cls.importer.importar()
-
-    @classmethod
+    
+    @classmethod    
     def tearDownClass(cls):
         from util_test import flush_db
-        flush_db(cls)
-
+        flush_db(cls)        
+            
     def setUp(self):
-        self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
-    
-    def test_graph_scale(self):
-        partidos = {}
-        partidos['Jacobinos'] = [0.1, -0.2]
-        partidos['Girondinos'] = [0.5, 1]
-        scaler = grafico.GraphScaler()
-        scaled = scaler.scale(partidos)
-        self.assertEqual(55, scaled['Jacobinos'][0])
-        self.assertEqual(40, scaled['Jacobinos'][1])
-        self.assertEqual(75, scaled['Girondinos'][0])
-        self.assertEqual(100, scaled['Girondinos'][1])
         
+        self.casa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        for partido in JsonAnaliseGeneratorTest.importer.partidos:
+            if partido.nome == convencao.GIRONDINOS:
+                self.girondinos = partido
+            if partido.nome == convencao.JACOBINOS:
+                self.jacobinos = partido
+            if partido.nome == convencao.MONARQUISTAS:
+                self.monarquistas = partido
+                        
+        self.analiseTemporal = AnaliseTemporal()
+        self.analiseTemporal.casa_legislativa = self.casa
+        self.analiseTemporal.periodicidade = models.BIENIO
+        self.analiseTemporal.area_total = 1
+        self.analiseTemporal.analises_periodo = []
+        
+        ap1 = AnalisePeriodo()
+        periodos_retriever = utils.PeriodosRetriever(self.casa, models.BIENIO)
+        periodos = periodos_retriever.get_periodos()
+        ap1.casa_legislativa = None
+        ap1.periodo = periodos[0]
+        ap1.partidos = [ self.girondinos, self.jacobinos, self.monarquistas ]
+        ap1.votacoes = []
+        ap1.num_votacoes = 0
+        ap1.tamanhos_partidos = {self.girondinos : 3, self.jacobinos : 3, self.monarquistas : 3} 
+        ap1.soma_dos_tamanhos_dos_partidos = 3*3
+        ap1.pca = PCAStub()
+        ap1.coordenadas_partidos = {}
+        ap1.coordenadas_partidos[convencao.JACOBINOS] = [-0.4,0.3]
+        ap1.coordenadas_partidos[convencao.GIRONDINOS] = [0.9,-0.3]
+        ap1.coordenadas_partidos[convencao.MONARQUISTAS] = [0.2,0.1]
+        ap1.legislaturas_por_partido = JsonAnaliseGeneratorTest.importer.legs
+        ap1.coordenadas_legislaturas = {} # legislatura.id => [x,y]
+        for p, legs in ap1.legislaturas_por_partido.items():
+            for leg in legs:
+                ap1.coordenadas_legislaturas[leg.id] = [random(), random()] 
+        self.analiseTemporal.analises_periodo.append(ap1)
+
     def test_json(self):
-        EXPECTED_JSON = {u'periodos': {'1': {u'quantidade_votacoes': 8, u'nome': u'1989 e 1990'}}, u'partidos': [{u'cor': u'#008000', u'nome': u'Girondinos', u'tamanho': [[1, 26.0]], u'numero': 27, u'y': [[1, 87.62]], u'x': [[1, 34.15]]}, {u'cor': u'#800080', u'nome': u'Monarquistas', u'tamanho': [[1, 26.0]], u'numero': 79, u'y': [[1, 44.91]], u'x': [[1, 90.51]]}, {u'cor': u'#FF0000', u'nome': u'Jacobinos', u'tamanho': [[1, 26.0]], u'numero': 42, u'y': [[1, 17.47]], u'x': [[1, 25.34]]}]}
-        gen = grafico.JsonAnaliseGenerator()
-        json = gen.get_json_dic(self.casa_legislativa)
-        self.maxDiff = None
-        self.assertEqual(json, EXPECTED_JSON)
+        gen = grafico.JsonAnaliseGenerator(self.analiseTemporal)
+        generated_json = gen.get_json()
+        dict_analise = json.loads(generated_json)
+        dict_casa = dict_analise['geral']['CasaLegislativa']
+        self.assertEquals(dict_casa['nome_curto'], self.casa.nome_curto)  
+        list_periodos = dict_analise['periodos']
+        self.assertEquals(len(list_periodos), 1)
+        dict_periodo = list_periodos[0]
+        self.assertTrue('1989' in dict_periodo['nome'])
+        list_partidos = dict_analise['partidos']
+        self.assertEquals(len(list_partidos), 3)
+        dict_partido = list_partidos[0]
+        toutes_les_parties = [convencao.JACOBINOS, convencao.GIRONDINOS, convencao.MONARQUISTAS]
+        self.assertTrue(dict_partido['nome'] in toutes_les_parties)
+        list_tamanhos = dict_partido['t']
+        self.assertEquals(list_tamanhos[0], 3)
+        list_parlamentares = dict_partido['parlamentares']
+        self.assertEquals(len(list_parlamentares), 3)
+        dict_parlamentar = list_parlamentares[0] 
+        list_xs = dict_parlamentar['x']
+        x = list_xs[0]
+        self.assertTrue(x >= 0 and x <= 100)
+        
+class PCAStub:
+    # TODO self.Vt should be properly stubbed
+    
+    def __init__(self):
+        self.eigen = numpy.zeros(4)
+        self.eigen[0] = 0.6
+        self.eigen[1] = 0.3
+        self.eigen[2] = 0.05
+        self.eigen[3] = 0.05
+        self.Vt = None
+
+
+class MaxRadiusCalculatorTest(TestCase):
+    
+    def test_max_radius_calculator(self):
+        calc = grafico.MaxRadiusCalculator()
+        self.assertEquals(calc.max_r(), 0)
+        calc.add_point(4, 3)
+        self.assertEquals(calc.max_r(), 5)
+        calc.add_point(1, 2)
+        self.assertEquals(calc.max_r(), 5)
+        calc.add_point(1, None)
+        self.assertEquals(calc.max_r(), 5)
+        calc.add_point(10, 3)
+        self.assertAlmostEquals(calc.max_r(), 10.44, 1)
 
 class TemasTest(TestCase):
 
@@ -304,33 +373,3 @@ class TemasTest(TestCase):
     def test_recuperacao_erro(self):
         with self.assertRaises(ValueError):
             self.dici.recuperar_palavras_por_sinonimo(None)
-
-############################
-# Testes não automatizados #
-############################
-
-class GraficoTestManual():
-
-    def importa_dados(self):
-        if not models.CasaLegislativa.objects.filter(nome_curto='conv').exists():
-            importer = convencao.ImportadorConvencao()
-            importer.importar()
-        self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
-        g = models.Partido.objects.get(nome=convencao.GIRONDINOS)
-        j = models.Partido.objects.get(nome=convencao.JACOBINOS)
-        m = models.Partido.objects.get(nome=convencao.MONARQUISTAS)
-        self.partidos = [g, j, m]
-
-    def testa_geracao_figura(self):
-        self.importa_dados()
-        an = analise.AnalisadorPeriodo(self.casa_legislativa, partidos=self.partidos)
-        an.partidos_2d()
-        gen = GeradorGrafico(an)
-        gen.figura()
-
-def main():
-    test = GraficoTest()
-    test.testa_geracao_figura()
-
-
-            

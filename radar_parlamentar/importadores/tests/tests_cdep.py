@@ -125,7 +125,7 @@ class VerificadorDeProposicoesTest(TestCase):
         props_queue.put(prop_sem_votacao)
         
         votadas_queue = Queue.Queue()    
-        verificador = camara.VerificadorDeProposicoes( props_queue, votadas_queue, False, camaraws = self.camaraws)
+        verificador = camara.VerificadorDeProposicoesVotadas(props_queue, votadas_queue, False, camaraws = self.camaraws)
         verificador.verifica_se_tem_votacoes()
 
         props_queue.join() # aguarda até que a fila seja toda processada

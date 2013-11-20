@@ -14,7 +14,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-#
+#TemasTest
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -25,168 +25,211 @@ dado que os cálculos do PCA já foram realizados
 """
 
 from __future__ import unicode_literals
-from sets import Set
-from modelagem import models
-from numpy import sqrt
 import json
-from json import encoder
 import logging
-import analise
+from math import sqrt, isnan
+from django import db # para debugar numero de queries, usando
+                        # db.reset_queries() e print len(db.connection.queries)
+import time
 
 logger = logging.getLogger("radar")
 
+class JsonAnaliseGenerator:
+    
+    def __init__(self, analise_temporal):
+        self.CONSTANTE_ESCALA_TAMANHO = 120
+        self.analise_temporal = analise_temporal
+        self.escala_periodo = None
+        self.json = None
+        self.max_parlamentar_radius_calculator = MaxRadiusCalculator()
+        self.max_partido_radius_calculator = MaxRadiusCalculator()
+        
+    def get_json(self):
+        if not self.json:
+            logger.info('Gerando json...')
+            self._cria_json()
+            logger.info('json gerado')
+        return self.json
+    
+    def _cria_json(self):
+        dict_analise = {}
+        dict_analise['geral'] = self._dict_geral()
+        dict_analise['periodos'] = self._list_periodos()
+        dict_analise['partidos'] = self._list_partidos_instrumented()
+        dict_analise['max_raio'] = self.max_parlamentar_radius_calculator.max_r()
+        dict_analise['max_raio_partidos'] = self.max_partido_radius_calculator.max_r()
+        self.json = json.dumps(dict_analise) 
+    
+    def _dict_geral(self):
+        dict_geral = {}
+        self.escala_periodo = self.CONSTANTE_ESCALA_TAMANHO**2. / max(1,self.analise_temporal.area_total)
+        escala_20px = 20**2. * (1./max(1,self.escala_periodo)) # numero de parlamentares representado
+        dict_geral['escala_tamanho'] = round(escala_20px,5)
+        dict_geral['escala_tamanho'] = None
+        dict_geral['filtro_votacoes'] = None
+        dict_geral['CasaLegislativa'] = self._dict_casa_legislativa()
+        return dict_geral
+    
+    def _dict_casa_legislativa(self):
+        casa_legislativa = self.analise_temporal.casa_legislativa        
+        dict_casa = {}
+        dict_casa['nome'] = casa_legislativa.nome
+        dict_casa['nome_curto'] = casa_legislativa.nome_curto
+        dict_casa['esfera'] = casa_legislativa.esfera
+        dict_casa['local'] = casa_legislativa.local
+        dict_casa['atualizacao'] = unicode(casa_legislativa.atualizacao)
+        return dict_casa        
+    
+    def _list_periodos(self):
+        list_aps = []
+        for ap in self.analise_temporal.analises_periodo:
+            dict_ap = {}
+            var_explicada = round((ap.pca.eigen[0] + ap.pca.eigen[1])/ap.pca.eigen.sum() * 100,1)
+            dict_ap['nvotacoes'] = ap.num_votacoes
+            dict_ap['nome'] = ap.periodo.string
+            dict_ap['var_explicada'] = var_explicada
+            dict_ap['cp1'] = self._dict_cp1(ap)
+            dict_ap['cp2'] = self._dict_cp2(ap)
+            dict_ap['votacoes'] = self._list_votacoes_do_periodo(ap)
+            list_aps.append(dict_ap)
+        return list_aps
+        
+    def _dict_cp1(self, ap):
+        return self._dict_cp(ap, 0)
+
+    def _dict_cp2(self, ap):
+        return self._dict_cp(ap, 1)
+        
+    def _dict_cp(self, ap, idx):
+        """ap -- AnalisePeriodo; idx == 0 para cp1 and idx == 1 para cp2"""
+        dict_cp = {}
+        try:
+            theta = round(ap.theta,0) % 180 + 90*idx
+        except AttributeError:
+            theta = 0
+        var_explicada = round(ap.pca.eigen[idx]/ap.pca.eigen.sum() * 100,1)
+        if ap.pca.Vt != None:
+            composicao = [round(el,2) for el in 100*ap.pca.Vt[idx,:]**2]
+            dict_cp['composicao'] = composicao
+        dict_cp['theta'] = theta
+        dict_cp['var_explicada'] = var_explicada
+        # TODO estas contas complicadas já deveriam ter sido feitas pela análise...
+        # o JsonGenerator não deveria entender dessas cosias.
+        return dict_cp 
+    
+    def _list_votacoes_do_periodo(self, ap):
+        list_votacoes = []
+        for votacao in ap.votacoes:
+            dict_votacao = {}
+            dict_votacao['id'] = unicode(votacao).replace('"',"'")
+            list_votacoes.append(dict_votacao)
+        return list_votacoes
+        
+    def _list_partidos_instrumented(self):
+        db.reset_queries()
+        print 'comecando lista de partidos'
+        ttotal1 = time.time()
+        list_partidos = self._list_partidos()
+        print 'queries para fazer lista de partidos = ' + str(len(db.connection.queries))
+        print 'tempo na lista de partidos = ' + str(time.time() - ttotal1) + ' s.'
+        return list_partidos        
+            
+    def _list_partidos(self):
+        list_partidos = []
+        partidos = self.analise_temporal.casa_legislativa.partidos().select_related('nome','numero','cor')
+        for partido in partidos: #  self.analise_temporal.analises_periodo[0].partidos:
+            list_partidos.append(self._dict_partido(partido))
+        return list_partidos
+
+    def _dict_partido(self, partido):
+        dict_partido = {"nome":partido.nome ,"numero":partido.numero,"cor":partido.cor}
+        dict_partido["t"] =  []
+        dict_partido["r"] =  []
+        dict_partido["x"] =  []
+        dict_partido["y"] =  []
+        for ap in self.analise_temporal.analises_periodo:
+            scaler = GraphScaler()
+            coordenadas = scaler.scale(ap.coordenadas_partidos)
+            try:
+                x = round(coordenadas[partido][0],2)
+                y = round(coordenadas[partido][1],2)
+                self.max_partido_radius_calculator.add_point(x, y)
+                if not isnan(x):
+                    dict_partido["x"].append(round(x,2))
+                    dict_partido["y"].append(round(y,2))
+                else:
+                    dict_partido["x"].append(0.)
+                    dict_partido["y"].append(0.)                
+            except KeyError:
+                dict_partido["x"].append(0.)
+                dict_partido["y"].append(0.)
+            t = ap.tamanhos_partidos[partido]
+            dict_partido["t"].append(t)
+            r = sqrt(t*self.escala_periodo)
+            dict_partido["r"].append(round(r,1))
+        dict_partido["parlamentares"] = []
+        #legislaturas = self.analise_temporal.analises_periodo[0].legislaturas_por_partido[partido.nome]
+        legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(partido=partido).select_related('id', 'localidade', 'partido__nome','parlamentar__nome')
+        for leg in legislaturas:
+            dict_partido["parlamentares"].append(self._dict_parlamentar(leg))
+        return dict_partido
+    
+    def _dict_parlamentar(self, legislatura):
+        leg_id = legislatura.id
+        nome = legislatura.parlamentar.nome
+        localidade = legislatura.localidade
+        dict_parlamentar = {"nome":nome, "id":leg_id, "localidade":localidade}
+        dict_parlamentar["x"] =  []
+        dict_parlamentar["y"] =  []     
+        for ap in self.analise_temporal.analises_periodo:
+            scaler = GraphScaler()
+            coordenadas = scaler.scale(ap.coordenadas_legislaturas)
+            if coordenadas.has_key(leg_id):
+                x = coordenadas[leg_id][0]
+                y = coordenadas[leg_id][1]
+                self.max_parlamentar_radius_calculator.add_point(x, y)
+                if not isnan(x):
+                    x = round(x,2)
+                    y = round(y,2)
+                else:
+                    x = None
+                    y = None
+                dict_parlamentar["x"].append(x)
+                dict_parlamentar["y"].append(y)
+            else:
+                dict_parlamentar["x"].append(None)
+                dict_parlamentar["y"].append(None)
+        return dict_parlamentar
+
+
+class MaxRadiusCalculator:
+    
+    def __init__(self):
+        self.max_r2 = 0
+    
+    def add_point(self, x, y):
+        if self._valid(x) and self._valid(y):
+            r2 = x**2 + y**2
+            self.max_r2 = max(self.max_r2, r2)
+            
+    def _valid(self, value):
+        return value != None and not isnan(value) 
+    
+    def max_r(self):
+        return round(sqrt(self.max_r2), 1)
+            
+
 class GraphScaler:
 
-    def scale(self, partidos2d):
-        """Recebe mapa de coordenadas de partidos (saída de analise.partidos_2d()
-        e altera a escala dos valores de [-1,1] para [0,100]
+    def scale(self, coords):
+        """Changes X,Y scale from [-1,1] to [-100,100]
+        coords -- key => [x, y]
         """
         scaled = {}
-        for partido, coord in partidos2d.items():
+        for key, coord in coords.items():
             x, y = coord[0], coord[1]
             if x < -1 or x > 1 or y < -1 or y > 1:
                 raise ValueError("Value should be in [-1,1]")
-            scaled[partido] = [x*50+50, y*50+50]
+            scaled[key] = [x*100, y*100]
         return scaled
-
-
-class JsonAnaliseGenerator:
-    """
-    Classe que gera o Json da Analise
-    """
-
-    @staticmethod
-    def _get_analises(casa_legislativa):
-        """
-        importa os dados da analise
-        """
-        analisador_temporal = analise.AnalisadorTemporal(casa_legislativa)
-        analisador_temporal.get_analises()
-        return analisador_temporal
-
-    @staticmethod
-    def inicia_dicionario(key,lista):
-        if key not in lista:
-            lista[key] = []
-
-    def _json_partidos_config(self,partidos2d,partidos, tamanhos,escala_tamanhos,analises_len,periodo,analisador,xs,ys):
-            """preenche a lista de tamanhos, xs e ys para serem utilizadas no json dos partidos"""
-            for p in partidos:
-                JsonAnaliseGenerator.inicia_dicionario(p,tamanhos)
-                JsonAnaliseGenerator.inicia_dicionario(p,xs)
-                JsonAnaliseGenerator.inicia_dicionario(p,ys)
-            for partido in partidos2d.keys():
-                tamanhos[partido].append([periodo, round(analisador.tamanhos_partidos[partido]/escala_tamanhos,1)])
-                xs[partido].append([periodo, round(partidos2d[partido][0],2)])
-                ys[partido].append([periodo, round(partidos2d[partido][1],2)])
-
-
-    def _json_partidos(self,analise,analises_len):
-        """
-        constroi o json dos partidos
-        """
-        tamanhos = {}
-        xs = {}
-        ys = {}
-        partidos = Set()
-        scaler = GraphScaler()
-        periodo = 0
-        analises = analise.analises_periodo
-        constante_escala_tamanho = 26 # quanto maior, maior serão as bolhas.
-        escala_tamanhos = sqrt(analise.area_total) / constante_escala_tamanho
-        if escala_tamanhos < 0.0001: # quero evitar divisões por zero
-            logger.info("Atenção: Fator de escala fixado em 1, pois %f seria muito baixo." %escala_tamanhos)
-            escala_tamanhos = 1
-        for analise in analises:
-            periodo +=1
-            partidos2d = scaler.scale(analise.coordenadas)
-            partidos.update(set(partidos2d.keys()))
-            self._json_partidos_config(partidos2d,partidos, tamanhos,escala_tamanhos,analises_len,periodo,analise,xs,ys)
-        json_partidos = []
-        for nome_partido in partidos:
-            partido = models.Partido.objects.get(nome=nome_partido)
-            json_partido = {"nome": nome_partido,"numero":partido.numero,"cor":partido.cor,"tamanho":tamanhos[nome_partido],"x":xs[nome_partido]\
-            ,"y":ys[nome_partido]}
-            json_partidos.append(json_partido)
-        return json_partidos
-
-    def _json_periodos(self,analises,analises_len):
-        """
-        constroi o json dos periodos
-        """
-        periodo = 0
-        json_periodos = {}
-        for analisador in analises:
-            periodo += 1
-            json_periodos[str(periodo)] = {"nome":unicode(analisador.periodo),"quantidade_votacoes":analisador.num_votacoes}
-        return json_periodos
-
-    def get_json(self, casa_legislativa):
-        """Retorna JSON para ser usado no gráfico"""
-        encoder.FLOAT_REPR = lambda o:format(o,'.2f')
-        return json.dumps(self.get_json_dic(casa_legislativa),separators=(",",":"))
-
-    def get_json_dic(self,casa_legislativa):
-        """Retorna o dicionario usado para gerar o JSON"""
-        analise = JsonAnaliseGenerator._get_analises(casa_legislativa)
-        analises = analise.analises_periodo
-        analises_len = len(analises)
-        json_periodos = self._json_periodos(analises,analises_len)
-        json_partidos = self._json_partidos(analise,analises_len)
-        return {"periodos":json_periodos,"partidos":json_partidos}
-
-
-class GeradorGrafico:
-    """Gera imagem com o gráfico estático da análise utilizando matplotlib"""
-
-    def __init__(self, analise):
-        self.analise = analise
-
-    def figura(self, escala=10, print_nome=False):
-        from matplotlib.pyplot import figure, show, scatter, text
-        import matplotlib.colors
-        import numpy
-        """Apresenta o gráfico da análise na tela.
-
-		O gráfico é gerado utilizando o matplotlib.
-		O primeiro componente principal no eixo x e o segundo no eixo y.
-
-        Argumentos:
-            escala: afeta tamanho das circunferências
-            print_nome: se False imprime números dos partidos, se True imprime nomes dos partidos
-        """
-
-        dados = self.analise.coordenadas
-
-        if not self.analise.coordenadas:
-            dados = self.analisep.artidos_2d()
-
-        fig = figure(1)
-        fig.clf()
-
-        lista_cores_partidos = []
-        for partido in self.analise.partidos:
-            if partido.cor:
-                lista_cores_partidos.append(partido.cor)
-            else:
-                lista_cores_partidos.append((1,1,1))
-
-        colormap_partidos = matplotlib.colors.ListedColormap(lista_cores_partidos,name='partidos')
-
-        fig.add_subplot(111, autoscale_on=True) #, xlim=(-1,5), ylim=(-5,3))
-        x = []
-        y = []
-        tamanhos = []
-        for partido in self.analise.partidos:
-            x.append(dados[partido.nome][0])
-            y.append(dados[partido.nome][1])
-            tamanhos.append(self.analise.tamanhos_partidos[partido.nome])
-        size = numpy.array(tamanhos) * escala * 3
-        scatter(x, y, size, range(len(x)), marker='o', cmap=colormap_partidos) #, norm=None, vmin=None, vmax=None, alpha=None, linewidths=None, faceted=True, verts=None, hold=None, **kwargs)
-
-        for partido in self.analise.partidos:
-            legenda = partido.nome if print_nome else partido.numero
-            text(dados[partido.nome][0]+.005,dados[partido.nome][1],legenda,fontsize=12,stretch=100,alpha=1)
-
-        show()
 

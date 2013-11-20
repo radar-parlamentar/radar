@@ -36,7 +36,7 @@ class CamarawsTest(TestCase):
         self.camaraws = camara.Camaraws()
 
     def test_obter_proposicao(self):
-        codigo_florestal_xml = self.camaraws.obter_proposicao(ID)
+        codigo_florestal_xml = self.camaraws.obter_proposicao_por_id(ID)
         nome = codigo_florestal_xml.find('nomeProposicao').text
         self.assertEquals(nome, NOME)
 
@@ -56,7 +56,7 @@ class CamarawsTest(TestCase):
         id_que_nao_existe = 'id_que_nao_existe'
         caught = False
         try:
-            self.camaraws.obter_proposicao(id_que_nao_existe)
+            self.camaraws.obter_proposicao_por_id(id_que_nao_existe)
         except ValueError as e:
             self.assertEquals(e.message, 'Proposicao %s nao encontrada' % id_que_nao_existe)
             caught = True

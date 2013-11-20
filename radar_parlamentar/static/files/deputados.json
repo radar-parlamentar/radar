@@ -1,0 +1,183 @@
+{
+"geral":
+    {
+    "CasaLegislativa":
+        {
+        "nome":"Convenção Nacional Francesa",
+        "nome_curto":"conv",
+        "esfera":"teste",
+        "local":"",
+        "atualizacao":""
+        },
+    "escala_tamanho":11.84,
+    "filtro_partidos":null,
+    "filtro_votacoes":null
+    },
+"periodos":
+    [    
+        {
+        "nvotacoes":17,
+        "nome":"1o Semestre 1788",
+        "var_explicada":85.3,
+        "cp1":
+            {
+            "theta":23.1,
+            "var_explicada":73.0,
+            "composicao":null
+            },
+        "cp2":
+            {
+            "theta":-66.9,
+            "var_explicada":12.3,
+            "composicao":null
+            },
+        "votacoes": null
+        },
+        {
+        "nvotacoes":30,
+        "nome":"2o Semestre 1788",
+        "var_explicada":87,
+        "cp1":
+            {
+            "theta":0,
+            "var_explicada":63.0,
+            "composicao":null
+            },
+        "cp2":
+            {
+            "theta":-36.9,
+            "var_explicada":22.3,
+            "composicao":null
+            },
+        "votacoes": null
+        },
+        {
+        "nvotacoes":2,
+        "nome":"1o Semestre 1789",
+        "var_explicada":93.3,
+        "cp1":
+            {
+            "theta":23.1,
+            "var_explicada":80.0,
+            "composicao":null
+            },
+        "cp2":
+            {
+            "theta":-66.9,
+            "var_explicada":10.3,
+            "composicao":null
+            },
+        "votacoes": null
+        }
+    ],
+"partidos":
+    [
+        {
+        "nome":"Monarquistas",
+        "numero":79,
+        "cor":"#A81450",        
+        "t":[16,9,0],
+        "r":[23.2, 17.4, 0.0],
+        "x":[61.2, 52.1, 12.1],
+        "y":[-14.0, 98.1, 74.0],
+        "p":[56, 100, 0],
+        "parlamentares":
+            [
+                {"nome":"Sr.Oaguai",
+                 "x":[-26.3, 86.0, 39.8],
+                 "y":[-63.2, -14.9, -30.7]
+                },
+                {"nome":"Sr.Vusari",
+                 "x":[null, -66.4, -66.4],
+                 "y":[null,  24.8, 10]
+                },
+                {"nome":"Sr.Uakiko",
+                 "x":[39.5, 88.0, 87.2],
+                 "y":[80.2, -76.4,  4.6]
+                },
+                {"nome":"Sr.Yubogi",
+                 "x":[16.8, -81.0, 82.9],
+                 "y":[-73.1, -91.8, -54.3]
+                },
+                {"nome":"Sr.Dueaou",
+                 "x":[-4.1, 88.4, -14.5],
+                 "y":[10.9, 21.8, 92.8]
+                }
+            ]
+        },
+        {
+        "nome":"Jacobinos",
+        "numero":42,
+        "cor":"#1421CC",
+        "t":[36,49,49],
+        "r":[34.9, 40.7, 40.7],
+        "x":[-61.2, 22.1, 56.0],
+        "y":[14.0, 8.1, -20.0],
+        "p":[56, 100, 100],
+        "parlamentares":
+            [
+                {"nome":"Sr. Dawiyo Jacobo",
+                 "x":[36.3, 72.3, -16.8],
+                 "y":[20.0, 17.1, 84.0]
+                },
+                {"nome":"Sr. Xivope Jacobo",
+                 "x":[50.7, 75.1, 40.4],
+                 "y":[33.7, 64.2, 60.7]
+                },
+                {"nome":"Sr. Aawive Jacobo",
+                 "x":[45.5, 73.7, 43.9],
+                 "y":[-39.3, 18.6, -37.1]
+                },
+                {"nome":"Sr. Eaqeoo Jacobo",
+                 "x":[-57.6, 27.8,  1.4],
+                 "y":[-21.0, 24.1, -68.8]
+                },
+                {"nome":"Sr. Keyaca Jacobo",
+                 "x":[-19.1, -74.3, -2.4],
+                 "y":[55.2, 94.1, -14.4]
+                },
+                {"nome":"Sr. Wonaka Jacobo",
+                 "x":[-59.8, -92.2, -27.9],
+                 "y":[55.3, 56.6,  2.9]
+                },
+                {"nome":"Sr. Jibare Jacobo",
+                 "x":[-11.7, -38.6, -14.3],
+                 "y":[79.8, 18.3, 40.2]
+                },
+                {"nome":"Sr. Janeee Jacobo",
+                 "x":[75.1, 85.8, 13.0],
+                 "y":[-87.7, -84.5, -41.9]
+                }
+            ]
+        },
+        {
+        "nome":"Girondinos",
+        "numero":27,
+        "cor":"#42A116",
+        "t":[0,4,25],
+        "r":[0.0, 11.6, 29.0],
+        "x":[61.2, 52.1, -30.0],
+        "y":[-14.0, 95.1, -30.0],
+        "p":[30, 90, 10],
+        "parlamentares":
+            [
+                {"nome":"Sr. Dexaga G.",
+                 "x":[null, 32.1, 37.3],
+                 "y":[null, 52.5, 52.5]
+                },
+                {"nome":"Sr. Bebito G.",
+                 "x":[65.3, -66.0, -83.0],
+                 "y":[-88.1, -18.0, -13.6]
+                },
+                {"nome":"Sr. Bopiso G.",
+                 "x":[null, 20.5, null],
+                 "y":[null, -23.9, null]
+                },
+                {"nome":"Sr. Dimuuo G.",
+                 "x":[96.8, null, 31.0],
+                 "y":[-10.1, null, -60.1]
+                }
+            ]
+        }
+    ]
+}

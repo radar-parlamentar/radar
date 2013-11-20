@@ -1,7 +1,8 @@
+
 {% extends "base.html" %}
 
 {% block title %}
-    Faça sua Análise - {{casa_legislativa.nome}}
+    Radar Parlamentar - {{casa_legislativa.nome}}
 {% endblock title %}
 
 {% block extrascripts %}
@@ -16,49 +17,42 @@
 {% endblock headerImgClass %}
 
 {% block nomepagina %}
-    Faça sua Análise
+    Radar Parlamentar
 {% endblock nomepagina %}
 
 {% block pagedesc %}
-    Entenda visualmente afinidades partidárias das casas legislativas
+    Entenda visualmente afinidades de partidos e parlamentares.
 {% endblock pagedesc %}
 
 {% block breadcrumbs %}
     <li><a href="/index/">Home</a> &raquo;</li>
-    <li><a href="/analises/">Análises</a> &raquo;</li>
-    <li><a href="/analises/analise/{{casa_legislativa.nome_curto}}">{{casa_legislativa.nome_curto}}</a></li>
+    <li><a href="/analises/">Gráficos</a> &raquo;</li>
+    <li><a href="/analises/analise/{{casa_legislativa.nome_curto}}">{{casa_legislativa.nome}}</a></li>
 {% endblock breadcrumbs %}
 
 {% block content %}
     <h3> {{casa_legislativa.nome}}</h3>
     <article id="descricao" class="inwrap">
-        Aqui é apresentada a animação das análises realizadas com as votações da {{casa_legislativa.nome}}.<br/>
-        <h4 style="margin-bottom:5px;">Como Funciona?</h4>
-        <aside id="como-funciona" style="margin: 0 90px 10px 20px; padding: 10px; background-color: rgba(220,220,220,0.7); -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">
-            A análise, realizada em períodos de dois anos, inicia-se no primeiro período disponibilizado pela casa legislativa e é animada para os períodos seguintes.<br/>
-            No lado superior direito da visualização é possível observar o período de análise que está sendo mostrado, e o logo abaixo o número de votações nominais utilizadas para a análise do mesmo.<br/>
-            Para visualizar um determinado período passe o mouse sobre o período, na horizontal.<br/>
-            À direita do gráfico, você encontra a legenda com o número dos partidos e a sigla da legenda.<br/>
-            O tamanho de cada partido no gráfico representa a quantidade de parlamentares que cada partido possui.
-        </aside>
-        Veja as movimentações e tire suas próprias conclusões.<br/>
-        Quantidade de votações considerada nesta análise: <b>{{num_votacao}}</b> votações.<br/><br/>
-        Os dados da {{casa_legislativa.nome}} utilizados para análise estão disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (dados atualizados em {{casa_legislativa.atualizacao}}).<br/>    
-        <!--div id="form">
-            <label for="periodos" ACCESSKEY="P">Período</label> <select id="periodos">
-            </select>
-            <button id="animar">Animar</button>
-            <br/><br/>
-        </div-->
-        <aside id="legenda" class="list">
-            <b>LEGENDA</b>
-            <ul class="legenda">
-                {% for partido in partidos %}
-                    <li class="botao_partido" id="list_cor_{{partido.numero}}">{{partido.numero}} | {{partido.nome}}</li>
-                {% endfor %}
+        <b>{{num_votacao}} votações</b> consideradas nesta análise.<br/><br/>
+        Dados utilizados nesta análise disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (atualizados em {{casa_legislativa.atualizacao}}).<br/>    
+        <aside id="legenda" class="list" style="width:300px">
+            <p align="left"><b>LEGENDA</b></p>
+            <ul class="legend">
             </ul>
         </aside>
+        <div style="width:700px">
         <figure id="animacao"><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
+        </div>
+
+        <aside id="como-funciona" style="margin: 0 90px 10px 20px; padding: 10px; background-color: rgba(220,220,220,0.7); -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">
+            <h4>Entenda o gráfico</h4>
+            <p>Quanto mais próximos dois parlamentares ou partidos, mais parecidos foram seus votos em plenário no período.</br>
+            <p>Para criar o gráfico, os dados de votações nominais foram tratados através de análises de Componentes Principais.</br>
+            O eixo horizontal é o primeiro componente principal, e o eixo vertical é o segundo eixo principal.</br>
+            Para saber mais, veja a <a href="https://github.com/leonardofl/radar_parlamentar/raw/a4fd865edfb5b36aebd56070a42f72d8d3551a17/doc/radar_parlamentar.pdf">documentação</a>.  
+            </p>
+        </aside>
+        
     </article>
         <div style="clear:right"/>
 {% endblock content %}
@@ -66,8 +60,10 @@
 {% block extrajsend %}
     {% if request.get_host == '127.0.0.1:8000' or request.get_host == 'localhost:8000' %}
         <script src="/static/files/codes/js/d3.min.js"></script>
+        <script src="/static/files/codes/js/d3-tip.js"></script>
     {% else %}
         <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js"></script>
+        <script src="/static/files/codes/js/d3-tip.js"></script>
         <script type="text/javascript">
           if (typeof d3 === 'undefined') {
             var e = document.createElement('script');
@@ -77,7 +73,7 @@
           }
         </script>
     {% endif %}
-    <script src="/static/files/codes/js/radar_parlamentar_plot.js"></script>
+    <script src="/static/files/codes/js/radar_plot.js"></script>log(d); 
 {% endblock extrajsend %}
 
 {% block extrascriptsend %}
