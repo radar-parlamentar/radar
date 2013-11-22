@@ -32,6 +32,7 @@ from importadores import convencao
 from random import random
 import numpy
 import json
+from datetime import date
 
 class AnalisadorPeriodoTest(TestCase):
     
@@ -210,21 +211,71 @@ class FiltroProposicaoTest(TestCase):
         palavra_existe_em_proposicao = filtro_proposicao.palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
         self.assertTrue(palavra_existe_em_proposicao)
 
-    def test_filtra_proposicoes_por_palavras_chave(self):
+    def test_verifica_palavras_chave_em_proposicao(self):
         proposicao = models.Proposicao.objects.get(id = 8)
         votacoes = models.Votacao.objects.filter(proposicao_id = 8)
         lista_palavras_chave = ['cotas', 'guerra', 'violência']
         filtro_proposicao = filtro.FiltroProposicao()
-        filtra_proposicoes_por_palavras_chave = filtro_proposicao.filtra_proposicoes_por_palavras_chave(proposicao, votacoes, lista_palavras_chave)
+        filtra_proposicoes_por_palavras_chave = filtro_proposicao.verifica_palavras_chave_em_proposicao(proposicao, votacoes, lista_palavras_chave)
         self.assertTrue(filtra_proposicoes_por_palavras_chave)
           
-    def test_filtra_proposicoes_por_palavras_chave_nao_relacionadas(self):
+    def test_verifica_palavras_chave_nao_relacionadas_em_proposicao(self):
         proposicao = models.Proposicao.objects.get(id = 8)
         votacoes = models.Votacao.objects.filter(proposicao_id = 8)
         lista_palavras_chave = ['cotas', 'educação', 'violência']
         filtro_proposicao = filtro.FiltroProposicao()
-        filtra_proposicoes_por_palavras_chave = filtro_proposicao.filtra_proposicoes_por_palavras_chave(proposicao, votacoes, lista_palavras_chave)
-        self.assertFalse(filtra_proposicoes_por_palavras_chave)      
+        filtra_proposicoes_por_palavras_chave = filtro_proposicao.verifica_palavras_chave_em_proposicao(proposicao, votacoes, lista_palavras_chave)
+        self.assertFalse(filtra_proposicoes_por_palavras_chave)
+
+    def test_filtra_proposicoes(self):
+        casa_legislativa = models.CasaLegislativa.objects.get(id = 1)
+        periodo_casa_legislativa = models.PeriodoCasaLegislativa(date(1989,02,02), date(1989,10,10))
+        lista_palavras_chave = ['cotas', 'guerra', 'violência']
+        filtro_proposicao = filtro.FiltroProposicao()
+        filtra_proposicoes = filtro_proposicao.filtra_proposicoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
+        self.assertEquals(1, len(filtra_proposicoes)) 
+     
+         
+    def test_filtra_proposicoes_com_periodo_invalido(self):
+        casa_legislativa = models.CasaLegislativa.objects.get(id = 1)
+        periodo_casa_legislativa = models.PeriodoCasaLegislativa(date(1990,10,10), date(1990,10,10))
+        lista_palavras_chave = ['cotas', 'guerra', 'violência']
+        filtro_proposicao = filtro.FiltroProposicao()
+        filtra_proposicoes = filtro_proposicao.filtra_proposicoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
+        self.assertEquals(0, len(filtra_proposicoes)) 
+
+    def test_filtra_proposicoes_com_periodo_(self):
+        casa_legislativa = models.CasaLegislativa.objects.get(id = 1)
+        periodo_casa_legislativa = models.PeriodoCasaLegislativa(date(1989,8,8), date(1992,11,11))
+        lista_palavras_chave = ['cotas', 'guerra', 'violência']
+        filtro_proposicao = filtro.FiltroProposicao()
+        filtra_proposicoes = filtro_proposicao.filtra_proposicoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
+        self.assertEquals(1, len(filtra_proposicoes)) 
+     
+    def test_filtra_proposicoes_sem_palavras_chave_relacionadas(self):
+        casa_legislativa = models.CasaLegislativa.objects.get(id = 1)
+        periodo_casa_legislativa = models.PeriodoCasaLegislativa(date(1989,02,02), date(1989,10,10))
+        lista_palavras_chave = ['cotas', 'educacao', 'violência']
+        filtro_proposicao = filtro.FiltroProposicao()
+        filtra_proposicoes = filtro_proposicao.filtra_proposicoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
+        self.assertEquals(0, len(filtra_proposicoes))
+
+    def test_filtra_proposicoes_com_varias_palavras_chave(self):
+        casa_legislativa = models.CasaLegislativa.objects.get(id = 1)
+        periodo_casa_legislativa = models.PeriodoCasaLegislativa(date(1989,02,02), date(1989,10,10))
+        lista_palavras_chave = ['militar', 'guerra', 'escolas', 'pensão']
+        filtro_proposicao = filtro.FiltroProposicao()
+        filtra_proposicoes = filtro_proposicao.filtra_proposicoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
+        self.assertEquals(4, len(filtra_proposicoes))
+
+
+    def test_filtra_proposicoes_por_palavras_chave(self):
+        proposicoes = models.Proposicao.objects.filter(casa_legislativa_id = 1)
+        votacoes = models.Votacao.objects.all()
+        lista_palavras_chave = ['militar', 'guerra', 'escolas', 'pensão']
+        filtro_proposicao = filtro.FiltroProposicao()
+        proposicoes_com_palavras_chave = filtro_proposicao.filtra_proposicoes_por_palavras_chave(proposicoes, votacoes, lista_palavras_chave)
+        self.assertEquals(4, len(proposicoes_com_palavras_chave))
 
 # grafico tests
 
