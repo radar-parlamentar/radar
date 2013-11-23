@@ -149,7 +149,7 @@ class CamaraTest(TestCase):
         #dublando a camara
         camaraWS = camara.Camaraws()
         camaraWS.listar_proposicoes = Mock(side_effect=mock_listar_proposicoes)
-        camaraWS.obter_proposicao = Mock(side_effect=mock_obter_proposicao)
+        camaraWS.obter_proposicao_por_id = Mock(side_effect=mock_obter_proposicao)
         camaraWS.obter_votacoes = Mock(side_effect=mock_obter_votacoes)
         importer.importar(camaraWS)
 
