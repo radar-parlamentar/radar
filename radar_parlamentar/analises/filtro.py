@@ -71,32 +71,58 @@ class Temas():
 
         return palavras
 
-class Filtro_Proposicao():
+class FiltroProposicao():
 
-    def filtra_proposicao(*args):
-    	proposicao = models.Proposicao.objects.all()
-	a = 0
-	lista_siglas = []
-	lista_palavras = []
-	lista_siglas = args[1]
-	lista_palavras = args[2]
-	lista_proposicao = []	
+    def recupera_proposicoes(self, casa_legislativa):
+        return models.Proposicao.objects.filter(casa_legislativa_id = casa_legislativa.id)
 
-	for r in lista_siglas:
-		sigla = r
-		for p in proposicao:
-			if(sigla == p.sigla):
-				for e in lista_palavras:
-					
-					palavra = e
-					if(re.search(palavra,p.descricao)!= None):
-						print 'Descricao:' + p.descricao + '\n'
-    						print 'Ementa:' + p.ementa + '\n'
-						lista_proposicao.append(p.descricao)
-						lista_proposicao.append(p.ementa)
+    def recupera_votacoes_da_proposicao(self,proposicao, votacoes):
+        votacoes_da_proposicao = []
+        for votacao in votacoes:
+            if votacao.proposicao_id == proposicao.id:
+                votacoes_da_proposicao.append(votacao)
+        return votacoes_da_proposicao        
 
-					else:
-						print 'palavra: ' + palavra + ' nao encontrada na descricao: ' + p.descricao + '\n' 
+    def filtra_proposicoes_com_votacoes(self, proposicoes, votacoes):
+        proposicoes_com_votacoes = []
+        for proposicao in proposicoes:
+            if len(self.recupera_votacoes_da_proposicao(proposicao, votacoes)) > 0:
+                proposicoes_com_votacoes.append(proposicao)
+        return proposicoes_com_votacoes 
+    
+    def palavra_existe_em_proposicao(self, proposicao, votacoes, palavra_chave):
+        #procura uma substring dentro de uma string
+        if((re.search(palavra_chave.upper(), proposicao.descricao.upper())!= None) or (re.search(palavra_chave.upper(), proposicao.ementa.upper())!= None) or (re.search(palavra_chave.upper(), proposicao.indexacao.upper())!= None)):
+            return True
 
-	
-	return lista_proposicao
+        for votacao in votacoes:
+            if(re.search(palavra_chave.upper(), votacao.descricao.upper())!= None):
+                return True
+        return False	 
+
+    def verifica_palavras_chave_em_proposicao(self, proposicao, votacoes, lista_palavras_chave):
+        votacoes_da_proposicao = self.recupera_votacoes_da_proposicao(proposicao, votacoes)
+        for palavra_chave in lista_palavras_chave:
+            if(self.palavra_existe_em_proposicao(proposicao, votacoes_da_proposicao, palavra_chave)):
+                return True
+        return False
+
+    def filtra_proposicoes_por_palavras_chave(self, proposicoes, votacoes, palavras_chave):
+        proposicoes_com_palavras_chave = []
+
+        for proposicao in proposicoes:
+            if self.verifica_palavras_chave_em_proposicao(proposicao, votacoes, palavras_chave):
+                proposicoes_com_palavras_chave.append(proposicao)
+        return proposicoes_com_palavras_chave
+
+    def filtra_proposicoes(self, casa_legislativa, periodo_casa_legislativa, palavras_chave):
+        proposicoes = self.recupera_proposicoes(casa_legislativa)
+
+        votacoes = models.Votacao.por_casa_legislativa(casa_legislativa, periodo_casa_legislativa.ini, periodo_casa_legislativa.fim)
+
+        proposicoes_com_votacoes = self.filtra_proposicoes_com_votacoes(proposicoes, votacoes)
+
+	proposicoes_com_palavras_chave = self.filtra_proposicoes_por_palavras_chave(proposicoes_com_votacoes, votacoes, palavras_chave)
+
+        return proposicoes_com_palavras_chave
+
