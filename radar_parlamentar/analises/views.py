@@ -33,21 +33,25 @@ def analises(request):
     return render_to_response('analises.html', {}, context_instance=RequestContext(request))
 
 def analise(request, nome_curto_casa_legislativa):
-    """ Retorna a lista de partidos para montar a legenda do gráfico"""
+    ''' Retorna a lista de partidos para montar a legenda do gráfico'''
     partidos = models.Partido.objects.order_by('numero').all()
     casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
+    try:     
+        periodicidade = request.POST["periodicidade"]
+    except:
+        periodicidade = models.BIENIO 
     num_votacao = casa_legislativa.num_votacao()
     return render_to_response(
                 'analise.html',
-                {'casa_legislativa':casa_legislativa, 'partidos':partidos,'num_votacao':num_votacao},
+                {'casa_legislativa':casa_legislativa, 'partidos':partidos,'num_votacao':num_votacao, 'periodicidade':periodicidade},
                 context_instance=RequestContext(request)
             )
 
 @cache_page(60 * 60 * 24 * 365)
-def json_analise(request, nome_curto_casa_legislativa):
+def json_analise(request, nome_curto_casa_legislativa, periodicidade):
     """Retorna o JSON com as coordenadas do gráfico PCA"""
     casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
-    analisador = AnalisadorTemporal(casa_legislativa)
+    analisador = AnalisadorTemporal(casa_legislativa, periodicidade)
     analise_temporal = analisador.get_analise_temporal()
     gen = JsonAnaliseGenerator(analise_temporal)
     json = gen.get_json()

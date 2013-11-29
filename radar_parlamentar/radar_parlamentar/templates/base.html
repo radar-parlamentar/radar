@@ -135,7 +135,7 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        {% block content %}{% endblock content %}
+        {% block content %}{% csrf_token %}{% endblock content %}
         
 
         <section class="cols">

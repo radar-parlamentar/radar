@@ -34,7 +34,19 @@
     <h3> {{casa_legislativa.nome}}</h3>
     <article id="descricao" class="inwrap">
         <b>{{num_votacao}} votações</b> consideradas nesta análise.<br/><br/>
-        Dados utilizados nesta análise disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (atualizados em {{casa_legislativa.atualizacao}}).<br/>    
+        Dados utilizados nesta análise disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (atualizados em {{casa_legislativa.atualizacao}}).<br/>
+        <h3>Periodicidade:</h3>
+        <form id="formAnalise" method="POST" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
+        {% csrf_token %}
+        <select id="periodicidade" name="periodicidade" onChange="this.form.submit()">
+            <option value="QUADRIENIO">Quadriênio</option>
+            <option value="BIENIO">Biênio</option>
+            <option value="ANO">Ano</option>
+            <option value="SEMESTRE">Semestre</option>
+            <option value="MES">Mês</option>
+        </select>
+        </form> 
+        <br><br>
         <aside id="legenda" class="list" style="width:300px">
             <p align="left"><b>LEGENDA</b></p>
             <ul class="legend">
@@ -43,7 +55,6 @@
         <div style="width:700px">
         <figure id="animacao"><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
         </div>
-
         <aside id="como-funciona" style="margin: 0 90px 10px 20px; padding: 10px; background-color: rgba(220,220,220,0.7); -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">
             <h4>Entenda o gráfico</h4>
             <p>Quanto mais próximos dois parlamentares ou partidos, mais parecidos foram seus votos em plenário no período.</br>
@@ -77,9 +88,16 @@
 {% endblock extrajsend %}
 
 {% block extrascriptsend %}
+    var campo_select = document.getElementById("periodicidade");
+    for(var i=0; i<campo_select.options.length; i++) {
+        if(campo_select.options[i].value == '{{periodicidade}}') {
+            campo_select.selectedIndex = i;
+        }
+    } 
+    
     menuActive("analises");
   $(document).ready(function() {
-    Plot.initialize('{{casa_legislativa.nome_curto}}')
+    Plot.initialize('{{casa_legislativa.nome_curto}}', '{{periodicidade}}')
   });
 {% endblock extrascriptsend %}
 
