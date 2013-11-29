@@ -89,7 +89,7 @@
 
 {% block extrascriptsend %}
     var campo_select = document.getElementById("periodicidade");
-    for(var i=0; i<campo_select.options.length; i++) {
+    for(var i=0; i < campo_select.options.length; i++) {
         if(campo_select.options[i].value == '{{periodicidade}}') {
             campo_select.selectedIndex = i;
         }
