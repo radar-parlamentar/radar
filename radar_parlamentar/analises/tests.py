@@ -138,7 +138,7 @@ class FiltroProposicaoTest(TestCase):
         casa_legislativa.id = 1
 
         filtro_proposicao = filtro.FiltroProposicao()
-        proposicoes = filtro_proposicao.recupera_proposicoes(casa_legislativa)
+        proposicoes = filtro_proposicao._recupera_proposicoes(casa_legislativa)
         self.assertEquals(9, len(proposicoes))
 
     def test_recupera_votacoes_da_proposicao(self):
@@ -146,21 +146,21 @@ class FiltroProposicaoTest(TestCase):
         proposicao.id = 1;
         votacoes = models.Votacao.objects.all()
         filtro_proposicao = filtro.FiltroProposicao()
-        votacoes_da_proposicao = filtro_proposicao.recupera_votacoes_da_proposicao(proposicao, votacoes)        
+        votacoes_da_proposicao = filtro_proposicao._recupera_votacoes_da_proposicao(proposicao, votacoes)        
         self.assertEquals(1, len(votacoes_da_proposicao))
 
     def test_filtra_proposicoes_com_votacoes(self):
         proposicoes = models.Proposicao.objects.filter(casa_legislativa_id = 1)
         votacoes = models.Votacao.objects.all()
         filtro_proposicao = filtro.FiltroProposicao()
-        proposicoes_com_votacoes = filtro_proposicao.filtra_proposicoes_com_votacoes(proposicoes, votacoes)
+        proposicoes_com_votacoes = filtro_proposicao._filtra_proposicoes_com_votacoes(proposicoes, votacoes)
         self.assertEquals(8, len(proposicoes_com_votacoes))
 
     def test_filtra_proposicoes_sem_votacoes(self):
         proposicoes = models.Proposicao.objects.filter(casa_legislativa_id = 1)
         votacoes = models.Votacao.objects.all()
         filtro_proposicao = filtro.FiltroProposicao()
-        proposicoes_com_votacoes = filtro_proposicao.filtra_proposicoes_com_votacoes(proposicoes, votacoes)
+        proposicoes_com_votacoes = filtro_proposicao._filtra_proposicoes_com_votacoes(proposicoes, votacoes)
         self.assertEquals(8, len(proposicoes_com_votacoes))
 
     def test_palavra_existe_em_descricao_proposicao(self):
@@ -168,7 +168,7 @@ class FiltroProposicaoTest(TestCase):
         votacoes = models.Votacao.objects.filter(proposicao_id = 1)
         palavra_chave = 'reforma'
         filtro_proposicao = filtro.FiltroProposicao()
-        palavra_existe_em_proposicao = filtro_proposicao.palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
+        palavra_existe_em_proposicao = filtro_proposicao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
         self.assertTrue(palavra_existe_em_proposicao)
         
     def test_palavra_nao_existe_em_proposicao(self):
@@ -176,31 +176,23 @@ class FiltroProposicaoTest(TestCase):
         votacoes = models.Votacao.objects.filter(proposicao_id = 1)
         palavra_chave = 'corrupcao'
         filtro_proposicao = filtro.FiltroProposicao()
-        palavra_existe_em_proposicao = filtro_proposicao.palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
+        palavra_existe_em_proposicao = filtro_proposicao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
         self.assertFalse(palavra_existe_em_proposicao)
 
     def test_palavra_existe_em_ementa_proposicao(self):
         proposicao = models.Proposicao.objects.get(id = 8)
         votacoes = models.Votacao.objects.filter(proposicao_id = 8)
-        palavra_chave = 'ementa'
+        palavra_chave = 'armas'
         filtro_proposicao = filtro.FiltroProposicao()
-        palavra_existe_em_proposicao = filtro_proposicao.palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
-        self.assertTrue(palavra_existe_em_proposicao)
-
-    def test_palavra_existe_em_ementa_proposicao(self):
-        proposicao = models.Proposicao.objects.get(id = 8)
-        votacoes = models.Votacao.objects.filter(proposicao_id = 8)
-        palavra_chave = 'ementa'
-        filtro_proposicao = filtro.FiltroProposicao()
-        palavra_existe_em_proposicao = filtro_proposicao.palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
+        palavra_existe_em_proposicao = filtro_proposicao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
         self.assertTrue(palavra_existe_em_proposicao)
 
     def test_palavra_existe_em_indexacao_proposicao(self):
         proposicao = models.Proposicao.objects.get(id = 8)
         votacoes = models.Votacao.objects.filter(proposicao_id = 8)
-        palavra_chave = 'indexacao'
+        palavra_chave = 'bombas'
         filtro_proposicao = filtro.FiltroProposicao()
-        palavra_existe_em_proposicao = filtro_proposicao.palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
+        palavra_existe_em_proposicao = filtro_proposicao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
         self.assertTrue(palavra_existe_em_proposicao)
 
     def test_palavra_existe_em_descricao_votacao(self):
@@ -208,7 +200,7 @@ class FiltroProposicaoTest(TestCase):
         votacoes = models.Votacao.objects.filter(proposicao_id = 8)
         palavra_chave = 'inglaterra'
         filtro_proposicao = filtro.FiltroProposicao()
-        palavra_existe_em_proposicao = filtro_proposicao.palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
+        palavra_existe_em_proposicao = filtro_proposicao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
         self.assertTrue(palavra_existe_em_proposicao)
 
     def test_verifica_palavras_chave_em_proposicao(self):
@@ -216,7 +208,7 @@ class FiltroProposicaoTest(TestCase):
         votacoes = models.Votacao.objects.filter(proposicao_id = 8)
         lista_palavras_chave = ['cotas', 'guerra', 'violência']
         filtro_proposicao = filtro.FiltroProposicao()
-        filtra_proposicoes_por_palavras_chave = filtro_proposicao.verifica_palavras_chave_em_proposicao(proposicao, votacoes, lista_palavras_chave)
+        filtra_proposicoes_por_palavras_chave = filtro_proposicao._verifica_palavras_chave_em_proposicao(proposicao, votacoes, lista_palavras_chave)
         self.assertTrue(filtra_proposicoes_por_palavras_chave)
           
     def test_verifica_palavras_chave_nao_relacionadas_em_proposicao(self):
@@ -224,7 +216,7 @@ class FiltroProposicaoTest(TestCase):
         votacoes = models.Votacao.objects.filter(proposicao_id = 8)
         lista_palavras_chave = ['cotas', 'educação', 'violência']
         filtro_proposicao = filtro.FiltroProposicao()
-        filtra_proposicoes_por_palavras_chave = filtro_proposicao.verifica_palavras_chave_em_proposicao(proposicao, votacoes, lista_palavras_chave)
+        filtra_proposicoes_por_palavras_chave = filtro_proposicao._verifica_palavras_chave_em_proposicao(proposicao, votacoes, lista_palavras_chave)
         self.assertFalse(filtra_proposicoes_por_palavras_chave)
 
     def test_filtra_proposicoes(self):
@@ -274,7 +266,7 @@ class FiltroProposicaoTest(TestCase):
         votacoes = models.Votacao.objects.all()
         lista_palavras_chave = ['militar', 'guerra', 'escolas', 'pensão']
         filtro_proposicao = filtro.FiltroProposicao()
-        proposicoes_com_palavras_chave = filtro_proposicao.filtra_proposicoes_por_palavras_chave(proposicoes, votacoes, lista_palavras_chave)
+        proposicoes_com_palavras_chave = filtro_proposicao._filtra_proposicoes_por_palavras_chave(proposicoes, votacoes, lista_palavras_chave)
         self.assertEquals(4, len(proposicoes_com_palavras_chave))
 
 # grafico tests

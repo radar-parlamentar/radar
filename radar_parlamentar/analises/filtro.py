@@ -1,6 +1,6 @@
 # coding=utf8
 
-# Copyright (C) 2012, Arthur Del Esposte, Leonardo Leite
+# Copyright (C) 2012, Arthur Del Esposte, Leonardo Leite, Aline Santos, Gabriel Augusto, Thallys Martins, Thatiany Lima, Winstein Martins.
 #
 # This file is part of Radar Parlamentar.
 # 
@@ -73,26 +73,37 @@ class Temas():
 
 class FiltroProposicao():
 
-    def recupera_proposicoes(self, casa_legislativa):
+    def filtra_proposicoes(self, casa_legislativa, periodo_casa_legislativa, palavras_chave):
+        proposicoes = self._recupera_proposicoes(casa_legislativa)
+
+        votacoes = models.Votacao.por_casa_legislativa(casa_legislativa, periodo_casa_legislativa.ini, periodo_casa_legislativa.fim)
+
+        proposicoes_com_votacoes = self._filtra_proposicoes_com_votacoes(proposicoes, votacoes)
+
+	proposicoes_com_palavras_chave = self._filtra_proposicoes_por_palavras_chave(proposicoes_com_votacoes, votacoes, palavras_chave)
+
+        return proposicoes_com_palavras_chave
+
+    def _recupera_proposicoes(self, casa_legislativa):
         return models.Proposicao.objects.filter(casa_legislativa_id = casa_legislativa.id)
 
-    def recupera_votacoes_da_proposicao(self,proposicao, votacoes):
+    def _recupera_votacoes_da_proposicao(self,proposicao, votacoes):
         votacoes_da_proposicao = []
         for votacao in votacoes:
             if votacao.proposicao_id == proposicao.id:
                 votacoes_da_proposicao.append(votacao)
         return votacoes_da_proposicao        
 
-    def filtra_proposicoes_com_votacoes(self, proposicoes, votacoes):
+    def _filtra_proposicoes_com_votacoes(self, proposicoes, votacoes):
         proposicoes_com_votacoes = []
         for proposicao in proposicoes:
-            if len(self.recupera_votacoes_da_proposicao(proposicao, votacoes)) > 0:
+            if len(self._recupera_votacoes_da_proposicao(proposicao, votacoes)) > 0:
                 proposicoes_com_votacoes.append(proposicao)
         return proposicoes_com_votacoes 
     
-    def palavra_existe_em_proposicao(self, proposicao, votacoes, palavra_chave):
+    def _palavra_existe_em_proposicao(self, proposicao, votacoes, palavra_chave):
         #procura uma substring dentro de uma string
-        if((re.search(palavra_chave.upper(), proposicao.descricao.upper())!= None) or (re.search(palavra_chave.upper(), proposicao.ementa.upper())!= None) or (re.search(palavra_chave.upper(), proposicao.indexacao.upper())!= None)):
+        if((re.search(palavra_chave.upper(), proposicao.descricao.upper())!= None) or (re.search(palavra_chave.upper(), proposicao.ementa.upper())!= None) or (re.search(palavra_chave.upper(),       proposicao.indexacao.upper())!= None)):
             return True
 
         for votacao in votacoes:
@@ -100,29 +111,20 @@ class FiltroProposicao():
                 return True
         return False	 
 
-    def verifica_palavras_chave_em_proposicao(self, proposicao, votacoes, lista_palavras_chave):
-        votacoes_da_proposicao = self.recupera_votacoes_da_proposicao(proposicao, votacoes)
+    def _verifica_palavras_chave_em_proposicao(self, proposicao, votacoes, lista_palavras_chave):
+        votacoes_da_proposicao = self._recupera_votacoes_da_proposicao(proposicao, votacoes)
         for palavra_chave in lista_palavras_chave:
-            if(self.palavra_existe_em_proposicao(proposicao, votacoes_da_proposicao, palavra_chave)):
+            if(self._palavra_existe_em_proposicao(proposicao, votacoes_da_proposicao, palavra_chave)):
                 return True
         return False
 
-    def filtra_proposicoes_por_palavras_chave(self, proposicoes, votacoes, palavras_chave):
+    def _filtra_proposicoes_por_palavras_chave(self, proposicoes, votacoes, palavras_chave):
         proposicoes_com_palavras_chave = []
 
         for proposicao in proposicoes:
-            if self.verifica_palavras_chave_em_proposicao(proposicao, votacoes, palavras_chave):
+            if self._verifica_palavras_chave_em_proposicao(proposicao, votacoes, palavras_chave):
                 proposicoes_com_palavras_chave.append(proposicao)
         return proposicoes_com_palavras_chave
 
-    def filtra_proposicoes(self, casa_legislativa, periodo_casa_legislativa, palavras_chave):
-        proposicoes = self.recupera_proposicoes(casa_legislativa)
-
-        votacoes = models.Votacao.por_casa_legislativa(casa_legislativa, periodo_casa_legislativa.ini, periodo_casa_legislativa.fim)
-
-        proposicoes_com_votacoes = self.filtra_proposicoes_com_votacoes(proposicoes, votacoes)
-
-	proposicoes_com_palavras_chave = self.filtra_proposicoes_por_palavras_chave(proposicoes_com_votacoes, votacoes, palavras_chave)
-
-        return proposicoes_com_palavras_chave
+    
 
