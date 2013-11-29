@@ -50,7 +50,7 @@ class AnalisadorTemporal:
         data_inicio e data_fim -- strings no formato 'aaaa-mm-dd'.
         analises_periodo -- lista de objetos da classe AnalisePeriodo
     """
-    def __init__(self, casa_legislativa, periodicidade=models.BIENIO, votacoes=[]):
+    def __init__(self, casa_legislativa, periodicidade, votacoes=[]):
         self.casa_legislativa = casa_legislativa
         retriever = utils.PeriodosRetriever(self.casa_legislativa, periodicidade)
         self.periodos = retriever.get_periodos()
