@@ -78,9 +78,6 @@ class Url(object):
 class Camaraws:
     """Acesso aos Web Services da Câmara dos Deputados"""
 
-    URL_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?idProp=%s'
-    URL_VOTACOES = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?tipo=%s&numero=%s&ano=%s'
-    URL_LISTAR_PROPOSICOES = 'http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=%s&numero=&ano=%s&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao='
     def __init__(self,url = Url()):
         self.url = url
 
@@ -96,7 +93,7 @@ class Camaraws:
             # http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/proposicoes-1/listarproposicoes
             retorno = URL_LISTAR_PROPOSICOES
             required = ["sigla", "ano"]
-            parametros_de_consulta = ["sigla", "numero", "ano", "datapresentacaoini", "datapresentacaofim", "autor", "partenomeautor", "siglapartidoautor", "siglaufautor", "generoautor", "codestado", "codorgaoestado", "emtramitacao"]
+            parametros_de_consulta = ["sigla", "numero", "ano", "datapresentacaoini", "datapresentacaofim", "idtipoautor", "partenomeautor", "siglapartidoautor", "siglaufautor", "generoautor", "codestado", "codorgaoestado", "emtramitacao"]
             parametros_de_retorno = ["id", "nome", "tipoproposicao", "numero", "ano", "orgaonumerador", "dataapresentacao", "ementa", "explicacaoementa", "regime", "apreciacao", "qtdeautores", "autor1", "ultimodespacho", "situacao", "proposicaoprincipal"]
 
         elif base == "obter_proposicao_por_id":
