@@ -100,7 +100,6 @@ class Partido(models.Model):
         from_nome(nome): retorna objeto do tipo Partido
         from_numero(numero): retorna objeto do tipo Partido
         get_sem_partido(): retorna um partido chamado 'SEM PARTIDO'
-        exists(): retorna True se já existe um partido com mesmo nome e número na base de dados, ou False caso contrário
     """
 
     LISTA_PARTIDOS = os.path.join(MODULE_DIR, 'recursos/partidos.txt')
@@ -228,6 +227,7 @@ class PeriodoCasaLegislativa(object):
     """
 
     def __init__(self,data_inicio,data_fim, quantidade_votacoes = 0):
+        # TODO self.casa_legislativa = ...
         self.ini = data_inicio
         self.fim = data_fim
         self.quantidade_votacoes = quantidade_votacoes
@@ -454,6 +454,7 @@ class Votacao(models.Model):
         id_vot - string identificadora de acordo a fonte de dados
         descricao, resultado -- strings
         data -- data da votação (tipo date)
+        resultado -- string
         proposicao -- objeto do tipo Proposicao
 
     Métodos:
