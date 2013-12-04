@@ -244,10 +244,10 @@ class ImportadorConvencao:
         prop.id_prop = NUM
         prop.sigla = 'PL'
         prop.numero = NUM
-        prop.ementa = 'ementa da batalha'
+        prop.ementa = 'o uso proibido de armas químicas'
         prop.descricao = 'descricao da guerra'
         prop.casa_legislativa = self.casa
-        prop.indexacao = 'indexacao'
+        prop.indexacao = 'bombas, efeitos, destruições'
         prop.save()
         votacao = self._gera_votacao(NUM, DESCRICAO, DATA_NO_SEGUNDO_SEMESTRE, prop)
 
