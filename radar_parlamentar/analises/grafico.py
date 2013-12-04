@@ -43,6 +43,7 @@ class JsonAnaliseGenerator:
         self.json = None
         self.max_parlamentar_radius_calculator = MaxRadiusCalculator()
         self.max_partido_radius_calculator = MaxRadiusCalculator()
+        self.scaler = GraphScaler()
         
     def get_json(self):
         if not self.json:
@@ -148,8 +149,8 @@ class JsonAnaliseGenerator:
         dict_partido["x"] =  []
         dict_partido["y"] =  []
         for ap in self.analise_temporal.analises_periodo:
-            scaler = GraphScaler()
-            coordenadas = scaler.scale(ap.coordenadas_partidos)
+            cache_coords_key = str(ap.periodo)+"partido"
+            coordenadas = self.scaler.scale(ap.coordenadas_partidos,cache_coords_key)
             try:
                 x = round(coordenadas[partido][0],2)
                 y = round(coordenadas[partido][1],2)
@@ -182,8 +183,8 @@ class JsonAnaliseGenerator:
         dict_parlamentar["x"] =  []
         dict_parlamentar["y"] =  []     
         for ap in self.analise_temporal.analises_periodo:
-            scaler = GraphScaler()
-            coordenadas = scaler.scale(ap.coordenadas_legislaturas)
+            cache_coords_key = str(ap.periodo)+"parlamentar"
+            coordenadas = self.scaler.scale(ap.coordenadas_legislaturas,cache_coords_key)
             if coordenadas.has_key(leg_id):
                 x = coordenadas[leg_id][0]
                 y = coordenadas[leg_id][1]
@@ -221,10 +222,20 @@ class MaxRadiusCalculator:
 
 class GraphScaler:
 
-    def scale(self, coords):
+    def __init__(self):
+        self.cache = {}    
+
+    def scale(self, coords, cache_key):
         """Changes X,Y scale from [-1,1] to [-100,100]
         coords -- key => [x, y]
         """
+        if cache_key in self.cache.keys():
+            return self.cache[cache_key]
+        scaled = self._scale(coords)
+        self.cache[cache_key] = scaled
+        return scaled
+
+    def _scale(self,coords):
         scaled = {}
         for key, coord in coords.items():
             x, y = coord[0], coord[1]
@@ -232,4 +243,3 @@ class GraphScaler:
                 raise ValueError("Value should be in [-1,1]")
             scaled[key] = [x*100, y*100]
         return scaled
-
