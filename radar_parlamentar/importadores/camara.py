@@ -78,55 +78,29 @@ class Url(object):
 class Camaraws:
     """Acesso aos Web Services da Câmara dos Deputados"""
 
+    URL_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?'
+    URL_VOTACOES = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?'
+    URL_LISTAR_PROPOSICOES = 'http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?'
+    
     def __init__(self,url = Url()):
         self.url = url
 
-    def _montar_url_consulta_camara(self,base, **kwargs):
-        URL_PROPOSICAO_POR_ID = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?'
-        URL_VOTACOES = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?'
-        URL_LISTAR_PROPOSICOES = 'http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?'
-        retorno = ""
-        required = []
-        parametros_de_consulta = []
-
-        if base == "listar_proposicoes":
-            # http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/proposicoes-1/listarproposicoes
-            retorno = URL_LISTAR_PROPOSICOES
-            required = ["sigla", "ano"]
-            parametros_de_consulta = ["sigla", "numero", "ano", "datapresentacaoini", "datapresentacaofim", "idtipoautor", "partenomeautor", "siglapartidoautor", "siglaufautor", "generoautor", "codestado", "codorgaoestado", "emtramitacao"]
-            parametros_de_retorno = ["id", "nome", "tipoproposicao", "numero", "ano", "orgaonumerador", "dataapresentacao", "ementa", "explicacaoementa", "regime", "apreciacao", "qtdeautores", "autor1", "ultimodespacho", "situacao", "proposicaoprincipal"]
-
-        elif base == "obter_proposicao_por_id":
-            #http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/proposicoes-1/obterproposicao
-            retorno = URL_PROPOSICAO_POR_ID
-            required = ["idprop"]
-            parametros_de_consulta = ["idprop"]
-            parametros_de_retorno = ["id", "nome", "tipoProposicao", "numero", "ano", "orgaoNumerador", "dataApresentacao", "ementa", "explicacaoEmenta", "regime", "apreciacao", "qtdeAutores", "autor1", "ultimoDespacho", "situacao", "proposicaoPrincipal"]
-
-        elif base == "obter_votacao_proposicao":
-            #http://www2.camara.leg.br/transparencia/dados-abertos/dados-abertos-legislativo/webservices/proposicoes-1/obtervotacaoproposicao
-            retorno = URL_VOTACOES
-            required = ["tipo", "numero", "ano"]
-            parametros_de_consulta = ["tipo", "numero", "ano"]
-            parametros_de_retorno = ["sigla", "numero", "ano", "votacoes"]
+    def _montar_url_consulta_camara(self,base_url,required_url_params,all_url_params, **kwargs):
+        built_url = base_url
 
         for par in kwargs.keys():
             if type(par) == str:
                 kwargs[par] = kwargs[par].lower()
 
-        for par in required:
-            if par not in kwargs.keys():
-                return None
-
-        for par in parametros_de_consulta:
+        for par in all_url_params:
             if par in kwargs.keys():
-                retorno += str(par)+"="+str(kwargs[par])+"&"
+                built_url += str(par)+"="+str(kwargs[par])+"&"
             else:
-                retorno += str(par)+"=&"
+                built_url += str(par)+"=&"
 
-        retorno = retorno.rstrip("&")
+        built_url = built_url.rstrip("&")
 
-        return retorno
+        return built_url
 
     def obter_proposicao_por_id(self, id_prop):
         """Obtém detalhes de uma proposição
@@ -141,8 +115,10 @@ class Camaraws:
         Exceções:
             ValueError -- quando proposição não existe
         """
-        parametros = { 'idprop': id_prop}
-        url = self._montar_url_consulta_camara('obter_proposicao_por_id', **parametros)
+        required = ["idprop"]
+        parametros_de_consulta = ["idprop"]
+        args = { 'idprop': id_prop}
+        url = self._montar_url_consulta_camara(Camaraws.URL_PROPOSICAO,required, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
         if tree is None:
             raise ValueError('Proposicao %s nao encontrada' % id_prop)
@@ -161,10 +137,12 @@ class Camaraws:
         Exceções:
             ValueError -- quando proposição não existe ou não possui votações
         """
-        parametros = {'tipo':sigla, 'numero':num, 'ano':ano}
+        required = ["tipo", "numero", "ano"]
+        parametros_de_consulta = ["tipo", "numero", "ano"]
+        args = {'tipo':sigla, 'numero':num, 'ano':ano}
         if kwargs:
-            parametros.update(kwargs)
-        url = self._montar_url_consulta_camara('obter_votacao_proposicao', **parametros)
+            args.update(kwargs)
+        url = self._montar_url_consulta_camara(Camaraws.URL_VOTACOES,required,parametros_de_consulta, **args)
         tree = self.url.toXml(url)
         if tree is None:
             raise ValueError('Votacoes da proposicao %s %s/%s nao encontrada' % (sigla, num, ano))
@@ -185,11 +163,13 @@ class Camaraws:
             ValueError -- quando o web service não retorna um XML,
             que ocorre quando não há resultados para os critérios da busca
         """
-        parametros = {'sigla':sigla, 'ano':ano}
+        required = ["sigla", "ano"]
+        parametros_de_consulta = ["sigla", "numero", "ano", "datapresentacaoini", "datapresentacaofim", "idtipoautor", "partenomeautor", "siglapartidoautor", "siglaufautor", "generoautor", "codestado", "codorgaoestado", "emtramitacao"]
+        args = {'sigla':sigla, 'ano':ano}
         if kwargs:
-            parametros.update(kwargs)
-        print (parametros)
-        url = self._montar_url_consulta_camara('listar_proposicoes', **parametros)
+            args.update(kwargs)
+        print (args)
+        url = self._montar_url_consulta_camara(Camaraws.URL_LISTAR_PROPOSICOES,required,parametros_de_consulta, **args)
         tree = self.url.toXml(url)
         if tree is None:
             raise ValueError('Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
