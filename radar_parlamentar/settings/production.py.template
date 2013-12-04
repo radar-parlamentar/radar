@@ -16,9 +16,23 @@ DATABASES = {
     }
 }
 
-# MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ['radar_parlamentar.middleware.ConsoleExceptionMiddleware']
 
-TEMPLATE_DIRS = ( 'radar_parlamentar/radar_parlamentar/templates/' )
+MIDDLEWARE_CLASSES = [
+    'radar_parlamentar.middleware.SmartUpdateCacheMiddleware', 
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'radar_parlamentar.middleware.ConsoleExceptionMiddleware',
+    # Uncomment the next line for simple clickjacking protection:
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CACHE_MIDDLEWARE_SECONDS = 10000000
+CACHE_MIDDLEWARE_KEY_PREFIX = 'site_cache'
+
 
 CACHES = {
     'default': {
@@ -26,3 +40,5 @@ CACHES = {
         'LOCATION': '/home/radarparlamentar/radarparlamentar.polignu.org/django_cache',
     }
 }
+
+TEMPLATE_DIRS = ( 'radar_parlamentar/radar_parlamentar/templates/' )
