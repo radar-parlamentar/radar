@@ -85,14 +85,14 @@ class Camaraws:
     def __init__(self,url = Url()):
         self.url = url
 
-    def _montar_url_consulta_camara(self,base_url,required_url_params,all_url_params, **kwargs):
+    def _montar_url_consulta_camara(self,base_url,url_params, **kwargs):
         built_url = base_url
 
         for par in kwargs.keys():
             if type(par) == str:
                 kwargs[par] = kwargs[par].lower()
 
-        for par in all_url_params:
+        for par in url_params:
             if par in kwargs.keys():
                 built_url += str(par)+"="+str(kwargs[par])+"&"
             else:
@@ -115,10 +115,9 @@ class Camaraws:
         Exceções:
             ValueError -- quando proposição não existe
         """
-        required = ["idprop"]
         parametros_de_consulta = ["idprop"]
         args = { 'idprop': id_prop}
-        url = self._montar_url_consulta_camara(Camaraws.URL_PROPOSICAO,required, parametros_de_consulta, **args)
+        url = self._montar_url_consulta_camara(Camaraws.URL_PROPOSICAO, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
         if tree is None:
             raise ValueError('Proposicao %s nao encontrada' % id_prop)
@@ -137,12 +136,11 @@ class Camaraws:
         Exceções:
             ValueError -- quando proposição não existe ou não possui votações
         """
-        required = ["tipo", "numero", "ano"]
         parametros_de_consulta = ["tipo", "numero", "ano"]
         args = {'tipo':sigla, 'numero':num, 'ano':ano}
         if kwargs:
             args.update(kwargs)
-        url = self._montar_url_consulta_camara(Camaraws.URL_VOTACOES,required,parametros_de_consulta, **args)
+        url = self._montar_url_consulta_camara(Camaraws.URL_VOTACOES,parametros_de_consulta, **args)
         tree = self.url.toXml(url)
         if tree is None:
             raise ValueError('Votacoes da proposicao %s %s/%s nao encontrada' % (sigla, num, ano))
@@ -163,13 +161,12 @@ class Camaraws:
             ValueError -- quando o web service não retorna um XML,
             que ocorre quando não há resultados para os critérios da busca
         """
-        required = ["sigla", "ano"]
         parametros_de_consulta = ["sigla", "numero", "ano", "datapresentacaoini", "datapresentacaofim", "idtipoautor", "partenomeautor", "siglapartidoautor", "siglaufautor", "generoautor", "codestado", "codorgaoestado", "emtramitacao"]
         args = {'sigla':sigla, 'ano':ano}
         if kwargs:
             args.update(kwargs)
         print (args)
-        url = self._montar_url_consulta_camara(Camaraws.URL_LISTAR_PROPOSICOES,required,parametros_de_consulta, **args)
+        url = self._montar_url_consulta_camara(Camaraws.URL_LISTAR_PROPOSICOES,parametros_de_consulta, **args)
         tree = self.url.toXml(url)
         if tree is None:
             raise ValueError('Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
