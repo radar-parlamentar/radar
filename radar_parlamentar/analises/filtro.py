@@ -73,16 +73,16 @@ class Temas():
 
 class FiltroProposicao():
 
-    def filtra_proposicoes(self, casa_legislativa, periodo_casa_legislativa, palavras_chave):
+    def filtra_votacoes(self, casa_legislativa, periodo_casa_legislativa, palavras_chave):
         proposicoes = self._recupera_proposicoes(casa_legislativa)
 
         votacoes = models.Votacao.por_casa_legislativa(casa_legislativa, periodo_casa_legislativa.ini, periodo_casa_legislativa.fim)
 
         proposicoes_com_votacoes = self._filtra_proposicoes_com_votacoes(proposicoes, votacoes)
 
-	proposicoes_com_palavras_chave = self._filtra_proposicoes_por_palavras_chave(proposicoes_com_votacoes, votacoes, palavras_chave)
+        votacoes_com_palavras_chave = self._filtra_votacoes_por_palavras_chave(proposicoes_com_votacoes, votacoes, palavras_chave)
 
-        return proposicoes_com_palavras_chave
+        return votacoes_com_palavras_chave
 
     def _recupera_proposicoes(self, casa_legislativa):
         return models.Proposicao.objects.filter(casa_legislativa_id = casa_legislativa.id)
@@ -118,13 +118,10 @@ class FiltroProposicao():
                 return True
         return False
 
-    def _filtra_proposicoes_por_palavras_chave(self, proposicoes, votacoes, palavras_chave):
-        proposicoes_com_palavras_chave = []
+    def _filtra_votacoes_por_palavras_chave(self, proposicoes, votacoes, palavras_chave):
+        votacoes_com_palavras_chave = []
 
         for proposicao in proposicoes:
             if self._verifica_palavras_chave_em_proposicao(proposicao, votacoes, palavras_chave):
-                proposicoes_com_palavras_chave.append(proposicao)
-        return proposicoes_com_palavras_chave
-
-    
-
+                votacoes_com_palavras_chave.extend(self._recupera_votacoes_da_proposicao(proposicao, votacoes))
+        return votacoes_com_palavras_chave
