@@ -233,7 +233,10 @@ class PeriodoCasaLegislativa(object):
         self.quantidade_votacoes = quantidade_votacoes
         self.string = ""
         self.string = unicode(self)
-
+    
+    def __str__(self):
+        return self.__unicode__()
+    
     def __unicode__(self):
         if not self.string: 
             self._build_string()
