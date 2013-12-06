@@ -44,6 +44,10 @@
             <option value="ANO">Ano</option>
             <option value="SEMESTRE">Semestre</option>
         </select>
+        <br>
+        <h3>Filtrar votações por palavras chave:</h3>
+        <input type="text" id="palavras_chave" name ="palavras_chave" size=30>
+        <input type="submit" value="enviar">
         </form> 
         <br><br>
         <aside id="legenda" class="list" style="width:300px">
@@ -96,7 +100,7 @@
     
     menuActive("analises");
   $(document).ready(function() {
-    Plot.initialize('{{casa_legislativa.nome_curto}}', '{{periodicidade}}')
+    Plot.initialize('{{casa_legislativa.nome_curto}}', '{{periodicidade}}', '{{palavras_chave}}')
   });
 {% endblock extrascriptsend %}
 

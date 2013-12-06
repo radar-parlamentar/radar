@@ -382,3 +382,20 @@ class ModelsTest(TestCase):
 
         nomes_votacao = [vt.id_vot for vt in depois_objetos_votacao]
         self.assertFalse(' 12345' in nomes_votacao)
+
+class StringUtilsTest(TestCase):
+
+    def test_transforma_texto_em_lista_de_string_texto_vazio(self):
+        lista_de_string = utils.StringUtils.transforma_texto_em_lista_de_string("")
+        self.assertEquals(0, len(lista_de_string))
+
+    def test_transforma_texto_em_lista_de_string_texto_nulo(self):
+        lista_de_string = utils.StringUtils.transforma_texto_em_lista_de_string(None)
+        self.assertEquals(0, len(lista_de_string))
+
+    def test_transforma_texto_em_lista_de_string(self):
+        lista_de_string = utils.StringUtils.transforma_texto_em_lista_de_string("educação, saúde, desmatamento")
+        self.assertEquals(3, len(lista_de_string))
+        self.assertEquals("educação", lista_de_string[0])
+        self.assertEquals("saúde", lista_de_string[1])
+        self.assertEquals("desmatamento", lista_de_string[2])

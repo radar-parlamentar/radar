@@ -24,6 +24,7 @@ from math import hypot, atan2, pi
 from models import AnalisePeriodo, AnaliseTemporal
 from modelagem import models
 from modelagem import utils
+from analises import filtro
 import logging
 import numpy
 import pca
@@ -50,7 +51,7 @@ class AnalisadorTemporal:
         data_inicio e data_fim -- strings no formato 'aaaa-mm-dd'.
         analises_periodo -- lista de objetos da classe AnalisePeriodo
     """
-    def __init__(self, casa_legislativa, periodicidade, votacoes=[]):
+    def __init__(self, casa_legislativa, periodicidade, palavras_chave, votacoes=[]):
         self.casa_legislativa = casa_legislativa
         retriever = utils.PeriodosRetriever(self.casa_legislativa, periodicidade)
         self.periodos = retriever.get_periodos()
@@ -58,7 +59,8 @@ class AnalisadorTemporal:
         self.fim = self.periodos[len(self.periodos)-1].fim
         self.periodicidade = periodicidade
         self.area_total = 1
-        self.analises_periodo = [] 
+        self.analises_periodo = []
+        self.palavras_chave = palavras_chave
         self.votacoes = []
         self.json = ""
 
@@ -78,7 +80,7 @@ class AnalisadorTemporal:
         """Método da classe AnalisadorTemporal que cria os objetos AnalisadorPeriodo e faz as análises."""
         for periodo in self.periodos:
             logger.info("Analisando periodo %s a %s." % (str(periodo.ini),str(periodo.fim)) )
-            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, self.votacoes)
+            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, self.votacoes, self.palavras_chave)
             if analisadorPeriodo.votacoes:
                 logger.info("O periodo possui %d votações." % len(analisadorPeriodo.votacoes))
                 analisePeriodo = analisadorPeriodo.analisa()
@@ -102,7 +104,7 @@ class AnalisadorTemporal:
 
 class AnalisadorPeriodo:
 
-    def __init__(self, casa_legislativa, periodo=None, votacoes=[]):
+    def __init__(self, casa_legislativa, periodo=None, votacoes=[], palavras_chave=""):
         """Argumentos:
             casa_legislativa -- objeto do tipo CasaLegislativa; somente votações desta casa serão analisados.
             periodo -- objeto do tipo PeriodoCasaLegislativa; 
@@ -117,9 +119,10 @@ class AnalisadorPeriodo:
         self.partidos = self.casa_legislativa.partidos()
         self.legislaturas = self.casa_legislativa.legislaturas()
         self.votacoes = votacoes
+        self.palavras_chave = palavras_chave
         if not self.votacoes: 
             self._inicializa_votacoes()
-        
+
         self.num_votacoes = len(self.votacoes)
         self.analise_ja_feita = False # quando a analise for feita, vale True.
         self.theta = 0 # em graus, eventual rotação feita por self.espelha_ou_roda()
@@ -139,7 +142,7 @@ class AnalisadorPeriodo:
 
     def _inicializa_votacoes(self):
         """Pega votações deste período no banco de dados e seta a lista self.votacoes"""
-        if self.ini == None and self.fim == None:
+        """if self.ini == None and self.fim == None:
             self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa) 
         if self.ini == None and self.fim != None:
             self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa).filter(data__lte=self.fim)
@@ -147,6 +150,11 @@ class AnalisadorPeriodo:
             self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa).filter(data__gte=self.ini)
         if self.ini != None and self.fim != None:
             self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa).filter(data__gte=self.ini, data__lte=self.fim)
+        """
+        filtro_votacao = filtro.FiltroProposicao()
+        self.votacoes = filtro_votacao.filtra_votacoes(self.casa_legislativa, self.periodo, self.palavras_chave)
+        #self.votacoes = models.Votacao.objects.all()[:3]
+        #self.votacoes = []
 
     def analisa(self):
         """Retorna instância de AnalisePeriodo"""
