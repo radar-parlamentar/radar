@@ -43,7 +43,8 @@ class JsonAnaliseGenerator:
         self.json = None
         self.max_parlamentar_radius_calculator = MaxRadiusCalculator()
         self.max_partido_radius_calculator = MaxRadiusCalculator()
-        self.scaler = GraphScaler()
+        self.parlamentaresScaler = GraphScaler()
+        self.partidosScaler = GraphScaler()
         
     def get_json(self):
         if not self.json:
@@ -149,8 +150,8 @@ class JsonAnaliseGenerator:
         dict_partido["x"] =  []
         dict_partido["y"] =  []
         for ap in self.analise_temporal.analises_periodo:
-            cache_coords_key = str(ap.periodo)+"partido"
-            coordenadas = self.scaler.scale(ap.coordenadas_partidos,cache_coords_key)
+            cache_coords_key = str(ap.periodo)
+            coordenadas = self.partidosScaler.scale(ap.coordenadas_partidos,cache_coords_key)
             try:
                 x = round(coordenadas[partido][0],2)
                 y = round(coordenadas[partido][1],2)
@@ -183,8 +184,8 @@ class JsonAnaliseGenerator:
         dict_parlamentar["x"] =  []
         dict_parlamentar["y"] =  []     
         for ap in self.analise_temporal.analises_periodo:
-            cache_coords_key = str(ap.periodo)+"parlamentar"
-            coordenadas = self.scaler.scale(ap.coordenadas_legislaturas,cache_coords_key)
+            cache_coords_key = str(ap.periodo)
+            coordenadas = self.parlamentaresScaler.scale(ap.coordenadas_legislaturas,cache_coords_key)
             if coordenadas.has_key(leg_id):
                 x = coordenadas[leg_id][0]
                 y = coordenadas[leg_id][1]
