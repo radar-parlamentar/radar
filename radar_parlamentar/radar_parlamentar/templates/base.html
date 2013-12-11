@@ -59,7 +59,7 @@
 </script>
 </head>
 <body>
-    <header id="header">
+    <header id="header" {%block headerAttr %} {% endblock headerAttr %}>
         <a href="/sim-voto-aberto"><img alt="Voto aberto: Eu apoio!" src="/static/assets/votoaberto/vaberto_branco.svg" style="position: absolute; top: 12px; right: 0; border: 0; z-index:1000;"></a>
         <div class="bar"></div><!-- the top border -->
         <section id="navNLogo">
@@ -106,6 +106,7 @@
                 </nav>
             </div><!-- end of .wrap -->
         </section><!-- end of #nav -->
+        {% block imageBox %}
         <section id="imageBox" class="headerImages">
             <div class="image {% block headerImgClass %}{% endblock headerImgClass %}"></div>
             <hgroup class="headerMsg">
@@ -114,6 +115,7 @@
             </hgroup>
         </section><!-- end of #imageBox -->
     </header><!-- end of #header -->
+        {% endblock imageBox %}
 
     <section id="content">
         <ul class="breadcrumbs">

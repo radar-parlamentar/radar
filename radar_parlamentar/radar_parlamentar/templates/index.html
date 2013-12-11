@@ -1,100 +1,54 @@
-<!DOCTYPE html>
-<html lang="pt-br" class="no-js">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="text/html"/>
-    <meta name="distribution" content="global"/>
-    <meta name="robots" content="follow, all"/>
-    <meta name="googlebot" content="index, follow"/>
-    <meta name="revisit-after" content="10 days"/>
-    <meta name="keywords" content="política, análise matemática, parlamentar, votações, partidos, radar parlamentar, polignu" />
-    <meta name="description" content="A tecnologia a serviço do cidadão: uma ferramenta para análise das casas legislativas."/>
+{% extends "base.html" %}
 
-    <title>Radar Parlamentar</title>
+{% block title %}
+Radar Parlamentar
+{% endblock title%}
 
-    <link rel="shortcut icon" href="/static/assets/favicon1.ico"/>
+{% block headerAttr %}
+class = "largeSlides"
+{% endblock headerAttr %}
 
-    <!-- CSS Libraries and codes -->
-    <link rel="stylesheet" type="text/css" href="/static/files/codes/css/reset.css" />
-    <link rel="stylesheet" href="/static/files/codes/css/style.css" type="text/css" />
-    <link rel="stylesheet" href="/static/files/codes/css/prettyPhoto.css" type="text/css" />
+{% block extrascripts %}
+    <script style="display: none;">
+        /* Cycle plugin for home page */
+        $(document).ready(function(){
+            var onBefore = function(curr, next, opts, fwd) {
+                jQuery(next).find('.slideMsgs.double').find('h1').css({'display':'none', 'left':'-999px', 'opacity': 0});
+                jQuery(next).find('.slideMsgs.double').find('h4').css({'display':'none', 'left':'-999px', 'opacity': 0});
+            }
 
-    {% if request.get_host == '127.0.0.1:8000' or request.get_host == 'localhost:8000' %}
-        <!-- Modernizr for HTML5 -->
-        <script src="/static/files/codes/js/modernizr.min.js"></script>
-        <!-- the jQuery library -->
-        <script src="/static/files/codes/js/jquery.min.js"></script>
-    {% else %}
-        <!-- Modernizr for HTML5 -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
-        <script type="text/javascript">
-          if (typeof Modernizr === 'undefined') {
-            var e = document.createElement('script');
-                e.src = '/static/files/codes/js/modernizr.min.js';
-                e.type='text/javascript';
-            document.getElementsByTagName("head")[0].appendChild(e);
-          }
-        </script>
-        <!-- the jQuery ligrary -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <script type="text/javascript">
-          if (typeof jQuery === 'undefined') {
-            var e = document.createElement('script');
-                e.src = '/static/files/codes/js/jquery.min.js';
-                e.type='text/javascript';
-            document.getElementsByTagName("head")[0].appendChild(e);
-          }
-        </script>
-    {% endif %}
-</head>
-<body>
-    <header id="header"  class="largeSlides">
-        <a href="/sim-voto-aberto"><img alt="Voto aberto: Eu apoio!" src="/static/assets/votoaberto/vaberto_branco.svg" style="position: absolute; top: 12px; right: 0; border: 0; z-index:1000;"></a>
-        <div class="bar"></div><!-- the top border -->
-        <section id="navNLogo">
-            <div class="wrap">
-                <div id="logo">
-                    <a href="#">
-                        <img src="/static/assets/logo_radar.svg" alt="Logo Radar Parlamentar" style="width: 150px; height: 110px; position:absolute; top:4px;">
-                    </a>
-                </div>
-                <nav>
-                    <ul id="menu">
-<!--                        <li id="botao_home"><a href="/index/">Home</a></li> -->
-                        <li id="analises">
-                            <a style="cursor: default;">Gráficos</a>
-                            <ul>
-                                <li id="botao_cmsp"><a href="/analises/analise/cmsp/">Câmara Municipal de São Paulo</a></li>
-                                <li id="botao_cpd"><a href="/analises/analise/cdep/">Câmara dos Deputados</a></li>
-                                <li><a href="/analises/analise/sen">Senado</a></li>
-                                <li><a href="/importadores">Acrescenta mais uma!</a></li>
-                            </ul>
-                        </li>
-                        <li id="genero">
-                            <a href="/genero/">Gênero</a>
-                            <ul>
-                                <li id="perfil_legis"><a href="/genero/perfil/legislaturas/">Perfil Legislaturas</a></li>
-                                <li id="perfil_part"><a href="/genero/perfil/partido/">Perfil Partido</a></li>
-                                <li id="comp_part"><a href="/genero/perfil/partido/comparacao/">Comparação Perfis Partidários</a></li>
-                                <li id="tematicas_part"><a href="/genero/tematica/nuvem/">Análise: Temáticas</a></li>
-                                <li id="tematicas_part"><a href="/genero/tematica/partido/">Análise: Temáticas Partido</a></a></li>
-                                <li id="tematicas_legis"><a href="/genero/tematica/legislador/">Análise: Temáticas Legislador(a)</a></li>
-                            </ul>
-                        <li id="origem">
-                            <a href="/origem/">História do Projeto</a>
-                        </li>
-                        <li id="botao_votoaberto"><a href="/sim-voto-aberto/">Voto Aberto</a></li>
-                        <li id="sobre_nos">				
-			    <a style="cursor: default;">Sobre Nós</a>
-			    <ul>
-				<li><a href="/ogrupo">O Grupo</a></li>
-				<li><a href="/premiacoes">Premiações</a></li>			
-			    </ul>
-			</li>
-                    </ul><!-- end of #menu -->
-                </nav>
-            </div><!-- end of .wrap -->
-        </section><!-- end of #nav -->
+            var onAfter = function(curr, next, opts, fwd) {
+                var width = $(document).width() - 980;
+                var h1Height = jQuery(this).find('.slideMsgs.double').find('h1').height(true);
+                jQuery(this).find('.slideMsgs.double').find('h1').css('display', 'block').delay(100).animate({'left': ((width / 2) + 70) +'px', 'opacity': 1}, 400, 'easeInQuad');
+                jQuery(this).find('.slideMsgs.double').find('h4').css({display: 'block', top: h1Height + 'px'}).delay(400).animate({'left': ((width / 2) + 70) +'px', 'opacity': 1}, 250, 'easeInQuad');
+            }
+
+            if ($('#slides').length > 0){
+                $('#slides').cycle({
+                    fx: 'scrollHorz',
+                    speed: 500,
+                    timeout: 5000,
+                    pause: 1,
+                    rev: 1,
+                    randomizeEffects: false,
+                    easing: 'easeInQuad', //jquery.easing library/plugin is required for this functionality
+                    next: '#sliderCtrls .next',
+                    prev: '#sliderCtrls .prev',
+                    before: onBefore,
+                    after: onAfter,
+                    pager: '',
+                    cleartypeNoBg: true
+                });
+            }
+            /* slider controls position inside the page*/
+            var left = Math.ceil((($(document).width()) - 980) / 2);
+            $('#sliderCtrls').css('left', left+'px');
+        });
+    </script>
+{% endblock extrascripts %}
+
+{% block imageBox %}
         <section id="imageBox">
             <ul id="slides">
                 <li data-slide="1">
@@ -128,44 +82,14 @@
             </div>
         </section><!-- end of #imageBox -->
     </header><!-- end of #header -->
+{% endblock imageBox %}
 
-    <section id="content">
+{% block content %}
 	    <div class="promoMsg">
 	            <h2>
 	                O Radar Parlamentar é um aplicativo que ilustra as semelhanças entre partidos políticos com base na análise matemática dos dados de votações que ocorrem na casa legislativa. As semelhanças são apresentadas em um gráfico bidimensional, em que círculos representam partidos ou parlamentares, e a distância entre esses círculos representa o quão parecido os mesmos votam.
 	            </h2>
         </div>
-        <!--hr class="elDvr" />
-
-        <ul class="promo3">
-            <li>
-                <a href="#">
-                    <img src="assets/icons/leaf.png" height="70" width="70" alt="Leaf">
-                </a>
-                <h4><a href="#">Awesome Graphics Design</a></h4>
-                <p>
-                    Pellentesque habitant quam morbi tristique senectus et netus et malesuada tristique fames. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
-                </p>
-            </li>
-            <li>
-                <a href="#">
-                    <img src="assets/icons/cup.png" height="70" width="70" alt="Cup">
-                </a>
-                <h4><a href="#">Stunning Character Animation</a></h4>
-                <p>
-                    Tristique senectus et netus et malesuada fames ac turpis egestas. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend.
-                </p>
-            </li>
-            <li>
-                <a href="#">
-                    <img src="assets/icons/bag.png" height="70" width="70" alt="Leather Bag">
-                </a>
-                <h4><a href="#">Creative Corporate Branding</a></h4>
-                <p>
-                    Habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est mauris.
-                </p>
-            </li>
-        </ul><!-- end of .promo3 -->
 
         <div class="stHead"><h4>Casas já analisadas</h4></div>
 
@@ -206,103 +130,9 @@
              <a href="https://github.com/leonardofl/radar_parlamentar">
              <img src="/static/assets/github.png"  alt="Código fonte no Github" /></a>
         </div>
-        </section>
-        
-
-        <section class="cols">
-            <div class="half">
-                <div class="stHead"><h4>Lei de acesso a informações públicas</h4></div>
-                <div id="feedback">
-                    <div class="ctrls">
-                        <a href="#" class="prev">Prev</a>
-                        <a href="#" class="next">Next</a>
-                    </div><!-- end of .ctrls -->
-                    <div class="wrap">
-                        <div class="contents">
-                            <ul>
-                                <li>
-                                    <blockquote>
-                                        <p>
-                                            Subordinam-se ao regime desta Lei: órgãos públicos integrantes da administração direta dos Poderes Executivo, Legislativo e Judiciário; Ministério Público; autarquias; fundações e empresas públicas; sociedades de economia mista e demais entidades controladas direta ou indiretamente pela União, Estados, Distrito Federal e Municípios.
-                                        </p>
-                                    </blockquote>
-                                    <cite>
-                                        Lei nº 12527/2011
-                                    </cite>
-                                </li>
-                                <li>
-                                    <blockquote>
-                                        <p>
-                                            Aplicam-se as disposições desta Lei, no que couber, às entidades privadas sem fins lucrativos que recebam, para realização de ações de interesse público, recursos públicos diretamente do orçamento ou mediante subvenções sociais, contrato de gestão, termo de parceria, convênios, acordo, ajustes ou outros instrumentos congêneres.
-                                        </p>
-                                    </blockquote>
-                                    <cite>
-                                        Lei nº 12527/2011
-                                    </cite>
-                                </li>
-                <li>
-                                    <blockquote>
-                                        <p>
-                                            É dever do Estado garantir o direito de acesso à informação, que será franqueada, mediante procedimentos objetivos e ágeis, de forma transparente, clara e em linguagem de fácil compreensão.
-                                        </p>
-                                    </blockquote>
-                                    <cite>
-                                        Lei nº 12527/2011
-                                    </cite>
-                                </li>
-                <li>
-                                    <blockquote>
-                                        <p>
-                                            Cabe aos órgãos e entidades do poder público assegurar a gestão transparente da informação, propiciando amplo acesso a ela e sua divulgação; e a proteção da informação, garantindo-se sua disponibilidade, autenticidade e integridade.
-                                        </p>
-                                    </blockquote>
-                                    <cite>
-                                        Lei nº 12527/2011
-                                    </cite>
-                                </li>
-                                <li>
-                                    <blockquote>
-                                        <p>
-                                            A negativa de acesso às informações objeto de pedido formulado aos órgãos e entidades quando não fundamentada, sujeitará o responsável a medidas disciplinares, nos termos do art. 32 da Lei nº 12527/2011.
-                                        </p>
-                                    </blockquote>
-                                    <cite>
-                                        http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2011/Lei/L12527.htm
-                                    </cite>
-                                </li>
-                                <li>
-                                    <blockquote>
-                                        <p>
-                                            É dever dos órgãos e entidades públicas promover, independentemente de requerimentos, a divulgação em local de fácil acesso, no âmbito de suas competências, de informações de interesse coletivo ou geral por eles produzidas ou custodiadas.
-                                        </p>
-                                    </blockquote>
-                                    <cite>
-                                        Lei nº 12527/2011
-                                    </cite>
-                                </li>
-
-
-                            </ul>
-                        </div><!-- end of .contents -->
-                    </div><!-- end of .wrap -->
-                </div><!-- end of .#feedback -->
-            </div><!-- end of .half -->
-            <!--div class="half">
-                <div class="stHead"><h4>Últimos Tweets</h4></div>
-                <div id="tweets">
-                    <div class="ctrls">
-                        <a href="#" class="prev">Anterior</a>
-                        <a href="#" class="next">Próximo</a>
-                    </div><!-- end of .ctrls -->
-                    <div class="wrap">
-                        <div class="contents">
-                        </div><!-- end of .contents -->
-                    </div><!-- end of .wrap -->
-                </div><!-- end of .#tweets -->
-            </div--><!-- end of .half -->
-        </section><!-- end of .cols -->
 
     </section><!-- end of #content -->
+{% endblock content %}
 
     <footer id="footer">
         <div class="top">
@@ -374,60 +204,6 @@
             </div><!-- end of .contents -->
         </section><!-- end of .bottom -->
     </footer><!-- end of #footer -->
-
-<!-- JavaScript Libraries and Codes -->
-    <!-- jQuery hoverIntent plugin -->
-    <script style="display: none;" src="/static/files/codes/js/jquery.hoverIntent.min.js"></script>
-    <!-- jQuery Cycle plugin -->
-    <script style="display: none;" src="/static/files/codes/js/jquery.cycle.all.min.js"></script>
-    <!-- jQuery Quicksand plugin -->
-    <script style="display: none;" src="/static/files/codes/js/jquery.quicksand.min.js"></script>
-    <!-- jQuery prettyPhoto plugin -->
-    <script style="display: none;" src="/static/files/codes/js/jquery.prettyPhoto.min.js"></script>
-    <!-- jQuery twitter plugin -->
-    <script style="display: none;" src="/static/files/codes/js/jquery.tweet.min.js"></script>
-
-    <!-- This file starts/initializes all js functionalities throughout
-        this site and houses some more scripts or libraries. -->
-    <script style="display: none;" src="/static/files/codes/js/init.min.js"></script>
-
-    <script style="display: none;">
-        /* Cycle plugin for home page */
-        $(document).ready(function(){
-            var onBefore = function(curr, next, opts, fwd) {
-                jQuery(next).find('.slideMsgs.double').find('h1').css({'display':'none', 'left':'-999px', 'opacity': 0});
-                jQuery(next).find('.slideMsgs.double').find('h4').css({'display':'none', 'left':'-999px', 'opacity': 0});
-            }
-
-            var onAfter = function(curr, next, opts, fwd) {
-                var width = $(document).width() - 980;
-                var h1Height = jQuery(this).find('.slideMsgs.double').find('h1').height(true);
-                jQuery(this).find('.slideMsgs.double').find('h1').css('display', 'block').delay(100).animate({'left': ((width / 2) + 70) +'px', 'opacity': 1}, 400, 'easeInQuad');
-                jQuery(this).find('.slideMsgs.double').find('h4').css({display: 'block', top: h1Height + 'px'}).delay(400).animate({'left': ((width / 2) + 70) +'px', 'opacity': 1}, 250, 'easeInQuad');
-            }
-
-            if ($('#slides').length > 0){
-                $('#slides').cycle({
-                    fx: 'scrollHorz',
-                    speed: 500,
-                    timeout: 5000,
-                    pause: 1,
-                    rev: 1,
-                    randomizeEffects: false,
-                    easing: 'easeInQuad', //jquery.easing library/plugin is required for this functionality
-                    next: '#sliderCtrls .next',
-                    prev: '#sliderCtrls .prev',
-                    before: onBefore,
-                    after: onAfter,
-                    pager: '',
-                    cleartypeNoBg: true
-                });
-            }
-            /* slider controls position inside the page*/
-            var left = Math.ceil((($(document).width()) - 980) / 2);
-            $('#sliderCtrls').css('left', left+'px');
-        });
-    </script>
 
 <!-- Weird IE specific codes -->
     <!--[if lt IE 9]>
