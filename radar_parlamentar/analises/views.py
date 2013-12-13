@@ -26,6 +26,7 @@ from modelagem import utils
 from grafico import JsonAnaliseGenerator
 from analise import AnalisadorTemporal
 import logging
+import json
 from django.views.decorators.cache import cache_page
 
 logger = logging.getLogger("radar")
@@ -58,7 +59,10 @@ def json_analise(request, nome_curto_casa_legislativa, periodicidade, palavras_c
     lista_de_palavras_chave = utils.StringUtils.transforma_texto_em_lista_de_string(palavras_chave)
     analisador = AnalisadorTemporal(casa_legislativa, periodicidade, lista_de_palavras_chave)
     analise_temporal = analisador.get_analise_temporal()
+    #if lista_de_palavras_chave and not analise_temporal.analises_periodo:        
     gen = JsonAnaliseGenerator(analise_temporal)
-    json = gen.get_json()
+    dieison = gen.get_json()
+    x = json.loads(dieison)
+    print x
     return HttpResponse(json, mimetype='application/json')
     

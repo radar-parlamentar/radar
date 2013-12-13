@@ -58,7 +58,7 @@ class AnalisadorTemporal:
         self.ini = self.periodos[0].ini
         self.fim = self.periodos[len(self.periodos)-1].fim
         self.periodicidade = periodicidade
-        self.area_total = 1
+        self.area_total = 0
         self.analises_periodo = []
         self.palavras_chave = palavras_chave
         self.votacoes = []
@@ -78,6 +78,7 @@ class AnalisadorTemporal:
             
     def _faz_analises(self):
         """Método da classe AnalisadorTemporal que cria os objetos AnalisadorPeriodo e faz as análises."""
+
         for periodo in self.periodos:
             logger.info("Analisando periodo %s a %s." % (str(periodo.ini),str(periodo.fim)) )
             analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, self.votacoes, self.palavras_chave)
@@ -87,6 +88,7 @@ class AnalisadorTemporal:
                 self.analises_periodo.append(analisePeriodo)
             else:
                 logger.info("O periodo não possui nenhuma votação.")
+                return
 
         # Rotaciona/espelha cada análise baseado em sua análise anterior
         logger.info("Rotacionando...")
