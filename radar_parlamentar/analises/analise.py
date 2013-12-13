@@ -50,8 +50,11 @@ class AnalisadorTemporal:
     Atributos:
         data_inicio e data_fim -- strings no formato 'aaaa-mm-dd'.
         analises_periodo -- lista de objetos da classe AnalisePeriodo
+        palavras_chave -- lista de strings para serem utilizadas na filtragem de votações
+        votacoes -- lista de objetos do tipo Votacao para serem usados na análise
+                    se não for especificado, procura votações na base de dados de acordo data_inicio, data_fim e palavras_chave.
     """
-    def __init__(self, casa_legislativa, periodicidade, palavras_chave, votacoes=[]):
+    def __init__(self, casa_legislativa, periodicidade, palavras_chave=[], votacoes=[]):
         self.casa_legislativa = casa_legislativa
         retriever = utils.PeriodosRetriever(self.casa_legislativa, periodicidade)
         self.periodos = retriever.get_periodos()
@@ -106,13 +109,14 @@ class AnalisadorTemporal:
 
 class AnalisadorPeriodo:
 
-    def __init__(self, casa_legislativa, periodo=None, votacoes=[], palavras_chave=""):
+    def __init__(self, casa_legislativa, periodo, votacoes=[], palavras_chave=[]):
         """Argumentos:
             casa_legislativa -- objeto do tipo CasaLegislativa; somente votações desta casa serão analisados.
             periodo -- objeto do tipo PeriodoCasaLegislativa; 
                        sem periodo, a análise é feita sobre todas as votações.
             votacoes -- lista de objetos do tipo Votacao para serem usados na análise
-                        se não for especificado, procura votações na base de dados de acordo data_inicio e data_fim.
+                        se não for especificado, procura votações na base de dados de acordo data_inicio, data_fim e palavras_chave.
+            palavras_chave -- lista de strings para serem usadas na filtragem das votações
         """
         self.casa_legislativa = casa_legislativa
         self.periodo = periodo
@@ -143,20 +147,9 @@ class AnalisadorPeriodo:
         self.coordenadas_legislaturas = {} 
 
     def _inicializa_votacoes(self):
-        """Pega votações deste período no banco de dados e seta a lista self.votacoes"""
-        """if self.ini == None and self.fim == None:
-            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa) 
-        if self.ini == None and self.fim != None:
-            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa).filter(data__lte=self.fim)
-        if self.ini != None and self.fim == None:
-            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa).filter(data__gte=self.ini)
-        if self.ini != None and self.fim != None:
-            self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=self.casa_legislativa).filter(data__gte=self.ini, data__lte=self.fim)
-        """
-        filtro_votacao = filtro.FiltroProposicao()
+        """Pega votações deste período no banco de dados, filtra por palavras chave e seta a lista self.votacoes"""
+        filtro_votacao = filtro.FiltroVotacao()
         self.votacoes = filtro_votacao.filtra_votacoes(self.casa_legislativa, self.periodo, self.palavras_chave)
-        #self.votacoes = models.Votacao.objects.all()[:3]
-        #self.votacoes = []
 
     def analisa(self):
         """Retorna instância de AnalisePeriodo"""

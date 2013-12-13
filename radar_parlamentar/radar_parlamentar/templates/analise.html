@@ -33,7 +33,7 @@
 {% block content %}
     <h3> {{casa_legislativa.nome}}</h3>
     <article id="descricao" class="inwrap">
-        <b>{{num_votacao}} votações</b> consideradas nesta análise.<br/><br/>
+        Total de votações existentes nesta casa legislativa: <b>{{num_votacao}} </b> <br/><br/>
         Dados utilizados nesta análise disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (atualizados em {{casa_legislativa.atualizacao}}).<br/>
         <h3>Periodicidade:</h3>
         <form id="formAnalise" method="POST" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
@@ -45,9 +45,10 @@
             <option value="SEMESTRE">Semestre</option>
         </select>
         <br>
-        <h3>Filtrar votações por palavras chave:</h3>
+        <h3>Filtrar votações por temas:</h3>
+        Faça uma análise com temas de seu interesse. Digite os temas desejados abaixo, separadas por vírgula. (ex.: saúde, educação)<br><br>
         <input type="text" id="palavras_chave" name ="palavras_chave" size=30>
-        <input type="submit" value="enviar">
+        <input type="submit" value="Filtrar">
         </form> 
         <br><br>
         <aside id="legenda" class="list" style="width:300px">

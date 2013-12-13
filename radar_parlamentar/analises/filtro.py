@@ -71,9 +71,14 @@ class Temas():
 
         return palavras
 
-class FiltroProposicao():
+class FiltroVotacao():
 
     def filtra_votacoes(self, casa_legislativa, periodo_casa_legislativa, palavras_chave):
+        """Argumentos:
+            casa_legislativa -- objeto do tipo CasaLegislativa; somente votações desta casa serão filtradas.
+            periodo_casa_legislativa -- objeto do tipo PeriodoCasaLegislativa; somente votações deste período serão filtradas.
+            palavras_chave -- lista de strings para serem usadas na filtragem das votações.
+        """
         proposicoes = self._recupera_proposicoes(casa_legislativa)
 
         votacoes = models.Votacao.por_casa_legislativa(casa_legislativa, periodo_casa_legislativa.ini, periodo_casa_legislativa.fim)
