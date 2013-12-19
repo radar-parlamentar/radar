@@ -165,8 +165,11 @@ class PeriodosRetriever:
         inicio_prox_periodo = datetime.date(ano_inicial, mes_inicial, dia_inicial)
         return inicio_prox_periodo
 
-    
-    
-    
-    
-    
+class StringUtils():
+
+    @staticmethod
+    def transforma_texto_em_lista_de_string(texto):
+        lista_de_string = []
+        if texto is not None and texto != "":
+            lista_de_string = texto.split(", ")
+        return lista_de_string

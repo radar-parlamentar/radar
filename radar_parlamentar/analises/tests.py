@@ -60,7 +60,8 @@ class AnalisadorPeriodoTest(TestCase):
                 self.monarquistas = partido
         
     def test_coordenadas_partidos(self):
-        analisador = analise.AnalisadorPeriodo(self.casa_legislativa)
+        periodo = models.PeriodoCasaLegislativa(date(1989,02,02), date(1989,10,10))
+        analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
         coordenadas = analise_periodo.coordenadas_partidos
         self.assertAlmostEqual(coordenadas[self.girondinos][0], -0.152, 2)
@@ -121,7 +122,7 @@ class AnalisadorTemporalTest(TestCase):
         self.assertAlmostEqual(coordenadas[self.monarquistas][0],  0.42384941, 4)
         self.assertAlmostEqual(coordenadas[self.monarquistas][1], 0.09787006, 4)                
 
-class FiltroProposicaoTest(TestCase):
+class FiltroVotacaoTest(TestCase):
     
     @classmethod
     def setUpClass(cls):
@@ -137,94 +138,94 @@ class FiltroProposicaoTest(TestCase):
         casa_legislativa = models.CasaLegislativa()
         casa_legislativa.id = 1
 
-        filtro_proposicao = filtro.FiltroProposicao()
-        proposicoes = filtro_proposicao._recupera_proposicoes(casa_legislativa)
+        filtro_votacao = filtro.FiltroVotacao()
+        proposicoes = filtro_votacao._recupera_proposicoes(casa_legislativa)
         self.assertEquals(9, len(proposicoes))
 
     def test_recupera_votacoes_da_proposicao(self):
         proposicao = models.Proposicao()
         proposicao.id = 1;
         votacoes = models.Votacao.objects.all()
-        filtro_proposicao = filtro.FiltroProposicao()
-        votacoes_da_proposicao = filtro_proposicao._recupera_votacoes_da_proposicao(proposicao, votacoes)        
+        filtro_votacao = filtro.FiltroVotacao()
+        votacoes_da_proposicao = filtro_votacao._recupera_votacoes_da_proposicao(proposicao, votacoes)        
         self.assertEquals(1, len(votacoes_da_proposicao))
 
     def test_filtra_proposicoes_com_votacoes(self):
         proposicoes = models.Proposicao.objects.filter(casa_legislativa_id = 1)
         votacoes = models.Votacao.objects.all()
-        filtro_proposicao = filtro.FiltroProposicao()
-        proposicoes_com_votacoes = filtro_proposicao._filtra_proposicoes_com_votacoes(proposicoes, votacoes)
+        filtro_votacao = filtro.FiltroVotacao()
+        proposicoes_com_votacoes = filtro_votacao._filtra_proposicoes_com_votacoes(proposicoes, votacoes)
         self.assertEquals(8, len(proposicoes_com_votacoes))
 
     def test_filtra_proposicoes_sem_votacoes(self):
         proposicoes = models.Proposicao.objects.filter(casa_legislativa_id = 1)
         votacoes = models.Votacao.objects.all()
-        filtro_proposicao = filtro.FiltroProposicao()
-        proposicoes_com_votacoes = filtro_proposicao._filtra_proposicoes_com_votacoes(proposicoes, votacoes)
+        filtro_votacao = filtro.FiltroVotacao()
+        proposicoes_com_votacoes = filtro_votacao._filtra_proposicoes_com_votacoes(proposicoes, votacoes)
         self.assertEquals(8, len(proposicoes_com_votacoes))
 
     def test_palavra_existe_em_descricao_proposicao(self):
         proposicao = models.Proposicao.objects.get(id = 1)
         votacoes = models.Votacao.objects.filter(proposicao_id = 1)
         palavra_chave = 'reforma'
-        filtro_proposicao = filtro.FiltroProposicao()
-        palavra_existe_em_proposicao = filtro_proposicao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
+        filtro_votacao = filtro.FiltroVotacao()
+        palavra_existe_em_proposicao = filtro_votacao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
         self.assertTrue(palavra_existe_em_proposicao)
         
     def test_palavra_nao_existe_em_proposicao(self):
         proposicao = models.Proposicao.objects.get(id = 1)
         votacoes = models.Votacao.objects.filter(proposicao_id = 1)
         palavra_chave = 'corrupcao'
-        filtro_proposicao = filtro.FiltroProposicao()
-        palavra_existe_em_proposicao = filtro_proposicao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
+        filtro_votacao = filtro.FiltroVotacao()
+        palavra_existe_em_proposicao = filtro_votacao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
         self.assertFalse(palavra_existe_em_proposicao)
 
     def test_palavra_existe_em_ementa_proposicao(self):
         proposicao = models.Proposicao.objects.get(id = 8)
         votacoes = models.Votacao.objects.filter(proposicao_id = 8)
         palavra_chave = 'armas'
-        filtro_proposicao = filtro.FiltroProposicao()
-        palavra_existe_em_proposicao = filtro_proposicao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
+        filtro_votacao = filtro.FiltroVotacao()
+        palavra_existe_em_proposicao = filtro_votacao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
         self.assertTrue(palavra_existe_em_proposicao)
 
     def test_palavra_existe_em_indexacao_proposicao(self):
         proposicao = models.Proposicao.objects.get(id = 8)
         votacoes = models.Votacao.objects.filter(proposicao_id = 8)
         palavra_chave = 'bombas'
-        filtro_proposicao = filtro.FiltroProposicao()
-        palavra_existe_em_proposicao = filtro_proposicao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
+        filtro_votacao = filtro.FiltroVotacao()
+        palavra_existe_em_proposicao = filtro_votacao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
         self.assertTrue(palavra_existe_em_proposicao)
 
     def test_palavra_existe_em_descricao_votacao(self):
         proposicao = models.Proposicao.objects.get(id = 8)
         votacoes = models.Votacao.objects.filter(proposicao_id = 8)
         palavra_chave = 'inglaterra'
-        filtro_proposicao = filtro.FiltroProposicao()
-        palavra_existe_em_proposicao = filtro_proposicao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
+        filtro_votacao = filtro.FiltroVotacao()
+        palavra_existe_em_proposicao = filtro_votacao._palavra_existe_em_proposicao(proposicao, votacoes, palavra_chave)
         self.assertTrue(palavra_existe_em_proposicao)
 
     def test_verifica_palavras_chave_em_proposicao(self):
         proposicao = models.Proposicao.objects.get(id = 8)
         votacoes = models.Votacao.objects.filter(proposicao_id = 8)
         lista_palavras_chave = ['cotas', 'guerra', 'violência']
-        filtro_proposicao = filtro.FiltroProposicao()
-        filtra_proposicoes_por_palavras_chave = filtro_proposicao._verifica_palavras_chave_em_proposicao(proposicao, votacoes, lista_palavras_chave)
+        filtro_votacao = filtro.FiltroVotacao()
+        filtra_proposicoes_por_palavras_chave = filtro_votacao._verifica_palavras_chave_em_proposicao(proposicao, votacoes, lista_palavras_chave)
         self.assertTrue(filtra_proposicoes_por_palavras_chave)
           
     def test_verifica_palavras_chave_nao_relacionadas_em_proposicao(self):
         proposicao = models.Proposicao.objects.get(id = 8)
         votacoes = models.Votacao.objects.filter(proposicao_id = 8)
         lista_palavras_chave = ['cotas', 'educação', 'violência']
-        filtro_proposicao = filtro.FiltroProposicao()
-        filtra_proposicoes_por_palavras_chave = filtro_proposicao._verifica_palavras_chave_em_proposicao(proposicao, votacoes, lista_palavras_chave)
+        filtro_votacao = filtro.FiltroVotacao()
+        filtra_proposicoes_por_palavras_chave = filtro_votacao._verifica_palavras_chave_em_proposicao(proposicao, votacoes, lista_palavras_chave)
         self.assertFalse(filtra_proposicoes_por_palavras_chave)
 
     def test_filtra_votacoes(self):
         casa_legislativa = models.CasaLegislativa.objects.get(id = 1)
         periodo_casa_legislativa = models.PeriodoCasaLegislativa(date(1989,02,02), date(1989,10,10))
         lista_palavras_chave = ['cotas', 'guerra', 'violência']
-        filtro_proposicao = filtro.FiltroProposicao()
-        votacoes_filtradas = filtro_proposicao.filtra_votacoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
+        filtro_votacao = filtro.FiltroVotacao()
+        votacoes_filtradas = filtro_votacao.filtra_votacoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
         self.assertEquals(1, len(votacoes_filtradas)) 
      
          
@@ -232,32 +233,32 @@ class FiltroProposicaoTest(TestCase):
         casa_legislativa = models.CasaLegislativa.objects.get(id = 1)
         periodo_casa_legislativa = models.PeriodoCasaLegislativa(date(1990,10,10), date(1990,10,10))
         lista_palavras_chave = ['cotas', 'guerra', 'violência']
-        filtro_proposicao = filtro.FiltroProposicao()
-        votacoes_filtradas = filtro_proposicao.filtra_votacoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
+        filtro_votacao = filtro.FiltroVotacao()
+        votacoes_filtradas = filtro_votacao.filtra_votacoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
         self.assertEquals(0, len(votacoes_filtradas)) 
 
     def test_filtra_votacoes_com_periodo_(self):
         casa_legislativa = models.CasaLegislativa.objects.get(id = 1)
         periodo_casa_legislativa = models.PeriodoCasaLegislativa(date(1989,8,8), date(1992,11,11))
         lista_palavras_chave = ['cotas', 'guerra', 'violência']
-        filtro_proposicao = filtro.FiltroProposicao()
-        votacoes_filtradas = filtro_proposicao.filtra_votacoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
+        filtro_votacao = filtro.FiltroVotacao()
+        votacoes_filtradas = filtro_votacao.filtra_votacoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
         self.assertEquals(1, len(votacoes_filtradas)) 
      
     def test_filtra_votacoes_sem_palavras_chave_relacionadas(self):
         casa_legislativa = models.CasaLegislativa.objects.get(id = 1)
         periodo_casa_legislativa = models.PeriodoCasaLegislativa(date(1989,02,02), date(1989,10,10))
         lista_palavras_chave = ['cotas', 'educacao', 'violência']
-        filtro_proposicao = filtro.FiltroProposicao()
-        votacoes_filtradas = filtro_proposicao.filtra_votacoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
+        filtro_votacao = filtro.FiltroVotacao()
+        votacoes_filtradas = filtro_votacao.filtra_votacoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
         self.assertEquals(0, len(votacoes_filtradas))
 
     def test_filtra_votacoes_com_varias_palavras_chave(self):
         casa_legislativa = models.CasaLegislativa.objects.get(id = 1)
         periodo_casa_legislativa = models.PeriodoCasaLegislativa(date(1989,02,02), date(1989,10,10))
         lista_palavras_chave = ['militar', 'guerra', 'escolas', 'pensão']
-        filtro_proposicao = filtro.FiltroProposicao()
-        votacoes_filtradas = filtro_proposicao.filtra_votacoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
+        filtro_votacao = filtro.FiltroVotacao()
+        votacoes_filtradas = filtro_votacao.filtra_votacoes(casa_legislativa, periodo_casa_legislativa, lista_palavras_chave)
         self.assertEquals(4, len(votacoes_filtradas))
 
 
@@ -265,8 +266,8 @@ class FiltroProposicaoTest(TestCase):
         proposicoes = models.Proposicao.objects.filter(casa_legislativa_id = 1)
         votacoes = models.Votacao.objects.all()
         lista_palavras_chave = ['militar', 'guerra', 'escolas', 'pensão']
-        filtro_proposicao = filtro.FiltroProposicao()
-        votacoes_com_palavras_chave = filtro_proposicao._filtra_votacoes_por_palavras_chave(proposicoes, votacoes, lista_palavras_chave)
+        filtro_votacao = filtro.FiltroVotacao()
+        votacoes_com_palavras_chave = filtro_votacao._filtra_votacoes_por_palavras_chave(proposicoes, votacoes, lista_palavras_chave)
         self.assertEquals(4, len(votacoes_com_palavras_chave))
 
 # grafico tests

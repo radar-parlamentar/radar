@@ -27,8 +27,13 @@ d3.selection.prototype.moveToFront = function() {
 Plot = (function ($) {
 
     // Function to load the data and draw the chart
-    function initialize(nome_curto_casa_legislativa, periodicidade) {
-        d3.json("/analises/json_analise/" + nome_curto_casa_legislativa + "/" + periodicidade, plot_data);
+    function initialize(nome_curto_casa_legislativa, periodicidade, palavras_chave) {
+        if (palavras_chave == "") {
+            d3.json("/analises/json_analise/" + nome_curto_casa_legislativa + "/" + periodicidade, plot_data);
+        } else {
+            d3.json("/analises/json_analise/" + nome_curto_casa_legislativa + "/" + periodicidade + "/" + palavras_chave, plot_data);
+        }
+
         //para testes com arquivo hardcoded
 //        d3.json("/static/files/partidos.json", plot_data);
 //        d3.json("/static/files/cdep.json", plot_data);
@@ -320,6 +325,8 @@ Plot = (function ($) {
         // explodindo: true quando estamos atualizando o gráfico por causa de uma explosão de partido
         // (explosão de partido é quando se clica no partido para ver seus parlamentares)
         function atualiza_grafico(explodindo) {
+            label_nvotacoes.text("Não há votações relacionadas com as palavras chave informadas");
+
             // Legend
             var partidos_legenda = get_partidos_no_periodo(periodo_atual);
 
