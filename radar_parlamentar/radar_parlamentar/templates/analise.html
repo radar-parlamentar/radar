@@ -35,23 +35,26 @@
     <article id="descricao" class="inwrap">
         Total de votações existentes nesta casa legislativa: <b>{{num_votacao}} </b> <br/><br/>
         Dados utilizados nesta análise disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (atualizados em {{casa_legislativa.atualizacao}}).<br/>
-        <h3>Periodicidade:</h3>
+
         <form id="formAnalise" method="POST" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
-        {% csrf_token %}
-        <select id="periodicidade" name="periodicidade" onChange="this.form.submit()">
-            <option value="QUADRIENIO">Quadriênio</option>
-            <option value="BIENIO">Biênio</option>
-            <option value="ANO">Ano</option>
-            <option value="SEMESTRE">Semestre</option>
-        </select>
-        <br>
-<!--
-        <h3>Filtrar votações por temas:</h3>
-        Faça uma análise com temas de seu interesse. Digite os temas desejados abaixo, separadas por vírgula. (ex.: saúde, educação)<br><br>
-        <input type="text" id="palavras_chave" name ="palavras_chave" size=30">
-        <input type="submit" value="Filtrar">
+            <p><label for="periodicidade">Periodicidade:</label>
+            <select id="periodicidade" name="periodicidade" onChange="this.form.submit()">
+                <option value="QUADRIENIO">Quadriênio</option>
+                <option value="BIENIO">Biênio</option>
+                <option value="ANO">Ano</option>
+                <option value="SEMESTRE">Semestre</option>
+                <!-- <option value="MES">Mês</option> Issue #193 -->
+            </select>
+            </p>
+            <!-- Issue #199
+            <p><label for="palavras_chave">Filtrar votações por temas:</label>
+            Separe as palavras-chaves por vírgula.<br>
+            <input type="text" id="palavras_chave" name ="palavras_chave" size=30" placeholder="saúde, educação">
+            <input type="submit" value="Filtrar">
+            </p>
+            -->
         </form> 
--->
+
         <br><br>
         <aside id="legenda" class="list" style="width:300px">
             <p align="left"><b>LEGENDA</b></p>

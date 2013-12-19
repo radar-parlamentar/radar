@@ -176,6 +176,22 @@
 /* Style northward tooltips differently */
 .d3-tip.n:after {
   margin: -1px 0 0 0;
-  top: 100%;
+  top: 100%;label{
+            color: #666;
+            display: block;
+            left: 10px;
+            top: 5px;
+        }
   left: 0;
 }
+
+label{
+    font-weight: bold;
+    font-size: 14px;
+    color: #4896E9;
+    display: block;
+    left: 10px;
+    top: 5px;
+}
+
+
