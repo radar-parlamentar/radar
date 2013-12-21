@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
+#para instalar o pacote wnominate: 
+#install.packages("ggplot2")
 require("wnominate")
 # rm(list=ls())
 # options(max.print=1000)
