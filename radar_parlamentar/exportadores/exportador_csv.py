@@ -18,7 +18,10 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Exportação para CSV para nossas análises no R"""
+"""Exportação para CSV para nossas análises no R.
+   Para ler o arquivo csv no R: read.csv('votes.csv', sep=',', as.is=T)
+   O último argumento impede que as strings sejam importadas como "factors".
+"""
 
 import os
 import csv
