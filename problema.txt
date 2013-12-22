@@ -1,0 +1,3 @@
+a linha dadoslist$votes <- with(dados, tapply(voto,list(nomepartido,rollcall),c))
+está dando um resultado bem diferente quando se usa o csv.
+Sugestao: esquecemos o roll call lula e gero um csv diferente mais no jeito para os argumentos de rollcall()
