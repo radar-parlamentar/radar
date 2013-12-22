@@ -22,6 +22,7 @@ require("wnominate")
 # options(max.print=1000)
 load("rollcall_lulaII.Rdata")
 dados <- rollcall_lulaII
+#dados  <- read.csv('votes.csv', sep=',', as.is=T)
 
 # Corrigir nome da deputada Luciana Costa:
 dados$name[dados$name=="LUCIANA COSTA\r\n\r\nLUCIANA COSTA\r\n\r\n\r\nLUCIANA COSTA"] <- "LUCIANA COSTA"
@@ -45,6 +46,8 @@ dados$voto[dados$vote == "O"] <- 0
 # Inicializar lista de dados que será argumento para rollcall().
 dadoslist <- list()
 dadoslist$desc <- "Camara dos Deputados 53a legislatura (2o mandato Lula)"
+# dadoslist$votes é uma matriz cujas linhas são parlamentares (nomepartido) e colunas votações (rollcall), 
+# e o valor das células são os votos em codificação numérica
 dadoslist$votes <- with(dados, tapply(voto,list(nomepartido,rollcall),c))
 dadoslist$legis.names <- dimnames(dadoslist$votes)[1][[1]]
 dadoslist$vote.names <- dimnames(dadoslist$votes)[2][[1]]
