@@ -79,7 +79,7 @@ class ExportadorCSV:
                 partido = legislatura.partido
                 csv_row = []
                 csv_row.append(votacao.id_vot)
-                csv_row.append(voto.id)
+                csv_row.append(legislatura.id)
                 csv_row.append(parlamentar.nome.encode('UTF-8'))
                 csv_row.append(partido.nome)
                 csv_row.append(self.coalition(partido.nome))
