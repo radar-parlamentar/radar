@@ -254,7 +254,6 @@ class ImportadorVotacoesSenado:
                         votacao = models.Votacao()
                         votacao.id_vot = codigo
                         votacao.save() # só pra criar a chave primária e poder atribuir o votos
-                        votacao.id_vot = votacao_tree.find('CodigoTramitacao').text
                         votacao.descricao = votacao_tree.find('DescricaoVotacao').text
                         votacao.data = self._converte_data(votacao_tree.find('DataSessao').text)
                         if votacao_tree.find('Resultado') != None:
