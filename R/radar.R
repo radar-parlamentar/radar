@@ -58,6 +58,33 @@ dadoslist$votes[is.na(dadoslist$votes)] <- 0 # Transforma NA em 0.
 # Criar o objeto de tipo rollcall:
 rcdados <- rollcall(dadoslist, yea=1, nay=-1, missing=0, notInLegis=NA, legis.data=dadoslist$legis.data, source="Dados obtidos com Ricardo Ceneviva.")
 
+build_rollcall <- function(input_data_frame, description) {
+    # data_frame must be in the format "rollcall,id,name,party,coalition,vote", where:
+    # rollcall - numeric code of the voting
+    # id - numeric code of the parliamentarian
+    # name - character identifying the voters
+    # party - character identifying the party
+    # coalition - 1 if it support ruler party or 0 otherwise
+    # vote - character \in {Y, N, A, O}
+
+    input_data_frame$name_party <- paste(input_data_frame$name, " (", input_data_frame$party, ")", sep="")
+
+    input_data_frame$coded_votes[dados$vote == "Y"] <- 1
+    input_data_frame$coded_votes[dados$vote == "N"] <- -1
+    input_data_frame$coded_votes[dados$vote == "A"] <- 0
+    input_data_frame$coded_votes[dados$vote == "O"] <- 0 
+
+    # votes has the format required by the rollcall function
+    # lines are voters, columns are votings, and values are votes.
+    votes <- with(input_data_frame, tapply(coded_votes, list(name_party, rollcall), c))
+    votes[is.na(votes)] <- 0 # Transforma NA em 0.
+
+    legisdata <- as.matrix(with(input_data_frame, tapply(party, name_party, max))) # ?
+
+    roll_call <- rollcall(votes, yea=1, nay=-1, missing=0, notInLegis=NA, legis.data=legisdata, desc=description)
+    return(roll_call)
+}
+
 
 por.partido <- function(rcobject){
   # Pega um objeto da classe rollcall e agrega votações por partido.
