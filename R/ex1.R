@@ -4,11 +4,11 @@
 # Faz análise por parlamentar e plota nuvem de pontos das PC1 e PC2
 # coloridos por partido.
 #
-# Rodar apenas apos ter feito:
-# source("radar.R")
-# para carregar as funcoes.
 
-r <- radarpca(rcdados, lop = 0, minvotes = 11,scale=FALSE,center=FALSE)
+# Carrega as funcoes.
+source("radar.R")
+
+r <- radarpca(rcdados, lop = 0, minvotes = 1,scale=FALSE,center=FALSE)
 xx <- r$pca$x[,1]
 yy <- r$pca$x[,2]
 partido <- factor(r$rcobject$legis.data)
@@ -18,12 +18,12 @@ cor <- paleta[as.integer(partido)]
 
 
 # gráfico com legenda e cores por partido:
-# symbols(xx,yy,circles=rep(1,length(xx)),inches=0.05,fg=cor)
-# legend("topright",levels(partido),col=paleta[1:22],pch=19) 
+symbols(xx,yy,circles=rep(1,length(xx)),inches=0.05,fg=cor)
+legend("topright",levels(partido),col=paleta[1:22],pch=19) 
 
 
 # gráfico em preto e branco sem legenda:
-# plot(r$pca$x[,1],r$pca$x[,2]) # se tiver só essa linha
+plot(r$pca$x[,1],r$pca$x[,2]) # se tiver só essa linha
 
  
 # por partido: (não está funcionando)
