@@ -218,13 +218,12 @@ radarpca <- function(rcobject, minvotes = 20, lop = 0.025, scale = FALSE , cente
 }
 
 
-plotar <- function(resultado) {
-  # plota resultado de uma PCA.
-  xx <- resultado$pca$x[,1]
-  yy <- resultado$pca$x[,2]
+plot_pca_by_party <- function(radar_pca) {
+  # plota resultado de uma PCA; indicado para a análise por partido.
+  xx <- radar_pca$pca$x[,1]
+  yy <- radar_pca$pca$x[,2]
   symbols(xx,yy,circles=rep(1,length(xx)),inches=0.2)
-  text(xx,yy,dimnames(resultado$pca$x)[[1]])
-  return
+  text(xx,yy,dimnames(radar_pca$pca$x)[[1]])
 }
 
 
