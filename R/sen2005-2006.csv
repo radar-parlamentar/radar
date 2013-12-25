@@ -1,0 +1,5898 @@
+rollcall,voter_id,name,party,coalition,vote
+3203,85,Marco Maciel,DEM,0,0
+3203,33,Fernando Bezerra,PTB,1,1
+3203,57,José Agripino,DEM,0,1
+3203,48,Heráclito Fortes,DEM,0,1
+3203,73,Leomar Quintanilha,PMDB,1,1
+3203,27,Edison Lobão,PMDB,1,1
+3203,112,Renan Calheiros,PMDB,1,1
+3203,120,Romeu Tuma,PTB,1,1
+3203,13,Antonio Carlos Magalhães,PFL,0,1
+3203,107,Pedro Simon,PMDB,1,1
+3203,105,Paulo Paim,PT,1,1
+3203,119,Romero Jucá,PMDB,1,1
+3203,30,Eduardo Suplicy,PT,1,1
+3203,54,Jonas Pinheiro,DEM,0,1
+3203,109,Reginaldo Duarte,PSDB,0,1
+3203,31,Efraim Morais,DEM,0,1
+3203,7,Aloizio Mercadante,PT,1,1
+3203,81,Lúcia Vânia,PSDB,0,1
+3203,131,Teotonio Vilela Filho,PSDB,0,1
+3203,35,Flávio Arns,PSDB,0,1
+3203,47,Heloísa Helena,PSOL,0,1
+3203,78,Luiz Otavio,PMDB,1,1
+3203,55,Jorge Bornhausen,PFL,0,0
+3203,65,João Alberto Souza,PMDB,1,1
+3203,133,Tião Viana,PT,1,0
+3203,61,José Jorge,PFL,0,1
+3203,4,Alberto Silva,PMDB,1,1
+3203,8,Alvaro Dias,PSDB,0,1
+3203,87,Maria do Carmo Alves,PFL,0,1
+3203,29,Eduardo Siqueira Campos,PSDB,0,1
+3203,116,Roberto Saturnino,PT,1,1
+3203,72,Juvêncio da Fonseca,PSDB,0,1
+3203,11,Antero Paes de Barros,PSDB,0,1
+3203,98,Osmar Dias,PDT,0,1
+3203,94,Ney Suassuna,PMDB,1,1
+3203,14,Antonio Carlos Valadares,PSB,1,1
+3203,49,Hélio Costa,PMDB,1,1
+3203,135,Valmir Amaral,PP,1,1
+3203,6,Almeida Lima,PMDB,1,1
+3203,50,Ideli Salvatti,PT,1,1
+3203,126,Sibá Machado,PT,1,1
+3203,37,Francisco Pereira,PL,0,1
+3203,69,João Ribeiro,PFL,0,1
+3203,104,Paulo Octávio,PFL,0,1
+3203,108,Ramez Tebet,PMDB,1,1
+3203,67,João Capiberibe,PSB,1,1
+3203,129,Tasso Jereissati,PSDB,0,1
+3203,100,Patrícia Saboya,PDT,0,1
+3203,25,Demóstenes Torres,DEM,0,1
+3203,134,Valdir Raupp,PMDB,1,1
+3203,41,Geraldo Mesquita Júnior,PMDB,1,0
+3203,28,Eduardo Azeredo,PSDB,0,1
+3203,84,Marcelo Crivella,PL,0,1
+3203,2,Aelton Freitas,Sem partido,0,1
+3203,22,César Borges,PR,0,1
+3203,74,Leonel Pavan,PSDB,0,1
+3203,24,Delcídio do Amaral,PT,1,1
+3203,125,Serys Slhessarenko,PT,1,1
+3203,66,João Batista Motta,PSDB,0,0
+3203,128,Sérgio Zambiasi,PTB,1,1
+3203,18,Arthur Virgílio,PSDB,0,1
+3203,121,Roseana Sarney,PMDB,1,0
+3203,118,Rodolpho Tourinho,PFL,0,1
+3203,127,Sérgio Cabral,PMDB,1,1
+3203,19,Augusto Botelho,PDT,0,1
+3203,21,Cristovam Buarque,PDT,0,1
+3203,38,Fátima Cleide,PT,1,1
+3203,39,Garibaldi Alves Filho,PMDB,1,1
+3203,92,Mão Santa,PSC,0,1
+3203,90,Mozarildo Cavalcanti,PTB,1,1
+3203,99,Papaléo Paes,PSDB,0,1
+3203,124,Sergio Guerra,PSDB,0,1
+3203,34,Flexa Ribeiro,PSDB,0,1
+3224,85,Marco Maciel,DEM,0,0
+3224,33,Fernando Bezerra,PTB,1,1
+3224,57,José Agripino,DEM,0,-1
+3224,48,Heráclito Fortes,DEM,0,-1
+3224,73,Leomar Quintanilha,PMDB,1,1
+3224,27,Edison Lobão,PMDB,1,1
+3224,112,Renan Calheiros,PMDB,1,0
+3224,120,Romeu Tuma,PTB,1,-1
+3224,13,Antonio Carlos Magalhães,PFL,0,-1
+3224,42,Gerson Camata,PMDB,1,1
+3224,107,Pedro Simon,PMDB,1,1
+3224,105,Paulo Paim,PT,1,1
+3224,119,Romero Jucá,PMDB,1,1
+3224,30,Eduardo Suplicy,PT,1,1
+3224,54,Jonas Pinheiro,DEM,0,-1
+3224,109,Reginaldo Duarte,PSDB,0,1
+3224,7,Aloizio Mercadante,PT,1,1
+3224,81,Lúcia Vânia,PSDB,0,1
+3224,131,Teotonio Vilela Filho,PSDB,0,1
+3224,47,Heloísa Helena,PSOL,0,-1
+3224,78,Luiz Otavio,PMDB,1,1
+3224,55,Jorge Bornhausen,PFL,0,0
+3224,65,João Alberto Souza,PMDB,1,1
+3224,133,Tião Viana,PT,1,1
+3224,61,José Jorge,PFL,0,0
+3224,4,Alberto Silva,PMDB,1,1
+3224,8,Alvaro Dias,PSDB,0,1
+3224,87,Maria do Carmo Alves,PFL,0,-1
+3224,116,Roberto Saturnino,PT,1,1
+3224,72,Juvêncio da Fonseca,PSDB,0,1
+3224,11,Antero Paes de Barros,PSDB,0,0
+3224,98,Osmar Dias,PDT,0,1
+3224,94,Ney Suassuna,PMDB,1,1
+3224,14,Antonio Carlos Valadares,PSB,1,1
+3224,49,Hélio Costa,PMDB,1,1
+3224,135,Valmir Amaral,PP,1,1
+3224,6,Almeida Lima,PMDB,1,-1
+3224,50,Ideli Salvatti,PT,1,1
+3224,126,Sibá Machado,PT,1,1
+3224,37,Francisco Pereira,PL,0,1
+3224,69,João Ribeiro,PFL,0,1
+3224,104,Paulo Octávio,PFL,0,-1
+3224,67,João Capiberibe,PSB,1,1
+3224,129,Tasso Jereissati,PSDB,0,1
+3224,100,Patrícia Saboya,PDT,0,1
+3224,25,Demóstenes Torres,DEM,0,-1
+3224,134,Valdir Raupp,PMDB,1,1
+3224,41,Geraldo Mesquita Júnior,PMDB,1,0
+3224,28,Eduardo Azeredo,PSDB,0,1
+3224,84,Marcelo Crivella,PL,0,1
+3224,22,César Borges,PR,0,-1
+3224,74,Leonel Pavan,PSDB,0,1
+3224,24,Delcídio do Amaral,PT,1,1
+3224,125,Serys Slhessarenko,PT,1,1
+3224,66,João Batista Motta,PSDB,0,0
+3224,10,Ana Júlia Carepa,PT,1,1
+3224,128,Sérgio Zambiasi,PTB,1,1
+3224,18,Arthur Virgílio,PSDB,0,1
+3224,121,Roseana Sarney,PMDB,1,0
+3224,118,Rodolpho Tourinho,PFL,0,-1
+3224,127,Sérgio Cabral,PMDB,1,1
+3224,19,Augusto Botelho,PDT,0,1
+3224,21,Cristovam Buarque,PDT,0,1
+3224,38,Fátima Cleide,PT,1,1
+3224,39,Garibaldi Alves Filho,PMDB,1,1
+3224,92,Mão Santa,PSC,0,1
+3224,90,Mozarildo Cavalcanti,PTB,1,1
+3224,99,Papaléo Paes,PSDB,0,1
+3224,124,Sergio Guerra,PSDB,0,1
+3224,34,Flexa Ribeiro,PSDB,0,1
+3225,85,Marco Maciel,DEM,0,1
+3225,33,Fernando Bezerra,PTB,1,1
+3225,57,José Agripino,DEM,0,1
+3225,48,Heráclito Fortes,DEM,0,1
+3225,73,Leomar Quintanilha,PMDB,1,1
+3225,27,Edison Lobão,PMDB,1,1
+3225,112,Renan Calheiros,PMDB,1,0
+3225,120,Romeu Tuma,PTB,1,1
+3225,13,Antonio Carlos Magalhães,PFL,0,1
+3225,107,Pedro Simon,PMDB,1,1
+3225,105,Paulo Paim,PT,1,1
+3225,119,Romero Jucá,PMDB,1,1
+3225,30,Eduardo Suplicy,PT,1,1
+3225,54,Jonas Pinheiro,DEM,0,1
+3225,109,Reginaldo Duarte,PSDB,0,1
+3225,31,Efraim Morais,DEM,0,1
+3225,7,Aloizio Mercadante,PT,1,1
+3225,81,Lúcia Vânia,PSDB,0,1
+3225,131,Teotonio Vilela Filho,PSDB,0,1
+3225,47,Heloísa Helena,PSOL,0,1
+3225,78,Luiz Otavio,PMDB,1,1
+3225,55,Jorge Bornhausen,PFL,0,1
+3225,65,João Alberto Souza,PMDB,1,1
+3225,133,Tião Viana,PT,1,1
+3225,61,José Jorge,PFL,0,1
+3225,4,Alberto Silva,PMDB,1,1
+3225,87,Maria do Carmo Alves,PFL,0,1
+3225,116,Roberto Saturnino,PT,1,1
+3225,72,Juvêncio da Fonseca,PSDB,0,1
+3225,11,Antero Paes de Barros,PSDB,0,1
+3225,98,Osmar Dias,PDT,0,1
+3225,14,Antonio Carlos Valadares,PSB,1,1
+3225,49,Hélio Costa,PMDB,1,1
+3225,135,Valmir Amaral,PP,1,1
+3225,6,Almeida Lima,PMDB,1,1
+3225,50,Ideli Salvatti,PT,1,1
+3225,126,Sibá Machado,PT,1,1
+3225,37,Francisco Pereira,PL,0,1
+3225,69,João Ribeiro,PFL,0,1
+3225,104,Paulo Octávio,PFL,0,1
+3225,67,João Capiberibe,PSB,1,1
+3225,129,Tasso Jereissati,PSDB,0,1
+3225,100,Patrícia Saboya,PDT,0,1
+3225,25,Demóstenes Torres,DEM,0,1
+3225,134,Valdir Raupp,PMDB,1,1
+3225,41,Geraldo Mesquita Júnior,PMDB,1,1
+3225,28,Eduardo Azeredo,PSDB,0,1
+3225,2,Aelton Freitas,Sem partido,0,1
+3225,22,César Borges,PR,0,1
+3225,74,Leonel Pavan,PSDB,0,1
+3225,24,Delcídio do Amaral,PT,1,1
+3225,125,Serys Slhessarenko,PT,1,1
+3225,66,João Batista Motta,PSDB,0,0
+3225,10,Ana Júlia Carepa,PT,1,1
+3225,128,Sérgio Zambiasi,PTB,1,1
+3225,18,Arthur Virgílio,PSDB,0,1
+3225,121,Roseana Sarney,PMDB,1,0
+3225,118,Rodolpho Tourinho,PFL,0,1
+3225,127,Sérgio Cabral,PMDB,1,1
+3225,19,Augusto Botelho,PDT,0,1
+3225,21,Cristovam Buarque,PDT,0,1
+3225,38,Fátima Cleide,PT,1,1
+3225,39,Garibaldi Alves Filho,PMDB,1,1
+3225,92,Mão Santa,PSC,0,1
+3225,90,Mozarildo Cavalcanti,PTB,1,1
+3225,99,Papaléo Paes,PSDB,0,1
+3225,34,Flexa Ribeiro,PSDB,0,1
+3226,85,Marco Maciel,DEM,0,1
+3226,33,Fernando Bezerra,PTB,1,1
+3226,57,José Agripino,DEM,0,1
+3226,48,Heráclito Fortes,DEM,0,1
+3226,73,Leomar Quintanilha,PMDB,1,1
+3226,27,Edison Lobão,PMDB,1,1
+3226,112,Renan Calheiros,PMDB,1,0
+3226,120,Romeu Tuma,PTB,1,1
+3226,13,Antonio Carlos Magalhães,PFL,0,1
+3226,42,Gerson Camata,PMDB,1,1
+3226,107,Pedro Simon,PMDB,1,1
+3226,105,Paulo Paim,PT,1,1
+3226,119,Romero Jucá,PMDB,1,1
+3226,30,Eduardo Suplicy,PT,1,1
+3226,54,Jonas Pinheiro,DEM,0,1
+3226,109,Reginaldo Duarte,PSDB,0,1
+3226,31,Efraim Morais,DEM,0,1
+3226,7,Aloizio Mercadante,PT,1,1
+3226,81,Lúcia Vânia,PSDB,0,1
+3226,131,Teotonio Vilela Filho,PSDB,0,1
+3226,47,Heloísa Helena,PSOL,0,1
+3226,78,Luiz Otavio,PMDB,1,1
+3226,55,Jorge Bornhausen,PFL,0,1
+3226,65,João Alberto Souza,PMDB,1,1
+3226,133,Tião Viana,PT,1,1
+3226,61,José Jorge,PFL,0,1
+3226,4,Alberto Silva,PMDB,1,1
+3226,8,Alvaro Dias,PSDB,0,1
+3226,116,Roberto Saturnino,PT,1,1
+3226,72,Juvêncio da Fonseca,PSDB,0,1
+3226,11,Antero Paes de Barros,PSDB,0,1
+3226,98,Osmar Dias,PDT,0,1
+3226,94,Ney Suassuna,PMDB,1,1
+3226,14,Antonio Carlos Valadares,PSB,1,1
+3226,49,Hélio Costa,PMDB,1,1
+3226,135,Valmir Amaral,PP,1,1
+3226,6,Almeida Lima,PMDB,1,1
+3226,50,Ideli Salvatti,PT,1,1
+3226,126,Sibá Machado,PT,1,1
+3226,37,Francisco Pereira,PL,0,1
+3226,69,João Ribeiro,PFL,0,1
+3226,104,Paulo Octávio,PFL,0,1
+3226,67,João Capiberibe,PSB,1,1
+3226,100,Patrícia Saboya,PDT,0,1
+3226,25,Demóstenes Torres,DEM,0,1
+3226,134,Valdir Raupp,PMDB,1,1
+3226,41,Geraldo Mesquita Júnior,PMDB,1,1
+3226,28,Eduardo Azeredo,PSDB,0,1
+3226,84,Marcelo Crivella,PL,0,1
+3226,2,Aelton Freitas,Sem partido,0,1
+3226,22,César Borges,PR,0,1
+3226,74,Leonel Pavan,PSDB,0,1
+3226,24,Delcídio do Amaral,PT,1,1
+3226,125,Serys Slhessarenko,PT,1,1
+3226,66,João Batista Motta,PSDB,0,0
+3226,10,Ana Júlia Carepa,PT,1,1
+3226,128,Sérgio Zambiasi,PTB,1,1
+3226,18,Arthur Virgílio,PSDB,0,1
+3226,121,Roseana Sarney,PMDB,1,0
+3226,118,Rodolpho Tourinho,PFL,0,1
+3226,19,Augusto Botelho,PDT,0,1
+3226,21,Cristovam Buarque,PDT,0,1
+3226,38,Fátima Cleide,PT,1,1
+3226,39,Garibaldi Alves Filho,PMDB,1,1
+3226,92,Mão Santa,PSC,0,1
+3226,90,Mozarildo Cavalcanti,PTB,1,1
+3226,99,Papaléo Paes,PSDB,0,1
+3226,34,Flexa Ribeiro,PSDB,0,1
+3244,64,José Sarney,PMDB,1,1
+3244,85,Marco Maciel,DEM,0,1
+3244,33,Fernando Bezerra,PTB,1,1
+3244,45,Gilberto Miranda,PFL,0,1
+3244,57,José Agripino,DEM,0,1
+3244,48,Heráclito Fortes,DEM,0,1
+3244,73,Leomar Quintanilha,PMDB,1,1
+3244,27,Edison Lobão,PMDB,1,1
+3244,112,Renan Calheiros,PMDB,1,1
+3244,120,Romeu Tuma,PTB,1,1
+3244,13,Antonio Carlos Magalhães,PFL,0,1
+3244,42,Gerson Camata,PMDB,1,1
+3244,107,Pedro Simon,PMDB,1,1
+3244,105,Paulo Paim,PT,1,1
+3244,119,Romero Jucá,PMDB,1,1
+3244,30,Eduardo Suplicy,PT,1,1
+3244,109,Reginaldo Duarte,PSDB,0,1
+3244,31,Efraim Morais,DEM,0,1
+3244,7,Aloizio Mercadante,PT,1,0
+3244,81,Lúcia Vânia,PSDB,0,1
+3244,131,Teotonio Vilela Filho,PSDB,0,1
+3244,35,Flávio Arns,PSDB,0,0
+3244,55,Jorge Bornhausen,PFL,0,1
+3244,61,José Jorge,PFL,0,1
+3244,4,Alberto Silva,PMDB,1,1
+3244,8,Alvaro Dias,PSDB,0,1
+3244,29,Eduardo Siqueira Campos,PSDB,0,1
+3244,116,Roberto Saturnino,PT,1,1
+3244,72,Juvêncio da Fonseca,PSDB,0,1
+3244,11,Antero Paes de Barros,PSDB,0,0
+3244,98,Osmar Dias,PDT,0,1
+3244,94,Ney Suassuna,PMDB,1,1
+3244,14,Antonio Carlos Valadares,PSB,1,1
+3244,49,Hélio Costa,PMDB,1,1
+3244,6,Almeida Lima,PMDB,1,1
+3244,50,Ideli Salvatti,PT,1,1
+3244,126,Sibá Machado,PT,1,1
+3244,37,Francisco Pereira,PL,0,1
+3244,69,João Ribeiro,PFL,0,1
+3244,108,Ramez Tebet,PMDB,1,0
+3244,67,João Capiberibe,PSB,1,0
+3244,129,Tasso Jereissati,PSDB,0,1
+3244,100,Patrícia Saboya,PDT,0,1
+3244,25,Demóstenes Torres,DEM,0,1
+3244,134,Valdir Raupp,PMDB,1,1
+3244,41,Geraldo Mesquita Júnior,PMDB,1,0
+3244,2,Aelton Freitas,Sem partido,0,1
+3244,22,César Borges,PR,0,1
+3244,74,Leonel Pavan,PSDB,0,1
+3244,24,Delcídio do Amaral,PT,1,1
+3244,66,João Batista Motta,PSDB,0,1
+3244,10,Ana Júlia Carepa,PT,1,1
+3244,128,Sérgio Zambiasi,PTB,1,1
+3244,18,Arthur Virgílio,PSDB,0,1
+3244,121,Roseana Sarney,PMDB,1,0
+3244,118,Rodolpho Tourinho,PFL,0,1
+3244,127,Sérgio Cabral,PMDB,1,1
+3244,91,Mário Calixto,PMDB,1,1
+3244,19,Augusto Botelho,PDT,0,1
+3244,21,Cristovam Buarque,PDT,0,1
+3244,38,Fátima Cleide,PT,1,0
+3244,39,Garibaldi Alves Filho,PMDB,1,1
+3244,92,Mão Santa,PSC,0,1
+3244,90,Mozarildo Cavalcanti,PTB,1,0
+3244,99,Papaléo Paes,PSDB,0,1
+3244,124,Sergio Guerra,PSDB,0,1
+3244,34,Flexa Ribeiro,PSDB,0,1
+3263,85,Marco Maciel,DEM,0,-1
+3263,45,Gilberto Miranda,PFL,0,-1
+3263,57,José Agripino,DEM,0,-1
+3263,48,Heráclito Fortes,DEM,0,-1
+3263,27,Edison Lobão,PMDB,1,-1
+3263,112,Renan Calheiros,PMDB,1,0
+3263,120,Romeu Tuma,PTB,1,-1
+3263,13,Antonio Carlos Magalhães,PFL,0,-1
+3263,42,Gerson Camata,PMDB,1,1
+3263,107,Pedro Simon,PMDB,1,1
+3263,105,Paulo Paim,PT,1,1
+3263,52,Jefferson Peres,PDT,0,0
+3263,119,Romero Jucá,PMDB,1,1
+3263,30,Eduardo Suplicy,PT,1,1
+3263,54,Jonas Pinheiro,DEM,0,0
+3263,83,Maguito Vilela,PMDB,1,1
+3263,109,Reginaldo Duarte,PSDB,0,-1
+3263,7,Aloizio Mercadante,PT,1,1
+3263,81,Lúcia Vânia,PSDB,0,0
+3263,131,Teotonio Vilela Filho,PSDB,0,-1
+3263,35,Flávio Arns,PSDB,0,1
+3263,47,Heloísa Helena,PSOL,0,-1
+3263,78,Luiz Otavio,PMDB,1,1
+3263,55,Jorge Bornhausen,PFL,0,-1
+3263,133,Tião Viana,PT,1,1
+3263,4,Alberto Silva,PMDB,1,1
+3263,8,Alvaro Dias,PSDB,0,-1
+3263,87,Maria do Carmo Alves,PFL,0,-1
+3263,116,Roberto Saturnino,PT,1,1
+3263,72,Juvêncio da Fonseca,PSDB,0,1
+3263,11,Antero Paes de Barros,PSDB,0,0
+3263,98,Osmar Dias,PDT,0,1
+3263,94,Ney Suassuna,PMDB,1,1
+3263,14,Antonio Carlos Valadares,PSB,1,1
+3263,49,Hélio Costa,PMDB,1,1
+3263,50,Ideli Salvatti,PT,1,0
+3263,126,Sibá Machado,PT,1,1
+3263,37,Francisco Pereira,PL,0,1
+3263,69,João Ribeiro,PFL,0,1
+3263,104,Paulo Octávio,PFL,0,-1
+3263,108,Ramez Tebet,PMDB,1,1
+3263,129,Tasso Jereissati,PSDB,0,-1
+3263,100,Patrícia Saboya,PDT,0,1
+3263,25,Demóstenes Torres,DEM,0,-1
+3263,62,José Maranhão,PMDB,1,1
+3263,134,Valdir Raupp,PMDB,1,1
+3263,41,Geraldo Mesquita Júnior,PMDB,1,0
+3263,28,Eduardo Azeredo,PSDB,0,-1
+3263,84,Marcelo Crivella,PL,0,1
+3263,2,Aelton Freitas,Sem partido,0,1
+3263,74,Leonel Pavan,PSDB,0,-1
+3263,24,Delcídio do Amaral,PT,1,1
+3263,125,Serys Slhessarenko,PT,1,1
+3263,66,João Batista Motta,PSDB,0,-1
+3263,128,Sérgio Zambiasi,PTB,1,1
+3263,18,Arthur Virgílio,PSDB,0,-1
+3263,121,Roseana Sarney,PMDB,1,1
+3263,118,Rodolpho Tourinho,PFL,0,0
+3263,127,Sérgio Cabral,PMDB,1,1
+3263,19,Augusto Botelho,PDT,0,1
+3263,21,Cristovam Buarque,PDT,0,0
+3263,38,Fátima Cleide,PT,1,0
+3263,90,Mozarildo Cavalcanti,PTB,1,1
+3263,34,Flexa Ribeiro,PSDB,0,0
+3428,64,José Sarney,PMDB,1,1
+3428,85,Marco Maciel,DEM,0,1
+3428,33,Fernando Bezerra,PTB,1,1
+3428,57,José Agripino,DEM,0,0
+3428,48,Heráclito Fortes,DEM,0,1
+3428,73,Leomar Quintanilha,PMDB,1,1
+3428,27,Edison Lobão,PMDB,1,1
+3428,112,Renan Calheiros,PMDB,1,0
+3428,120,Romeu Tuma,PTB,1,1
+3428,13,Antonio Carlos Magalhães,PFL,0,1
+3428,42,Gerson Camata,PMDB,1,1
+3428,107,Pedro Simon,PMDB,1,1
+3428,105,Paulo Paim,PT,1,1
+3428,30,Eduardo Suplicy,PT,1,1
+3428,54,Jonas Pinheiro,DEM,0,1
+3428,83,Maguito Vilela,PMDB,1,1
+3428,109,Reginaldo Duarte,PSDB,0,1
+3428,31,Efraim Morais,DEM,0,1
+3428,7,Aloizio Mercadante,PT,1,1
+3428,131,Teotonio Vilela Filho,PSDB,0,0
+3428,35,Flávio Arns,PSDB,0,1
+3428,47,Heloísa Helena,PSOL,0,1
+3428,44,Gilberto Mestrinho,PMDB,1,1
+3428,78,Luiz Otavio,PMDB,1,1
+3428,55,Jorge Bornhausen,PFL,0,1
+3428,8,Alvaro Dias,PSDB,0,1
+3428,29,Eduardo Siqueira Campos,PSDB,0,1
+3428,9,Amir Lando,PMDB,1,1
+3428,11,Antero Paes de Barros,PSDB,0,1
+3428,98,Osmar Dias,PDT,0,1
+3428,94,Ney Suassuna,PMDB,1,1
+3428,14,Antonio Carlos Valadares,PSB,1,1
+3428,49,Hélio Costa,PMDB,1,1
+3428,135,Valmir Amaral,PP,1,1
+3428,50,Ideli Salvatti,PT,1,1
+3428,126,Sibá Machado,PT,1,1
+3428,37,Francisco Pereira,PL,0,1
+3428,69,João Ribeiro,PFL,0,1
+3428,104,Paulo Octávio,PFL,0,1
+3428,108,Ramez Tebet,PMDB,1,0
+3428,67,João Capiberibe,PSB,1,1
+3428,129,Tasso Jereissati,PSDB,0,1
+3428,100,Patrícia Saboya,PDT,0,1
+3428,25,Demóstenes Torres,DEM,0,1
+3428,62,José Maranhão,PMDB,1,1
+3428,134,Valdir Raupp,PMDB,1,1
+3428,41,Geraldo Mesquita Júnior,PMDB,1,1
+3428,22,César Borges,PR,0,1
+3428,74,Leonel Pavan,PSDB,0,0
+3428,24,Delcídio do Amaral,PT,1,1
+3428,125,Serys Slhessarenko,PT,1,1
+3428,66,João Batista Motta,PSDB,0,1
+3428,10,Ana Júlia Carepa,PT,1,1
+3428,128,Sérgio Zambiasi,PTB,1,1
+3428,18,Arthur Virgílio,PSDB,0,1
+3428,121,Roseana Sarney,PMDB,1,1
+3428,118,Rodolpho Tourinho,PFL,0,1
+3428,127,Sérgio Cabral,PMDB,1,1
+3428,139,Wirlande da  Luz,PMDB,1,1
+3428,19,Augusto Botelho,PDT,0,1
+3428,21,Cristovam Buarque,PDT,0,1
+3428,38,Fátima Cleide,PT,1,1
+3428,39,Garibaldi Alves Filho,PMDB,1,1
+3428,92,Mão Santa,PSC,0,1
+3428,90,Mozarildo Cavalcanti,PTB,1,1
+3428,99,Papaléo Paes,PSDB,0,1
+3428,34,Flexa Ribeiro,PSDB,0,1
+3423,85,Marco Maciel,DEM,0,1
+3423,57,José Agripino,DEM,0,0
+3423,48,Heráclito Fortes,DEM,0,1
+3423,73,Leomar Quintanilha,PMDB,1,1
+3423,27,Edison Lobão,PMDB,1,1
+3423,112,Renan Calheiros,PMDB,1,0
+3423,120,Romeu Tuma,PTB,1,1
+3423,13,Antonio Carlos Magalhães,PFL,0,1
+3423,42,Gerson Camata,PMDB,1,1
+3423,107,Pedro Simon,PMDB,1,1
+3423,105,Paulo Paim,PT,1,1
+3423,52,Jefferson Peres,PDT,0,1
+3423,30,Eduardo Suplicy,PT,1,1
+3423,54,Jonas Pinheiro,DEM,0,1
+3423,83,Maguito Vilela,PMDB,1,1
+3423,109,Reginaldo Duarte,PSDB,0,1
+3423,31,Efraim Morais,DEM,0,1
+3423,7,Aloizio Mercadante,PT,1,1
+3423,81,Lúcia Vânia,PSDB,0,1
+3423,131,Teotonio Vilela Filho,PSDB,0,0
+3423,35,Flávio Arns,PSDB,0,1
+3423,47,Heloísa Helena,PSOL,0,1
+3423,44,Gilberto Mestrinho,PMDB,1,1
+3423,78,Luiz Otavio,PMDB,1,1
+3423,55,Jorge Bornhausen,PFL,0,1
+3423,65,João Alberto Souza,PMDB,1,1
+3423,133,Tião Viana,PT,1,1
+3423,61,José Jorge,PFL,0,1
+3423,8,Alvaro Dias,PSDB,0,1
+3423,72,Juvêncio da Fonseca,PSDB,0,1
+3423,11,Antero Paes de Barros,PSDB,0,1
+3423,98,Osmar Dias,PDT,0,1
+3423,94,Ney Suassuna,PMDB,1,1
+3423,14,Antonio Carlos Valadares,PSB,1,1
+3423,49,Hélio Costa,PMDB,1,1
+3423,6,Almeida Lima,PMDB,1,1
+3423,50,Ideli Salvatti,PT,1,1
+3423,126,Sibá Machado,PT,1,1
+3423,37,Francisco Pereira,PL,0,1
+3423,69,João Ribeiro,PFL,0,1
+3423,104,Paulo Octávio,PFL,0,1
+3423,108,Ramez Tebet,PMDB,1,0
+3423,129,Tasso Jereissati,PSDB,0,1
+3423,100,Patrícia Saboya,PDT,0,1
+3423,25,Demóstenes Torres,DEM,0,1
+3423,41,Geraldo Mesquita Júnior,PMDB,1,1
+3423,28,Eduardo Azeredo,PSDB,0,1
+3423,84,Marcelo Crivella,PL,0,1
+3423,22,César Borges,PR,0,1
+3423,74,Leonel Pavan,PSDB,0,0
+3423,24,Delcídio do Amaral,PT,1,1
+3423,66,João Batista Motta,PSDB,0,1
+3423,10,Ana Júlia Carepa,PT,1,1
+3423,128,Sérgio Zambiasi,PTB,1,1
+3423,18,Arthur Virgílio,PSDB,0,1
+3423,121,Roseana Sarney,PMDB,1,1
+3423,118,Rodolpho Tourinho,PFL,0,1
+3423,127,Sérgio Cabral,PMDB,1,1
+3423,139,Wirlande da  Luz,PMDB,1,1
+3423,19,Augusto Botelho,PDT,0,1
+3423,21,Cristovam Buarque,PDT,0,1
+3423,39,Garibaldi Alves Filho,PMDB,1,1
+3423,92,Mão Santa,PSC,0,1
+3423,90,Mozarildo Cavalcanti,PTB,1,0
+3423,99,Papaléo Paes,PSDB,0,1
+3423,34,Flexa Ribeiro,PSDB,0,1
+3424,85,Marco Maciel,DEM,0,1
+3424,57,José Agripino,DEM,0,0
+3424,48,Heráclito Fortes,DEM,0,1
+3424,73,Leomar Quintanilha,PMDB,1,1
+3424,27,Edison Lobão,PMDB,1,1
+3424,112,Renan Calheiros,PMDB,1,0
+3424,120,Romeu Tuma,PTB,1,1
+3424,13,Antonio Carlos Magalhães,PFL,0,1
+3424,42,Gerson Camata,PMDB,1,1
+3424,107,Pedro Simon,PMDB,1,1
+3424,105,Paulo Paim,PT,1,1
+3424,52,Jefferson Peres,PDT,0,1
+3424,30,Eduardo Suplicy,PT,1,1
+3424,54,Jonas Pinheiro,DEM,0,1
+3424,83,Maguito Vilela,PMDB,1,1
+3424,109,Reginaldo Duarte,PSDB,0,1
+3424,31,Efraim Morais,DEM,0,1
+3424,7,Aloizio Mercadante,PT,1,1
+3424,81,Lúcia Vânia,PSDB,0,1
+3424,131,Teotonio Vilela Filho,PSDB,0,0
+3424,35,Flávio Arns,PSDB,0,1
+3424,47,Heloísa Helena,PSOL,0,0
+3424,44,Gilberto Mestrinho,PMDB,1,1
+3424,78,Luiz Otavio,PMDB,1,1
+3424,55,Jorge Bornhausen,PFL,0,1
+3424,65,João Alberto Souza,PMDB,1,1
+3424,133,Tião Viana,PT,1,1
+3424,61,José Jorge,PFL,0,1
+3424,8,Alvaro Dias,PSDB,0,1
+3424,72,Juvêncio da Fonseca,PSDB,0,1
+3424,11,Antero Paes de Barros,PSDB,0,1
+3424,98,Osmar Dias,PDT,0,1
+3424,94,Ney Suassuna,PMDB,1,1
+3424,14,Antonio Carlos Valadares,PSB,1,1
+3424,49,Hélio Costa,PMDB,1,1
+3424,6,Almeida Lima,PMDB,1,1
+3424,50,Ideli Salvatti,PT,1,1
+3424,126,Sibá Machado,PT,1,1
+3424,37,Francisco Pereira,PL,0,1
+3424,69,João Ribeiro,PFL,0,1
+3424,108,Ramez Tebet,PMDB,1,0
+3424,129,Tasso Jereissati,PSDB,0,1
+3424,100,Patrícia Saboya,PDT,0,1
+3424,25,Demóstenes Torres,DEM,0,1
+3424,41,Geraldo Mesquita Júnior,PMDB,1,1
+3424,28,Eduardo Azeredo,PSDB,0,1
+3424,84,Marcelo Crivella,PL,0,1
+3424,22,César Borges,PR,0,1
+3424,74,Leonel Pavan,PSDB,0,0
+3424,24,Delcídio do Amaral,PT,1,1
+3424,10,Ana Júlia Carepa,PT,1,1
+3424,128,Sérgio Zambiasi,PTB,1,1
+3424,18,Arthur Virgílio,PSDB,0,1
+3424,121,Roseana Sarney,PMDB,1,1
+3424,118,Rodolpho Tourinho,PFL,0,1
+3424,139,Wirlande da  Luz,PMDB,1,1
+3424,19,Augusto Botelho,PDT,0,1
+3424,21,Cristovam Buarque,PDT,0,1
+3424,39,Garibaldi Alves Filho,PMDB,1,1
+3424,92,Mão Santa,PSC,0,1
+3424,90,Mozarildo Cavalcanti,PTB,1,0
+3424,99,Papaléo Paes,PSDB,0,1
+3424,34,Flexa Ribeiro,PSDB,0,1
+3425,64,José Sarney,PMDB,1,1
+3425,85,Marco Maciel,DEM,0,1
+3425,33,Fernando Bezerra,PTB,1,1
+3425,57,José Agripino,DEM,0,0
+3425,48,Heráclito Fortes,DEM,0,1
+3425,73,Leomar Quintanilha,PMDB,1,1
+3425,27,Edison Lobão,PMDB,1,1
+3425,112,Renan Calheiros,PMDB,1,0
+3425,120,Romeu Tuma,PTB,1,1
+3425,13,Antonio Carlos Magalhães,PFL,0,1
+3425,42,Gerson Camata,PMDB,1,1
+3425,107,Pedro Simon,PMDB,1,1
+3425,105,Paulo Paim,PT,1,1
+3425,52,Jefferson Peres,PDT,0,1
+3425,30,Eduardo Suplicy,PT,1,1
+3425,54,Jonas Pinheiro,DEM,0,1
+3425,83,Maguito Vilela,PMDB,1,1
+3425,109,Reginaldo Duarte,PSDB,0,1
+3425,31,Efraim Morais,DEM,0,1
+3425,7,Aloizio Mercadante,PT,1,1
+3425,81,Lúcia Vânia,PSDB,0,1
+3425,131,Teotonio Vilela Filho,PSDB,0,0
+3425,35,Flávio Arns,PSDB,0,1
+3425,47,Heloísa Helena,PSOL,0,1
+3425,44,Gilberto Mestrinho,PMDB,1,1
+3425,78,Luiz Otavio,PMDB,1,1
+3425,55,Jorge Bornhausen,PFL,0,1
+3425,133,Tião Viana,PT,1,1
+3425,61,José Jorge,PFL,0,1
+3425,8,Alvaro Dias,PSDB,0,1
+3425,29,Eduardo Siqueira Campos,PSDB,0,1
+3425,9,Amir Lando,PMDB,1,1
+3425,116,Roberto Saturnino,PT,1,1
+3425,11,Antero Paes de Barros,PSDB,0,1
+3425,98,Osmar Dias,PDT,0,1
+3425,94,Ney Suassuna,PMDB,1,1
+3425,14,Antonio Carlos Valadares,PSB,1,1
+3425,49,Hélio Costa,PMDB,1,1
+3425,135,Valmir Amaral,PP,1,1
+3425,6,Almeida Lima,PMDB,1,1
+3425,50,Ideli Salvatti,PT,1,1
+3425,126,Sibá Machado,PT,1,1
+3425,37,Francisco Pereira,PL,0,1
+3425,69,João Ribeiro,PFL,0,1
+3425,104,Paulo Octávio,PFL,0,1
+3425,108,Ramez Tebet,PMDB,1,0
+3425,129,Tasso Jereissati,PSDB,0,1
+3425,100,Patrícia Saboya,PDT,0,1
+3425,25,Demóstenes Torres,DEM,0,1
+3425,62,José Maranhão,PMDB,1,1
+3425,134,Valdir Raupp,PMDB,1,1
+3425,41,Geraldo Mesquita Júnior,PMDB,1,1
+3425,22,César Borges,PR,0,1
+3425,74,Leonel Pavan,PSDB,0,0
+3425,24,Delcídio do Amaral,PT,1,1
+3425,125,Serys Slhessarenko,PT,1,1
+3425,66,João Batista Motta,PSDB,0,1
+3425,10,Ana Júlia Carepa,PT,1,1
+3425,128,Sérgio Zambiasi,PTB,1,1
+3425,18,Arthur Virgílio,PSDB,0,1
+3425,121,Roseana Sarney,PMDB,1,1
+3425,118,Rodolpho Tourinho,PFL,0,1
+3425,127,Sérgio Cabral,PMDB,1,1
+3425,139,Wirlande da  Luz,PMDB,1,1
+3425,19,Augusto Botelho,PDT,0,1
+3425,21,Cristovam Buarque,PDT,0,1
+3425,38,Fátima Cleide,PT,1,1
+3425,39,Garibaldi Alves Filho,PMDB,1,1
+3425,92,Mão Santa,PSC,0,1
+3425,90,Mozarildo Cavalcanti,PTB,1,1
+3425,34,Flexa Ribeiro,PSDB,0,1
+3426,64,José Sarney,PMDB,1,1
+3426,85,Marco Maciel,DEM,0,1
+3426,33,Fernando Bezerra,PTB,1,1
+3426,57,José Agripino,DEM,0,0
+3426,48,Heráclito Fortes,DEM,0,1
+3426,73,Leomar Quintanilha,PMDB,1,1
+3426,27,Edison Lobão,PMDB,1,1
+3426,112,Renan Calheiros,PMDB,1,0
+3426,120,Romeu Tuma,PTB,1,1
+3426,13,Antonio Carlos Magalhães,PFL,0,1
+3426,42,Gerson Camata,PMDB,1,1
+3426,107,Pedro Simon,PMDB,1,1
+3426,105,Paulo Paim,PT,1,1
+3426,30,Eduardo Suplicy,PT,1,1
+3426,54,Jonas Pinheiro,DEM,0,1
+3426,83,Maguito Vilela,PMDB,1,1
+3426,109,Reginaldo Duarte,PSDB,0,1
+3426,31,Efraim Morais,DEM,0,1
+3426,7,Aloizio Mercadante,PT,1,1
+3426,81,Lúcia Vânia,PSDB,0,1
+3426,131,Teotonio Vilela Filho,PSDB,0,0
+3426,35,Flávio Arns,PSDB,0,1
+3426,47,Heloísa Helena,PSOL,0,1
+3426,44,Gilberto Mestrinho,PMDB,1,1
+3426,78,Luiz Otavio,PMDB,1,1
+3426,55,Jorge Bornhausen,PFL,0,1
+3426,61,José Jorge,PFL,0,1
+3426,8,Alvaro Dias,PSDB,0,1
+3426,29,Eduardo Siqueira Campos,PSDB,0,1
+3426,9,Amir Lando,PMDB,1,1
+3426,116,Roberto Saturnino,PT,1,1
+3426,11,Antero Paes de Barros,PSDB,0,1
+3426,98,Osmar Dias,PDT,0,1
+3426,94,Ney Suassuna,PMDB,1,1
+3426,14,Antonio Carlos Valadares,PSB,1,1
+3426,49,Hélio Costa,PMDB,1,1
+3426,135,Valmir Amaral,PP,1,1
+3426,50,Ideli Salvatti,PT,1,1
+3426,126,Sibá Machado,PT,1,1
+3426,37,Francisco Pereira,PL,0,1
+3426,69,João Ribeiro,PFL,0,1
+3426,104,Paulo Octávio,PFL,0,1
+3426,108,Ramez Tebet,PMDB,1,0
+3426,67,João Capiberibe,PSB,1,1
+3426,129,Tasso Jereissati,PSDB,0,1
+3426,100,Patrícia Saboya,PDT,0,1
+3426,25,Demóstenes Torres,DEM,0,1
+3426,62,José Maranhão,PMDB,1,1
+3426,134,Valdir Raupp,PMDB,1,1
+3426,41,Geraldo Mesquita Júnior,PMDB,1,1
+3426,84,Marcelo Crivella,PL,0,1
+3426,22,César Borges,PR,0,1
+3426,74,Leonel Pavan,PSDB,0,0
+3426,24,Delcídio do Amaral,PT,1,1
+3426,125,Serys Slhessarenko,PT,1,1
+3426,66,João Batista Motta,PSDB,0,1
+3426,10,Ana Júlia Carepa,PT,1,1
+3426,128,Sérgio Zambiasi,PTB,1,1
+3426,18,Arthur Virgílio,PSDB,0,1
+3426,121,Roseana Sarney,PMDB,1,1
+3426,118,Rodolpho Tourinho,PFL,0,1
+3426,127,Sérgio Cabral,PMDB,1,1
+3426,139,Wirlande da  Luz,PMDB,1,1
+3426,19,Augusto Botelho,PDT,0,1
+3426,21,Cristovam Buarque,PDT,0,1
+3426,38,Fátima Cleide,PT,1,1
+3426,39,Garibaldi Alves Filho,PMDB,1,1
+3426,92,Mão Santa,PSC,0,1
+3426,90,Mozarildo Cavalcanti,PTB,1,1
+3426,34,Flexa Ribeiro,PSDB,0,1
+3429,64,José Sarney,PMDB,1,1
+3429,85,Marco Maciel,DEM,0,1
+3429,33,Fernando Bezerra,PTB,1,1
+3429,57,José Agripino,DEM,0,0
+3429,48,Heráclito Fortes,DEM,0,1
+3429,73,Leomar Quintanilha,PMDB,1,1
+3429,27,Edison Lobão,PMDB,1,1
+3429,112,Renan Calheiros,PMDB,1,0
+3429,120,Romeu Tuma,PTB,1,1
+3429,13,Antonio Carlos Magalhães,PFL,0,1
+3429,42,Gerson Camata,PMDB,1,1
+3429,107,Pedro Simon,PMDB,1,1
+3429,105,Paulo Paim,PT,1,1
+3429,30,Eduardo Suplicy,PT,1,1
+3429,54,Jonas Pinheiro,DEM,0,1
+3429,83,Maguito Vilela,PMDB,1,1
+3429,109,Reginaldo Duarte,PSDB,0,1
+3429,31,Efraim Morais,DEM,0,1
+3429,7,Aloizio Mercadante,PT,1,1
+3429,131,Teotonio Vilela Filho,PSDB,0,0
+3429,35,Flávio Arns,PSDB,0,1
+3429,47,Heloísa Helena,PSOL,0,1
+3429,44,Gilberto Mestrinho,PMDB,1,1
+3429,78,Luiz Otavio,PMDB,1,1
+3429,55,Jorge Bornhausen,PFL,0,1
+3429,29,Eduardo Siqueira Campos,PSDB,0,1
+3429,9,Amir Lando,PMDB,1,1
+3429,11,Antero Paes de Barros,PSDB,0,1
+3429,98,Osmar Dias,PDT,0,1
+3429,94,Ney Suassuna,PMDB,1,1
+3429,14,Antonio Carlos Valadares,PSB,1,1
+3429,49,Hélio Costa,PMDB,1,1
+3429,135,Valmir Amaral,PP,1,1
+3429,50,Ideli Salvatti,PT,1,1
+3429,126,Sibá Machado,PT,1,1
+3429,37,Francisco Pereira,PL,0,1
+3429,69,João Ribeiro,PFL,0,1
+3429,104,Paulo Octávio,PFL,0,1
+3429,108,Ramez Tebet,PMDB,1,0
+3429,67,João Capiberibe,PSB,1,1
+3429,129,Tasso Jereissati,PSDB,0,1
+3429,100,Patrícia Saboya,PDT,0,1
+3429,25,Demóstenes Torres,DEM,0,1
+3429,62,José Maranhão,PMDB,1,1
+3429,134,Valdir Raupp,PMDB,1,1
+3429,41,Geraldo Mesquita Júnior,PMDB,1,1
+3429,22,César Borges,PR,0,1
+3429,74,Leonel Pavan,PSDB,0,0
+3429,24,Delcídio do Amaral,PT,1,1
+3429,125,Serys Slhessarenko,PT,1,1
+3429,66,João Batista Motta,PSDB,0,1
+3429,10,Ana Júlia Carepa,PT,1,1
+3429,128,Sérgio Zambiasi,PTB,1,1
+3429,18,Arthur Virgílio,PSDB,0,1
+3429,121,Roseana Sarney,PMDB,1,1
+3429,118,Rodolpho Tourinho,PFL,0,1
+3429,127,Sérgio Cabral,PMDB,1,1
+3429,139,Wirlande da  Luz,PMDB,1,1
+3429,19,Augusto Botelho,PDT,0,1
+3429,21,Cristovam Buarque,PDT,0,1
+3429,38,Fátima Cleide,PT,1,1
+3429,39,Garibaldi Alves Filho,PMDB,1,1
+3429,92,Mão Santa,PSC,0,1
+3429,90,Mozarildo Cavalcanti,PTB,1,1
+3429,99,Papaléo Paes,PSDB,0,1
+3429,34,Flexa Ribeiro,PSDB,0,1
+3427,85,Marco Maciel,DEM,0,1
+3427,33,Fernando Bezerra,PTB,1,1
+3427,57,José Agripino,DEM,0,0
+3427,48,Heráclito Fortes,DEM,0,1
+3427,73,Leomar Quintanilha,PMDB,1,1
+3427,27,Edison Lobão,PMDB,1,1
+3427,112,Renan Calheiros,PMDB,1,0
+3427,120,Romeu Tuma,PTB,1,1
+3427,13,Antonio Carlos Magalhães,PFL,0,1
+3427,42,Gerson Camata,PMDB,1,1
+3427,107,Pedro Simon,PMDB,1,1
+3427,105,Paulo Paim,PT,1,1
+3427,30,Eduardo Suplicy,PT,1,1
+3427,109,Reginaldo Duarte,PSDB,0,1
+3427,31,Efraim Morais,DEM,0,1
+3427,7,Aloizio Mercadante,PT,1,1
+3427,81,Lúcia Vânia,PSDB,0,1
+3427,131,Teotonio Vilela Filho,PSDB,0,0
+3427,35,Flávio Arns,PSDB,0,1
+3427,47,Heloísa Helena,PSOL,0,1
+3427,44,Gilberto Mestrinho,PMDB,1,1
+3427,78,Luiz Otavio,PMDB,1,1
+3427,55,Jorge Bornhausen,PFL,0,1
+3427,61,José Jorge,PFL,0,1
+3427,8,Alvaro Dias,PSDB,0,1
+3427,29,Eduardo Siqueira Campos,PSDB,0,1
+3427,9,Amir Lando,PMDB,1,1
+3427,116,Roberto Saturnino,PT,1,1
+3427,11,Antero Paes de Barros,PSDB,0,1
+3427,98,Osmar Dias,PDT,0,1
+3427,94,Ney Suassuna,PMDB,1,1
+3427,14,Antonio Carlos Valadares,PSB,1,1
+3427,49,Hélio Costa,PMDB,1,1
+3427,135,Valmir Amaral,PP,1,1
+3427,50,Ideli Salvatti,PT,1,1
+3427,126,Sibá Machado,PT,1,1
+3427,37,Francisco Pereira,PL,0,1
+3427,69,João Ribeiro,PFL,0,1
+3427,104,Paulo Octávio,PFL,0,1
+3427,108,Ramez Tebet,PMDB,1,0
+3427,67,João Capiberibe,PSB,1,1
+3427,129,Tasso Jereissati,PSDB,0,1
+3427,100,Patrícia Saboya,PDT,0,1
+3427,25,Demóstenes Torres,DEM,0,1
+3427,62,José Maranhão,PMDB,1,1
+3427,134,Valdir Raupp,PMDB,1,1
+3427,41,Geraldo Mesquita Júnior,PMDB,1,1
+3427,84,Marcelo Crivella,PL,0,1
+3427,22,César Borges,PR,0,1
+3427,74,Leonel Pavan,PSDB,0,0
+3427,24,Delcídio do Amaral,PT,1,1
+3427,125,Serys Slhessarenko,PT,1,1
+3427,66,João Batista Motta,PSDB,0,1
+3427,10,Ana Júlia Carepa,PT,1,1
+3427,128,Sérgio Zambiasi,PTB,1,1
+3427,18,Arthur Virgílio,PSDB,0,1
+3427,121,Roseana Sarney,PMDB,1,1
+3427,118,Rodolpho Tourinho,PFL,0,1
+3427,127,Sérgio Cabral,PMDB,1,1
+3427,139,Wirlande da  Luz,PMDB,1,1
+3427,19,Augusto Botelho,PDT,0,1
+3427,21,Cristovam Buarque,PDT,0,1
+3427,38,Fátima Cleide,PT,1,1
+3427,39,Garibaldi Alves Filho,PMDB,1,1
+3427,92,Mão Santa,PSC,0,1
+3427,90,Mozarildo Cavalcanti,PTB,1,1
+3427,34,Flexa Ribeiro,PSDB,0,1
+3650,85,Marco Maciel,DEM,0,1
+3650,33,Fernando Bezerra,PTB,1,1
+3650,57,José Agripino,DEM,0,1
+3650,48,Heráclito Fortes,DEM,0,-1
+3650,73,Leomar Quintanilha,PMDB,1,1
+3650,112,Renan Calheiros,PMDB,1,0
+3650,120,Romeu Tuma,PTB,1,1
+3650,13,Antonio Carlos Magalhães,PFL,0,1
+3650,107,Pedro Simon,PMDB,1,1
+3650,105,Paulo Paim,PT,1,1
+3650,30,Eduardo Suplicy,PT,1,1
+3650,54,Jonas Pinheiro,DEM,0,1
+3650,83,Maguito Vilela,PMDB,1,1
+3650,109,Reginaldo Duarte,PSDB,0,1
+3650,31,Efraim Morais,DEM,0,0
+3650,7,Aloizio Mercadante,PT,1,1
+3650,81,Lúcia Vânia,PSDB,0,1
+3650,131,Teotonio Vilela Filho,PSDB,0,1
+3650,35,Flávio Arns,PSDB,0,1
+3650,47,Heloísa Helena,PSOL,0,1
+3650,44,Gilberto Mestrinho,PMDB,1,1
+3650,78,Luiz Otavio,PMDB,1,1
+3650,55,Jorge Bornhausen,PFL,0,1
+3650,133,Tião Viana,PT,1,1
+3650,29,Eduardo Siqueira Campos,PSDB,0,0
+3650,9,Amir Lando,PMDB,1,1
+3650,72,Juvêncio da Fonseca,PSDB,0,1
+3650,98,Osmar Dias,PDT,0,1
+3650,80,Luiz Soares,Sem partido,0,1
+3650,94,Ney Suassuna,PMDB,1,1
+3650,14,Antonio Carlos Valadares,PSB,1,1
+3650,82,Magno Malta,PR,0,1
+3650,49,Hélio Costa,PMDB,1,1
+3650,6,Almeida Lima,PMDB,1,1
+3650,50,Ideli Salvatti,PT,1,1
+3650,126,Sibá Machado,PT,1,1
+3650,95,Nezinho Alencar,PSB,1,0
+3650,104,Paulo Octávio,PFL,0,1
+3650,108,Ramez Tebet,PMDB,1,1
+3650,67,João Capiberibe,PSB,1,0
+3650,100,Patrícia Saboya,PDT,0,1
+3650,25,Demóstenes Torres,DEM,0,1
+3650,62,José Maranhão,PMDB,1,1
+3650,134,Valdir Raupp,PMDB,1,1
+3650,41,Geraldo Mesquita Júnior,PMDB,1,1
+3650,28,Eduardo Azeredo,PSDB,0,1
+3650,84,Marcelo Crivella,PL,0,1
+3650,2,Aelton Freitas,Sem partido,0,1
+3650,22,César Borges,PR,0,1
+3650,74,Leonel Pavan,PSDB,0,1
+3650,24,Delcídio do Amaral,PT,1,1
+3650,125,Serys Slhessarenko,PT,1,1
+3650,66,João Batista Motta,PSDB,0,1
+3650,18,Arthur Virgílio,PSDB,0,1
+3650,121,Roseana Sarney,PMDB,1,0
+3650,127,Sérgio Cabral,PMDB,1,1
+3650,139,Wirlande da  Luz,PMDB,1,1
+3650,19,Augusto Botelho,PDT,0,1
+3650,21,Cristovam Buarque,PDT,0,1
+3650,38,Fátima Cleide,PT,1,1
+3650,39,Garibaldi Alves Filho,PMDB,1,1
+3650,92,Mão Santa,PSC,0,0
+3650,99,Papaléo Paes,PSDB,0,0
+3650,124,Sergio Guerra,PSDB,0,1
+3650,34,Flexa Ribeiro,PSDB,0,1
+3663,64,José Sarney,PMDB,1,1
+3663,85,Marco Maciel,DEM,0,1
+3663,48,Heráclito Fortes,DEM,0,1
+3663,73,Leomar Quintanilha,PMDB,1,1
+3663,112,Renan Calheiros,PMDB,1,0
+3663,120,Romeu Tuma,PTB,1,1
+3663,13,Antonio Carlos Magalhães,PFL,0,1
+3663,107,Pedro Simon,PMDB,1,1
+3663,105,Paulo Paim,PT,1,1
+3663,30,Eduardo Suplicy,PT,1,1
+3663,54,Jonas Pinheiro,DEM,0,1
+3663,83,Maguito Vilela,PMDB,1,1
+3663,109,Reginaldo Duarte,PSDB,0,1
+3663,31,Efraim Morais,DEM,0,0
+3663,7,Aloizio Mercadante,PT,1,1
+3663,81,Lúcia Vânia,PSDB,0,1
+3663,131,Teotonio Vilela Filho,PSDB,0,1
+3663,35,Flávio Arns,PSDB,0,1
+3663,47,Heloísa Helena,PSOL,0,1
+3663,44,Gilberto Mestrinho,PMDB,1,1
+3663,78,Luiz Otavio,PMDB,1,1
+3663,133,Tião Viana,PT,1,1
+3663,29,Eduardo Siqueira Campos,PSDB,0,0
+3663,9,Amir Lando,PMDB,1,1
+3663,72,Juvêncio da Fonseca,PSDB,0,1
+3663,98,Osmar Dias,PDT,0,1
+3663,80,Luiz Soares,Sem partido,0,1
+3663,94,Ney Suassuna,PMDB,1,1
+3663,14,Antonio Carlos Valadares,PSB,1,1
+3663,82,Magno Malta,PR,0,1
+3663,49,Hélio Costa,PMDB,1,1
+3663,6,Almeida Lima,PMDB,1,1
+3663,50,Ideli Salvatti,PT,1,1
+3663,126,Sibá Machado,PT,1,1
+3663,95,Nezinho Alencar,PSB,1,0
+3663,104,Paulo Octávio,PFL,0,1
+3663,108,Ramez Tebet,PMDB,1,1
+3663,67,João Capiberibe,PSB,1,0
+3663,100,Patrícia Saboya,PDT,0,1
+3663,25,Demóstenes Torres,DEM,0,1
+3663,62,José Maranhão,PMDB,1,1
+3663,134,Valdir Raupp,PMDB,1,1
+3663,41,Geraldo Mesquita Júnior,PMDB,1,1
+3663,28,Eduardo Azeredo,PSDB,0,1
+3663,84,Marcelo Crivella,PL,0,1
+3663,2,Aelton Freitas,Sem partido,0,1
+3663,22,César Borges,PR,0,1
+3663,74,Leonel Pavan,PSDB,0,1
+3663,24,Delcídio do Amaral,PT,1,1
+3663,125,Serys Slhessarenko,PT,1,1
+3663,66,João Batista Motta,PSDB,0,1
+3663,128,Sérgio Zambiasi,PTB,1,1
+3663,18,Arthur Virgílio,PSDB,0,1
+3663,121,Roseana Sarney,PMDB,1,0
+3663,127,Sérgio Cabral,PMDB,1,1
+3663,139,Wirlande da  Luz,PMDB,1,1
+3663,19,Augusto Botelho,PDT,0,1
+3663,21,Cristovam Buarque,PDT,0,1
+3663,38,Fátima Cleide,PT,1,1
+3663,39,Garibaldi Alves Filho,PMDB,1,1
+3663,92,Mão Santa,PSC,0,0
+3663,99,Papaléo Paes,PSDB,0,0
+3663,124,Sergio Guerra,PSDB,0,1
+3663,34,Flexa Ribeiro,PSDB,0,1
+3783,64,José Sarney,PMDB,1,1
+3783,85,Marco Maciel,DEM,0,-1
+3783,33,Fernando Bezerra,PTB,1,1
+3783,57,José Agripino,DEM,0,1
+3783,48,Heráclito Fortes,DEM,0,-1
+3783,73,Leomar Quintanilha,PMDB,1,1
+3783,27,Edison Lobão,PMDB,1,1
+3783,120,Romeu Tuma,PTB,1,1
+3783,13,Antonio Carlos Magalhães,PFL,0,-1
+3783,42,Gerson Camata,PMDB,1,1
+3783,107,Pedro Simon,PMDB,1,1
+3783,105,Paulo Paim,PT,1,1
+3783,30,Eduardo Suplicy,PT,1,1
+3783,54,Jonas Pinheiro,DEM,0,1
+3783,83,Maguito Vilela,PMDB,1,1
+3783,109,Reginaldo Duarte,PSDB,0,-1
+3783,31,Efraim Morais,DEM,0,-1
+3783,7,Aloizio Mercadante,PT,1,1
+3783,81,Lúcia Vânia,PSDB,0,1
+3783,131,Teotonio Vilela Filho,PSDB,0,-1
+3783,16,Antônio Leite,PMDB,1,1
+3783,89,Mauro Fecury,PMDB,1,0
+3783,35,Flávio Arns,PSDB,0,1
+3783,47,Heloísa Helena,PSOL,0,-1
+3783,44,Gilberto Mestrinho,PMDB,1,1
+3783,78,Luiz Otavio,PMDB,1,1
+3783,55,Jorge Bornhausen,PFL,0,-1
+3783,133,Tião Viana,PT,1,1
+3783,61,José Jorge,PFL,0,-1
+3783,4,Alberto Silva,PMDB,1,1
+3783,8,Alvaro Dias,PSDB,0,-1
+3783,87,Maria do Carmo Alves,PFL,0,0
+3783,29,Eduardo Siqueira Campos,PSDB,0,0
+3783,116,Roberto Saturnino,PT,1,1
+3783,72,Juvêncio da Fonseca,PSDB,0,1
+3783,98,Osmar Dias,PDT,0,1
+3783,94,Ney Suassuna,PMDB,1,1
+3783,14,Antonio Carlos Valadares,PSB,1,1
+3783,82,Magno Malta,PR,0,0
+3783,49,Hélio Costa,PMDB,1,1
+3783,135,Valmir Amaral,PP,1,1
+3783,6,Almeida Lima,PMDB,1,0
+3783,50,Ideli Salvatti,PT,1,1
+3783,95,Nezinho Alencar,PSB,1,1
+3783,104,Paulo Octávio,PFL,0,0
+3783,108,Ramez Tebet,PMDB,1,1
+3783,67,João Capiberibe,PSB,1,1
+3783,129,Tasso Jereissati,PSDB,0,-1
+3783,100,Patrícia Saboya,PDT,0,1
+3783,62,José Maranhão,PMDB,1,-1
+3783,134,Valdir Raupp,PMDB,1,1
+3783,41,Geraldo Mesquita Júnior,PMDB,1,-1
+3783,28,Eduardo Azeredo,PSDB,0,1
+3783,84,Marcelo Crivella,PL,0,1
+3783,2,Aelton Freitas,Sem partido,0,1
+3783,22,César Borges,PR,0,-1
+3783,74,Leonel Pavan,PSDB,0,1
+3783,24,Delcídio do Amaral,PT,1,1
+3783,125,Serys Slhessarenko,PT,1,1
+3783,66,João Batista Motta,PSDB,0,1
+3783,10,Ana Júlia Carepa,PT,1,1
+3783,128,Sérgio Zambiasi,PTB,1,1
+3783,18,Arthur Virgílio,PSDB,0,1
+3783,118,Rodolpho Tourinho,PFL,0,-1
+3783,19,Augusto Botelho,PDT,0,1
+3783,21,Cristovam Buarque,PDT,0,1
+3783,38,Fátima Cleide,PT,1,1
+3783,39,Garibaldi Alves Filho,PMDB,1,1
+3783,92,Mão Santa,PSC,0,-1
+3783,99,Papaléo Paes,PSDB,0,1
+3783,34,Flexa Ribeiro,PSDB,0,1
+3843,85,Marco Maciel,DEM,0,-1
+3843,33,Fernando Bezerra,PTB,1,-1
+3843,57,José Agripino,DEM,0,-1
+3843,48,Heráclito Fortes,DEM,0,1
+3843,73,Leomar Quintanilha,PMDB,1,0
+3843,27,Edison Lobão,PMDB,1,1
+3843,112,Renan Calheiros,PMDB,1,0
+3843,120,Romeu Tuma,PTB,1,1
+3843,107,Pedro Simon,PMDB,1,1
+3843,105,Paulo Paim,PT,1,-1
+3843,30,Eduardo Suplicy,PT,1,1
+3843,109,Reginaldo Duarte,PSDB,0,-1
+3843,31,Efraim Morais,DEM,0,1
+3843,7,Aloizio Mercadante,PT,1,-1
+3843,81,Lúcia Vânia,PSDB,0,1
+3843,131,Teotonio Vilela Filho,PSDB,0,1
+3843,16,Antônio Leite,PMDB,1,1
+3843,89,Mauro Fecury,PMDB,1,0
+3843,35,Flávio Arns,PSDB,0,-1
+3843,47,Heloísa Helena,PSOL,0,1
+3843,78,Luiz Otavio,PMDB,1,-1
+3843,61,José Jorge,PFL,0,-1
+3843,4,Alberto Silva,PMDB,1,1
+3843,8,Alvaro Dias,PSDB,0,1
+3843,87,Maria do Carmo Alves,PFL,0,0
+3843,29,Eduardo Siqueira Campos,PSDB,0,1
+3843,72,Juvêncio da Fonseca,PSDB,0,1
+3843,98,Osmar Dias,PDT,0,1
+3843,94,Ney Suassuna,PMDB,1,1
+3843,14,Antonio Carlos Valadares,PSB,1,1
+3843,82,Magno Malta,PR,0,1
+3843,49,Hélio Costa,PMDB,1,1
+3843,6,Almeida Lima,PMDB,1,0
+3843,50,Ideli Salvatti,PT,1,-1
+3843,95,Nezinho Alencar,PSB,1,1
+3843,104,Paulo Octávio,PFL,0,0
+3843,108,Ramez Tebet,PMDB,1,1
+3843,129,Tasso Jereissati,PSDB,0,-1
+3843,100,Patrícia Saboya,PDT,0,-1
+3843,25,Demóstenes Torres,DEM,0,1
+3843,62,José Maranhão,PMDB,1,1
+3843,134,Valdir Raupp,PMDB,1,1
+3843,41,Geraldo Mesquita Júnior,PMDB,1,1
+3843,28,Eduardo Azeredo,PSDB,0,-1
+3843,84,Marcelo Crivella,PL,0,1
+3843,2,Aelton Freitas,Sem partido,0,1
+3843,22,César Borges,PR,0,-1
+3843,74,Leonel Pavan,PSDB,0,1
+3843,24,Delcídio do Amaral,PT,1,-1
+3843,66,João Batista Motta,PSDB,0,-1
+3843,10,Ana Júlia Carepa,PT,1,0
+3843,128,Sérgio Zambiasi,PTB,1,1
+3843,18,Arthur Virgílio,PSDB,0,-1
+3843,118,Rodolpho Tourinho,PFL,0,-1
+3843,127,Sérgio Cabral,PMDB,1,1
+3843,139,Wirlande da  Luz,PMDB,1,1
+3843,19,Augusto Botelho,PDT,0,1
+3843,21,Cristovam Buarque,PDT,0,-1
+3843,38,Fátima Cleide,PT,1,-1
+3843,39,Garibaldi Alves Filho,PMDB,1,1
+3843,92,Mão Santa,PSC,0,0
+3843,99,Papaléo Paes,PSDB,0,0
+3843,34,Flexa Ribeiro,PSDB,0,-1
+3844,85,Marco Maciel,DEM,0,-1
+3844,33,Fernando Bezerra,PTB,1,-1
+3844,57,José Agripino,DEM,0,-1
+3844,48,Heráclito Fortes,DEM,0,-1
+3844,73,Leomar Quintanilha,PMDB,1,0
+3844,27,Edison Lobão,PMDB,1,-1
+3844,120,Romeu Tuma,PTB,1,1
+3844,107,Pedro Simon,PMDB,1,-1
+3844,105,Paulo Paim,PT,1,-1
+3844,52,Jefferson Peres,PDT,0,1
+3844,30,Eduardo Suplicy,PT,1,-1
+3844,109,Reginaldo Duarte,PSDB,0,-1
+3844,31,Efraim Morais,DEM,0,1
+3844,7,Aloizio Mercadante,PT,1,-1
+3844,81,Lúcia Vânia,PSDB,0,1
+3844,131,Teotonio Vilela Filho,PSDB,0,1
+3844,16,Antônio Leite,PMDB,1,1
+3844,89,Mauro Fecury,PMDB,1,0
+3844,35,Flávio Arns,PSDB,0,-1
+3844,47,Heloísa Helena,PSOL,0,1
+3844,78,Luiz Otavio,PMDB,1,-1
+3844,61,José Jorge,PFL,0,-1
+3844,8,Alvaro Dias,PSDB,0,1
+3844,87,Maria do Carmo Alves,PFL,0,0
+3844,29,Eduardo Siqueira Campos,PSDB,0,1
+3844,72,Juvêncio da Fonseca,PSDB,0,1
+3844,98,Osmar Dias,PDT,0,1
+3844,94,Ney Suassuna,PMDB,1,1
+3844,14,Antonio Carlos Valadares,PSB,1,1
+3844,49,Hélio Costa,PMDB,1,1
+3844,6,Almeida Lima,PMDB,1,0
+3844,50,Ideli Salvatti,PT,1,-1
+3844,95,Nezinho Alencar,PSB,1,1
+3844,104,Paulo Octávio,PFL,0,0
+3844,129,Tasso Jereissati,PSDB,0,-1
+3844,100,Patrícia Saboya,PDT,0,-1
+3844,62,José Maranhão,PMDB,1,1
+3844,41,Geraldo Mesquita Júnior,PMDB,1,1
+3844,28,Eduardo Azeredo,PSDB,0,-1
+3844,84,Marcelo Crivella,PL,0,1
+3844,2,Aelton Freitas,Sem partido,0,1
+3844,22,César Borges,PR,0,-1
+3844,24,Delcídio do Amaral,PT,1,-1
+3844,66,João Batista Motta,PSDB,0,1
+3844,10,Ana Júlia Carepa,PT,1,-1
+3844,128,Sérgio Zambiasi,PTB,1,1
+3844,18,Arthur Virgílio,PSDB,0,-1
+3844,118,Rodolpho Tourinho,PFL,0,-1
+3844,127,Sérgio Cabral,PMDB,1,1
+3844,139,Wirlande da  Luz,PMDB,1,1
+3844,19,Augusto Botelho,PDT,0,1
+3844,21,Cristovam Buarque,PDT,0,-1
+3844,38,Fátima Cleide,PT,1,-1
+3844,39,Garibaldi Alves Filho,PMDB,1,1
+3844,92,Mão Santa,PSC,0,0
+3844,90,Mozarildo Cavalcanti,PTB,1,1
+3844,99,Papaléo Paes,PSDB,0,0
+3844,34,Flexa Ribeiro,PSDB,0,-1
+3845,85,Marco Maciel,DEM,0,1
+3845,33,Fernando Bezerra,PTB,1,1
+3845,57,José Agripino,DEM,0,1
+3845,48,Heráclito Fortes,DEM,0,1
+3845,73,Leomar Quintanilha,PMDB,1,0
+3845,27,Edison Lobão,PMDB,1,1
+3845,120,Romeu Tuma,PTB,1,1
+3845,107,Pedro Simon,PMDB,1,1
+3845,105,Paulo Paim,PT,1,1
+3845,52,Jefferson Peres,PDT,0,1
+3845,31,Efraim Morais,DEM,0,1
+3845,7,Aloizio Mercadante,PT,1,1
+3845,81,Lúcia Vânia,PSDB,0,1
+3845,131,Teotonio Vilela Filho,PSDB,0,1
+3845,16,Antônio Leite,PMDB,1,1
+3845,89,Mauro Fecury,PMDB,1,0
+3845,35,Flávio Arns,PSDB,0,1
+3845,47,Heloísa Helena,PSOL,0,1
+3845,78,Luiz Otavio,PMDB,1,1
+3845,61,José Jorge,PFL,0,1
+3845,8,Alvaro Dias,PSDB,0,1
+3845,87,Maria do Carmo Alves,PFL,0,0
+3845,29,Eduardo Siqueira Campos,PSDB,0,1
+3845,72,Juvêncio da Fonseca,PSDB,0,1
+3845,98,Osmar Dias,PDT,0,1
+3845,94,Ney Suassuna,PMDB,1,1
+3845,14,Antonio Carlos Valadares,PSB,1,1
+3845,82,Magno Malta,PR,0,1
+3845,49,Hélio Costa,PMDB,1,1
+3845,6,Almeida Lima,PMDB,1,0
+3845,50,Ideli Salvatti,PT,1,1
+3845,95,Nezinho Alencar,PSB,1,1
+3845,104,Paulo Octávio,PFL,0,0
+3845,108,Ramez Tebet,PMDB,1,1
+3845,129,Tasso Jereissati,PSDB,0,1
+3845,100,Patrícia Saboya,PDT,0,1
+3845,62,José Maranhão,PMDB,1,1
+3845,134,Valdir Raupp,PMDB,1,1
+3845,41,Geraldo Mesquita Júnior,PMDB,1,1
+3845,28,Eduardo Azeredo,PSDB,0,1
+3845,84,Marcelo Crivella,PL,0,1
+3845,2,Aelton Freitas,Sem partido,0,1
+3845,22,César Borges,PR,0,1
+3845,24,Delcídio do Amaral,PT,1,1
+3845,66,João Batista Motta,PSDB,0,1
+3845,10,Ana Júlia Carepa,PT,1,1
+3845,128,Sérgio Zambiasi,PTB,1,1
+3845,18,Arthur Virgílio,PSDB,0,1
+3845,118,Rodolpho Tourinho,PFL,0,1
+3845,127,Sérgio Cabral,PMDB,1,1
+3845,139,Wirlande da  Luz,PMDB,1,1
+3845,19,Augusto Botelho,PDT,0,1
+3845,21,Cristovam Buarque,PDT,0,1
+3845,38,Fátima Cleide,PT,1,1
+3845,39,Garibaldi Alves Filho,PMDB,1,1
+3845,92,Mão Santa,PSC,0,0
+3845,90,Mozarildo Cavalcanti,PTB,1,1
+3845,99,Papaléo Paes,PSDB,0,0
+3845,34,Flexa Ribeiro,PSDB,0,1
+3846,64,José Sarney,PMDB,1,1
+3846,85,Marco Maciel,DEM,0,1
+3846,33,Fernando Bezerra,PTB,1,1
+3846,57,José Agripino,DEM,0,1
+3846,48,Heráclito Fortes,DEM,0,1
+3846,73,Leomar Quintanilha,PMDB,1,0
+3846,27,Edison Lobão,PMDB,1,1
+3846,112,Renan Calheiros,PMDB,1,0
+3846,120,Romeu Tuma,PTB,1,1
+3846,13,Antonio Carlos Magalhães,PFL,0,1
+3846,42,Gerson Camata,PMDB,1,1
+3846,107,Pedro Simon,PMDB,1,1
+3846,105,Paulo Paim,PT,1,1
+3846,52,Jefferson Peres,PDT,0,1
+3846,30,Eduardo Suplicy,PT,1,1
+3846,109,Reginaldo Duarte,PSDB,0,1
+3846,31,Efraim Morais,DEM,0,1
+3846,7,Aloizio Mercadante,PT,1,1
+3846,81,Lúcia Vânia,PSDB,0,1
+3846,131,Teotonio Vilela Filho,PSDB,0,1
+3846,16,Antônio Leite,PMDB,1,1
+3846,89,Mauro Fecury,PMDB,1,0
+3846,35,Flávio Arns,PSDB,0,1
+3846,47,Heloísa Helena,PSOL,0,1
+3846,78,Luiz Otavio,PMDB,1,1
+3846,61,José Jorge,PFL,0,1
+3846,4,Alberto Silva,PMDB,1,1
+3846,8,Alvaro Dias,PSDB,0,1
+3846,87,Maria do Carmo Alves,PFL,0,0
+3846,29,Eduardo Siqueira Campos,PSDB,0,1
+3846,116,Roberto Saturnino,PT,1,1
+3846,72,Juvêncio da Fonseca,PSDB,0,1
+3846,98,Osmar Dias,PDT,0,1
+3846,94,Ney Suassuna,PMDB,1,1
+3846,14,Antonio Carlos Valadares,PSB,1,1
+3846,82,Magno Malta,PR,0,1
+3846,49,Hélio Costa,PMDB,1,1
+3846,6,Almeida Lima,PMDB,1,0
+3846,50,Ideli Salvatti,PT,1,1
+3846,95,Nezinho Alencar,PSB,1,1
+3846,104,Paulo Octávio,PFL,0,0
+3846,108,Ramez Tebet,PMDB,1,1
+3846,129,Tasso Jereissati,PSDB,0,1
+3846,100,Patrícia Saboya,PDT,0,1
+3846,25,Demóstenes Torres,DEM,0,1
+3846,62,José Maranhão,PMDB,1,1
+3846,134,Valdir Raupp,PMDB,1,1
+3846,41,Geraldo Mesquita Júnior,PMDB,1,1
+3846,28,Eduardo Azeredo,PSDB,0,1
+3846,84,Marcelo Crivella,PL,0,1
+3846,2,Aelton Freitas,Sem partido,0,1
+3846,22,César Borges,PR,0,1
+3846,74,Leonel Pavan,PSDB,0,1
+3846,24,Delcídio do Amaral,PT,1,1
+3846,66,João Batista Motta,PSDB,0,1
+3846,10,Ana Júlia Carepa,PT,1,1
+3846,128,Sérgio Zambiasi,PTB,1,1
+3846,18,Arthur Virgílio,PSDB,0,1
+3846,118,Rodolpho Tourinho,PFL,0,1
+3846,127,Sérgio Cabral,PMDB,1,1
+3846,139,Wirlande da  Luz,PMDB,1,1
+3846,19,Augusto Botelho,PDT,0,1
+3846,21,Cristovam Buarque,PDT,0,1
+3846,38,Fátima Cleide,PT,1,1
+3846,39,Garibaldi Alves Filho,PMDB,1,0
+3846,92,Mão Santa,PSC,0,0
+3846,90,Mozarildo Cavalcanti,PTB,1,1
+3846,99,Papaléo Paes,PSDB,0,0
+3846,124,Sergio Guerra,PSDB,0,1
+3846,34,Flexa Ribeiro,PSDB,0,1
+3827,64,José Sarney,PMDB,1,1
+3827,85,Marco Maciel,DEM,0,1
+3827,57,José Agripino,DEM,0,1
+3827,73,Leomar Quintanilha,PMDB,1,0
+3827,27,Edison Lobão,PMDB,1,1
+3827,112,Renan Calheiros,PMDB,1,0
+3827,120,Romeu Tuma,PTB,1,1
+3827,13,Antonio Carlos Magalhães,PFL,0,1
+3827,42,Gerson Camata,PMDB,1,1
+3827,107,Pedro Simon,PMDB,1,1
+3827,105,Paulo Paim,PT,1,1
+3827,52,Jefferson Peres,PDT,0,1
+3827,30,Eduardo Suplicy,PT,1,1
+3827,109,Reginaldo Duarte,PSDB,0,1
+3827,31,Efraim Morais,DEM,0,1
+3827,7,Aloizio Mercadante,PT,1,1
+3827,81,Lúcia Vânia,PSDB,0,1
+3827,131,Teotonio Vilela Filho,PSDB,0,1
+3827,16,Antônio Leite,PMDB,1,1
+3827,89,Mauro Fecury,PMDB,1,0
+3827,35,Flávio Arns,PSDB,0,1
+3827,47,Heloísa Helena,PSOL,0,1
+3827,44,Gilberto Mestrinho,PMDB,1,1
+3827,78,Luiz Otavio,PMDB,1,1
+3827,55,Jorge Bornhausen,PFL,0,1
+3827,61,José Jorge,PFL,0,1
+3827,4,Alberto Silva,PMDB,1,1
+3827,8,Alvaro Dias,PSDB,0,1
+3827,87,Maria do Carmo Alves,PFL,0,0
+3827,29,Eduardo Siqueira Campos,PSDB,0,1
+3827,116,Roberto Saturnino,PT,1,1
+3827,72,Juvêncio da Fonseca,PSDB,0,1
+3827,98,Osmar Dias,PDT,0,1
+3827,94,Ney Suassuna,PMDB,1,1
+3827,14,Antonio Carlos Valadares,PSB,1,1
+3827,82,Magno Malta,PR,0,1
+3827,49,Hélio Costa,PMDB,1,1
+3827,135,Valmir Amaral,PP,1,1
+3827,6,Almeida Lima,PMDB,1,0
+3827,50,Ideli Salvatti,PT,1,1
+3827,126,Sibá Machado,PT,1,1
+3827,95,Nezinho Alencar,PSB,1,1
+3827,104,Paulo Octávio,PFL,0,0
+3827,108,Ramez Tebet,PMDB,1,1
+3827,67,João Capiberibe,PSB,1,1
+3827,129,Tasso Jereissati,PSDB,0,1
+3827,100,Patrícia Saboya,PDT,0,1
+3827,25,Demóstenes Torres,DEM,0,1
+3827,62,José Maranhão,PMDB,1,1
+3827,134,Valdir Raupp,PMDB,1,1
+3827,41,Geraldo Mesquita Júnior,PMDB,1,1
+3827,28,Eduardo Azeredo,PSDB,0,1
+3827,84,Marcelo Crivella,PL,0,1
+3827,2,Aelton Freitas,Sem partido,0,1
+3827,22,César Borges,PR,0,1
+3827,74,Leonel Pavan,PSDB,0,1
+3827,24,Delcídio do Amaral,PT,1,1
+3827,125,Serys Slhessarenko,PT,1,1
+3827,10,Ana Júlia Carepa,PT,1,1
+3827,128,Sérgio Zambiasi,PTB,1,1
+3827,18,Arthur Virgílio,PSDB,0,1
+3827,118,Rodolpho Tourinho,PFL,0,1
+3827,127,Sérgio Cabral,PMDB,1,1
+3827,139,Wirlande da  Luz,PMDB,1,1
+3827,19,Augusto Botelho,PDT,0,1
+3827,21,Cristovam Buarque,PDT,0,1
+3827,38,Fátima Cleide,PT,1,1
+3827,39,Garibaldi Alves Filho,PMDB,1,1
+3827,92,Mão Santa,PSC,0,0
+3827,90,Mozarildo Cavalcanti,PTB,1,1
+3827,99,Papaléo Paes,PSDB,0,0
+3827,124,Sergio Guerra,PSDB,0,1
+3827,34,Flexa Ribeiro,PSDB,0,1
+3828,64,José Sarney,PMDB,1,1
+3828,85,Marco Maciel,DEM,0,-1
+3828,33,Fernando Bezerra,PTB,1,1
+3828,57,José Agripino,DEM,0,-1
+3828,48,Heráclito Fortes,DEM,0,1
+3828,73,Leomar Quintanilha,PMDB,1,0
+3828,27,Edison Lobão,PMDB,1,1
+3828,112,Renan Calheiros,PMDB,1,0
+3828,120,Romeu Tuma,PTB,1,1
+3828,13,Antonio Carlos Magalhães,PFL,0,-1
+3828,42,Gerson Camata,PMDB,1,-1
+3828,107,Pedro Simon,PMDB,1,-1
+3828,105,Paulo Paim,PT,1,-1
+3828,52,Jefferson Peres,PDT,0,1
+3828,30,Eduardo Suplicy,PT,1,-1
+3828,109,Reginaldo Duarte,PSDB,0,-1
+3828,7,Aloizio Mercadante,PT,1,-1
+3828,81,Lúcia Vânia,PSDB,0,1
+3828,131,Teotonio Vilela Filho,PSDB,0,1
+3828,89,Mauro Fecury,PMDB,1,0
+3828,35,Flávio Arns,PSDB,0,-1
+3828,47,Heloísa Helena,PSOL,0,1
+3828,44,Gilberto Mestrinho,PMDB,1,1
+3828,78,Luiz Otavio,PMDB,1,-1
+3828,4,Alberto Silva,PMDB,1,1
+3828,8,Alvaro Dias,PSDB,0,1
+3828,87,Maria do Carmo Alves,PFL,0,0
+3828,29,Eduardo Siqueira Campos,PSDB,0,1
+3828,116,Roberto Saturnino,PT,1,-1
+3828,72,Juvêncio da Fonseca,PSDB,0,1
+3828,98,Osmar Dias,PDT,0,1
+3828,94,Ney Suassuna,PMDB,1,1
+3828,14,Antonio Carlos Valadares,PSB,1,1
+3828,82,Magno Malta,PR,0,1
+3828,49,Hélio Costa,PMDB,1,1
+3828,135,Valmir Amaral,PP,1,1
+3828,6,Almeida Lima,PMDB,1,0
+3828,50,Ideli Salvatti,PT,1,-1
+3828,95,Nezinho Alencar,PSB,1,1
+3828,104,Paulo Octávio,PFL,0,0
+3828,108,Ramez Tebet,PMDB,1,1
+3828,129,Tasso Jereissati,PSDB,0,-1
+3828,100,Patrícia Saboya,PDT,0,-1
+3828,25,Demóstenes Torres,DEM,0,1
+3828,62,José Maranhão,PMDB,1,1
+3828,134,Valdir Raupp,PMDB,1,1
+3828,41,Geraldo Mesquita Júnior,PMDB,1,1
+3828,28,Eduardo Azeredo,PSDB,0,-1
+3828,84,Marcelo Crivella,PL,0,1
+3828,22,César Borges,PR,0,-1
+3828,74,Leonel Pavan,PSDB,0,1
+3828,24,Delcídio do Amaral,PT,1,-1
+3828,125,Serys Slhessarenko,PT,1,-1
+3828,10,Ana Júlia Carepa,PT,1,-1
+3828,128,Sérgio Zambiasi,PTB,1,1
+3828,18,Arthur Virgílio,PSDB,0,-1
+3828,118,Rodolpho Tourinho,PFL,0,1
+3828,127,Sérgio Cabral,PMDB,1,1
+3828,139,Wirlande da  Luz,PMDB,1,1
+3828,19,Augusto Botelho,PDT,0,-1
+3828,21,Cristovam Buarque,PDT,0,-1
+3828,38,Fátima Cleide,PT,1,-1
+3828,39,Garibaldi Alves Filho,PMDB,1,1
+3828,92,Mão Santa,PSC,0,0
+3828,90,Mozarildo Cavalcanti,PTB,1,1
+3828,99,Papaléo Paes,PSDB,0,0
+3828,124,Sergio Guerra,PSDB,0,-1
+3828,34,Flexa Ribeiro,PSDB,0,-1
+3829,85,Marco Maciel,DEM,0,0
+3829,33,Fernando Bezerra,PTB,1,1
+3829,57,José Agripino,DEM,0,1
+3829,48,Heráclito Fortes,DEM,0,1
+3829,73,Leomar Quintanilha,PMDB,1,0
+3829,27,Edison Lobão,PMDB,1,1
+3829,112,Renan Calheiros,PMDB,1,0
+3829,120,Romeu Tuma,PTB,1,1
+3829,13,Antonio Carlos Magalhães,PFL,0,1
+3829,107,Pedro Simon,PMDB,1,1
+3829,105,Paulo Paim,PT,1,1
+3829,30,Eduardo Suplicy,PT,1,1
+3829,109,Reginaldo Duarte,PSDB,0,1
+3829,31,Efraim Morais,DEM,0,1
+3829,7,Aloizio Mercadante,PT,1,1
+3829,81,Lúcia Vânia,PSDB,0,1
+3829,131,Teotonio Vilela Filho,PSDB,0,1
+3829,16,Antônio Leite,PMDB,1,1
+3829,89,Mauro Fecury,PMDB,1,0
+3829,35,Flávio Arns,PSDB,0,1
+3829,47,Heloísa Helena,PSOL,0,1
+3829,44,Gilberto Mestrinho,PMDB,1,1
+3829,78,Luiz Otavio,PMDB,1,1
+3829,61,José Jorge,PFL,0,1
+3829,4,Alberto Silva,PMDB,1,1
+3829,8,Alvaro Dias,PSDB,0,1
+3829,87,Maria do Carmo Alves,PFL,0,0
+3829,29,Eduardo Siqueira Campos,PSDB,0,1
+3829,116,Roberto Saturnino,PT,1,1
+3829,72,Juvêncio da Fonseca,PSDB,0,1
+3829,98,Osmar Dias,PDT,0,1
+3829,94,Ney Suassuna,PMDB,1,1
+3829,14,Antonio Carlos Valadares,PSB,1,1
+3829,82,Magno Malta,PR,0,1
+3829,49,Hélio Costa,PMDB,1,1
+3829,135,Valmir Amaral,PP,1,1
+3829,6,Almeida Lima,PMDB,1,0
+3829,50,Ideli Salvatti,PT,1,1
+3829,126,Sibá Machado,PT,1,1
+3829,95,Nezinho Alencar,PSB,1,1
+3829,104,Paulo Octávio,PFL,0,0
+3829,108,Ramez Tebet,PMDB,1,1
+3829,129,Tasso Jereissati,PSDB,0,1
+3829,100,Patrícia Saboya,PDT,0,1
+3829,25,Demóstenes Torres,DEM,0,1
+3829,62,José Maranhão,PMDB,1,1
+3829,134,Valdir Raupp,PMDB,1,1
+3829,41,Geraldo Mesquita Júnior,PMDB,1,1
+3829,28,Eduardo Azeredo,PSDB,0,1
+3829,84,Marcelo Crivella,PL,0,1
+3829,2,Aelton Freitas,Sem partido,0,1
+3829,22,César Borges,PR,0,1
+3829,74,Leonel Pavan,PSDB,0,1
+3829,24,Delcídio do Amaral,PT,1,1
+3829,66,João Batista Motta,PSDB,0,1
+3829,10,Ana Júlia Carepa,PT,1,1
+3829,128,Sérgio Zambiasi,PTB,1,1
+3829,18,Arthur Virgílio,PSDB,0,1
+3829,118,Rodolpho Tourinho,PFL,0,-1
+3829,127,Sérgio Cabral,PMDB,1,1
+3829,139,Wirlande da  Luz,PMDB,1,1
+3829,19,Augusto Botelho,PDT,0,1
+3829,21,Cristovam Buarque,PDT,0,1
+3829,38,Fátima Cleide,PT,1,1
+3829,39,Garibaldi Alves Filho,PMDB,1,1
+3829,92,Mão Santa,PSC,0,0
+3829,90,Mozarildo Cavalcanti,PTB,1,1
+3829,99,Papaléo Paes,PSDB,0,0
+3863,64,José Sarney,PMDB,1,1
+3863,85,Marco Maciel,DEM,0,1
+3863,33,Fernando Bezerra,PTB,1,1
+3863,57,José Agripino,DEM,0,1
+3863,48,Heráclito Fortes,DEM,0,0
+3863,112,Renan Calheiros,PMDB,1,0
+3863,120,Romeu Tuma,PTB,1,1
+3863,13,Antonio Carlos Magalhães,PFL,0,1
+3863,107,Pedro Simon,PMDB,1,1
+3863,105,Paulo Paim,PT,1,1
+3863,119,Romero Jucá,PMDB,1,0
+3863,54,Jonas Pinheiro,DEM,0,1
+3863,83,Maguito Vilela,PMDB,1,1
+3863,109,Reginaldo Duarte,PSDB,0,1
+3863,7,Aloizio Mercadante,PT,1,1
+3863,81,Lúcia Vânia,PSDB,0,0
+3863,131,Teotonio Vilela Filho,PSDB,0,1
+3863,89,Mauro Fecury,PMDB,1,1
+3863,35,Flávio Arns,PSDB,0,1
+3863,47,Heloísa Helena,PSOL,0,1
+3863,44,Gilberto Mestrinho,PMDB,1,1
+3863,78,Luiz Otavio,PMDB,1,1
+3863,133,Tião Viana,PT,1,1
+3863,61,José Jorge,PFL,0,1
+3863,4,Alberto Silva,PMDB,1,0
+3863,8,Alvaro Dias,PSDB,0,1
+3863,87,Maria do Carmo Alves,PFL,0,1
+3863,29,Eduardo Siqueira Campos,PSDB,0,1
+3863,72,Juvêncio da Fonseca,PSDB,0,1
+3863,98,Osmar Dias,PDT,0,1
+3863,80,Luiz Soares,Sem partido,0,1
+3863,114,Ribamar Fiquene,PMDB,1,0
+3863,94,Ney Suassuna,PMDB,1,1
+3863,14,Antonio Carlos Valadares,PSB,1,1
+3863,82,Magno Malta,PR,0,1
+3863,6,Almeida Lima,PMDB,1,1
+3863,50,Ideli Salvatti,PT,1,1
+3863,126,Sibá Machado,PT,1,1
+3863,95,Nezinho Alencar,PSB,1,1
+3863,104,Paulo Octávio,PFL,0,0
+3863,108,Ramez Tebet,PMDB,1,0
+3863,67,João Capiberibe,PSB,1,1
+3863,129,Tasso Jereissati,PSDB,0,1
+3863,100,Patrícia Saboya,PDT,0,1
+3863,134,Valdir Raupp,PMDB,1,0
+3863,41,Geraldo Mesquita Júnior,PMDB,1,1
+3863,2,Aelton Freitas,Sem partido,0,1
+3863,22,César Borges,PR,0,0
+3863,74,Leonel Pavan,PSDB,0,1
+3863,24,Delcídio do Amaral,PT,1,1
+3863,125,Serys Slhessarenko,PT,1,0
+3863,66,João Batista Motta,PSDB,0,1
+3863,10,Ana Júlia Carepa,PT,1,1
+3863,128,Sérgio Zambiasi,PTB,1,1
+3863,18,Arthur Virgílio,PSDB,0,1
+3863,118,Rodolpho Tourinho,PFL,0,1
+3863,127,Sérgio Cabral,PMDB,1,1
+3863,19,Augusto Botelho,PDT,0,1
+3863,21,Cristovam Buarque,PDT,0,1
+3863,38,Fátima Cleide,PT,1,1
+3863,92,Mão Santa,PSC,0,0
+3863,90,Mozarildo Cavalcanti,PTB,1,1
+3863,99,Papaléo Paes,PSDB,0,1
+3863,124,Sergio Guerra,PSDB,0,1
+3863,138,Wellington Salgado de Oliveira,PMDB,1,1
+3863,34,Flexa Ribeiro,PSDB,0,1
+3864,64,José Sarney,PMDB,1,-1
+3864,85,Marco Maciel,DEM,0,1
+3864,33,Fernando Bezerra,PTB,1,-1
+3864,57,José Agripino,DEM,0,1
+3864,48,Heráclito Fortes,DEM,0,1
+3864,27,Edison Lobão,PMDB,1,-1
+3864,13,Antonio Carlos Magalhães,PFL,0,1
+3864,42,Gerson Camata,PMDB,1,-1
+3864,107,Pedro Simon,PMDB,1,-1
+3864,105,Paulo Paim,PT,1,-1
+3864,30,Eduardo Suplicy,PT,1,-1
+3864,109,Reginaldo Duarte,PSDB,0,1
+3864,7,Aloizio Mercadante,PT,1,1
+3864,81,Lúcia Vânia,PSDB,0,0
+3864,131,Teotonio Vilela Filho,PSDB,0,0
+3864,89,Mauro Fecury,PMDB,1,-1
+3864,44,Gilberto Mestrinho,PMDB,1,-1
+3864,78,Luiz Otavio,PMDB,1,-1
+3864,55,Jorge Bornhausen,PFL,0,1
+3864,133,Tião Viana,PT,1,0
+3864,61,José Jorge,PFL,0,1
+3864,4,Alberto Silva,PMDB,1,0
+3864,87,Maria do Carmo Alves,PFL,0,1
+3864,29,Eduardo Siqueira Campos,PSDB,0,1
+3864,116,Roberto Saturnino,PT,1,-1
+3864,72,Juvêncio da Fonseca,PSDB,0,1
+3864,98,Osmar Dias,PDT,0,1
+3864,80,Luiz Soares,Sem partido,0,1
+3864,114,Ribamar Fiquene,PMDB,1,-1
+3864,94,Ney Suassuna,PMDB,1,-1
+3864,14,Antonio Carlos Valadares,PSB,1,-1
+3864,6,Almeida Lima,PMDB,1,1
+3864,50,Ideli Salvatti,PT,1,-1
+3864,126,Sibá Machado,PT,1,-1
+3864,95,Nezinho Alencar,PSB,1,0
+3864,104,Paulo Octávio,PFL,0,1
+3864,108,Ramez Tebet,PMDB,1,1
+3864,67,João Capiberibe,PSB,1,-1
+3864,129,Tasso Jereissati,PSDB,0,1
+3864,100,Patrícia Saboya,PDT,0,-1
+3864,25,Demóstenes Torres,DEM,0,1
+3864,62,José Maranhão,PMDB,1,-1
+3864,134,Valdir Raupp,PMDB,1,-1
+3864,84,Marcelo Crivella,PL,0,0
+3864,2,Aelton Freitas,Sem partido,0,-1
+3864,22,César Borges,PR,0,1
+3864,74,Leonel Pavan,PSDB,0,1
+3864,24,Delcídio do Amaral,PT,1,-1
+3864,125,Serys Slhessarenko,PT,1,-1
+3864,66,João Batista Motta,PSDB,0,1
+3864,10,Ana Júlia Carepa,PT,1,-1
+3864,128,Sérgio Zambiasi,PTB,1,-1
+3864,18,Arthur Virgílio,PSDB,0,1
+3864,118,Rodolpho Tourinho,PFL,0,0
+3864,127,Sérgio Cabral,PMDB,1,1
+3864,19,Augusto Botelho,PDT,0,1
+3864,21,Cristovam Buarque,PDT,0,-1
+3864,38,Fátima Cleide,PT,1,-1
+3864,92,Mão Santa,PSC,0,1
+3864,90,Mozarildo Cavalcanti,PTB,1,0
+3864,99,Papaléo Paes,PSDB,0,1
+3864,124,Sergio Guerra,PSDB,0,1
+3864,138,Wellington Salgado de Oliveira,PMDB,1,-1
+3865,33,Fernando Bezerra,PTB,1,-1
+3865,57,José Agripino,DEM,0,1
+3865,27,Edison Lobão,PMDB,1,1
+3865,112,Renan Calheiros,PMDB,1,0
+3865,13,Antonio Carlos Magalhães,PFL,0,1
+3865,42,Gerson Camata,PMDB,1,-1
+3865,107,Pedro Simon,PMDB,1,0
+3865,105,Paulo Paim,PT,1,0
+3865,119,Romero Jucá,PMDB,1,-1
+3865,30,Eduardo Suplicy,PT,1,-1
+3865,83,Maguito Vilela,PMDB,1,-1
+3865,109,Reginaldo Duarte,PSDB,0,1
+3865,31,Efraim Morais,DEM,0,1
+3865,7,Aloizio Mercadante,PT,1,-1
+3865,81,Lúcia Vânia,PSDB,0,0
+3865,131,Teotonio Vilela Filho,PSDB,0,0
+3865,89,Mauro Fecury,PMDB,1,-1
+3865,35,Flávio Arns,PSDB,0,-1
+3865,47,Heloísa Helena,PSOL,0,1
+3865,44,Gilberto Mestrinho,PMDB,1,-1
+3865,78,Luiz Otavio,PMDB,1,-1
+3865,133,Tião Viana,PT,1,-1
+3865,61,José Jorge,PFL,0,1
+3865,4,Alberto Silva,PMDB,1,0
+3865,8,Alvaro Dias,PSDB,0,1
+3865,29,Eduardo Siqueira Campos,PSDB,0,1
+3865,116,Roberto Saturnino,PT,1,-1
+3865,72,Juvêncio da Fonseca,PSDB,0,1
+3865,98,Osmar Dias,PDT,0,1
+3865,80,Luiz Soares,Sem partido,0,1
+3865,114,Ribamar Fiquene,PMDB,1,-1
+3865,94,Ney Suassuna,PMDB,1,-1
+3865,14,Antonio Carlos Valadares,PSB,1,1
+3865,135,Valmir Amaral,PP,1,-1
+3865,50,Ideli Salvatti,PT,1,-1
+3865,126,Sibá Machado,PT,1,-1
+3865,43,Gilberto Goellner,DEM,0,1
+3865,95,Nezinho Alencar,PSB,1,0
+3865,104,Paulo Octávio,PFL,0,1
+3865,108,Ramez Tebet,PMDB,1,-1
+3865,67,João Capiberibe,PSB,1,1
+3865,129,Tasso Jereissati,PSDB,0,0
+3865,100,Patrícia Saboya,PDT,0,-1
+3865,62,José Maranhão,PMDB,1,1
+3865,134,Valdir Raupp,PMDB,1,-1
+3865,41,Geraldo Mesquita Júnior,PMDB,1,1
+3865,28,Eduardo Azeredo,PSDB,0,1
+3865,84,Marcelo Crivella,PL,0,-1
+3865,2,Aelton Freitas,Sem partido,0,1
+3865,22,César Borges,PR,0,1
+3865,74,Leonel Pavan,PSDB,0,1
+3865,24,Delcídio do Amaral,PT,1,-1
+3865,125,Serys Slhessarenko,PT,1,-1
+3865,66,João Batista Motta,PSDB,0,1
+3865,10,Ana Júlia Carepa,PT,1,-1
+3865,128,Sérgio Zambiasi,PTB,1,0
+3865,18,Arthur Virgílio,PSDB,0,1
+3865,118,Rodolpho Tourinho,PFL,0,0
+3865,127,Sérgio Cabral,PMDB,1,1
+3865,19,Augusto Botelho,PDT,0,1
+3865,21,Cristovam Buarque,PDT,0,0
+3865,38,Fátima Cleide,PT,1,-1
+3865,39,Garibaldi Alves Filho,PMDB,1,-1
+3865,92,Mão Santa,PSC,0,1
+3865,90,Mozarildo Cavalcanti,PTB,1,0
+3865,99,Papaléo Paes,PSDB,0,1
+3865,124,Sergio Guerra,PSDB,0,1
+3865,138,Wellington Salgado de Oliveira,PMDB,1,-1
+3865,34,Flexa Ribeiro,PSDB,0,1
+3879,85,Marco Maciel,DEM,0,1
+3879,57,José Agripino,DEM,0,1
+3879,48,Heráclito Fortes,DEM,0,1
+3879,73,Leomar Quintanilha,PMDB,1,1
+3879,120,Romeu Tuma,PTB,1,1
+3879,13,Antonio Carlos Magalhães,PFL,0,1
+3879,42,Gerson Camata,PMDB,1,1
+3879,107,Pedro Simon,PMDB,1,1
+3879,105,Paulo Paim,PT,1,1
+3879,119,Romero Jucá,PMDB,1,1
+3879,30,Eduardo Suplicy,PT,1,1
+3879,109,Reginaldo Duarte,PSDB,0,1
+3879,31,Efraim Morais,DEM,0,1
+3879,7,Aloizio Mercadante,PT,1,1
+3879,131,Teotonio Vilela Filho,PSDB,0,1
+3879,89,Mauro Fecury,PMDB,1,0
+3879,35,Flávio Arns,PSDB,0,1
+3879,47,Heloísa Helena,PSOL,0,0
+3879,44,Gilberto Mestrinho,PMDB,1,1
+3879,78,Luiz Otavio,PMDB,1,1
+3879,55,Jorge Bornhausen,PFL,0,1
+3879,133,Tião Viana,PT,1,1
+3879,61,José Jorge,PFL,0,1
+3879,4,Alberto Silva,PMDB,1,1
+3879,8,Alvaro Dias,PSDB,0,1
+3879,87,Maria do Carmo Alves,PFL,0,0
+3879,29,Eduardo Siqueira Campos,PSDB,0,0
+3879,98,Osmar Dias,PDT,0,1
+3879,114,Ribamar Fiquene,PMDB,1,1
+3879,94,Ney Suassuna,PMDB,1,1
+3879,14,Antonio Carlos Valadares,PSB,1,1
+3879,82,Magno Malta,PR,0,0
+3879,50,Ideli Salvatti,PT,1,1
+3879,126,Sibá Machado,PT,1,1
+3879,43,Gilberto Goellner,DEM,0,1
+3879,95,Nezinho Alencar,PSB,1,1
+3879,104,Paulo Octávio,PFL,0,1
+3879,108,Ramez Tebet,PMDB,1,1
+3879,67,João Capiberibe,PSB,1,1
+3879,129,Tasso Jereissati,PSDB,0,1
+3879,100,Patrícia Saboya,PDT,0,1
+3879,25,Demóstenes Torres,DEM,0,1
+3879,62,José Maranhão,PMDB,1,1
+3879,134,Valdir Raupp,PMDB,1,1
+3879,41,Geraldo Mesquita Júnior,PMDB,1,1
+3879,28,Eduardo Azeredo,PSDB,0,1
+3879,84,Marcelo Crivella,PL,0,1
+3879,2,Aelton Freitas,Sem partido,0,0
+3879,22,César Borges,PR,0,1
+3879,24,Delcídio do Amaral,PT,1,1
+3879,125,Serys Slhessarenko,PT,1,1
+3879,66,João Batista Motta,PSDB,0,1
+3879,10,Ana Júlia Carepa,PT,1,0
+3879,128,Sérgio Zambiasi,PTB,1,1
+3879,18,Arthur Virgílio,PSDB,0,1
+3879,118,Rodolpho Tourinho,PFL,0,1
+3879,127,Sérgio Cabral,PMDB,1,1
+3879,140,Íris de Araújo,PMDB,1,1
+3879,19,Augusto Botelho,PDT,0,1
+3879,38,Fátima Cleide,PT,1,1
+3879,92,Mão Santa,PSC,0,0
+3879,99,Papaléo Paes,PSDB,0,1
+3879,138,Wellington Salgado de Oliveira,PMDB,1,1
+3879,34,Flexa Ribeiro,PSDB,0,1
+3874,64,José Sarney,PMDB,1,1
+3874,85,Marco Maciel,DEM,0,1
+3874,33,Fernando Bezerra,PTB,1,1
+3874,57,José Agripino,DEM,0,1
+3874,73,Leomar Quintanilha,PMDB,1,1
+3874,27,Edison Lobão,PMDB,1,1
+3874,112,Renan Calheiros,PMDB,1,1
+3874,120,Romeu Tuma,PTB,1,1
+3874,13,Antonio Carlos Magalhães,PFL,0,1
+3874,42,Gerson Camata,PMDB,1,1
+3874,107,Pedro Simon,PMDB,1,1
+3874,105,Paulo Paim,PT,1,1
+3874,52,Jefferson Peres,PDT,0,0
+3874,119,Romero Jucá,PMDB,1,1
+3874,30,Eduardo Suplicy,PT,1,1
+3874,109,Reginaldo Duarte,PSDB,0,1
+3874,31,Efraim Morais,DEM,0,1
+3874,7,Aloizio Mercadante,PT,1,1
+3874,131,Teotonio Vilela Filho,PSDB,0,1
+3874,89,Mauro Fecury,PMDB,1,1
+3874,35,Flávio Arns,PSDB,0,-1
+3874,47,Heloísa Helena,PSOL,0,0
+3874,44,Gilberto Mestrinho,PMDB,1,1
+3874,78,Luiz Otavio,PMDB,1,1
+3874,55,Jorge Bornhausen,PFL,0,1
+3874,133,Tião Viana,PT,1,0
+3874,61,José Jorge,PFL,0,1
+3874,4,Alberto Silva,PMDB,1,1
+3874,8,Alvaro Dias,PSDB,0,1
+3874,87,Maria do Carmo Alves,PFL,0,0
+3874,29,Eduardo Siqueira Campos,PSDB,0,1
+3874,116,Roberto Saturnino,PT,1,1
+3874,72,Juvêncio da Fonseca,PSDB,0,1
+3874,98,Osmar Dias,PDT,0,1
+3874,114,Ribamar Fiquene,PMDB,1,1
+3874,94,Ney Suassuna,PMDB,1,1
+3874,14,Antonio Carlos Valadares,PSB,1,1
+3874,82,Magno Malta,PR,0,0
+3874,50,Ideli Salvatti,PT,1,1
+3874,126,Sibá Machado,PT,1,1
+3874,43,Gilberto Goellner,DEM,0,1
+3874,95,Nezinho Alencar,PSB,1,1
+3874,104,Paulo Octávio,PFL,0,1
+3874,108,Ramez Tebet,PMDB,1,1
+3874,67,João Capiberibe,PSB,1,1
+3874,129,Tasso Jereissati,PSDB,0,1
+3874,100,Patrícia Saboya,PDT,0,1
+3874,25,Demóstenes Torres,DEM,0,1
+3874,62,José Maranhão,PMDB,1,1
+3874,134,Valdir Raupp,PMDB,1,1
+3874,41,Geraldo Mesquita Júnior,PMDB,1,-1
+3874,28,Eduardo Azeredo,PSDB,0,1
+3874,84,Marcelo Crivella,PL,0,1
+3874,2,Aelton Freitas,Sem partido,0,0
+3874,22,César Borges,PR,0,1
+3874,74,Leonel Pavan,PSDB,0,1
+3874,24,Delcídio do Amaral,PT,1,1
+3874,125,Serys Slhessarenko,PT,1,1
+3874,10,Ana Júlia Carepa,PT,1,-1
+3874,128,Sérgio Zambiasi,PTB,1,1
+3874,18,Arthur Virgílio,PSDB,0,1
+3874,118,Rodolpho Tourinho,PFL,0,1
+3874,127,Sérgio Cabral,PMDB,1,1
+3874,140,Íris de Araújo,PMDB,1,1
+3874,19,Augusto Botelho,PDT,0,-1
+3874,21,Cristovam Buarque,PDT,0,1
+3874,38,Fátima Cleide,PT,1,1
+3874,39,Garibaldi Alves Filho,PMDB,1,1
+3874,92,Mão Santa,PSC,0,0
+3874,90,Mozarildo Cavalcanti,PTB,1,1
+3874,99,Papaléo Paes,PSDB,0,1
+3874,124,Sergio Guerra,PSDB,0,1
+3874,138,Wellington Salgado de Oliveira,PMDB,1,1
+3874,34,Flexa Ribeiro,PSDB,0,1
+3875,64,José Sarney,PMDB,1,-1
+3875,85,Marco Maciel,DEM,0,-1
+3875,57,José Agripino,DEM,0,-1
+3875,48,Heráclito Fortes,DEM,0,-1
+3875,73,Leomar Quintanilha,PMDB,1,-1
+3875,27,Edison Lobão,PMDB,1,-1
+3875,120,Romeu Tuma,PTB,1,-1
+3875,13,Antonio Carlos Magalhães,PFL,0,-1
+3875,42,Gerson Camata,PMDB,1,-1
+3875,107,Pedro Simon,PMDB,1,-1
+3875,105,Paulo Paim,PT,1,-1
+3875,52,Jefferson Peres,PDT,0,0
+3875,119,Romero Jucá,PMDB,1,-1
+3875,30,Eduardo Suplicy,PT,1,-1
+3875,109,Reginaldo Duarte,PSDB,0,-1
+3875,31,Efraim Morais,DEM,0,-1
+3875,131,Teotonio Vilela Filho,PSDB,0,-1
+3875,89,Mauro Fecury,PMDB,1,-1
+3875,35,Flávio Arns,PSDB,0,-1
+3875,47,Heloísa Helena,PSOL,0,0
+3875,44,Gilberto Mestrinho,PMDB,1,-1
+3875,78,Luiz Otavio,PMDB,1,-1
+3875,55,Jorge Bornhausen,PFL,0,-1
+3875,133,Tião Viana,PT,1,0
+3875,61,José Jorge,PFL,0,-1
+3875,4,Alberto Silva,PMDB,1,-1
+3875,8,Alvaro Dias,PSDB,0,-1
+3875,87,Maria do Carmo Alves,PFL,0,0
+3875,29,Eduardo Siqueira Campos,PSDB,0,-1
+3875,116,Roberto Saturnino,PT,1,-1
+3875,72,Juvêncio da Fonseca,PSDB,0,-1
+3875,98,Osmar Dias,PDT,0,-1
+3875,114,Ribamar Fiquene,PMDB,1,-1
+3875,94,Ney Suassuna,PMDB,1,-1
+3875,14,Antonio Carlos Valadares,PSB,1,-1
+3875,82,Magno Malta,PR,0,0
+3875,50,Ideli Salvatti,PT,1,-1
+3875,126,Sibá Machado,PT,1,-1
+3875,43,Gilberto Goellner,DEM,0,-1
+3875,95,Nezinho Alencar,PSB,1,-1
+3875,104,Paulo Octávio,PFL,0,-1
+3875,108,Ramez Tebet,PMDB,1,-1
+3875,129,Tasso Jereissati,PSDB,0,-1
+3875,100,Patrícia Saboya,PDT,0,-1
+3875,25,Demóstenes Torres,DEM,0,-1
+3875,62,José Maranhão,PMDB,1,-1
+3875,134,Valdir Raupp,PMDB,1,-1
+3875,41,Geraldo Mesquita Júnior,PMDB,1,0
+3875,28,Eduardo Azeredo,PSDB,0,-1
+3875,84,Marcelo Crivella,PL,0,0
+3875,2,Aelton Freitas,Sem partido,0,0
+3875,22,César Borges,PR,0,-1
+3875,74,Leonel Pavan,PSDB,0,-1
+3875,24,Delcídio do Amaral,PT,1,-1
+3875,125,Serys Slhessarenko,PT,1,-1
+3875,66,João Batista Motta,PSDB,0,-1
+3875,10,Ana Júlia Carepa,PT,1,0
+3875,128,Sérgio Zambiasi,PTB,1,-1
+3875,18,Arthur Virgílio,PSDB,0,-1
+3875,118,Rodolpho Tourinho,PFL,0,-1
+3875,127,Sérgio Cabral,PMDB,1,-1
+3875,140,Íris de Araújo,PMDB,1,-1
+3875,19,Augusto Botelho,PDT,0,-1
+3875,38,Fátima Cleide,PT,1,-1
+3875,39,Garibaldi Alves Filho,PMDB,1,-1
+3875,92,Mão Santa,PSC,0,0
+3875,90,Mozarildo Cavalcanti,PTB,1,-1
+3875,99,Papaléo Paes,PSDB,0,-1
+3875,124,Sergio Guerra,PSDB,0,-1
+3875,138,Wellington Salgado de Oliveira,PMDB,1,-1
+3875,34,Flexa Ribeiro,PSDB,0,-1
+3876,85,Marco Maciel,DEM,0,1
+3876,57,José Agripino,DEM,0,1
+3876,48,Heráclito Fortes,DEM,0,1
+3876,73,Leomar Quintanilha,PMDB,1,1
+3876,27,Edison Lobão,PMDB,1,1
+3876,120,Romeu Tuma,PTB,1,1
+3876,13,Antonio Carlos Magalhães,PFL,0,1
+3876,42,Gerson Camata,PMDB,1,1
+3876,107,Pedro Simon,PMDB,1,1
+3876,105,Paulo Paim,PT,1,1
+3876,52,Jefferson Peres,PDT,0,0
+3876,119,Romero Jucá,PMDB,1,1
+3876,30,Eduardo Suplicy,PT,1,1
+3876,109,Reginaldo Duarte,PSDB,0,1
+3876,31,Efraim Morais,DEM,0,1
+3876,131,Teotonio Vilela Filho,PSDB,0,1
+3876,89,Mauro Fecury,PMDB,1,1
+3876,35,Flávio Arns,PSDB,0,-1
+3876,47,Heloísa Helena,PSOL,0,0
+3876,44,Gilberto Mestrinho,PMDB,1,1
+3876,78,Luiz Otavio,PMDB,1,1
+3876,55,Jorge Bornhausen,PFL,0,1
+3876,133,Tião Viana,PT,1,0
+3876,4,Alberto Silva,PMDB,1,1
+3876,8,Alvaro Dias,PSDB,0,1
+3876,87,Maria do Carmo Alves,PFL,0,0
+3876,29,Eduardo Siqueira Campos,PSDB,0,1
+3876,116,Roberto Saturnino,PT,1,1
+3876,72,Juvêncio da Fonseca,PSDB,0,1
+3876,98,Osmar Dias,PDT,0,1
+3876,114,Ribamar Fiquene,PMDB,1,1
+3876,94,Ney Suassuna,PMDB,1,1
+3876,14,Antonio Carlos Valadares,PSB,1,1
+3876,82,Magno Malta,PR,0,0
+3876,50,Ideli Salvatti,PT,1,1
+3876,126,Sibá Machado,PT,1,1
+3876,43,Gilberto Goellner,DEM,0,1
+3876,95,Nezinho Alencar,PSB,1,1
+3876,104,Paulo Octávio,PFL,0,1
+3876,108,Ramez Tebet,PMDB,1,1
+3876,67,João Capiberibe,PSB,1,1
+3876,129,Tasso Jereissati,PSDB,0,1
+3876,100,Patrícia Saboya,PDT,0,1
+3876,25,Demóstenes Torres,DEM,0,1
+3876,62,José Maranhão,PMDB,1,1
+3876,134,Valdir Raupp,PMDB,1,1
+3876,41,Geraldo Mesquita Júnior,PMDB,1,0
+3876,28,Eduardo Azeredo,PSDB,0,1
+3876,84,Marcelo Crivella,PL,0,1
+3876,2,Aelton Freitas,Sem partido,0,0
+3876,22,César Borges,PR,0,1
+3876,74,Leonel Pavan,PSDB,0,1
+3876,24,Delcídio do Amaral,PT,1,1
+3876,125,Serys Slhessarenko,PT,1,1
+3876,66,João Batista Motta,PSDB,0,1
+3876,10,Ana Júlia Carepa,PT,1,1
+3876,128,Sérgio Zambiasi,PTB,1,1
+3876,18,Arthur Virgílio,PSDB,0,1
+3876,118,Rodolpho Tourinho,PFL,0,1
+3876,127,Sérgio Cabral,PMDB,1,1
+3876,140,Íris de Araújo,PMDB,1,1
+3876,19,Augusto Botelho,PDT,0,-1
+3876,38,Fátima Cleide,PT,1,1
+3876,39,Garibaldi Alves Filho,PMDB,1,1
+3876,92,Mão Santa,PSC,0,0
+3876,90,Mozarildo Cavalcanti,PTB,1,1
+3876,99,Papaléo Paes,PSDB,0,1
+3876,124,Sergio Guerra,PSDB,0,1
+3876,138,Wellington Salgado de Oliveira,PMDB,1,1
+3876,34,Flexa Ribeiro,PSDB,0,1
+3877,33,Fernando Bezerra,PTB,1,1
+3877,48,Heráclito Fortes,DEM,0,1
+3877,73,Leomar Quintanilha,PMDB,1,1
+3877,27,Edison Lobão,PMDB,1,1
+3877,120,Romeu Tuma,PTB,1,1
+3877,13,Antonio Carlos Magalhães,PFL,0,-1
+3877,42,Gerson Camata,PMDB,1,-1
+3877,107,Pedro Simon,PMDB,1,-1
+3877,105,Paulo Paim,PT,1,-1
+3877,52,Jefferson Peres,PDT,0,0
+3877,119,Romero Jucá,PMDB,1,0
+3877,30,Eduardo Suplicy,PT,1,-1
+3877,109,Reginaldo Duarte,PSDB,0,1
+3877,31,Efraim Morais,DEM,0,1
+3877,7,Aloizio Mercadante,PT,1,-1
+3877,131,Teotonio Vilela Filho,PSDB,0,-1
+3877,89,Mauro Fecury,PMDB,1,1
+3877,35,Flávio Arns,PSDB,0,-1
+3877,47,Heloísa Helena,PSOL,0,0
+3877,44,Gilberto Mestrinho,PMDB,1,-1
+3877,78,Luiz Otavio,PMDB,1,-1
+3877,55,Jorge Bornhausen,PFL,0,1
+3877,133,Tião Viana,PT,1,0
+3877,4,Alberto Silva,PMDB,1,-1
+3877,8,Alvaro Dias,PSDB,0,-1
+3877,87,Maria do Carmo Alves,PFL,0,0
+3877,29,Eduardo Siqueira Campos,PSDB,0,1
+3877,116,Roberto Saturnino,PT,1,-1
+3877,72,Juvêncio da Fonseca,PSDB,0,-1
+3877,98,Osmar Dias,PDT,0,-1
+3877,114,Ribamar Fiquene,PMDB,1,1
+3877,94,Ney Suassuna,PMDB,1,1
+3877,14,Antonio Carlos Valadares,PSB,1,-1
+3877,82,Magno Malta,PR,0,0
+3877,50,Ideli Salvatti,PT,1,-1
+3877,126,Sibá Machado,PT,1,-1
+3877,43,Gilberto Goellner,DEM,0,-1
+3877,95,Nezinho Alencar,PSB,1,-1
+3877,104,Paulo Octávio,PFL,0,1
+3877,67,João Capiberibe,PSB,1,-1
+3877,129,Tasso Jereissati,PSDB,0,1
+3877,100,Patrícia Saboya,PDT,0,1
+3877,25,Demóstenes Torres,DEM,0,-1
+3877,134,Valdir Raupp,PMDB,1,-1
+3877,41,Geraldo Mesquita Júnior,PMDB,1,0
+3877,28,Eduardo Azeredo,PSDB,0,1
+3877,84,Marcelo Crivella,PL,0,1
+3877,2,Aelton Freitas,Sem partido,0,0
+3877,22,César Borges,PR,0,-1
+3877,24,Delcídio do Amaral,PT,1,-1
+3877,125,Serys Slhessarenko,PT,1,-1
+3877,66,João Batista Motta,PSDB,0,1
+3877,10,Ana Júlia Carepa,PT,1,-1
+3877,128,Sérgio Zambiasi,PTB,1,-1
+3877,118,Rodolpho Tourinho,PFL,0,-1
+3877,127,Sérgio Cabral,PMDB,1,1
+3877,140,Íris de Araújo,PMDB,1,-1
+3877,19,Augusto Botelho,PDT,0,0
+3877,38,Fátima Cleide,PT,1,-1
+3877,39,Garibaldi Alves Filho,PMDB,1,1
+3877,92,Mão Santa,PSC,0,0
+3877,90,Mozarildo Cavalcanti,PTB,1,1
+3877,99,Papaléo Paes,PSDB,0,-1
+3877,138,Wellington Salgado de Oliveira,PMDB,1,-1
+3877,34,Flexa Ribeiro,PSDB,0,1
+3878,64,José Sarney,PMDB,1,1
+3878,85,Marco Maciel,DEM,0,1
+3878,33,Fernando Bezerra,PTB,1,1
+3878,57,José Agripino,DEM,0,1
+3878,48,Heráclito Fortes,DEM,0,1
+3878,73,Leomar Quintanilha,PMDB,1,1
+3878,27,Edison Lobão,PMDB,1,1
+3878,120,Romeu Tuma,PTB,1,1
+3878,13,Antonio Carlos Magalhães,PFL,0,1
+3878,42,Gerson Camata,PMDB,1,1
+3878,107,Pedro Simon,PMDB,1,1
+3878,105,Paulo Paim,PT,1,1
+3878,52,Jefferson Peres,PDT,0,0
+3878,119,Romero Jucá,PMDB,1,1
+3878,30,Eduardo Suplicy,PT,1,1
+3878,109,Reginaldo Duarte,PSDB,0,1
+3878,31,Efraim Morais,DEM,0,1
+3878,7,Aloizio Mercadante,PT,1,1
+3878,131,Teotonio Vilela Filho,PSDB,0,1
+3878,89,Mauro Fecury,PMDB,1,1
+3878,35,Flávio Arns,PSDB,0,1
+3878,47,Heloísa Helena,PSOL,0,0
+3878,44,Gilberto Mestrinho,PMDB,1,1
+3878,78,Luiz Otavio,PMDB,1,1
+3878,55,Jorge Bornhausen,PFL,0,1
+3878,133,Tião Viana,PT,1,0
+3878,61,José Jorge,PFL,0,1
+3878,4,Alberto Silva,PMDB,1,1
+3878,8,Alvaro Dias,PSDB,0,1
+3878,87,Maria do Carmo Alves,PFL,0,0
+3878,29,Eduardo Siqueira Campos,PSDB,0,1
+3878,116,Roberto Saturnino,PT,1,1
+3878,72,Juvêncio da Fonseca,PSDB,0,1
+3878,114,Ribamar Fiquene,PMDB,1,1
+3878,94,Ney Suassuna,PMDB,1,1
+3878,14,Antonio Carlos Valadares,PSB,1,1
+3878,82,Magno Malta,PR,0,1
+3878,50,Ideli Salvatti,PT,1,1
+3878,126,Sibá Machado,PT,1,1
+3878,43,Gilberto Goellner,DEM,0,1
+3878,95,Nezinho Alencar,PSB,1,1
+3878,104,Paulo Octávio,PFL,0,1
+3878,108,Ramez Tebet,PMDB,1,1
+3878,67,João Capiberibe,PSB,1,1
+3878,129,Tasso Jereissati,PSDB,0,1
+3878,100,Patrícia Saboya,PDT,0,1
+3878,25,Demóstenes Torres,DEM,0,0
+3878,62,José Maranhão,PMDB,1,1
+3878,134,Valdir Raupp,PMDB,1,1
+3878,41,Geraldo Mesquita Júnior,PMDB,1,0
+3878,28,Eduardo Azeredo,PSDB,0,1
+3878,84,Marcelo Crivella,PL,0,1
+3878,2,Aelton Freitas,Sem partido,0,0
+3878,22,César Borges,PR,0,1
+3878,24,Delcídio do Amaral,PT,1,1
+3878,125,Serys Slhessarenko,PT,1,1
+3878,66,João Batista Motta,PSDB,0,1
+3878,10,Ana Júlia Carepa,PT,1,-1
+3878,128,Sérgio Zambiasi,PTB,1,1
+3878,18,Arthur Virgílio,PSDB,0,1
+3878,118,Rodolpho Tourinho,PFL,0,1
+3878,127,Sérgio Cabral,PMDB,1,1
+3878,140,Íris de Araújo,PMDB,1,1
+3878,19,Augusto Botelho,PDT,0,1
+3878,38,Fátima Cleide,PT,1,1
+3878,39,Garibaldi Alves Filho,PMDB,1,1
+3878,92,Mão Santa,PSC,0,0
+3878,90,Mozarildo Cavalcanti,PTB,1,-1
+3878,99,Papaléo Paes,PSDB,0,1
+3878,138,Wellington Salgado de Oliveira,PMDB,1,1
+3878,34,Flexa Ribeiro,PSDB,0,1
+3866,85,Marco Maciel,DEM,0,1
+3866,33,Fernando Bezerra,PTB,1,1
+3866,48,Heráclito Fortes,DEM,0,1
+3866,27,Edison Lobão,PMDB,1,1
+3866,112,Renan Calheiros,PMDB,1,0
+3866,120,Romeu Tuma,PTB,1,1
+3866,13,Antonio Carlos Magalhães,PFL,0,1
+3866,42,Gerson Camata,PMDB,1,1
+3866,107,Pedro Simon,PMDB,1,0
+3866,119,Romero Jucá,PMDB,1,1
+3866,30,Eduardo Suplicy,PT,1,1
+3866,109,Reginaldo Duarte,PSDB,0,1
+3866,7,Aloizio Mercadante,PT,1,1
+3866,81,Lúcia Vânia,PSDB,0,1
+3866,131,Teotonio Vilela Filho,PSDB,0,1
+3866,89,Mauro Fecury,PMDB,1,1
+3866,35,Flávio Arns,PSDB,0,0
+3866,47,Heloísa Helena,PSOL,0,1
+3866,44,Gilberto Mestrinho,PMDB,1,1
+3866,78,Luiz Otavio,PMDB,1,1
+3866,133,Tião Viana,PT,1,1
+3866,61,José Jorge,PFL,0,1
+3866,4,Alberto Silva,PMDB,1,1
+3866,8,Alvaro Dias,PSDB,0,1
+3866,87,Maria do Carmo Alves,PFL,0,1
+3866,29,Eduardo Siqueira Campos,PSDB,0,1
+3866,9,Amir Lando,PMDB,1,1
+3866,116,Roberto Saturnino,PT,1,1
+3866,72,Juvêncio da Fonseca,PSDB,0,1
+3866,98,Osmar Dias,PDT,0,1
+3866,80,Luiz Soares,Sem partido,0,1
+3866,114,Ribamar Fiquene,PMDB,1,1
+3866,94,Ney Suassuna,PMDB,1,1
+3866,14,Antonio Carlos Valadares,PSB,1,1
+3866,82,Magno Malta,PR,0,1
+3866,135,Valmir Amaral,PP,1,1
+3866,6,Almeida Lima,PMDB,1,1
+3866,50,Ideli Salvatti,PT,1,1
+3866,126,Sibá Machado,PT,1,1
+3866,43,Gilberto Goellner,DEM,0,1
+3866,95,Nezinho Alencar,PSB,1,1
+3866,104,Paulo Octávio,PFL,0,1
+3866,108,Ramez Tebet,PMDB,1,1
+3866,67,João Capiberibe,PSB,1,1
+3866,100,Patrícia Saboya,PDT,0,1
+3866,25,Demóstenes Torres,DEM,0,1
+3866,62,José Maranhão,PMDB,1,1
+3866,134,Valdir Raupp,PMDB,1,1
+3866,41,Geraldo Mesquita Júnior,PMDB,1,1
+3866,28,Eduardo Azeredo,PSDB,0,1
+3866,2,Aelton Freitas,Sem partido,0,1
+3866,22,César Borges,PR,0,1
+3866,74,Leonel Pavan,PSDB,0,1
+3866,125,Serys Slhessarenko,PT,1,1
+3866,66,João Batista Motta,PSDB,0,1
+3866,128,Sérgio Zambiasi,PTB,1,1
+3866,118,Rodolpho Tourinho,PFL,0,1
+3866,127,Sérgio Cabral,PMDB,1,1
+3866,140,Íris de Araújo,PMDB,1,1
+3866,19,Augusto Botelho,PDT,0,1
+3866,21,Cristovam Buarque,PDT,0,1
+3866,38,Fátima Cleide,PT,1,1
+3866,39,Garibaldi Alves Filho,PMDB,1,1
+3866,92,Mão Santa,PSC,0,0
+3866,90,Mozarildo Cavalcanti,PTB,1,1
+3866,124,Sergio Guerra,PSDB,0,1
+3868,85,Marco Maciel,DEM,0,-1
+3868,33,Fernando Bezerra,PTB,1,-1
+3868,57,José Agripino,DEM,0,-1
+3868,48,Heráclito Fortes,DEM,0,-1
+3868,73,Leomar Quintanilha,PMDB,1,-1
+3868,27,Edison Lobão,PMDB,1,1
+3868,112,Renan Calheiros,PMDB,1,0
+3868,120,Romeu Tuma,PTB,1,-1
+3868,13,Antonio Carlos Magalhães,PFL,0,-1
+3868,42,Gerson Camata,PMDB,1,-1
+3868,107,Pedro Simon,PMDB,1,0
+3868,119,Romero Jucá,PMDB,1,-1
+3868,30,Eduardo Suplicy,PT,1,-1
+3868,109,Reginaldo Duarte,PSDB,0,-1
+3868,31,Efraim Morais,DEM,0,-1
+3868,7,Aloizio Mercadante,PT,1,-1
+3868,81,Lúcia Vânia,PSDB,0,-1
+3868,131,Teotonio Vilela Filho,PSDB,0,-1
+3868,89,Mauro Fecury,PMDB,1,-1
+3868,35,Flávio Arns,PSDB,0,0
+3868,44,Gilberto Mestrinho,PMDB,1,-1
+3868,78,Luiz Otavio,PMDB,1,-1
+3868,55,Jorge Bornhausen,PFL,0,-1
+3868,133,Tião Viana,PT,1,-1
+3868,4,Alberto Silva,PMDB,1,-1
+3868,87,Maria do Carmo Alves,PFL,0,-1
+3868,29,Eduardo Siqueira Campos,PSDB,0,-1
+3868,9,Amir Lando,PMDB,1,-1
+3868,116,Roberto Saturnino,PT,1,-1
+3868,72,Juvêncio da Fonseca,PSDB,0,-1
+3868,114,Ribamar Fiquene,PMDB,1,-1
+3868,94,Ney Suassuna,PMDB,1,-1
+3868,14,Antonio Carlos Valadares,PSB,1,-1
+3868,82,Magno Malta,PR,0,-1
+3868,50,Ideli Salvatti,PT,1,-1
+3868,126,Sibá Machado,PT,1,-1
+3868,43,Gilberto Goellner,DEM,0,-1
+3868,95,Nezinho Alencar,PSB,1,-1
+3868,104,Paulo Octávio,PFL,0,-1
+3868,67,João Capiberibe,PSB,1,1
+3868,100,Patrícia Saboya,PDT,0,-1
+3868,25,Demóstenes Torres,DEM,0,-1
+3868,62,José Maranhão,PMDB,1,1
+3868,134,Valdir Raupp,PMDB,1,-1
+3868,41,Geraldo Mesquita Júnior,PMDB,1,-1
+3868,28,Eduardo Azeredo,PSDB,0,-1
+3868,22,César Borges,PR,0,-1
+3868,74,Leonel Pavan,PSDB,0,1
+3868,125,Serys Slhessarenko,PT,1,-1
+3868,10,Ana Júlia Carepa,PT,1,-1
+3868,128,Sérgio Zambiasi,PTB,1,-1
+3868,118,Rodolpho Tourinho,PFL,0,-1
+3868,127,Sérgio Cabral,PMDB,1,-1
+3868,140,Íris de Araújo,PMDB,1,-1
+3868,19,Augusto Botelho,PDT,0,-1
+3868,21,Cristovam Buarque,PDT,0,-1
+3868,38,Fátima Cleide,PT,1,1
+3868,39,Garibaldi Alves Filho,PMDB,1,-1
+3868,92,Mão Santa,PSC,0,0
+3868,90,Mozarildo Cavalcanti,PTB,1,-1
+3868,99,Papaléo Paes,PSDB,0,-1
+3868,124,Sergio Guerra,PSDB,0,-1
+3868,34,Flexa Ribeiro,PSDB,0,1
+3867,85,Marco Maciel,DEM,0,1
+3867,33,Fernando Bezerra,PTB,1,1
+3867,57,José Agripino,DEM,0,1
+3867,48,Heráclito Fortes,DEM,0,1
+3867,73,Leomar Quintanilha,PMDB,1,1
+3867,27,Edison Lobão,PMDB,1,1
+3867,112,Renan Calheiros,PMDB,1,0
+3867,120,Romeu Tuma,PTB,1,1
+3867,13,Antonio Carlos Magalhães,PFL,0,1
+3867,42,Gerson Camata,PMDB,1,1
+3867,107,Pedro Simon,PMDB,1,0
+3867,119,Romero Jucá,PMDB,1,1
+3867,30,Eduardo Suplicy,PT,1,1
+3867,109,Reginaldo Duarte,PSDB,0,1
+3867,31,Efraim Morais,DEM,0,1
+3867,7,Aloizio Mercadante,PT,1,1
+3867,81,Lúcia Vânia,PSDB,0,-1
+3867,131,Teotonio Vilela Filho,PSDB,0,1
+3867,89,Mauro Fecury,PMDB,1,1
+3867,35,Flávio Arns,PSDB,0,0
+3867,47,Heloísa Helena,PSOL,0,1
+3867,44,Gilberto Mestrinho,PMDB,1,1
+3867,78,Luiz Otavio,PMDB,1,1
+3867,133,Tião Viana,PT,1,1
+3867,61,José Jorge,PFL,0,1
+3867,87,Maria do Carmo Alves,PFL,0,1
+3867,29,Eduardo Siqueira Campos,PSDB,0,1
+3867,9,Amir Lando,PMDB,1,1
+3867,72,Juvêncio da Fonseca,PSDB,0,1
+3867,98,Osmar Dias,PDT,0,1
+3867,80,Luiz Soares,Sem partido,0,1
+3867,114,Ribamar Fiquene,PMDB,1,1
+3867,94,Ney Suassuna,PMDB,1,1
+3867,14,Antonio Carlos Valadares,PSB,1,1
+3867,82,Magno Malta,PR,0,1
+3867,135,Valmir Amaral,PP,1,1
+3867,50,Ideli Salvatti,PT,1,1
+3867,126,Sibá Machado,PT,1,1
+3867,43,Gilberto Goellner,DEM,0,1
+3867,95,Nezinho Alencar,PSB,1,1
+3867,104,Paulo Octávio,PFL,0,1
+3867,67,João Capiberibe,PSB,1,1
+3867,100,Patrícia Saboya,PDT,0,1
+3867,25,Demóstenes Torres,DEM,0,1
+3867,62,José Maranhão,PMDB,1,1
+3867,134,Valdir Raupp,PMDB,1,1
+3867,41,Geraldo Mesquita Júnior,PMDB,1,1
+3867,28,Eduardo Azeredo,PSDB,0,1
+3867,2,Aelton Freitas,Sem partido,0,1
+3867,22,César Borges,PR,0,1
+3867,74,Leonel Pavan,PSDB,0,1
+3867,125,Serys Slhessarenko,PT,1,1
+3867,10,Ana Júlia Carepa,PT,1,1
+3867,128,Sérgio Zambiasi,PTB,1,1
+3867,118,Rodolpho Tourinho,PFL,0,1
+3867,127,Sérgio Cabral,PMDB,1,1
+3867,140,Íris de Araújo,PMDB,1,1
+3867,19,Augusto Botelho,PDT,0,1
+3867,21,Cristovam Buarque,PDT,0,1
+3867,38,Fátima Cleide,PT,1,1
+3867,39,Garibaldi Alves Filho,PMDB,1,1
+3867,92,Mão Santa,PSC,0,0
+3867,90,Mozarildo Cavalcanti,PTB,1,1
+3867,99,Papaléo Paes,PSDB,0,1
+3867,34,Flexa Ribeiro,PSDB,0,1
+3869,64,José Sarney,PMDB,1,1
+3869,85,Marco Maciel,DEM,0,1
+3869,33,Fernando Bezerra,PTB,1,1
+3869,57,José Agripino,DEM,0,1
+3869,48,Heráclito Fortes,DEM,0,1
+3869,73,Leomar Quintanilha,PMDB,1,1
+3869,27,Edison Lobão,PMDB,1,1
+3869,112,Renan Calheiros,PMDB,1,1
+3869,120,Romeu Tuma,PTB,1,1
+3869,13,Antonio Carlos Magalhães,PFL,0,1
+3869,107,Pedro Simon,PMDB,1,0
+3869,30,Eduardo Suplicy,PT,1,1
+3869,109,Reginaldo Duarte,PSDB,0,1
+3869,31,Efraim Morais,DEM,0,1
+3869,7,Aloizio Mercadante,PT,1,1
+3869,81,Lúcia Vânia,PSDB,0,1
+3869,131,Teotonio Vilela Filho,PSDB,0,1
+3869,89,Mauro Fecury,PMDB,1,1
+3869,35,Flávio Arns,PSDB,0,0
+3869,78,Luiz Otavio,PMDB,1,1
+3869,55,Jorge Bornhausen,PFL,0,1
+3869,133,Tião Viana,PT,1,0
+3869,4,Alberto Silva,PMDB,1,1
+3869,29,Eduardo Siqueira Campos,PSDB,0,1
+3869,116,Roberto Saturnino,PT,1,1
+3869,80,Luiz Soares,Sem partido,0,1
+3869,114,Ribamar Fiquene,PMDB,1,1
+3869,94,Ney Suassuna,PMDB,1,1
+3869,14,Antonio Carlos Valadares,PSB,1,1
+3869,82,Magno Malta,PR,0,1
+3869,6,Almeida Lima,PMDB,1,1
+3869,50,Ideli Salvatti,PT,1,1
+3869,126,Sibá Machado,PT,1,1
+3869,43,Gilberto Goellner,DEM,0,1
+3869,95,Nezinho Alencar,PSB,1,1
+3869,104,Paulo Octávio,PFL,0,1
+3869,108,Ramez Tebet,PMDB,1,1
+3869,67,João Capiberibe,PSB,1,1
+3869,129,Tasso Jereissati,PSDB,0,1
+3869,25,Demóstenes Torres,DEM,0,1
+3869,62,José Maranhão,PMDB,1,1
+3869,134,Valdir Raupp,PMDB,1,1
+3869,41,Geraldo Mesquita Júnior,PMDB,1,-1
+3869,28,Eduardo Azeredo,PSDB,0,1
+3869,22,César Borges,PR,0,1
+3869,74,Leonel Pavan,PSDB,0,1
+3869,125,Serys Slhessarenko,PT,1,1
+3869,66,João Batista Motta,PSDB,0,1
+3869,10,Ana Júlia Carepa,PT,1,0
+3869,128,Sérgio Zambiasi,PTB,1,1
+3869,118,Rodolpho Tourinho,PFL,0,1
+3869,140,Íris de Araújo,PMDB,1,1
+3869,19,Augusto Botelho,PDT,0,1
+3869,21,Cristovam Buarque,PDT,0,1
+3869,38,Fátima Cleide,PT,1,1
+3869,39,Garibaldi Alves Filho,PMDB,1,1
+3869,92,Mão Santa,PSC,0,0
+3869,90,Mozarildo Cavalcanti,PTB,1,1
+3869,99,Papaléo Paes,PSDB,0,1
+3869,124,Sergio Guerra,PSDB,0,1
+3869,34,Flexa Ribeiro,PSDB,0,1
+3873,64,José Sarney,PMDB,1,1
+3873,85,Marco Maciel,DEM,0,1
+3873,33,Fernando Bezerra,PTB,1,1
+3873,57,José Agripino,DEM,0,1
+3873,48,Heráclito Fortes,DEM,0,1
+3873,73,Leomar Quintanilha,PMDB,1,1
+3873,27,Edison Lobão,PMDB,1,1
+3873,112,Renan Calheiros,PMDB,1,0
+3873,120,Romeu Tuma,PTB,1,1
+3873,13,Antonio Carlos Magalhães,PFL,0,1
+3873,42,Gerson Camata,PMDB,1,1
+3873,119,Romero Jucá,PMDB,1,1
+3873,109,Reginaldo Duarte,PSDB,0,1
+3873,31,Efraim Morais,DEM,0,1
+3873,7,Aloizio Mercadante,PT,1,1
+3873,81,Lúcia Vânia,PSDB,0,1
+3873,131,Teotonio Vilela Filho,PSDB,0,1
+3873,89,Mauro Fecury,PMDB,1,1
+3873,35,Flávio Arns,PSDB,0,1
+3873,47,Heloísa Helena,PSOL,0,1
+3873,44,Gilberto Mestrinho,PMDB,1,1
+3873,78,Luiz Otavio,PMDB,1,1
+3873,55,Jorge Bornhausen,PFL,0,1
+3873,133,Tião Viana,PT,1,1
+3873,61,José Jorge,PFL,0,1
+3873,4,Alberto Silva,PMDB,1,1
+3873,87,Maria do Carmo Alves,PFL,0,1
+3873,29,Eduardo Siqueira Campos,PSDB,0,1
+3873,98,Osmar Dias,PDT,0,1
+3873,80,Luiz Soares,Sem partido,0,1
+3873,114,Ribamar Fiquene,PMDB,1,1
+3873,14,Antonio Carlos Valadares,PSB,1,1
+3873,82,Magno Malta,PR,0,1
+3873,43,Gilberto Goellner,DEM,0,1
+3873,95,Nezinho Alencar,PSB,1,1
+3873,108,Ramez Tebet,PMDB,1,1
+3873,129,Tasso Jereissati,PSDB,0,1
+3873,25,Demóstenes Torres,DEM,0,1
+3873,62,José Maranhão,PMDB,1,1
+3873,134,Valdir Raupp,PMDB,1,1
+3873,41,Geraldo Mesquita Júnior,PMDB,1,1
+3873,28,Eduardo Azeredo,PSDB,0,1
+3873,84,Marcelo Crivella,PL,0,1
+3873,2,Aelton Freitas,Sem partido,0,0
+3873,22,César Borges,PR,0,0
+3873,74,Leonel Pavan,PSDB,0,1
+3873,125,Serys Slhessarenko,PT,1,1
+3873,66,João Batista Motta,PSDB,0,1
+3873,128,Sérgio Zambiasi,PTB,1,1
+3873,18,Arthur Virgílio,PSDB,0,1
+3873,118,Rodolpho Tourinho,PFL,0,1
+3873,140,Íris de Araújo,PMDB,1,1
+3873,19,Augusto Botelho,PDT,0,1
+3873,21,Cristovam Buarque,PDT,0,1
+3873,39,Garibaldi Alves Filho,PMDB,1,1
+3873,92,Mão Santa,PSC,0,1
+3873,90,Mozarildo Cavalcanti,PTB,1,1
+3873,99,Papaléo Paes,PSDB,0,1
+3873,124,Sergio Guerra,PSDB,0,1
+3873,138,Wellington Salgado de Oliveira,PMDB,1,0
+3873,34,Flexa Ribeiro,PSDB,0,1
+3881,85,Marco Maciel,DEM,0,1
+3881,33,Fernando Bezerra,PTB,1,0
+3881,57,José Agripino,DEM,0,1
+3881,48,Heráclito Fortes,DEM,0,1
+3881,73,Leomar Quintanilha,PMDB,1,1
+3881,27,Edison Lobão,PMDB,1,1
+3881,120,Romeu Tuma,PTB,1,1
+3881,42,Gerson Camata,PMDB,1,1
+3881,119,Romero Jucá,PMDB,1,1
+3881,30,Eduardo Suplicy,PT,1,1
+3881,109,Reginaldo Duarte,PSDB,0,1
+3881,7,Aloizio Mercadante,PT,1,1
+3881,81,Lúcia Vânia,PSDB,0,1
+3881,131,Teotonio Vilela Filho,PSDB,0,0
+3881,89,Mauro Fecury,PMDB,1,1
+3881,35,Flávio Arns,PSDB,0,1
+3881,44,Gilberto Mestrinho,PMDB,1,1
+3881,55,Jorge Bornhausen,PFL,0,1
+3881,61,José Jorge,PFL,0,1
+3881,4,Alberto Silva,PMDB,1,1
+3881,8,Alvaro Dias,PSDB,0,1
+3881,9,Amir Lando,PMDB,1,1
+3881,98,Osmar Dias,PDT,0,1
+3881,114,Ribamar Fiquene,PMDB,1,0
+3881,94,Ney Suassuna,PMDB,1,1
+3881,14,Antonio Carlos Valadares,PSB,1,1
+3881,82,Magno Malta,PR,0,0
+3881,6,Almeida Lima,PMDB,1,0
+3881,50,Ideli Salvatti,PT,1,1
+3881,126,Sibá Machado,PT,1,1
+3881,43,Gilberto Goellner,DEM,0,1
+3881,69,João Ribeiro,PFL,0,1
+3881,104,Paulo Octávio,PFL,0,1
+3881,108,Ramez Tebet,PMDB,1,1
+3881,67,João Capiberibe,PSB,1,1
+3881,129,Tasso Jereissati,PSDB,0,1
+3881,100,Patrícia Saboya,PDT,0,1
+3881,62,José Maranhão,PMDB,1,1
+3881,41,Geraldo Mesquita Júnior,PMDB,1,1
+3881,28,Eduardo Azeredo,PSDB,0,1
+3881,84,Marcelo Crivella,PL,0,0
+3881,22,César Borges,PR,0,1
+3881,74,Leonel Pavan,PSDB,0,1
+3881,24,Delcídio do Amaral,PT,1,0
+3881,125,Serys Slhessarenko,PT,1,1
+3881,66,João Batista Motta,PSDB,0,1
+3881,10,Ana Júlia Carepa,PT,1,1
+3881,128,Sérgio Zambiasi,PTB,1,1
+3881,18,Arthur Virgílio,PSDB,0,1
+3881,118,Rodolpho Tourinho,PFL,0,1
+3881,140,Íris de Araújo,PMDB,1,0
+3881,38,Fátima Cleide,PT,1,1
+3881,39,Garibaldi Alves Filho,PMDB,1,1
+3881,92,Mão Santa,PSC,0,1
+3881,90,Mozarildo Cavalcanti,PTB,1,1
+3881,124,Sergio Guerra,PSDB,0,1
+3881,138,Wellington Salgado de Oliveira,PMDB,1,1
+3881,34,Flexa Ribeiro,PSDB,0,1
+3888,64,José Sarney,PMDB,1,1
+3888,85,Marco Maciel,DEM,0,1
+3888,57,José Agripino,DEM,0,0
+3888,48,Heráclito Fortes,DEM,0,1
+3888,73,Leomar Quintanilha,PMDB,1,1
+3888,27,Edison Lobão,PMDB,1,1
+3888,112,Renan Calheiros,PMDB,1,1
+3888,42,Gerson Camata,PMDB,1,1
+3888,107,Pedro Simon,PMDB,1,1
+3888,105,Paulo Paim,PT,1,1
+3888,119,Romero Jucá,PMDB,1,1
+3888,30,Eduardo Suplicy,PT,1,-1
+3888,109,Reginaldo Duarte,PSDB,0,1
+3888,31,Efraim Morais,DEM,0,1
+3888,7,Aloizio Mercadante,PT,1,-1
+3888,81,Lúcia Vânia,PSDB,0,-1
+3888,131,Teotonio Vilela Filho,PSDB,0,-1
+3888,35,Flávio Arns,PSDB,0,0
+3888,47,Heloísa Helena,PSOL,0,1
+3888,44,Gilberto Mestrinho,PMDB,1,0
+3888,78,Luiz Otavio,PMDB,1,1
+3888,133,Tião Viana,PT,1,1
+3888,4,Alberto Silva,PMDB,1,1
+3888,8,Alvaro Dias,PSDB,0,-1
+3888,87,Maria do Carmo Alves,PFL,0,1
+3888,29,Eduardo Siqueira Campos,PSDB,0,-1
+3888,9,Amir Lando,PMDB,1,1
+3888,98,Osmar Dias,PDT,0,0
+3888,94,Ney Suassuna,PMDB,1,1
+3888,14,Antonio Carlos Valadares,PSB,1,0
+3888,50,Ideli Salvatti,PT,1,1
+3888,69,João Ribeiro,PFL,0,1
+3888,104,Paulo Octávio,PFL,0,1
+3888,108,Ramez Tebet,PMDB,1,1
+3888,62,José Maranhão,PMDB,1,1
+3888,134,Valdir Raupp,PMDB,1,1
+3888,41,Geraldo Mesquita Júnior,PMDB,1,1
+3888,28,Eduardo Azeredo,PSDB,0,1
+3888,2,Aelton Freitas,Sem partido,0,1
+3888,125,Serys Slhessarenko,PT,1,1
+3888,66,João Batista Motta,PSDB,0,1
+3888,10,Ana Júlia Carepa,PT,1,1
+3888,128,Sérgio Zambiasi,PTB,1,1
+3888,18,Arthur Virgílio,PSDB,0,1
+3888,127,Sérgio Cabral,PMDB,1,1
+3888,140,Íris de Araújo,PMDB,1,1
+3888,19,Augusto Botelho,PDT,0,1
+3888,21,Cristovam Buarque,PDT,0,1
+3888,39,Garibaldi Alves Filho,PMDB,1,1
+3888,92,Mão Santa,PSC,0,1
+3888,124,Sergio Guerra,PSDB,0,-1
+3888,138,Wellington Salgado de Oliveira,PMDB,1,1
+3888,34,Flexa Ribeiro,PSDB,0,1
+3882,33,Fernando Bezerra,PTB,1,1
+3882,57,José Agripino,DEM,0,1
+3882,48,Heráclito Fortes,DEM,0,1
+3882,27,Edison Lobão,PMDB,1,1
+3882,112,Renan Calheiros,PMDB,1,0
+3882,120,Romeu Tuma,PTB,1,1
+3882,13,Antonio Carlos Magalhães,PFL,0,1
+3882,42,Gerson Camata,PMDB,1,1
+3882,107,Pedro Simon,PMDB,1,1
+3882,52,Jefferson Peres,PDT,0,1
+3882,30,Eduardo Suplicy,PT,1,1
+3882,109,Reginaldo Duarte,PSDB,0,1
+3882,31,Efraim Morais,DEM,0,1
+3882,7,Aloizio Mercadante,PT,1,1
+3882,81,Lúcia Vânia,PSDB,0,1
+3882,131,Teotonio Vilela Filho,PSDB,0,1
+3882,35,Flávio Arns,PSDB,0,1
+3882,47,Heloísa Helena,PSOL,0,-1
+3882,44,Gilberto Mestrinho,PMDB,1,1
+3882,61,José Jorge,PFL,0,1
+3882,8,Alvaro Dias,PSDB,0,1
+3882,87,Maria do Carmo Alves,PFL,0,0
+3882,116,Roberto Saturnino,PT,1,1
+3882,72,Juvêncio da Fonseca,PSDB,0,1
+3882,98,Osmar Dias,PDT,0,1
+3882,14,Antonio Carlos Valadares,PSB,1,1
+3882,82,Magno Malta,PR,0,1
+3882,6,Almeida Lima,PMDB,1,-1
+3882,50,Ideli Salvatti,PT,1,1
+3882,126,Sibá Machado,PT,1,1
+3882,43,Gilberto Goellner,DEM,0,1
+3882,69,João Ribeiro,PFL,0,1
+3882,108,Ramez Tebet,PMDB,1,1
+3882,129,Tasso Jereissati,PSDB,0,1
+3882,100,Patrícia Saboya,PDT,0,1
+3882,41,Geraldo Mesquita Júnior,PMDB,1,1
+3882,84,Marcelo Crivella,PL,0,1
+3882,22,César Borges,PR,0,1
+3882,74,Leonel Pavan,PSDB,0,1
+3882,125,Serys Slhessarenko,PT,1,1
+3882,66,João Batista Motta,PSDB,0,0
+3882,10,Ana Júlia Carepa,PT,1,1
+3882,128,Sérgio Zambiasi,PTB,1,1
+3882,18,Arthur Virgílio,PSDB,0,1
+3882,118,Rodolpho Tourinho,PFL,0,1
+3882,19,Augusto Botelho,PDT,0,1
+3882,21,Cristovam Buarque,PDT,0,1
+3882,38,Fátima Cleide,PT,1,1
+3882,39,Garibaldi Alves Filho,PMDB,1,1
+3882,92,Mão Santa,PSC,0,1
+3882,99,Papaléo Paes,PSDB,0,1
+3882,124,Sergio Guerra,PSDB,0,1
+3882,138,Wellington Salgado de Oliveira,PMDB,1,1
+3882,34,Flexa Ribeiro,PSDB,0,1
+3885,85,Marco Maciel,DEM,0,1
+3885,33,Fernando Bezerra,PTB,1,1
+3885,57,José Agripino,DEM,0,1
+3885,48,Heráclito Fortes,DEM,0,1
+3885,73,Leomar Quintanilha,PMDB,1,1
+3885,27,Edison Lobão,PMDB,1,1
+3885,112,Renan Calheiros,PMDB,1,0
+3885,120,Romeu Tuma,PTB,1,1
+3885,13,Antonio Carlos Magalhães,PFL,0,1
+3885,42,Gerson Camata,PMDB,1,1
+3885,107,Pedro Simon,PMDB,1,1
+3885,30,Eduardo Suplicy,PT,1,1
+3885,109,Reginaldo Duarte,PSDB,0,1
+3885,31,Efraim Morais,DEM,0,1
+3885,7,Aloizio Mercadante,PT,1,1
+3885,81,Lúcia Vânia,PSDB,0,1
+3885,131,Teotonio Vilela Filho,PSDB,0,1
+3885,35,Flávio Arns,PSDB,0,1
+3885,47,Heloísa Helena,PSOL,0,1
+3885,44,Gilberto Mestrinho,PMDB,1,1
+3885,78,Luiz Otavio,PMDB,1,1
+3885,55,Jorge Bornhausen,PFL,0,1
+3885,133,Tião Viana,PT,1,1
+3885,61,José Jorge,PFL,0,1
+3885,8,Alvaro Dias,PSDB,0,1
+3885,87,Maria do Carmo Alves,PFL,0,0
+3885,29,Eduardo Siqueira Campos,PSDB,0,1
+3885,72,Juvêncio da Fonseca,PSDB,0,1
+3885,11,Antero Paes de Barros,PSDB,0,1
+3885,98,Osmar Dias,PDT,0,1
+3885,94,Ney Suassuna,PMDB,1,1
+3885,14,Antonio Carlos Valadares,PSB,1,1
+3885,50,Ideli Salvatti,PT,1,1
+3885,126,Sibá Machado,PT,1,1
+3885,43,Gilberto Goellner,DEM,0,1
+3885,69,João Ribeiro,PFL,0,1
+3885,104,Paulo Octávio,PFL,0,1
+3885,108,Ramez Tebet,PMDB,1,1
+3885,129,Tasso Jereissati,PSDB,0,1
+3885,100,Patrícia Saboya,PDT,0,1
+3885,62,José Maranhão,PMDB,1,1
+3885,134,Valdir Raupp,PMDB,1,1
+3885,41,Geraldo Mesquita Júnior,PMDB,1,1
+3885,2,Aelton Freitas,Sem partido,0,1
+3885,22,César Borges,PR,0,1
+3885,125,Serys Slhessarenko,PT,1,1
+3885,66,João Batista Motta,PSDB,0,0
+3885,10,Ana Júlia Carepa,PT,1,1
+3885,128,Sérgio Zambiasi,PTB,1,1
+3885,18,Arthur Virgílio,PSDB,0,1
+3885,121,Roseana Sarney,PMDB,1,1
+3885,118,Rodolpho Tourinho,PFL,0,1
+3885,127,Sérgio Cabral,PMDB,1,1
+3885,140,Íris de Araújo,PMDB,1,1
+3885,19,Augusto Botelho,PDT,0,1
+3885,21,Cristovam Buarque,PDT,0,1
+3885,38,Fátima Cleide,PT,1,1
+3885,99,Papaléo Paes,PSDB,0,1
+3885,124,Sergio Guerra,PSDB,0,1
+3885,138,Wellington Salgado de Oliveira,PMDB,1,1
+3885,34,Flexa Ribeiro,PSDB,0,1
+3902,85,Marco Maciel,DEM,0,1
+3902,33,Fernando Bezerra,PTB,1,1
+3902,57,José Agripino,DEM,0,1
+3902,48,Heráclito Fortes,DEM,0,1
+3902,27,Edison Lobão,PMDB,1,1
+3902,13,Antonio Carlos Magalhães,PFL,0,1
+3902,42,Gerson Camata,PMDB,1,1
+3902,107,Pedro Simon,PMDB,1,1
+3902,30,Eduardo Suplicy,PT,1,1
+3902,109,Reginaldo Duarte,PSDB,0,1
+3902,31,Efraim Morais,DEM,0,1
+3902,7,Aloizio Mercadante,PT,1,1
+3902,81,Lúcia Vânia,PSDB,0,1
+3902,35,Flávio Arns,PSDB,0,1
+3902,55,Jorge Bornhausen,PFL,0,1
+3902,133,Tião Viana,PT,1,1
+3902,4,Alberto Silva,PMDB,1,1
+3902,87,Maria do Carmo Alves,PFL,0,0
+3902,29,Eduardo Siqueira Campos,PSDB,0,1
+3902,11,Antero Paes de Barros,PSDB,0,1
+3902,98,Osmar Dias,PDT,0,1
+3902,82,Magno Malta,PR,0,1
+3902,6,Almeida Lima,PMDB,1,1
+3902,50,Ideli Salvatti,PT,1,1
+3902,43,Gilberto Goellner,DEM,0,1
+3902,69,João Ribeiro,PFL,0,1
+3902,129,Tasso Jereissati,PSDB,0,1
+3902,100,Patrícia Saboya,PDT,0,1
+3902,134,Valdir Raupp,PMDB,1,1
+3902,41,Geraldo Mesquita Júnior,PMDB,1,1
+3902,22,César Borges,PR,0,1
+3902,66,João Batista Motta,PSDB,0,0
+3902,10,Ana Júlia Carepa,PT,1,1
+3902,128,Sérgio Zambiasi,PTB,1,1
+3902,18,Arthur Virgílio,PSDB,0,1
+3902,121,Roseana Sarney,PMDB,1,1
+3902,118,Rodolpho Tourinho,PFL,0,1
+3902,140,Íris de Araújo,PMDB,1,1
+3902,19,Augusto Botelho,PDT,0,1
+3902,38,Fátima Cleide,PT,1,1
+3902,92,Mão Santa,PSC,0,1
+3902,99,Papaléo Paes,PSDB,0,1
+3902,124,Sergio Guerra,PSDB,0,1
+3902,138,Wellington Salgado de Oliveira,PMDB,1,1
+3902,34,Flexa Ribeiro,PSDB,0,1
+3886,57,José Agripino,DEM,0,-1
+3886,48,Heráclito Fortes,DEM,0,1
+3886,73,Leomar Quintanilha,PMDB,1,-1
+3886,27,Edison Lobão,PMDB,1,1
+3886,112,Renan Calheiros,PMDB,1,0
+3886,120,Romeu Tuma,PTB,1,-1
+3886,13,Antonio Carlos Magalhães,PFL,0,-1
+3886,42,Gerson Camata,PMDB,1,-1
+3886,105,Paulo Paim,PT,1,0
+3886,30,Eduardo Suplicy,PT,1,-1
+3886,109,Reginaldo Duarte,PSDB,0,-1
+3886,31,Efraim Morais,DEM,0,-1
+3886,7,Aloizio Mercadante,PT,1,-1
+3886,81,Lúcia Vânia,PSDB,0,-1
+3886,131,Teotonio Vilela Filho,PSDB,0,-1
+3886,35,Flávio Arns,PSDB,0,0
+3886,47,Heloísa Helena,PSOL,0,0
+3886,44,Gilberto Mestrinho,PMDB,1,-1
+3886,78,Luiz Otavio,PMDB,1,-1
+3886,133,Tião Viana,PT,1,-1
+3886,61,José Jorge,PFL,0,1
+3886,8,Alvaro Dias,PSDB,0,-1
+3886,87,Maria do Carmo Alves,PFL,0,0
+3886,116,Roberto Saturnino,PT,1,-1
+3886,11,Antero Paes de Barros,PSDB,0,1
+3886,98,Osmar Dias,PDT,0,-1
+3886,94,Ney Suassuna,PMDB,1,-1
+3886,50,Ideli Salvatti,PT,1,-1
+3886,126,Sibá Machado,PT,1,-1
+3886,69,João Ribeiro,PFL,0,-1
+3886,104,Paulo Octávio,PFL,0,-1
+3886,108,Ramez Tebet,PMDB,1,-1
+3886,129,Tasso Jereissati,PSDB,0,-1
+3886,100,Patrícia Saboya,PDT,0,-1
+3886,25,Demóstenes Torres,DEM,0,1
+3886,62,José Maranhão,PMDB,1,-1
+3886,22,César Borges,PR,0,-1
+3886,74,Leonel Pavan,PSDB,0,-1
+3886,24,Delcídio do Amaral,PT,1,-1
+3886,125,Serys Slhessarenko,PT,1,0
+3886,66,João Batista Motta,PSDB,0,0
+3886,10,Ana Júlia Carepa,PT,1,-1
+3886,128,Sérgio Zambiasi,PTB,1,-1
+3886,18,Arthur Virgílio,PSDB,0,-1
+3886,118,Rodolpho Tourinho,PFL,0,0
+3886,140,Íris de Araújo,PMDB,1,1
+3886,19,Augusto Botelho,PDT,0,-1
+3886,21,Cristovam Buarque,PDT,0,-1
+3886,38,Fátima Cleide,PT,1,-1
+3886,39,Garibaldi Alves Filho,PMDB,1,-1
+3886,92,Mão Santa,PSC,0,-1
+3886,90,Mozarildo Cavalcanti,PTB,1,-1
+3886,99,Papaléo Paes,PSDB,0,1
+3886,124,Sergio Guerra,PSDB,0,-1
+3886,138,Wellington Salgado de Oliveira,PMDB,1,-1
+3886,34,Flexa Ribeiro,PSDB,0,-1
+3897,85,Marco Maciel,DEM,0,1
+3897,33,Fernando Bezerra,PTB,1,1
+3897,57,José Agripino,DEM,0,1
+3897,48,Heráclito Fortes,DEM,0,1
+3897,73,Leomar Quintanilha,PMDB,1,1
+3897,112,Renan Calheiros,PMDB,1,0
+3897,13,Antonio Carlos Magalhães,PFL,0,1
+3897,42,Gerson Camata,PMDB,1,1
+3897,107,Pedro Simon,PMDB,1,1
+3897,52,Jefferson Peres,PDT,0,1
+3897,119,Romero Jucá,PMDB,1,1
+3897,30,Eduardo Suplicy,PT,1,1
+3897,31,Efraim Morais,DEM,0,1
+3897,7,Aloizio Mercadante,PT,1,1
+3897,81,Lúcia Vânia,PSDB,0,1
+3897,131,Teotonio Vilela Filho,PSDB,0,1
+3897,35,Flávio Arns,PSDB,0,0
+3897,47,Heloísa Helena,PSOL,0,1
+3897,78,Luiz Otavio,PMDB,1,1
+3897,65,João Alberto Souza,PMDB,1,0
+3897,61,José Jorge,PFL,0,1
+3897,4,Alberto Silva,PMDB,1,0
+3897,8,Alvaro Dias,PSDB,0,1
+3897,87,Maria do Carmo Alves,PFL,0,1
+3897,29,Eduardo Siqueira Campos,PSDB,0,1
+3897,9,Amir Lando,PMDB,1,1
+3897,116,Roberto Saturnino,PT,1,1
+3897,72,Juvêncio da Fonseca,PSDB,0,1
+3897,11,Antero Paes de Barros,PSDB,0,1
+3897,98,Osmar Dias,PDT,0,1
+3897,94,Ney Suassuna,PMDB,1,1
+3897,14,Antonio Carlos Valadares,PSB,1,1
+3897,82,Magno Malta,PR,0,1
+3897,50,Ideli Salvatti,PT,1,1
+3897,126,Sibá Machado,PT,1,1
+3897,43,Gilberto Goellner,DEM,0,1
+3897,69,João Ribeiro,PFL,0,1
+3897,104,Paulo Octávio,PFL,0,1
+3897,108,Ramez Tebet,PMDB,1,1
+3897,129,Tasso Jereissati,PSDB,0,0
+3897,100,Patrícia Saboya,PDT,0,1
+3897,25,Demóstenes Torres,DEM,0,1
+3897,62,José Maranhão,PMDB,1,-1
+3897,134,Valdir Raupp,PMDB,1,1
+3897,41,Geraldo Mesquita Júnior,PMDB,1,1
+3897,28,Eduardo Azeredo,PSDB,0,1
+3897,84,Marcelo Crivella,PL,0,0
+3897,2,Aelton Freitas,Sem partido,0,1
+3897,22,César Borges,PR,0,1
+3897,74,Leonel Pavan,PSDB,0,1
+3897,125,Serys Slhessarenko,PT,1,1
+3897,66,João Batista Motta,PSDB,0,1
+3897,10,Ana Júlia Carepa,PT,1,1
+3897,18,Arthur Virgílio,PSDB,0,1
+3897,127,Sérgio Cabral,PMDB,1,1
+3897,140,Íris de Araújo,PMDB,1,1
+3897,19,Augusto Botelho,PDT,0,1
+3897,21,Cristovam Buarque,PDT,0,1
+3897,38,Fátima Cleide,PT,1,1
+3897,39,Garibaldi Alves Filho,PMDB,1,1
+3897,92,Mão Santa,PSC,0,0
+3897,90,Mozarildo Cavalcanti,PTB,1,1
+3897,99,Papaléo Paes,PSDB,0,1
+3897,124,Sergio Guerra,PSDB,0,1
+3897,138,Wellington Salgado de Oliveira,PMDB,1,1
+3897,34,Flexa Ribeiro,PSDB,0,1
+3898,85,Marco Maciel,DEM,0,1
+3898,33,Fernando Bezerra,PTB,1,1
+3898,57,José Agripino,DEM,0,1
+3898,48,Heráclito Fortes,DEM,0,1
+3898,73,Leomar Quintanilha,PMDB,1,1
+3898,112,Renan Calheiros,PMDB,1,0
+3898,13,Antonio Carlos Magalhães,PFL,0,1
+3898,42,Gerson Camata,PMDB,1,1
+3898,107,Pedro Simon,PMDB,1,1
+3898,105,Paulo Paim,PT,1,1
+3898,52,Jefferson Peres,PDT,0,1
+3898,119,Romero Jucá,PMDB,1,1
+3898,30,Eduardo Suplicy,PT,1,1
+3898,31,Efraim Morais,DEM,0,1
+3898,7,Aloizio Mercadante,PT,1,1
+3898,81,Lúcia Vânia,PSDB,0,1
+3898,131,Teotonio Vilela Filho,PSDB,0,1
+3898,35,Flávio Arns,PSDB,0,0
+3898,47,Heloísa Helena,PSOL,0,1
+3898,78,Luiz Otavio,PMDB,1,1
+3898,61,José Jorge,PFL,0,1
+3898,4,Alberto Silva,PMDB,1,0
+3898,8,Alvaro Dias,PSDB,0,1
+3898,29,Eduardo Siqueira Campos,PSDB,0,1
+3898,9,Amir Lando,PMDB,1,1
+3898,72,Juvêncio da Fonseca,PSDB,0,1
+3898,11,Antero Paes de Barros,PSDB,0,1
+3898,98,Osmar Dias,PDT,0,1
+3898,94,Ney Suassuna,PMDB,1,1
+3898,14,Antonio Carlos Valadares,PSB,1,1
+3898,82,Magno Malta,PR,0,1
+3898,135,Valmir Amaral,PP,1,1
+3898,6,Almeida Lima,PMDB,1,-1
+3898,50,Ideli Salvatti,PT,1,1
+3898,126,Sibá Machado,PT,1,1
+3898,43,Gilberto Goellner,DEM,0,1
+3898,69,João Ribeiro,PFL,0,1
+3898,104,Paulo Octávio,PFL,0,1
+3898,108,Ramez Tebet,PMDB,1,1
+3898,129,Tasso Jereissati,PSDB,0,0
+3898,100,Patrícia Saboya,PDT,0,1
+3898,25,Demóstenes Torres,DEM,0,1
+3898,62,José Maranhão,PMDB,1,1
+3898,134,Valdir Raupp,PMDB,1,1
+3898,41,Geraldo Mesquita Júnior,PMDB,1,1
+3898,28,Eduardo Azeredo,PSDB,0,1
+3898,84,Marcelo Crivella,PL,0,0
+3898,2,Aelton Freitas,Sem partido,0,1
+3898,22,César Borges,PR,0,1
+3898,74,Leonel Pavan,PSDB,0,1
+3898,125,Serys Slhessarenko,PT,1,1
+3898,66,João Batista Motta,PSDB,0,1
+3898,10,Ana Júlia Carepa,PT,1,1
+3898,18,Arthur Virgílio,PSDB,0,1
+3898,118,Rodolpho Tourinho,PFL,0,1
+3898,127,Sérgio Cabral,PMDB,1,1
+3898,140,Íris de Araújo,PMDB,1,1
+3898,19,Augusto Botelho,PDT,0,1
+3898,21,Cristovam Buarque,PDT,0,1
+3898,38,Fátima Cleide,PT,1,1
+3898,39,Garibaldi Alves Filho,PMDB,1,1
+3898,92,Mão Santa,PSC,0,0
+3898,90,Mozarildo Cavalcanti,PTB,1,1
+3898,99,Papaléo Paes,PSDB,0,1
+3898,124,Sergio Guerra,PSDB,0,1
+3898,138,Wellington Salgado de Oliveira,PMDB,1,1
+3898,34,Flexa Ribeiro,PSDB,0,1
+3899,85,Marco Maciel,DEM,0,-1
+3899,33,Fernando Bezerra,PTB,1,-1
+3899,57,José Agripino,DEM,0,-1
+3899,48,Heráclito Fortes,DEM,0,-1
+3899,27,Edison Lobão,PMDB,1,-1
+3899,112,Renan Calheiros,PMDB,1,0
+3899,13,Antonio Carlos Magalhães,PFL,0,-1
+3899,42,Gerson Camata,PMDB,1,-1
+3899,107,Pedro Simon,PMDB,1,-1
+3899,105,Paulo Paim,PT,1,-1
+3899,52,Jefferson Peres,PDT,0,-1
+3899,30,Eduardo Suplicy,PT,1,1
+3899,7,Aloizio Mercadante,PT,1,-1
+3899,81,Lúcia Vânia,PSDB,0,-1
+3899,35,Flávio Arns,PSDB,0,0
+3899,47,Heloísa Helena,PSOL,0,-1
+3899,78,Luiz Otavio,PMDB,1,-1
+3899,4,Alberto Silva,PMDB,1,0
+3899,8,Alvaro Dias,PSDB,0,-1
+3899,29,Eduardo Siqueira Campos,PSDB,0,-1
+3899,72,Juvêncio da Fonseca,PSDB,0,-1
+3899,11,Antero Paes de Barros,PSDB,0,1
+3899,98,Osmar Dias,PDT,0,-1
+3899,14,Antonio Carlos Valadares,PSB,1,1
+3899,82,Magno Malta,PR,0,-1
+3899,135,Valmir Amaral,PP,1,-1
+3899,6,Almeida Lima,PMDB,1,0
+3899,50,Ideli Salvatti,PT,1,-1
+3899,126,Sibá Machado,PT,1,1
+3899,43,Gilberto Goellner,DEM,0,-1
+3899,69,João Ribeiro,PFL,0,-1
+3899,104,Paulo Octávio,PFL,0,-1
+3899,129,Tasso Jereissati,PSDB,0,0
+3899,100,Patrícia Saboya,PDT,0,-1
+3899,25,Demóstenes Torres,DEM,0,-1
+3899,62,José Maranhão,PMDB,1,1
+3899,41,Geraldo Mesquita Júnior,PMDB,1,-1
+3899,28,Eduardo Azeredo,PSDB,0,-1
+3899,84,Marcelo Crivella,PL,0,0
+3899,22,César Borges,PR,0,-1
+3899,74,Leonel Pavan,PSDB,0,-1
+3899,125,Serys Slhessarenko,PT,1,-1
+3899,66,João Batista Motta,PSDB,0,-1
+3899,10,Ana Júlia Carepa,PT,1,-1
+3899,18,Arthur Virgílio,PSDB,0,-1
+3899,118,Rodolpho Tourinho,PFL,0,-1
+3899,127,Sérgio Cabral,PMDB,1,-1
+3899,140,Íris de Araújo,PMDB,1,1
+3899,19,Augusto Botelho,PDT,0,-1
+3899,21,Cristovam Buarque,PDT,0,-1
+3899,38,Fátima Cleide,PT,1,-1
+3899,39,Garibaldi Alves Filho,PMDB,1,-1
+3899,92,Mão Santa,PSC,0,0
+3899,90,Mozarildo Cavalcanti,PTB,1,-1
+3899,99,Papaléo Paes,PSDB,0,-1
+3899,138,Wellington Salgado de Oliveira,PMDB,1,-1
+3899,34,Flexa Ribeiro,PSDB,0,-1
+3900,85,Marco Maciel,DEM,0,1
+3900,33,Fernando Bezerra,PTB,1,1
+3900,57,José Agripino,DEM,0,1
+3900,48,Heráclito Fortes,DEM,0,1
+3900,27,Edison Lobão,PMDB,1,1
+3900,112,Renan Calheiros,PMDB,1,0
+3900,13,Antonio Carlos Magalhães,PFL,0,1
+3900,42,Gerson Camata,PMDB,1,1
+3900,107,Pedro Simon,PMDB,1,1
+3900,105,Paulo Paim,PT,1,1
+3900,52,Jefferson Peres,PDT,0,1
+3900,30,Eduardo Suplicy,PT,1,1
+3900,109,Reginaldo Duarte,PSDB,0,1
+3900,7,Aloizio Mercadante,PT,1,1
+3900,81,Lúcia Vânia,PSDB,0,1
+3900,131,Teotonio Vilela Filho,PSDB,0,1
+3900,35,Flávio Arns,PSDB,0,0
+3900,47,Heloísa Helena,PSOL,0,1
+3900,78,Luiz Otavio,PMDB,1,1
+3900,4,Alberto Silva,PMDB,1,0
+3900,8,Alvaro Dias,PSDB,0,1
+3900,29,Eduardo Siqueira Campos,PSDB,0,1
+3900,72,Juvêncio da Fonseca,PSDB,0,1
+3900,11,Antero Paes de Barros,PSDB,0,1
+3900,98,Osmar Dias,PDT,0,1
+3900,94,Ney Suassuna,PMDB,1,1
+3900,14,Antonio Carlos Valadares,PSB,1,1
+3900,82,Magno Malta,PR,0,1
+3900,135,Valmir Amaral,PP,1,1
+3900,6,Almeida Lima,PMDB,1,1
+3900,50,Ideli Salvatti,PT,1,1
+3900,126,Sibá Machado,PT,1,1
+3900,43,Gilberto Goellner,DEM,0,1
+3900,69,João Ribeiro,PFL,0,1
+3900,104,Paulo Octávio,PFL,0,1
+3900,129,Tasso Jereissati,PSDB,0,0
+3900,100,Patrícia Saboya,PDT,0,1
+3900,25,Demóstenes Torres,DEM,0,1
+3900,62,José Maranhão,PMDB,1,1
+3900,41,Geraldo Mesquita Júnior,PMDB,1,1
+3900,28,Eduardo Azeredo,PSDB,0,1
+3900,84,Marcelo Crivella,PL,0,0
+3900,2,Aelton Freitas,Sem partido,0,1
+3900,22,César Borges,PR,0,1
+3900,74,Leonel Pavan,PSDB,0,1
+3900,66,João Batista Motta,PSDB,0,1
+3900,10,Ana Júlia Carepa,PT,1,1
+3900,18,Arthur Virgílio,PSDB,0,1
+3900,118,Rodolpho Tourinho,PFL,0,1
+3900,127,Sérgio Cabral,PMDB,1,1
+3900,140,Íris de Araújo,PMDB,1,1
+3900,19,Augusto Botelho,PDT,0,1
+3900,21,Cristovam Buarque,PDT,0,1
+3900,38,Fátima Cleide,PT,1,1
+3900,39,Garibaldi Alves Filho,PMDB,1,1
+3900,92,Mão Santa,PSC,0,0
+3900,90,Mozarildo Cavalcanti,PTB,1,1
+3900,99,Papaléo Paes,PSDB,0,1
+3900,138,Wellington Salgado de Oliveira,PMDB,1,1
+3900,34,Flexa Ribeiro,PSDB,0,1
+3901,85,Marco Maciel,DEM,0,1
+3901,57,José Agripino,DEM,0,1
+3901,48,Heráclito Fortes,DEM,0,1
+3901,73,Leomar Quintanilha,PMDB,1,1
+3901,27,Edison Lobão,PMDB,1,1
+3901,13,Antonio Carlos Magalhães,PFL,0,1
+3901,42,Gerson Camata,PMDB,1,1
+3901,107,Pedro Simon,PMDB,1,1
+3901,105,Paulo Paim,PT,1,1
+3901,52,Jefferson Peres,PDT,0,1
+3901,30,Eduardo Suplicy,PT,1,1
+3901,109,Reginaldo Duarte,PSDB,0,1
+3901,7,Aloizio Mercadante,PT,1,1
+3901,131,Teotonio Vilela Filho,PSDB,0,1
+3901,35,Flávio Arns,PSDB,0,0
+3901,47,Heloísa Helena,PSOL,0,1
+3901,133,Tião Viana,PT,1,1
+3901,4,Alberto Silva,PMDB,1,0
+3901,8,Alvaro Dias,PSDB,0,1
+3901,29,Eduardo Siqueira Campos,PSDB,0,1
+3901,72,Juvêncio da Fonseca,PSDB,0,1
+3901,11,Antero Paes de Barros,PSDB,0,1
+3901,98,Osmar Dias,PDT,0,1
+3901,94,Ney Suassuna,PMDB,1,1
+3901,14,Antonio Carlos Valadares,PSB,1,1
+3901,82,Magno Malta,PR,0,1
+3901,135,Valmir Amaral,PP,1,1
+3901,6,Almeida Lima,PMDB,1,1
+3901,50,Ideli Salvatti,PT,1,1
+3901,126,Sibá Machado,PT,1,1
+3901,43,Gilberto Goellner,DEM,0,1
+3901,69,João Ribeiro,PFL,0,1
+3901,104,Paulo Octávio,PFL,0,1
+3901,129,Tasso Jereissati,PSDB,0,0
+3901,100,Patrícia Saboya,PDT,0,1
+3901,25,Demóstenes Torres,DEM,0,1
+3901,62,José Maranhão,PMDB,1,1
+3901,41,Geraldo Mesquita Júnior,PMDB,1,1
+3901,28,Eduardo Azeredo,PSDB,0,1
+3901,84,Marcelo Crivella,PL,0,0
+3901,22,César Borges,PR,0,1
+3901,74,Leonel Pavan,PSDB,0,1
+3901,24,Delcídio do Amaral,PT,1,1
+3901,125,Serys Slhessarenko,PT,1,1
+3901,66,João Batista Motta,PSDB,0,1
+3901,10,Ana Júlia Carepa,PT,1,1
+3901,18,Arthur Virgílio,PSDB,0,1
+3901,118,Rodolpho Tourinho,PFL,0,1
+3901,127,Sérgio Cabral,PMDB,1,1
+3901,140,Íris de Araújo,PMDB,1,1
+3901,19,Augusto Botelho,PDT,0,1
+3901,21,Cristovam Buarque,PDT,0,1
+3901,38,Fátima Cleide,PT,1,1
+3901,39,Garibaldi Alves Filho,PMDB,1,1
+3901,92,Mão Santa,PSC,0,0
+3901,90,Mozarildo Cavalcanti,PTB,1,1
+3901,99,Papaléo Paes,PSDB,0,1
+3901,124,Sergio Guerra,PSDB,0,1
+3901,138,Wellington Salgado de Oliveira,PMDB,1,1
+3901,34,Flexa Ribeiro,PSDB,0,1
+3931,85,Marco Maciel,DEM,0,1
+3931,33,Fernando Bezerra,PTB,1,1
+3931,48,Heráclito Fortes,DEM,0,1
+3931,73,Leomar Quintanilha,PMDB,1,1
+3931,112,Renan Calheiros,PMDB,1,0
+3931,120,Romeu Tuma,PTB,1,1
+3931,13,Antonio Carlos Magalhães,PFL,0,1
+3931,42,Gerson Camata,PMDB,1,1
+3931,107,Pedro Simon,PMDB,1,0
+3931,119,Romero Jucá,PMDB,1,1
+3931,30,Eduardo Suplicy,PT,1,1
+3931,109,Reginaldo Duarte,PSDB,0,1
+3931,31,Efraim Morais,DEM,0,1
+3931,7,Aloizio Mercadante,PT,1,1
+3931,81,Lúcia Vânia,PSDB,0,1
+3931,131,Teotonio Vilela Filho,PSDB,0,1
+3931,35,Flávio Arns,PSDB,0,1
+3931,47,Heloísa Helena,PSOL,0,1
+3931,44,Gilberto Mestrinho,PMDB,1,1
+3931,65,João Alberto Souza,PMDB,1,1
+3931,133,Tião Viana,PT,1,1
+3931,4,Alberto Silva,PMDB,1,1
+3931,29,Eduardo Siqueira Campos,PSDB,0,0
+3931,116,Roberto Saturnino,PT,1,1
+3931,11,Antero Paes de Barros,PSDB,0,1
+3931,98,Osmar Dias,PDT,0,1
+3931,94,Ney Suassuna,PMDB,1,1
+3931,14,Antonio Carlos Valadares,PSB,1,1
+3931,126,Sibá Machado,PT,1,1
+3931,69,João Ribeiro,PFL,0,1
+3931,104,Paulo Octávio,PFL,0,1
+3931,108,Ramez Tebet,PMDB,1,0
+3931,129,Tasso Jereissati,PSDB,0,1
+3931,100,Patrícia Saboya,PDT,0,1
+3931,25,Demóstenes Torres,DEM,0,1
+3931,62,José Maranhão,PMDB,1,1
+3931,41,Geraldo Mesquita Júnior,PMDB,1,1
+3931,28,Eduardo Azeredo,PSDB,0,1
+3931,22,César Borges,PR,0,1
+3931,24,Delcídio do Amaral,PT,1,1
+3931,125,Serys Slhessarenko,PT,1,1
+3931,66,João Batista Motta,PSDB,0,1
+3931,10,Ana Júlia Carepa,PT,1,1
+3931,18,Arthur Virgílio,PSDB,0,1
+3931,118,Rodolpho Tourinho,PFL,0,1
+3931,140,Íris de Araújo,PMDB,1,1
+3931,19,Augusto Botelho,PDT,0,1
+3931,38,Fátima Cleide,PT,1,1
+3931,39,Garibaldi Alves Filho,PMDB,1,1
+3931,92,Mão Santa,PSC,0,1
+3931,90,Mozarildo Cavalcanti,PTB,1,0
+3931,99,Papaléo Paes,PSDB,0,1
+3931,124,Sergio Guerra,PSDB,0,1
+3931,34,Flexa Ribeiro,PSDB,0,1
+3932,64,José Sarney,PMDB,1,1
+3932,85,Marco Maciel,DEM,0,1
+3932,33,Fernando Bezerra,PTB,1,1
+3932,57,José Agripino,DEM,0,1
+3932,48,Heráclito Fortes,DEM,0,1
+3932,73,Leomar Quintanilha,PMDB,1,1
+3932,27,Edison Lobão,PMDB,1,1
+3932,112,Renan Calheiros,PMDB,1,0
+3932,120,Romeu Tuma,PTB,1,1
+3932,13,Antonio Carlos Magalhães,PFL,0,1
+3932,42,Gerson Camata,PMDB,1,1
+3932,107,Pedro Simon,PMDB,1,0
+3932,119,Romero Jucá,PMDB,1,1
+3932,30,Eduardo Suplicy,PT,1,1
+3932,54,Jonas Pinheiro,DEM,0,1
+3932,109,Reginaldo Duarte,PSDB,0,1
+3932,31,Efraim Morais,DEM,0,1
+3932,7,Aloizio Mercadante,PT,1,1
+3932,81,Lúcia Vânia,PSDB,0,1
+3932,35,Flávio Arns,PSDB,0,1
+3932,47,Heloísa Helena,PSOL,0,1
+3932,44,Gilberto Mestrinho,PMDB,1,1
+3932,65,João Alberto Souza,PMDB,1,1
+3932,133,Tião Viana,PT,1,1
+3932,4,Alberto Silva,PMDB,1,1
+3932,29,Eduardo Siqueira Campos,PSDB,0,0
+3932,116,Roberto Saturnino,PT,1,1
+3932,11,Antero Paes de Barros,PSDB,0,1
+3932,98,Osmar Dias,PDT,0,1
+3932,94,Ney Suassuna,PMDB,1,1
+3932,14,Antonio Carlos Valadares,PSB,1,1
+3932,82,Magno Malta,PR,0,1
+3932,6,Almeida Lima,PMDB,1,1
+3932,126,Sibá Machado,PT,1,1
+3932,104,Paulo Octávio,PFL,0,1
+3932,108,Ramez Tebet,PMDB,1,0
+3932,129,Tasso Jereissati,PSDB,0,1
+3932,100,Patrícia Saboya,PDT,0,1
+3932,25,Demóstenes Torres,DEM,0,1
+3932,62,José Maranhão,PMDB,1,1
+3932,41,Geraldo Mesquita Júnior,PMDB,1,1
+3932,28,Eduardo Azeredo,PSDB,0,1
+3932,84,Marcelo Crivella,PL,0,1
+3932,2,Aelton Freitas,Sem partido,0,1
+3932,22,César Borges,PR,0,1
+3932,74,Leonel Pavan,PSDB,0,1
+3932,24,Delcídio do Amaral,PT,1,1
+3932,125,Serys Slhessarenko,PT,1,1
+3932,10,Ana Júlia Carepa,PT,1,1
+3932,18,Arthur Virgílio,PSDB,0,1
+3932,118,Rodolpho Tourinho,PFL,0,1
+3932,140,Íris de Araújo,PMDB,1,1
+3932,19,Augusto Botelho,PDT,0,1
+3932,38,Fátima Cleide,PT,1,1
+3932,39,Garibaldi Alves Filho,PMDB,1,1
+3932,92,Mão Santa,PSC,0,1
+3932,90,Mozarildo Cavalcanti,PTB,1,0
+3932,99,Papaléo Paes,PSDB,0,1
+3932,124,Sergio Guerra,PSDB,0,1
+3932,138,Wellington Salgado de Oliveira,PMDB,1,1
+3932,34,Flexa Ribeiro,PSDB,0,1
+3933,85,Marco Maciel,DEM,0,-1
+3933,33,Fernando Bezerra,PTB,1,-1
+3933,57,José Agripino,DEM,0,-1
+3933,48,Heráclito Fortes,DEM,0,-1
+3933,73,Leomar Quintanilha,PMDB,1,-1
+3933,27,Edison Lobão,PMDB,1,-1
+3933,112,Renan Calheiros,PMDB,1,0
+3933,120,Romeu Tuma,PTB,1,-1
+3933,13,Antonio Carlos Magalhães,PFL,0,-1
+3933,42,Gerson Camata,PMDB,1,-1
+3933,107,Pedro Simon,PMDB,1,0
+3933,119,Romero Jucá,PMDB,1,-1
+3933,30,Eduardo Suplicy,PT,1,-1
+3933,109,Reginaldo Duarte,PSDB,0,-1
+3933,31,Efraim Morais,DEM,0,-1
+3933,81,Lúcia Vânia,PSDB,0,-1
+3933,35,Flávio Arns,PSDB,0,-1
+3933,47,Heloísa Helena,PSOL,0,0
+3933,44,Gilberto Mestrinho,PMDB,1,-1
+3933,65,João Alberto Souza,PMDB,1,-1
+3933,133,Tião Viana,PT,1,-1
+3933,4,Alberto Silva,PMDB,1,-1
+3933,29,Eduardo Siqueira Campos,PSDB,0,0
+3933,116,Roberto Saturnino,PT,1,-1
+3933,11,Antero Paes de Barros,PSDB,0,-1
+3933,98,Osmar Dias,PDT,0,1
+3933,94,Ney Suassuna,PMDB,1,-1
+3933,14,Antonio Carlos Valadares,PSB,1,-1
+3933,82,Magno Malta,PR,0,-1
+3933,6,Almeida Lima,PMDB,1,-1
+3933,126,Sibá Machado,PT,1,-1
+3933,69,João Ribeiro,PFL,0,-1
+3933,104,Paulo Octávio,PFL,0,-1
+3933,108,Ramez Tebet,PMDB,1,0
+3933,129,Tasso Jereissati,PSDB,0,-1
+3933,100,Patrícia Saboya,PDT,0,-1
+3933,25,Demóstenes Torres,DEM,0,-1
+3933,62,José Maranhão,PMDB,1,-1
+3933,134,Valdir Raupp,PMDB,1,-1
+3933,41,Geraldo Mesquita Júnior,PMDB,1,-1
+3933,28,Eduardo Azeredo,PSDB,0,-1
+3933,84,Marcelo Crivella,PL,0,-1
+3933,2,Aelton Freitas,Sem partido,0,-1
+3933,22,César Borges,PR,0,-1
+3933,74,Leonel Pavan,PSDB,0,-1
+3933,24,Delcídio do Amaral,PT,1,-1
+3933,125,Serys Slhessarenko,PT,1,-1
+3933,66,João Batista Motta,PSDB,0,-1
+3933,10,Ana Júlia Carepa,PT,1,-1
+3933,18,Arthur Virgílio,PSDB,0,-1
+3933,118,Rodolpho Tourinho,PFL,0,-1
+3933,140,Íris de Araújo,PMDB,1,1
+3933,19,Augusto Botelho,PDT,0,-1
+3933,38,Fátima Cleide,PT,1,-1
+3933,39,Garibaldi Alves Filho,PMDB,1,-1
+3933,92,Mão Santa,PSC,0,-1
+3933,90,Mozarildo Cavalcanti,PTB,1,0
+3933,99,Papaléo Paes,PSDB,0,-1
+3933,124,Sergio Guerra,PSDB,0,-1
+3933,138,Wellington Salgado de Oliveira,PMDB,1,-1
+3933,34,Flexa Ribeiro,PSDB,0,-1
+3934,33,Fernando Bezerra,PTB,1,1
+3934,48,Heráclito Fortes,DEM,0,1
+3934,73,Leomar Quintanilha,PMDB,1,-1
+3934,27,Edison Lobão,PMDB,1,-1
+3934,112,Renan Calheiros,PMDB,1,0
+3934,120,Romeu Tuma,PTB,1,-1
+3934,13,Antonio Carlos Magalhães,PFL,0,-1
+3934,42,Gerson Camata,PMDB,1,-1
+3934,107,Pedro Simon,PMDB,1,0
+3934,119,Romero Jucá,PMDB,1,-1
+3934,30,Eduardo Suplicy,PT,1,-1
+3934,54,Jonas Pinheiro,DEM,0,1
+3934,109,Reginaldo Duarte,PSDB,0,-1
+3934,31,Efraim Morais,DEM,0,-1
+3934,7,Aloizio Mercadante,PT,1,-1
+3934,81,Lúcia Vânia,PSDB,0,-1
+3934,35,Flávio Arns,PSDB,0,-1
+3934,47,Heloísa Helena,PSOL,0,1
+3934,44,Gilberto Mestrinho,PMDB,1,-1
+3934,78,Luiz Otavio,PMDB,1,-1
+3934,65,João Alberto Souza,PMDB,1,-1
+3934,133,Tião Viana,PT,1,-1
+3934,4,Alberto Silva,PMDB,1,1
+3934,29,Eduardo Siqueira Campos,PSDB,0,0
+3934,116,Roberto Saturnino,PT,1,-1
+3934,11,Antero Paes de Barros,PSDB,0,-1
+3934,98,Osmar Dias,PDT,0,-1
+3934,14,Antonio Carlos Valadares,PSB,1,1
+3934,6,Almeida Lima,PMDB,1,1
+3934,50,Ideli Salvatti,PT,1,-1
+3934,126,Sibá Machado,PT,1,-1
+3934,104,Paulo Octávio,PFL,0,-1
+3934,108,Ramez Tebet,PMDB,1,0
+3934,129,Tasso Jereissati,PSDB,0,-1
+3934,100,Patrícia Saboya,PDT,0,-1
+3934,25,Demóstenes Torres,DEM,0,-1
+3934,62,José Maranhão,PMDB,1,-1
+3934,134,Valdir Raupp,PMDB,1,-1
+3934,41,Geraldo Mesquita Júnior,PMDB,1,1
+3934,28,Eduardo Azeredo,PSDB,0,-1
+3934,84,Marcelo Crivella,PL,0,-1
+3934,2,Aelton Freitas,Sem partido,0,-1
+3934,22,César Borges,PR,0,0
+3934,24,Delcídio do Amaral,PT,1,-1
+3934,125,Serys Slhessarenko,PT,1,-1
+3934,10,Ana Júlia Carepa,PT,1,-1
+3934,18,Arthur Virgílio,PSDB,0,-1
+3934,118,Rodolpho Tourinho,PFL,0,-1
+3934,140,Íris de Araújo,PMDB,1,1
+3934,19,Augusto Botelho,PDT,0,1
+3934,38,Fátima Cleide,PT,1,-1
+3934,39,Garibaldi Alves Filho,PMDB,1,1
+3934,92,Mão Santa,PSC,0,1
+3934,90,Mozarildo Cavalcanti,PTB,1,0
+3934,99,Papaléo Paes,PSDB,0,-1
+3934,124,Sergio Guerra,PSDB,0,1
+3934,138,Wellington Salgado de Oliveira,PMDB,1,-1
+3934,34,Flexa Ribeiro,PSDB,0,-1
+3935,85,Marco Maciel,DEM,0,-1
+3935,33,Fernando Bezerra,PTB,1,-1
+3935,57,José Agripino,DEM,0,-1
+3935,48,Heráclito Fortes,DEM,0,-1
+3935,73,Leomar Quintanilha,PMDB,1,1
+3935,27,Edison Lobão,PMDB,1,-1
+3935,112,Renan Calheiros,PMDB,1,0
+3935,120,Romeu Tuma,PTB,1,-1
+3935,13,Antonio Carlos Magalhães,PFL,0,-1
+3935,42,Gerson Camata,PMDB,1,-1
+3935,107,Pedro Simon,PMDB,1,0
+3935,119,Romero Jucá,PMDB,1,1
+3935,30,Eduardo Suplicy,PT,1,1
+3935,54,Jonas Pinheiro,DEM,0,-1
+3935,109,Reginaldo Duarte,PSDB,0,-1
+3935,31,Efraim Morais,DEM,0,-1
+3935,7,Aloizio Mercadante,PT,1,1
+3935,81,Lúcia Vânia,PSDB,0,-1
+3935,35,Flávio Arns,PSDB,0,-1
+3935,47,Heloísa Helena,PSOL,0,0
+3935,44,Gilberto Mestrinho,PMDB,1,-1
+3935,78,Luiz Otavio,PMDB,1,1
+3935,65,João Alberto Souza,PMDB,1,1
+3935,133,Tião Viana,PT,1,1
+3935,4,Alberto Silva,PMDB,1,-1
+3935,29,Eduardo Siqueira Campos,PSDB,0,0
+3935,116,Roberto Saturnino,PT,1,1
+3935,11,Antero Paes de Barros,PSDB,0,-1
+3935,98,Osmar Dias,PDT,0,-1
+3935,94,Ney Suassuna,PMDB,1,-1
+3935,14,Antonio Carlos Valadares,PSB,1,1
+3935,82,Magno Malta,PR,0,-1
+3935,6,Almeida Lima,PMDB,1,-1
+3935,50,Ideli Salvatti,PT,1,1
+3935,126,Sibá Machado,PT,1,1
+3935,69,João Ribeiro,PFL,0,1
+3935,108,Ramez Tebet,PMDB,1,0
+3935,129,Tasso Jereissati,PSDB,0,-1
+3935,100,Patrícia Saboya,PDT,0,-1
+3935,25,Demóstenes Torres,DEM,0,-1
+3935,62,José Maranhão,PMDB,1,-1
+3935,134,Valdir Raupp,PMDB,1,-1
+3935,41,Geraldo Mesquita Júnior,PMDB,1,-1
+3935,28,Eduardo Azeredo,PSDB,0,-1
+3935,84,Marcelo Crivella,PL,0,-1
+3935,2,Aelton Freitas,Sem partido,0,1
+3935,22,César Borges,PR,0,-1
+3935,24,Delcídio do Amaral,PT,1,1
+3935,125,Serys Slhessarenko,PT,1,1
+3935,66,João Batista Motta,PSDB,0,-1
+3935,10,Ana Júlia Carepa,PT,1,1
+3935,18,Arthur Virgílio,PSDB,0,-1
+3935,118,Rodolpho Tourinho,PFL,0,-1
+3935,140,Íris de Araújo,PMDB,1,-1
+3935,19,Augusto Botelho,PDT,0,-1
+3935,38,Fátima Cleide,PT,1,1
+3935,39,Garibaldi Alves Filho,PMDB,1,-1
+3935,92,Mão Santa,PSC,0,-1
+3935,90,Mozarildo Cavalcanti,PTB,1,0
+3935,99,Papaléo Paes,PSDB,0,-1
+3935,124,Sergio Guerra,PSDB,0,-1
+3935,34,Flexa Ribeiro,PSDB,0,-1
+3936,85,Marco Maciel,DEM,0,1
+3936,57,José Agripino,DEM,0,1
+3936,48,Heráclito Fortes,DEM,0,1
+3936,73,Leomar Quintanilha,PMDB,1,1
+3936,112,Renan Calheiros,PMDB,1,0
+3936,120,Romeu Tuma,PTB,1,1
+3936,13,Antonio Carlos Magalhães,PFL,0,1
+3936,42,Gerson Camata,PMDB,1,1
+3936,107,Pedro Simon,PMDB,1,0
+3936,105,Paulo Paim,PT,1,1
+3936,119,Romero Jucá,PMDB,1,1
+3936,30,Eduardo Suplicy,PT,1,1
+3936,54,Jonas Pinheiro,DEM,0,1
+3936,109,Reginaldo Duarte,PSDB,0,1
+3936,31,Efraim Morais,DEM,0,1
+3936,7,Aloizio Mercadante,PT,1,1
+3936,81,Lúcia Vânia,PSDB,0,1
+3936,35,Flávio Arns,PSDB,0,1
+3936,47,Heloísa Helena,PSOL,0,0
+3936,44,Gilberto Mestrinho,PMDB,1,1
+3936,78,Luiz Otavio,PMDB,1,1
+3936,133,Tião Viana,PT,1,1
+3936,4,Alberto Silva,PMDB,1,1
+3936,29,Eduardo Siqueira Campos,PSDB,0,0
+3936,116,Roberto Saturnino,PT,1,1
+3936,11,Antero Paes de Barros,PSDB,0,1
+3936,98,Osmar Dias,PDT,0,1
+3936,94,Ney Suassuna,PMDB,1,1
+3936,82,Magno Malta,PR,0,1
+3936,6,Almeida Lima,PMDB,1,1
+3936,50,Ideli Salvatti,PT,1,1
+3936,126,Sibá Machado,PT,1,1
+3936,108,Ramez Tebet,PMDB,1,0
+3936,129,Tasso Jereissati,PSDB,0,1
+3936,100,Patrícia Saboya,PDT,0,1
+3936,62,José Maranhão,PMDB,1,1
+3936,134,Valdir Raupp,PMDB,1,1
+3936,41,Geraldo Mesquita Júnior,PMDB,1,1
+3936,28,Eduardo Azeredo,PSDB,0,1
+3936,84,Marcelo Crivella,PL,0,1
+3936,22,César Borges,PR,0,1
+3936,24,Delcídio do Amaral,PT,1,1
+3936,125,Serys Slhessarenko,PT,1,1
+3936,66,João Batista Motta,PSDB,0,1
+3936,10,Ana Júlia Carepa,PT,1,1
+3936,18,Arthur Virgílio,PSDB,0,1
+3936,118,Rodolpho Tourinho,PFL,0,1
+3936,140,Íris de Araújo,PMDB,1,1
+3936,19,Augusto Botelho,PDT,0,1
+3936,39,Garibaldi Alves Filho,PMDB,1,1
+3936,92,Mão Santa,PSC,0,1
+3936,90,Mozarildo Cavalcanti,PTB,1,0
+3936,124,Sergio Guerra,PSDB,0,1
+3936,138,Wellington Salgado de Oliveira,PMDB,1,1
+3936,34,Flexa Ribeiro,PSDB,0,1
+3937,85,Marco Maciel,DEM,0,1
+3937,57,José Agripino,DEM,0,1
+3937,48,Heráclito Fortes,DEM,0,1
+3937,73,Leomar Quintanilha,PMDB,1,1
+3937,112,Renan Calheiros,PMDB,1,0
+3937,120,Romeu Tuma,PTB,1,1
+3937,13,Antonio Carlos Magalhães,PFL,0,1
+3937,42,Gerson Camata,PMDB,1,1
+3937,107,Pedro Simon,PMDB,1,0
+3937,105,Paulo Paim,PT,1,1
+3937,119,Romero Jucá,PMDB,1,1
+3937,30,Eduardo Suplicy,PT,1,1
+3937,54,Jonas Pinheiro,DEM,0,1
+3937,109,Reginaldo Duarte,PSDB,0,1
+3937,31,Efraim Morais,DEM,0,1
+3937,81,Lúcia Vânia,PSDB,0,1
+3937,35,Flávio Arns,PSDB,0,1
+3937,47,Heloísa Helena,PSOL,0,0
+3937,44,Gilberto Mestrinho,PMDB,1,1
+3937,78,Luiz Otavio,PMDB,1,1
+3937,133,Tião Viana,PT,1,1
+3937,4,Alberto Silva,PMDB,1,1
+3937,29,Eduardo Siqueira Campos,PSDB,0,0
+3937,9,Amir Lando,PMDB,1,1
+3937,116,Roberto Saturnino,PT,1,1
+3937,11,Antero Paes de Barros,PSDB,0,1
+3937,98,Osmar Dias,PDT,0,1
+3937,14,Antonio Carlos Valadares,PSB,1,1
+3937,82,Magno Malta,PR,0,1
+3937,6,Almeida Lima,PMDB,1,1
+3937,50,Ideli Salvatti,PT,1,1
+3937,126,Sibá Machado,PT,1,1
+3937,108,Ramez Tebet,PMDB,1,0
+3937,129,Tasso Jereissati,PSDB,0,1
+3937,100,Patrícia Saboya,PDT,0,1
+3937,25,Demóstenes Torres,DEM,0,1
+3937,62,José Maranhão,PMDB,1,1
+3937,134,Valdir Raupp,PMDB,1,1
+3937,41,Geraldo Mesquita Júnior,PMDB,1,1
+3937,28,Eduardo Azeredo,PSDB,0,1
+3937,84,Marcelo Crivella,PL,0,1
+3937,22,César Borges,PR,0,1
+3937,24,Delcídio do Amaral,PT,1,1
+3937,125,Serys Slhessarenko,PT,1,1
+3937,66,João Batista Motta,PSDB,0,1
+3937,10,Ana Júlia Carepa,PT,1,1
+3937,18,Arthur Virgílio,PSDB,0,1
+3937,118,Rodolpho Tourinho,PFL,0,1
+3937,140,Íris de Araújo,PMDB,1,1
+3937,19,Augusto Botelho,PDT,0,1
+3937,39,Garibaldi Alves Filho,PMDB,1,1
+3937,92,Mão Santa,PSC,0,1
+3937,90,Mozarildo Cavalcanti,PTB,1,0
+3937,138,Wellington Salgado de Oliveira,PMDB,1,1
+3937,34,Flexa Ribeiro,PSDB,0,1
+3938,85,Marco Maciel,DEM,0,1
+3938,57,José Agripino,DEM,0,1
+3938,48,Heráclito Fortes,DEM,0,1
+3938,73,Leomar Quintanilha,PMDB,1,1
+3938,27,Edison Lobão,PMDB,1,1
+3938,112,Renan Calheiros,PMDB,1,0
+3938,120,Romeu Tuma,PTB,1,1
+3938,13,Antonio Carlos Magalhães,PFL,0,1
+3938,42,Gerson Camata,PMDB,1,1
+3938,107,Pedro Simon,PMDB,1,0
+3938,105,Paulo Paim,PT,1,1
+3938,119,Romero Jucá,PMDB,1,1
+3938,30,Eduardo Suplicy,PT,1,1
+3938,54,Jonas Pinheiro,DEM,0,1
+3938,109,Reginaldo Duarte,PSDB,0,1
+3938,31,Efraim Morais,DEM,0,1
+3938,7,Aloizio Mercadante,PT,1,1
+3938,81,Lúcia Vânia,PSDB,0,1
+3938,131,Teotonio Vilela Filho,PSDB,0,1
+3938,47,Heloísa Helena,PSOL,0,1
+3938,44,Gilberto Mestrinho,PMDB,1,1
+3938,78,Luiz Otavio,PMDB,1,1
+3938,133,Tião Viana,PT,1,1
+3938,4,Alberto Silva,PMDB,1,1
+3938,29,Eduardo Siqueira Campos,PSDB,0,0
+3938,9,Amir Lando,PMDB,1,1
+3938,116,Roberto Saturnino,PT,1,1
+3938,11,Antero Paes de Barros,PSDB,0,1
+3938,98,Osmar Dias,PDT,0,1
+3938,14,Antonio Carlos Valadares,PSB,1,1
+3938,82,Magno Malta,PR,0,1
+3938,6,Almeida Lima,PMDB,1,1
+3938,50,Ideli Salvatti,PT,1,1
+3938,126,Sibá Machado,PT,1,1
+3938,69,João Ribeiro,PFL,0,1
+3938,104,Paulo Octávio,PFL,0,1
+3938,108,Ramez Tebet,PMDB,1,0
+3938,129,Tasso Jereissati,PSDB,0,1
+3938,100,Patrícia Saboya,PDT,0,1
+3938,25,Demóstenes Torres,DEM,0,1
+3938,62,José Maranhão,PMDB,1,1
+3938,134,Valdir Raupp,PMDB,1,1
+3938,41,Geraldo Mesquita Júnior,PMDB,1,1
+3938,84,Marcelo Crivella,PL,0,1
+3938,2,Aelton Freitas,Sem partido,0,1
+3938,22,César Borges,PR,0,1
+3938,24,Delcídio do Amaral,PT,1,1
+3938,125,Serys Slhessarenko,PT,1,1
+3938,66,João Batista Motta,PSDB,0,1
+3938,10,Ana Júlia Carepa,PT,1,1
+3938,128,Sérgio Zambiasi,PTB,1,1
+3938,18,Arthur Virgílio,PSDB,0,1
+3938,118,Rodolpho Tourinho,PFL,0,1
+3938,140,Íris de Araújo,PMDB,1,1
+3938,19,Augusto Botelho,PDT,0,1
+3938,39,Garibaldi Alves Filho,PMDB,1,1
+3938,92,Mão Santa,PSC,0,1
+3938,90,Mozarildo Cavalcanti,PTB,1,0
+3938,99,Papaléo Paes,PSDB,0,1
+3938,138,Wellington Salgado de Oliveira,PMDB,1,1
+3938,34,Flexa Ribeiro,PSDB,0,1
+3939,85,Marco Maciel,DEM,0,1
+3939,57,José Agripino,DEM,0,1
+3939,48,Heráclito Fortes,DEM,0,1
+3939,73,Leomar Quintanilha,PMDB,1,1
+3939,27,Edison Lobão,PMDB,1,1
+3939,112,Renan Calheiros,PMDB,1,0
+3939,120,Romeu Tuma,PTB,1,1
+3939,13,Antonio Carlos Magalhães,PFL,0,1
+3939,42,Gerson Camata,PMDB,1,1
+3939,107,Pedro Simon,PMDB,1,0
+3939,105,Paulo Paim,PT,1,1
+3939,119,Romero Jucá,PMDB,1,1
+3939,30,Eduardo Suplicy,PT,1,1
+3939,54,Jonas Pinheiro,DEM,0,1
+3939,109,Reginaldo Duarte,PSDB,0,1
+3939,31,Efraim Morais,DEM,0,1
+3939,7,Aloizio Mercadante,PT,1,1
+3939,131,Teotonio Vilela Filho,PSDB,0,1
+3939,44,Gilberto Mestrinho,PMDB,1,1
+3939,78,Luiz Otavio,PMDB,1,1
+3939,133,Tião Viana,PT,1,1
+3939,4,Alberto Silva,PMDB,1,1
+3939,29,Eduardo Siqueira Campos,PSDB,0,0
+3939,11,Antero Paes de Barros,PSDB,0,1
+3939,98,Osmar Dias,PDT,0,1
+3939,94,Ney Suassuna,PMDB,1,1
+3939,14,Antonio Carlos Valadares,PSB,1,1
+3939,82,Magno Malta,PR,0,1
+3939,6,Almeida Lima,PMDB,1,1
+3939,50,Ideli Salvatti,PT,1,1
+3939,126,Sibá Machado,PT,1,1
+3939,69,João Ribeiro,PFL,0,1
+3939,104,Paulo Octávio,PFL,0,1
+3939,108,Ramez Tebet,PMDB,1,0
+3939,129,Tasso Jereissati,PSDB,0,1
+3939,100,Patrícia Saboya,PDT,0,1
+3939,25,Demóstenes Torres,DEM,0,1
+3939,62,José Maranhão,PMDB,1,1
+3939,134,Valdir Raupp,PMDB,1,1
+3939,41,Geraldo Mesquita Júnior,PMDB,1,1
+3939,22,César Borges,PR,0,1
+3939,24,Delcídio do Amaral,PT,1,1
+3939,125,Serys Slhessarenko,PT,1,1
+3939,66,João Batista Motta,PSDB,0,1
+3939,10,Ana Júlia Carepa,PT,1,1
+3939,128,Sérgio Zambiasi,PTB,1,1
+3939,18,Arthur Virgílio,PSDB,0,1
+3939,118,Rodolpho Tourinho,PFL,0,1
+3939,19,Augusto Botelho,PDT,0,1
+3939,39,Garibaldi Alves Filho,PMDB,1,1
+3939,92,Mão Santa,PSC,0,1
+3939,90,Mozarildo Cavalcanti,PTB,1,0
+3939,99,Papaléo Paes,PSDB,0,1
+3939,138,Wellington Salgado de Oliveira,PMDB,1,1
+3939,34,Flexa Ribeiro,PSDB,0,1
+3940,85,Marco Maciel,DEM,0,1
+3940,57,José Agripino,DEM,0,1
+3940,48,Heráclito Fortes,DEM,0,1
+3940,73,Leomar Quintanilha,PMDB,1,1
+3940,27,Edison Lobão,PMDB,1,1
+3940,112,Renan Calheiros,PMDB,1,0
+3940,120,Romeu Tuma,PTB,1,1
+3940,13,Antonio Carlos Magalhães,PFL,0,1
+3940,42,Gerson Camata,PMDB,1,1
+3940,107,Pedro Simon,PMDB,1,0
+3940,105,Paulo Paim,PT,1,1
+3940,119,Romero Jucá,PMDB,1,1
+3940,30,Eduardo Suplicy,PT,1,1
+3940,54,Jonas Pinheiro,DEM,0,1
+3940,109,Reginaldo Duarte,PSDB,0,1
+3940,31,Efraim Morais,DEM,0,1
+3940,7,Aloizio Mercadante,PT,1,1
+3940,131,Teotonio Vilela Filho,PSDB,0,1
+3940,44,Gilberto Mestrinho,PMDB,1,1
+3940,78,Luiz Otavio,PMDB,1,1
+3940,133,Tião Viana,PT,1,1
+3940,4,Alberto Silva,PMDB,1,1
+3940,29,Eduardo Siqueira Campos,PSDB,0,0
+3940,11,Antero Paes de Barros,PSDB,0,1
+3940,98,Osmar Dias,PDT,0,1
+3940,94,Ney Suassuna,PMDB,1,1
+3940,14,Antonio Carlos Valadares,PSB,1,1
+3940,82,Magno Malta,PR,0,1
+3940,6,Almeida Lima,PMDB,1,1
+3940,50,Ideli Salvatti,PT,1,-1
+3940,126,Sibá Machado,PT,1,1
+3940,69,João Ribeiro,PFL,0,1
+3940,108,Ramez Tebet,PMDB,1,0
+3940,129,Tasso Jereissati,PSDB,0,1
+3940,100,Patrícia Saboya,PDT,0,1
+3940,25,Demóstenes Torres,DEM,0,1
+3940,134,Valdir Raupp,PMDB,1,1
+3940,41,Geraldo Mesquita Júnior,PMDB,1,1
+3940,84,Marcelo Crivella,PL,0,1
+3940,22,César Borges,PR,0,1
+3940,24,Delcídio do Amaral,PT,1,1
+3940,125,Serys Slhessarenko,PT,1,1
+3940,66,João Batista Motta,PSDB,0,1
+3940,10,Ana Júlia Carepa,PT,1,-1
+3940,128,Sérgio Zambiasi,PTB,1,1
+3940,18,Arthur Virgílio,PSDB,0,1
+3940,118,Rodolpho Tourinho,PFL,0,1
+3940,19,Augusto Botelho,PDT,0,1
+3940,39,Garibaldi Alves Filho,PMDB,1,1
+3940,92,Mão Santa,PSC,0,1
+3940,90,Mozarildo Cavalcanti,PTB,1,0
+3940,99,Papaléo Paes,PSDB,0,1
+3940,138,Wellington Salgado de Oliveira,PMDB,1,1
+3940,34,Flexa Ribeiro,PSDB,0,1
+3954,57,José Agripino,DEM,0,1
+3954,48,Heráclito Fortes,DEM,0,1
+3954,112,Renan Calheiros,PMDB,1,0
+3954,120,Romeu Tuma,PTB,1,1
+3954,13,Antonio Carlos Magalhães,PFL,0,1
+3954,42,Gerson Camata,PMDB,1,1
+3954,105,Paulo Paim,PT,1,1
+3954,119,Romero Jucá,PMDB,1,1
+3954,30,Eduardo Suplicy,PT,1,1
+3954,54,Jonas Pinheiro,DEM,0,1
+3954,109,Reginaldo Duarte,PSDB,0,1
+3954,31,Efraim Morais,DEM,0,1
+3954,7,Aloizio Mercadante,PT,1,1
+3954,131,Teotonio Vilela Filho,PSDB,0,1
+3954,46,Gilvam Borges,PMDB,1,1
+3954,35,Flávio Arns,PSDB,0,1
+3954,47,Heloísa Helena,PSOL,0,1
+3954,44,Gilberto Mestrinho,PMDB,1,1
+3954,55,Jorge Bornhausen,PFL,0,-1
+3954,133,Tião Viana,PT,1,1
+3954,61,José Jorge,PFL,0,1
+3954,8,Alvaro Dias,PSDB,0,1
+3954,87,Maria do Carmo Alves,PFL,0,0
+3954,29,Eduardo Siqueira Campos,PSDB,0,0
+3954,9,Amir Lando,PMDB,1,0
+3954,116,Roberto Saturnino,PT,1,1
+3954,72,Juvêncio da Fonseca,PSDB,0,1
+3954,98,Osmar Dias,PDT,0,1
+3954,94,Ney Suassuna,PMDB,1,1
+3954,14,Antonio Carlos Valadares,PSB,1,1
+3954,6,Almeida Lima,PMDB,1,1
+3954,104,Paulo Octávio,PFL,0,1
+3954,129,Tasso Jereissati,PSDB,0,1
+3954,100,Patrícia Saboya,PDT,0,1
+3954,25,Demóstenes Torres,DEM,0,1
+3954,62,José Maranhão,PMDB,1,1
+3954,41,Geraldo Mesquita Júnior,PMDB,1,1
+3954,28,Eduardo Azeredo,PSDB,0,1
+3954,84,Marcelo Crivella,PL,0,1
+3954,2,Aelton Freitas,Sem partido,0,1
+3954,22,César Borges,PR,0,1
+3954,74,Leonel Pavan,PSDB,0,1
+3954,125,Serys Slhessarenko,PT,1,1
+3954,10,Ana Júlia Carepa,PT,1,1
+3954,128,Sérgio Zambiasi,PTB,1,1
+3954,18,Arthur Virgílio,PSDB,0,1
+3954,118,Rodolpho Tourinho,PFL,0,1
+3954,127,Sérgio Cabral,PMDB,1,0
+3954,19,Augusto Botelho,PDT,0,1
+3954,21,Cristovam Buarque,PDT,0,1
+3954,39,Garibaldi Alves Filho,PMDB,1,1
+3954,90,Mozarildo Cavalcanti,PTB,1,0
+3954,99,Papaléo Paes,PSDB,0,1
+3954,138,Wellington Salgado de Oliveira,PMDB,1,1
+3954,34,Flexa Ribeiro,PSDB,0,1
+3904,64,José Sarney,PMDB,1,1
+3904,85,Marco Maciel,DEM,0,1
+3904,33,Fernando Bezerra,PTB,1,1
+3904,57,José Agripino,DEM,0,1
+3904,48,Heráclito Fortes,DEM,0,1
+3904,27,Edison Lobão,PMDB,1,1
+3904,112,Renan Calheiros,PMDB,1,0
+3904,120,Romeu Tuma,PTB,1,1
+3904,13,Antonio Carlos Magalhães,PFL,0,1
+3904,42,Gerson Camata,PMDB,1,1
+3904,105,Paulo Paim,PT,1,1
+3904,52,Jefferson Peres,PDT,0,1
+3904,30,Eduardo Suplicy,PT,1,-1
+3904,54,Jonas Pinheiro,DEM,0,1
+3904,109,Reginaldo Duarte,PSDB,0,1
+3904,31,Efraim Morais,DEM,0,1
+3904,7,Aloizio Mercadante,PT,1,1
+3904,81,Lúcia Vânia,PSDB,0,1
+3904,131,Teotonio Vilela Filho,PSDB,0,1
+3904,35,Flávio Arns,PSDB,0,1
+3904,47,Heloísa Helena,PSOL,0,1
+3904,78,Luiz Otavio,PMDB,1,1
+3904,55,Jorge Bornhausen,PFL,0,1
+3904,133,Tião Viana,PT,1,1
+3904,61,José Jorge,PFL,0,1
+3904,4,Alberto Silva,PMDB,1,1
+3904,8,Alvaro Dias,PSDB,0,1
+3904,87,Maria do Carmo Alves,PFL,0,1
+3904,29,Eduardo Siqueira Campos,PSDB,0,1
+3904,9,Amir Lando,PMDB,1,1
+3904,116,Roberto Saturnino,PT,1,1
+3904,72,Juvêncio da Fonseca,PSDB,0,1
+3904,11,Antero Paes de Barros,PSDB,0,1
+3904,98,Osmar Dias,PDT,0,1
+3904,94,Ney Suassuna,PMDB,1,1
+3904,50,Ideli Salvatti,PT,1,1
+3904,126,Sibá Machado,PT,1,1
+3904,69,João Ribeiro,PFL,0,1
+3904,104,Paulo Octávio,PFL,0,1
+3904,100,Patrícia Saboya,PDT,0,1
+3904,28,Eduardo Azeredo,PSDB,0,1
+3904,84,Marcelo Crivella,PL,0,1
+3904,2,Aelton Freitas,Sem partido,0,1
+3904,22,César Borges,PR,0,1
+3904,74,Leonel Pavan,PSDB,0,1
+3904,24,Delcídio do Amaral,PT,1,1
+3904,125,Serys Slhessarenko,PT,1,1
+3904,10,Ana Júlia Carepa,PT,1,1
+3904,128,Sérgio Zambiasi,PTB,1,1
+3904,18,Arthur Virgílio,PSDB,0,1
+3904,121,Roseana Sarney,PMDB,1,1
+3904,118,Rodolpho Tourinho,PFL,0,1
+3904,127,Sérgio Cabral,PMDB,1,1
+3904,19,Augusto Botelho,PDT,0,1
+3904,21,Cristovam Buarque,PDT,0,0
+3904,38,Fátima Cleide,PT,1,1
+3904,90,Mozarildo Cavalcanti,PTB,1,1
+3904,99,Papaléo Paes,PSDB,0,1
+3904,124,Sergio Guerra,PSDB,0,1
+3904,138,Wellington Salgado de Oliveira,PMDB,1,1
+3905,64,José Sarney,PMDB,1,1
+3905,33,Fernando Bezerra,PTB,1,1
+3905,48,Heráclito Fortes,DEM,0,1
+3905,73,Leomar Quintanilha,PMDB,1,1
+3905,112,Renan Calheiros,PMDB,1,0
+3905,120,Romeu Tuma,PTB,1,1
+3905,13,Antonio Carlos Magalhães,PFL,0,1
+3905,42,Gerson Camata,PMDB,1,1
+3905,107,Pedro Simon,PMDB,1,1
+3905,105,Paulo Paim,PT,1,1
+3905,52,Jefferson Peres,PDT,0,1
+3905,119,Romero Jucá,PMDB,1,1
+3905,30,Eduardo Suplicy,PT,1,1
+3905,54,Jonas Pinheiro,DEM,0,1
+3905,83,Maguito Vilela,PMDB,1,1
+3905,109,Reginaldo Duarte,PSDB,0,1
+3905,31,Efraim Morais,DEM,0,1
+3905,7,Aloizio Mercadante,PT,1,1
+3905,81,Lúcia Vânia,PSDB,0,1
+3905,131,Teotonio Vilela Filho,PSDB,0,1
+3905,46,Gilvam Borges,PMDB,1,1
+3905,35,Flávio Arns,PSDB,0,1
+3905,47,Heloísa Helena,PSOL,0,1
+3905,133,Tião Viana,PT,1,1
+3905,4,Alberto Silva,PMDB,1,1
+3905,29,Eduardo Siqueira Campos,PSDB,0,1
+3905,9,Amir Lando,PMDB,1,1
+3905,116,Roberto Saturnino,PT,1,1
+3905,72,Juvêncio da Fonseca,PSDB,0,1
+3905,98,Osmar Dias,PDT,0,1
+3905,14,Antonio Carlos Valadares,PSB,1,1
+3905,82,Magno Malta,PR,0,1
+3905,50,Ideli Salvatti,PT,1,1
+3905,126,Sibá Machado,PT,1,1
+3905,104,Paulo Octávio,PFL,0,1
+3905,129,Tasso Jereissati,PSDB,0,1
+3905,100,Patrícia Saboya,PDT,0,1
+3905,62,José Maranhão,PMDB,1,1
+3905,41,Geraldo Mesquita Júnior,PMDB,1,1
+3905,2,Aelton Freitas,Sem partido,0,1
+3905,22,César Borges,PR,0,1
+3905,74,Leonel Pavan,PSDB,0,1
+3905,24,Delcídio do Amaral,PT,1,1
+3905,125,Serys Slhessarenko,PT,1,1
+3905,10,Ana Júlia Carepa,PT,1,1
+3905,128,Sérgio Zambiasi,PTB,1,1
+3905,121,Roseana Sarney,PMDB,1,1
+3905,118,Rodolpho Tourinho,PFL,0,1
+3905,19,Augusto Botelho,PDT,0,1
+3905,21,Cristovam Buarque,PDT,0,0
+3905,39,Garibaldi Alves Filho,PMDB,1,1
+3905,92,Mão Santa,PSC,0,1
+3905,90,Mozarildo Cavalcanti,PTB,1,1
+3905,124,Sergio Guerra,PSDB,0,1
+3905,138,Wellington Salgado de Oliveira,PMDB,1,1
+3908,33,Fernando Bezerra,PTB,1,1
+3908,57,José Agripino,DEM,0,1
+3908,48,Heráclito Fortes,DEM,0,1
+3908,73,Leomar Quintanilha,PMDB,1,0
+3908,112,Renan Calheiros,PMDB,1,0
+3908,120,Romeu Tuma,PTB,1,1
+3908,13,Antonio Carlos Magalhães,PFL,0,1
+3908,42,Gerson Camata,PMDB,1,1
+3908,107,Pedro Simon,PMDB,1,1
+3908,105,Paulo Paim,PT,1,1
+3908,52,Jefferson Peres,PDT,0,1
+3908,30,Eduardo Suplicy,PT,1,1
+3908,54,Jonas Pinheiro,DEM,0,1
+3908,31,Efraim Morais,DEM,0,1
+3908,7,Aloizio Mercadante,PT,1,1
+3908,81,Lúcia Vânia,PSDB,0,1
+3908,131,Teotonio Vilela Filho,PSDB,0,1
+3908,47,Heloísa Helena,PSOL,0,1
+3908,44,Gilberto Mestrinho,PMDB,1,1
+3908,78,Luiz Otavio,PMDB,1,1
+3908,133,Tião Viana,PT,1,1
+3908,61,José Jorge,PFL,0,1
+3908,4,Alberto Silva,PMDB,1,1
+3908,72,Juvêncio da Fonseca,PSDB,0,1
+3908,94,Ney Suassuna,PMDB,1,1
+3908,14,Antonio Carlos Valadares,PSB,1,1
+3908,82,Magno Malta,PR,0,1
+3908,135,Valmir Amaral,PP,1,1
+3908,6,Almeida Lima,PMDB,1,1
+3908,50,Ideli Salvatti,PT,1,1
+3908,69,João Ribeiro,PFL,0,1
+3908,104,Paulo Octávio,PFL,0,1
+3908,108,Ramez Tebet,PMDB,1,1
+3908,129,Tasso Jereissati,PSDB,0,0
+3908,62,José Maranhão,PMDB,1,1
+3908,134,Valdir Raupp,PMDB,1,1
+3908,41,Geraldo Mesquita Júnior,PMDB,1,1
+3908,22,César Borges,PR,0,1
+3908,74,Leonel Pavan,PSDB,0,1
+3908,24,Delcídio do Amaral,PT,1,1
+3908,125,Serys Slhessarenko,PT,1,1
+3908,66,João Batista Motta,PSDB,0,1
+3908,10,Ana Júlia Carepa,PT,1,1
+3908,128,Sérgio Zambiasi,PTB,1,1
+3908,18,Arthur Virgílio,PSDB,0,1
+3908,118,Rodolpho Tourinho,PFL,0,1
+3908,127,Sérgio Cabral,PMDB,1,1
+3908,19,Augusto Botelho,PDT,0,1
+3908,21,Cristovam Buarque,PDT,0,0
+3908,38,Fátima Cleide,PT,1,1
+3908,39,Garibaldi Alves Filho,PMDB,1,1
+3908,92,Mão Santa,PSC,0,1
+3908,99,Papaléo Paes,PSDB,0,1
+3908,138,Wellington Salgado de Oliveira,PMDB,1,1
+3908,34,Flexa Ribeiro,PSDB,0,1
+3907,33,Fernando Bezerra,PTB,1,1
+3907,57,José Agripino,DEM,0,1
+3907,48,Heráclito Fortes,DEM,0,1
+3907,73,Leomar Quintanilha,PMDB,1,0
+3907,112,Renan Calheiros,PMDB,1,0
+3907,120,Romeu Tuma,PTB,1,1
+3907,13,Antonio Carlos Magalhães,PFL,0,1
+3907,42,Gerson Camata,PMDB,1,1
+3907,107,Pedro Simon,PMDB,1,1
+3907,105,Paulo Paim,PT,1,1
+3907,52,Jefferson Peres,PDT,0,1
+3907,30,Eduardo Suplicy,PT,1,1
+3907,54,Jonas Pinheiro,DEM,0,1
+3907,31,Efraim Morais,DEM,0,1
+3907,7,Aloizio Mercadante,PT,1,1
+3907,81,Lúcia Vânia,PSDB,0,1
+3907,131,Teotonio Vilela Filho,PSDB,0,1
+3907,47,Heloísa Helena,PSOL,0,1
+3907,44,Gilberto Mestrinho,PMDB,1,1
+3907,78,Luiz Otavio,PMDB,1,1
+3907,133,Tião Viana,PT,1,1
+3907,61,José Jorge,PFL,0,1
+3907,4,Alberto Silva,PMDB,1,1
+3907,29,Eduardo Siqueira Campos,PSDB,0,1
+3907,94,Ney Suassuna,PMDB,1,1
+3907,14,Antonio Carlos Valadares,PSB,1,1
+3907,82,Magno Malta,PR,0,1
+3907,135,Valmir Amaral,PP,1,1
+3907,6,Almeida Lima,PMDB,1,1
+3907,50,Ideli Salvatti,PT,1,1
+3907,69,João Ribeiro,PFL,0,1
+3907,104,Paulo Octávio,PFL,0,1
+3907,108,Ramez Tebet,PMDB,1,1
+3907,129,Tasso Jereissati,PSDB,0,0
+3907,62,José Maranhão,PMDB,1,1
+3907,134,Valdir Raupp,PMDB,1,1
+3907,41,Geraldo Mesquita Júnior,PMDB,1,1
+3907,28,Eduardo Azeredo,PSDB,0,1
+3907,2,Aelton Freitas,Sem partido,0,1
+3907,22,César Borges,PR,0,1
+3907,74,Leonel Pavan,PSDB,0,1
+3907,24,Delcídio do Amaral,PT,1,1
+3907,125,Serys Slhessarenko,PT,1,1
+3907,66,João Batista Motta,PSDB,0,1
+3907,10,Ana Júlia Carepa,PT,1,1
+3907,128,Sérgio Zambiasi,PTB,1,1
+3907,18,Arthur Virgílio,PSDB,0,1
+3907,118,Rodolpho Tourinho,PFL,0,1
+3907,127,Sérgio Cabral,PMDB,1,1
+3907,19,Augusto Botelho,PDT,0,1
+3907,21,Cristovam Buarque,PDT,0,0
+3907,38,Fátima Cleide,PT,1,1
+3907,39,Garibaldi Alves Filho,PMDB,1,1
+3907,92,Mão Santa,PSC,0,1
+3907,99,Papaléo Paes,PSDB,0,1
+3907,138,Wellington Salgado de Oliveira,PMDB,1,1
+3907,34,Flexa Ribeiro,PSDB,0,1
+3906,57,José Agripino,DEM,0,-1
+3906,48,Heráclito Fortes,DEM,0,-1
+3906,73,Leomar Quintanilha,PMDB,1,0
+3906,112,Renan Calheiros,PMDB,1,0
+3906,120,Romeu Tuma,PTB,1,-1
+3906,13,Antonio Carlos Magalhães,PFL,0,-1
+3906,42,Gerson Camata,PMDB,1,1
+3906,107,Pedro Simon,PMDB,1,1
+3906,105,Paulo Paim,PT,1,1
+3906,52,Jefferson Peres,PDT,0,-1
+3906,30,Eduardo Suplicy,PT,1,1
+3906,54,Jonas Pinheiro,DEM,0,1
+3906,83,Maguito Vilela,PMDB,1,1
+3906,109,Reginaldo Duarte,PSDB,0,1
+3906,31,Efraim Morais,DEM,0,-1
+3906,7,Aloizio Mercadante,PT,1,1
+3906,81,Lúcia Vânia,PSDB,0,-1
+3906,131,Teotonio Vilela Filho,PSDB,0,-1
+3906,46,Gilvam Borges,PMDB,1,1
+3906,47,Heloísa Helena,PSOL,0,0
+3906,44,Gilberto Mestrinho,PMDB,1,-1
+3906,78,Luiz Otavio,PMDB,1,1
+3906,55,Jorge Bornhausen,PFL,0,-1
+3906,133,Tião Viana,PT,1,1
+3906,61,José Jorge,PFL,0,-1
+3906,4,Alberto Silva,PMDB,1,1
+3906,87,Maria do Carmo Alves,PFL,0,-1
+3906,29,Eduardo Siqueira Campos,PSDB,0,1
+3906,98,Osmar Dias,PDT,0,1
+3906,94,Ney Suassuna,PMDB,1,1
+3906,14,Antonio Carlos Valadares,PSB,1,1
+3906,82,Magno Malta,PR,0,1
+3906,135,Valmir Amaral,PP,1,1
+3906,6,Almeida Lima,PMDB,1,-1
+3906,50,Ideli Salvatti,PT,1,1
+3906,69,João Ribeiro,PFL,0,1
+3906,104,Paulo Octávio,PFL,0,-1
+3906,108,Ramez Tebet,PMDB,1,1
+3906,129,Tasso Jereissati,PSDB,0,0
+3906,100,Patrícia Saboya,PDT,0,1
+3906,25,Demóstenes Torres,DEM,0,-1
+3906,62,José Maranhão,PMDB,1,1
+3906,134,Valdir Raupp,PMDB,1,1
+3906,41,Geraldo Mesquita Júnior,PMDB,1,1
+3906,28,Eduardo Azeredo,PSDB,0,-1
+3906,2,Aelton Freitas,Sem partido,0,1
+3906,22,César Borges,PR,0,-1
+3906,24,Delcídio do Amaral,PT,1,1
+3906,125,Serys Slhessarenko,PT,1,1
+3906,66,João Batista Motta,PSDB,0,-1
+3906,10,Ana Júlia Carepa,PT,1,1
+3906,128,Sérgio Zambiasi,PTB,1,1
+3906,18,Arthur Virgílio,PSDB,0,-1
+3906,118,Rodolpho Tourinho,PFL,0,-1
+3906,127,Sérgio Cabral,PMDB,1,-1
+3906,19,Augusto Botelho,PDT,0,1
+3906,21,Cristovam Buarque,PDT,0,0
+3906,39,Garibaldi Alves Filho,PMDB,1,1
+3906,92,Mão Santa,PSC,0,-1
+3906,90,Mozarildo Cavalcanti,PTB,1,-1
+3906,99,Papaléo Paes,PSDB,0,-1
+3906,124,Sergio Guerra,PSDB,0,-1
+3906,138,Wellington Salgado de Oliveira,PMDB,1,1
+3906,34,Flexa Ribeiro,PSDB,0,-1
+3916,85,Marco Maciel,DEM,0,1
+3916,33,Fernando Bezerra,PTB,1,1
+3916,57,José Agripino,DEM,0,1
+3916,48,Heráclito Fortes,DEM,0,1
+3916,73,Leomar Quintanilha,PMDB,1,1
+3916,27,Edison Lobão,PMDB,1,1
+3916,112,Renan Calheiros,PMDB,1,0
+3916,120,Romeu Tuma,PTB,1,1
+3916,13,Antonio Carlos Magalhães,PFL,0,1
+3916,42,Gerson Camata,PMDB,1,1
+3916,107,Pedro Simon,PMDB,1,1
+3916,105,Paulo Paim,PT,1,1
+3916,52,Jefferson Peres,PDT,0,1
+3916,119,Romero Jucá,PMDB,1,1
+3916,30,Eduardo Suplicy,PT,1,1
+3916,54,Jonas Pinheiro,DEM,0,1
+3916,83,Maguito Vilela,PMDB,1,1
+3916,109,Reginaldo Duarte,PSDB,0,1
+3916,7,Aloizio Mercadante,PT,1,1
+3916,81,Lúcia Vânia,PSDB,0,1
+3916,131,Teotonio Vilela Filho,PSDB,0,1
+3916,35,Flávio Arns,PSDB,0,1
+3916,47,Heloísa Helena,PSOL,0,1
+3916,44,Gilberto Mestrinho,PMDB,1,1
+3916,55,Jorge Bornhausen,PFL,0,1
+3916,65,João Alberto Souza,PMDB,1,1
+3916,61,José Jorge,PFL,0,1
+3916,4,Alberto Silva,PMDB,1,1
+3916,87,Maria do Carmo Alves,PFL,0,1
+3916,29,Eduardo Siqueira Campos,PSDB,0,0
+3916,11,Antero Paes de Barros,PSDB,0,1
+3916,98,Osmar Dias,PDT,0,1
+3916,14,Antonio Carlos Valadares,PSB,1,1
+3916,82,Magno Malta,PR,0,1
+3916,135,Valmir Amaral,PP,1,1
+3916,50,Ideli Salvatti,PT,1,1
+3916,126,Sibá Machado,PT,1,1
+3916,69,João Ribeiro,PFL,0,1
+3916,108,Ramez Tebet,PMDB,1,1
+3916,129,Tasso Jereissati,PSDB,0,0
+3916,100,Patrícia Saboya,PDT,0,1
+3916,25,Demóstenes Torres,DEM,0,1
+3916,134,Valdir Raupp,PMDB,1,1
+3916,41,Geraldo Mesquita Júnior,PMDB,1,1
+3916,28,Eduardo Azeredo,PSDB,0,1
+3916,2,Aelton Freitas,Sem partido,0,0
+3916,22,César Borges,PR,0,1
+3916,74,Leonel Pavan,PSDB,0,1
+3916,24,Delcídio do Amaral,PT,1,1
+3916,125,Serys Slhessarenko,PT,1,1
+3916,66,João Batista Motta,PSDB,0,1
+3916,10,Ana Júlia Carepa,PT,1,1
+3916,128,Sérgio Zambiasi,PTB,1,1
+3916,18,Arthur Virgílio,PSDB,0,1
+3916,121,Roseana Sarney,PMDB,1,1
+3916,118,Rodolpho Tourinho,PFL,0,1
+3916,127,Sérgio Cabral,PMDB,1,1
+3916,19,Augusto Botelho,PDT,0,1
+3916,21,Cristovam Buarque,PDT,0,0
+3916,38,Fátima Cleide,PT,1,1
+3916,39,Garibaldi Alves Filho,PMDB,1,1
+3916,90,Mozarildo Cavalcanti,PTB,1,1
+3916,99,Papaléo Paes,PSDB,0,1
+3916,124,Sergio Guerra,PSDB,0,1
+3916,138,Wellington Salgado de Oliveira,PMDB,1,1
+3916,34,Flexa Ribeiro,PSDB,0,1
+3917,85,Marco Maciel,DEM,0,1
+3917,33,Fernando Bezerra,PTB,1,1
+3917,57,José Agripino,DEM,0,1
+3917,73,Leomar Quintanilha,PMDB,1,1
+3917,27,Edison Lobão,PMDB,1,1
+3917,112,Renan Calheiros,PMDB,1,0
+3917,120,Romeu Tuma,PTB,1,1
+3917,13,Antonio Carlos Magalhães,PFL,0,1
+3917,42,Gerson Camata,PMDB,1,1
+3917,107,Pedro Simon,PMDB,1,-1
+3917,105,Paulo Paim,PT,1,1
+3917,30,Eduardo Suplicy,PT,1,1
+3917,54,Jonas Pinheiro,DEM,0,1
+3917,109,Reginaldo Duarte,PSDB,0,-1
+3917,7,Aloizio Mercadante,PT,1,1
+3917,81,Lúcia Vânia,PSDB,0,1
+3917,46,Gilvam Borges,PMDB,1,1
+3917,35,Flávio Arns,PSDB,0,1
+3917,47,Heloísa Helena,PSOL,0,-1
+3917,44,Gilberto Mestrinho,PMDB,1,-1
+3917,133,Tião Viana,PT,1,1
+3917,4,Alberto Silva,PMDB,1,1
+3917,29,Eduardo Siqueira Campos,PSDB,0,0
+3917,9,Amir Lando,PMDB,1,-1
+3917,94,Ney Suassuna,PMDB,1,1
+3917,14,Antonio Carlos Valadares,PSB,1,1
+3917,82,Magno Malta,PR,0,1
+3917,6,Almeida Lima,PMDB,1,-1
+3917,50,Ideli Salvatti,PT,1,1
+3917,126,Sibá Machado,PT,1,1
+3917,104,Paulo Octávio,PFL,0,1
+3917,129,Tasso Jereissati,PSDB,0,0
+3917,100,Patrícia Saboya,PDT,0,1
+3917,25,Demóstenes Torres,DEM,0,1
+3917,62,José Maranhão,PMDB,1,-1
+3917,134,Valdir Raupp,PMDB,1,1
+3917,41,Geraldo Mesquita Júnior,PMDB,1,-1
+3917,28,Eduardo Azeredo,PSDB,0,1
+3917,84,Marcelo Crivella,PL,0,1
+3917,2,Aelton Freitas,Sem partido,0,0
+3917,22,César Borges,PR,0,1
+3917,74,Leonel Pavan,PSDB,0,1
+3917,24,Delcídio do Amaral,PT,1,1
+3917,125,Serys Slhessarenko,PT,1,1
+3917,66,João Batista Motta,PSDB,0,-1
+3917,10,Ana Júlia Carepa,PT,1,1
+3917,128,Sérgio Zambiasi,PTB,1,0
+3917,18,Arthur Virgílio,PSDB,0,1
+3917,118,Rodolpho Tourinho,PFL,0,1
+3917,127,Sérgio Cabral,PMDB,1,1
+3917,19,Augusto Botelho,PDT,0,-1
+3917,21,Cristovam Buarque,PDT,0,0
+3917,38,Fátima Cleide,PT,1,1
+3917,39,Garibaldi Alves Filho,PMDB,1,1
+3917,92,Mão Santa,PSC,0,-1
+3917,90,Mozarildo Cavalcanti,PTB,1,-1
+3917,99,Papaléo Paes,PSDB,0,-1
+3917,138,Wellington Salgado de Oliveira,PMDB,1,0
+3917,34,Flexa Ribeiro,PSDB,0,1
+3918,64,José Sarney,PMDB,1,1
+3918,85,Marco Maciel,DEM,0,0
+3918,33,Fernando Bezerra,PTB,1,1
+3918,57,José Agripino,DEM,0,1
+3918,48,Heráclito Fortes,DEM,0,1
+3918,27,Edison Lobão,PMDB,1,1
+3918,112,Renan Calheiros,PMDB,1,0
+3918,120,Romeu Tuma,PTB,1,1
+3918,13,Antonio Carlos Magalhães,PFL,0,1
+3918,42,Gerson Camata,PMDB,1,-1
+3918,107,Pedro Simon,PMDB,1,1
+3918,105,Paulo Paim,PT,1,1
+3918,52,Jefferson Peres,PDT,0,1
+3918,119,Romero Jucá,PMDB,1,1
+3918,30,Eduardo Suplicy,PT,1,-1
+3918,54,Jonas Pinheiro,DEM,0,1
+3918,83,Maguito Vilela,PMDB,1,1
+3918,109,Reginaldo Duarte,PSDB,0,1
+3918,31,Efraim Morais,DEM,0,1
+3918,7,Aloizio Mercadante,PT,1,1
+3918,131,Teotonio Vilela Filho,PSDB,0,1
+3918,46,Gilvam Borges,PMDB,1,1
+3918,35,Flávio Arns,PSDB,0,1
+3918,47,Heloísa Helena,PSOL,0,1
+3918,44,Gilberto Mestrinho,PMDB,1,1
+3918,78,Luiz Otavio,PMDB,1,1
+3918,55,Jorge Bornhausen,PFL,0,1
+3918,65,João Alberto Souza,PMDB,1,1
+3918,133,Tião Viana,PT,1,1
+3918,61,José Jorge,PFL,0,1
+3918,4,Alberto Silva,PMDB,1,1
+3918,8,Alvaro Dias,PSDB,0,1
+3918,29,Eduardo Siqueira Campos,PSDB,0,0
+3918,9,Amir Lando,PMDB,1,1
+3918,72,Juvêncio da Fonseca,PSDB,0,1
+3918,11,Antero Paes de Barros,PSDB,0,1
+3918,98,Osmar Dias,PDT,0,0
+3918,94,Ney Suassuna,PMDB,1,1
+3918,14,Antonio Carlos Valadares,PSB,1,1
+3918,82,Magno Malta,PR,0,1
+3918,135,Valmir Amaral,PP,1,1
+3918,6,Almeida Lima,PMDB,1,1
+3918,50,Ideli Salvatti,PT,1,1
+3918,126,Sibá Machado,PT,1,1
+3918,69,João Ribeiro,PFL,0,0
+3918,108,Ramez Tebet,PMDB,1,1
+3918,100,Patrícia Saboya,PDT,0,0
+3918,25,Demóstenes Torres,DEM,0,1
+3918,62,José Maranhão,PMDB,1,1
+3918,134,Valdir Raupp,PMDB,1,0
+3918,41,Geraldo Mesquita Júnior,PMDB,1,1
+3918,28,Eduardo Azeredo,PSDB,0,1
+3918,84,Marcelo Crivella,PL,0,0
+3918,2,Aelton Freitas,Sem partido,0,1
+3918,22,César Borges,PR,0,1
+3918,74,Leonel Pavan,PSDB,0,1
+3918,125,Serys Slhessarenko,PT,1,1
+3918,66,João Batista Motta,PSDB,0,1
+3918,10,Ana Júlia Carepa,PT,1,1
+3918,128,Sérgio Zambiasi,PTB,1,1
+3918,18,Arthur Virgílio,PSDB,0,1
+3918,121,Roseana Sarney,PMDB,1,0
+3918,118,Rodolpho Tourinho,PFL,0,1
+3918,127,Sérgio Cabral,PMDB,1,1
+3918,19,Augusto Botelho,PDT,0,1
+3918,21,Cristovam Buarque,PDT,0,1
+3918,38,Fátima Cleide,PT,1,1
+3918,39,Garibaldi Alves Filho,PMDB,1,1
+3918,92,Mão Santa,PSC,0,1
+3918,90,Mozarildo Cavalcanti,PTB,1,0
+3918,99,Papaléo Paes,PSDB,0,1
+3918,124,Sergio Guerra,PSDB,0,1
+3918,138,Wellington Salgado de Oliveira,PMDB,1,1
+3918,34,Flexa Ribeiro,PSDB,0,1
+3922,85,Marco Maciel,DEM,0,1
+3922,33,Fernando Bezerra,PTB,1,1
+3922,57,José Agripino,DEM,0,1
+3922,48,Heráclito Fortes,DEM,0,1
+3922,73,Leomar Quintanilha,PMDB,1,1
+3922,27,Edison Lobão,PMDB,1,1
+3922,112,Renan Calheiros,PMDB,1,0
+3922,120,Romeu Tuma,PTB,1,1
+3922,13,Antonio Carlos Magalhães,PFL,0,1
+3922,42,Gerson Camata,PMDB,1,1
+3922,107,Pedro Simon,PMDB,1,1
+3922,105,Paulo Paim,PT,1,1
+3922,52,Jefferson Peres,PDT,0,1
+3922,119,Romero Jucá,PMDB,1,1
+3922,30,Eduardo Suplicy,PT,1,1
+3922,54,Jonas Pinheiro,DEM,0,1
+3922,83,Maguito Vilela,PMDB,1,1
+3922,109,Reginaldo Duarte,PSDB,0,1
+3922,31,Efraim Morais,DEM,0,1
+3922,7,Aloizio Mercadante,PT,1,1
+3922,81,Lúcia Vânia,PSDB,0,1
+3922,131,Teotonio Vilela Filho,PSDB,0,1
+3922,35,Flávio Arns,PSDB,0,1
+3922,47,Heloísa Helena,PSOL,0,1
+3922,44,Gilberto Mestrinho,PMDB,1,1
+3922,78,Luiz Otavio,PMDB,1,1
+3922,55,Jorge Bornhausen,PFL,0,1
+3922,133,Tião Viana,PT,1,1
+3922,61,José Jorge,PFL,0,1
+3922,4,Alberto Silva,PMDB,1,1
+3922,8,Alvaro Dias,PSDB,0,1
+3922,87,Maria do Carmo Alves,PFL,0,1
+3922,29,Eduardo Siqueira Campos,PSDB,0,0
+3922,72,Juvêncio da Fonseca,PSDB,0,1
+3922,11,Antero Paes de Barros,PSDB,0,1
+3922,98,Osmar Dias,PDT,0,0
+3922,94,Ney Suassuna,PMDB,1,1
+3922,14,Antonio Carlos Valadares,PSB,1,1
+3922,82,Magno Malta,PR,0,1
+3922,6,Almeida Lima,PMDB,1,1
+3922,50,Ideli Salvatti,PT,1,1
+3922,126,Sibá Machado,PT,1,1
+3922,69,João Ribeiro,PFL,0,0
+3922,129,Tasso Jereissati,PSDB,0,0
+3922,100,Patrícia Saboya,PDT,0,0
+3922,62,José Maranhão,PMDB,1,1
+3922,134,Valdir Raupp,PMDB,1,0
+3922,41,Geraldo Mesquita Júnior,PMDB,1,1
+3922,2,Aelton Freitas,Sem partido,0,1
+3922,22,César Borges,PR,0,1
+3922,74,Leonel Pavan,PSDB,0,1
+3922,24,Delcídio do Amaral,PT,1,1
+3922,125,Serys Slhessarenko,PT,1,1
+3922,66,João Batista Motta,PSDB,0,1
+3922,10,Ana Júlia Carepa,PT,1,1
+3922,128,Sérgio Zambiasi,PTB,1,1
+3922,18,Arthur Virgílio,PSDB,0,1
+3922,121,Roseana Sarney,PMDB,1,0
+3922,118,Rodolpho Tourinho,PFL,0,-1
+3922,127,Sérgio Cabral,PMDB,1,1
+3922,19,Augusto Botelho,PDT,0,1
+3922,38,Fátima Cleide,PT,1,1
+3922,39,Garibaldi Alves Filho,PMDB,1,1
+3922,90,Mozarildo Cavalcanti,PTB,1,0
+3922,99,Papaléo Paes,PSDB,0,1
+3922,124,Sergio Guerra,PSDB,0,1
+3922,138,Wellington Salgado de Oliveira,PMDB,1,1
+3922,34,Flexa Ribeiro,PSDB,0,1
+3919,85,Marco Maciel,DEM,0,1
+3919,33,Fernando Bezerra,PTB,1,1
+3919,57,José Agripino,DEM,0,1
+3919,48,Heráclito Fortes,DEM,0,1
+3919,73,Leomar Quintanilha,PMDB,1,1
+3919,27,Edison Lobão,PMDB,1,1
+3919,120,Romeu Tuma,PTB,1,1
+3919,13,Antonio Carlos Magalhães,PFL,0,1
+3919,42,Gerson Camata,PMDB,1,-1
+3919,107,Pedro Simon,PMDB,1,1
+3919,105,Paulo Paim,PT,1,1
+3919,52,Jefferson Peres,PDT,0,1
+3919,119,Romero Jucá,PMDB,1,1
+3919,30,Eduardo Suplicy,PT,1,1
+3919,54,Jonas Pinheiro,DEM,0,1
+3919,83,Maguito Vilela,PMDB,1,1
+3919,109,Reginaldo Duarte,PSDB,0,1
+3919,31,Efraim Morais,DEM,0,1
+3919,7,Aloizio Mercadante,PT,1,1
+3919,81,Lúcia Vânia,PSDB,0,1
+3919,131,Teotonio Vilela Filho,PSDB,0,1
+3919,35,Flávio Arns,PSDB,0,1
+3919,47,Heloísa Helena,PSOL,0,1
+3919,44,Gilberto Mestrinho,PMDB,1,1
+3919,78,Luiz Otavio,PMDB,1,1
+3919,55,Jorge Bornhausen,PFL,0,1
+3919,65,João Alberto Souza,PMDB,1,1
+3919,133,Tião Viana,PT,1,1
+3919,61,José Jorge,PFL,0,1
+3919,4,Alberto Silva,PMDB,1,1
+3919,8,Alvaro Dias,PSDB,0,1
+3919,87,Maria do Carmo Alves,PFL,0,0
+3919,29,Eduardo Siqueira Campos,PSDB,0,0
+3919,72,Juvêncio da Fonseca,PSDB,0,1
+3919,11,Antero Paes de Barros,PSDB,0,1
+3919,98,Osmar Dias,PDT,0,0
+3919,94,Ney Suassuna,PMDB,1,1
+3919,14,Antonio Carlos Valadares,PSB,1,1
+3919,6,Almeida Lima,PMDB,1,1
+3919,50,Ideli Salvatti,PT,1,1
+3919,126,Sibá Machado,PT,1,1
+3919,69,João Ribeiro,PFL,0,0
+3919,104,Paulo Octávio,PFL,0,1
+3919,108,Ramez Tebet,PMDB,1,1
+3919,129,Tasso Jereissati,PSDB,0,0
+3919,100,Patrícia Saboya,PDT,0,0
+3919,25,Demóstenes Torres,DEM,0,1
+3919,62,José Maranhão,PMDB,1,1
+3919,134,Valdir Raupp,PMDB,1,0
+3919,41,Geraldo Mesquita Júnior,PMDB,1,1
+3919,2,Aelton Freitas,Sem partido,0,1
+3919,22,César Borges,PR,0,1
+3919,74,Leonel Pavan,PSDB,0,1
+3919,125,Serys Slhessarenko,PT,1,1
+3919,66,João Batista Motta,PSDB,0,1
+3919,10,Ana Júlia Carepa,PT,1,1
+3919,128,Sérgio Zambiasi,PTB,1,1
+3919,121,Roseana Sarney,PMDB,1,0
+3919,118,Rodolpho Tourinho,PFL,0,1
+3919,127,Sérgio Cabral,PMDB,1,1
+3919,19,Augusto Botelho,PDT,0,1
+3919,21,Cristovam Buarque,PDT,0,1
+3919,38,Fátima Cleide,PT,1,1
+3919,39,Garibaldi Alves Filho,PMDB,1,1
+3919,90,Mozarildo Cavalcanti,PTB,1,0
+3919,99,Papaléo Paes,PSDB,0,1
+3919,124,Sergio Guerra,PSDB,0,1
+3919,138,Wellington Salgado de Oliveira,PMDB,1,1
+3919,34,Flexa Ribeiro,PSDB,0,1
+3920,85,Marco Maciel,DEM,0,-1
+3920,33,Fernando Bezerra,PTB,1,1
+3920,57,José Agripino,DEM,0,-1
+3920,48,Heráclito Fortes,DEM,0,-1
+3920,73,Leomar Quintanilha,PMDB,1,1
+3920,27,Edison Lobão,PMDB,1,-1
+3920,120,Romeu Tuma,PTB,1,-1
+3920,13,Antonio Carlos Magalhães,PFL,0,-1
+3920,42,Gerson Camata,PMDB,1,1
+3920,107,Pedro Simon,PMDB,1,-1
+3920,52,Jefferson Peres,PDT,0,-1
+3920,119,Romero Jucá,PMDB,1,1
+3920,30,Eduardo Suplicy,PT,1,1
+3920,54,Jonas Pinheiro,DEM,0,-1
+3920,109,Reginaldo Duarte,PSDB,0,-1
+3920,31,Efraim Morais,DEM,0,-1
+3920,7,Aloizio Mercadante,PT,1,1
+3920,81,Lúcia Vânia,PSDB,0,-1
+3920,131,Teotonio Vilela Filho,PSDB,0,-1
+3920,35,Flávio Arns,PSDB,0,1
+3920,47,Heloísa Helena,PSOL,0,-1
+3920,44,Gilberto Mestrinho,PMDB,1,-1
+3920,78,Luiz Otavio,PMDB,1,-1
+3920,55,Jorge Bornhausen,PFL,0,-1
+3920,65,João Alberto Souza,PMDB,1,1
+3920,133,Tião Viana,PT,1,1
+3920,61,José Jorge,PFL,0,-1
+3920,4,Alberto Silva,PMDB,1,-1
+3920,8,Alvaro Dias,PSDB,0,-1
+3920,87,Maria do Carmo Alves,PFL,0,-1
+3920,29,Eduardo Siqueira Campos,PSDB,0,0
+3920,72,Juvêncio da Fonseca,PSDB,0,-1
+3920,11,Antero Paes de Barros,PSDB,0,-1
+3920,98,Osmar Dias,PDT,0,0
+3920,94,Ney Suassuna,PMDB,1,-1
+3920,14,Antonio Carlos Valadares,PSB,1,1
+3920,82,Magno Malta,PR,0,1
+3920,6,Almeida Lima,PMDB,1,-1
+3920,50,Ideli Salvatti,PT,1,1
+3920,126,Sibá Machado,PT,1,1
+3920,69,João Ribeiro,PFL,0,0
+3920,104,Paulo Octávio,PFL,0,-1
+3920,108,Ramez Tebet,PMDB,1,-1
+3920,129,Tasso Jereissati,PSDB,0,0
+3920,100,Patrícia Saboya,PDT,0,0
+3920,25,Demóstenes Torres,DEM,0,-1
+3920,62,José Maranhão,PMDB,1,1
+3920,134,Valdir Raupp,PMDB,1,0
+3920,41,Geraldo Mesquita Júnior,PMDB,1,0
+3920,84,Marcelo Crivella,PL,0,-1
+3920,2,Aelton Freitas,Sem partido,0,1
+3920,22,César Borges,PR,0,-1
+3920,74,Leonel Pavan,PSDB,0,-1
+3920,24,Delcídio do Amaral,PT,1,1
+3920,125,Serys Slhessarenko,PT,1,1
+3920,66,João Batista Motta,PSDB,0,-1
+3920,10,Ana Júlia Carepa,PT,1,1
+3920,128,Sérgio Zambiasi,PTB,1,1
+3920,121,Roseana Sarney,PMDB,1,0
+3920,118,Rodolpho Tourinho,PFL,0,-1
+3920,127,Sérgio Cabral,PMDB,1,-1
+3920,19,Augusto Botelho,PDT,0,-1
+3920,38,Fátima Cleide,PT,1,1
+3920,39,Garibaldi Alves Filho,PMDB,1,-1
+3920,92,Mão Santa,PSC,0,-1
+3920,90,Mozarildo Cavalcanti,PTB,1,0
+3920,99,Papaléo Paes,PSDB,0,-1
+3920,138,Wellington Salgado de Oliveira,PMDB,1,-1
+3920,34,Flexa Ribeiro,PSDB,0,-1
+3921,85,Marco Maciel,DEM,0,-1
+3921,33,Fernando Bezerra,PTB,1,1
+3921,57,José Agripino,DEM,0,-1
+3921,48,Heráclito Fortes,DEM,0,-1
+3921,73,Leomar Quintanilha,PMDB,1,1
+3921,27,Edison Lobão,PMDB,1,-1
+3921,112,Renan Calheiros,PMDB,1,0
+3921,120,Romeu Tuma,PTB,1,-1
+3921,13,Antonio Carlos Magalhães,PFL,0,-1
+3921,42,Gerson Camata,PMDB,1,1
+3921,107,Pedro Simon,PMDB,1,1
+3921,105,Paulo Paim,PT,1,1
+3921,52,Jefferson Peres,PDT,0,-1
+3921,119,Romero Jucá,PMDB,1,1
+3921,30,Eduardo Suplicy,PT,1,1
+3921,54,Jonas Pinheiro,DEM,0,-1
+3921,109,Reginaldo Duarte,PSDB,0,1
+3921,31,Efraim Morais,DEM,0,-1
+3921,81,Lúcia Vânia,PSDB,0,-1
+3921,131,Teotonio Vilela Filho,PSDB,0,-1
+3921,35,Flávio Arns,PSDB,0,1
+3921,44,Gilberto Mestrinho,PMDB,1,-1
+3921,78,Luiz Otavio,PMDB,1,-1
+3921,55,Jorge Bornhausen,PFL,0,-1
+3921,65,João Alberto Souza,PMDB,1,1
+3921,61,José Jorge,PFL,0,-1
+3921,4,Alberto Silva,PMDB,1,-1
+3921,8,Alvaro Dias,PSDB,0,-1
+3921,87,Maria do Carmo Alves,PFL,0,-1
+3921,29,Eduardo Siqueira Campos,PSDB,0,0
+3921,72,Juvêncio da Fonseca,PSDB,0,-1
+3921,11,Antero Paes de Barros,PSDB,0,-1
+3921,98,Osmar Dias,PDT,0,0
+3921,94,Ney Suassuna,PMDB,1,1
+3921,14,Antonio Carlos Valadares,PSB,1,1
+3921,82,Magno Malta,PR,0,1
+3921,6,Almeida Lima,PMDB,1,-1
+3921,50,Ideli Salvatti,PT,1,1
+3921,126,Sibá Machado,PT,1,1
+3921,69,João Ribeiro,PFL,0,0
+3921,104,Paulo Octávio,PFL,0,-1
+3921,108,Ramez Tebet,PMDB,1,-1
+3921,129,Tasso Jereissati,PSDB,0,0
+3921,100,Patrícia Saboya,PDT,0,0
+3921,62,José Maranhão,PMDB,1,1
+3921,134,Valdir Raupp,PMDB,1,0
+3921,41,Geraldo Mesquita Júnior,PMDB,1,0
+3921,2,Aelton Freitas,Sem partido,0,-1
+3921,22,César Borges,PR,0,-1
+3921,74,Leonel Pavan,PSDB,0,-1
+3921,24,Delcídio do Amaral,PT,1,1
+3921,125,Serys Slhessarenko,PT,1,1
+3921,66,João Batista Motta,PSDB,0,-1
+3921,10,Ana Júlia Carepa,PT,1,1
+3921,128,Sérgio Zambiasi,PTB,1,1
+3921,121,Roseana Sarney,PMDB,1,0
+3921,118,Rodolpho Tourinho,PFL,0,-1
+3921,127,Sérgio Cabral,PMDB,1,-1
+3921,19,Augusto Botelho,PDT,0,-1
+3921,38,Fátima Cleide,PT,1,1
+3921,39,Garibaldi Alves Filho,PMDB,1,1
+3921,92,Mão Santa,PSC,0,1
+3921,90,Mozarildo Cavalcanti,PTB,1,0
+3921,99,Papaléo Paes,PSDB,0,-1
+3921,138,Wellington Salgado de Oliveira,PMDB,1,-1
+3923,85,Marco Maciel,DEM,0,1
+3923,33,Fernando Bezerra,PTB,1,1
+3923,57,José Agripino,DEM,0,1
+3923,48,Heráclito Fortes,DEM,0,1
+3923,27,Edison Lobão,PMDB,1,1
+3923,112,Renan Calheiros,PMDB,1,0
+3923,120,Romeu Tuma,PTB,1,1
+3923,13,Antonio Carlos Magalhães,PFL,0,1
+3923,42,Gerson Camata,PMDB,1,1
+3923,107,Pedro Simon,PMDB,1,1
+3923,105,Paulo Paim,PT,1,1
+3923,52,Jefferson Peres,PDT,0,1
+3923,119,Romero Jucá,PMDB,1,1
+3923,30,Eduardo Suplicy,PT,1,1
+3923,54,Jonas Pinheiro,DEM,0,1
+3923,109,Reginaldo Duarte,PSDB,0,1
+3923,31,Efraim Morais,DEM,0,1
+3923,7,Aloizio Mercadante,PT,1,1
+3923,81,Lúcia Vânia,PSDB,0,1
+3923,131,Teotonio Vilela Filho,PSDB,0,1
+3923,46,Gilvam Borges,PMDB,1,1
+3923,35,Flávio Arns,PSDB,0,1
+3923,47,Heloísa Helena,PSOL,0,1
+3923,78,Luiz Otavio,PMDB,1,1
+3923,55,Jorge Bornhausen,PFL,0,1
+3923,133,Tião Viana,PT,1,1
+3923,61,José Jorge,PFL,0,1
+3923,4,Alberto Silva,PMDB,1,1
+3923,8,Alvaro Dias,PSDB,0,1
+3923,29,Eduardo Siqueira Campos,PSDB,0,0
+3923,72,Juvêncio da Fonseca,PSDB,0,1
+3923,98,Osmar Dias,PDT,0,0
+3923,94,Ney Suassuna,PMDB,1,1
+3923,14,Antonio Carlos Valadares,PSB,1,1
+3923,82,Magno Malta,PR,0,1
+3923,6,Almeida Lima,PMDB,1,1
+3923,50,Ideli Salvatti,PT,1,1
+3923,126,Sibá Machado,PT,1,1
+3923,69,João Ribeiro,PFL,0,0
+3923,104,Paulo Octávio,PFL,0,1
+3923,129,Tasso Jereissati,PSDB,0,0
+3923,100,Patrícia Saboya,PDT,0,0
+3923,62,José Maranhão,PMDB,1,1
+3923,134,Valdir Raupp,PMDB,1,0
+3923,41,Geraldo Mesquita Júnior,PMDB,1,1
+3923,84,Marcelo Crivella,PL,0,1
+3923,2,Aelton Freitas,Sem partido,0,1
+3923,22,César Borges,PR,0,1
+3923,74,Leonel Pavan,PSDB,0,1
+3923,24,Delcídio do Amaral,PT,1,1
+3923,125,Serys Slhessarenko,PT,1,1
+3923,66,João Batista Motta,PSDB,0,1
+3923,10,Ana Júlia Carepa,PT,1,1
+3923,128,Sérgio Zambiasi,PTB,1,1
+3923,18,Arthur Virgílio,PSDB,0,1
+3923,121,Roseana Sarney,PMDB,1,0
+3923,118,Rodolpho Tourinho,PFL,0,1
+3923,127,Sérgio Cabral,PMDB,1,1
+3923,19,Augusto Botelho,PDT,0,1
+3923,21,Cristovam Buarque,PDT,0,1
+3923,38,Fátima Cleide,PT,1,1
+3923,39,Garibaldi Alves Filho,PMDB,1,1
+3923,92,Mão Santa,PSC,0,1
+3923,90,Mozarildo Cavalcanti,PTB,1,0
+3923,124,Sergio Guerra,PSDB,0,1
+3923,138,Wellington Salgado de Oliveira,PMDB,1,-1
+3923,34,Flexa Ribeiro,PSDB,0,1
+3924,85,Marco Maciel,DEM,0,1
+3924,33,Fernando Bezerra,PTB,1,1
+3924,57,José Agripino,DEM,0,1
+3924,48,Heráclito Fortes,DEM,0,1
+3924,27,Edison Lobão,PMDB,1,1
+3924,112,Renan Calheiros,PMDB,1,0
+3924,120,Romeu Tuma,PTB,1,1
+3924,13,Antonio Carlos Magalhães,PFL,0,1
+3924,42,Gerson Camata,PMDB,1,1
+3924,107,Pedro Simon,PMDB,1,1
+3924,105,Paulo Paim,PT,1,1
+3924,52,Jefferson Peres,PDT,0,1
+3924,119,Romero Jucá,PMDB,1,1
+3924,30,Eduardo Suplicy,PT,1,1
+3924,54,Jonas Pinheiro,DEM,0,1
+3924,109,Reginaldo Duarte,PSDB,0,1
+3924,31,Efraim Morais,DEM,0,1
+3924,7,Aloizio Mercadante,PT,1,1
+3924,81,Lúcia Vânia,PSDB,0,1
+3924,131,Teotonio Vilela Filho,PSDB,0,1
+3924,35,Flávio Arns,PSDB,0,1
+3924,47,Heloísa Helena,PSOL,0,1
+3924,78,Luiz Otavio,PMDB,1,1
+3924,133,Tião Viana,PT,1,1
+3924,4,Alberto Silva,PMDB,1,1
+3924,8,Alvaro Dias,PSDB,0,1
+3924,29,Eduardo Siqueira Campos,PSDB,0,0
+3924,72,Juvêncio da Fonseca,PSDB,0,1
+3924,98,Osmar Dias,PDT,0,0
+3924,94,Ney Suassuna,PMDB,1,1
+3924,14,Antonio Carlos Valadares,PSB,1,1
+3924,82,Magno Malta,PR,0,1
+3924,6,Almeida Lima,PMDB,1,1
+3924,50,Ideli Salvatti,PT,1,1
+3924,126,Sibá Machado,PT,1,1
+3924,69,João Ribeiro,PFL,0,0
+3924,104,Paulo Octávio,PFL,0,1
+3924,129,Tasso Jereissati,PSDB,0,0
+3924,100,Patrícia Saboya,PDT,0,0
+3924,25,Demóstenes Torres,DEM,0,1
+3924,62,José Maranhão,PMDB,1,1
+3924,134,Valdir Raupp,PMDB,1,0
+3924,41,Geraldo Mesquita Júnior,PMDB,1,1
+3924,84,Marcelo Crivella,PL,0,1
+3924,2,Aelton Freitas,Sem partido,0,1
+3924,22,César Borges,PR,0,1
+3924,74,Leonel Pavan,PSDB,0,1
+3924,24,Delcídio do Amaral,PT,1,1
+3924,125,Serys Slhessarenko,PT,1,1
+3924,66,João Batista Motta,PSDB,0,1
+3924,10,Ana Júlia Carepa,PT,1,1
+3924,128,Sérgio Zambiasi,PTB,1,1
+3924,18,Arthur Virgílio,PSDB,0,1
+3924,121,Roseana Sarney,PMDB,1,0
+3924,118,Rodolpho Tourinho,PFL,0,1
+3924,127,Sérgio Cabral,PMDB,1,1
+3924,19,Augusto Botelho,PDT,0,1
+3924,21,Cristovam Buarque,PDT,0,1
+3924,38,Fátima Cleide,PT,1,1
+3924,39,Garibaldi Alves Filho,PMDB,1,1
+3924,92,Mão Santa,PSC,0,1
+3924,90,Mozarildo Cavalcanti,PTB,1,0
+3924,124,Sergio Guerra,PSDB,0,1
+3924,138,Wellington Salgado de Oliveira,PMDB,1,-1
+3924,34,Flexa Ribeiro,PSDB,0,1
+3925,85,Marco Maciel,DEM,0,1
+3925,33,Fernando Bezerra,PTB,1,1
+3925,48,Heráclito Fortes,DEM,0,1
+3925,27,Edison Lobão,PMDB,1,1
+3925,112,Renan Calheiros,PMDB,1,0
+3925,120,Romeu Tuma,PTB,1,1
+3925,13,Antonio Carlos Magalhães,PFL,0,1
+3925,42,Gerson Camata,PMDB,1,1
+3925,107,Pedro Simon,PMDB,1,1
+3925,105,Paulo Paim,PT,1,1
+3925,119,Romero Jucá,PMDB,1,1
+3925,54,Jonas Pinheiro,DEM,0,1
+3925,109,Reginaldo Duarte,PSDB,0,1
+3925,31,Efraim Morais,DEM,0,1
+3925,7,Aloizio Mercadante,PT,1,1
+3925,81,Lúcia Vânia,PSDB,0,1
+3925,131,Teotonio Vilela Filho,PSDB,0,1
+3925,46,Gilvam Borges,PMDB,1,1
+3925,35,Flávio Arns,PSDB,0,1
+3925,47,Heloísa Helena,PSOL,0,1
+3925,44,Gilberto Mestrinho,PMDB,1,1
+3925,78,Luiz Otavio,PMDB,1,1
+3925,133,Tião Viana,PT,1,1
+3925,4,Alberto Silva,PMDB,1,1
+3925,29,Eduardo Siqueira Campos,PSDB,0,0
+3925,98,Osmar Dias,PDT,0,0
+3925,94,Ney Suassuna,PMDB,1,1
+3925,14,Antonio Carlos Valadares,PSB,1,1
+3925,82,Magno Malta,PR,0,1
+3925,6,Almeida Lima,PMDB,1,1
+3925,50,Ideli Salvatti,PT,1,1
+3925,126,Sibá Machado,PT,1,1
+3925,69,João Ribeiro,PFL,0,0
+3925,104,Paulo Octávio,PFL,0,1
+3925,129,Tasso Jereissati,PSDB,0,0
+3925,100,Patrícia Saboya,PDT,0,0
+3925,25,Demóstenes Torres,DEM,0,1
+3925,62,José Maranhão,PMDB,1,1
+3925,134,Valdir Raupp,PMDB,1,0
+3925,41,Geraldo Mesquita Júnior,PMDB,1,-1
+3925,28,Eduardo Azeredo,PSDB,0,1
+3925,22,César Borges,PR,0,1
+3925,74,Leonel Pavan,PSDB,0,1
+3925,24,Delcídio do Amaral,PT,1,1
+3925,125,Serys Slhessarenko,PT,1,1
+3925,66,João Batista Motta,PSDB,0,1
+3925,10,Ana Júlia Carepa,PT,1,1
+3925,128,Sérgio Zambiasi,PTB,1,1
+3925,18,Arthur Virgílio,PSDB,0,1
+3925,121,Roseana Sarney,PMDB,1,0
+3925,118,Rodolpho Tourinho,PFL,0,1
+3925,127,Sérgio Cabral,PMDB,1,1
+3925,19,Augusto Botelho,PDT,0,1
+3925,21,Cristovam Buarque,PDT,0,1
+3925,38,Fátima Cleide,PT,1,1
+3925,39,Garibaldi Alves Filho,PMDB,1,1
+3925,92,Mão Santa,PSC,0,1
+3925,90,Mozarildo Cavalcanti,PTB,1,0
+3925,124,Sergio Guerra,PSDB,0,1
+3925,138,Wellington Salgado de Oliveira,PMDB,1,1
+3925,34,Flexa Ribeiro,PSDB,0,1
+3926,85,Marco Maciel,DEM,0,1
+3926,33,Fernando Bezerra,PTB,1,1
+3926,57,José Agripino,DEM,0,1
+3926,48,Heráclito Fortes,DEM,0,1
+3926,27,Edison Lobão,PMDB,1,1
+3926,112,Renan Calheiros,PMDB,1,0
+3926,120,Romeu Tuma,PTB,1,1
+3926,13,Antonio Carlos Magalhães,PFL,0,1
+3926,42,Gerson Camata,PMDB,1,1
+3926,107,Pedro Simon,PMDB,1,1
+3926,105,Paulo Paim,PT,1,1
+3926,119,Romero Jucá,PMDB,1,1
+3926,30,Eduardo Suplicy,PT,1,1
+3926,54,Jonas Pinheiro,DEM,0,1
+3926,109,Reginaldo Duarte,PSDB,0,1
+3926,31,Efraim Morais,DEM,0,1
+3926,7,Aloizio Mercadante,PT,1,1
+3926,81,Lúcia Vânia,PSDB,0,1
+3926,131,Teotonio Vilela Filho,PSDB,0,1
+3926,46,Gilvam Borges,PMDB,1,1
+3926,35,Flávio Arns,PSDB,0,1
+3926,47,Heloísa Helena,PSOL,0,1
+3926,78,Luiz Otavio,PMDB,1,1
+3926,133,Tião Viana,PT,1,1
+3926,4,Alberto Silva,PMDB,1,1
+3926,29,Eduardo Siqueira Campos,PSDB,0,0
+3926,72,Juvêncio da Fonseca,PSDB,0,0
+3926,98,Osmar Dias,PDT,0,0
+3926,94,Ney Suassuna,PMDB,1,1
+3926,14,Antonio Carlos Valadares,PSB,1,1
+3926,82,Magno Malta,PR,0,1
+3926,6,Almeida Lima,PMDB,1,1
+3926,50,Ideli Salvatti,PT,1,1
+3926,69,João Ribeiro,PFL,0,0
+3926,104,Paulo Octávio,PFL,0,1
+3926,129,Tasso Jereissati,PSDB,0,0
+3926,100,Patrícia Saboya,PDT,0,0
+3926,25,Demóstenes Torres,DEM,0,1
+3926,62,José Maranhão,PMDB,1,1
+3926,134,Valdir Raupp,PMDB,1,0
+3926,41,Geraldo Mesquita Júnior,PMDB,1,-1
+3926,22,César Borges,PR,0,1
+3926,74,Leonel Pavan,PSDB,0,1
+3926,24,Delcídio do Amaral,PT,1,1
+3926,125,Serys Slhessarenko,PT,1,1
+3926,66,João Batista Motta,PSDB,0,1
+3926,10,Ana Júlia Carepa,PT,1,1
+3926,128,Sérgio Zambiasi,PTB,1,1
+3926,18,Arthur Virgílio,PSDB,0,1
+3926,121,Roseana Sarney,PMDB,1,0
+3926,118,Rodolpho Tourinho,PFL,0,1
+3926,127,Sérgio Cabral,PMDB,1,1
+3926,19,Augusto Botelho,PDT,0,1
+3926,21,Cristovam Buarque,PDT,0,1
+3926,38,Fátima Cleide,PT,1,1
+3926,39,Garibaldi Alves Filho,PMDB,1,1
+3926,92,Mão Santa,PSC,0,1
+3926,90,Mozarildo Cavalcanti,PTB,1,0
+3926,124,Sergio Guerra,PSDB,0,1
+3926,138,Wellington Salgado de Oliveira,PMDB,1,1
+3926,34,Flexa Ribeiro,PSDB,0,1
+3930,33,Fernando Bezerra,PTB,1,-1
+3930,57,José Agripino,DEM,0,1
+3930,48,Heráclito Fortes,DEM,0,1
+3930,73,Leomar Quintanilha,PMDB,1,-1
+3930,112,Renan Calheiros,PMDB,1,0
+3930,120,Romeu Tuma,PTB,1,-1
+3930,107,Pedro Simon,PMDB,1,-1
+3930,105,Paulo Paim,PT,1,-1
+3930,119,Romero Jucá,PMDB,1,-1
+3930,30,Eduardo Suplicy,PT,1,-1
+3930,54,Jonas Pinheiro,DEM,0,1
+3930,83,Maguito Vilela,PMDB,1,-1
+3930,31,Efraim Morais,DEM,0,1
+3930,7,Aloizio Mercadante,PT,1,-1
+3930,81,Lúcia Vânia,PSDB,0,1
+3930,131,Teotonio Vilela Filho,PSDB,0,1
+3930,35,Flávio Arns,PSDB,0,1
+3930,47,Heloísa Helena,PSOL,0,-1
+3930,44,Gilberto Mestrinho,PMDB,1,-1
+3930,55,Jorge Bornhausen,PFL,0,1
+3930,133,Tião Viana,PT,1,-1
+3930,61,José Jorge,PFL,0,1
+3930,4,Alberto Silva,PMDB,1,-1
+3930,8,Alvaro Dias,PSDB,0,1
+3930,29,Eduardo Siqueira Campos,PSDB,0,0
+3930,11,Antero Paes de Barros,PSDB,0,1
+3930,98,Osmar Dias,PDT,0,0
+3930,94,Ney Suassuna,PMDB,1,-1
+3930,14,Antonio Carlos Valadares,PSB,1,-1
+3930,82,Magno Malta,PR,0,0
+3930,50,Ideli Salvatti,PT,1,-1
+3930,126,Sibá Machado,PT,1,-1
+3930,69,João Ribeiro,PFL,0,-1
+3930,100,Patrícia Saboya,PDT,0,0
+3930,62,José Maranhão,PMDB,1,0
+3930,41,Geraldo Mesquita Júnior,PMDB,1,-1
+3930,28,Eduardo Azeredo,PSDB,0,1
+3930,84,Marcelo Crivella,PL,0,-1
+3930,2,Aelton Freitas,Sem partido,0,1
+3930,22,César Borges,PR,0,-1
+3930,74,Leonel Pavan,PSDB,0,1
+3930,24,Delcídio do Amaral,PT,1,-1
+3930,125,Serys Slhessarenko,PT,1,-1
+3930,66,João Batista Motta,PSDB,0,1
+3930,10,Ana Júlia Carepa,PT,1,-1
+3930,128,Sérgio Zambiasi,PTB,1,-1
+3930,18,Arthur Virgílio,PSDB,0,1
+3930,118,Rodolpho Tourinho,PFL,0,-1
+3930,19,Augusto Botelho,PDT,0,1
+3930,21,Cristovam Buarque,PDT,0,-1
+3930,38,Fátima Cleide,PT,1,0
+3930,39,Garibaldi Alves Filho,PMDB,1,-1
+3930,92,Mão Santa,PSC,0,1
+3930,99,Papaléo Paes,PSDB,0,1
+3930,124,Sergio Guerra,PSDB,0,1
+3930,138,Wellington Salgado de Oliveira,PMDB,1,1
+3930,34,Flexa Ribeiro,PSDB,0,1
+3967,64,José Sarney,PMDB,1,1
+3967,85,Marco Maciel,DEM,0,1
+3967,33,Fernando Bezerra,PTB,1,1
+3967,57,José Agripino,DEM,0,1
+3967,48,Heráclito Fortes,DEM,0,1
+3967,73,Leomar Quintanilha,PMDB,1,1
+3967,27,Edison Lobão,PMDB,1,1
+3967,112,Renan Calheiros,PMDB,1,1
+3967,120,Romeu Tuma,PTB,1,1
+3967,13,Antonio Carlos Magalhães,PFL,0,1
+3967,107,Pedro Simon,PMDB,1,-1
+3967,105,Paulo Paim,PT,1,0
+3967,52,Jefferson Peres,PDT,0,0
+3967,119,Romero Jucá,PMDB,1,1
+3967,30,Eduardo Suplicy,PT,1,1
+3967,54,Jonas Pinheiro,DEM,0,-1
+3967,31,Efraim Morais,DEM,0,-1
+3967,7,Aloizio Mercadante,PT,1,1
+3967,81,Lúcia Vânia,PSDB,0,1
+3967,46,Gilvam Borges,PMDB,1,1
+3967,35,Flávio Arns,PSDB,0,1
+3967,47,Heloísa Helena,PSOL,0,-1
+3967,44,Gilberto Mestrinho,PMDB,1,1
+3967,78,Luiz Otavio,PMDB,1,1
+3967,55,Jorge Bornhausen,PFL,0,1
+3967,133,Tião Viana,PT,1,1
+3967,61,José Jorge,PFL,0,1
+3967,4,Alberto Silva,PMDB,1,1
+3967,8,Alvaro Dias,PSDB,0,-1
+3967,79,Luiz Pontes,PSDB,0,1
+3967,87,Maria do Carmo Alves,PFL,0,0
+3967,9,Amir Lando,PMDB,1,1
+3967,116,Roberto Saturnino,PT,1,1
+3967,11,Antero Paes de Barros,PSDB,0,-1
+3967,98,Osmar Dias,PDT,0,0
+3967,94,Ney Suassuna,PMDB,1,1
+3967,14,Antonio Carlos Valadares,PSB,1,1
+3967,82,Magno Malta,PR,0,1
+3967,6,Almeida Lima,PMDB,1,-1
+3967,50,Ideli Salvatti,PT,1,1
+3967,126,Sibá Machado,PT,1,1
+3967,70,João Tenório,PSDB,0,-1
+3967,69,João Ribeiro,PFL,0,1
+3967,108,Ramez Tebet,PMDB,1,0
+3967,129,Tasso Jereissati,PSDB,0,1
+3967,100,Patrícia Saboya,PDT,0,1
+3967,134,Valdir Raupp,PMDB,1,1
+3967,41,Geraldo Mesquita Júnior,PMDB,1,-1
+3967,28,Eduardo Azeredo,PSDB,0,1
+3967,22,César Borges,PR,0,-1
+3967,74,Leonel Pavan,PSDB,0,-1
+3967,10,Ana Júlia Carepa,PT,1,0
+3967,128,Sérgio Zambiasi,PTB,1,1
+3967,18,Arthur Virgílio,PSDB,0,1
+3967,118,Rodolpho Tourinho,PFL,0,1
+3967,19,Augusto Botelho,PDT,0,0
+3967,21,Cristovam Buarque,PDT,0,-1
+3967,38,Fátima Cleide,PT,1,1
+3967,92,Mão Santa,PSC,0,-1
+3967,90,Mozarildo Cavalcanti,PTB,1,0
+3967,124,Sergio Guerra,PSDB,0,-1
+3967,86,Marcos Guerra,PSDB,0,1
+3967,34,Flexa Ribeiro,PSDB,0,1
+3967,15,Antonio João,PTB,1,-1
+3976,64,José Sarney,PMDB,1,1
+3976,85,Marco Maciel,DEM,0,1
+3976,33,Fernando Bezerra,PTB,1,0
+3976,57,José Agripino,DEM,0,1
+3976,48,Heráclito Fortes,DEM,0,1
+3976,73,Leomar Quintanilha,PMDB,1,1
+3976,112,Renan Calheiros,PMDB,1,0
+3976,120,Romeu Tuma,PTB,1,1
+3976,13,Antonio Carlos Magalhães,PFL,0,1
+3976,107,Pedro Simon,PMDB,1,1
+3976,105,Paulo Paim,PT,1,1
+3976,119,Romero Jucá,PMDB,1,1
+3976,30,Eduardo Suplicy,PT,1,1
+3976,54,Jonas Pinheiro,DEM,0,1
+3976,31,Efraim Morais,DEM,0,1
+3976,7,Aloizio Mercadante,PT,1,1
+3976,35,Flávio Arns,PSDB,0,1
+3976,47,Heloísa Helena,PSOL,0,1
+3976,133,Tião Viana,PT,1,1
+3976,61,José Jorge,PFL,0,1
+3976,4,Alberto Silva,PMDB,1,0
+3976,79,Luiz Pontes,PSDB,0,1
+3976,29,Eduardo Siqueira Campos,PSDB,0,1
+3976,72,Juvêncio da Fonseca,PSDB,0,1
+3976,11,Antero Paes de Barros,PSDB,0,1
+3976,98,Osmar Dias,PDT,0,0
+3976,94,Ney Suassuna,PMDB,1,1
+3976,14,Antonio Carlos Valadares,PSB,1,1
+3976,82,Magno Malta,PR,0,0
+3976,6,Almeida Lima,PMDB,1,1
+3976,50,Ideli Salvatti,PT,1,1
+3976,126,Sibá Machado,PT,1,1
+3976,70,João Tenório,PSDB,0,0
+3976,69,João Ribeiro,PFL,0,0
+3976,104,Paulo Octávio,PFL,0,0
+3976,108,Ramez Tebet,PMDB,1,1
+3976,129,Tasso Jereissati,PSDB,0,1
+3976,100,Patrícia Saboya,PDT,0,1
+3976,25,Demóstenes Torres,DEM,0,1
+3976,62,José Maranhão,PMDB,1,1
+3976,134,Valdir Raupp,PMDB,1,1
+3976,41,Geraldo Mesquita Júnior,PMDB,1,0
+3976,28,Eduardo Azeredo,PSDB,0,1
+3976,84,Marcelo Crivella,PL,0,1
+3976,22,César Borges,PR,0,1
+3976,125,Serys Slhessarenko,PT,1,1
+3976,66,João Batista Motta,PSDB,0,1
+3976,10,Ana Júlia Carepa,PT,1,1
+3976,128,Sérgio Zambiasi,PTB,1,1
+3976,18,Arthur Virgílio,PSDB,0,1
+3976,121,Roseana Sarney,PMDB,1,0
+3976,118,Rodolpho Tourinho,PFL,0,1
+3976,140,Íris de Araújo,PMDB,1,1
+3976,19,Augusto Botelho,PDT,0,0
+3976,21,Cristovam Buarque,PDT,0,1
+3976,38,Fátima Cleide,PT,1,1
+3976,92,Mão Santa,PSC,0,0
+3976,90,Mozarildo Cavalcanti,PTB,1,0
+3976,99,Papaléo Paes,PSDB,0,1
+3976,86,Marcos Guerra,PSDB,0,1
+3976,138,Wellington Salgado de Oliveira,PMDB,1,1
+3976,34,Flexa Ribeiro,PSDB,0,1
+3976,15,Antonio João,PTB,1,1
+3977,64,José Sarney,PMDB,1,1
+3977,85,Marco Maciel,DEM,0,1
+3977,33,Fernando Bezerra,PTB,1,0
+3977,57,José Agripino,DEM,0,1
+3977,48,Heráclito Fortes,DEM,0,1
+3977,73,Leomar Quintanilha,PMDB,1,1
+3977,27,Edison Lobão,PMDB,1,1
+3977,112,Renan Calheiros,PMDB,1,0
+3977,120,Romeu Tuma,PTB,1,1
+3977,13,Antonio Carlos Magalhães,PFL,0,1
+3977,107,Pedro Simon,PMDB,1,1
+3977,105,Paulo Paim,PT,1,1
+3977,119,Romero Jucá,PMDB,1,1
+3977,30,Eduardo Suplicy,PT,1,1
+3977,54,Jonas Pinheiro,DEM,0,1
+3977,31,Efraim Morais,DEM,0,1
+3977,7,Aloizio Mercadante,PT,1,1
+3977,35,Flávio Arns,PSDB,0,1
+3977,47,Heloísa Helena,PSOL,0,1
+3977,44,Gilberto Mestrinho,PMDB,1,1
+3977,78,Luiz Otavio,PMDB,1,1
+3977,55,Jorge Bornhausen,PFL,0,1
+3977,133,Tião Viana,PT,1,1
+3977,61,José Jorge,PFL,0,1
+3977,4,Alberto Silva,PMDB,1,0
+3977,79,Luiz Pontes,PSDB,0,1
+3977,72,Juvêncio da Fonseca,PSDB,0,1
+3977,11,Antero Paes de Barros,PSDB,0,1
+3977,98,Osmar Dias,PDT,0,0
+3977,94,Ney Suassuna,PMDB,1,1
+3977,14,Antonio Carlos Valadares,PSB,1,1
+3977,82,Magno Malta,PR,0,0
+3977,6,Almeida Lima,PMDB,1,1
+3977,50,Ideli Salvatti,PT,1,1
+3977,126,Sibá Machado,PT,1,1
+3977,70,João Tenório,PSDB,0,0
+3977,69,João Ribeiro,PFL,0,1
+3977,104,Paulo Octávio,PFL,0,0
+3977,108,Ramez Tebet,PMDB,1,1
+3977,129,Tasso Jereissati,PSDB,0,1
+3977,100,Patrícia Saboya,PDT,0,1
+3977,25,Demóstenes Torres,DEM,0,1
+3977,62,José Maranhão,PMDB,1,1
+3977,134,Valdir Raupp,PMDB,1,1
+3977,41,Geraldo Mesquita Júnior,PMDB,1,0
+3977,28,Eduardo Azeredo,PSDB,0,1
+3977,84,Marcelo Crivella,PL,0,1
+3977,22,César Borges,PR,0,1
+3977,74,Leonel Pavan,PSDB,0,1
+3977,125,Serys Slhessarenko,PT,1,1
+3977,66,João Batista Motta,PSDB,0,1
+3977,10,Ana Júlia Carepa,PT,1,1
+3977,128,Sérgio Zambiasi,PTB,1,1
+3977,18,Arthur Virgílio,PSDB,0,1
+3977,121,Roseana Sarney,PMDB,1,0
+3977,118,Rodolpho Tourinho,PFL,0,1
+3977,140,Íris de Araújo,PMDB,1,1
+3977,19,Augusto Botelho,PDT,0,0
+3977,21,Cristovam Buarque,PDT,0,1
+3977,38,Fátima Cleide,PT,1,1
+3977,39,Garibaldi Alves Filho,PMDB,1,1
+3977,92,Mão Santa,PSC,0,0
+3977,90,Mozarildo Cavalcanti,PTB,1,0
+3977,99,Papaléo Paes,PSDB,0,1
+3977,124,Sergio Guerra,PSDB,0,1
+3977,86,Marcos Guerra,PSDB,0,1
+3977,138,Wellington Salgado de Oliveira,PMDB,1,1
+3977,34,Flexa Ribeiro,PSDB,0,1
+3977,15,Antonio João,PTB,1,1
+3978,64,José Sarney,PMDB,1,-1
+3978,85,Marco Maciel,DEM,0,-1
+3978,33,Fernando Bezerra,PTB,1,0
+3978,57,José Agripino,DEM,0,1
+3978,48,Heráclito Fortes,DEM,0,-1
+3978,112,Renan Calheiros,PMDB,1,0
+3978,120,Romeu Tuma,PTB,1,-1
+3978,13,Antonio Carlos Magalhães,PFL,0,-1
+3978,107,Pedro Simon,PMDB,1,-1
+3978,105,Paulo Paim,PT,1,-1
+3978,119,Romero Jucá,PMDB,1,-1
+3978,30,Eduardo Suplicy,PT,1,-1
+3978,54,Jonas Pinheiro,DEM,0,-1
+3978,31,Efraim Morais,DEM,0,-1
+3978,7,Aloizio Mercadante,PT,1,-1
+3978,35,Flávio Arns,PSDB,0,-1
+3978,47,Heloísa Helena,PSOL,0,-1
+3978,133,Tião Viana,PT,1,-1
+3978,61,José Jorge,PFL,0,-1
+3978,4,Alberto Silva,PMDB,1,0
+3978,79,Luiz Pontes,PSDB,0,-1
+3978,29,Eduardo Siqueira Campos,PSDB,0,-1
+3978,72,Juvêncio da Fonseca,PSDB,0,-1
+3978,11,Antero Paes de Barros,PSDB,0,-1
+3978,98,Osmar Dias,PDT,0,0
+3978,94,Ney Suassuna,PMDB,1,-1
+3978,14,Antonio Carlos Valadares,PSB,1,-1
+3978,82,Magno Malta,PR,0,0
+3978,6,Almeida Lima,PMDB,1,-1
+3978,50,Ideli Salvatti,PT,1,-1
+3978,126,Sibá Machado,PT,1,-1
+3978,70,João Tenório,PSDB,0,0
+3978,69,João Ribeiro,PFL,0,-1
+3978,104,Paulo Octávio,PFL,0,0
+3978,108,Ramez Tebet,PMDB,1,-1
+3978,129,Tasso Jereissati,PSDB,0,-1
+3978,100,Patrícia Saboya,PDT,0,-1
+3978,25,Demóstenes Torres,DEM,0,-1
+3978,62,José Maranhão,PMDB,1,-1
+3978,134,Valdir Raupp,PMDB,1,-1
+3978,41,Geraldo Mesquita Júnior,PMDB,1,0
+3978,28,Eduardo Azeredo,PSDB,0,-1
+3978,84,Marcelo Crivella,PL,0,1
+3978,22,César Borges,PR,0,-1
+3978,74,Leonel Pavan,PSDB,0,-1
+3978,125,Serys Slhessarenko,PT,1,-1
+3978,66,João Batista Motta,PSDB,0,-1
+3978,10,Ana Júlia Carepa,PT,1,-1
+3978,128,Sérgio Zambiasi,PTB,1,-1
+3978,18,Arthur Virgílio,PSDB,0,-1
+3978,121,Roseana Sarney,PMDB,1,0
+3978,118,Rodolpho Tourinho,PFL,0,-1
+3978,140,Íris de Araújo,PMDB,1,-1
+3978,19,Augusto Botelho,PDT,0,0
+3978,21,Cristovam Buarque,PDT,0,1
+3978,38,Fátima Cleide,PT,1,-1
+3978,92,Mão Santa,PSC,0,0
+3978,90,Mozarildo Cavalcanti,PTB,1,0
+3978,99,Papaléo Paes,PSDB,0,-1
+3978,124,Sergio Guerra,PSDB,0,-1
+3978,86,Marcos Guerra,PSDB,0,-1
+3978,138,Wellington Salgado de Oliveira,PMDB,1,-1
+3978,34,Flexa Ribeiro,PSDB,0,-1
+3978,15,Antonio João,PTB,1,-1
+3979,64,José Sarney,PMDB,1,1
+3979,85,Marco Maciel,DEM,0,1
+3979,33,Fernando Bezerra,PTB,1,1
+3979,57,José Agripino,DEM,0,1
+3979,48,Heráclito Fortes,DEM,0,1
+3979,27,Edison Lobão,PMDB,1,1
+3979,112,Renan Calheiros,PMDB,1,0
+3979,120,Romeu Tuma,PTB,1,1
+3979,13,Antonio Carlos Magalhães,PFL,0,1
+3979,107,Pedro Simon,PMDB,1,1
+3979,105,Paulo Paim,PT,1,1
+3979,119,Romero Jucá,PMDB,1,1
+3979,30,Eduardo Suplicy,PT,1,1
+3979,54,Jonas Pinheiro,DEM,0,1
+3979,31,Efraim Morais,DEM,0,1
+3979,7,Aloizio Mercadante,PT,1,0
+3979,81,Lúcia Vânia,PSDB,0,1
+3979,44,Gilberto Mestrinho,PMDB,1,1
+3979,78,Luiz Otavio,PMDB,1,1
+3979,55,Jorge Bornhausen,PFL,0,1
+3979,65,João Alberto Souza,PMDB,1,1
+3979,133,Tião Viana,PT,1,1
+3979,61,José Jorge,PFL,0,1
+3979,4,Alberto Silva,PMDB,1,1
+3979,8,Alvaro Dias,PSDB,0,1
+3979,79,Luiz Pontes,PSDB,0,1
+3979,87,Maria do Carmo Alves,PFL,0,1
+3979,29,Eduardo Siqueira Campos,PSDB,0,1
+3979,9,Amir Lando,PMDB,1,0
+3979,116,Roberto Saturnino,PT,1,1
+3979,72,Juvêncio da Fonseca,PSDB,0,1
+3979,98,Osmar Dias,PDT,0,1
+3979,94,Ney Suassuna,PMDB,1,1
+3979,14,Antonio Carlos Valadares,PSB,1,1
+3979,82,Magno Malta,PR,0,0
+3979,6,Almeida Lima,PMDB,1,1
+3979,50,Ideli Salvatti,PT,1,1
+3979,70,João Tenório,PSDB,0,1
+3979,104,Paulo Octávio,PFL,0,1
+3979,108,Ramez Tebet,PMDB,1,1
+3979,129,Tasso Jereissati,PSDB,0,0
+3979,100,Patrícia Saboya,PDT,0,0
+3979,134,Valdir Raupp,PMDB,1,1
+3979,41,Geraldo Mesquita Júnior,PMDB,1,1
+3979,28,Eduardo Azeredo,PSDB,0,1
+3979,84,Marcelo Crivella,PL,0,0
+3979,2,Aelton Freitas,Sem partido,0,1
+3979,22,César Borges,PR,0,1
+3979,74,Leonel Pavan,PSDB,0,1
+3979,125,Serys Slhessarenko,PT,1,1
+3979,66,João Batista Motta,PSDB,0,1
+3979,10,Ana Júlia Carepa,PT,1,-1
+3979,128,Sérgio Zambiasi,PTB,1,1
+3979,18,Arthur Virgílio,PSDB,0,1
+3979,121,Roseana Sarney,PMDB,1,1
+3979,118,Rodolpho Tourinho,PFL,0,1
+3979,127,Sérgio Cabral,PMDB,1,0
+3979,140,Íris de Araújo,PMDB,1,1
+3979,19,Augusto Botelho,PDT,0,0
+3979,38,Fátima Cleide,PT,1,1
+3979,39,Garibaldi Alves Filho,PMDB,1,1
+3979,92,Mão Santa,PSC,0,0
+3979,90,Mozarildo Cavalcanti,PTB,1,0
+3979,99,Papaléo Paes,PSDB,0,0
+3979,124,Sergio Guerra,PSDB,0,1
+3979,86,Marcos Guerra,PSDB,0,1
+3979,138,Wellington Salgado de Oliveira,PMDB,1,1
+3979,34,Flexa Ribeiro,PSDB,0,1
+3979,15,Antonio João,PTB,1,1
+3980,64,José Sarney,PMDB,1,1
+3980,85,Marco Maciel,DEM,0,1
+3980,33,Fernando Bezerra,PTB,1,1
+3980,57,José Agripino,DEM,0,1
+3980,48,Heráclito Fortes,DEM,0,1
+3980,27,Edison Lobão,PMDB,1,1
+3980,112,Renan Calheiros,PMDB,1,0
+3980,120,Romeu Tuma,PTB,1,1
+3980,13,Antonio Carlos Magalhães,PFL,0,1
+3980,107,Pedro Simon,PMDB,1,1
+3980,105,Paulo Paim,PT,1,1
+3980,119,Romero Jucá,PMDB,1,1
+3980,30,Eduardo Suplicy,PT,1,1
+3980,54,Jonas Pinheiro,DEM,0,1
+3980,31,Efraim Morais,DEM,0,1
+3980,7,Aloizio Mercadante,PT,1,0
+3980,35,Flávio Arns,PSDB,0,1
+3980,44,Gilberto Mestrinho,PMDB,1,1
+3980,78,Luiz Otavio,PMDB,1,1
+3980,55,Jorge Bornhausen,PFL,0,1
+3980,65,João Alberto Souza,PMDB,1,1
+3980,133,Tião Viana,PT,1,1
+3980,61,José Jorge,PFL,0,1
+3980,4,Alberto Silva,PMDB,1,1
+3980,8,Alvaro Dias,PSDB,0,1
+3980,79,Luiz Pontes,PSDB,0,1
+3980,29,Eduardo Siqueira Campos,PSDB,0,1
+3980,9,Amir Lando,PMDB,1,0
+3980,116,Roberto Saturnino,PT,1,1
+3980,72,Juvêncio da Fonseca,PSDB,0,1
+3980,94,Ney Suassuna,PMDB,1,1
+3980,14,Antonio Carlos Valadares,PSB,1,1
+3980,82,Magno Malta,PR,0,0
+3980,6,Almeida Lima,PMDB,1,1
+3980,50,Ideli Salvatti,PT,1,1
+3980,70,João Tenório,PSDB,0,1
+3980,104,Paulo Octávio,PFL,0,1
+3980,108,Ramez Tebet,PMDB,1,1
+3980,129,Tasso Jereissati,PSDB,0,0
+3980,100,Patrícia Saboya,PDT,0,0
+3980,134,Valdir Raupp,PMDB,1,1
+3980,41,Geraldo Mesquita Júnior,PMDB,1,1
+3980,28,Eduardo Azeredo,PSDB,0,1
+3980,84,Marcelo Crivella,PL,0,0
+3980,2,Aelton Freitas,Sem partido,0,1
+3980,22,César Borges,PR,0,1
+3980,74,Leonel Pavan,PSDB,0,1
+3980,125,Serys Slhessarenko,PT,1,1
+3980,66,João Batista Motta,PSDB,0,1
+3980,10,Ana Júlia Carepa,PT,1,1
+3980,128,Sérgio Zambiasi,PTB,1,1
+3980,18,Arthur Virgílio,PSDB,0,1
+3980,121,Roseana Sarney,PMDB,1,1
+3980,118,Rodolpho Tourinho,PFL,0,1
+3980,127,Sérgio Cabral,PMDB,1,0
+3980,140,Íris de Araújo,PMDB,1,1
+3980,19,Augusto Botelho,PDT,0,0
+3980,38,Fátima Cleide,PT,1,1
+3980,39,Garibaldi Alves Filho,PMDB,1,1
+3980,92,Mão Santa,PSC,0,0
+3980,90,Mozarildo Cavalcanti,PTB,1,0
+3980,99,Papaléo Paes,PSDB,0,0
+3980,86,Marcos Guerra,PSDB,0,1
+3980,138,Wellington Salgado de Oliveira,PMDB,1,1
+3980,34,Flexa Ribeiro,PSDB,0,1
+3980,15,Antonio João,PTB,1,1
+3981,64,José Sarney,PMDB,1,1
+3981,85,Marco Maciel,DEM,0,1
+3981,33,Fernando Bezerra,PTB,1,1
+3981,57,José Agripino,DEM,0,1
+3981,48,Heráclito Fortes,DEM,0,1
+3981,27,Edison Lobão,PMDB,1,1
+3981,112,Renan Calheiros,PMDB,1,0
+3981,120,Romeu Tuma,PTB,1,1
+3981,13,Antonio Carlos Magalhães,PFL,0,1
+3981,107,Pedro Simon,PMDB,1,1
+3981,105,Paulo Paim,PT,1,1
+3981,119,Romero Jucá,PMDB,1,1
+3981,30,Eduardo Suplicy,PT,1,1
+3981,54,Jonas Pinheiro,DEM,0,1
+3981,31,Efraim Morais,DEM,0,1
+3981,7,Aloizio Mercadante,PT,1,0
+3981,35,Flávio Arns,PSDB,0,1
+3981,44,Gilberto Mestrinho,PMDB,1,-1
+3981,78,Luiz Otavio,PMDB,1,1
+3981,65,João Alberto Souza,PMDB,1,1
+3981,133,Tião Viana,PT,1,1
+3981,61,José Jorge,PFL,0,1
+3981,4,Alberto Silva,PMDB,1,1
+3981,8,Alvaro Dias,PSDB,0,1
+3981,79,Luiz Pontes,PSDB,0,1
+3981,29,Eduardo Siqueira Campos,PSDB,0,1
+3981,9,Amir Lando,PMDB,1,0
+3981,116,Roberto Saturnino,PT,1,1
+3981,72,Juvêncio da Fonseca,PSDB,0,1
+3981,94,Ney Suassuna,PMDB,1,1
+3981,14,Antonio Carlos Valadares,PSB,1,1
+3981,82,Magno Malta,PR,0,0
+3981,6,Almeida Lima,PMDB,1,1
+3981,50,Ideli Salvatti,PT,1,1
+3981,70,João Tenório,PSDB,0,1
+3981,104,Paulo Octávio,PFL,0,1
+3981,108,Ramez Tebet,PMDB,1,1
+3981,129,Tasso Jereissati,PSDB,0,0
+3981,100,Patrícia Saboya,PDT,0,0
+3981,134,Valdir Raupp,PMDB,1,1
+3981,41,Geraldo Mesquita Júnior,PMDB,1,1
+3981,28,Eduardo Azeredo,PSDB,0,1
+3981,84,Marcelo Crivella,PL,0,0
+3981,22,César Borges,PR,0,1
+3981,74,Leonel Pavan,PSDB,0,1
+3981,125,Serys Slhessarenko,PT,1,1
+3981,66,João Batista Motta,PSDB,0,1
+3981,10,Ana Júlia Carepa,PT,1,1
+3981,128,Sérgio Zambiasi,PTB,1,1
+3981,18,Arthur Virgílio,PSDB,0,1
+3981,118,Rodolpho Tourinho,PFL,0,1
+3981,127,Sérgio Cabral,PMDB,1,0
+3981,140,Íris de Araújo,PMDB,1,1
+3981,19,Augusto Botelho,PDT,0,0
+3981,21,Cristovam Buarque,PDT,0,1
+3981,38,Fátima Cleide,PT,1,1
+3981,39,Garibaldi Alves Filho,PMDB,1,1
+3981,92,Mão Santa,PSC,0,0
+3981,90,Mozarildo Cavalcanti,PTB,1,0
+3981,99,Papaléo Paes,PSDB,0,0
+3981,86,Marcos Guerra,PSDB,0,1
+3981,138,Wellington Salgado de Oliveira,PMDB,1,1
+3981,34,Flexa Ribeiro,PSDB,0,1
+3981,15,Antonio João,PTB,1,1
+3999,33,Fernando Bezerra,PTB,1,1
+3999,48,Heráclito Fortes,DEM,0,1
+3999,73,Leomar Quintanilha,PMDB,1,1
+3999,112,Renan Calheiros,PMDB,1,0
+3999,120,Romeu Tuma,PTB,1,1
+3999,13,Antonio Carlos Magalhães,PFL,0,1
+3999,107,Pedro Simon,PMDB,1,1
+3999,52,Jefferson Peres,PDT,0,1
+3999,119,Romero Jucá,PMDB,1,1
+3999,30,Eduardo Suplicy,PT,1,1
+3999,54,Jonas Pinheiro,DEM,0,1
+3999,31,Efraim Morais,DEM,0,1
+3999,7,Aloizio Mercadante,PT,1,1
+3999,81,Lúcia Vânia,PSDB,0,1
+3999,35,Flávio Arns,PSDB,0,1
+3999,47,Heloísa Helena,PSOL,0,1
+3999,44,Gilberto Mestrinho,PMDB,1,1
+3999,78,Luiz Otavio,PMDB,1,1
+3999,55,Jorge Bornhausen,PFL,0,1
+3999,65,João Alberto Souza,PMDB,1,1
+3999,133,Tião Viana,PT,1,1
+3999,61,José Jorge,PFL,0,-1
+3999,8,Alvaro Dias,PSDB,0,1
+3999,79,Luiz Pontes,PSDB,0,1
+3999,87,Maria do Carmo Alves,PFL,0,1
+3999,116,Roberto Saturnino,PT,1,1
+3999,72,Juvêncio da Fonseca,PSDB,0,1
+3999,98,Osmar Dias,PDT,0,1
+3999,94,Ney Suassuna,PMDB,1,1
+3999,14,Antonio Carlos Valadares,PSB,1,1
+3999,82,Magno Malta,PR,0,1
+3999,50,Ideli Salvatti,PT,1,1
+3999,126,Sibá Machado,PT,1,1
+3999,69,João Ribeiro,PFL,0,1
+3999,108,Ramez Tebet,PMDB,1,1
+3999,129,Tasso Jereissati,PSDB,0,0
+3999,100,Patrícia Saboya,PDT,0,0
+3999,134,Valdir Raupp,PMDB,1,1
+3999,41,Geraldo Mesquita Júnior,PMDB,1,1
+3999,28,Eduardo Azeredo,PSDB,0,1
+3999,84,Marcelo Crivella,PL,0,0
+3999,2,Aelton Freitas,Sem partido,0,0
+3999,22,César Borges,PR,0,1
+3999,74,Leonel Pavan,PSDB,0,0
+3999,125,Serys Slhessarenko,PT,1,1
+3999,66,João Batista Motta,PSDB,0,1
+3999,10,Ana Júlia Carepa,PT,1,1
+3999,128,Sérgio Zambiasi,PTB,1,1
+3999,121,Roseana Sarney,PMDB,1,0
+3999,118,Rodolpho Tourinho,PFL,0,1
+3999,127,Sérgio Cabral,PMDB,1,0
+3999,40,Geovani Borges,PMDB,1,1
+3999,140,Íris de Araújo,PMDB,1,1
+3999,19,Augusto Botelho,PDT,0,1
+3999,21,Cristovam Buarque,PDT,0,1
+3999,38,Fátima Cleide,PT,1,1
+3999,92,Mão Santa,PSC,0,0
+3999,99,Papaléo Paes,PSDB,0,0
+3999,124,Sergio Guerra,PSDB,0,0
+3999,86,Marcos Guerra,PSDB,0,1
+3999,138,Wellington Salgado de Oliveira,PMDB,1,1
+3999,34,Flexa Ribeiro,PSDB,0,1
+3999,15,Antonio João,PTB,1,0
+3999,115,Roberto Cavalcanti,PRB,0,1
+3996,33,Fernando Bezerra,PTB,1,1
+3996,57,José Agripino,DEM,0,1
+3996,48,Heráclito Fortes,DEM,0,1
+3996,27,Edison Lobão,PMDB,1,1
+3996,112,Renan Calheiros,PMDB,1,0
+3996,120,Romeu Tuma,PTB,1,1
+3996,13,Antonio Carlos Magalhães,PFL,0,1
+3996,107,Pedro Simon,PMDB,1,1
+3996,105,Paulo Paim,PT,1,1
+3996,52,Jefferson Peres,PDT,0,1
+3996,119,Romero Jucá,PMDB,1,1
+3996,30,Eduardo Suplicy,PT,1,1
+3996,54,Jonas Pinheiro,DEM,0,1
+3996,31,Efraim Morais,DEM,0,1
+3996,7,Aloizio Mercadante,PT,1,1
+3996,81,Lúcia Vânia,PSDB,0,1
+3996,35,Flávio Arns,PSDB,0,1
+3996,47,Heloísa Helena,PSOL,0,1
+3996,44,Gilberto Mestrinho,PMDB,1,1
+3996,78,Luiz Otavio,PMDB,1,1
+3996,55,Jorge Bornhausen,PFL,0,1
+3996,65,João Alberto Souza,PMDB,1,1
+3996,133,Tião Viana,PT,1,1
+3996,61,José Jorge,PFL,0,1
+3996,8,Alvaro Dias,PSDB,0,1
+3996,79,Luiz Pontes,PSDB,0,1
+3996,87,Maria do Carmo Alves,PFL,0,1
+3996,116,Roberto Saturnino,PT,1,1
+3996,72,Juvêncio da Fonseca,PSDB,0,1
+3996,11,Antero Paes de Barros,PSDB,0,1
+3996,94,Ney Suassuna,PMDB,1,1
+3996,14,Antonio Carlos Valadares,PSB,1,1
+3996,82,Magno Malta,PR,0,1
+3996,6,Almeida Lima,PMDB,1,1
+3996,50,Ideli Salvatti,PT,1,1
+3996,126,Sibá Machado,PT,1,1
+3996,69,João Ribeiro,PFL,0,0
+3996,108,Ramez Tebet,PMDB,1,1
+3996,129,Tasso Jereissati,PSDB,0,1
+3996,100,Patrícia Saboya,PDT,0,0
+3996,134,Valdir Raupp,PMDB,1,1
+3996,41,Geraldo Mesquita Júnior,PMDB,1,1
+3996,28,Eduardo Azeredo,PSDB,0,1
+3996,84,Marcelo Crivella,PL,0,0
+3996,2,Aelton Freitas,Sem partido,0,0
+3996,22,César Borges,PR,0,1
+3996,74,Leonel Pavan,PSDB,0,0
+3996,125,Serys Slhessarenko,PT,1,1
+3996,10,Ana Júlia Carepa,PT,1,1
+3996,128,Sérgio Zambiasi,PTB,1,1
+3996,18,Arthur Virgílio,PSDB,0,1
+3996,121,Roseana Sarney,PMDB,1,0
+3996,118,Rodolpho Tourinho,PFL,0,1
+3996,127,Sérgio Cabral,PMDB,1,0
+3996,40,Geovani Borges,PMDB,1,1
+3996,140,Íris de Araújo,PMDB,1,1
+3996,19,Augusto Botelho,PDT,0,1
+3996,21,Cristovam Buarque,PDT,0,1
+3996,92,Mão Santa,PSC,0,0
+3996,90,Mozarildo Cavalcanti,PTB,1,1
+3996,99,Papaléo Paes,PSDB,0,0
+3996,124,Sergio Guerra,PSDB,0,0
+3996,86,Marcos Guerra,PSDB,0,1
+3996,138,Wellington Salgado de Oliveira,PMDB,1,1
+3996,34,Flexa Ribeiro,PSDB,0,1
+3996,15,Antonio João,PTB,1,0
+3996,115,Roberto Cavalcanti,PRB,0,1
+4018,64,José Sarney,PMDB,1,0
+4018,85,Marco Maciel,DEM,0,1
+4018,33,Fernando Bezerra,PTB,1,0
+4018,57,José Agripino,DEM,0,1
+4018,73,Leomar Quintanilha,PMDB,1,1
+4018,27,Edison Lobão,PMDB,1,1
+4018,112,Renan Calheiros,PMDB,1,0
+4018,120,Romeu Tuma,PTB,1,1
+4018,13,Antonio Carlos Magalhães,PFL,0,1
+4018,107,Pedro Simon,PMDB,1,1
+4018,105,Paulo Paim,PT,1,0
+4018,52,Jefferson Peres,PDT,0,0
+4018,119,Romero Jucá,PMDB,1,1
+4018,30,Eduardo Suplicy,PT,1,1
+4018,54,Jonas Pinheiro,DEM,0,1
+4018,83,Maguito Vilela,PMDB,1,0
+4018,31,Efraim Morais,DEM,0,1
+4018,7,Aloizio Mercadante,PT,1,1
+4018,81,Lúcia Vânia,PSDB,0,1
+4018,131,Teotonio Vilela Filho,PSDB,0,0
+4018,35,Flávio Arns,PSDB,0,1
+4018,47,Heloísa Helena,PSOL,0,1
+4018,44,Gilberto Mestrinho,PMDB,1,1
+4018,78,Luiz Otavio,PMDB,1,1
+4018,133,Tião Viana,PT,1,1
+4018,79,Luiz Pontes,PSDB,0,0
+4018,116,Roberto Saturnino,PT,1,1
+4018,72,Juvêncio da Fonseca,PSDB,0,1
+4018,11,Antero Paes de Barros,PSDB,0,1
+4018,98,Osmar Dias,PDT,0,0
+4018,14,Antonio Carlos Valadares,PSB,1,1
+4018,82,Magno Malta,PR,0,1
+4018,6,Almeida Lima,PMDB,1,1
+4018,50,Ideli Salvatti,PT,1,1
+4018,126,Sibá Machado,PT,1,1
+4018,69,João Ribeiro,PFL,0,1
+4018,129,Tasso Jereissati,PSDB,0,0
+4018,100,Patrícia Saboya,PDT,0,1
+4018,134,Valdir Raupp,PMDB,1,1
+4018,41,Geraldo Mesquita Júnior,PMDB,1,1
+4018,28,Eduardo Azeredo,PSDB,0,1
+4018,84,Marcelo Crivella,PL,0,0
+4018,2,Aelton Freitas,Sem partido,0,0
+4018,22,César Borges,PR,0,0
+4018,24,Delcídio do Amaral,PT,1,1
+4018,125,Serys Slhessarenko,PT,1,1
+4018,66,João Batista Motta,PSDB,0,1
+4018,10,Ana Júlia Carepa,PT,1,0
+4018,128,Sérgio Zambiasi,PTB,1,1
+4018,18,Arthur Virgílio,PSDB,0,1
+4018,121,Roseana Sarney,PMDB,1,0
+4018,118,Rodolpho Tourinho,PFL,0,0
+4018,127,Sérgio Cabral,PMDB,1,0
+4018,40,Geovani Borges,PMDB,1,1
+4018,19,Augusto Botelho,PDT,0,0
+4018,21,Cristovam Buarque,PDT,0,0
+4018,38,Fátima Cleide,PT,1,1
+4018,39,Garibaldi Alves Filho,PMDB,1,0
+4018,92,Mão Santa,PSC,0,1
+4018,90,Mozarildo Cavalcanti,PTB,1,0
+4018,99,Papaléo Paes,PSDB,0,0
+4018,124,Sergio Guerra,PSDB,0,1
+4018,86,Marcos Guerra,PSDB,0,1
+4018,34,Flexa Ribeiro,PSDB,0,1
+4018,115,Roberto Cavalcanti,PRB,0,0
+4019,64,José Sarney,PMDB,1,0
+4019,85,Marco Maciel,DEM,0,1
+4019,33,Fernando Bezerra,PTB,1,0
+4019,57,José Agripino,DEM,0,1
+4019,73,Leomar Quintanilha,PMDB,1,1
+4019,27,Edison Lobão,PMDB,1,1
+4019,112,Renan Calheiros,PMDB,1,0
+4019,120,Romeu Tuma,PTB,1,1
+4019,13,Antonio Carlos Magalhães,PFL,0,1
+4019,107,Pedro Simon,PMDB,1,1
+4019,105,Paulo Paim,PT,1,0
+4019,52,Jefferson Peres,PDT,0,0
+4019,119,Romero Jucá,PMDB,1,1
+4019,30,Eduardo Suplicy,PT,1,1
+4019,54,Jonas Pinheiro,DEM,0,1
+4019,83,Maguito Vilela,PMDB,1,0
+4019,31,Efraim Morais,DEM,0,1
+4019,7,Aloizio Mercadante,PT,1,1
+4019,81,Lúcia Vânia,PSDB,0,1
+4019,131,Teotonio Vilela Filho,PSDB,0,0
+4019,35,Flávio Arns,PSDB,0,1
+4019,47,Heloísa Helena,PSOL,0,1
+4019,44,Gilberto Mestrinho,PMDB,1,1
+4019,78,Luiz Otavio,PMDB,1,1
+4019,133,Tião Viana,PT,1,1
+4019,79,Luiz Pontes,PSDB,0,0
+4019,29,Eduardo Siqueira Campos,PSDB,0,1
+4019,116,Roberto Saturnino,PT,1,1
+4019,72,Juvêncio da Fonseca,PSDB,0,1
+4019,11,Antero Paes de Barros,PSDB,0,1
+4019,98,Osmar Dias,PDT,0,0
+4019,14,Antonio Carlos Valadares,PSB,1,1
+4019,82,Magno Malta,PR,0,1
+4019,6,Almeida Lima,PMDB,1,1
+4019,50,Ideli Salvatti,PT,1,1
+4019,126,Sibá Machado,PT,1,1
+4019,69,João Ribeiro,PFL,0,1
+4019,129,Tasso Jereissati,PSDB,0,0
+4019,100,Patrícia Saboya,PDT,0,1
+4019,134,Valdir Raupp,PMDB,1,1
+4019,41,Geraldo Mesquita Júnior,PMDB,1,1
+4019,28,Eduardo Azeredo,PSDB,0,1
+4019,84,Marcelo Crivella,PL,0,0
+4019,2,Aelton Freitas,Sem partido,0,0
+4019,22,César Borges,PR,0,0
+4019,24,Delcídio do Amaral,PT,1,1
+4019,125,Serys Slhessarenko,PT,1,1
+4019,66,João Batista Motta,PSDB,0,1
+4019,10,Ana Júlia Carepa,PT,1,0
+4019,128,Sérgio Zambiasi,PTB,1,1
+4019,18,Arthur Virgílio,PSDB,0,1
+4019,121,Roseana Sarney,PMDB,1,0
+4019,118,Rodolpho Tourinho,PFL,0,0
+4019,127,Sérgio Cabral,PMDB,1,0
+4019,40,Geovani Borges,PMDB,1,1
+4019,19,Augusto Botelho,PDT,0,0
+4019,21,Cristovam Buarque,PDT,0,0
+4019,38,Fátima Cleide,PT,1,1
+4019,39,Garibaldi Alves Filho,PMDB,1,0
+4019,92,Mão Santa,PSC,0,1
+4019,90,Mozarildo Cavalcanti,PTB,1,0
+4019,99,Papaléo Paes,PSDB,0,0
+4019,124,Sergio Guerra,PSDB,0,1
+4019,86,Marcos Guerra,PSDB,0,1
+4019,34,Flexa Ribeiro,PSDB,0,1
+4019,115,Roberto Cavalcanti,PRB,0,0
+4020,64,José Sarney,PMDB,1,0
+4020,33,Fernando Bezerra,PTB,1,0
+4020,57,José Agripino,DEM,0,1
+4020,73,Leomar Quintanilha,PMDB,1,1
+4020,27,Edison Lobão,PMDB,1,1
+4020,112,Renan Calheiros,PMDB,1,0
+4020,120,Romeu Tuma,PTB,1,1
+4020,13,Antonio Carlos Magalhães,PFL,0,1
+4020,107,Pedro Simon,PMDB,1,1
+4020,105,Paulo Paim,PT,1,0
+4020,52,Jefferson Peres,PDT,0,0
+4020,119,Romero Jucá,PMDB,1,1
+4020,30,Eduardo Suplicy,PT,1,1
+4020,54,Jonas Pinheiro,DEM,0,1
+4020,83,Maguito Vilela,PMDB,1,0
+4020,31,Efraim Morais,DEM,0,1
+4020,7,Aloizio Mercadante,PT,1,1
+4020,81,Lúcia Vânia,PSDB,0,1
+4020,131,Teotonio Vilela Filho,PSDB,0,0
+4020,35,Flávio Arns,PSDB,0,1
+4020,47,Heloísa Helena,PSOL,0,1
+4020,44,Gilberto Mestrinho,PMDB,1,1
+4020,78,Luiz Otavio,PMDB,1,1
+4020,133,Tião Viana,PT,1,0
+4020,79,Luiz Pontes,PSDB,0,0
+4020,116,Roberto Saturnino,PT,1,1
+4020,72,Juvêncio da Fonseca,PSDB,0,1
+4020,11,Antero Paes de Barros,PSDB,0,1
+4020,98,Osmar Dias,PDT,0,0
+4020,14,Antonio Carlos Valadares,PSB,1,1
+4020,82,Magno Malta,PR,0,1
+4020,6,Almeida Lima,PMDB,1,1
+4020,50,Ideli Salvatti,PT,1,1
+4020,126,Sibá Machado,PT,1,1
+4020,69,João Ribeiro,PFL,0,1
+4020,129,Tasso Jereissati,PSDB,0,0
+4020,100,Patrícia Saboya,PDT,0,1
+4020,134,Valdir Raupp,PMDB,1,1
+4020,41,Geraldo Mesquita Júnior,PMDB,1,1
+4020,28,Eduardo Azeredo,PSDB,0,1
+4020,84,Marcelo Crivella,PL,0,0
+4020,2,Aelton Freitas,Sem partido,0,0
+4020,22,César Borges,PR,0,0
+4020,125,Serys Slhessarenko,PT,1,1
+4020,66,João Batista Motta,PSDB,0,1
+4020,10,Ana Júlia Carepa,PT,1,0
+4020,128,Sérgio Zambiasi,PTB,1,1
+4020,18,Arthur Virgílio,PSDB,0,1
+4020,121,Roseana Sarney,PMDB,1,0
+4020,118,Rodolpho Tourinho,PFL,0,0
+4020,127,Sérgio Cabral,PMDB,1,0
+4020,40,Geovani Borges,PMDB,1,1
+4020,19,Augusto Botelho,PDT,0,0
+4020,21,Cristovam Buarque,PDT,0,0
+4020,38,Fátima Cleide,PT,1,1
+4020,39,Garibaldi Alves Filho,PMDB,1,0
+4020,92,Mão Santa,PSC,0,1
+4020,90,Mozarildo Cavalcanti,PTB,1,0
+4020,99,Papaléo Paes,PSDB,0,0
+4020,124,Sergio Guerra,PSDB,0,1
+4020,86,Marcos Guerra,PSDB,0,1
+4020,34,Flexa Ribeiro,PSDB,0,1
+4020,115,Roberto Cavalcanti,PRB,0,0
+4021,64,José Sarney,PMDB,1,1
+4021,85,Marco Maciel,DEM,0,0
+4021,33,Fernando Bezerra,PTB,1,1
+4021,48,Heráclito Fortes,DEM,0,1
+4021,73,Leomar Quintanilha,PMDB,1,1
+4021,112,Renan Calheiros,PMDB,1,0
+4021,120,Romeu Tuma,PTB,1,1
+4021,13,Antonio Carlos Magalhães,PFL,0,1
+4021,107,Pedro Simon,PMDB,1,0
+4021,119,Romero Jucá,PMDB,1,1
+4021,30,Eduardo Suplicy,PT,1,1
+4021,54,Jonas Pinheiro,DEM,0,1
+4021,83,Maguito Vilela,PMDB,1,1
+4021,31,Efraim Morais,DEM,0,1
+4021,7,Aloizio Mercadante,PT,1,1
+4021,81,Lúcia Vânia,PSDB,0,1
+4021,131,Teotonio Vilela Filho,PSDB,0,0
+4021,35,Flávio Arns,PSDB,0,1
+4021,44,Gilberto Mestrinho,PMDB,1,1
+4021,78,Luiz Otavio,PMDB,1,1
+4021,55,Jorge Bornhausen,PFL,0,0
+4021,65,João Alberto Souza,PMDB,1,1
+4021,133,Tião Viana,PT,1,1
+4021,61,José Jorge,PFL,0,0
+4021,8,Alvaro Dias,PSDB,0,0
+4021,79,Luiz Pontes,PSDB,0,0
+4021,87,Maria do Carmo Alves,PFL,0,1
+4021,29,Eduardo Siqueira Campos,PSDB,0,1
+4021,9,Amir Lando,PMDB,1,1
+4021,116,Roberto Saturnino,PT,1,1
+4021,72,Juvêncio da Fonseca,PSDB,0,1
+4021,11,Antero Paes de Barros,PSDB,0,1
+4021,98,Osmar Dias,PDT,0,1
+4021,94,Ney Suassuna,PMDB,1,1
+4021,14,Antonio Carlos Valadares,PSB,1,1
+4021,82,Magno Malta,PR,0,1
+4021,6,Almeida Lima,PMDB,1,1
+4021,50,Ideli Salvatti,PT,1,1
+4021,126,Sibá Machado,PT,1,1
+4021,69,João Ribeiro,PFL,0,1
+4021,104,Paulo Octávio,PFL,0,1
+4021,129,Tasso Jereissati,PSDB,0,0
+4021,100,Patrícia Saboya,PDT,0,1
+4021,25,Demóstenes Torres,DEM,0,1
+4021,134,Valdir Raupp,PMDB,1,1
+4021,41,Geraldo Mesquita Júnior,PMDB,1,1
+4021,28,Eduardo Azeredo,PSDB,0,1
+4021,84,Marcelo Crivella,PL,0,1
+4021,22,César Borges,PR,0,0
+4021,74,Leonel Pavan,PSDB,0,1
+4021,24,Delcídio do Amaral,PT,1,1
+4021,125,Serys Slhessarenko,PT,1,1
+4021,66,João Batista Motta,PSDB,0,1
+4021,10,Ana Júlia Carepa,PT,1,1
+4021,128,Sérgio Zambiasi,PTB,1,1
+4021,18,Arthur Virgílio,PSDB,0,1
+4021,121,Roseana Sarney,PMDB,1,0
+4021,118,Rodolpho Tourinho,PFL,0,0
+4021,127,Sérgio Cabral,PMDB,1,0
+4021,40,Geovani Borges,PMDB,1,1
+4021,19,Augusto Botelho,PDT,0,1
+4021,21,Cristovam Buarque,PDT,0,1
+4021,38,Fátima Cleide,PT,1,1
+4021,92,Mão Santa,PSC,0,1
+4021,90,Mozarildo Cavalcanti,PTB,1,1
+4021,124,Sergio Guerra,PSDB,0,0
+4021,86,Marcos Guerra,PSDB,0,1
+4021,138,Wellington Salgado de Oliveira,PMDB,1,1
+4021,34,Flexa Ribeiro,PSDB,0,1
+4022,64,José Sarney,PMDB,1,1
+4022,85,Marco Maciel,DEM,0,0
+4022,33,Fernando Bezerra,PTB,1,1
+4022,48,Heráclito Fortes,DEM,0,1
+4022,73,Leomar Quintanilha,PMDB,1,1
+4022,112,Renan Calheiros,PMDB,1,0
+4022,120,Romeu Tuma,PTB,1,1
+4022,13,Antonio Carlos Magalhães,PFL,0,1
+4022,107,Pedro Simon,PMDB,1,0
+4022,119,Romero Jucá,PMDB,1,1
+4022,30,Eduardo Suplicy,PT,1,1
+4022,54,Jonas Pinheiro,DEM,0,1
+4022,83,Maguito Vilela,PMDB,1,1
+4022,31,Efraim Morais,DEM,0,1
+4022,7,Aloizio Mercadante,PT,1,1
+4022,81,Lúcia Vânia,PSDB,0,1
+4022,131,Teotonio Vilela Filho,PSDB,0,0
+4022,35,Flávio Arns,PSDB,0,1
+4022,44,Gilberto Mestrinho,PMDB,1,1
+4022,78,Luiz Otavio,PMDB,1,1
+4022,55,Jorge Bornhausen,PFL,0,0
+4022,133,Tião Viana,PT,1,1
+4022,61,José Jorge,PFL,0,0
+4022,8,Alvaro Dias,PSDB,0,0
+4022,79,Luiz Pontes,PSDB,0,0
+4022,29,Eduardo Siqueira Campos,PSDB,0,1
+4022,116,Roberto Saturnino,PT,1,1
+4022,72,Juvêncio da Fonseca,PSDB,0,1
+4022,98,Osmar Dias,PDT,0,1
+4022,94,Ney Suassuna,PMDB,1,1
+4022,14,Antonio Carlos Valadares,PSB,1,1
+4022,82,Magno Malta,PR,0,1
+4022,6,Almeida Lima,PMDB,1,1
+4022,126,Sibá Machado,PT,1,1
+4022,69,João Ribeiro,PFL,0,1
+4022,129,Tasso Jereissati,PSDB,0,0
+4022,100,Patrícia Saboya,PDT,0,1
+4022,25,Demóstenes Torres,DEM,0,1
+4022,134,Valdir Raupp,PMDB,1,1
+4022,41,Geraldo Mesquita Júnior,PMDB,1,1
+4022,28,Eduardo Azeredo,PSDB,0,1
+4022,22,César Borges,PR,0,0
+4022,24,Delcídio do Amaral,PT,1,1
+4022,125,Serys Slhessarenko,PT,1,1
+4022,10,Ana Júlia Carepa,PT,1,1
+4022,128,Sérgio Zambiasi,PTB,1,1
+4022,18,Arthur Virgílio,PSDB,0,1
+4022,121,Roseana Sarney,PMDB,1,0
+4022,118,Rodolpho Tourinho,PFL,0,0
+4022,127,Sérgio Cabral,PMDB,1,0
+4022,40,Geovani Borges,PMDB,1,1
+4022,19,Augusto Botelho,PDT,0,1
+4022,21,Cristovam Buarque,PDT,0,1
+4022,38,Fátima Cleide,PT,1,1
+4022,39,Garibaldi Alves Filho,PMDB,1,1
+4022,92,Mão Santa,PSC,0,1
+4022,90,Mozarildo Cavalcanti,PTB,1,1
+4022,124,Sergio Guerra,PSDB,0,0
+4022,86,Marcos Guerra,PSDB,0,1
+4022,138,Wellington Salgado de Oliveira,PMDB,1,1
+4022,34,Flexa Ribeiro,PSDB,0,1
+4023,64,José Sarney,PMDB,1,-1
+4023,85,Marco Maciel,DEM,0,0
+4023,33,Fernando Bezerra,PTB,1,-1
+4023,73,Leomar Quintanilha,PMDB,1,-1
+4023,112,Renan Calheiros,PMDB,1,0
+4023,120,Romeu Tuma,PTB,1,-1
+4023,13,Antonio Carlos Magalhães,PFL,0,-1
+4023,107,Pedro Simon,PMDB,1,0
+4023,119,Romero Jucá,PMDB,1,-1
+4023,54,Jonas Pinheiro,DEM,0,-1
+4023,83,Maguito Vilela,PMDB,1,1
+4023,31,Efraim Morais,DEM,0,-1
+4023,81,Lúcia Vânia,PSDB,0,-1
+4023,131,Teotonio Vilela Filho,PSDB,0,0
+4023,35,Flávio Arns,PSDB,0,-1
+4023,44,Gilberto Mestrinho,PMDB,1,-1
+4023,78,Luiz Otavio,PMDB,1,-1
+4023,55,Jorge Bornhausen,PFL,0,0
+4023,133,Tião Viana,PT,1,-1
+4023,61,José Jorge,PFL,0,0
+4023,8,Alvaro Dias,PSDB,0,0
+4023,79,Luiz Pontes,PSDB,0,0
+4023,29,Eduardo Siqueira Campos,PSDB,0,-1
+4023,116,Roberto Saturnino,PT,1,-1
+4023,72,Juvêncio da Fonseca,PSDB,0,-1
+4023,98,Osmar Dias,PDT,0,-1
+4023,94,Ney Suassuna,PMDB,1,-1
+4023,14,Antonio Carlos Valadares,PSB,1,-1
+4023,82,Magno Malta,PR,0,-1
+4023,6,Almeida Lima,PMDB,1,0
+4023,50,Ideli Salvatti,PT,1,-1
+4023,126,Sibá Machado,PT,1,-1
+4023,69,João Ribeiro,PFL,0,-1
+4023,129,Tasso Jereissati,PSDB,0,0
+4023,100,Patrícia Saboya,PDT,0,-1
+4023,25,Demóstenes Torres,DEM,0,-1
+4023,134,Valdir Raupp,PMDB,1,-1
+4023,41,Geraldo Mesquita Júnior,PMDB,1,-1
+4023,28,Eduardo Azeredo,PSDB,0,-1
+4023,2,Aelton Freitas,Sem partido,0,-1
+4023,22,César Borges,PR,0,0
+4023,24,Delcídio do Amaral,PT,1,-1
+4023,125,Serys Slhessarenko,PT,1,-1
+4023,66,João Batista Motta,PSDB,0,-1
+4023,10,Ana Júlia Carepa,PT,1,-1
+4023,128,Sérgio Zambiasi,PTB,1,-1
+4023,121,Roseana Sarney,PMDB,1,0
+4023,118,Rodolpho Tourinho,PFL,0,0
+4023,127,Sérgio Cabral,PMDB,1,0
+4023,40,Geovani Borges,PMDB,1,-1
+4023,19,Augusto Botelho,PDT,0,-1
+4023,21,Cristovam Buarque,PDT,0,-1
+4023,38,Fátima Cleide,PT,1,-1
+4023,39,Garibaldi Alves Filho,PMDB,1,-1
+4023,92,Mão Santa,PSC,0,-1
+4023,90,Mozarildo Cavalcanti,PTB,1,0
+4023,124,Sergio Guerra,PSDB,0,0
+4023,138,Wellington Salgado de Oliveira,PMDB,1,-1
+4023,34,Flexa Ribeiro,PSDB,0,-1
+4025,33,Fernando Bezerra,PTB,1,-1
+4025,57,José Agripino,DEM,0,1
+4025,48,Heráclito Fortes,DEM,0,1
+4025,73,Leomar Quintanilha,PMDB,1,-1
+4025,112,Renan Calheiros,PMDB,1,0
+4025,120,Romeu Tuma,PTB,1,1
+4025,13,Antonio Carlos Magalhães,PFL,0,1
+4025,42,Gerson Camata,PMDB,1,-1
+4025,107,Pedro Simon,PMDB,1,1
+4025,105,Paulo Paim,PT,1,1
+4025,119,Romero Jucá,PMDB,1,-1
+4025,54,Jonas Pinheiro,DEM,0,1
+4025,83,Maguito Vilela,PMDB,1,-1
+4025,31,Efraim Morais,DEM,0,0
+4025,7,Aloizio Mercadante,PT,1,-1
+4025,81,Lúcia Vânia,PSDB,0,1
+4025,46,Gilvam Borges,PMDB,1,-1
+4025,35,Flávio Arns,PSDB,0,1
+4025,47,Heloísa Helena,PSOL,0,1
+4025,44,Gilberto Mestrinho,PMDB,1,-1
+4025,78,Luiz Otavio,PMDB,1,-1
+4025,55,Jorge Bornhausen,PFL,0,0
+4025,133,Tião Viana,PT,1,-1
+4025,4,Alberto Silva,PMDB,1,0
+4025,79,Luiz Pontes,PSDB,0,0
+4025,98,Osmar Dias,PDT,0,1
+4025,94,Ney Suassuna,PMDB,1,-1
+4025,82,Magno Malta,PR,0,-1
+4025,6,Almeida Lima,PMDB,1,1
+4025,50,Ideli Salvatti,PT,1,-1
+4025,126,Sibá Machado,PT,1,-1
+4025,69,João Ribeiro,PFL,0,-1
+4025,104,Paulo Octávio,PFL,0,1
+4025,129,Tasso Jereissati,PSDB,0,-1
+4025,100,Patrícia Saboya,PDT,0,-1
+4025,25,Demóstenes Torres,DEM,0,1
+4025,62,José Maranhão,PMDB,1,-1
+4025,134,Valdir Raupp,PMDB,1,-1
+4025,41,Geraldo Mesquita Júnior,PMDB,1,-1
+4025,28,Eduardo Azeredo,PSDB,0,-1
+4025,84,Marcelo Crivella,PL,0,-1
+4025,2,Aelton Freitas,Sem partido,0,-1
+4025,22,César Borges,PR,0,1
+4025,74,Leonel Pavan,PSDB,0,1
+4025,24,Delcídio do Amaral,PT,1,-1
+4025,125,Serys Slhessarenko,PT,1,-1
+4025,66,João Batista Motta,PSDB,0,1
+4025,18,Arthur Virgílio,PSDB,0,-1
+4025,118,Rodolpho Tourinho,PFL,0,1
+4025,127,Sérgio Cabral,PMDB,1,0
+4025,19,Augusto Botelho,PDT,0,-1
+4025,38,Fátima Cleide,PT,1,-1
+4025,39,Garibaldi Alves Filho,PMDB,1,1
+4025,92,Mão Santa,PSC,0,1
+4025,90,Mozarildo Cavalcanti,PTB,1,1
+4025,124,Sergio Guerra,PSDB,0,0
+4025,138,Wellington Salgado de Oliveira,PMDB,1,-1
+4025,34,Flexa Ribeiro,PSDB,0,1
+4025,136,Valter Pereira,PMDB,1,-1
+4032,85,Marco Maciel,DEM,0,1
+4032,57,José Agripino,DEM,0,1
+4032,48,Heráclito Fortes,DEM,0,1
+4032,73,Leomar Quintanilha,PMDB,1,1
+4032,112,Renan Calheiros,PMDB,1,0
+4032,120,Romeu Tuma,PTB,1,1
+4032,13,Antonio Carlos Magalhães,PFL,0,1
+4032,42,Gerson Camata,PMDB,1,1
+4032,107,Pedro Simon,PMDB,1,0
+4032,105,Paulo Paim,PT,1,1
+4032,119,Romero Jucá,PMDB,1,1
+4032,30,Eduardo Suplicy,PT,1,1
+4032,54,Jonas Pinheiro,DEM,0,1
+4032,83,Maguito Vilela,PMDB,1,1
+4032,31,Efraim Morais,DEM,0,1
+4032,7,Aloizio Mercadante,PT,1,1
+4032,81,Lúcia Vânia,PSDB,0,1
+4032,46,Gilvam Borges,PMDB,1,1
+4032,35,Flávio Arns,PSDB,0,0
+4032,47,Heloísa Helena,PSOL,0,-1
+4032,44,Gilberto Mestrinho,PMDB,1,0
+4032,78,Luiz Otavio,PMDB,1,1
+4032,55,Jorge Bornhausen,PFL,0,0
+4032,4,Alberto Silva,PMDB,1,1
+4032,29,Eduardo Siqueira Campos,PSDB,0,1
+4032,9,Amir Lando,PMDB,1,1
+4032,98,Osmar Dias,PDT,0,1
+4032,94,Ney Suassuna,PMDB,1,1
+4032,14,Antonio Carlos Valadares,PSB,1,1
+4032,82,Magno Malta,PR,0,1
+4032,50,Ideli Salvatti,PT,1,1
+4032,126,Sibá Machado,PT,1,1
+4032,69,João Ribeiro,PFL,0,1
+4032,104,Paulo Octávio,PFL,0,1
+4032,129,Tasso Jereissati,PSDB,0,1
+4032,100,Patrícia Saboya,PDT,0,0
+4032,62,José Maranhão,PMDB,1,1
+4032,41,Geraldo Mesquita Júnior,PMDB,1,1
+4032,84,Marcelo Crivella,PL,0,1
+4032,2,Aelton Freitas,Sem partido,0,1
+4032,22,César Borges,PR,0,1
+4032,24,Delcídio do Amaral,PT,1,1
+4032,125,Serys Slhessarenko,PT,1,1
+4032,66,João Batista Motta,PSDB,0,1
+4032,128,Sérgio Zambiasi,PTB,1,1
+4032,18,Arthur Virgílio,PSDB,0,1
+4032,121,Roseana Sarney,PMDB,1,0
+4032,118,Rodolpho Tourinho,PFL,0,1
+4032,19,Augusto Botelho,PDT,0,1
+4032,21,Cristovam Buarque,PDT,0,1
+4032,38,Fátima Cleide,PT,1,1
+4032,39,Garibaldi Alves Filho,PMDB,1,0
+4032,92,Mão Santa,PSC,0,1
+4032,99,Papaléo Paes,PSDB,0,1
+4032,124,Sergio Guerra,PSDB,0,1
+4032,138,Wellington Salgado de Oliveira,PMDB,1,1
+4032,34,Flexa Ribeiro,PSDB,0,1
+4032,136,Valter Pereira,PMDB,1,1

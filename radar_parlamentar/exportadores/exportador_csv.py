@@ -34,13 +34,13 @@ COALITION_PARTIES = ['PT', 'PCdoB', 'PSB', 'PP', 'PMDB', 'PTB']
 # PR, PDT não são coalition?
 
 ROLLCALL = 'rollcall' 
-ID = 'id'
+VOTER_ID = 'voter_id'
 NAME = 'name'
 PARTY = 'party'
 COALITION = 'coalition'
 VOTE = 'vote'
 
-LABELS = [ROLLCALL, ID, NAME, PARTY, COALITION, VOTE]
+LABELS = [ROLLCALL, VOTER_ID, NAME, PARTY, COALITION, VOTE]
 
 CSV_FILE = 'votes.csv'
 
@@ -94,13 +94,13 @@ class ExportadorCSV:
                 
     def voto(self, opcao):
         if opcao == models.SIM:
-            return 'Y'
+            return 1
         elif opcao == models.NAO:
-            return 'N'
+            return -1
         elif opcao == models.ABSTENCAO:
-            return 'A'
+            return 0
         elif opcao == models.OBSTRUCAO:
-            return 'O'
+            return 0
         else: 
             raise ValueError()
     
@@ -111,8 +111,8 @@ class ExportadorCSV:
             writer.writerows(self.csv_rows)
 
 def main():
-    data_ini = parse_datetime('2010-06-01 0:0:0')
-    data_fim = parse_datetime('2010-06-30 0:0:0')
+    data_ini = parse_datetime('2005-01-01 0:0:0')
+    data_fim = parse_datetime('2006-12-30 0:0:0')
     exportador = ExportadorCSV('sen', data_ini, data_fim)
     exportador.exportar_csv()
     

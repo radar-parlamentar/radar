@@ -10,7 +10,7 @@ source("radar.R")
 
 rcdados <- build_rollcall_lulaII()
 
-r <- radarpca(rcdados, lop = 0, minvotes = 1,scale=FALSE,center=FALSE)
+r <- radarpca(rcdados, lop = 0, minvotes = 11, scale=FALSE, center=FALSE)
 xx <- r$pca$x[,1]
 yy <- r$pca$x[,2]
 partido <- factor(r$rcobject$legis.data)

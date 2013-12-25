@@ -26,7 +26,6 @@ build_rollcall_lulaII <- function() {
 
     load("rollcall_lulaII.Rdata")
     dados <- rollcall_lulaII
-    #dados  <- read.csv('votes.csv', sep=',', as.is=T)
 
     # Corrigir nome da deputada Luciana Costa:
     dados$name[dados$name=="LUCIANA COSTA\r\n\r\nLUCIANA COSTA\r\n\r\n\r\nLUCIANA COSTA"] <- "LUCIANA COSTA"
@@ -64,30 +63,26 @@ build_rollcall_lulaII <- function() {
 }
 
 
-build_rollcall <- function(input_data_frame, description) {
-    # data_frame must be in the format "rollcall,id,name,party,coalition,vote", where:
+build_rollcall <- function(csv_file, description) {
+    # csv_file - path to the csv file
+    # csv must be in the format "rollcall,voter_id,name,party,coalition,vote", where:
     # rollcall - numeric code of the voting
-    # id - numeric code of the parliamentarian
-    # name - character identifying the voters
-    # party - character identifying the party
+    # voter_id - numeric code of the voter (if voter changes his party, he is a new voter, therefore the code must be other)
+    # name - characteres identifying the voter
+    # party - characteres identifying the party
     # coalition - 1 if it support ruler party or 0 otherwise
-    # vote - character \in {Y, N, A, O}
+    # vote - number \in {-1, 0, 1} // NA for absent
 
-    input_data_frame$name_party <- paste(input_data_frame$name, " (", input_data_frame$party, ")", sep="")
+    data  <- read.csv(csv_file, sep=',', as.is=T)
 
-    input_data_frame$coded_votes[dados$vote == "Y"] <- 1
-    input_data_frame$coded_votes[dados$vote == "N"] <- -1
-    input_data_frame$coded_votes[dados$vote == "A"] <- 0
-    input_data_frame$coded_votes[dados$vote == "O"] <- 0 
-
-    # votes has the format required by the rollcall function
+    # votes is a matrix with the format required by the rollcall function
     # lines are voters, columns are votings, and values are votes.
-    votes <- with(input_data_frame, tapply(coded_votes, list(name_party, rollcall), c))
+    votes <- with(data, tapply(vote, list(voter_id, rollcall), c))
     votes[is.na(votes)] <- 0 # Transforma NA em 0.
 
-    legisdata <- as.matrix(with(input_data_frame, tapply(party, name_party, max))) # ?
+    legisdata <- as.matrix(with(data, tapply(party, voter_id, max))) # ?
 
-    roll_call <- rollcall(votes, yea=1, nay=-1, missing=0, notInLegis=NA, legis.data=legisdata, desc=description)
+    roll_call <- rollcall(votes, yea=1, nay=-1, missing=0, notInLegis=NA, legis.data=legisdata, desc=description, source='Radar Parlamentar')
     return(roll_call)
 }
 
@@ -280,6 +275,23 @@ ver.pc <- function(resultado,numero.pc) {
   alt.max <- max(alturas) 
   plot(xvotos,abs(alturas),type="s",main=NULL,sub=NULL,xlab="",ylab="",ylim=c(-alt.max,alt.max))
   barplot(alturas,sub=paste("Variancia Explicada =",round(pca$sdev[numero.pc]^2,2),"(",round(100*(pca$sdev[numero.pc]^2)/sum(pca$sdev^2),1),"%)"),space=0,border=NA,add=TRUE,xlab=NULL,names.arg=" ")
+}
+
+
+plot_radar_black_and_white <- function(radar_pca) {
+    plot(radar_pca$pca$x[,1], radar_pca$pca$x[,2])
+}
+
+
+plot_radar <- function(radar_pca) {
+    xx <- radar_pca$pca$x[,1]
+    yy <- radar_pca$pca$x[,2]
+    partido <- factor(radar_pca$rcobject$legis.data)
+    num.partidos <- length(levels(partido))
+    paleta <- colorRampPalette(c("darkblue","blue","yellow","green","darkmagenta","cyan","red","black","aquamarine"),space = "Lab")(num.partidos)
+    cor <- paleta[as.integer(partido)]
+    symbols(xx,yy,circles=rep(1,length(xx)),inches=0.05,fg=cor)
+    legend("topright",levels(partido),col=paleta[1:22],pch=19) 
 }
 
 # OBSERVAÇÕES:
