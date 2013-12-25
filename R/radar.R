@@ -1,4 +1,4 @@
-# Copyright (C) 2013, Saulo Trento
+# Copyright (C) 2013, Saulo Trento, Leonardo Leite
 #
 # This file is part of Radar Parlamentar.
 # 
@@ -20,43 +20,49 @@
 require("wnominate")
 # rm(list=ls())
 # options(max.print=1000)
-load("rollcall_lulaII.Rdata")
-dados <- rollcall_lulaII
-#dados  <- read.csv('votes.csv', sep=',', as.is=T)
-
-# Corrigir nome da deputada Luciana Costa:
-dados$name[dados$name=="LUCIANA COSTA\r\n\r\nLUCIANA COSTA\r\n\r\n\r\nLUCIANA COSTA"] <- "LUCIANA COSTA"
-# Tirar os acentos, porque o wnominate não aceita:
-dados$name[dados$name=="EMILIANO JOS\xc9"] <- "EMILIANO JOSE"
-dados$name[dados$name=="JO\xc3O HERRMANN"] <- "JOAO HERRMANN"
-dados$name[dados$name=="JOS\xc9 EDMAR"] <- "JOSE EDMAR"
-dados$name[dados$name=="MAJOR F\xc1BIO"] <- "MAJOR FABIO"
-dados$name[dados$name=="JOS\xc9 MAIA FILHO"] <- "JOSE MAIA FILHO"
-
-# Criar uma coluna com nome+partido (identificador único de quem vota)
-dados$nomepartido <- paste(dados$name," (",dados$party,")",sep="")
-
-# Codificar votos:
-dados$voto[dados$vote == "Y"] <- 1
-dados$voto[dados$vote == "N"] <- -1
-dados$voto[dados$vote == "A"] <- 0
-dados$voto[dados$vote == "O"] <- 0
 
 
-# Inicializar lista de dados que será argumento para rollcall().
-dadoslist <- list()
-dadoslist$desc <- "Camara dos Deputados 53a legislatura (2o mandato Lula)"
-# dadoslist$votes é uma matriz cujas linhas são parlamentares (nomepartido) e colunas votações (rollcall), 
-# e o valor das células são os votos em codificação numérica
-dadoslist$votes <- with(dados, tapply(voto,list(nomepartido,rollcall),c))
-dadoslist$legis.names <- dimnames(dadoslist$votes)[1][[1]]
-dadoslist$vote.names <- dimnames(dadoslist$votes)[2][[1]]
-dadoslist$legis.data <- as.matrix(with(dados,tapply(party,nomepartido,max)))
+build_rollcall_lulaII <- function() {
 
-dadoslist$votes[is.na(dadoslist$votes)] <- 0 # Transforma NA em 0.
+    load("rollcall_lulaII.Rdata")
+    dados <- rollcall_lulaII
+    #dados  <- read.csv('votes.csv', sep=',', as.is=T)
 
-# Criar o objeto de tipo rollcall:
-rcdados <- rollcall(dadoslist, yea=1, nay=-1, missing=0, notInLegis=NA, legis.data=dadoslist$legis.data, source="Dados obtidos com Ricardo Ceneviva.")
+    # Corrigir nome da deputada Luciana Costa:
+    dados$name[dados$name=="LUCIANA COSTA\r\n\r\nLUCIANA COSTA\r\n\r\n\r\nLUCIANA COSTA"] <- "LUCIANA COSTA"
+    # Tirar os acentos, porque o wnominate não aceita:
+    dados$name[dados$name=="EMILIANO JOS\xc9"] <- "EMILIANO JOSE"
+    dados$name[dados$name=="JO\xc3O HERRMANN"] <- "JOAO HERRMANN"
+    dados$name[dados$name=="JOS\xc9 EDMAR"] <- "JOSE EDMAR"
+    dados$name[dados$name=="MAJOR F\xc1BIO"] <- "MAJOR FABIO"
+    dados$name[dados$name=="JOS\xc9 MAIA FILHO"] <- "JOSE MAIA FILHO"
+
+    # Criar uma coluna com nome+partido (identificador único de quem vota)
+    dados$nomepartido <- paste(dados$name," (",dados$party,")",sep="")
+
+    # Codificar votos:
+    dados$voto[dados$vote == "Y"] <- 1
+    dados$voto[dados$vote == "N"] <- -1
+    dados$voto[dados$vote == "A"] <- 0
+    dados$voto[dados$vote == "O"] <- 0
+
+
+    # Inicializar lista de dados que será argumento para rollcall().
+    dadoslist <- list()
+    dadoslist$desc <- "Camara dos Deputados 53a legislatura (2o mandato Lula)"
+    # dadoslist$votes é uma matriz cujas linhas são parlamentares (nomepartido) e colunas votações (rollcall), 
+    # e o valor das células são os votos em codificação numérica
+    dadoslist$votes <- with(dados, tapply(voto,list(nomepartido,rollcall),c))
+    dadoslist$legis.names <- dimnames(dadoslist$votes)[1][[1]]
+    dadoslist$vote.names <- dimnames(dadoslist$votes)[2][[1]]
+    dadoslist$legis.data <- as.matrix(with(dados,tapply(party,nomepartido,max)))
+
+    dadoslist$votes[is.na(dadoslist$votes)] <- 0 # Transforma NA em 0.
+
+    # Criar o objeto de tipo rollcall:
+    rcdados <- rollcall(dadoslist, yea=1, nay=-1, missing=0, notInLegis=NA, legis.data=dadoslist$legis.data, source="Dados obtidos com Ricardo Ceneviva.")
+}
+
 
 build_rollcall <- function(input_data_frame, description) {
     # data_frame must be in the format "rollcall,id,name,party,coalition,vote", where:
