@@ -80,7 +80,9 @@ build_rollcall <- function(csv_file, description) {
     votes <- with(data, tapply(vote, list(voter_id, rollcall), c))
     votes[is.na(votes)] <- 0 # Transforma NA em 0.
 
-    legisdata <- as.matrix(with(data, tapply(party, voter_id, max))) # ?
+    # a matrix with rows labelled with voters ids and one single column;
+    # the value of a cell is the party of the voter off that row
+    legisdata <- as.matrix(with(data, tapply(party, voter_id, unique))) 
 
     roll_call <- rollcall(votes, yea=1, nay=-1, missing=0, notInLegis=NA, legis.data=legisdata, desc=description, source='Radar Parlamentar')
     return(roll_call)
