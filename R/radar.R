@@ -129,23 +129,29 @@ radarpca <- function(rcobject, minvotes = 20, lop = 0.025, scale = FALSE , cente
   resultado$scale <- scale
   resultado$center <- center
   cat("\nPreparando para rodar o RADAR-PCA...")
-  x <- rcobject$votes
+  x <- rcobject$votes # TODO rename x to votes_matrix
   xoriginal <- x
   cat("\n\n\tVerificando dados...")
 
   # Vamos retirar os votos unânimes da matriz x.
-  xs <- xoriginal; xs[xs==-1] <- 0; xs <- colSums( xs)
-  xn <- xoriginal; xn[xn== 1] <- 0; xn <- colSums(-xn)
-  total <- xs + xn
-  total[total==0] <- 1
-  minoria <- pmin(xn/total,xs/total)
-  votos.retidos <- minoria>lop
-  x <- x[,votos.retidos]
-  xs <- xs[votos.retidos]
-  xn <- xn[votos.retidos]
-  votosminoria <- pmin(xs,xn)
+  votes_matrix <- rcobject$votes
+  yea_matrix <- votes_matrix; yea_matrix[yea_matrix==-1] <- 0
+  total_yeas_vector <- colSums( yea_matrix) 
+  nay_matrix <- votes_matrix; nay_matrix[nay_matrix== 1] <- 0
+  total_nays_vector <- colSums(-nay_matrix)
+  total_votes_vector = total_yeas_vector + total_nays_vector
+  total_votes_vector[total_votes_vector==0] <- 1 # avoiding division by zero
+  yea_fraction_vector = total_yeas_vector/total_votes_vector
+  nay_fraction_vector = total_nays_vector/total_votes_vector
+  minority_fraction_vector = pmin(yea_fraction_vector, nay_fraction_vector)
+  # votings_to_use: a boolean vector indicating which votings are unanimous (FALSE) or not (TRUE)
+  votings_to_use <- minority_fraction_vector > lop
+  x <- x[,votings_to_use] # pega só as colunas das votações retidas
+  total_yeas_vector <- total_yeas_vector[votings_to_use] 
+  total_nays_vector <- total_nays_vector[votings_to_use]
+  votosminoria <- pmin(total_yeas_vector, total_nays_vector) # quantidade de votos da minoria em cada votação usada
   Nvotos <- dim(x)[2]
-  resultado$votos.retidos <- votos.retidos
+  resultado$votos.retidos <- votings_to_use
   cat("\n\t\t...",dim(xoriginal)[2]-Nvotos, "de", dim(xoriginal)[2],
       "votos descartados.")
 
@@ -216,6 +222,11 @@ radarpca <- function(rcobject, minvotes = 20, lop = 0.025, scale = FALSE , cente
   cat("\n\nRADAR PCA levou", (proc.time()-t.inicio)[3], "segundos para executar.\n\n")
   return(resultado)
 }
+
+
+
+
+################################3
 
 
 plot_pca_by_party <- function(radar_pca) {
