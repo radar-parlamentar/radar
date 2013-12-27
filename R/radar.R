@@ -169,7 +169,7 @@ radarpca <- function(rcobject, minvotes = 20, lop = 0.025, scale = FALSE , cente
   if (center == TRUE) {
     centraliza <- TRUE
   } else {
-    centraliza <- rep(0,ncol(x))
+    centraliza <- rep(0,ncol(x)) #  realmente necessário?
   }
   
   resultado$pca <- prcomp(x,scale=scale,center=centraliza)
@@ -205,7 +205,7 @@ radarpca <- function(rcobject, minvotes = 20, lop = 0.025, scale = FALSE , cente
   cat("\nNumero de Votos:         ",Nvotos," (",dim(xoriginal)[2]-Nvotos," votos excluidos)")
   cat("\nPrevisoes de SIM:        ",sim.acertado,"de", sim.verdadeiro.total, "(",round(100*sim.acertado/sim.verdadeiro.total,1),"%) previsoes corretas")
   cat("\nPrevisoes de NAO:        ",nao.acertado,"de", nao.verdadeiro.total, "(",round(100*nao.acertado/nao.verdadeiro.total,1),"%) previsoes corretas")
-  cat("\nClassificacao Correta:   ",round(100*classif.correta1d,2),"%",round(100*classif.correta2d,2),"%")
+  cat("\nClassificacao Correta:   ","1D:",round(100*classif.correta1d,2),"% \t 2D:",round(100*classif.correta2d,2),"%")
 
   # APRE
   so.erros.1d <- -acertos.erros.1d
@@ -217,7 +217,7 @@ radarpca <- function(rcobject, minvotes = 20, lop = 0.025, scale = FALSE , cente
   apre.1d = sum(votosminoria - erros.1d)/sum(votosminoria)
   apre.2d = sum(votosminoria - erros.2d)/sum(votosminoria)
 
-  cat("\nAPRE:                    ",round(apre.1d,3),round(apre.2d,3))
+  cat("\nAPRE:                    ","1D:",round(apre.1d,3),"2D:",round(apre.2d,3))
   
   cat("\n\nRADAR PCA levou", (proc.time()-t.inicio)[3], "segundos para executar.\n\n")
   return(resultado)
