@@ -302,7 +302,7 @@ plot_radar <- function(radar_pca) {
     num.partidos <- length(levels(partido))
     paleta <- colorRampPalette(c("darkblue","blue","yellow","green","darkmagenta","cyan","red","black","aquamarine"),space = "Lab")(num.partidos)
     cor <- paleta[as.integer(partido)]
-    symbols(xx,yy,circles=rep(1,length(xx)),inches=0.05,fg=cor)
+    symbols(xx,yy,circles=rep(1,length(xx)),inches=0.05,fg=cor,bg=cor)
     legend("topright",levels(partido),col=paleta[1:22],pch=19) 
 }
 
