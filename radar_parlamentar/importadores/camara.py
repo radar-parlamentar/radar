@@ -81,7 +81,8 @@ class Camaraws:
     URL_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?'
     URL_VOTACOES = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?'
     URL_LISTAR_PROPOSICOES = 'http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?'
-    
+    URL_PLENARIO = 'http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoesVotadasEmPlenario?'
+
     def __init__(self,url = Url()):
         self.url = url
 
@@ -99,79 +100,21 @@ class Camaraws:
                 built_url += str(par)+"=&"
 
         built_url = built_url.rstrip("&")
-
+        print built_url
         return built_url
 
-    def obter_proposicao_por_id(self, id_prop):
-        """Obtém detalhes de uma proposição
 
-        Argumentos:
-        id_prop
-
-        Retorna:
-        Um objeto ElementTree correspondente ao XML retornado pelo web service
-        Exemplo: http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterProposicaoPorID?idProp=17338
-
-        Exceções:
-            ValueError -- quando proposição não existe
-        """
-        parametros_de_consulta = ["idprop"]
-        args = { 'idprop': id_prop}
-        url = self._montar_url_consulta_camara(Camaraws.URL_PROPOSICAO, parametros_de_consulta, **args)
+    def obter_proposicoes_com_votacoes(self,ano):
+        """Utiliza o método ListarProposicoesVotadasEmPlenario disponibilizado pela camara. Ele retorna um xml com todas as proposicões votadas."""
+        parametros_de_consulta = ["ano","tipo"]
+        #tipo é um campo optativo dentro da url
+        args = {'ano':ano,'tipo':' '}  
+        url = self._montar_url_consulta_camara(Camaraws.URL_PLENARIO, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
         if tree is None:
-            raise ValueError('Proposicao %s nao encontrada' % id_prop)
+            logger.info('O ano %s nao possui votacoes ainda' % ano)    
         return tree
-
-    def obter_votacoes(self, sigla, num, ano, **kwargs):
-        """Obtém votacões de uma proposição
-
-        Argumentos:
-        sigla, num, ano -- strings que caracterizam a proposicão
-
-        Retorna:
-        Um objeto ElementTree correspondente ao XML retornado pelo web service
-        Exemplo: http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ObterVotacaoProposicao?tipo=pl&numero=1876&ano=1999
-
-        Exceções:
-            ValueError -- quando proposição não existe ou não possui votações
-        """
-        parametros_de_consulta = ["tipo", "numero", "ano"]
-        args = {'tipo':sigla, 'numero':num, 'ano':ano}
-        if kwargs:
-            args.update(kwargs)
-        url = self._montar_url_consulta_camara(Camaraws.URL_VOTACOES,parametros_de_consulta, **args)
-        tree = self.url.toXml(url)
-        if tree is None:
-            raise ValueError('Votacoes da proposicao %s %s/%s nao encontrada' % (sigla, num, ano))
-        return tree
-
-    def listar_proposicoes(self, sigla, ano, **kwargs):
-        """Busca proposições de acordo com ano e sigla desejada
-
-        Argumentos obrigatórios:
-        sigla, ano -- strings que caracterizam as proposições buscadas
-
-        Retorna:
-        ElementTree correspondente ao XML retornado pelo web service
-        Exemplo: http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=PL&numero=&ano=2011&datApresentacaoIni=14/11/2011&datApresentacaoFim=16/11/2011&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=
-        O retorno é uma lista de objetos Element sendo cara item da lista uma proposição encontrada
-
-        Exceções:
-            ValueError -- quando o web service não retorna um XML,
-            que ocorre quando não há resultados para os critérios da busca
-        """
-        parametros_de_consulta = ["sigla", "numero", "ano", "datapresentacaoini", "datapresentacaofim", "idtipoautor", "partenomeautor", "siglapartidoautor", "siglaufautor", "generoautor", "codestado", "codorgaoestado", "emtramitacao"]
-        args = {'sigla':sigla, 'ano':ano}
-        if kwargs:
-            args.update(kwargs)
-        print (args)
-        url = self._montar_url_consulta_camara(Camaraws.URL_LISTAR_PROPOSICOES,parametros_de_consulta, **args)
-        tree = self.url.toXml(url)
-        if tree is None:
-            raise ValueError('Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
-        return tree
-
+        
     def listar_siglas(self):
         """Listar as siglas de proposições existentes; exemplo: "PL", "PEC" etc.
         O retorno é feito em uma lista de strings.
@@ -193,14 +136,14 @@ class ProposicoesFinder:
         """Recebe XML (objeto etree) do web service ListarProposicoes e devolve uma lista de tuplas,
         o primeiro item da tuple é o id da proposição, e o segundo item é o nome da proposição (sigla num/ano).
         """
-        ids = []
-        nomes = []
+        list_id_prop = []
+        list_nome = []
         for child in xml:
-            id_prop = child.find('id').text.strip()
-            nome = child.find('nome').text.strip()
-            ids.append(id_prop)
-            nomes.append(nome)
-        return zip(ids, nomes)
+            id_prop = child.find('codProposicao').text.strip()
+            nome_prop = child.find('nomeProposicao').text.strip()
+            list_id_prop.append(id_prop)
+            list_nome.append(nome_prop)
+        return zip(list_id_prop,list_nome)
 
     def _nome_proposicao(self, prop_xml):
         sigla = prop_xml.get('tipo').strip()
@@ -208,7 +151,7 @@ class ProposicoesFinder:
         ano = prop_xml.get('ano').strip()
         return '%s %s/%s' % (sigla, numero, ano)
 
-    def find_props_que_existem(self, ano_min=1988, ano_max=None, outputFilePath=None, camaraws = Camaraws()):
+    def find_props_que_existem(self, ano_min=1991, ano_max=None, outputFilePath=None, camaraws = Camaraws()):
         """Retorna IDs de proposições que existem na câmara dos deputados.
 
         Buscas são feitas por proposições apresentadas desde ano_min, que por padrão é 1988, até o presente.
@@ -219,12 +162,11 @@ class ProposicoesFinder:
 
         Retorna lista dos ids que existem
         """
-
         today = datetime.today()
         if (ano_max == None):
             ano_max = today.year
         if (outputFilePath == None):
-            outputFilePath = IDS_FILE_PATH
+            outputFilePath = VOTADAS_FILE_PATH
 
         siglas = camaraws.listar_siglas()
         ids_que_existem = []
@@ -234,11 +176,11 @@ class ProposicoesFinder:
             f.write('# Procurando ids entre %d e %d.\n' % (ano_min, ano_max))
             f.write('# id  : proposicao\n')
             f.write('#-----------\n')
-            for ano in range(ano_min, ano_max+1):
+            for ano in range(ano_min, ano_max + 1):
                 logger.info('Procurando em %s' % ano)
                 for sigla in siglas:
                     try:
-                        xml = camaraws.listar_proposicoes(sigla, ano)
+                        xml = camaraws.obter_proposicoes_com_votacoes(ano)
                         props = self._parse_nomes_lista_proposicoes(xml)
                         for id_prop, nome in props:
                             ids_que_existem.append(id_prop)
