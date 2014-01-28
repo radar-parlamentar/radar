@@ -6,7 +6,8 @@ if __name__ == "__main__":
     if (len(sys.argv) >= 2) and (sys.argv[1] == 'test'):
         os.environ["DJANGO_SETTINGS_MODULE"] = "settings.test"
     else:
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.development")
+        if not os.environ["DJANGO_SETTINGS_MODULE"]:
+            os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.development")
 
     from django.core.management import execute_from_command_line
     execute_from_command_line(sys.argv)

@@ -37,8 +37,10 @@ CACHE_MIDDLEWARE_KEY_PREFIX = 'site_cache'
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/home/radarparlamentar/radarparlamentar.polignu.org/django_cache',
+        'LOCATION': '/tmp/django_cache',
     }
 }
 
-TEMPLATE_DIRS = ( 'radar_parlamentar/radar_parlamentar/templates/' )
+here = os.path.abspath(os.path.dirname(__file__))
+TEMPLATE_DIRS = ( os.path.join(here, os.pardir, 'radar_parlamentar/templates/') )
+
