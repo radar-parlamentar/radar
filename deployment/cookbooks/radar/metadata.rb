@@ -7,5 +7,4 @@ version          "0.0.1"
 
 depends "mysql"
 depends "database"
-depends "application_python"
 
