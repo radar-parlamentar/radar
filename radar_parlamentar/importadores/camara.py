@@ -94,7 +94,8 @@ class Camaraws:
                 built_url += str(par)+"=&"
 
         built_url = built_url.rstrip("&")
-        print built_url
+        logger.info('=========url======')
+        print'url' + built_url
         return built_url
 
 
@@ -111,12 +112,14 @@ class Camaraws:
         Exceções:
             ValueError -- quando proposição não existe
         """
+        logger.info("====entrou no ID====")
         parametros_de_consulta = ["idprop"]
         args = { 'idprop': id_prop}
         url = self._montar_url_consulta_camara(Camaraws.URL_PROPOSICAO, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
         if tree is None:
             raise ValueError('Proposicao %s nao encontrada' % id_prop)
+        logger.info("====montou a url ====")
         return tree
 
 
@@ -406,7 +409,16 @@ class ImportadorCamara:
         voto = models.Voto()
 
         opcao_str = voto_xml.get('Voto')
-        voto.opcao = self._opcao_xml_to_model(opcao_str)
+        '''Por algum motivo os votos estavam vindo com muitos espaços em branco, quebrando a importação
+        dos mesmos'''
+        logger.info("===== passando na substring ======")
+        print 'opcao_str' + opcao_str
+        if (opcao_str.find(" ")):
+            print 'opcao_str'+ opcao_str + 'tem espaço'
+            voto.opcao = self._opcao_xml_to_model(opcao_str[0:opcao_str.index(" ")])
+        else:
+            print 'nao tem espaço'
+            voto.opcao = self._opcao_xml_to_model(opcao_str)
         leg = self._legislatura(voto_xml)
 
         voto.legislatura = leg
@@ -417,10 +429,13 @@ class ImportadorCamara:
 
     def _opcao_xml_to_model(self, voto):
         """Interpreta voto como tá no XML e responde em adequação a modelagem em models.py"""
-
+        
+        print 'tipo do voto' + voto + 'teste'
         if voto == 'Não':
+            print 'entrou no nao'
             return models.NAO
         elif voto == 'Sim':
+            print 'entrou no sim'
             return models.SIM
         elif voto == 'Obstrução':
             return models.OBSTRUCAO
@@ -512,16 +527,22 @@ class ImportadorCamara:
             logger.info('Importando votações da PROPOSIÇÃO %s: %s %s/%s' % (id_prop, sigla, num, ano))
 
             try: 
+                logger.info('============entrou_0===========')
                 prop_xml = camaraws.obter_proposicao_por_id(id_prop)
+                logger.info('============entrou_1===========')
                 prop = self._prop_from_xml(prop_xml, id_prop)
+                logger.info('============entrou_2===========')
                 vots_xml = camaraws.obter_votacoes(sigla, num, ano)
+                logger.info('============entrou_3===========')
 
                 for child in vots_xml.find('Votacoes'):
+                    logger.info('============entrou_4===========')
                     self._votacao_from_xml(child, prop)
 
                 self.importadas += 1
                 self._progresso()
             except ValueError as e:
+                logger.info('============error===========')
                 logger.error('%s' % e)
 
         logger.info('### Fim da Importação das Votações das Proposições da Câmara dos Deputados.')
@@ -600,7 +621,7 @@ def main():
     propParser =  ProposicoesParser(zip_votadas)
     dic_votadas = propParser.parse()
     separador = SeparadorDeLista(NUM_THREADS)
-    listas_votadas = separador.separa_lista_em_varias_listas(votadas)
+    listas_votadas = separador.separa_lista_em_varias_listas(dic_votadas)
     threads = []
     for lista_votadas in listas_votadas:
         importer = ImportadorCamara(lista_votadas)
