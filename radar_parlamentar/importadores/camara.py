@@ -94,8 +94,6 @@ class Camaraws:
                 built_url += str(par)+"=&"
 
         built_url = built_url.rstrip("&")
-        logger.info('=========url======')
-        print'url' + built_url
         return built_url
 
 
@@ -112,14 +110,12 @@ class Camaraws:
         Exceções:
             ValueError -- quando proposição não existe
         """
-        logger.info("====entrou no ID====")
         parametros_de_consulta = ["idprop"]
         args = { 'idprop': id_prop}
         url = self._montar_url_consulta_camara(Camaraws.URL_PROPOSICAO, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
         if tree is None:
             raise ValueError('Proposicao %s nao encontrada' % id_prop)
-        logger.info("====montou a url ====")
         return tree
 
 
@@ -230,7 +226,7 @@ class ProposicoesFinder:
         ano = prop_xml.get('ano').strip()
         return '%s %s/%s' % (sigla, numero, ano)
 
-    def find_props_que_existem(self, ano_min=2013, ano_max=2013, outputFilePath=None, camaraws = Camaraws()):
+    def find_props_que_existem(self, ano_min=1991, ano_max=2013, camaraws = Camaraws()):
         """Retorna IDs de proposições que existem na câmara dos deputados.
 
         Buscas são feitas por proposições apresentadas desde ano_min, que por padrão é 1991, até o presente.
@@ -270,13 +266,17 @@ class ProposicoesParser:
 	formato da lista que será percorrida:
 	Ex:[('604604', 'REQ 9261/2013 => PRC 228/2013'),('604123', 'PL 9261/2013 => PRC 228/2013')]
 	"""
-        proposicoes = []
+        #Tratar a seta => na hora de inserir na hash
+	proposicoes = []
         for position in self.votadas:
             for prop in position:
                 id_prop = prop[0]
                 sigla = prop[1][0:prop[1].index(" ")]
                 num = prop[1][prop[1].index(" ") + 1 : prop[1].index("/")]
-                ano = prop[1][prop[1].index("/") + 1 : len(prop[1])]
+		if prop[1][prop[1].find("=>")] > -1:
+		    ano = prop[1][prop[1].index("/") + 1 : prop[1].index("=") - 2]	
+	        else:
+		    ano = prop[1][prop[1].index("/") + 1 : len(prop[1])]
                 proposicoes.append({'id':id_prop, 'sigla':sigla, 'num':num, 'ano':ano})
         return proposicoes
 
@@ -411,13 +411,9 @@ class ImportadorCamara:
         opcao_str = voto_xml.get('Voto')
         '''Por algum motivo os votos estavam vindo com muitos espaços em branco, quebrando a importação
         dos mesmos'''
-        logger.info("===== passando na substring ======")
-        print 'opcao_str' + opcao_str
-        if (opcao_str.find(" ")):
-            print 'opcao_str'+ opcao_str + 'tem espaço'
-            voto.opcao = self._opcao_xml_to_model(opcao_str[0:opcao_str.index(" ")])
+        if (opcao_str.find(" ") > -1):
+	    voto.opcao = self._opcao_xml_to_model(opcao_str[0:opcao_str.index(" ")])
         else:
-            print 'nao tem espaço'
             voto.opcao = self._opcao_xml_to_model(opcao_str)
         leg = self._legislatura(voto_xml)
 
@@ -430,12 +426,9 @@ class ImportadorCamara:
     def _opcao_xml_to_model(self, voto):
         """Interpreta voto como tá no XML e responde em adequação a modelagem em models.py"""
         
-        print 'tipo do voto' + voto + 'teste'
         if voto == 'Não':
-            print 'entrou no nao'
             return models.NAO
         elif voto == 'Sim':
-            print 'entrou no sim'
             return models.SIM
         elif voto == 'Obstrução':
             return models.OBSTRUCAO
@@ -503,11 +496,8 @@ class ImportadorCamara:
         if not parlamentar:
             parlamentar = models.Parlamentar()
             parlamentar.nome = nome_dep
-            #votante.id_parlamentar =
-            #votante.genero =
             parlamentar.save()
             self.parlamentares[key] = parlamentar
-            #logger.debug('Deputado %s salvo' % parlamentar)
         return parlamentar
 
     def _progresso(self):
@@ -527,22 +517,16 @@ class ImportadorCamara:
             logger.info('Importando votações da PROPOSIÇÃO %s: %s %s/%s' % (id_prop, sigla, num, ano))
 
             try: 
-                logger.info('============entrou_0===========')
                 prop_xml = camaraws.obter_proposicao_por_id(id_prop)
-                logger.info('============entrou_1===========')
                 prop = self._prop_from_xml(prop_xml, id_prop)
-                logger.info('============entrou_2===========')
                 vots_xml = camaraws.obter_votacoes(sigla, num, ano)
-                logger.info('============entrou_3===========')
 
                 for child in vots_xml.find('Votacoes'):
-                    logger.info('============entrou_4===========')
                     self._votacao_from_xml(child, prop)
 
                 self.importadas += 1
                 self._progresso()
             except ValueError as e:
-                logger.info('============error===========')
                 logger.error('%s' % e)
 
         logger.info('### Fim da Importação das Votações das Proposições da Câmara dos Deputados.')
