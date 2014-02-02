@@ -143,7 +143,7 @@ class Camaraws:
         return tree
 
 
-    def obter_proposicoes_com_votacoes(self,ano):
+    def obter_proposicoes_votadas_plenario(self,ano):
         """
 	Obtem as votações votadas em Plenario
 
@@ -220,18 +220,11 @@ class ProposicoesFinder:
 	    list_nome.append(nome_prop)
 	return zip(list_id_prop,list_nome)
 
-    def _nome_proposicao(self, prop_xml):
-        sigla = prop_xml.get('tipo').strip()
-        numero = prop_xml.get('numero').strip()
-        ano = prop_xml.get('ano').strip()
-        return '%s %s/%s' % (sigla, numero, ano)
-
-    def find_props_que_existem(self, ano_min=1991, ano_max=2013, camaraws = Camaraws()):
-        """Retorna IDs de proposições que existem na câmara dos deputados.
+    def find_props_disponiveis(self, ano_min=1991, ano_max=2013, camaraws = Camaraws()):
+        """Retorna uma lista com os ids e nomes das proposicoes disponibilizadas 
+        pela funcionalidade ListarProposicoesVotadasPlenario.
 
         Buscas são feitas por proposições apresentadas desde ano_min, que por padrão é 1991, até o presente.
-	Usando o web service ListarProposicoesVotadasPlenario todos is IDs possuem votações.
-        Retorna lista dos ids que existem
         """
         today = datetime.today()
         if (ano_max == None):
@@ -242,7 +235,7 @@ class ProposicoesFinder:
             logger.info('Procurando em %s' % ano)
             for sigla in siglas:
                 try:
-                    xml = camaraws.obter_proposicoes_com_votacoes(ano)
+                    xml = camaraws.obter_proposicoes_votadas_plenario(ano)
 		    zip_list_prop = self._parse_nomes_lista_proposicoes(xml)
                     votadas.append(zip_list_prop)
                     logger.info('%d %ss encontrados' % (len(zip_list_prop), sigla))
@@ -273,18 +266,9 @@ class ProposicoesParser:
                 id_prop = prop[0]
                 sigla = prop[1][0:prop[1].index(" ")]
                 num = prop[1][prop[1].index(" ") + 1 : prop[1].index("/")]
-		if prop[1][prop[1].find("=>")] > -1:
-		    ano = prop[1][prop[1].index("/") + 1 : prop[1].index("=") - 2]	
-	        else:
-		    ano = prop[1][prop[1].index("/") + 1 : len(prop[1])]
+                ano = prop[1][prop[1].index("/") + 1 : len(prop[1])]
                 proposicoes.append({'id':id_prop, 'sigla':sigla, 'num':num, 'ano':ano})
         return proposicoes
-
-    def parse_from_list(list_props):
-        proposicoes = []
-        for prop in list_props:
-            proposicoes.append('')
-
 
 LOCK_TO_CREATE_CASA = threading.Lock()
 
@@ -601,7 +585,7 @@ def main():
 
     logger.info('IMPORTANDO DADOS DA CAMARA DOS DEPUTADOS')
     propFinder = ProposicoesFinder()
-    zip_votadas =  propFinder.find_props_que_existem()
+    zip_votadas =  propFinder.find_props_disponiveis()
     propParser =  ProposicoesParser(zip_votadas)
     dic_votadas = propParser.parse()
     separador = SeparadorDeLista(NUM_THREADS)

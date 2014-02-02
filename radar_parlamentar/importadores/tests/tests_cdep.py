@@ -21,7 +21,7 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from importadores import camara
-from importadores.tests.mocks_cdep import mock_obter_proposicao,mock_listar_proposicoes, mock_obter_votacoes, mock_obter_proposicoes_com_votacoes
+from importadores.tests.mocks_cdep import mock_obter_proposicao,mock_listar_proposicoes, mock_obter_votacoes, mock_obter_proposicoes_votadas_plenario
 import Queue
 from mock import Mock
 from modelagem import models
@@ -50,8 +50,8 @@ class ProposicoesParserTest(TestCase):
     def test_parse(self):
 	votadasParser = camara.ProposicoesParser(test_votadas)
 	votadas = votadasParser.parse()        
-	emenda_constituicao =  {'id': ID , 'sigla': SIGLA, 'num': NUM, 'ano':ANO}
-	self.assertTrue(emenda_constituicao in votadas)
+	codigo_florestal =  {'id': ID , 'sigla': SIGLA, 'num': NUM, 'ano':ANO}
+	self.assertTrue(codigo_florestal in votadas)
 
 class SeparadorDeListaTest(TestCase):
     
@@ -112,19 +112,19 @@ class CamaraTest(TestCase):
         camara = models.CasaLegislativa.objects.get(nome_curto='cdep')
         self.assertEquals(camara.nome, 'Câmara dos Deputados')
 
-    def test_prop_emenda_const(self):
+    def test_prop_cod_florestal(self):
         votadasParser = camara.ProposicoesParser(test_votadas)
         votadas = votadasParser.parse()        
         importer = camara.ImportadorCamara(votadas)
         data = importer._converte_data('19/10/1999')
-        prop_emenda_const = models.Proposicao.objects.get(id_prop=ID)
-        self.assertEquals(prop_emenda_const.nome(), NOME)
-        self.assertEquals(prop_emenda_const.situacao,'Tranformada no(a) Lei Ordinária 12651/2012')
-        self.assertEquals(prop_emenda_const.data_apresentacao.day, data.day)
-        self.assertEquals(prop_emenda_const.data_apresentacao.month, data.month)
-        self.assertEquals(prop_emenda_const.data_apresentacao.year, data.year)
+        prop_cod_flor = models.Proposicao.objects.get(id_prop=ID)
+        self.assertEquals(prop_cod_flor.nome(), NOME)
+        self.assertEquals(prop_cod_flor.situacao,'Tranformada no(a) Lei Ordinária 12651/2012')
+        self.assertEquals(prop_cod_flor.data_apresentacao.day, data.day)
+        self.assertEquals(prop_cod_flor.data_apresentacao.month, data.month)
+        self.assertEquals(prop_cod_flor.data_apresentacao.year, data.year)
 
-    def test_votacoes_emenda_const(self):
+    def test_votacoes_cod_florestal(self):
         votacoes = models.Votacao.objects.filter(proposicao__id_prop=ID)
         self.assertEquals(len(votacoes), 5)
 
@@ -137,11 +137,8 @@ class CamaraTest(TestCase):
         self.assertEquals(vot.data.day, data.day)
         self.assertEquals(vot.data.month, data.month)
         self.assertEquals(vot.data.year, data.year)
-        # vot.data está sem hora e minuto
-#         self.assertEquals(vot.data.hour, data.hour)
-#         self.assertEquals(vot.data.minute, data.minute)
 
-    def test_votos_emenda_const(self):
+    def test_votos_cod_florestal(self):
         votacao = models.Votacao.objects.filter(proposicao__id_prop=ID)[0]
         voto1 = [ v for v in votacao.votos() if v.legislatura.parlamentar.nome == 'Mara Gabrilli' ][0]
 	voto2 = [ v for v in votacao.votos() if v.legislatura.parlamentar.nome == 'Carlos Roberto' ][0]
@@ -150,18 +147,15 @@ class CamaraTest(TestCase):
 	self.assertEquals(voto1.legislatura.partido.nome, 'PSDB')
 	self.assertEquals(voto2.legislatura.localidade, 'SP')
 
-
-#Será necessário criar um novo teste para testar o Ws do Plenário
 class WsPlenarioTest(TestCase):
-    #dublando a camara
 
     def test_prop_in_xml(self):
 	ano_min = 2013
 	ano_max = 2013
 	camaraWS = camara.Camaraws()
-	camaraWS.obter_proposicoes_com_votacoes= Mock(side_effect=mock_obter_proposicoes_com_votacoes)
+	camaraWS.obter_proposicoes_votadas_plenario= Mock(side_effect=mock_obter_proposicoes_votadas_plenario)
 	propFinder = camara.ProposicoesFinder()
-        zip_votadas =  propFinder.find_props_que_existem(ano_min,ano_max,camaraWS)
+        zip_votadas =  propFinder.find_props_disponiveis(ano_min,ano_max,camaraWS)
         prop_test = ('14245', 'PEC 3/1999')	
 	for x in range(0,len(zip_votadas)):
 	    self.assertTrue(prop_test in zip_votadas[x])
@@ -170,9 +164,9 @@ class WsPlenarioTest(TestCase):
         ano_min = 2013
 	ano_max = 2013
 	camaraWS = camara.Camaraws()
-	camaraWS.obter_proposicoes_com_votacoes= Mock(side_effect=mock_obter_proposicoes_com_votacoes)
+	camaraWS.obter_proposicoes_votadas_plenario= Mock(side_effect=mock_obter_proposicoes_votadas_plenario)
         propFinder = camara.ProposicoesFinder()
-	zip_votadas =  propFinder.find_props_que_existem(ano_min,ano_max,camaraWS)
+	zip_votadas =  propFinder.find_props_disponiveis(ano_min,ano_max,camaraWS)
 	propParser = camara.ProposicoesParser(zip_votadas)
         dict_votadas =  propParser.parse()
 	prop_in_dict = {'id': ID_PLENARIO , 'sigla': SIGLA_PLENARIO, 'num': NUM_PLENARIO, 'ano':ANO_PLENARIO}

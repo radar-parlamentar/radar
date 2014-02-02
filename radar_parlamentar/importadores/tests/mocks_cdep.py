@@ -48,7 +48,7 @@ def mock_listar_proposicoes(sigla,ano):
         Recebe a sigla e o ano da proposicao e retorna um xml"""
     return verificar_xml('proposicoes_'+sigla+str(ano),MOCK_PROPOSICOES)
 
-def mock_obter_proposicoes_com_votacoes(ano):
+def mock_obter_proposicoes_votadas_plenario(ano):
     """mock do método mock_obter_proposicoes_com_votacoes de camaraWS. 
         Recebe o ano da proposicao e retorna um xml"""
     return verificar_xml('proposicoes_votadas_'+str(ano),MOCK_PROPOSICOES_VOTADAS)
