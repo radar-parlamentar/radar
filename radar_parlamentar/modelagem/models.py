@@ -33,19 +33,19 @@ OBSTRUCAO = 'OBSTRUCAO'
 AUSENTE = 'AUSENTE'
 
 OPCOES = (
-    (SIM, 'Sim'),
-    (NAO, 'Não'),
-    (ABSTENCAO, 'Abstenção'),
-    (OBSTRUCAO, 'Obstrução'),
-    (AUSENTE, 'Ausente'),
+    (SIM, "Sim"),
+    (NAO, "Não"),
+    (ABSTENCAO, "Abstenção"),
+    (OBSTRUCAO, "Obstrução"),
+    (AUSENTE, "Ausente"),
 )
 
-M = 'M'
-F = 'F'
+M = "M"
+F = "F"
 
 GENEROS = (
-    (M, 'Masculino'),
-    (F, 'Feminino'),
+    (M, "Masculino"),
+    (F, "Feminino"),
 )
 
 MUNICIPAL = 'MUNICIPAL'
@@ -58,7 +58,7 @@ ESFERAS = (
     (FEDERAL, 'Federal'),
 )
 
-QUADRIENIO = 'QUADRIENIO'
+QUADRIENIO = "QUADRIENIO"
 BIENIO = 'BIENIO'
 ANO = 'ANO'
 SEMESTRE = 'SEMESTRE'
@@ -75,18 +75,6 @@ PERIODOS = (
 SEM_PARTIDO = 'Sem partido'
 COR_PRETA = '#000000'
 
-class Indexadores(models.Model):
-    """Termos utilizados na indexação de proposições
-
-    Atributos:
-        termo -- string; ex: "mulher" ou "partido político"
-        principal -- bool; identifica se o termo é o principal de uma linha de sinônimos, o termo a ser usado.
-    """
-    termo = models.CharField(max_length=120)
-    principal = models.BooleanField()
-
-    def __unicode__(self):
-        return '%s-%s-%s' % (self.nome, self.numero, self.cor)
 
 class Partido(models.Model):
     """Partido político.
@@ -110,30 +98,41 @@ class Partido(models.Model):
 
     @classmethod
     def from_nome(cls, nome):
-        """Recebe um nome e retornar um objeto do tipo Partido, ou None se nome for inválido"""
-        if (nome == None):
+        """Recebe um nome e retornar um objeto do tipo Partido,
+            ou None se nome for inválido
+        """
+        if nome is None:
             return None
-        p = Partido.objects.filter(nome=nome) # procura primeiro no banco de dados
+
+        # procura primeiro no banco de dados
+        p = Partido.objects.filter(nome=nome)
         if p:
             return p[0]
-        else: # se não estiver no BD, procura no arquivo que contém lista de partidos
+        else:
+            # se não estiver no BD, procura hardcoded
             return cls._from_regex(1, nome.strip())
 
     @classmethod
     def from_numero(cls, numero):
-        """Recebe um número (int) e retornar um objeto do tipo Partido, ou None se nome for inválido"""
-        if (numero == None):
+        """Recebe um número (int) e retornar um objeto do tipo Partido,
+            ou None se nome for inválido
+        """
+
+        if numero is None:
             return None
-        p = Partido.objects.filter(numero=numero) # procura primeiro no banco de dados
+
+        # procura primeiro no banco de dados
+        p = Partido.objects.filter(numero=numero)
         if p:
             return p[0]
-        else: # se não estiver no BD, procura no arquivo que contém lista de partidos
+        else:
+            # se não estiver no BD, procura no arquivo hardcoded
             return cls._from_regex(2, str(numero))
 
     @classmethod
     def get_sem_partido(cls):
         """Retorna um partido chamado 'SEM PARTIDO'"""
-        lista = Partido.objects.filter(nome = SEM_PARTIDO)
+        lista = Partido.objects.filter(nome=SEM_PARTIDO)
         if not lista:
             partido = Partido()
             partido.nome = SEM_PARTIDO
@@ -168,10 +167,12 @@ class CasaLegislativa(models.Model):
 
     Atributos:
         nome -- string; ex 'Câmara Municipal de São Paulo'
-        nome_curto -- string; será usado pra gerar links. ex 'cmsp' para 'Câmara Municipal de São Paulo'
+        nome_curto -- string; será usado pra gerar links.
+                        ex 'cmsp' para 'Câmara Municipal de São Paulo'
         esfera -- string (municipal, estadual, federal)
         local -- string; ex 'São Paulo' para a CMSP
-        atualizacao -- data em que a base de dados foi atualizada pea última vez com votações desta casa
+        atualizacao -- data em que a base de dados foi atualizada pela
+                            última vez com votações desta casa
     """
 
     nome = models.CharField(max_length=100)
@@ -180,43 +181,47 @@ class CasaLegislativa(models.Model):
     local = models.CharField(max_length=100)
     atualizacao = models.DateField(blank=True, null=True)
 
-
     def __unicode__(self):
         return self.nome
 
     def partidos(self):
         """Retorna os partidos existentes nesta casa legislativa"""
-        return Partido.objects.filter(legislatura__casa_legislativa=self).distinct()
+        return Partido.objects.filter(
+            legislatura__casa_legislativa=self).distinct()
 
     def legislaturas(self):
         """Retorna as legislaturas existentes nesta casa legislativa"""
         return Legislatura.objects.filter(casa_legislativa=self).distinct()
 
-    def num_votacao(self,data_inicial=None,data_final=None):
+    def num_votacao(self, data_inicial=None, data_final=None):
         """retorna a quantidade de votacao numa casa legislativa"""
-        return Votacao.por_casa_legislativa(self,data_inicial,data_final).count()
+        return Votacao.por_casa_legislativa(
+            self, data_inicial, data_final).count()
 
-    def num_votos(self,data_inicio=None,data_fim=None):
+    def num_votos(self, data_inicio=None, data_fim=None):
         """retorna a quantidade de votos numa casa legislativa"""
-        votacoes = Votacao.por_casa_legislativa(self,data_inicio,data_fim)
+        votacoes = Votacao.por_casa_legislativa(self, data_inicio, data_fim)
         votos = []
         for votacao in votacoes:
-            votos+=votacao.votos()
+            votos += votacao.votos()
         return len(votos)
 
     @staticmethod
     def deleta_casa(nome_casa_curto):
-        """Método que deleta determinado registro de casa legislativa em cascata
+        """Método que deleta determinado registro de casa legislativa
+            em cascata
             Argumentos:
                 nome_casa - Nome da casa a ser deletada"""
         try:
             try:
-                CasaLegislativa.objects.get(nome_curto=nome_casa_curto).delete()
+                CasaLegislativa.objects.get(
+                    nome_curto=nome_casa_curto).delete()
 
             except CasaLegislativa.DoesNotExist:
                 print 'Casa legislativa ' + nome_casa_curto + ' não existe'
         except:
-            print 'Possivelmente a operacao extrapolou o limite de operacoes do SQLite, tente utilizar o MySQL'
+            print('Possivelmente a operacao extrapolou o limite de '
+                  'operacoes do SQLite, tente utilizar o MySQL')
 
 
 class PeriodoCasaLegislativa(object):
@@ -226,19 +231,19 @@ class PeriodoCasaLegislativa(object):
         quantidade_votacoes -- inteiro
     """
 
-    def __init__(self,data_inicio,data_fim, quantidade_votacoes = 0):
+    def __init__(self, data_inicio, data_fim, quantidade_votacoes=0):
         # TODO self.casa_legislativa = ...
         self.ini = data_inicio
         self.fim = data_fim
         self.quantidade_votacoes = quantidade_votacoes
         self.string = ""
         self.string = unicode(self)
-    
+
     def __str__(self):
         return self.__unicode__()
-    
+
     def __unicode__(self):
-        if not self.string: 
+        if not self.string:
             self._build_string()
         return self.string
 
@@ -246,25 +251,38 @@ class PeriodoCasaLegislativa(object):
         data_string = ''
 #       data_string = str(self.ini.year) # sempre começa com o ano
         delta = self.fim - self.ini
-        if delta.days < 35: # período é de um mês
-            meses = ['','Jan', 'Fev', 'Mar', 'Abr', 'Maio', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+        if delta.days < 35:  # período é de um mês
+            meses = ['',
+                     'Jan',
+                     'Fev',
+                     'Mar',
+                     'Abr',
+                     'Maio',
+                     'Jun',
+                     'Jul',
+                     'Ago',
+                     'Set',
+                     'Out',
+                     'Nov',
+                     'Dez']
             data_string += str(self.ini.year)
-            data_string +=" "+str(meses[self.ini.month])
-        elif delta.days < 200: # periodo é de um semestre
+            data_string += " " + str(meses[self.ini.month])
+        elif delta.days < 200:  # periodo é de um semestre
             data_string += str(self.ini.year)
             if self.ini.month < 6:
                 data_string += " 1o Semestre"
             else:
                 data_string += " 2o Semestre"
-        elif delta.days < 370: # periodo é de um ano
+        elif delta.days < 370:  # periodo é de um ano
             data_string += str(self.ini.year)
-        elif delta.days < 750: # periodo é um biênio
+        elif delta.days < 750:  # periodo é um biênio
             data_string += str(self.ini.year) + " e "
             data_string += str(self.fim.year)
-        elif delta.days <1500: # periodo é um quadriênio
+        elif delta.days < 1500:  # periodo é um quadriênio
             data_string += str(self.ini.year) + " a "
             data_string += str(self.fim.year)
         self.string = data_string
+
 
 class Parlamentar(models.Model):
     """Um parlamentar.
@@ -273,8 +291,8 @@ class Parlamentar(models.Model):
         id_parlamentar - string identificadora de acordo a fonte de dados
         nome, genero -- strings
     """
-
-    id_parlamentar = models.CharField(max_length=100, blank=True) # obs: não é chave primária!
+    # obs: id_parlamentar não é chave primária!
+    id_parlamentar = models.CharField(max_length=100, blank=True)
     nome = models.CharField(max_length=100)
     genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
 
@@ -288,11 +306,13 @@ class Legislatura(models.Model):
     e o suplente assume, temos aí uma troca de legislatura.
 
     Atributos:
-        parlamentar -- parlamentar exercendo a legislatura; objeto do tipo Parlamentar
+        parlamentar -- parlamentar exercendo a legislatura;
+                        objeto do tipo Parlamentar
         casa_legislativa -- objeto do tipo CasaLegislativa
         inicio, fim -- datas indicando o período
         partido -- objeto do tipo Partido
-        localidade -- string; ex 'SP', 'RJ' se for no senado ou câmara dos deputados
+        localidade -- string; ex 'SP', 'RJ' se for no senado ou
+                                    câmara dos deputados
 
     Métodos:
         find -- busca legislatura por data e parlamentar
@@ -307,22 +327,30 @@ class Legislatura(models.Model):
 
     @staticmethod
     def find(data, nome_parlamentar):
-        """Busca a legislatura de um parlamentar pelo nome em uma determinada data
+        """Busca a legislatura de um parlamentar pelo nome
+            em uma determinada data
            Argumentos:
              data -- objeto do tipo date
              nome_parlamentar -- string
            Retorno: objeto do tipo Legislatura
            Se não existir, lança exceção ValueError
         """
-        # Assumimos que uma pessoa não pode assumir duas legislaturas em um dado período!
+        # Assumimos que uma pessoa não pode assumir
+            # duas legislaturas em um dado período!
         legs = Legislatura.objects.filter(parlamentar__nome=nome_parlamentar)
         for leg in legs:
-            if data >= leg.inicio and data <= leg.fim :
+            if data >= leg.inicio and data <= leg.fim:
                 return leg
-        raise ValueError('Não achei legislatura para %s em %s' % (nome_parlamentar, data))
+        raise ValueError('Não achei legislatura para %s em %s' %
+                         (nome_parlamentar, data))
 
     def __unicode__(self):
-        return "%s - %s@%s [%s, %s]" % (self.parlamentar, self.partido, self.casa_legislativa.nome_curto, self.inicio, self.fim)
+        return "%s - %s@%s [%s, %s]" % (
+            self.parlamentar,
+            self.partido,
+            self.casa_legislativa.nome_curto,
+            self.inicio,
+            self.fim)
 
 
 class Proposicao(models.Model):
@@ -330,7 +358,7 @@ class Proposicao(models.Model):
 
     Atributos:
         id_prop - string identificadora de acordo a fonte de dados
-        sigla, numero, ano -- string que juntas formam o nome legal da proposição
+        sigla, numero, ano -- strings que formam o nome legal da proposição
         ementa-- descrição sucinta e oficial
         descricao -- descrição mais detalhada
         indexacao -- palavras chaves
@@ -342,8 +370,8 @@ class Proposicao(models.Model):
     Métodos:
         nome: retorna "sigla numero/ano"
     """
-
-    id_prop = models.CharField(max_length=100, blank=True) # obs: não é chave primária!
+    # obs: id_prop não é chave primária!
+    id_prop = models.CharField(max_length=100, blank=True)
     sigla = models.CharField(max_length=10)
     numero = models.CharField(max_length=10)
     ano = models.CharField(max_length=4)
@@ -354,14 +382,22 @@ class Proposicao(models.Model):
     situacao = models.TextField(blank=True)
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
     autor_principal = models.TextField(blank=True)
-    #TOOD: autor_principal = models.ForeignKey(Parlamentar, null=True, related_name='Autor principal')
-    autores = models.ManyToManyField(Parlamentar, null=True, related_name='demais_autores')
+    #TODO
+    #autor_principal = models.ForeignKey(
+    #    Parlamentar,
+    #    null=True,
+    #    related_name='Autor principal')
+    autores = models.ManyToManyField(
+        Parlamentar,
+        null=True,
+        related_name='demais_autores')
 
     def nome(self):
         return "%s %s/%s" % (self.sigla, self.numero, self.ano)
 
     def __unicode__(self):
         return "[%s] %s" % (self.nome(), self.ementa)
+
 
 class Votacao(models.Model):
     """Votação em planário.
@@ -377,8 +413,8 @@ class Votacao(models.Model):
         votos()
         por_partido()
     """
-
-    id_vot = models.CharField(max_length=100, blank=True) # obs: não é chave primária!
+    # obs: id_vot não é chave primária!
+    id_vot = models.CharField(max_length=100, blank=True)
     descricao = models.TextField(blank=True)
     data = models.DateField(blank=True, null=True)
     resultado = models.TextField(blank=True)
@@ -391,26 +427,32 @@ class Votacao(models.Model):
     def por_partido(self):
         """Retorna votos agregados por partido.
 
-        Retorno: um dicionário cuja chave é o nome do partido (string) e o valor é um VotoPartido
+        Retorno: um dicionário cuja chave é o nome do partido (string)
+        e o valor é um VotoPartido
         """
         dic = {}
         for voto in self.votos():
-            # TODO poderia ser mais complexo: checar se a data da votação bate com o período da legislatura mais recente
+            # TODO poderia ser mais complexo:
+                # checar se a data da votação bate com
+                # o período da legislatura mais recente
             part = voto.legislatura.partido.nome
-            if not dic.has_key(part):
+            if part not in dic:
                 dic[part] = VotoPartido(part)
             voto_partido = dic[part]
             voto_partido.add(voto.opcao)
         return dic
 
     @staticmethod
-    def por_casa_legislativa(casa_legislativa,data_inicial=None,data_final=None):
-        votacoes = Votacao.objects.filter(proposicao__casa_legislativa=casa_legislativa)
+    def por_casa_legislativa(casa_legislativa,
+                             data_inicial=None,
+                             data_final=None):
+        votacoes = Votacao.objects.filter(
+            proposicao__casa_legislativa=casa_legislativa)
         from django.utils.dateparse import parse_datetime
-        if data_inicial != None:
+        if data_inicial is not None:
             ini = parse_datetime('%s 0:0:0' % data_inicial)
-            votacoes =  votacoes.filter(data__gte=ini)
-        if data_final != None:
+            votacoes = votacoes.filter(data__gte=ini)
+        if data_final is not None:
             fim = parse_datetime('%s 0:0:0' % data_final)
             votacoes = votacoes.filter(data__lte=fim)
         return votacoes
@@ -429,7 +471,8 @@ class Voto(models.Model):
 
     Atributos:
         legislatura -- objeto do tipo Legislatura
-        opcao -- qual foi o voto do parlamentar (sim, não, abstenção, obstrução, não votou)
+        opcao -- qual foi o voto do parlamentar
+                (sim, não, abstenção, obstrução, não votou)
     """
 
     votacao = models.ForeignKey(Votacao)
@@ -439,11 +482,13 @@ class Voto(models.Model):
     def __unicode__(self):
         return "%s votou %s" % (self.legislatura, self.opcao)
 
+
 class VotosAgregados:
     """Um conjunto de votos.
 
     Atributos:
-        sim, nao, abstencao -- inteiros que representam a quantidade de votos no conjunto
+        sim, nao, abstencao --
+            inteiros que representam a quantidade de votos no conjunto
 
     Método:
         add
@@ -479,7 +524,8 @@ class VotosAgregados:
         return self.sim + self.nao + self.abstencao
 
     def voto_medio(self):
-        """Valor real que representa a 'opnião média' dos votos agregados; 1 representa sim e -1 representa não."""
+        """Valor real que representa a 'opnião média' dos
+            votos agregados; 1 representa sim e -1 representa não."""
         total = self.total()
         if total > 0:
             return 1.0 * (self.sim - self.nao) / self.total()
@@ -498,11 +544,11 @@ class VotoPartido(VotosAgregados):
 
     Atributos:
         partido -- objeto do tipo Partido
-        sim, nao, abstencao -- inteiros que representam a quantidade de votos no conjunto
+        sim, nao, abstencao --
+            inteiros que representam a quantidade de votos no conjunto
     """
     def __init__(self, partido):
         VotosAgregados.__init__(self)
         self.partido = partido
 
 # TODO class VotoUF(VotosAgregados):
-
