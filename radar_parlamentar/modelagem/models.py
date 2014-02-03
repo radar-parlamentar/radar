@@ -33,19 +33,19 @@ OBSTRUCAO = 'OBSTRUCAO'
 AUSENTE = 'AUSENTE'
 
 OPCOES = (
-    (SIM, 'Sim'),
-    (NAO, 'Não'),
-    (ABSTENCAO, 'Abstenção'),
-    (OBSTRUCAO, 'Obstrução'),
-    (AUSENTE, 'Ausente'),
+    (SIM, "Sim"),
+    (NAO, "Não"),
+    (ABSTENCAO, "Abstenção"),
+    (OBSTRUCAO, "Obstrução"),
+    (AUSENTE, "Ausente"),
 )
 
-M = 'M'
-F = 'F'
+M = "M"
+F = "F"
 
 GENEROS = (
-    (M, 'Masculino'),
-    (F, 'Feminino'),
+    (M, "Masculino"),
+    (F, "Feminino"),
 )
 
 MUNICIPAL = 'MUNICIPAL'
@@ -58,7 +58,7 @@ ESFERAS = (
     (FEDERAL, 'Federal'),
 )
 
-QUADRIENIO = 'QUADRIENIO'
+QUADRIENIO = "QUADRIENIO"
 BIENIO = 'BIENIO'
 ANO = 'ANO'
 SEMESTRE = 'SEMESTRE'
@@ -89,7 +89,6 @@ class Indexadores(models.Model):
 
     def __unicode__(self):
         return '%s-%s-%s' % (self.nome, self.numero, self.cor)
-
 
 
 class Partido(models.Model):
