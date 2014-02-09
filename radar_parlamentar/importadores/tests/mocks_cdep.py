@@ -28,6 +28,7 @@ MOCK_PATH = os.path.join(camara.RESOURCES_FOLDER,'mocks')
 MOCK_PROPOSICAO = glob.glob(os.path.join(MOCK_PATH,'proposicao_*'))
 MOCK_PROPOSICOES = glob.glob(os.path.join(MOCK_PATH,'proposicoes_*'))
 MOCK_VOTACOES = glob.glob(os.path.join(MOCK_PATH,'votacoes_*'))
+MOCK_PROPOSICOES_VOTADAS = glob.glob(os.path.join(MOCK_PATH,'proposicoes_votadas_*'))
 
 def verificar_xml(nome,lista_xmls):
     """verifica se existe um arquivo com determinado nome, dentro de uma lista de arquivos"""
@@ -46,6 +47,11 @@ def mock_listar_proposicoes(sigla,ano):
     """mock do método listar_proposicoes de camaraWS. 
         Recebe a sigla e o ano da proposicao e retorna um xml"""
     return verificar_xml('proposicoes_'+sigla+str(ano),MOCK_PROPOSICOES)
+
+def mock_obter_proposicoes_votadas_plenario(ano):
+    """mock do método mock_obter_proposicoes_com_votacoes de camaraWS. 
+        Recebe o ano da proposicao e retorna um xml"""
+    return verificar_xml('proposicoes_votadas_'+str(ano),MOCK_PROPOSICOES_VOTADAS)
 
 def mock_obter_votacoes(sigla,num,ano):
     """mock do método obter_votacoes de camaraWS. 
