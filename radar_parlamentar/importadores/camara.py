@@ -26,16 +26,13 @@ from django.db.utils import DatabaseError
 from modelagem import models
 from datetime import datetime
 import re
-import sys
 import os
 import xml.etree.ElementTree as etree
 import urllib2
 import logging
-import Queue
 import threading
 import time
 import math
-import codecs
 
 # data em que a lista votadas.txt foi atualizada
 ULTIMA_ATUALIZACAO = parse_datetime('2013-07-22 0:0:0')
@@ -211,14 +208,14 @@ class ProposicoesFinder:
         """Recebe XML (objeto etree) do web service ListarProposicoesVotadasPlenario e devolve uma lista de tuplas,
         o primeiro item da tuple é o id da proposição, e o segundo item é o nome da proposição (sigla num/ano).
         """
-	list_id_prop = []
-	list_nome = []
-	for child in xml:
-	    id_prop = child.find('codProposicao').text.strip()
-	    nome_prop = child.find('nomeProposicao').text.strip()
-	    list_id_prop.append(id_prop)
-	    list_nome.append(nome_prop)
-	return zip(list_id_prop,list_nome)
+        list_id_prop = []
+        list_nome = []
+        for child in xml:
+            id_prop = child.find('codProposicao').text.strip()
+            nome_prop = child.find('nomeProposicao').text.strip()
+            list_id_prop.append(id_prop)
+            list_nome.append(nome_prop)
+        return zip(list_id_prop,list_nome)
 
     def find_props_disponiveis(self, ano_min=1991, ano_max=2013, camaraws = Camaraws()):
         """Retorna uma lista com os ids e nomes das proposicoes disponibilizadas 
@@ -236,7 +233,7 @@ class ProposicoesFinder:
             for sigla in siglas:
                 try:
                     xml = camaraws.obter_proposicoes_votadas_plenario(ano)
-		    zip_list_prop = self._parse_nomes_lista_proposicoes(xml)
+                    zip_list_prop = self._parse_nomes_lista_proposicoes(xml)
                     votadas.append(zip_list_prop)
                     logger.info('%d %ss encontrados' % (len(zip_list_prop), sigla))
                 except urllib2.URLError, etree.ParseError:
@@ -260,7 +257,7 @@ class ProposicoesParser:
 	Ex:[('604604', 'REQ 9261/2013 => PRC 228/2013'),('604123', 'PL 9261/2013 => PRC 228/2013')]
 	"""
         #Tratar a seta => na hora de inserir na hash
-	proposicoes = []
+        proposicoes = []
         for position in self.votadas:
             for prop in position:
                 id_prop = prop[0]
@@ -396,7 +393,7 @@ class ImportadorCamara:
         '''Por algum motivo os votos estavam vindo com muitos espaços em branco, quebrando a importação
         dos mesmos'''
         if (opcao_str.find(" ") > -1):
-	    voto.opcao = self._opcao_xml_to_model(opcao_str[0:opcao_str.index(" ")])
+            voto.opcao = self._opcao_xml_to_model(opcao_str[0:opcao_str.index(" ")])
         else:
             voto.opcao = self._opcao_xml_to_model(opcao_str)
         leg = self._legislatura(voto_xml)
