@@ -6,7 +6,6 @@ if __name__ == "__main__":
     if (len(sys.argv) >= 2) and (sys.argv[1] == 'test'):
         os.environ["DJANGO_SETTINGS_MODULE"] = "settings.test"
     else:
-        print "DJANGO_SETTINGS_MODULE" in os.environ
         if not "DJANGO_SETTINGS_MODULE" in os.environ:
             os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.development")
 
