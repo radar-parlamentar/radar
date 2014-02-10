@@ -22,10 +22,8 @@ from __future__ import unicode_literals
 from django.test import TestCase
 from importadores import camara
 from importadores.tests.mocks_cdep import mock_obter_proposicao,mock_listar_proposicoes, mock_obter_votacoes, mock_obter_proposicoes_votadas_plenario
-import Queue
 from mock import Mock
 from modelagem import models
-import os
 
 #constantes relativas ao código florestal
 #Alterar teste para que o mesmo utilize alguma proposicao retornada pela funcionalidade do Plenário.
@@ -48,10 +46,10 @@ test_votadas = [[('17338', 'PL 1876/1999')]]
 class ProposicoesParserTest(TestCase):
     
     def test_parse(self):
-	votadasParser = camara.ProposicoesParser(test_votadas)
-	votadas = votadasParser.parse()        
-	codigo_florestal =  {'id': ID , 'sigla': SIGLA, 'num': NUM, 'ano':ANO}
-	self.assertTrue(codigo_florestal in votadas)
+        votadasParser = camara.ProposicoesParser(test_votadas)
+        votadas = votadasParser.parse()        
+        codigo_florestal =  {'id': ID , 'sigla': SIGLA, 'num': NUM, 'ano':ANO}
+        self.assertTrue(codigo_florestal in votadas)
 
 class SeparadorDeListaTest(TestCase):
     
@@ -59,15 +57,15 @@ class SeparadorDeListaTest(TestCase):
 
         lista = [1, 2, 3, 4, 5, 6]
         
-	separador = camara.SeparadorDeLista(1)
-	listas = separador.separa_lista_em_varias_listas(lista)
-	self.assertEquals(len(listas), 1)
-	self.assertEquals(listas[0], lista)
+        separador = camara.SeparadorDeLista(1)
+        listas = separador.separa_lista_em_varias_listas(lista)
+        self.assertEquals(len(listas), 1)
+        self.assertEquals(listas[0], lista)
 
-	separador = camara.SeparadorDeLista(2)
-	listas = separador.separa_lista_em_varias_listas(lista)
-	self.assertEquals(len(listas), 2)
-	self.assertEquals(listas[0], [1, 2, 3])
+        separador = camara.SeparadorDeLista(2)
+        listas = separador.separa_lista_em_varias_listas(lista)
+        self.assertEquals(len(listas), 2)
+        self.assertEquals(listas[0], [1, 2, 3])
         self.assertEquals(listas[1], [4, 5, 6])
 
         separador = camara.SeparadorDeLista(3)
@@ -93,7 +91,7 @@ class CamaraTest(TestCase):
     @classmethod
     def setUpClass(cls):
         # vamos importar apenas as votações das proposições em votadas_test.txt
-	votadasParser = camara.ProposicoesParser(test_votadas)
+        votadasParser = camara.ProposicoesParser(test_votadas)
         votadas = votadasParser.parse()        
         importer = camara.ImportadorCamara(votadas)
         #dublando a camara
@@ -141,33 +139,33 @@ class CamaraTest(TestCase):
     def test_votos_cod_florestal(self):
         votacao = models.Votacao.objects.filter(proposicao__id_prop=ID)[0]
         voto1 = [ v for v in votacao.votos() if v.legislatura.parlamentar.nome == 'Mara Gabrilli' ][0]
-	voto2 = [ v for v in votacao.votos() if v.legislatura.parlamentar.nome == 'Carlos Roberto' ][0]
+        voto2 = [ v for v in votacao.votos() if v.legislatura.parlamentar.nome == 'Carlos Roberto' ][0]
         self.assertEquals(voto1.opcao, models.SIM)
-	self.assertEquals(voto2.opcao, models.NAO)
-	self.assertEquals(voto1.legislatura.partido.nome, 'PSDB')
-	self.assertEquals(voto2.legislatura.localidade, 'SP')
+        self.assertEquals(voto2.opcao, models.NAO)
+        self.assertEquals(voto1.legislatura.partido.nome, 'PSDB')
+        self.assertEquals(voto2.legislatura.localidade, 'SP')
 
 class WsPlenarioTest(TestCase):
 
     def test_prop_in_xml(self):
-	ano_min = 2013
-	ano_max = 2013
-	camaraWS = camara.Camaraws()
-	camaraWS.obter_proposicoes_votadas_plenario= Mock(side_effect=mock_obter_proposicoes_votadas_plenario)
-	propFinder = camara.ProposicoesFinder()
+        ano_min = 2013
+        ano_max = 2013
+        camaraWS = camara.Camaraws()
+        camaraWS.obter_proposicoes_votadas_plenario= Mock(side_effect=mock_obter_proposicoes_votadas_plenario)
+        propFinder = camara.ProposicoesFinder()
         zip_votadas =  propFinder.find_props_disponiveis(ano_min,ano_max,camaraWS)
         prop_test = ('14245', 'PEC 3/1999')	
-	for x in range(0,len(zip_votadas)):
-	    self.assertTrue(prop_test in zip_votadas[x])
+        for x in range(0,len(zip_votadas)):
+            self.assertTrue(prop_test in zip_votadas[x])
 
     def test_prop_in_dict(self):
         ano_min = 2013
-	ano_max = 2013
-	camaraWS = camara.Camaraws()
-	camaraWS.obter_proposicoes_votadas_plenario= Mock(side_effect=mock_obter_proposicoes_votadas_plenario)
+        ano_max = 2013
+        camaraWS = camara.Camaraws()
+        camaraWS.obter_proposicoes_votadas_plenario= Mock(side_effect=mock_obter_proposicoes_votadas_plenario)
         propFinder = camara.ProposicoesFinder()
-	zip_votadas =  propFinder.find_props_disponiveis(ano_min,ano_max,camaraWS)
-	propParser = camara.ProposicoesParser(zip_votadas)
+        zip_votadas =  propFinder.find_props_disponiveis(ano_min,ano_max,camaraWS)
+        propParser = camara.ProposicoesParser(zip_votadas)
         dict_votadas =  propParser.parse()
-	prop_in_dict = {'id': ID_PLENARIO , 'sigla': SIGLA_PLENARIO, 'num': NUM_PLENARIO, 'ano':ANO_PLENARIO}
-	self.assertTrue(prop_in_dict in dict_votadas)
+        prop_in_dict = {'id': ID_PLENARIO , 'sigla': SIGLA_PLENARIO, 'num': NUM_PLENARIO, 'ano':ANO_PLENARIO}
+        self.assertTrue(prop_in_dict in dict_votadas)
