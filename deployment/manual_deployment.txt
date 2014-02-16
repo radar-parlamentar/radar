@@ -40,7 +40,18 @@ CREATE DATABASE radar;
 cd ~/radar/repo/radar_parlamentar
 python manage.py syncdb
 
-sudo usermod -a -G lleite www-data // enables nginx to access the file socket that links it to uwsgi (lleite is the user)
+#enables nginx to access the file socket that links it to uwsgi (lleite is the user)
+sudo usermod -a -G lleite www-data 
+
+# importing radar data
+cd ~/radar/repo/radar_parlamentar
+python manage.py shell
+from importadores import cmsp
+cmsp.main()
+from importadores import senado
+senado.main()
+from importadores import camara
+camara.main()
 
 cd ~/radar
 uwsgi --ini radar_uwsgi.ini

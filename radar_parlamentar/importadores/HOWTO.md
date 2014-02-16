@@ -15,6 +15,8 @@ Importação dos dados abertos para o banco de dados do Radar Parlamentar
     $ from importadores import cmsp
     $ cmsp.main()
 
+    Tempo aproximado de execução (na VM do Google): 3 min
+
 2.Senado
 -----------------------------------
 
@@ -27,11 +29,11 @@ Importação dos dados abertos para o banco de dados do Radar Parlamentar
 3.Câmara dos Deputados
 -----------------------------------
 
-*Passo 1* - Gerar lista de IDs que existem:
-
     $ python manage.py shell
     $ from importadores import camara
     $ camara.main()
+
+    Tempo aproximado de execução (na VM do Google): 1 hora
 
 4.Criando novos importadores:
 -----------------------------------
