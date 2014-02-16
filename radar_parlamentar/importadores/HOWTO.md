@@ -22,21 +22,15 @@ Importação dos dados abertos para o banco de dados do Radar Parlamentar
     $ from importadores import senado
     $ senado.main()
 
+    Tempo aproximado de execução (na VM do Google): 4 min
+
 3.Câmara dos Deputados
 -----------------------------------
 
 *Passo 1* - Gerar lista de IDs que existem:
 
+    $ python manage.py shell
     $ from importadores import camara
-    $ finder = camara.ProposicoesFinder()
-    $ finder.find_props_que_existem() # vai gerar dados/cdep/ids_que_existem.txt
-
-*Passo 2* - Verificar dos IDs que existem, quais são os IDs que possuem votações associadas:
-
-    $ props = finder.find_props_com_votacoes() # vai gerar dados/cdep/votadas.txt
-
-*Passo 3* - importar para o banco de dados:
-
     $ camara.main()
 
 4.Criando novos importadores:

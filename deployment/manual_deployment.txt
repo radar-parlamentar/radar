@@ -29,17 +29,18 @@ git clone https://github.com/leonardofl/radar_parlamentar.git repo
 cd repo
 easy_install -U distribute
 pip install -r requirements.txt
+pip install ipython
 mkdir /tmp/django_cache
 
 cd ~/radar/repo/radar_parlamentar/settings
 source is_prod.sh
-<create production.settings>
+<create settings/production.py>
 mysql -u root  -p
 CREATE DATABASE radar;
 cd ~/radar/repo/radar_parlamentar
 python manage.py syncdb
 
-sudo usermod -a -G $USER www-data // enables nginx to access the file socket that links it to uwsgi
+sudo usermod -a -G lleite www-data // enables nginx to access the file socket that links it to uwsgi (lleite is the user)
 
 cd ~/radar
 uwsgi --ini radar_uwsgi.ini

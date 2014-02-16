@@ -18,11 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-"""módulo cmsp (Câmara Municipal de São Paulo)
-
-Classes:
-    ImportadorCMSP
-"""
+"""módulo cmsp (Câmara Municipal de São Paulo)"""
 
 from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
@@ -127,14 +123,14 @@ class XmlCMSP:
         elif voto == 'Abstenção':
             return models.ABSTENCAO
         else:
-            print 'tipo de voto (%s) não mapeado!' % voto
+            print 'tipo de voto (%s) nao mapeado!' % voto
             return models.ABSTENCAO
 
     def partido(self, ver_tree):
         nome_partido = ver_tree.get('Partido').strip()
         partido = models.Partido.from_nome(nome_partido)
         if partido == None:
-            print 'Não achou o partido %s' % nome_partido
+            print 'Nao achou o partido %s' % nome_partido
             partido = models.Partido.get_sem_partido()
         return partido
 
@@ -211,7 +207,7 @@ class XmlCMSP:
                     proposicoes[prop_nome] = prop
 
                 if self.verbose:
-                    print 'Proposição %s salva' % prop
+                    print 'Proposicao %s salva' % prop
                 prop.save()
                 vot = models.Votacao()
                 vot.save() # só pra criar a chave primária e poder atribuir o votos
@@ -222,7 +218,7 @@ class XmlCMSP:
                 self.votos_from_tree(vot_tree, vot)
                 vot.proposicao = prop
                 if self.verbose:
-                    print 'Votação %s salva' % vot
+                    print 'Votacao %s salva' % vot
                 else:
                     self.progresso()
                 vot.save()
@@ -267,11 +263,11 @@ class ImportadorCMSP:
 
  
 def main():
-    print 'IMPORTANDO DADOS DA CÂMARA MUNICIPAL DE SÃO PAULO (CMSP)'
+    print 'IMPORTANDO DADOS DA CAMARA MUNICIPAL DE SAO PAULO (CMSP)'
     gerador_casa = GeradorCasaLegislativa()
     cmsp = gerador_casa.gerar_cmsp()
     importer = ImportadorCMSP(cmsp)
     for xml in [XML2010,XML2011,XML2012]:
         importer.importar_de(xml)
-    print 'Importação dos dados da Câmara Municipal de São Paulo (CMSP) terminada'
+    print 'Importacao dos dados da Camara Municipal de Sao Paulo (CMSP) terminada'
 
