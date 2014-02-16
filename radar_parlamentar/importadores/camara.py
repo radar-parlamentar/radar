@@ -141,23 +141,23 @@ class Camaraws:
 
 
     def obter_proposicoes_votadas_plenario(self,ano):
-        """
-	Obtem as votações votadas em Plenario
+        """Obtem as votações votadas em Plenario
 
-	Argumentos:
-	obrigatorio : ano
-	opcional : tipo
-        
-	Retorna:
+        Argumentos:
+        obrigatorio : ano
+        opcional : tipo
+                
+        Retorna:
         Um objeto ElementTree correspondente ao XML retornado pelo web service
-        Exemplo:http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ListarProposicoesVotadasEmPlenario"""
+        Exemplo:http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ListarProposicoesVotadasEmPlenario
+        """
 
         parametros_de_consulta = ["ano","tipo"]
         args = {'ano':ano,'tipo':' '}  
         url = self._montar_url_consulta_camara(Camaraws.URL_PLENARIO, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
         if tree is None:
-            logger.info('O ano %s nao possui votacoes ainda' % ano)    
+            raise ValueError('O ano %s nao possui votacoes ainda' % ano)  
         return tree
      
 
