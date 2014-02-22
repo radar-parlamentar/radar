@@ -23,7 +23,6 @@ urlpatterns = patterns('',
     url(r'^premiacoes/$', 'radar_parlamentar.views.premiacoes'),
     url(r'^sim-voto-aberto/$', 'radar_parlamentar.views.votoaberto'),
     url(r'^importadores/$', 'radar_parlamentar.views.importadores'),
-    url(r'^grafico_alternativo/$', 'radar_parlamentar.views.grafico_alternativo'),
 
     #Páginas do Projeto Gênero do Hackathon da Câmara dos Deputados em 2013
     url(r'^genero/$', 'radar_parlamentar.views.genero'),
