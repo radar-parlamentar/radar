@@ -4,7 +4,7 @@ MANUAL DEPLOYMENT
 Main source:
 https://uwsgi.readthedocs.org/en/latest/tutorials/Django_and_nginx.html
 
-sudo aptitude install python-pip python-dev git nginx python-virtualenv
+sudo aptitude install python-pip python-dev git nginx python-virtualenv tmux
 sudo pip install uwsgi
 
 # mariadb: https://downloads.mariadb.org/mariadb/repositories/#
