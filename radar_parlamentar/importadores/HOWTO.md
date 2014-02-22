@@ -39,6 +39,3 @@ Importação dos dados abertos para o banco de dados do Radar Parlamentar
 -----------------------------------
 
 http://radarparlamentar.polignu.org/importadores/
-
-
-

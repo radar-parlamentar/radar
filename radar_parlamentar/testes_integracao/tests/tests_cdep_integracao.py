@@ -29,6 +29,12 @@ NUM = '1876'
 ANO = '1999'
 NOME = 'PL 1876/1999'
 
+ID_PLENARIO = '584279' 
+ANO_PLENARIO = 2013
+SIGLA_PLENARIO = 'REQ'
+NUM_PLENARIO = '8196'
+NOME_PLENARIO = 'REQ 8196/2013'
+NOT_NOME_PLENARIO = 'DAVID 1309/1992'
 class CamarawsTest(TestCase):
     """Realiza testes envolvendo os web services da câmara"""
     
@@ -89,4 +95,11 @@ class CamarawsTest(TestCase):
         self.assertTrue('PL' in siglas)
         self.assertTrue('PEC' in siglas)
         self.assertTrue('MPV' in siglas)        
-
+    
+    def test_votacao_presente_plenario(self):
+        etree_plenario = self.camaraws.obter_proposicoes_votadas_plenario(ANO_PLENARIO)
+        nome_prop_list = []
+        for nomeProp in etree_plenario:
+            nome_prop_list.append(nomeProp.find('nomeProposicao').text)
+        self.assertTrue(NOME_PLENARIO in nome_prop_list)    
+        self.assertFalse(NOT_NOME_PLENARIO in nome_prop_list)                   
