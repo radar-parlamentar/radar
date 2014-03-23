@@ -38,7 +38,7 @@ def analise(request, nome_curto_casa_legislativa):
     partidos = models.Partido.objects.order_by('numero').all()
     casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
     try:     
-        periodicidade = request.POST["periodicidade"]
+        periodicidade = request.GET["periodicidade"]
     except:
         periodicidade = models.BIENIO
     try:
