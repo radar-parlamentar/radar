@@ -101,6 +101,8 @@ class ExportadorCSV:
             return 0
         elif opcao == models.OBSTRUCAO:
             return 0
+        elif opcao == models.AUSENTE:
+            return 0
         else: 
             raise ValueError()
     
@@ -111,8 +113,8 @@ class ExportadorCSV:
             writer.writerows(self.csv_rows)
 
 def main():
-    data_ini = parse_datetime('2005-01-01 0:0:0')
-    data_fim = parse_datetime('2006-12-30 0:0:0')
+    data_ini = parse_datetime('2010-06-09 0:0:0')
+    data_fim = parse_datetime('2010-06-09 23:59:0')
     exportador = ExportadorCSV('sen', data_ini, data_fim)
     exportador.exportar_csv()
     
