@@ -53,6 +53,16 @@ senado.main()
 from importadores import camara
 camara.main()
 
+# configuring uwsgi to start at boot
+wget -O init-deb.sh http://library.linode.com/assets/683-uwsgi-init-deb.sh
+sudo mv init-deb.sh /etc/init.d/uwsgi
+sudo chmod +x /etc/init.d/uwsgi
+sudo chown root:root /etc/init.d/uwsgi
+cd ~/radar
+sudo ln -s radar_uwsgi.ini /etc/default/uwsgi
+sudo /usr/sbin/update-rc.d -f uwsgi defaults
+sudo /etc/init.d/uwsgi start
+
 cd ~/radar
 uwsgi --ini radar_uwsgi.ini
 sudo /etc/init.d/nginx restart
