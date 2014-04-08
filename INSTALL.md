@@ -143,36 +143,23 @@ Agora, pode-se importar todos os dados com os Importadores!!
 4. Importação dos Dados
 -------------------
 
-- Convenção Nacional Francesa
+Para importar os dados basta digitar o comando:
+$ python manage.py shell
+$ from importadores import importador
 
-    	$ python manage.py shell
-    	$ from importadores import convencao
-    	$ convencao.main()
-
-- Câmara Municipal de São Paulo
-
-    	$ python manage.py shell
-    	$ from importadores import cmsp
-    	$ cmsp.main()
-
-    Tempo aproximado de execução (na VM do Google): 3 min
-
+Para selecionar os dados que serão importados, basta colocar 'True' na base desejada de acordo com a ordem abaixo:
+- Convenção
+- CMSP (Camara Municipal de São Paulo)
 - Senado
-
-    	$ python manage.py shell
-    	$ from importadores import senado
-    	$ senado.main()
-
-    Tempo aproximado de execução (na VM do Google): 4 min
-
 - Câmara dos Deputados
 
-    	$ python manage.py shell
-    	$ from importadores import camara
-    	$ camara.main()
+Por exemplo, caso deseje importar somente a base Convencao e Senado, então faça:
+$ importador.main(True, False, True, False) 
 
-    Tempo aproximado de execução (na VM do Google): 1 hora
-    
+
+Caso deseje importar todos:
+$ importador.main(True, True, True, True)
+
 - Criando novos importadores:
 
 http://radarparlamentar.polignu.org/importadores/
