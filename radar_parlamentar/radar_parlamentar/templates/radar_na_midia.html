@@ -1,0 +1,54 @@
+{%extends "base.html"%}
+
+{% block title %}
+   Radar na Mídia
+{% endblock title %}
+
+{% block extrascripts %}
+{% endblock extrascripts %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block headerImgClass %}
+    about
+{% endblock headerImgClass %}
+
+{% block nomepagina %}
+    Radar na Mídia
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Radar Parlamentar é notícia em todo lugar!
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}    
+    <li><a href="/index">Home</a> &raquo;</li>
+    <li><a href="/radarnamidia">Radar na Mídia</a></li>	 	
+	
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <article class="aboutDesc">
+        <p>
+	    <h3><a href="http://www.gazetadopovo.com.br">Gazeta do Povo</a></h3>
+	    <h4>Fidelidade a toda prova</h4>
+            Um estudo realizado pelo Grupo de Estudos de Software Livre da Poli/USP (PoliGNU) analisou a semelhança dos partidos políticos com base em 92 votações de projetos em 2011 na Câmara dos Deputados. Os dados indicam que as legendas aliadas apoiaram o PT, partido da presidente Dilma Rousseff, em 90% das propostas, independentemente da ideologia política, enquanto a oposição mantém semelhança próxima a 30%. No caso do PT, base do governo, a maior proximidade foi com o PCdoB, com 97%, e a menor com o PSol (19%). Com o PSDB, principal legenda da oposição, a igualdade ficou em 25%.
+	    <br><a href="https://dl.dropboxusercontent.com/u/18183156/radar/fiedelidade.pdf">Saiba mais...</a><br>
+        </p>
+	
+	 	<p>
+	    <h3><a href="http://www5.usp.br/">USP - Universidade de São Paulo</a></h3>
+	    <h4>Radar Parlamentar desenvolvido na Poli facilita acesso a dados de votações</h4>
+            Um projeto em fase de desenvolvimento por um grupo de alunos da Escola Politécnica (Poli) da USP deverá facilitar o acesso e análise, por parte da população em geral, dos dados referentes às votações ocorridas entre os parlamentares brasileiros, seja em âmbito municipal ou federal.
+	    <br><a href="http://www5.usp.br/11567/radar-parlamentar-desenvolvido-na-poli-facilita-acesso-a-dados-de-votacoes/">Saiba mais...</a><br>
+        </p>
+	</article>
+{% endblock content %}
+
+{% block extrascriptsend %}
+    menuActive('sobre_nos');   
+{% endblock extrascriptsend %}
+
+{% block extrajsend %}
+{% endblock extrajsend %}
