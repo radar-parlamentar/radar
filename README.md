@@ -17,6 +17,13 @@ Leonardo Leite
 
 =
 
+###TO DO
+
+
+* Toda a lista de ToDo do **Radar Parlamentar** é controlada através das *Issues*: [Issues Radar Parlamentar](https://github.com/leonardofl/radar_parlamentar/issues)
+
+=
+
 ###Questões
 
 Algumas questões específicas que espero responder analisando os dados. Os resultados dessas análises se encontram na pasta "resultados"
