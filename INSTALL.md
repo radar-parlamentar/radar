@@ -65,7 +65,7 @@ Agora, dentro da nossa pasta do projeto teremos disponíveis todas variáveis de
 
 Para instalar todas as dependencias Python necessárias para o nosso projeto rodar, basta executar:
 
-    $ pip install -r requirements.txt
+    $ sudo pip install -r requirements.txt
 
 Este comando vai buscar todas as dependencias definidas no arquivo *requirements.txt* e as intalará em nosso *conteiner* do *virtualenv*
 
@@ -98,21 +98,97 @@ Observações
 
 Você deve configurar um banco de dados MySQL para ser utilizado pelo Radar.
 
-Para mais detalhes, confira o arquivo **radar_parlamentar/BD_CONFIG.md**.
+Para configurar o MySql como banco de dados:
+Instalação:
 
-Para que seu banco possua dados, você deve realizar os processos de importação de dados descritos em **radar_parlamentar/importadores/HOWTO.md**.
+	$ sudo apt-get install mysql-server
+	$ sudo apt-get install python-mysqldb
+
+Deve-se criar um usuário "root" e o banco dentro do próprio MySQL.
+
+    $ mysql -u root -p 
+    Enter password: root
+    #Entra no shell do mysql
+    
+    mysql>CREATE DATABASE radar;
+    mysql>quit
+
+Edite o arquivo settings/development.py* e insira a senha do seu usuário do mysql (pode ser o root).
+
+Ao rodar python manage.py runserver no ambiente de desenvolvimento, será usado as configurações settings/development.py.
+
+<b>Em ambiente de desenvolvimento:</b>
+
+Criar development.py baseado em development.py.template.
+
+
+<b>Em ambiente de produção:</b>
+
+Criar production.py baseado em production.py.template.
+
+No ambiente de produção é necessário exportar a variável de ambiente export 	DJANGO_SETTINGS_MODULE='settings.production'. Para isso basta executar o script is_prod.sh. Referência do DJANGO: (https://code.djangoproject.com/wiki/SplitSettings)
+
+
+
+
+    
+Para criar as tabelas do Radar Parlamentar:
+
+    $ python manage.py syncdb #Cria todas as tabelas
+    
+Agora, pode-se importar todos os dados com os Importadores!!
+
+
+
+4. Importação dos Dados
+-------------------
+
+- Convenção Nacional Francesa
+
+    	$ python manage.py shell
+    	$ from importadores import convencao
+    	$ convencao.main()
+
+- Câmara Municipal de São Paulo
+
+    	$ python manage.py shell
+    	$ from importadores import cmsp
+    	$ cmsp.main()
+
+    Tempo aproximado de execução (na VM do Google): 3 min
+
+- Senado
+
+    	$ python manage.py shell
+    	$ from importadores import senado
+    	$ senado.main()
+
+    Tempo aproximado de execução (na VM do Google): 4 min
+
+- Câmara dos Deputados
+
+    	$ python manage.py shell
+    	$ from importadores import camara
+    	$ camara.main()
+
+    Tempo aproximado de execução (na VM do Google): 1 hora
+    
+- Criando novos importadores:
+
+http://radarparlamentar.polignu.org/importadores/
+
+
 
 Recomendamos inicialmente que você realize a importação dos dados Convenção Nacional Francesa (uma casa legislativa fictícia).
 
 
-4. Conferindo se está tudo certo
+5. Conferindo se está tudo certo
 ---------------------------------
+Execute o script de testes e testes unitários:
+    
+    $ ./tests.sh
+    $ ./unit_tests.sh
 
-Execute os testes:
-
-    $ python manage.py test <module_name>
-
-Onde `<module_name>` pode ser `analises, modelagem, importadores, exportadores ou importadorInterno`.
 
 Inicie o servidor do Django:
 
