@@ -42,7 +42,7 @@ def analise(request, nome_curto_casa_legislativa):
     except:
         periodicidade = models.BIENIO
     try:
-        palavras_chave = request.POST["palavras_chave"]
+        palavras_chave = request.GET["palavras_chave"]
     except:
         palavras_chave = ""
     num_votacao = casa_legislativa.num_votacao()
