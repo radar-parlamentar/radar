@@ -33,7 +33,8 @@
 {% block content %}
     <h3> {{casa_legislativa.nome}}</h3>
     <article id="descricao" class="inwrap">
-        Total de votações existentes nesta casa legislativa: <b>{{num_votacao}} </b> <br/><br/>
+        Total de votações existentes nesta casa legislativa: <b>{{num_votacao}} </b> 
+        <br/><br/>
         Dados utilizados nesta análise disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (atualizados em {{casa_legislativa.atualizacao}}).<br/>
 
         <form id="formAnalise" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">

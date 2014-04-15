@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^origem/$', 'radar_parlamentar.views.origem'),
     url(r'^ogrupo/$', 'radar_parlamentar.views.ogrupo'),
     url(r'^premiacoes/$', 'radar_parlamentar.views.premiacoes'),
+    url(r'^radarnamidia/$', 'radar_parlamentar.views.radar_na_midia'),
     url(r'^sim-voto-aberto/$', 'radar_parlamentar.views.votoaberto'),
     url(r'^importadores/$', 'radar_parlamentar.views.importadores'),
 
