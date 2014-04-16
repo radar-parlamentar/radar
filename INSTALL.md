@@ -168,8 +168,30 @@ http://radarparlamentar.polignu.org/importadores/
 
 Recomendamos inicialmente que você realize a importação dos dados Convenção Nacional Francesa (uma casa legislativa fictícia).
 
+5. Configuração do South
+-------------------------
 
-5. Conferindo se está tudo certo
+South é uma ferramenta que funciona como uma camada de migração, independente do banco de dados. Eventualmente, seu models.py vai ser modificado e o South vai identificar e realizar as mudanças correspondentes no seu banco por você, sem a necessidade de utilizar comandos SQL e sem perda de dados.
+
+* Instalação:
+
+	$ sudo pip install South 
+	
+Adicionar o South no `INSTALLED_APPS` no arquivo `settings/defaults.py`.
+
+	$ python manage.py syncdb 
+	$ python manage.py convert_to_south modelagem
+
+* Como usar:
+
+Quando ocorrer alterações na model, digite no terminal:
+	
+	$ python manage.py schemamigration modelagem --auto
+	$ python manage.py migrate modelagem
+	
+Observação: Cuidado ao diminuir o tamanho dos campos. Podem existir dados com tamanho superior ao tamanho desejado.
+
+6. Conferindo se está tudo certo
 ---------------------------------
 Execute o script de testes e testes unitários:
     
