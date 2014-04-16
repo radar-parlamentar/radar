@@ -117,7 +117,9 @@ INSTALLED_APPS = (
     'analises',
     'exportadores',
     'importadorInterno',
-    'testes_integracao'
+    'testes_integracao',
+    'south',
+
 )
 
 # A sample logging configuration. The only tangible logging
