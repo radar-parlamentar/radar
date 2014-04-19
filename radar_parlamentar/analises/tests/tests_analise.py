@@ -24,6 +24,7 @@ from django.utils.dateparse import parse_datetime
 
 from analises import analise
 from modelagem import models
+from modelagem.utils import PeriodosRetriever
 from importadores import convencao
 from datetime import date
 import numpy
@@ -74,6 +75,11 @@ class MatrizesDeDadosBuilderTest(TestCase):
         cls.importer = convencao.ImportadorConvencao()
         cls.importer.importar()
 
+    @classmethod
+    def tearDownClass(cls):
+        from util_test import flush_db
+        flush_db(cls)
+        
     def setUp(self):
         self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
         self.partidos = MatrizesDeDadosBuilderTest.importer.partidos
@@ -93,6 +99,8 @@ class MatrizesDeDadosBuilderTest(TestCase):
 
 def mean(v):
     return 1.0 * sum(v) / len(v)
+
+
 
 class AnalisadorTemporalTest(TestCase):
     
@@ -142,6 +150,41 @@ class AnalisadorTemporalTest(TestCase):
         self.assertAlmostEqual(coordenadas[self.monarquistas][1], 0.09787006, 4)                
 
 
+
+class RotacionadorTest(TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.importer = convencao.ImportadorConvencao()
+        cls.importer.importar()
+
+    @classmethod
+    def tearDownClass(cls):
+        from util_test import flush_db
+        flush_db(cls)
+
+    def setUp(self):
+        self.casa_legislativa = models.CasaLegislativa.objects.get(nome_curto='conv')
+                    
+    def test_rotacao(self):
+        periodosRetriever = PeriodosRetriever(self.casa_legislativa, models.SEMESTRE)
+        periodos = periodosRetriever.get_periodos()
+        analisador1 = analise.AnalisadorPeriodo(self.casa_legislativa, periodo=periodos[0])
+        analise_do_periodo1 = analisador1.analisa()
+        analisador2 = analise.AnalisadorPeriodo(self.casa_legislativa, periodo=periodos[1])
+        analise_do_periodo2 = analisador2.analisa()
+        rotacionador = analise.Rotacionador(analise_do_periodo2, analise_do_periodo1)
+        analise_rotacionada = rotacionador.espelha_ou_roda()
+        grafico = analise_rotacionada.coordenadas_legislaturas
+        # legislatura 1
+        self.assertAlmostEqual(grafico[1][0], -0.29498659, 4)    
+        self.assertAlmostEqual(grafico[1][1], -0.06674737, 4)
+        # legislatura 4
+        self.assertAlmostEqual(grafico[4][0], -0.11386368, 4)    
+        self.assertAlmostEqual(grafico[4][1], -0.38797608, 4)
+        # legislatura 9
+        self.assertAlmostEqual(grafico[9][0],  0.49080368, 4)    
+        self.assertAlmostEqual(grafico[9][1], -0.20057948, 4)
 
 
 
