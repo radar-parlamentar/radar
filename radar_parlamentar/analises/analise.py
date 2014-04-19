@@ -61,7 +61,6 @@ class AnalisadorTemporal:
         self.ini = self.periodos[0].ini
         self.fim = self.periodos[len(self.periodos)-1].fim
         self.periodicidade = periodicidade
-        self.area_total = 0
         self.analises_periodo = []
         self.palavras_chave = palavras_chave
         self.votacoes = []
@@ -74,7 +73,6 @@ class AnalisadorTemporal:
         analise_temporal = AnaliseTemporal()
         analise_temporal.casa_legislativa = self.casa_legislativa
         analise_temporal.periodicidade = self.periodicidade
-        analise_temporal.area_total = self.area_total
         analise_temporal.analises_periodo = self.analises_periodo
         analise_temporal.votacoes = self.votacoes
         return analise_temporal
@@ -100,11 +98,7 @@ class AnalisadorTemporal:
             analiseRotacionada = rotacionador.espelha_ou_roda()
             self.analises_periodo[i] = analiseRotacionada
         logger.info("Rotacionado") 
-        
-        # determina área máxima:
-        maior_soma_dos_tamanhos_dos_partidos = max([ analise.soma_dos_tamanhos_dos_partidos for analise in self.analises_periodo ])
-        logger.info("maior soma dos tamanhos dos partidos = %f",maior_soma_dos_tamanhos_dos_partidos)
-        self.area_total = maior_soma_dos_tamanhos_dos_partidos
+
 
 
 class AnalisadorPeriodo:
@@ -138,7 +132,6 @@ class AnalisadorPeriodo:
         self.vetores_presencas = []
         self.tamanhos_partidos = {}
         self.coordenadas_partidos = {}
-        self.soma_dos_tamanhos_dos_partidos = 0
         self.partido_do_parlamentar = [] # array de partido.nome's, um por legislatura
         self.presencas_legislaturas = {} # legislatura.id => {True,False}, sendo True se estava presente no periodo.
         self.legislaturas_por_partido = {} # partido.nome => lista das legislaturas do partido (independente de periodo).
@@ -163,7 +156,6 @@ class AnalisadorPeriodo:
         analisePeriodo.num_votacoes = self.num_votacoes
         analisePeriodo.pca = self.pca
         analisePeriodo.tamanhos_partidos = self.tamanhos_partidos
-        analisePeriodo.soma_dos_tamanhos_dos_partidos = self.soma_dos_tamanhos_dos_partidos
         analisePeriodo.coordenadas_legislaturas = self.coordenadas_legislaturas
         analisePeriodo.coordenadas_partidos = self.coordenadas_partidos
         analisePeriodo.legislaturas_por_partido = self.legislaturas_por_partido
@@ -249,7 +241,6 @@ class AnalisadorPeriodo:
         analisador_partidos.analisa_partidos()
         self.coordenadas_partidos = analisador_partidos.coordenadas_partidos
         self.tamanhos_partidos = analisador_partidos.tamanhos_partidos
-        self.soma_dos_tamanhos_dos_partidos = analisador_partidos.soma_dos_tamanhos_dos_partidos
         self.legislaturas_por_partido = analisador_partidos.legislaturas_por_partido
 
 class MatrizesDeDadosBuilder:
@@ -326,14 +317,12 @@ class AnalisadorPartidos:
         self.partido_do_parlamentar = partido_do_parlamentar 
         self.coordenadas_partidos = {}
         self.tamanhos_partidos = {}
-        self.soma_dos_tamanhos_dos_partidos = 0
         self.legislaturas_por_partido = {}
 
     def analisa_partidos(self):
         """Gera as seguintes saídas:
             self.coordenadas_partido # partido => [x,y]
             self.tamanhos_partidos # partido => int
-            self.soma_dos_tamanhos_dos_partidos # int
             self.legislaturas_por_partido # partido => legislaturas
         """
         for ip in range(0, len(self.partidos)):
@@ -345,7 +334,6 @@ class AnalisadorPartidos:
             tamanho_partido = len(self.matriz_presencas[indices_deste_partido,:].sum(axis=1).nonzero()[0])
             self.tamanhos_partidos[self.partidos[ip]] = tamanho_partido
             self.legislaturas_por_partido[self.partidos[ip].nome] = [self.legislaturas[x] for x in indices_deste_partido]
-            self.soma_dos_tamanhos_dos_partidos = sum(self.tamanhos_partidos.values())
             self.coordenadas_partidos[self.partidos[ip]] = coordenadas_medias
             
     def _media_sem_nans(self, array_numpy):
