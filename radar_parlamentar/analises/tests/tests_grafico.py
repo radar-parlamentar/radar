@@ -134,3 +134,19 @@ class MaxRadiusCalculatorTest(TestCase):
         self.assertEquals(calc.max_r(), 5)
         calc.add_point(10, 3)
         self.assertAlmostEquals(calc.max_r(), 10.44, 1)
+        
+        
+class GraphScalerTest(TestCase):
+    
+    def test_graph_scale(self):
+        partidos = {}
+        partidos['Jacobinos'] = [0.1, -0.2]
+        partidos['Girondinos'] = [0.5, 1]
+        scaler = grafico.GraphScaler()
+        scaled = scaler.scale(partidos, "cach_key")
+        self.assertEqual(10, scaled['Jacobinos'][0])
+        self.assertEqual(-20, scaled['Jacobinos'][1])
+        self.assertEqual(50, scaled['Girondinos'][0])
+        self.assertEqual(100, scaled['Girondinos'][1])
+        
+        
