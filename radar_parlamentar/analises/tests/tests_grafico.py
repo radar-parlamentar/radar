@@ -149,4 +149,32 @@ class GraphScalerTest(TestCase):
         self.assertEqual(50, scaled['Girondinos'][0])
         self.assertEqual(100, scaled['Girondinos'][1])
         
+class RaioPartidoCalculatorTest(TestCase):
+    
+    @classmethod
+    def setUpClass(cls):
+        cls.importer = convencao.ImportadorConvencao()
+        cls.importer.importar()
+
+    @classmethod
+    def tearDownClass(cls):
+        from util_test import flush_db
+        flush_db(cls)
+
+    def setUp(self):
+        self.partidos = RaioPartidoCalculatorTest.importer.partidos
+        
+    def test_raio_partidos(self):
+        periodo_str = '1o Semestre'
+        tamanhos = {}
+        tamanho_por_partido = convencao.PARLAMENTARES_POR_PARTIDO
+        for partido in self.partidos:
+            tamanhos[partido] = tamanho_por_partido
+        tamanhos_dos_partidos_por_periodo = {periodo_str : tamanhos}
+        raio_calculator = grafico.RaioPartidoCalculator(tamanhos_dos_partidos_por_periodo)
+        raio_esperado = 69.3
+        for partido in self.partidos:
+            raio = raio_calculator.get_raio(partido, periodo_str)
+            self.assertAlmostEqual(raio, raio_esperado, 1)
+        
         

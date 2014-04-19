@@ -66,7 +66,7 @@ class JsonAnaliseGenerator:
         dict_geral = {}
         self.escala_periodo = self.CONSTANTE_ESCALA_TAMANHO**2. / max(1,self.analise_temporal.area_total)
         escala_20px = 20**2. * (1./max(1,self.escala_periodo)) # numero de parlamentares representado
-        dict_geral['escala_tamanho'] = round(escala_20px,5)
+        dict_geral['escala_tamanho'] = round(escala_20px,5) # TODO ???????????
         dict_geral['escala_tamanho'] = None
         dict_geral['filtro_votacoes'] = None
         dict_geral['CasaLegislativa'] = self._dict_casa_legislativa()
@@ -244,3 +244,37 @@ class GraphScaler:
                 raise ValueError("Value should be in [-1,1]")
             scaled[key] = [x*100, y*100]
         return scaled
+
+
+class RaioPartidoCalculator():
+    """Define o raio da circunferência do partido no gráfico"""
+    
+    def __init__(self, tamanhos_dos_partidos_por_periodo):
+        """Argumento:
+            tamanhos_dos_partidos_por_periodo: string_periodo => (partido => int)
+            
+            onde string_periodo é uma string que representa univocamente um período;
+            gerada com str(periodo), onde periodo é do tipo PeriodoCasaLegislativa
+        """
+        self.CONSTANTE_ESCALA_TAMANHO = 120
+        self.tamanhos_dos_partidos_por_periodo = tamanhos_dos_partidos_por_periodo
+        self._init_area_total()
+        self.escala = self.CONSTANTE_ESCALA_TAMANHO**2. / max(1, self.area_total)
+
+    def _init_area_total(self):
+        maior_soma = 0
+        for tamanhos_partidos in self.tamanhos_dos_partidos_por_periodo.values():
+            soma_dos_tamanhos_dos_partidos = sum(tamanhos_partidos.values())
+            if soma_dos_tamanhos_dos_partidos > maior_soma:
+                maior_soma = soma_dos_tamanhos_dos_partidos
+        self.area_total = maior_soma;
+        
+    def get_raio(self, partido, periodo_str):
+        tamanhos_partidos = self.tamanhos_dos_partidos_por_periodo[periodo_str]
+        tamanho = tamanhos_partidos[partido] 
+        raio = sqrt(tamanho * self.escala)
+        return round(raio, 1)
+        
+        
+        
+        

@@ -20,8 +20,6 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 
-from django.utils.dateparse import parse_datetime
-
 from analises import analise
 from modelagem import models
 from modelagem.utils import PeriodosRetriever
