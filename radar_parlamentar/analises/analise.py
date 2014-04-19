@@ -174,8 +174,6 @@ class AnalisadorPeriodo:
         matrizesBuilder.gera_matrizes()
         self.vetores_votacao = matrizesBuilder.matriz_votacoes
         self.vetores_presencas = matrizesBuilder.matriz_presencas
-        self.vetores_votacao_por_partido = matrizesBuilder.matriz_votacoes_por_partido
-        self.vetores_presenca_por_partido = matrizesBuilder.matriz_presencas_por_partido
         self.partido_do_parlamentar = matrizesBuilder.partido_do_parlamentar
 
     def _calcula_legislaturas_2d(self):
@@ -278,23 +276,17 @@ class MatrizesDeDadosBuilder:
         self.legislaturas = legislaturas
         self.matriz_votacoes =  numpy.zeros((len(self.legislaturas), len(self.votacoes)))
         self.matriz_presencas = numpy.zeros((len(self.legislaturas), len(self.votacoes)))
-        self.matriz_votacoes_por_partido =  numpy.zeros((len(self.partidos), len(self.votacoes)))
-        self.matriz_presencas_por_partido = numpy.zeros((len(self.partidos), len(self.votacoes)))
         self.partido_do_parlamentar = [] # array de partido.nome's, um por legislatura
         self._dic_partido_votos = {} # chave eh nome do partido, e valor eh VotoPartido
         self._dic_legislaturas_votos = {} # legislatura.id => voto.opcao
 
     def gera_matrizes(self):
-        """Cria quatro matrizes: 
+        """Cria duas matrizes: 
             matriz_votacoes -- de votações (por legislaturas), 
             matriz_presencas -- presenças de legislaturas
-            matriz_votacoes_por_partido
-            matriz_presencas_por_partido
 
-        As matrizes de votações têm valores entre -1 e 1. Quando por parlamentar, os valores
-        possíveis são -1, 0 e 1, e quando agregado por partido a faixa é contínua.
-    
-        As linhas indexam os partidos ou parlamentares (dependendo da matriz). 
+        Os valores possíveis nas matrizes são -1, 0 e 1.
+        As linhas indexam parlamentares. 
         As colunas indexam as votações.
         A ordenação das linhas segue a ordem de self.partidos ou self.legislaturas,
         e a ordenação das colunas segue a ordem de self.votacoes.
@@ -306,22 +298,13 @@ class MatrizesDeDadosBuilder:
             iv += 1
             self._agrega_votos(votacao)
             self._preenche_matriz_por_legislatura(votacao, iv)
-            self._preenche_matrizes_por_partido(votacao, iv)
         return self.matriz_votacoes  
     
     def _agrega_votos(self, votacao):
-        self._dic_partido_votos = {}
-        for partido in self.partidos:
-            self._dic_partido_votos[partido.nome] = models.VotoPartido(partido.nome)
         # com o "select_related" fazemos uma query eager
-        votos = votacao.voto_set.select_related('legislatura__partido', 'opcao', 'legislatura__id').all() 
-        
+        votos = votacao.voto_set.select_related('opcao', 'legislatura__id').all() 
         for voto in votos:
-            nome_partido = voto.legislatura.partido.nome
-            voto_partido = self._dic_partido_votos[nome_partido]
-            opcao = voto.opcao
-            voto_partido.add(opcao) 
-            self._dic_legislaturas_votos[voto.legislatura.id] = opcao
+            self._dic_legislaturas_votos[voto.legislatura.id] = voto.opcao
             
     def _preenche_matriz_por_legislatura(self, votacao, iv):
         il = -1 # indice legislatura
@@ -338,18 +321,6 @@ class MatrizesDeDadosBuilder:
             else:
                 self.matriz_votacoes[il][iv] = 0.
                 self.matriz_presencas[il][iv] = 0.
-
-    def _preenche_matrizes_por_partido(self, votacao, iv):
-        ip = -1 # índice partido 
-        for partido in self.partidos:
-            ip += 1
-            if self._dic_partido_votos.has_key(partido.nome):
-                voto_partido = self._dic_partido_votos[partido.nome] 
-                self.matriz_votacoes_por_partido[ip][iv] = voto_partido.voto_medio() 
-                self.matriz_presencas_por_partido[ip][iv] = voto_partido.total()
-            else:
-                self.matriz_votacoes_por_partido[ip][iv] = 0.
-                self.matriz_presencas_por_partido[ip][iv] = 0.
 
     def _opcao_to_double(self, opcao):
         if opcao == 'SIM':

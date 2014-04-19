@@ -114,10 +114,6 @@ class MatrizesDeDadosBuilderTest(TestCase):
         builder.gera_matrizes()
         self.assertTrue((builder.matriz_votacoes == MATRIZ_VOTACAO_ESPERADA).all()) 
 
-def mean(v):
-    return 1.0 * sum(v) / len(v)
-
-
 
 class AnalisadorTemporalTest(TestCase):
     
