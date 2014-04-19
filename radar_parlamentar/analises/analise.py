@@ -270,7 +270,6 @@ class AnalisadorPeriodo:
         return mm.filled(numpy.nan)
     
 
-# TODO testar matriz_votacoes
 class MatrizesDeDadosBuilder:
     
     def __init__(self, votacoes, partidos, legislaturas):
@@ -289,14 +288,18 @@ class MatrizesDeDadosBuilder:
         """Cria quatro matrizes: 
             matriz_votacoes -- de votações (por legislaturas), 
             matriz_presencas -- presenças de legislaturas
+            matriz_votacoes_por_partido
+            matriz_presencas_por_partido
 
-        As matrizes de votações têm valores entre -1 e 1. Quando por deputado, os valores
+        As matrizes de votações têm valores entre -1 e 1. Quando por parlamentar, os valores
         possíveis são -1, 0 e 1, e quando agregado por partido a faixa é contínua.
     
-        As linhas indexam os partidos em matriz_votacoes_por_partido e matriz_presencas
-        e indexam os legislaturas em matriz_votacoes. As colunas indexam as votações.
+        As linhas indexam os partidos ou parlamentares (dependendo da matriz). 
+        As colunas indexam as votações.
         A ordenação das linhas segue a ordem de self.partidos ou self.legislaturas,
         e a ordenação das colunas segue a ordem de self.votacoes.
+        
+        Retorna matriz_votacoes
         """
         iv = -1 # índice votação
         for votacao in self.votacoes:
