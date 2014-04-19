@@ -56,6 +56,7 @@ class AnalisadorPeriodoTest(TestCase):
         
     # TODO test_coordenadas_parlamentares
         
+    # TODO mover test_coordenadas_partidos para AnalisadorPartidosTest
     def test_coordenadas_partidos(self):
         periodo = models.PeriodoCasaLegislativa(date(1989,02,02), date(1989,10,10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
@@ -115,6 +116,20 @@ class MatrizesDeDadosBuilderTest(TestCase):
         builder = analise.MatrizesDeDadosBuilder(self.votacoes, self.partidos, self.legislaturas)
         builder.gera_matrizes()
         self.assertTrue((builder.matriz_votacoes == MATRIZ_VOTACAO_ESPERADA).all()) 
+
+    def test_matriz_presencas(self):
+        MATRIZ_PRESENCAS_ESPERADA = numpy.matrix([[ 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.],
+                                             [ 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.],
+                                             [ 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.],
+                                             [ 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.],
+                                             [ 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.],
+                                             [ 1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.],
+                                             [ 1.,  1.,  1.,  1.,  1.,  0.,  1.,  1.],
+                                             [ 1.,  1.,  1.,  1.,  1.,  1.,  0.,  0.],
+                                             [ 1.,  1.,  1.,  0.,  1.,  1.,  1.,  1.]])
+        builder = analise.MatrizesDeDadosBuilder(self.votacoes, self.partidos, self.legislaturas)
+        builder.gera_matrizes()
+        self.assertTrue((builder.matriz_presencas == MATRIZ_PRESENCAS_ESPERADA).all())
 
 
 class AnalisadorTemporalTest(TestCase):
