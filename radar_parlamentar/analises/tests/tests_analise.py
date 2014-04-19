@@ -99,16 +99,20 @@ class MatrizesDeDadosBuilderTest(TestCase):
         self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa__nome_curto='conv')
         self.legislaturas = models.Legislatura.objects.filter(casa_legislativa__nome_curto='conv').distinct()
                         
-    # TODO creio que esta matriz não é mais utilizada...                     
-    def test_matriz_votacoes_por_partido(self):
-        vetor_girondinos =   [mean([1, 0, -1]), mean([-1, -1, -1]), mean([-1, -1, 1]), mean([1, 1, 1]), mean([1, 1, 0]), mean([1, 1, 1]), mean([1, 1, 0]), mean([-1, -1, -1])]
-        vetor_jacobinos =    [mean([1, 1, 1]), mean([-1, -1, -1]), mean([-1, -1, -1]), mean([1, 0 -1]), mean([1, 1, 1]), mean([1, 1, 1]), mean([1, 1, 1]), mean([0, -1, -1])]
-        vetor_monarquistas = [mean([-1, -1, -1]), mean([1, 1, 1]), mean([1, 1, 1]), mean([1, -1]), mean([-1, -1, -1]), mean([1, 1]), mean([1,  1]), mean([1, 1])]
-        MATRIZ_VOTACAO_ESPERADA = numpy.matrix([vetor_girondinos, vetor_jacobinos, vetor_monarquistas])
+    def test_matriz_votacoes(self):
+        # linhas são parlamentares e colunas são votações
+        MATRIZ_VOTACAO_ESPERADA = numpy.matrix([[ 1., -1., -1.,  1.,  1.,  1.,  1., -1.],
+                                        [ 0., -1., -1.,  1.,  1.,  1.,  1., -1.],
+                                        [-1., -1.,  1.,  1.,  0.,  1.,  0., -1.],
+                                        [ 1., -1., -1.,  1.,  1.,  1.,  1.,  0.],
+                                        [ 1., -1., -1.,  0.,  1.,  1.,  1., -1.],
+                                        [ 1., -1., -1., -1.,  1.,  1.,  1., -1.],
+                                        [-1.,  1.,  1.,  1., -1.,  0.,  1.,  1.],
+                                        [-1.,  1.,  1., -1., -1.,  1.,  0.,  0.],
+                                        [-1.,  1.,  1.,  0., -1.,  1.,  1.,  1.]])
         builder = analise.MatrizesDeDadosBuilder(self.votacoes, self.partidos, self.legislaturas)
         builder.gera_matrizes()
-        matriz_votacao_por_partido = builder.matriz_votacoes_por_partido
-        self.assertTrue((matriz_votacao_por_partido == MATRIZ_VOTACAO_ESPERADA).all())         
+        self.assertTrue((builder.matriz_votacoes == MATRIZ_VOTACAO_ESPERADA).all()) 
 
 def mean(v):
     return 1.0 * sum(v) / len(v)
