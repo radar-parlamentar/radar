@@ -54,6 +54,8 @@ class AnalisadorPeriodoTest(TestCase):
             if partido.nome == convencao.MONARQUISTAS:
                 self.monarquistas = partido
         
+    # TODO test_coordenadas_parlamentares
+        
     def test_coordenadas_partidos(self):
         periodo = models.PeriodoCasaLegislativa(date(1989,02,02), date(1989,10,10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
