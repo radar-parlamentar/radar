@@ -66,6 +66,19 @@ class AnalisadorPeriodoTest(TestCase):
         self.assertAlmostEqual(coordenadas[self.monarquistas][0], 0.440, 2)
         self.assertAlmostEqual(coordenadas[self.monarquistas][1], 0.079, 2)
 
+    # TODO extrair classe que calcula tamanho do partido
+    def test_tamanho_partidos(self):
+        periodo = models.PeriodoCasaLegislativa(date(1989,02,02), date(1989,10,10))
+        analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
+        analise_periodo = analisador.analisa()
+        tamanhos = analise_periodo.tamanhos_partidos
+        tamanho_esperado = convencao.PARLAMENTARES_POR_PARTIDO
+        partidos = AnalisadorPeriodoTest.importer.partidos
+        self.assertEquals(3, len(partidos))
+        for p in partidos:
+            self.assertEqual(tamanhos[p], tamanho_esperado)
+        soma = 3*tamanho_esperado
+        self.assertEqual(analise_periodo.soma_dos_tamanhos_dos_partidos, soma)
 
 
 class MatrizesDeDadosBuilderTest(TestCase):        
