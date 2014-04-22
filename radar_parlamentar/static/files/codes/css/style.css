@@ -467,26 +467,26 @@ ol.list.alphalow{list-style: lower-alpha;}
         background: transparent url(../../images/boxes/fbt-box-top.png) 0 0 no-repeat;
         padding-top: 10px;
         width: 440px;
-        height: 120px;
+        height: 150px;
     }
 
     #feedback .contents,
     #tweets .contents{
         background: transparent url(../../images/boxes/fbt-box-btm.png) 0 bottom no-repeat;
         padding-bottom: 10px;
-        height: 100px;
+        height: 140px;
     }
 
     #feedback ul,
     #tweets ul{
         background: transparent url(../../images/boxes/fbt-box-bg.png) 0 0 repeat-y;
         padding: 10px 0;
-        height: 80px;
+        height: 140px;
     }
 
     #feedback ul li{
         display: block;
-        line-height: 18px;
+        line-height: 10px;
         width: 410px;
         padding: 14px 16px 16px 16px;
     }

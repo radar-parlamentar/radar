@@ -82,7 +82,7 @@ class FiltroVotacao():
         proposicoes = self._recupera_proposicoes(casa_legislativa)
 
         votacoes = models.Votacao.por_casa_legislativa(casa_legislativa, periodo_casa_legislativa.ini, periodo_casa_legislativa.fim)
-        if not palavras_chave:
+        if palavras_chave==[]:
             votacoes_com_palavras_chave = votacoes   
         else:
             proposicoes_com_votacoes = self._filtra_proposicoes_com_votacoes(proposicoes, votacoes)
