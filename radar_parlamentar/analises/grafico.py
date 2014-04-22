@@ -45,7 +45,15 @@ class JsonAnaliseGenerator:
         self.max_partido_radius_calculator = MaxRadiusCalculator()
         self.parlamentaresScaler = GraphScaler()
         self.partidosScaler = GraphScaler()
+        self._init_raio_calculator()
         
+    def _init_raio_calculator(self):
+        tamanhos_dos_partidos_por_periodo = {}
+        for ap in self.analise_temporal.analises_periodo:
+            label_periodo = str(ap.periodo)
+            tamanhos_dos_partidos_por_periodo[label_periodo] = ap.tamanhos_partidos 
+        self.raio_partido_calculator = RaioPartidoCalculator(tamanhos_dos_partidos_por_periodo)
+    
     def get_json(self):
         if not self.json:
             logger.info('Gerando json...')
@@ -64,9 +72,6 @@ class JsonAnaliseGenerator:
     
     def _dict_geral(self):
         dict_geral = {}
-        self.escala_periodo = self.CONSTANTE_ESCALA_TAMANHO**2. / max(1,self.analise_temporal.area_total)
-        escala_20px = 20**2. * (1./max(1,self.escala_periodo)) # numero de parlamentares representado
-        dict_geral['escala_tamanho'] = round(escala_20px,5)
         dict_geral['escala_tamanho'] = None
         dict_geral['filtro_votacoes'] = None
         dict_geral['CasaLegislativa'] = self._dict_casa_legislativa()
@@ -150,7 +155,8 @@ class JsonAnaliseGenerator:
         dict_partido["x"] =  []
         dict_partido["y"] =  []
         for ap in self.analise_temporal.analises_periodo:
-            cache_coords_key = str(ap.periodo)
+            label_periodo = str(ap.periodo)
+            cache_coords_key = label_periodo 
             coordenadas = self.partidosScaler.scale(ap.coordenadas_partidos,cache_coords_key)
             try:
                 x = round(coordenadas[partido][0],2)
@@ -165,10 +171,10 @@ class JsonAnaliseGenerator:
             except KeyError:
                 dict_partido["x"].append(0.)
                 dict_partido["y"].append(0.)
-            t = ap.tamanhos_partidos[partido]
-            dict_partido["t"].append(t)
-            r = sqrt(t*self.escala_periodo)
-            dict_partido["r"].append(round(r,1))
+            tamanho = ap.tamanhos_partidos[partido]
+            dict_partido["t"].append(tamanho)
+            raio = self.raio_partido_calculator.get_raio(partido, label_periodo)
+            dict_partido["r"].append(raio)
         dict_partido["parlamentares"] = []
         #legislaturas = self.analise_temporal.analises_periodo[0].legislaturas_por_partido[partido.nome]
         legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(partido=partido).select_related('id', 'localidade', 'partido__nome','parlamentar__nome')
@@ -244,3 +250,37 @@ class GraphScaler:
                 raise ValueError("Value should be in [-1,1]")
             scaled[key] = [x*100, y*100]
         return scaled
+
+
+class RaioPartidoCalculator():
+    """Define o raio da circunferência do partido no gráfico"""
+    
+    def __init__(self, tamanhos_dos_partidos_por_periodo):
+        """Argumento:
+            tamanhos_dos_partidos_por_periodo: string_periodo => (partido => int)
+            
+            onde string_periodo é uma string que representa univocamente um período;
+            gerada com str(periodo), onde periodo é do tipo PeriodoCasaLegislativa
+        """
+        self.CONSTANTE_ESCALA_TAMANHO = 120
+        self.tamanhos_dos_partidos_por_periodo = tamanhos_dos_partidos_por_periodo
+        self._init_area_total()
+        self.escala = self.CONSTANTE_ESCALA_TAMANHO**2. / max(1, self.area_total)
+
+    def _init_area_total(self):
+        maior_soma = 0
+        for tamanhos_partidos in self.tamanhos_dos_partidos_por_periodo.values():
+            soma_dos_tamanhos_dos_partidos = sum(tamanhos_partidos.values())
+            if soma_dos_tamanhos_dos_partidos > maior_soma:
+                maior_soma = soma_dos_tamanhos_dos_partidos
+        self.area_total = maior_soma;
+        
+    def get_raio(self, partido, periodo_str):
+        tamanhos_partidos = self.tamanhos_dos_partidos_por_periodo[periodo_str]
+        tamanho = tamanhos_partidos[partido] 
+        raio = sqrt(tamanho * self.escala)
+        return round(raio, 1)
+        
+        
+        
+        

@@ -61,7 +61,6 @@ class AnalisadorTemporal:
         self.ini = self.periodos[0].ini
         self.fim = self.periodos[len(self.periodos)-1].fim
         self.periodicidade = periodicidade
-        self.area_total = 0
         self.analises_periodo = []
         self.palavras_chave = palavras_chave
         self.votacoes = []
@@ -74,7 +73,6 @@ class AnalisadorTemporal:
         analise_temporal = AnaliseTemporal()
         analise_temporal.casa_legislativa = self.casa_legislativa
         analise_temporal.periodicidade = self.periodicidade
-        analise_temporal.area_total = self.area_total
         analise_temporal.analises_periodo = self.analises_periodo
         analise_temporal.votacoes = self.votacoes
         return analise_temporal
@@ -100,11 +98,7 @@ class AnalisadorTemporal:
             analiseRotacionada = rotacionador.espelha_ou_roda()
             self.analises_periodo[i] = analiseRotacionada
         logger.info("Rotacionado") 
-        
-        # determina área máxima:
-        maior_soma_dos_tamanhos_dos_partidos = max([ analise.soma_dos_tamanhos_dos_partidos for analise in self.analises_periodo ])
-        logger.info("maior soma dos tamanhos dos partidos = %f",maior_soma_dos_tamanhos_dos_partidos)
-        self.area_total = maior_soma_dos_tamanhos_dos_partidos
+
 
 
 class AnalisadorPeriodo:
@@ -138,7 +132,6 @@ class AnalisadorPeriodo:
         self.vetores_presencas = []
         self.tamanhos_partidos = {}
         self.coordenadas_partidos = {}
-        self.soma_dos_tamanhos_dos_partidos = 0
         self.partido_do_parlamentar = [] # array de partido.nome's, um por legislatura
         self.presencas_legislaturas = {} # legislatura.id => {True,False}, sendo True se estava presente no periodo.
         self.legislaturas_por_partido = {} # partido.nome => lista das legislaturas do partido (independente de periodo).
@@ -154,7 +147,7 @@ class AnalisadorPeriodo:
     def analisa(self):
         """Retorna instância de AnalisePeriodo"""
         self._calcula_legislaturas_2d()
-        self._calcula_centroides_partidos()
+        self._analisa_partidos()
         analisePeriodo = AnalisePeriodo()
         analisePeriodo.casa_legislativa = self.casa_legislativa
         analisePeriodo.periodo = self.periodo
@@ -163,7 +156,6 @@ class AnalisadorPeriodo:
         analisePeriodo.num_votacoes = self.num_votacoes
         analisePeriodo.pca = self.pca
         analisePeriodo.tamanhos_partidos = self.tamanhos_partidos
-        analisePeriodo.soma_dos_tamanhos_dos_partidos = self.soma_dos_tamanhos_dos_partidos
         analisePeriodo.coordenadas_legislaturas = self.coordenadas_legislaturas
         analisePeriodo.coordenadas_partidos = self.coordenadas_partidos
         analisePeriodo.legislaturas_por_partido = self.legislaturas_por_partido
@@ -174,8 +166,6 @@ class AnalisadorPeriodo:
         matrizesBuilder.gera_matrizes()
         self.vetores_votacao = matrizesBuilder.matriz_votacoes
         self.vetores_presencas = matrizesBuilder.matriz_presencas
-        self.vetores_votacao_por_partido = matrizesBuilder.matriz_votacoes_por_partido
-        self.vetores_presenca_por_partido = matrizesBuilder.matriz_presencas_por_partido
         self.partido_do_parlamentar = matrizesBuilder.partido_do_parlamentar
 
     def _calcula_legislaturas_2d(self):
@@ -244,33 +234,15 @@ class AnalisadorPeriodo:
                 self.pca.U[il,:] = numpy.zeros((1,self.num_votacoes))*numpy.NaN
                 self.presencas_legislaturas[l.id] = False
 
-    def _calcula_centroides_partidos(self):
-        ip = -1
-        matriz_2cp = self.pca.U[:,0:2]
-        for p in self.partidos:
-            ip += 1
-            indices_deste_partido = []
-            il = -1
-            for l in self.legislaturas:
-                il += 1
-                if self.partido_do_parlamentar[il] == self.partidos[ip].nome:
-                    indices_deste_partido.append(il)
-            coordenadas_medias = self._media_sem_nans(matriz_2cp[indices_deste_partido,:])
-            tamanho_partido = len(self.vetores_presencas[indices_deste_partido,:].sum(axis=1).nonzero()[0])
-            self.tamanhos_partidos[self.partidos[ip]] = tamanho_partido
-            self.legislaturas_por_partido[self.partidos[ip].nome] = [self.legislaturas[x] for x in indices_deste_partido]
-            self.soma_dos_tamanhos_dos_partidos = sum(self.tamanhos_partidos.values())
-            self.coordenadas_partidos[self.partidos[ip]] = coordenadas_medias
-            
-    def _media_sem_nans(self, array_numpy):
-        """ Retorna média por colunas de uma array numpy, desconsiderando os nans.
-        """
-        mdat = numpy.ma.masked_array(array_numpy,numpy.isnan(array_numpy))
-        mm = numpy.mean(mdat,axis=0)
-        return mm.filled(numpy.nan)
-    
+    def _analisa_partidos(self):
+        coordenadas_parlamentares = self.pca.U[:,0:2]
+        analisador_partidos = AnalisadorPartidos(coordenadas_parlamentares, self.legislaturas, self.partidos, 
+                                                 self.vetores_presencas, self.partido_do_parlamentar)
+        analisador_partidos.analisa_partidos()
+        self.coordenadas_partidos = analisador_partidos.coordenadas_partidos
+        self.tamanhos_partidos = analisador_partidos.tamanhos_partidos
+        self.legislaturas_por_partido = analisador_partidos.legislaturas_por_partido
 
-# TODO testar matriz_votacoes
 class MatrizesDeDadosBuilder:
     
     def __init__(self, votacoes, partidos, legislaturas):
@@ -279,48 +251,38 @@ class MatrizesDeDadosBuilder:
         self.legislaturas = legislaturas
         self.matriz_votacoes =  numpy.zeros((len(self.legislaturas), len(self.votacoes)))
         self.matriz_presencas = numpy.zeros((len(self.legislaturas), len(self.votacoes)))
-        self.matriz_votacoes_por_partido =  numpy.zeros((len(self.partidos), len(self.votacoes)))
-        self.matriz_presencas_por_partido = numpy.zeros((len(self.partidos), len(self.votacoes)))
         self.partido_do_parlamentar = [] # array de partido.nome's, um por legislatura
         self._dic_partido_votos = {} # chave eh nome do partido, e valor eh VotoPartido
         self._dic_legislaturas_votos = {} # legislatura.id => voto.opcao
 
     def gera_matrizes(self):
-        """Cria quatro matrizes: 
+        """Cria duas matrizes: 
             matriz_votacoes -- de votações (por legislaturas), 
             matriz_presencas -- presenças de legislaturas
 
-        As matrizes de votações têm valores entre -1 e 1. Quando por deputado, os valores
-        possíveis são -1, 0 e 1, e quando agregado por partido a faixa é contínua.
-    
-        As linhas indexam os partidos em matriz_votacoes_por_partido e matriz_presencas
-        e indexam os legislaturas em matriz_votacoes. As colunas indexam as votações.
+        Os valores possíveis na matriz de votações são -1 (não), 0 (abtencão/falta) e 1 (sim).
+        Os valores possíveis na matriz de presenças são 0 (falta) e 1 (presente).
+        As linhas indexam parlamentares. 
+        As colunas indexam as votações.
         A ordenação das linhas segue a ordem de self.partidos ou self.legislaturas,
         e a ordenação das colunas segue a ordem de self.votacoes.
+        
+        Retorna matriz_votacoes
         """
         iv = -1 # índice votação
         for votacao in self.votacoes:
             iv += 1
-            self._agrega_votos(votacao)
-            self._preenche_matriz_por_legislatura(votacao, iv)
-            self._preenche_matrizes_por_partido(votacao, iv)
+            self._build_dic_legislaturas_votos(votacao)
+            self._preenche_matrizes(votacao, iv)
         return self.matriz_votacoes  
     
-    def _agrega_votos(self, votacao):
-        self._dic_partido_votos = {}
-        for partido in self.partidos:
-            self._dic_partido_votos[partido.nome] = models.VotoPartido(partido.nome)
+    def _build_dic_legislaturas_votos(self, votacao):
         # com o "select_related" fazemos uma query eager
-        votos = votacao.voto_set.select_related('legislatura__partido', 'opcao', 'legislatura__id').all() 
-        
+        votos = votacao.voto_set.select_related('opcao', 'legislatura__id').all() 
         for voto in votos:
-            nome_partido = voto.legislatura.partido.nome
-            voto_partido = self._dic_partido_votos[nome_partido]
-            opcao = voto.opcao
-            voto_partido.add(opcao) 
-            self._dic_legislaturas_votos[voto.legislatura.id] = opcao
+            self._dic_legislaturas_votos[voto.legislatura.id] = voto.opcao
             
-    def _preenche_matriz_por_legislatura(self, votacao, iv):
+    def _preenche_matrizes(self, votacao, iv):
         il = -1 # indice legislatura
         for legislatura in self.legislaturas:
             il += 1
@@ -336,25 +298,50 @@ class MatrizesDeDadosBuilder:
                 self.matriz_votacoes[il][iv] = 0.
                 self.matriz_presencas[il][iv] = 0.
 
-    def _preenche_matrizes_por_partido(self, votacao, iv):
-        ip = -1 # índice partido 
-        for partido in self.partidos:
-            ip += 1
-            if self._dic_partido_votos.has_key(partido.nome):
-                voto_partido = self._dic_partido_votos[partido.nome] 
-                self.matriz_votacoes_por_partido[ip][iv] = voto_partido.voto_medio() 
-                self.matriz_presencas_por_partido[ip][iv] = voto_partido.total()
-            else:
-                self.matriz_votacoes_por_partido[ip][iv] = 0.
-                self.matriz_presencas_por_partido[ip][iv] = 0.
-
     def _opcao_to_double(self, opcao):
         if opcao == 'SIM':
             return 1.
         if opcao == 'NAO':
             return -1.
         return 0.
+    
 
+class AnalisadorPartidos:
+    """Analisa um partido em um período"""
+    
+    def __init__(self, coordenadas_parlamentares, legislaturas, partidos, matriz_presencas, partido_do_parlamentar):
+        self.coordenadas_parlamentares = coordenadas_parlamentares
+        self.legislaturas = legislaturas;
+        self.partidos = partidos
+        self.matriz_presencas = matriz_presencas
+        self.partido_do_parlamentar = partido_do_parlamentar 
+        self.coordenadas_partidos = {}
+        self.tamanhos_partidos = {}
+        self.legislaturas_por_partido = {}
+
+    def analisa_partidos(self):
+        """Gera as seguintes saídas:
+            self.coordenadas_partido # partido => [x,y]
+            self.tamanhos_partidos # partido => int
+            self.legislaturas_por_partido # partido => legislaturas
+        """
+        for ip in range(0, len(self.partidos)):
+            indices_deste_partido = []
+            for il in range(0, len(self.legislaturas)):
+                if self.partido_do_parlamentar[il] == self.partidos[ip].nome:
+                    indices_deste_partido.append(il)
+            coordenadas_medias = self._media_sem_nans(self.coordenadas_parlamentares[indices_deste_partido,:])
+            tamanho_partido = len(self.matriz_presencas[indices_deste_partido,:].sum(axis=1).nonzero()[0])
+            self.tamanhos_partidos[self.partidos[ip]] = tamanho_partido
+            self.legislaturas_por_partido[self.partidos[ip].nome] = [self.legislaturas[x] for x in indices_deste_partido]
+            self.coordenadas_partidos[self.partidos[ip]] = coordenadas_medias
+            
+    def _media_sem_nans(self, array_numpy):
+        """ Retorna média por colunas de uma array numpy, desconsiderando os nans."""
+        mdat = numpy.ma.masked_array(array_numpy,numpy.isnan(array_numpy))
+        mm = numpy.mean(mdat,axis=0)
+        return mm.filled(numpy.nan)  
+      
     
 class Rotacionador:
     
