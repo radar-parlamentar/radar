@@ -2,7 +2,7 @@ from defaults import *
 
 print('Starting DEVELOPMENT environment ...')
 
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = DEBUG
 
