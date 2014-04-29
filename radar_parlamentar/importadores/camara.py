@@ -51,8 +51,8 @@ class Url(object):
         try:
             xml = self.read(url)
             tree = etree.fromstring(xml)
-        except etree.ParseError:
-            logger.info("erro no Parse do XML")
+        except etree.ParseError, error:
+            logger.error("ParseError: %s" % error)
             return None
         return tree
 
@@ -61,10 +61,10 @@ class Url(object):
         try:
             request = urllib2.Request(url)
             text = urllib2.urlopen(request).read()
-        except urllib2.URLError:
-            logger.info("erro na URL")
-        except urllib2.HTTPError:
-            logger.info("erro HTTP")
+        except urllib2.URLError, error:
+            logger.error("URLError: %s" % error)
+        except urllib2.HTTPError, error:
+            logger.info("HTTPError: %s" % error)
         return text
 
 class Camaraws:
@@ -236,10 +236,12 @@ class ProposicoesFinder:
                     zip_list_prop = self._parse_nomes_lista_proposicoes(xml)
                     votadas.append(zip_list_prop)
                     logger.info('%d %ss encontrados' % (len(zip_list_prop), sigla))
-                except urllib2.URLError, etree.ParseError:
-                    logger.info('access error in %s' % sigla)
-                except ValueError:
-                    logger.info('XML parser error in %s' % sigla)
+                except urllib2.URLError, error:
+                    logger.error("URLError in %s: %s" % (sigla, error))
+                except etree.ParseError, error:
+                    logger.error("ParseError in %s: %s" % (sigla, error))
+                except ValueError, error:
+                    logger.error('ValueError in %s: %s' % (sigla, error))
         return votadas
 
 class ProposicoesParser:

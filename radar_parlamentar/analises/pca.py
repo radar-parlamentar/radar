@@ -52,6 +52,8 @@ See also:
 
 Source: http://stackoverflow.com/questions/1730600/principal-component-analysis-in-python
 """
+import logging
+logger = logging.getLogger("radar")
 
 from __future__ import division
 import numpy as np
@@ -147,7 +149,8 @@ if __name__ == "__main__":
     try:
         A = np.genfromtxt( csv, delimiter="," )
         N, K = A.shape
-    except IOError:
+    except IOError, error:
+        logger.error("IOError: %s" % error)
         A = np.random.normal( size=(N, K) )  # gen correlated ?
 
     print "csv: %s  N: %d  K: %d  fraction: %.2g" % (csv, N, K, fraction)
