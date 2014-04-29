@@ -27,6 +27,8 @@ import os
 import csv
 from modelagem import models
 from django.utils.dateparse import parse_datetime
+import logging
+logger = logging.getLogger("radar")
 
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -87,8 +89,8 @@ class ExportadorCSV:
                     csv_row.append(self.voto(voto.opcao))
                     self.csv_rows.append(csv_row)
                 except:
-                    print 'Ignorando voto ', voto.opcao
-                
+                    logger.info("Ignorando voto: %s" % voto.opcao)
+                                  
     def coalition(self, nome_partido):
         return '1' if nome_partido in COALITION_PARTIES else '0'
                 
