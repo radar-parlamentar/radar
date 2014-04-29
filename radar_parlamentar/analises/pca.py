@@ -52,10 +52,11 @@ See also:
 
 Source: http://stackoverflow.com/questions/1730600/principal-component-analysis-in-python
 """
+from __future__ import division
+
 import logging
 logger = logging.getLogger("radar")
 
-from __future__ import division
 import numpy as np
 dot = np.dot
     # import bz.numpyutil as nu
