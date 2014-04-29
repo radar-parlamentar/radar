@@ -23,6 +23,8 @@ from modelagem import models
 import re
 import sys
 import os
+import logging
+logger = logging.getLogger("radar")
 
 
 MODULE_DIR = os.getcwd() + '/exportadores/'
@@ -40,8 +42,8 @@ def deserialize_partido():
 	try:
 		filepath = os.path.join(MODULE_DIR, 'dados/partido.xml')
 		out = open(filepath, "r")
-	except IOError as e:
-		print "I/O erro, não há nenhum arquivo de Partido para ser importado".format(e.errno, e.strerror)
+	except IOError, error:
+		logger.error("IOError: %s" % error)
 		return
 
 	data = serializers.deserialize("xml", out)
@@ -52,8 +54,8 @@ def deserialize_casa_legislativa():
 	try:
 		filepath = os.path.join(MODULE_DIR, 'dados/casa_legislativa.xml')
 		out = open(filepath, "r")
-	except IOError as e:
-		print "I/O erro, não há nenhum arquivo de CasaLegislativa para ser importado".format(e.errno, e.strerror)
+	except IOError, error:
+		logger.error("IOError: %s" % error)
 		return
 
 	data = serializers.deserialize("xml", out)
@@ -64,8 +66,8 @@ def deserialize_parlamentar():
 	try:
 		filepath = os.path.join(MODULE_DIR, 'dados/parlamentar.xml')
 		out = open(filepath, "r")
-	except IOError as e:
-		print "I/O erro, não há nenhum arquivo de Parlamentar para ser importado".format(e.errno, e.strerror)
+	except IOError, error:
+		logger.error("IOError: %s" % error)
 		return
 
 	data = serializers.deserialize("xml", out)
@@ -76,8 +78,8 @@ def _deserialize_legislatura():
 	try:
 		filepath = os.path.join(MODULE_DIR, 'dados/legislatura.xml')
 		out = open(filepath, "r")
-	except IOError as e:
-		print "I/O erro, não há nenhum arquivo de Legislatura para ser importado".format(e.errno, e.strerror)
+	except IOError, error:
+		logger.error("IOError: %s" % error)
 		return	
 	data = serializers.deserialize("xml", out)
 	for deserialized_object in data:
@@ -88,8 +90,8 @@ def _deserialize_proposicao():
 	try:
 		filepath = os.path.join(MODULE_DIR, 'dados/proposicao.xml')
 		out = open(filepath, "r")
-	except IOError as e:
-		print "I/O erro, não há nenhum arquivo de Proposição para ser importado".format(e.errno, e.strerror)
+	except IOError, error:
+		logger.error("IOError: %s" % error)
 		return
 
 	data = serializers.deserialize("xml", out)
@@ -101,8 +103,8 @@ def _deserialize_votacao():
 	try:
 		filepath = os.path.join(MODULE_DIR, 'dados/votacao.xml')
 		out = open(filepath, "r")
-	except IOError as e:
-		print "I/O erro, não há nenhum arquivo de Votacação para ser importado".format(e.errno, e.strerror)
+	except IOError, error:
+		logger.error("IOError: %s" % error)
 		return
 			
 	data = serializers.deserialize("xml", out)
@@ -114,8 +116,8 @@ def _deserialize_voto():
 	try:
 		filepath = os.path.join(MODULE_DIR, 'dados/voto.xml')
 		out = open(filepath, "r")
-	except IOError as e:
-		print "I/O erro, não há nenhum arquivo de Voto para ser importado".format(e.errno, e.strerror)
+	except IOError, error:
+		logger.error("IOError: %s" % error)
 		return
 
 	data = serializers.deserialize("xml", out)
@@ -126,8 +128,8 @@ def _importa_legislatura(nome_casa_curto):
 	try:
 		filepath = os.path.join(MODULE_DIR, 'dados/legislatura.xml')
 		out = open(filepath, "r")
-	except IOError as e:
-		print "I/O erro, não há nenhum arquivo de Legislatura para ser importado".format(e.errno, e.strerror)
+	except IOError, error:
+		logger.error("IOError: %s" % error)
 		return	
 	data = serializers.deserialize("xml", out)
 	for deserialized_object in data:
@@ -138,8 +140,8 @@ def _importa_proposicao(nome_casa_curto):
 	try:
 		filepath = os.path.join(MODULE_DIR, 'dados/proposicao.xml')
 		out = open(filepath, "r")
-	except IOError as e:
-		print "I/O erro, não há nenhum arquivo de Proposição para ser importado".format(e.errno, e.strerror)
+	except IOError, error:
+		logger.error("IOError: %s" % error)
 		return
 
 	data = serializers.deserialize("xml", out)
@@ -151,8 +153,8 @@ def _importa_votacao(nome_casa_curto):
 	try:
 		filepath = os.path.join(MODULE_DIR, 'dados/votacao.xml')
 		out = open(filepath, "r")
-	except IOError as e:
-		print "I/O erro, não há nenhum arquivo de Votacação para ser importado".format(e.errno, e.strerror)
+	except IOError, error:
+		logger.error("IOError: %s" % error)
 		return
 			
 	data = serializers.deserialize("xml", out)
@@ -164,8 +166,8 @@ def _importa_voto(nome_casa_curto):
 	try:
 		filepath = os.path.join(MODULE_DIR, 'dados/voto.xml')
 		out = open(filepath, "r")
-	except IOError as e:
-		print "I/O erro, não há nenhum arquivo de Voto para ser importado".format(e.errno, e.strerror)
+	except IOError, error:
+		logger.error("IOError: %s" % error)
 		return
 
 	data = serializers.deserialize("xml", out)
@@ -177,8 +179,8 @@ def importa_casa_legislativa(nome_casa_curto):
 	try:
 		filepath = os.path.join(MODULE_DIR, 'dados/casa_legislativa.xml')
 		out = open(filepath, "r")
-	except IOError as e:
-		print "I/O erro, não há nenhum arquivo de CasaLegislativa para ser importado".format(e.errno, e.strerror)
+	except IOError, error:
+		logger.error("IOError: %s" % error)
 		return
 
 	data = serializers.deserialize("xml", out)

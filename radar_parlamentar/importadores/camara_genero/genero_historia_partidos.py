@@ -88,10 +88,9 @@ for arq in arqs:
             #    try:
             #        prox_data = ordenada[ordenada.index(i)+1]
             #        prox = prox_data.partition("-")[0]
-            #    except ValueError:
-            #        print("SEM prox", i)
-
-
+            #    except ValueError, erro:
+            #        logger.error("ValueError: %s" % error)
+            #       
             #    ano1, e, ano2 = i.partition("-")
             #    duracao = int(ano2)-int(ano1)+1
             #    if ano2 == prox:

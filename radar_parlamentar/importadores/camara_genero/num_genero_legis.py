@@ -66,8 +66,8 @@ for i in ordenada:
     
     try:
         prox_data = ordenada[ordenada.index(i)+1]
-    except:
-        print("SEM prox", i)
+    except ValueError, error:
+        logger.error("ValueError: %s" % error)
 
     prox = prox_data.partition("-")[0]
 
