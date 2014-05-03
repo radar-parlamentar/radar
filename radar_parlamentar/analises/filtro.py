@@ -22,17 +22,18 @@ from __future__ import unicode_literals
 from modelagem import models
 import re
 class Temas():
-
-    dicionario = {}   
+    
+    def __init__(self):
+        self.dicionario = {}   
            
   
     @staticmethod
     def get_temas_padrao():
-	temas = Temas()
+        temas = Temas()
         sinonimos = {}
         sinonimos['educação'] = ['escola', 'professor', 'aluno', 'EAD', 'universidade', 'cotas']
         sinonimos['segurança'] = ['policial', 'polícia', 'bandido', 'PM','violência', 'presídios']
-        sinonimos['economia'] = ['impostos', 'dívida', 'tributos']
+        sinonimos['economia'] = ['impostos', 'dívida', 'tributos', 'financeira']
         sinonimos['saúde'] = ['medicina', 'médicos', 'SUS', 'hospital', 'enfermeiro', 'remédios', 'receita']
         sinonimos['transporte'] = ['trânsito', 'pedágio', 'congestionamento', 'ônibus', 'metrô', 'avião'] 
         sinonimos['violência'] = ['desarmamento', 'bullying']
@@ -43,92 +44,98 @@ class Temas():
         sinonimos['assistência social'] = ['bolsa', 'família', 'cidadania']
         sinonimos['tecnologia'] = ['inovação', 'internet', 'rede', 'dados', 'hacker']
         sinonimos['política'] = ['eleição', 'partido', 'mandato', 'sistema eleitoral', 'voto', 'reforma', 'prefeito', 'deputado', 'vereador', 'senador', 'presidente', 'eleitor']
+        sinonimos['família'] = ['maternidade', 'mãe', 'pai', 'paternidade', 'adoção']
+        sinonimos['constituição'] = ['PEC', 'constituinte']
         for i in sinonimos:
             for j in sinonimos[i]:
                 temas.inserir_sinonimo(i,j)
-	return temas
-	
-	
+        return temas
+
+
 
     def inserir_sinonimo(self, tema, sinonimo):
         if tema == None or sinonimo == None:
             raise ValueError('Impossivel adicionar sinonimo\n')
         if self.dicionario.has_key(tema.encode('utf-8')):
-		 self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
+            self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
         else:
             self.dicionario[tema.encode('utf-8')] = set()
             self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
 
-    def recuperar_palavras_por_sinonimo(self, sinonimo):
-        if sinonimo == None:
-            raise ValueError('Impossivel encontrar palavra\n')
+    def expandir_palavras_chaves(self, palavras_chaves):
+        expandido = []
+        for palavra in palavras_chaves:
+            expandido.extend(self.recuperar_sinonimos(palavra))
+        return expandido    
 
+    def recuperar_sinonimos(self, palavra):
+        palavra = palavra.encode('utf-8')
         palavras = []
-        for e in self.dicionario:
-            
-            if sinonimo in self.dicionario[e]:
-                palavras.append(e)
-
+        for tema, sinonimos in self.dicionario.items():
+            if palavra in tema or self._palavra_in_sinonimos(palavra, sinonimos):
+                palavras.append(tema)
+                palavras.extend(sinonimos)
+        if not palavras:
+            palavras.append(palavra)
         return palavras
+    
+    def _palavra_in_sinonimos(self, palavra, sinonimos):
+        for sinonimo in sinonimos:
+            if palavra in sinonimo:
+                return True
+        return False
+    
 
 class FiltroVotacao():
+    """Filtra votações pelos campos:
+        * votacao.descricao 
+        * proposicao.ementa
+        * proposicao.descricao
+        * proposicao.indexacao
+    """
 
-    def filtra_votacoes(self, casa_legislativa, periodo_casa_legislativa, palavras_chave):
+    def __init__(self, casa_legislativa, periodo_casa_legislativa, palavras_chave):
         """Argumentos:
             casa_legislativa -- objeto do tipo CasaLegislativa; somente votações desta casa serão filtradas.
             periodo_casa_legislativa -- objeto do tipo PeriodoCasaLegislativa; somente votações deste período serão filtradas.
             palavras_chave -- lista de strings para serem usadas na filtragem das votações.
         """
-        proposicoes = self._recupera_proposicoes(casa_legislativa)
-
-        votacoes = models.Votacao.por_casa_legislativa(casa_legislativa, periodo_casa_legislativa.ini, periodo_casa_legislativa.fim)
-        if not palavras_chave:
-            votacoes_com_palavras_chave = votacoes   
-        else:
-            proposicoes_com_votacoes = self._filtra_proposicoes_com_votacoes(proposicoes, votacoes)
-
-            votacoes_com_palavras_chave = self._filtra_votacoes_por_palavras_chave(proposicoes_com_votacoes, votacoes, palavras_chave)
-
-        return votacoes_com_palavras_chave
-
-    def _recupera_proposicoes(self, casa_legislativa):
-        return models.Proposicao.objects.filter(casa_legislativa_id = casa_legislativa.id)
-
-    def _recupera_votacoes_da_proposicao(self,proposicao, votacoes):
-        votacoes_da_proposicao = []
-        for votacao in votacoes:
-            if votacao.proposicao_id == proposicao.id:
-                votacoes_da_proposicao.append(votacao)
-        return votacoes_da_proposicao        
-
-    def _filtra_proposicoes_com_votacoes(self, proposicoes, votacoes):
-        proposicoes_com_votacoes = []
-        for proposicao in proposicoes:
-            if len(self._recupera_votacoes_da_proposicao(proposicao, votacoes)) > 0:
-                proposicoes_com_votacoes.append(proposicao)
-        return proposicoes_com_votacoes 
+        self.casa_legislativa = casa_legislativa
+        self.periodo_casa_legislativa = periodo_casa_legislativa
+        self.palavras_chaves = palavras_chave
+        self.temas = Temas.get_temas_padrao()
+        self.votacoes = []
     
-    def _palavra_existe_em_proposicao(self, proposicao, votacoes, palavra_chave):
-        #procura uma substring dentro de uma string
-        if((re.search(palavra_chave.upper(), proposicao.descricao.upper())!= None) or (re.search(palavra_chave.upper(), proposicao.ementa.upper())!= None) or (re.search(palavra_chave.upper(),       proposicao.indexacao.upper())!= None)):
-            return True
+    def filtra_votacoes(self):
+        self.votacoes = models.Votacao.por_casa_legislativa(self.casa_legislativa, 
+                                                       self.periodo_casa_legislativa.ini, 
+                                                       self.periodo_casa_legislativa.fim)
+        if self.palavras_chaves:
+            self.palavras_chaves = self.temas.expandir_palavras_chaves(self.palavras_chaves)
+            self.votacoes = self._filtra_votacoes_por_palavras_chave()
+        return self.votacoes
 
-        for votacao in votacoes:
-            if(re.search(palavra_chave.upper(), votacao.descricao.upper())!= None):
-                return True
-        return False	 
-
-    def _verifica_palavras_chave_em_proposicao(self, proposicao, votacoes, lista_palavras_chave):
-        votacoes_da_proposicao = self._recupera_votacoes_da_proposicao(proposicao, votacoes)
-        for palavra_chave in lista_palavras_chave:
-            if(self._palavra_existe_em_proposicao(proposicao, votacoes_da_proposicao, palavra_chave)):
+    def _filtra_votacoes_por_palavras_chave(self):
+        votacoes_com_palavras_chave = []
+        for votacao in self.votacoes:
+            if self._verifica_palavras_chave_em_votacao(votacao):
+                votacoes_com_palavras_chave.append(votacao)
+        return votacoes_com_palavras_chave
+        
+    def _verifica_palavras_chave_em_votacao(self, votacao):
+        for palavra_chave in self.palavras_chaves:
+            if(self._palavra_existe_em_votacao(votacao, palavra_chave)):
                 return True
         return False
-
-    def _filtra_votacoes_por_palavras_chave(self, proposicoes, votacoes, palavras_chave):
-        votacoes_com_palavras_chave = []
-
-        for proposicao in proposicoes:
-            if self._verifica_palavras_chave_em_proposicao(proposicao, votacoes, palavras_chave):
-                votacoes_com_palavras_chave.extend(self._recupera_votacoes_da_proposicao(proposicao, votacoes))
-        return votacoes_com_palavras_chave
+    
+    def _palavra_existe_em_votacao(self, votacao, palavra_chave):
+        #procura uma substring dentro de uma string
+        proposicao = votacao.proposicao
+        if((re.search(palavra_chave.upper(), proposicao.descricao.upper())!= None) or 
+           (re.search(palavra_chave.upper(), proposicao.ementa.upper())!= None) or 
+           (re.search(palavra_chave.upper(), proposicao.indexacao.upper())!= None) or 
+           (re.search(palavra_chave.upper(), votacao.descricao.upper())!= None)):
+            return True
+        else:
+            return False    
+    

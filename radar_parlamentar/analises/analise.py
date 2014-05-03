@@ -141,8 +141,8 @@ class AnalisadorPeriodo:
 
     def _inicializa_votacoes(self):
         """Pega votações deste período no banco de dados, filtra por palavras chave e seta a lista self.votacoes"""
-        filtro_votacao = filtro.FiltroVotacao()
-        self.votacoes = filtro_votacao.filtra_votacoes(self.casa_legislativa, self.periodo, self.palavras_chave)
+        filtro_votacao = filtro.FiltroVotacao(self.casa_legislativa, self.periodo, self.palavras_chave)
+        self.votacoes = filtro_votacao.filtra_votacoes()
 
     def analisa(self):
         """Retorna instância de AnalisePeriodo"""
