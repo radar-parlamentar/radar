@@ -51,8 +51,8 @@ class Url(object):
         try:
             xml = self.read(url)
             tree = etree.fromstring(xml)
-        except etree.ParseError:
-            logger.info("erro no Parse do XML")
+        except etree.ParseErrorm, error:
+            logger.error("etree.ParseErrorm: %s" % error)
             return None
         return tree
 
@@ -61,10 +61,10 @@ class Url(object):
         try:
             request = urllib2.Request(url)
             text = urllib2.urlopen(request).read()
-        except urllib2.URLError:
-            logger.info("erro na URL")
+        except urllib2.URLError, error:
+            logger.error("urllib2.URLError: %s" % error)
         except urllib2.HTTPError:
-            logger.info("erro HTTP")
+            logger.error("urllib2.HTTPError: %s" % error)
         return text
 
 class Camaraws:
@@ -237,9 +237,9 @@ class ProposicoesFinder:
                     votadas.append(zip_list_prop)
                     logger.info('%d %ss encontrados' % (len(zip_list_prop), sigla))
                 except urllib2.URLError, etree.ParseError:
-                    logger.info('access error in %s' % sigla)
-                except ValueError:
-                    logger.info('XML parser error in %s' % sigla)
+                    logger.error('access error in %s' % sigla)
+                except ValueError, error:
+                    logger.error("ValueError: %s" % error)
         return votadas
 
 class ProposicoesParser:
@@ -322,7 +322,8 @@ class ImportadorCamara:
         """
         try:
             query = models.Proposicao.objects.filter(id_prop=id_prop, casa_legislativa=self.camara_dos_deputados)
-        except DatabaseError:
+        except DatabaseError, error:
+            logger.error("DatabaseError: %s" % error)
             # try again
             time.sleep(1)
             query = models.Proposicao.objects.filter(id_prop=id_prop, casa_legislativa=self.camara_dos_deputados)
@@ -508,8 +509,8 @@ class ImportadorCamara:
 
                 self.importadas += 1
                 self._progresso()
-            except ValueError as e:
-                logger.error('%s' % e)
+            except ValueError, error:
+                logger.error("ValueError: %s" % error)
 
         logger.info('### Fim da Importação das Votações das Proposições da Câmara dos Deputados.')
 

@@ -62,6 +62,9 @@ dot = np.dot
 __version__ = "2010-04-14 apr"
 __author_email__ = "denis-bz-py at t-online dot de"
 
+import logging
+  logger = logging.getLogger("radar")
+
 #...............................................................................
 class PCA:
     def __init__( self, A, fraction=0.90 ):
@@ -147,8 +150,9 @@ if __name__ == "__main__":
     try:
         A = np.genfromtxt( csv, delimiter="," )
         N, K = A.shape
-    except IOError:
+    except IOError, error:
         A = np.random.normal( size=(N, K) )  # gen correlated ?
+        logger.error("IOError: %s" % error)
 
     print "csv: %s  N: %d  K: %d  fraction: %.2g" % (csv, N, K, fraction)
     Center(A)

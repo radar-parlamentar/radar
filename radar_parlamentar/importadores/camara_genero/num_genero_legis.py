@@ -2,6 +2,9 @@
 
 from os import listdir
 from xml.dom.minidom import parseString
+import logging
+  logger = logging.getLogger("radar")
+
 
 
 arqs = listdir("bios")
@@ -66,9 +69,9 @@ for i in ordenada:
     
     try:
         prox_data = ordenada[ordenada.index(i)+1]
-    except:
-        print("SEM prox", i)
-
+    except:ValueError, error :
+        logger.error("ValueError: %s" % error)
+        
     prox = prox_data.partition("-")[0]
 
     ano1, e, ano2 = i.partition("-")
