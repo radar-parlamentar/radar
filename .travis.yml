@@ -10,10 +10,10 @@ env:
 # Dependencias do projeto
 install:
   # Criar um requirements para o ambiente de testes?
-  # - pip install -r requirements.txt --use-mirrors
-  - pip install argparse==1.2.1 --use-mirrors
-  - pip install pysqlite==2.6.0 --use-mirrors
-  - pip install -q Django==$DJANGO_VERSION --use-mirrors
+  - pip install -r requirements.txt --use-mirrors
+#  - pip install argparse==1.2.1 --use-mirrors
+#  - pip install pysqlite==2.6.0 --use-mirrors
+#  - pip install -q Django==$DJANGO_VERSION --use-mirrors
 
 # Roda Testes
 script: cd radar_parlamentar/ ; sh ./tests.sh
