@@ -46,6 +46,7 @@ class Temas():
         sinonimos['política'] = ['eleição', 'partido', 'mandato', 'sistema eleitoral', 'voto', 'reforma', 'prefeito', 'deputado', 'vereador', 'senador', 'presidente', 'eleitor']
         sinonimos['família'] = ['maternidade', 'mãe', 'pai', 'paternidade', 'adoção']
         sinonimos['constituição'] = ['PEC', 'constituinte']
+        sinonimos['burocrática'] = ['pauta', 'quorum', 'urgência', 'adiamento', 'sessão']
         for i in sinonimos:
             for j in sinonimos[i]:
                 temas.inserir_sinonimo(i,j)
