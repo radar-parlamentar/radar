@@ -15,6 +15,6 @@ def main(convencao=False, cmsp=False, senado=False, camara=False):
         importador_senado.main()
 
     if camara is not False:
-        from importadores import cmdp as importador_camara
+        from importadores import cdep as importador_camara
 
         importador_camara.main()
