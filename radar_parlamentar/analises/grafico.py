@@ -91,7 +91,9 @@ class JsonAnaliseGenerator:
         list_aps = []
         for ap in self.analise_temporal.analises_periodo:
             dict_ap = {}
-            var_explicada = round((ap.pca.eigen[0] + ap.pca.eigen[1])/ap.pca.eigen.sum() * 100,1)
+            eigen0 = ap.pca.eigen[0] if len(ap.pca.eigen) > 0 != None else 0
+            eigen1 = ap.pca.eigen[1] if len(ap.pca.eigen) > 1 != None else 0
+            var_explicada = round((eigen0 + eigen1)/ap.pca.eigen.sum() * 100, 1)
             dict_ap['nvotacoes'] = ap.num_votacoes
             dict_ap['nome'] = ap.periodo.string
             dict_ap['var_explicada'] = var_explicada
@@ -114,10 +116,14 @@ class JsonAnaliseGenerator:
             theta = round(ap.theta,0) % 180 + 90*idx
         except AttributeError:
             theta = 0
-        var_explicada = round(ap.pca.eigen[idx]/ap.pca.eigen.sum() * 100,1)
-        if ap.pca.Vt != None:
-            composicao = [round(el,2) for el in 100*ap.pca.Vt[idx,:]**2]
-            dict_cp['composicao'] = composicao
+        try:
+            var_explicada = round(ap.pca.eigen[idx]/ap.pca.eigen.sum() * 100,1)
+            if ap.pca.Vt != None:
+                composicao = [round(el,2) for el in 100*ap.pca.Vt[idx,:]**2]
+                dict_cp['composicao'] = composicao
+        except IndexError:
+            var_explicada = 0
+            dict_cp['composicao'] = 0
         dict_cp['theta'] = theta
         dict_cp['var_explicada'] = var_explicada
         # TODO estas contas complicadas já deveriam ter sido feitas pela análise...
@@ -245,7 +251,11 @@ class GraphScaler:
     def _scale(self,coords):
         scaled = {}
         for key, coord in coords.items():
-            x, y = coord[0], coord[1]
+            x = coord[0] 
+            try:
+                y = coord[1]
+            except IndexError:
+                y = 0
             if x < -1 or x > 1 or y < -1 or y > 1:
                 raise ValueError("Value should be in [-1,1]")
             scaled[key] = [x*100, y*100]
