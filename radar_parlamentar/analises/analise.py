@@ -89,7 +89,6 @@ class AnalisadorTemporal:
                 self.analises_periodo.append(analisePeriodo)
             else:
                 logger.info("O periodo não possui nenhuma votação.")
-                return
 
         # Rotaciona/espelha cada análise baseado em sua análise anterior
         logger.info("Rotacionando...")
