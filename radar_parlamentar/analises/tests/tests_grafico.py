@@ -24,7 +24,7 @@ from analises import grafico
 from modelagem import models
 from modelagem import utils
 from analises.models import AnalisePeriodo, AnaliseTemporal
-from importadores import convencao
+from importadores import conv
 from random import random
 import numpy
 import json
@@ -37,7 +37,7 @@ class JsonAnaliseGeneratorTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.importer = convencao.ImportadorConvencao()
+        cls.importer = conv.ImportadorConvencao()
         cls.importer.importar()
     
     @classmethod    
@@ -49,11 +49,11 @@ class JsonAnaliseGeneratorTest(TestCase):
         
         self.casa = models.CasaLegislativa.objects.get(nome_curto='conv')
         for partido in JsonAnaliseGeneratorTest.importer.partidos:
-            if partido.nome == convencao.GIRONDINOS:
+            if partido.nome == conv.GIRONDINOS:
                 self.girondinos = partido
-            if partido.nome == convencao.JACOBINOS:
+            if partido.nome == conv.JACOBINOS:
                 self.jacobinos = partido
-            if partido.nome == convencao.MONARQUISTAS:
+            if partido.nome == conv.MONARQUISTAS:
                 self.monarquistas = partido
                         
         self.analiseTemporal = AnaliseTemporal()
@@ -74,9 +74,9 @@ class JsonAnaliseGeneratorTest(TestCase):
         ap1.soma_dos_tamanhos_dos_partidos = 3*3
         ap1.pca = PCAStub()
         ap1.coordenadas_partidos = {}
-        ap1.coordenadas_partidos[convencao.JACOBINOS] = [-0.4,0.3]
-        ap1.coordenadas_partidos[convencao.GIRONDINOS] = [0.9,-0.3]
-        ap1.coordenadas_partidos[convencao.MONARQUISTAS] = [0.2,0.1]
+        ap1.coordenadas_partidos[conv.JACOBINOS] = [-0.4,0.3]
+        ap1.coordenadas_partidos[conv.GIRONDINOS] = [0.9,-0.3]
+        ap1.coordenadas_partidos[conv.MONARQUISTAS] = [0.2,0.1]
         ap1.legislaturas_por_partido = JsonAnaliseGeneratorTest.importer.legs
         ap1.coordenadas_legislaturas = {} # legislatura.id => [x,y]
         for p, legs in ap1.legislaturas_por_partido.items():
@@ -97,7 +97,7 @@ class JsonAnaliseGeneratorTest(TestCase):
         list_partidos = dict_analise['partidos']
         self.assertEquals(len(list_partidos), 3)
         dict_partido = list_partidos[0]
-        toutes_les_parties = [convencao.JACOBINOS, convencao.GIRONDINOS, convencao.MONARQUISTAS]
+        toutes_les_parties = [conv.JACOBINOS, conv.GIRONDINOS, conv.MONARQUISTAS]
         self.assertTrue(dict_partido['nome'] in toutes_les_parties)
         list_tamanhos = dict_partido['t']
         self.assertEquals(list_tamanhos[0], 3)
@@ -153,7 +153,7 @@ class RaioPartidoCalculatorTest(TestCase):
     
     @classmethod
     def setUpClass(cls):
-        cls.importer = convencao.ImportadorConvencao()
+        cls.importer = conv.ImportadorConvencao()
         cls.importer.importar()
 
     @classmethod
@@ -167,7 +167,7 @@ class RaioPartidoCalculatorTest(TestCase):
     def test_raio_partidos(self):
         periodo_str = '1o Semestre'
         tamanhos = {}
-        tamanho_por_partido = convencao.PARLAMENTARES_POR_PARTIDO
+        tamanho_por_partido = conv.PARLAMENTARES_POR_PARTIDO
         for partido in self.partidos:
             tamanhos[partido] = tamanho_por_partido
         tamanhos_dos_partidos_por_periodo = {periodo_str : tamanhos}

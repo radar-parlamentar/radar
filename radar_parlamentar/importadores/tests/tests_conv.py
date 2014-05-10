@@ -20,7 +20,7 @@
 
 from __future__ import unicode_literals
 from django.test import TestCase
-from importadores import convencao
+from importadores import conv
 from modelagem import models
 import os
 
@@ -28,7 +28,7 @@ class ConvencaoTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        importer = convencao.ImportadorConvencao()
+        importer = conv.ImportadorConvencao()
         importer.importar()
 
     @classmethod
@@ -59,9 +59,9 @@ class ConvencaoTest(TestCase):
     def test_check_partidos(self):
         partidos = models.Partido.objects.all()
         nomes_partidos = [p.nome for p in partidos]
-        self.assertTrue(convencao.GIRONDINOS in nomes_partidos)
-        self.assertTrue(convencao.JACOBINOS in nomes_partidos)
-        self.assertTrue(convencao.MONARQUISTAS in nomes_partidos)
+        self.assertTrue(conv.GIRONDINOS in nomes_partidos)
+        self.assertTrue(conv.JACOBINOS in nomes_partidos)
+        self.assertTrue(conv.MONARQUISTAS in nomes_partidos)
 
     def test_check_parlamentares(self):
         NUM_PARLAMENTARES = 3*3

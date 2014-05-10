@@ -20,7 +20,7 @@
 
 from __future__ import unicode_literals
 from django.test import TestCase
-from importadores import camara
+from importadores import cdep
 from importadores.tests.mocks_cdep import mock_obter_proposicao,mock_listar_proposicoes, mock_obter_votacoes, mock_obter_proposicoes_votadas_plenario
 from mock import Mock
 from modelagem import models
@@ -46,7 +46,7 @@ test_votadas = [[('17338', 'PL 1876/1999')]]
 class ProposicoesParserTest(TestCase):
     
     def test_parse(self):
-        votadasParser = camara.ProposicoesParser(test_votadas)
+        votadasParser = cdep.ProposicoesParser(test_votadas)
         votadas = votadasParser.parse()        
         codigo_florestal =  {'id': ID , 'sigla': SIGLA, 'num': NUM, 'ano':ANO}
         self.assertTrue(codigo_florestal in votadas)
@@ -57,18 +57,18 @@ class SeparadorDeListaTest(TestCase):
 
         lista = [1, 2, 3, 4, 5, 6]
         
-        separador = camara.SeparadorDeLista(1)
+        separador = cdep.SeparadorDeLista(1)
         listas = separador.separa_lista_em_varias_listas(lista)
         self.assertEquals(len(listas), 1)
         self.assertEquals(listas[0], lista)
 
-        separador = camara.SeparadorDeLista(2)
+        separador = cdep.SeparadorDeLista(2)
         listas = separador.separa_lista_em_varias_listas(lista)
         self.assertEquals(len(listas), 2)
         self.assertEquals(listas[0], [1, 2, 3])
         self.assertEquals(listas[1], [4, 5, 6])
 
-        separador = camara.SeparadorDeLista(3)
+        separador = cdep.SeparadorDeLista(3)
         listas = separador.separa_lista_em_varias_listas(lista)
         self.assertEquals(len(listas), 3)
         self.assertEquals(listas[0], [1, 2])
@@ -79,7 +79,7 @@ class SeparadorDeListaTest(TestCase):
 
         lista = [1, 2, 3, 4, 5, 6, 7]
         
-        separador = camara.SeparadorDeLista(3)
+        separador = cdep.SeparadorDeLista(3)
         listas = separador.separa_lista_em_varias_listas(lista)
         self.assertEquals(len(listas), 3)
         self.assertEquals(listas[0], [1, 2, 3])
@@ -91,11 +91,11 @@ class CamaraTest(TestCase):
     @classmethod
     def setUpClass(cls):
         # vamos importar apenas as votações das proposições em votadas_test.txt
-        votadasParser = camara.ProposicoesParser(test_votadas)
+        votadasParser = cdep.ProposicoesParser(test_votadas)
         votadas = votadasParser.parse()        
-        importer = camara.ImportadorCamara(votadas)
+        importer = cdep.ImportadorCamara(votadas)
         #dublando a camara
-        camaraWS = camara.Camaraws()
+        camaraWS = cdep.Camaraws()
         camaraWS.listar_proposicoes = Mock(side_effect=mock_listar_proposicoes)
         camaraWS.obter_proposicao_por_id = Mock(side_effect=mock_obter_proposicao)
         camaraWS.obter_votacoes = Mock(side_effect=mock_obter_votacoes)
@@ -111,9 +111,9 @@ class CamaraTest(TestCase):
         self.assertEquals(camara.nome, 'Câmara dos Deputados')
 
     def test_prop_cod_florestal(self):
-        votadasParser = camara.ProposicoesParser(test_votadas)
+        votadasParser = cdep.ProposicoesParser(test_votadas)
         votadas = votadasParser.parse()        
-        importer = camara.ImportadorCamara(votadas)
+        importer = cdep.ImportadorCamara(votadas)
         data = importer._converte_data('19/10/1999')
         prop_cod_flor = models.Proposicao.objects.get(id_prop=ID)
         self.assertEquals(prop_cod_flor.nome(), NOME)
@@ -129,7 +129,7 @@ class CamaraTest(TestCase):
         vot = votacoes[0]
         self.assertTrue('REQUERIMENTO DE RETIRADA DE PAUTA' in vot.descricao)
 
-        importer = camara.ImportadorCamara(votacoes)
+        importer = cdep.ImportadorCamara(votacoes)
         data = importer._converte_data('24/5/2011')
         vot = votacoes[1]
         self.assertEquals(vot.data.day, data.day)
@@ -150,9 +150,9 @@ class WsPlenarioTest(TestCase):
     def test_prop_in_xml(self):
         ano_min = 2013
         ano_max = 2013
-        camaraWS = camara.Camaraws()
+        camaraWS = cdep.Camaraws()
         camaraWS.obter_proposicoes_votadas_plenario= Mock(side_effect=mock_obter_proposicoes_votadas_plenario)
-        propFinder = camara.ProposicoesFinder()
+        propFinder = cdep.ProposicoesFinder()
         zip_votadas =  propFinder.find_props_disponiveis(ano_min,ano_max,camaraWS)
         prop_test = ('14245', 'PEC 3/1999')	
         for x in range(0,len(zip_votadas)):
@@ -161,11 +161,11 @@ class WsPlenarioTest(TestCase):
     def test_prop_in_dict(self):
         ano_min = 2013
         ano_max = 2013
-        camaraWS = camara.Camaraws()
+        camaraWS = cdep.Camaraws()
         camaraWS.obter_proposicoes_votadas_plenario= Mock(side_effect=mock_obter_proposicoes_votadas_plenario)
-        propFinder = camara.ProposicoesFinder()
+        propFinder = cdep.ProposicoesFinder()
         zip_votadas =  propFinder.find_props_disponiveis(ano_min,ano_max,camaraWS)
-        propParser = camara.ProposicoesParser(zip_votadas)
+        propParser = cdep.ProposicoesParser(zip_votadas)
         dict_votadas =  propParser.parse()
         prop_in_dict = {'id': ID_PLENARIO , 'sigla': SIGLA_PLENARIO, 'num': NUM_PLENARIO, 'ano':ANO_PLENARIO}
         self.assertTrue(prop_in_dict in dict_votadas)

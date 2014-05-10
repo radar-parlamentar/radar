@@ -21,10 +21,10 @@
 import os
 import xml.etree.ElementTree as etree
 import glob
-from  importadores import camara
+from  importadores import cdep
 
-VOTADAS_FILE_PATH = camara.RESOURCES_FOLDER + 'votadas_test.txt'
-MOCK_PATH = os.path.join(camara.RESOURCES_FOLDER,'mocks')
+VOTADAS_FILE_PATH = cdep.RESOURCES_FOLDER + 'votadas_test.txt'
+MOCK_PATH = os.path.join(cdep.RESOURCES_FOLDER,'mocks')
 MOCK_PROPOSICAO = glob.glob(os.path.join(MOCK_PATH,'proposicao_*'))
 MOCK_PROPOSICOES = glob.glob(os.path.join(MOCK_PATH,'proposicoes_*'))
 MOCK_VOTACOES = glob.glob(os.path.join(MOCK_PATH,'votacoes_*'))

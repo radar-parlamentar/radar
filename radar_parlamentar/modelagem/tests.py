@@ -19,7 +19,7 @@
 
 from __future__ import unicode_literals
 from django.test import TestCase
-from importadores import convencao
+from importadores import conv
 import datetime 
 import models
 import utils
@@ -74,7 +74,7 @@ class PeriodosRetrieverTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        importer = convencao.ImportadorConvencao()
+        importer = conv.ImportadorConvencao()
         importer.importar()
     
     @classmethod
@@ -181,7 +181,7 @@ class ModelsTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        importer = convencao.ImportadorConvencao()
+        importer = conv.ImportadorConvencao()
         importer.importar()
     
     @classmethod
@@ -208,13 +208,13 @@ class ModelsTest(TestCase):
         self.assertEquals(partido.cor,'#000000')
 
     def test_casa_legislativa_partidos(self):
-        conv = models.CasaLegislativa.objects.get(nome_curto='conv')
-        partidos = conv.partidos()
+        casa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        partidos = casa.partidos()
         self.assertEquals(len(partidos), 3)
         nomes = [ p.nome for p in partidos ]
-        self.assertTrue(convencao.JACOBINOS in nomes)
-        self.assertTrue(convencao.GIRONDINOS in nomes)
-        self.assertTrue(convencao.MONARQUISTAS in nomes)
+        self.assertTrue(conv.JACOBINOS in nomes)
+        self.assertTrue(conv.GIRONDINOS in nomes)
+        self.assertTrue(conv.MONARQUISTAS in nomes)
 
     def test_should_find_legislatura(self):
         dt = datetime.date(1989, 07, 14)

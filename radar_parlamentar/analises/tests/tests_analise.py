@@ -23,7 +23,7 @@ from django.test import TestCase
 from analises import analise
 from modelagem import models
 from modelagem.utils import PeriodosRetriever
-from importadores import convencao
+from importadores import conv
 from datetime import date
 import numpy
 
@@ -31,7 +31,7 @@ class AnalisadorPeriodoTest(TestCase):
     
     @classmethod
     def setUpClass(cls):
-        cls.importer = convencao.ImportadorConvencao()
+        cls.importer = conv.ImportadorConvencao()
         cls.importer.importar()
 
     @classmethod
@@ -45,11 +45,11 @@ class AnalisadorPeriodoTest(TestCase):
         self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa__nome_curto='conv')
         self.legislaturas = models.Legislatura.objects.filter(casa_legislativa__nome_curto='conv').distinct()
         for partido in self.partidos:
-            if partido.nome == convencao.GIRONDINOS:
+            if partido.nome == conv.GIRONDINOS:
                 self.girondinos = partido
-            if partido.nome == convencao.JACOBINOS:
+            if partido.nome == conv.JACOBINOS:
                 self.jacobinos = partido
-            if partido.nome == convencao.MONARQUISTAS:
+            if partido.nome == conv.MONARQUISTAS:
                 self.monarquistas = partido
         
     # TODO test_coordenadas_parlamentares
@@ -73,7 +73,7 @@ class AnalisadorPeriodoTest(TestCase):
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
         tamanhos = analise_periodo.tamanhos_partidos
-        tamanho_esperado = convencao.PARLAMENTARES_POR_PARTIDO
+        tamanho_esperado = conv.PARLAMENTARES_POR_PARTIDO
         partidos = AnalisadorPeriodoTest.importer.partidos
         self.assertEquals(3, len(partidos))
         for p in partidos:
@@ -84,7 +84,7 @@ class MatrizesDeDadosBuilderTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.importer = convencao.ImportadorConvencao()
+        cls.importer = conv.ImportadorConvencao()
         cls.importer.importar()
 
     @classmethod
@@ -132,7 +132,7 @@ class AnalisadorTemporalTest(TestCase):
     
     @classmethod
     def setUpClass(cls):
-        cls.importer = convencao.ImportadorConvencao()
+        cls.importer = conv.ImportadorConvencao()
         cls.importer.importar()
 
     @classmethod
@@ -146,11 +146,11 @@ class AnalisadorTemporalTest(TestCase):
         self.votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa__nome_curto='conv')
         self.legislaturas = models.Legislatura.objects.filter(casa_legislativa__nome_curto='conv').distinct()
         for partido in self.partidos:
-            if partido.nome == convencao.GIRONDINOS:
+            if partido.nome == conv.GIRONDINOS:
                 self.girondinos = partido
-            if partido.nome == convencao.JACOBINOS:
+            if partido.nome == conv.JACOBINOS:
                 self.jacobinos = partido
-            if partido.nome == convencao.MONARQUISTAS:
+            if partido.nome == conv.MONARQUISTAS:
                 self.monarquistas = partido        
         
     def test_analisador_temporal(self):
@@ -181,7 +181,7 @@ class RotacionadorTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.importer = convencao.ImportadorConvencao()
+        cls.importer = conv.ImportadorConvencao()
         cls.importer.importar()
 
     @classmethod

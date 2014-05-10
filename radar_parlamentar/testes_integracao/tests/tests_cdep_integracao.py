@@ -20,7 +20,7 @@
 
 from __future__ import unicode_literals
 from django.test import TestCase
-from importadores import camara
+from importadores import cdep
 
 # constantes relativas ao código florestal
 ID = '17338'
@@ -33,7 +33,7 @@ class CamarawsTest(TestCase):
     """Realiza testes envolvendo os web services da câmara"""
     
     def setUp(self):
-        self.camaraws = camara.Camaraws()
+        self.camaraws = cdep.Camaraws()
 
     def test_obter_proposicao(self):
         codigo_florestal_xml = self.camaraws.obter_proposicao_por_id(ID)
