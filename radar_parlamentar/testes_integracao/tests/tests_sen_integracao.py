@@ -20,7 +20,7 @@
 
 from __future__ import unicode_literals
 from django.test import TestCase
-from importadores import senado
+from importadores import sen
 from modelagem import models
 import os
 
@@ -29,7 +29,8 @@ class SenadoWSTest(TestCase):
     
     def test_obter_senadores_from_legislatura(self):
         id_leg = '52'
-        senws = senado.SenadoWS()
+        senws = sen.SenadoWS()
         tree = senws.obter_senadores_from_legislatura(id_leg)
         self.assertIsNotNone(tree)
         self.assertTrue(len(tree.findall('Metadados')) == 1)
+
