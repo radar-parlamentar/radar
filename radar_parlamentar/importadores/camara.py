@@ -51,8 +51,8 @@ class Url(object):
         try:
             xml = self.read(url)
             tree = etree.fromstring(xml)
-        except etree.ParseErrorm, error:
-            logger.error("etree.ParseErrorm: %s" % error)
+        except etree.ParseError, error:
+            logger.error("etree.ParseError: %s" % error)
             return None
         return tree
 

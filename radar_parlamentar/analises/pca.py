@@ -63,7 +63,7 @@ __version__ = "2010-04-14 apr"
 __author_email__ = "denis-bz-py at t-online dot de"
 
 import logging
-  logger = logging.getLogger("radar")
+logger = logging.getLogger("radar")
 
 #...............................................................................
 class PCA:

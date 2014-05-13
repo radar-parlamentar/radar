@@ -24,7 +24,7 @@ import re
 import sys
 import os
 import logging
-  logger = logging.getLogger("radar")
+logger = logging.getLogger("radar")
 
 MODULE_DIR = os.getcwd() + '/exportadores/'
 
