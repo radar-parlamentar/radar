@@ -99,6 +99,16 @@ class AnalisadorTemporal:
             self.analises_periodo[i] = analiseRotacionada
         logger.info("Rotacionado") 
 
+    def numero_total_de_votacoes(self):
+        total_votacoes = 0
+        for periodo in self.periodos:
+            
+            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, self.votacoes, self.palavras_chave)
+            if analisadorPeriodo.votacoes:
+                
+                total_votacoes = total_votacoes + len(analisadorPeriodo.votacoes)
+        return total_votacoes
+
 
 
 class AnalisadorPeriodo:
