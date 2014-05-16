@@ -45,10 +45,19 @@ def analise(request, nome_curto_casa_legislativa):
         palavras_chave = request.GET["palavras_chave"]
     except:
         palavras_chave = ""
+
     num_votacao = casa_legislativa.num_votacao()
+
+    if palavras_chave:
+        lista_de_palavras_chave = utils.StringUtils.transforma_texto_em_lista_de_string(palavras_chave)
+        analisador = AnalisadorTemporal(casa_legislativa, periodicidade, lista_de_palavras_chave)
+        total_votacoes = analisador.numero_total_de_votacoes()
+    else:
+        total_votacoes = None
+
     return render_to_response(
                 'analise.html',
-                {'casa_legislativa':casa_legislativa, 'partidos':partidos,'num_votacao':num_votacao, 'periodicidade':periodicidade, 'palavras_chave':palavras_chave},
+                {'casa_legislativa':casa_legislativa, 'partidos':partidos,'num_votacao':num_votacao, 'periodicidade':periodicidade, 'palavras_chave':palavras_chave, 'total_votacoes':total_votacoes},
                 context_instance=RequestContext(request)
             )
 
