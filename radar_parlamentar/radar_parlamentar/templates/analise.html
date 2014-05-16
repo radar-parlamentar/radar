@@ -35,6 +35,11 @@
     <article id="descricao" class="inwrap">
         Total de votações existentes nesta casa legislativa: <b>{{num_votacao}} </b> 
         <br/><br/>
+        {% if total_votacoes %}
+        Total de votações filtradas nesta casa legislativa: <b>{{total_votacoes}} </b> 
+        <br/><br/>
+        {% else %}
+        {% endif %}
         Dados utilizados nesta análise disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (atualizados em {{casa_legislativa.atualizacao}}).<br/>
 
         <form id="formAnalise" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
@@ -47,13 +52,13 @@
                 <!-- <option value="MES">Mês</option> Issue #193 -->
             </select>
             </p>
-            <!-- Issue #199
+            
             <p><label for="palavras_chave">Filtrar votações por temas:</label>
             Separe as palavras-chaves por vírgula.<br>
-            <input type="text" id="palavras_chave" name ="palavras_chave" size=30" placeholder="saúde, educação">
+            <input type="text" id="palavras_chave" name ="palavras_chave" size="30" placeholder="saúde, educação">
             <input type="submit" value="Filtrar">
             </p>
-            -->
+           
         </form> 
 
         <br><br>
