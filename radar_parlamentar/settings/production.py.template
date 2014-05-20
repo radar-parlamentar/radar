@@ -3,7 +3,7 @@ import os
 
 print('Starting PRODUCTION environment ...')
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
