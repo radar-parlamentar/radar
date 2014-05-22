@@ -114,7 +114,8 @@ class JsonAnaliseGenerator:
         dict_cp = {}
         try:
             theta = round(ap.theta,0) % 180 + 90*idx
-        except AttributeError:
+        except AttributeError, error:
+            logger.error("AttributeError: %s" % error)
             theta = 0
         try:
             var_explicada = round(ap.pca.eigen[idx]/ap.pca.eigen.sum() * 100,1)
@@ -174,7 +175,8 @@ class JsonAnaliseGenerator:
                 else:
                     dict_partido["x"].append(0.)
                     dict_partido["y"].append(0.)                
-            except KeyError:
+            except KeyError, error:
+                logger.error("KeyError: %s" % error)
                 dict_partido["x"].append(0.)
                 dict_partido["y"].append(0.)
             tamanho = ap.tamanhos_partidos[partido]

@@ -3,6 +3,8 @@
 from os import listdir
 from xml.dom.minidom import parseString
 import json
+import logging
+  logger = logging.getLogger("radar")
 
 
 arqs = listdir("bios")
@@ -88,8 +90,8 @@ for arq in arqs:
             #    try:
             #        prox_data = ordenada[ordenada.index(i)+1]
             #        prox = prox_data.partition("-")[0]
-            #    except ValueError:
-            #        print("SEM prox", i)
+            #    except ValueError, error :
+            #        logger.error("ValueError: %s" % error)
 
 
             #    ano1, e, ano2 = i.partition("-")
