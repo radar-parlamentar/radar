@@ -64,6 +64,7 @@ class AnalisadorTemporal:
         self.analises_periodo = []
         self.palavras_chave = palavras_chave
         self.votacoes = []
+        self.total_votacoes = 0
         self.json = ""
 
     def get_analise_temporal(self):
@@ -75,6 +76,8 @@ class AnalisadorTemporal:
         analise_temporal.periodicidade = self.periodicidade
         analise_temporal.analises_periodo = self.analises_periodo
         analise_temporal.votacoes = self.votacoes
+        analise_temporal.total_votacoes = self.total_votacoes
+        analise_temporal.palavras_chaves = self.palavras_chave
         return analise_temporal
             
     def _faz_analises(self):
@@ -87,6 +90,7 @@ class AnalisadorTemporal:
                 logger.info("O periodo possui %d votações." % len(analisadorPeriodo.votacoes))
                 analisePeriodo = analisadorPeriodo.analisa()
                 self.analises_periodo.append(analisePeriodo)
+                self.total_votacoes += len(analisadorPeriodo.votacoes)
             else:
                 logger.info("O periodo não possui nenhuma votação.")
 
@@ -98,15 +102,6 @@ class AnalisadorTemporal:
             self.analises_periodo[i] = analiseRotacionada
         logger.info("Rotacionado") 
 
-    def numero_total_de_votacoes(self):
-        total_votacoes = 0
-        for periodo in self.periodos:
-            
-            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, self.votacoes, self.palavras_chave)
-            if analisadorPeriodo.votacoes:
-                
-                total_votacoes = total_votacoes + len(analisadorPeriodo.votacoes)
-        return total_votacoes
 
 
 

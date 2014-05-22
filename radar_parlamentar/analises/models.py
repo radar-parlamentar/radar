@@ -22,9 +22,10 @@ class AnaliseTemporal:
     def __init__(self):
         self.casa_legislativa = None
         self.periodicidade = None
-        self.area_total = 1
         self.analises_periodo = [] 
         self.votacoes = []
+        self.total_votacoes = 0
+        self.palavras_chaves = []
 
 
 class AnalisePeriodo:

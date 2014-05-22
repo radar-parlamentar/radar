@@ -75,6 +75,8 @@ class JsonAnaliseGenerator:
         dict_geral['escala_tamanho'] = None
         dict_geral['filtro_votacoes'] = None
         dict_geral['CasaLegislativa'] = self._dict_casa_legislativa()
+        dict_geral['total_votacoes'] = self.analise_temporal.total_votacoes
+        dict_geral['palavras_chaves'] = self.analise_temporal.palavras_chaves
         return dict_geral
     
     def _dict_casa_legislativa(self):

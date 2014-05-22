@@ -156,6 +156,7 @@ class AnalisadorTemporalTest(TestCase):
     def test_analisador_temporal(self):
         analisador_temporal = analise.AnalisadorTemporal(self.casa_legislativa, models.SEMESTRE)
         analise_temporal = analisador_temporal.get_analise_temporal()
+        self.assertEqual(analise_temporal.total_votacoes, 8)
         analises = analise_temporal.analises_periodo
         self.assertEqual(len(analises), 2)
         # primeiro semestre

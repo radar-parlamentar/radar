@@ -59,8 +59,8 @@ class JsonAnaliseGeneratorTest(TestCase):
         self.analiseTemporal = AnaliseTemporal()
         self.analiseTemporal.casa_legislativa = self.casa
         self.analiseTemporal.periodicidade = models.BIENIO
-        self.analiseTemporal.area_total = 1
         self.analiseTemporal.analises_periodo = []
+        self.analiseTemporal.total_votacoes = 8
         
         ap1 = AnalisePeriodo()
         periodos_retriever = utils.PeriodosRetriever(self.casa, models.BIENIO)
@@ -88,6 +88,7 @@ class JsonAnaliseGeneratorTest(TestCase):
         gen = grafico.JsonAnaliseGenerator(self.analiseTemporal)
         generated_json = gen.get_json()
         dict_analise = json.loads(generated_json)
+        self.assertEquals(dict_analise['geral']['total_votacoes'], 8)
         dict_casa = dict_analise['geral']['CasaLegislativa']
         self.assertEquals(dict_casa['nome_curto'], self.casa.nome_curto)  
         list_periodos = dict_analise['periodos']

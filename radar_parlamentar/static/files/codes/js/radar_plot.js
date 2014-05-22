@@ -144,8 +144,11 @@ Plot = (function ($) {
 
     // Function that draws the chart
     function plot_data(dados) {
+
         // Inicialmente remove o spinner de loading
         $("#loading").remove();
+
+        plot_total_votacoes_filtradas(dados["geral"]);
 
         var r_maximo = dados.max_raio
         var r_partidos = dados.max_raio_partidos
@@ -644,6 +647,14 @@ Plot = (function ($) {
         // Retorna o json de parlamentares do partido, do qual foram excluídos parlamentares ausentes no dado period.
         function get_parlamentares_no_periodo(partido, period) {
             return partido.parlamentares.filter(function (d) {return d.x[periodo_atual] !== null; })
+        }
+    }
+
+    function plot_total_votacoes_filtradas(dados_gerais) {
+        if (dados_gerais["palavras_chaves"].length > 0) {
+          total_votacoes_filtradas = dados_gerais["total_votacoes"]
+          $( "#total_votacoes_filtradas_div" ).show()
+          $( "#total_votacoes_filtradas" ).text(total_votacoes_filtradas);
         }
     }
 
