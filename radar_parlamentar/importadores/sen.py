@@ -71,12 +71,14 @@ class SenadoWS:
         try:
             request = urllib2.Request(url)
             xml = urllib2.urlopen(request).read()
-        except urllib2.URLError:
+        except urllib2.URLError, error:
+            logger.error("urllib2.URLError: %s" % error)
             raise ValueError('Legislatura %s não encontrada' % id_leg)
 
         try:
             tree = etree.fromstring(xml)
-        except etree.ParseError:
+        except etree.ParseError, error:
+            logger.error("etree.ParseError: %s" % error)
             raise ValueError('Legislatura %s não encontrada' % id_leg)
 
         return tree
@@ -179,7 +181,8 @@ class ImportadorVotacoesSenado:
             nome_senador = voto_parlamentar_tree.find('NomeParlamentar').text
             try:
                 legislatura = models.Legislatura.find(votacao.data, nome_senador)
-            except ValueError:
+            except ValueError, error:
+                logger.error("ValueError: %s" % error)
                 logger.warn('Não encontramos legislatura do senador %s' % nome_senador)
                 logger.info('Criando legislatura para o senador %s' % nome_senador)
                 legislatura = self._cria_legislatura(voto_parlamentar_tree, votacao)

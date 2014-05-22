@@ -23,6 +23,9 @@ import urllib2
 import os
 from modelagem import models
 
+import logging
+  logger = logging.getLogger("radar")
+
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 RESOURCES_FOLDER = os.path.join(MODULE_DIR, '../exportadores/dados/')
 
@@ -41,6 +44,7 @@ class importador_interno:
 			tree = etree.parse(diretorio)
 			root = tree.getroot()
 		except Exception:
+			logger.error("Arquivo não encontrado: %s.xml" % nome_curto)
 			print "Xml não encontrado"
 			return None	
 
