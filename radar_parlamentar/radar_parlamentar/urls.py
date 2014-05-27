@@ -5,10 +5,8 @@ from django.conf.urls.defaults import *
 from django.views.generic.simple import redirect_to
 from django.conf import settings
 import os
-import django_cron
 
 
-django_cron.autodiscover()
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin

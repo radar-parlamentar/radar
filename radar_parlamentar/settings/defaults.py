@@ -117,8 +117,16 @@ INSTALLED_APPS = (
     'analises',
     'exportadores',
     'importadorInterno',
-    'testes_integracao'
+    'testes_integracao',
+    'django_cron'
 )
+
+
+CRON_CLASSES = [
+    
+    "analises.cron.ImportadorAnaliseCron"
+
+]
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
