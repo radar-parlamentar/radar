@@ -240,6 +240,8 @@ class AnalisadorPeriodo:
 
     def _analisa_partidos(self):
         coordenadas_parlamentares = self.pca.U[:,0:2]
+        if coordenadas_parlamentares.shape[1] == 1:
+            coordenadas_parlamentares = numpy.append(coordenadas_parlamentares,numpy.zeros([len(coordenadas_parlamentares),1]),1)
         analisador_partidos = AnalisadorPartidos(coordenadas_parlamentares, self.legislaturas, self.partidos, 
                                                  self.vetores_presencas, self.partido_do_parlamentar)
         analisador_partidos.analisa_partidos()
@@ -405,8 +407,8 @@ class Rotacionador:
         dados_fixos = self.analisePeriodoReferencia.coordenadas_partidos if por_partido else self.analisePeriodoReferencia.coordenadas_legislaturas
         epsilon = 0.001
 
-        print "Calculando teta1 e teta2..."
         if not so_espelha:
+            print "Calculando teta1 e teta2..."
             numerador = 0;
             denominador = 0;
             for key, coords in dados_meus.items():
@@ -421,10 +423,10 @@ class Rotacionador:
             else:
                 teta1 = numpy.arctan(numerador/denominador) * 180 / 3.141592
                 teta2 = teta1 + 180
+            print "teta 1 = "  + str(teta1) + "; teta2 = " + str(teta2)
         else:
             teta1=0
             teta2=180
-        print "teta 1 = "  + str(teta1) + "; teta2 = " + str(teta2)
 
         ex = numpy.array([self._energia(dados_fixos,dados_meus,por_partido,graus=teta1,espelho=0),self._energia(dados_fixos,dados_meus,por_partido,graus=teta2,espelho=0),self._energia(dados_fixos,dados_meus,por_partido,graus=teta1,espelho=1), self._energia(dados_fixos,dados_meus,por_partido,graus=teta2,espelho=1) ])
         print ex
