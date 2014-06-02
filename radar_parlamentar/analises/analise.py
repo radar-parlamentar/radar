@@ -180,16 +180,16 @@ class AnalisadorPeriodo:
         de duas posições [x,y].
         """
         if not self.analise_ja_feita: 
-            self.coordenadas_legislaturas = self._pca_legislaturas() 
+            self.coordenadas_legislaturas = self._pca_legislaturas()
             if self.num_votacoes > 1:
                 for partido in self.coordenadas_legislaturas.keys():
                     self.coordenadas_legislaturas[partido] = (self.coordenadas_legislaturas[partido])[0:2]
             elif self.num_votacoes == 1: # se só tem 1 votação, só tem 1 C.P. Jogar tudo zero na segunda CP.
                 for partido in self.coordenadas_legislaturas.keys():
-                    self.coordenadas_legislaturas[partido] = [(self.coordenadas_legislaturas[partido])[0], 0.]
+                    self.coordenadas_legislaturas[partido] = numpy.array([(self.coordenadas_legislaturas[partido])[0], 0.])
             else: # Zero votações no período. Os partidos são todos iguais. Tudo zero.
                 for legislatura in self.coordenadas_legislaturas.keys():
-                    self.coordenadas_legislaturas[legislatura] = [ 0. , 0. ]
+                    self.coordenadas_legislaturas[legislatura] = numpy.array([ 0. , 0. ])
         return self.coordenadas_legislaturas
 
     def _pca_legislaturas(self):
@@ -352,7 +352,7 @@ class Rotacionador:
     def __init__(self, analisePeriodo, analisePeriodoReferencia):
         self.analisePeriodo = analisePeriodo
         self.analisePeriodoReferencia = analisePeriodoReferencia
-    
+
     def _energia(self,dados_fixos,dados_meus,por_partido,graus=0,espelho=0):
         """Calcula energia envolvida no movimento entre dois instantes (fixo e meu), onde o meu é rodado (entre 0 e 360 graus), e primeiro eixo multiplicado por -1 se espelho=1. Ver pdf intitulado "Solução Analítica para o Problema de Rotação dos Eixos de Representação dos Partidos no Radar Parlamentar" (algoritmo_rotacao.pdf)."""
         e = 0
@@ -431,7 +431,6 @@ class Rotacionador:
         
         dados_partidos = self.analisePeriodo.coordenadas_partidos
         dados_legislaturas = self.analisePeriodo.coordenadas_legislaturas
-
         ganhou = ex.argmin()
         campeao = [0,0]
         if ganhou >= 2: # espelhar
