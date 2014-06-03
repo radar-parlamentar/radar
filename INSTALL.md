@@ -147,18 +147,21 @@ Para importar os dados basta digitar o comando:
 $ python manage.py shell
 $ from importadores import importador
 
-Para selecionar os dados que serão importados, basta colocar 'True' na base desejada de acordo com a ordem abaixo:
-- Convenção
-- CMSP (Camara Municipal de São Paulo)
-- Senado
-- Câmara dos Deputados
+Para selecionar os dados que serão importados, basta passar como parametro uma lista com os nomes reduzidos das casas legislativas. 
+
+* Convenção Francesa: conv
+* Camara Municipal de São Paulo: cmsp
+* Senado: sen
+* Câmara dos Deputados: cdep
 
 Por exemplo, caso deseje importar somente a base Convencao e Senado, então faça:
-$ importador.main(True, False, True, False) 
+
+        $importador.main(['conv', 'sen']) 
 
 
 Caso deseje importar todos:
-$ importador.main(True, True, True, True)
+
+        $ importador.main(['conv', 'sen', 'cmsp', 'cdep'])
 
 - Criando novos importadores:
 

@@ -1,20 +1,27 @@
-def main(convencao=False, cmsp=False, senado=False, camara=False):
-    if convencao is not False:
-        from importadores import conv as importador_convencao
+#-*- coding: utf-8 -*-
+def main(lista_casas_legislativas):
 
-        importador_convencao.main()
+    for casa_legislativa in lista_casas_legislativas:
 
-    if cmsp is not False:
-        from importadores import cmsp as importador_cmsp
+        if casa_legislativa == 'conv':
+            from importadores import conv as importador_convencao
 
-        importador_cmsp.main()
+            importador_convencao.main()
 
-    if senado is not False:
-        from importadores import sen as importador_senado
+        elif casa_legislativa == 'cmsp':
+            from importadores import cmsp as importador_cmsp
 
-        importador_senado.main()
+            importador_cmsp.main()
 
-    if camara is not False:
-        from importadores import cdep as importador_camara
+        elif casa_legislativa == 'sen' :
+            from importadores import sen as importador_senado
 
-        importador_camara.main()
+            importador_senado.main()
+
+        elif casa_legislativa == 'cdep':
+            from importadores import cdep as importador_camara
+
+            importador_camara.main()
+
+        else:
+            print "Casa %s não encontrada" % casa_legislativa
