@@ -118,13 +118,14 @@ INSTALLED_APPS = (
     'exportadores',
     'importadorInterno',
     'testes_integracao',
-    'django_cron'
+    'django_cron',
+    'cron'
 )
 
 
 CRON_CLASSES = [
     
-    "analises.cron.ImportadorAnaliseCron"
+    "cron.cron.ImportadorAnaliseCron"
 
 ]
 

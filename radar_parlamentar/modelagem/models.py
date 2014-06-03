@@ -566,4 +566,14 @@ class VotoPartido(VotosAgregados):
         VotosAgregados.__init__(self)
         self.partido = partido
 
+class TesteCron(models.Model):
+    """Model para armezenar flags do Cron para testes.
+
+    Atributos:
+        data -- data em que o Cron foi executado
+        hora -- hora em que o Cron foi executado
+    """
+    data = models.DateField(auto_now_add = True)
+    hora = models.TimeField(auto_now_add = True)
+
 # TODO class VotoUF(VotosAgregados):
