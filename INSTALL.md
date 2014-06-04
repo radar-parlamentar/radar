@@ -129,7 +129,7 @@ Criar production.py baseado em production.py.template.
 No ambiente de produção é necessário exportar a variável de ambiente export 	DJANGO_SETTINGS_MODULE='settings.production'. Para isso basta executar o script is_prod.sh. Referência do DJANGO: (https://code.djangoproject.com/wiki/SplitSettings)
 
 
-
+*Importante dizer que deve-se atribuir False a variável DEBUG em settings/development.py ou production.py (em ambiente de produção) para ativar a visualização da página de erro default 404.
 
     
 Para criar as tabelas do Radar Parlamentar:
@@ -147,18 +147,21 @@ Para importar os dados basta digitar o comando:
 $ python manage.py shell
 $ from importadores import importador
 
-Para selecionar os dados que serão importados, basta colocar 'True' na base desejada de acordo com a ordem abaixo:
-- Convenção
-- CMSP (Camara Municipal de São Paulo)
-- Senado
-- Câmara dos Deputados
+Para selecionar os dados que serão importados, basta passar como parametro uma lista com os nomes reduzidos das casas legislativas. 
+
+* Convenção Francesa: conv
+* Camara Municipal de São Paulo: cmsp
+* Senado: sen
+* Câmara dos Deputados: cdep
 
 Por exemplo, caso deseje importar somente a base Convencao e Senado, então faça:
-$ importador.main(True, False, True, False) 
+
+        $importador.main(['conv', 'sen']) 
 
 
 Caso deseje importar todos:
-$ importador.main(True, True, True, True)
+
+        $ importador.main(['conv', 'sen', 'cmsp', 'cdep'])
 
 - Criando novos importadores:
 
