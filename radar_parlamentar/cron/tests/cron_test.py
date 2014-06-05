@@ -24,9 +24,11 @@ from django.test import TestCase
 
 from modelagem.models import TesteCron
 
-
 class ImportadorAnaliseCronTest(TestCase):
 
-
     def setUp(self):
-        pass	
+    	self.verifica_horario = models.TesteCron.objects.get(data)
+
+   	# TODO mover test_coordenadas_partidos para AnalisadorPartidosTest
+    def test_coordenadas_partidos(self):
+        self.assertEquals('01:00', self.verifica_horario)

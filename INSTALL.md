@@ -101,8 +101,8 @@ Você deve configurar um banco de dados MySQL para ser utilizado pelo Radar.
 Para configurar o MySql como banco de dados:
 Instalação:
 
-	$ sudo apt-get install mysql-server
-	$ sudo apt-get install python-mysqldb
+    $ sudo apt-get install mysql-server
+    $ sudo apt-get install python-mysqldb
 
 Deve-se criar um usuário "root" e o banco dentro do próprio MySQL.
 
@@ -126,10 +126,10 @@ Criar development.py baseado em development.py.template.
 
 Criar production.py baseado em production.py.template.
 
-No ambiente de produção é necessário exportar a variável de ambiente export 	DJANGO_SETTINGS_MODULE='settings.production'. Para isso basta executar o script is_prod.sh. Referência do DJANGO: (https://code.djangoproject.com/wiki/SplitSettings)
+No ambiente de produção é necessário exportar a variável de ambiente export     DJANGO_SETTINGS_MODULE='settings.production'. Para isso basta executar o script is_prod.sh. Referência do DJANGO: (https://code.djangoproject.com/wiki/SplitSettings)
 
 
-
+*Importante dizer que deve-se atribuir False a variável DEBUG em settings/development.py ou production.py (em ambiente de produção) para ativar a visualização da página de erro default 404.
 
     
 Para criar as tabelas do Radar Parlamentar:
@@ -147,18 +147,21 @@ Para importar os dados basta digitar o comando:
 $ python manage.py shell
 $ from importadores import importador
 
-Para selecionar os dados que serão importados, basta colocar 'True' na base desejada de acordo com a ordem abaixo:
-- Convenção
-- CMSP (Camara Municipal de São Paulo)
-- Senado
-- Câmara dos Deputados
+Para selecionar os dados que serão importados, basta passar como parametro uma lista com os nomes reduzidos das casas legislativas. 
+
+* Convenção Francesa: conv
+* Camara Municipal de São Paulo: cmsp
+* Senado: sen
+* Câmara dos Deputados: cdep
 
 Por exemplo, caso deseje importar somente a base Convencao e Senado, então faça:
-$ importador.main(True, False, True, False) 
+
+        $importador.main(['conv', 'sen']) 
 
 
 Caso deseje importar todos:
-$ importador.main(True, True, True, True)
+
+        $ importador.main(['conv', 'sen', 'cmsp', 'cdep'])
 
 - Criando novos importadores:
 
@@ -168,8 +171,30 @@ http://radarparlamentar.polignu.org/importadores/
 
 Recomendamos inicialmente que você realize a importação dos dados Convenção Nacional Francesa (uma casa legislativa fictícia).
 
+5. Configuração do South
+-------------------------
 
-5. Conferindo se está tudo certo
+South é uma ferramenta que funciona como uma camada de migração, independente do banco de dados. Eventualmente, seu models.py vai ser modificado e o South vai identificar e realizar as mudanças correspondentes no seu banco por você, sem a necessidade de utilizar comandos SQL e sem perda de dados.
+
+* Instalação:
+
+    $ sudo pip install South 
+    
+Adicionar o South no `INSTALLED_APPS` no arquivo `settings/defaults.py`.
+
+    $ python manage.py syncdb 
+    $ python manage.py convert_to_south modelagem
+
+* Como usar:
+
+Quando ocorrer alterações na model, digite no terminal:
+    
+    $ python manage.py schemamigration modelagem --auto
+    $ python manage.py migrate modelagem
+    
+Observação: Cuidado ao diminuir o tamanho dos campos. Podem existir dados com tamanho superior ao tamanho desejado.
+
+6. Conferindo se está tudo certo
 ---------------------------------
 Execute o script de testes e testes unitários:
     
