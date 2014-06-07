@@ -32,6 +32,7 @@ XML_TEST = os.path.join(cmsp.MODULE_DIR,'dados/cmsp/cmsp_test.xml')
 
 class AprendizadoEtreeCase(TestCase):
     """Testes para entender o funcionamento da lib etree"""
+    
     def setUp(self):
         xml =   """<CMSP>
                     <Votacao VotacaoID="1">
@@ -111,7 +112,7 @@ class EstaticosCMSPCase(TestCase):
         num_ano = self.xmlCMSP.tipo_num_anoDePropNome(prop_nome)
         self.assertEquals(num_ano,("PL","1","1000"))
 
-    def test_tipo_num_ano_de_prop_nome_valido(self):
+    def test_tipo_num_ano_de_prop_nome_invalido(self):
         prop_nome = "nao e proposicao valida"
         num_ano = self.xmlCMSP.tipo_num_anoDePropNome(prop_nome)
         self.assertEquals(num_ano,(None,None,None))
@@ -177,3 +178,35 @@ class ModelCMSPCase(TestCase):
         #legislatura = self.xmlCMSP.legislatura(xml_vereador)
         #self.assertEquals(legislatura,models.Legislatura.objects.get(parlamentar__id_parlamentar="1",partido__nome="PTest"))
 
+
+class IdempotenciaCMSPCase(TestCase):
+    
+#    def setUp(self):
+        
+    def test_idempotencia_cmsp(self):
+
+        casa = GeradorCasaLegislativa().gerar_cmsp()
+        importer = ImportadorCMSP(casa, False)
+        
+        # importa a primeira vez
+        votacoes = importer.importar_de(XML_TEST)
+        self.votacao = votacoes[0]
+
+        num_casas_antes = models.CasaLegislativa.objects.filter(nome_curto='cmsp').count()
+        num_votacoes_antes = models.Votacao.objects.filter(proposicao__casa_legislativa = casa).count()
+        num_legs_antes = models.Legislatura.objects.filter(casa_legislativa = casa).count()
+
+        # importa de novo
+        self.votacao = importer.importar_de(XML_TEST)[0]
+        
+        num_casas_depois = models.CasaLegislativa.objects.filter(nome_curto='cmsp').count()
+        num_votacoes_depois = models.Votacao.objects.filter(proposicao__casa_legislativa = casa).count()
+        num_legs_depois = models.Legislatura.objects.filter(casa_legislativa = casa).count()
+        
+        self.assertEqual(num_casas_antes, 1)
+        self.assertEqual(num_casas_depois, 1)
+        self.assertEquals(num_votacoes_depois, num_votacoes_antes)
+        self.assertEquals(num_legs_depois, num_legs_antes)
+        
+        
+        

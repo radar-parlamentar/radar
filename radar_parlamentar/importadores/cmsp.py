@@ -36,11 +36,12 @@ MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # arquivos com os dados fornecidos pela cmsp
 XML2010 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2010.xml')
-XML2011 = os.path.join(MODULE_DIR,'dados/cmsp/cmsp2011.xml')
-XML2012 = os.path.join(MODULE_DIR,'dados/cmsp/cmsp2012.xml')
-XML2013 = os.path.join(MODULE_DIR,'dados/cmsp/cmsp2013.xml')
+XML2011 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2011.xml')
+XML2012 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2012.xml')
+XML2013 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2013.xml')
+XML2014 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2014.xml')
 
-# tipos de proposições encontradas nos XMLs da cmsp (2010, 2011, 2012, 2013)
+# tipos de proposições encontradas nos XMLs da cmsp 
 # esta lista ajuda a identificar as votações que são de proposições
 # Exemplos de votações que não são de proposições: Adiamento do Prolong. do Expediente; Adiamento dos Demais itens da Pauta.
 TIPOS_PROPOSICOES = ['PL', 'PLO', 'PDL']
@@ -97,10 +98,14 @@ class XmlCMSP:
     def prop_nome(self, texto):
         """Procura "tipo num/ano" no texto"""
         res = re.search(PROP_REGEX, texto)
-        if res and res.group(1).upper() in TIPOS_PROPOSICOES:
+        if res:
+            nome = res.group(1).upper()
+            if self.votacao_valida(nome, texto):
                 return res.group(0).upper()
-        else:
-            return None
+        return None
+        
+    def votacao_valida(self, nome_prop, texto):
+        return nome_prop in TIPOS_PROPOSICOES and not 'Inversão' in texto
 
     def tipo_num_anoDePropNome(self, prop_nome):
         """Extrai ano de "tipo num/ano" """
@@ -196,32 +201,37 @@ class XmlCMSP:
             prop_nome = self.prop_nome(resumo) # vai retornar prop_nome se votação for de proposição
             # se a votacao for associavel a uma proposicao, entao..
             if (prop_nome):
-                # a proposicao a qual a votacao sob analise se refere jah estava no dicionario (eba!)
-                if proposicoes.has_key(prop_nome):
-                    prop = proposicoes[prop_nome]
-                # a prop. nao estava ainda, entao devemo-la tanto  criar qnt cadastrar no dicionario.
+                id_vot = vot_tree.get('VotacaoID')
+                votacoes_em_banco = models.Votacao.objects.filter(id_vot=id_vot)
+                if votacoes_em_banco:
+                    vot = votacoes_em_banco[0]
                 else:
-                    prop = models.Proposicao()
-                    prop.sigla, prop.numero, prop.ano = self.tipo_num_anoDePropNome(prop_nome)
-                    prop.casa_legislativa = self.cmsp
-                    proposicoes[prop_nome] = prop
-
-                if self.verbose:
-                    print 'Proposicao %s salva' % prop
-                prop.save()
-                vot = models.Votacao()
-                vot.save() # só pra criar a chave primária e poder atribuir o votos
-                vot.id_vot = vot_tree.get('VotacaoID')
-                vot.descricao = resumo
-                vot.data = self.converte_data(vot_tree.get('DataDaSessao'))
-                vot.resultado = vot_tree.get('Resultado')
-                self.votos_from_tree(vot_tree, vot)
-                vot.proposicao = prop
-                if self.verbose:
-                    print 'Votacao %s salva' % vot
-                else:
-                    self.progresso()
-                vot.save()
+                    # a proposicao a qual a votacao sob analise se refere jah estava no dicionario (eba!)
+                    if proposicoes.has_key(prop_nome):
+                        prop = proposicoes[prop_nome]
+                    # a prop. nao estava ainda, entao devemo-la tanto  criar qnt cadastrar no dicionario.
+                    else:
+                        prop = models.Proposicao()
+                        prop.sigla, prop.numero, prop.ano = self.tipo_num_anoDePropNome(prop_nome)
+                        prop.casa_legislativa = self.cmsp
+                        proposicoes[prop_nome] = prop
+    
+                    if self.verbose:
+                        print 'Proposicao %s salva' % prop
+                    prop.save()
+                    vot = models.Votacao()
+                    vot.save() # só pra criar a chave primária e poder atribuir o votos
+                    vot.id_vot = id_vot
+                    vot.descricao = resumo
+                    vot.data = self.converte_data(vot_tree.get('DataDaSessao'))
+                    vot.resultado = vot_tree.get('Resultado')
+                    self.votos_from_tree(vot_tree, vot)
+                    vot.proposicao = prop
+                    if self.verbose:
+                        print 'Votacao %s salva' % vot
+                    else:
+                        self.progresso()
+                    vot.save()
 
                 votacoes.append(vot)
 
