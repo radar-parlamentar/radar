@@ -195,6 +195,7 @@ class IdempotenciaCMSPCase(TestCase):
         num_casas_antes = models.CasaLegislativa.objects.filter(nome_curto='cmsp').count()
         num_votacoes_antes = models.Votacao.objects.filter(proposicao__casa_legislativa = casa).count()
         num_legs_antes = models.Legislatura.objects.filter(casa_legislativa = casa).count()
+        num_parlamentares_antes = models.Parlamentar.objects.all().count()
 
         # importa de novo
         self.votacao = importer.importar_de(XML_TEST)[0]
@@ -202,11 +203,13 @@ class IdempotenciaCMSPCase(TestCase):
         num_casas_depois = models.CasaLegislativa.objects.filter(nome_curto='cmsp').count()
         num_votacoes_depois = models.Votacao.objects.filter(proposicao__casa_legislativa = casa).count()
         num_legs_depois = models.Legislatura.objects.filter(casa_legislativa = casa).count()
+        num_parlamentares_depois = models.Parlamentar.objects.all().count()
         
         self.assertEqual(num_casas_antes, 1)
         self.assertEqual(num_casas_depois, 1)
         self.assertEquals(num_votacoes_depois, num_votacoes_antes)
         self.assertEquals(num_legs_depois, num_legs_antes)
+        self.assertEquals(num_parlamentares_depois, num_parlamentares_antes)
         
         
         

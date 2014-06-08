@@ -27,7 +27,6 @@ import re
 import sys
 import os
 import xml.etree.ElementTree as etree
-import threading
 
 # data em que os arquivos XMLs foram atualizados
 ULTIMA_ATUALIZACAO = parse_datetime('2012-12-31 0:0:0')
@@ -277,7 +276,7 @@ def main():
     gerador_casa = GeradorCasaLegislativa()
     cmsp = gerador_casa.gerar_cmsp()
     importer = ImportadorCMSP(cmsp)
-    for xml in [XML2010,XML2011,XML2012]:
+    for xml in [XML2010, XML2011, XML2012, XML2013, XML2014]:
         importer.importar_de(xml)
     print 'Importacao dos dados da Camara Municipal de Sao Paulo (CMSP) terminada'
 
