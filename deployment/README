@@ -1,6 +1,6 @@
 
 O Chef é um sistema para automatizar a implantação de sistemas.
-A pasta cookbooks/radar contém uma receita Chef para que se instale o Radar em um servidor.
+A pasta cookbooks/radar contém uma receita Chef que instala o Radar em um servidor.
 Para instalar o Radar usando essa receita em um servidor, siga os passos a baixo:
 
 Em $HOME/chef-solo copie todos os arquivos desta pasta (inclusive a pasta cookbooks e todo seu conteúdo).
