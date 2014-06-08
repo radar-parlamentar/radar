@@ -1,6 +1,6 @@
 # Django settings for radar_parlamentar project.
 
-ADMINS = ()
+ADMINS = (('Léo', 'leonardofl87@gmail.com'))
 MANAGERS = ADMINS
 
 # Local time zone for this installation. Choices can be found here:
