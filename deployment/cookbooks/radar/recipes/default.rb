@@ -1,31 +1,31 @@
 # License: GPL v3
 # Author: Leonardo Leite (2013, 2014)
 
-include_recipe "mysql::server" # TODO change to MariaDB
-include_recipe "database::mysql"
+#include_recipe "mariadb::ruby" 
+#include_recipe "database::mysql"
 
-mysql_database 'radar' do
-  connection(
-    :host     => 'localhost',
-    :username => 'root',
-    :password => node['mysql']['server_root_password']
-  )
-  action :create
-end
+#mysql_database 'radar' do
+#  connection(
+#    :host     => 'localhost',
+#    :username => 'root',
+#    :password => node['mariadb']['server_root_password']
+#  )
+#  action :create
+#end
 
-mysql_connection_info = {
-  :host     => 'localhost',
-  :username => 'root',
-  :password => node['mysql']['server_root_password']
-}
+#mysql_connection_info = {
+#  :host     => 'localhost',
+#  :username => 'root',
+#  :password => node['mariadb']['server_root_password']
+#}
 
-mysql_database_user 'radar' do
-  connection    mysql_connection_info
-  password      node['radar']['database_user_password']
-  database_name 'radar'
-  host          '%'
-  privileges    [:select,:update,:insert]
-  action        :grant
-end
+#mysql_database_user 'radar' do
+#  connection    mysql_connection_info
+#  password      node['radar']['database_user_password']
+#  database_name 'radar'
+#  host          '%'
+#  privileges    [:select,:update,:insert]
+#  action        :grant
+#end
 
 
