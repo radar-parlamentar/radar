@@ -12,3 +12,22 @@ Edite chef-solo/solo.rb para configurar adequadamente os atributos
 Execute "sudo chef-solo -c chef-solo/solo.rb"
 
 ATENÇÃO: ainda não está terminado :)
+
+
+==============
+
+Usando o Vagrant:
+
+Criar VM:
+$vagrant up
+
+Destruir VM:
+$vagrant destroy
+
+Reexecutar chef-solo:
+$vagrant reload --provision
+
+Obs: precisa ter o VirtualBox instalado.
+
+==============
+
