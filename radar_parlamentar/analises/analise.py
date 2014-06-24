@@ -102,6 +102,16 @@ class AnalisadorTemporal:
             self.analises_periodo[i] = analiseRotacionada
         logger.info("Rotacionado") 
 
+    def votacoes_com_filtro(self):
+        votos_com_filtro = []
+        for periodo in self.periodos:
+            
+            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, self.votacoes, self.palavras_chave)
+            #if analisadorPeriodo.votacoes:
+            votos_com_filtro = analisadorPeriodo._inicializa_votacoes()    
+                #votos_com_filtro = total_votacoes + len(analisadorPeriodo.votacoes)
+        return votos_com_filtro
+
 
 
 
@@ -147,6 +157,7 @@ class AnalisadorPeriodo:
         """Pega votações deste período no banco de dados, filtra por palavras chave e seta a lista self.votacoes"""
         filtro_votacao = filtro.FiltroVotacao(self.casa_legislativa, self.periodo, self.palavras_chave)
         self.votacoes = filtro_votacao.filtra_votacoes()
+        return self.votacoes
 
     def analisa(self):
         """Retorna instância de AnalisePeriodo"""
