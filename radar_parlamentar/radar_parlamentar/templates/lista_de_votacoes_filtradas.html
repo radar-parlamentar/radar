@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block headerImgClass %}
+    about
+{% endblock headerImgClass %}
+
+{% block nomepagina %}
+    Radar Parlamentar
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Veja a lista de votações filtradas.
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}
+    <li><a href="/index/">Home</a> &raquo;</li>
+    <!--<li><a href="/analises/">Gráficos</a> &raquo;</li>-->
+    <li><a href="/analises/lista_de_votacoes_filtradas/{{casa_legislativa.nome_curto}}">{{casa_legislativa.nome}}</a></li>
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <h3> {{casa_legislativa.nome}}</h3>
+    <br/><br/>
+    <h5>Palavras-Chave utilizadas na busca:
+    {% for palavra in lista_de_palavras_chave %}
+        <b>  {{palavra}} </b>
+    {% endfor %}</h5>
+    <br/>
+    <table>
+        <tr>
+            <td align="center"><b>Descricao</b></td>
+            <td align="center"><b>Ementa</b></td>
+            <td align="center"><b>Indexacao</b></td>
+            <td align="center"><b>Descricao da Proposição</b></td>
+        </tr>
+    {% for votacao in analise_temporal %}
+        <tr>
+            <td align="justify"><b>{{votacao.data}} </br></b>{{votacao.descricao}}</td>
+            <td align="justify">{{votacao.proposicao.ementa}}</td>
+            <td align="justify">{{votacao.proposicao.indexacao}}</td>
+            <td align="justify">{{votacao.proposicao.descricao}}</td>
+        </tr>
+    {% endfor %}     
+    </table>
+
+    <br/><br/>
+    Analise Temporal
+    {{analise_temporal}}
+        <!--article id="descricao" class="inwrap">
+            Total de votações existentes nesta casa legislativa: <b>{{num_votacao}} </b> 
+            <br/><br/>
+            <div id="total_votacoes_filtradas_div" style="display:none">
+              Total de votações filtradas nesta casa legislativa: <b><span id="total_votacoes_filtradas"></span></b> </b> 
+            <br/><br/>
+                Lista de Votações filtradas:
+            <br/><br/>
+            </div>
+        
+            <form id="formAnalise" method="GET" action="/analises/lista_de_votacoes_filtradas/{{casa_legislativa.nome_curto}}/">
+                Imprimir aqui o resultado
+            </form> 
+
+            <br><br>
+
+            
+        </article-->
+        <div style="clear:right"/>
+{% endblock content %}
+
+{% block extrajsend %}
+    {% if request.get_host == '127.0.0.1:8000' or request.get_host == 'localhost:8000' %}
+        <script src="/static/files/codes/js/d3.min.js"></script>
+        <script src="/static/files/codes/js/d3-tip.js"></script>
+    {% else %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js"></script>
+        <script src="/static/files/codes/js/d3-tip.js"></script>
+        <script type="text/javascript">
+          if (typeof d3 === 'undefined') {
+            var e = document.createElement('script');
+                e.src = '/static/files/codes/js/d3.min.js';
+                e.type='text/javascript';
+            document.getElementsByTagName("head")[0].appendChild(e);
+          }
+        </script>
+    {% endif %}
+    <script src="/static/files/codes/js/radar_plot.js"></script>log(d); 
+{% endblock extrajsend %}
+
+{% block extrascriptsend %}
+    var campo_select = document.getElementById("periodicidade");
+    for(var i=0; i < campo_select.options.length; i++) {
+        if(campo_select.options[i].value == '{{periodicidade}}') {
+            campo_select.selectedIndex = i;
+        }
+    } 
+    
+    menuActive("analises");
+  $(document).ready(function() {
+    Plot.initialize('{{casa_legislativa.nome_curto}}', '{{periodicidade}}', '{{palavras_chave}}')
+  });
+{% endblock extrascriptsend %}
