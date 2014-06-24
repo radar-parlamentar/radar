@@ -105,11 +105,8 @@ class AnalisadorTemporal:
     def votacoes_com_filtro(self):
         votos_com_filtro = []
         for periodo in self.periodos:
-            
             analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, self.votacoes, self.palavras_chave)
-            #if analisadorPeriodo.votacoes:
             votos_com_filtro = analisadorPeriodo._inicializa_votacoes()    
-                #votos_com_filtro = total_votacoes + len(analisadorPeriodo.votacoes)
         return votos_com_filtro
 
 
