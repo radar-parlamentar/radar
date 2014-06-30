@@ -1,10 +1,10 @@
-#-*- coding:UTF-8 -*-
+# -*- coding:UTF-8 -*-
 
 from os import listdir
 from xml.dom.minidom import parseString
 import json
 import logging
-  logger = logging.getLogger("radar")
+logger = logging.getLogger("radar")
 
 
 arqs = listdir("bios")
@@ -16,20 +16,22 @@ lista_partidos = []
 cont = 0
 for arq in arqs:
     if arq[0] != ".":
-        ponteiro = open("bios/"+arq)
+        ponteiro = open("bios/" + arq)
         data = ponteiro.read()
         dom = parseString(data)
         records = dom.getElementsByTagName('DATA_RECORD')
 
         for record in records:
-            legis = record.getElementsByTagName('MANDATOSCD')[0].firstChild.data
+            legis = record.getElementsByTagName(
+                'MANDATOSCD')[0].firstChild.data
             if legis.find("Deputada") != -1:
                 genero = "F"
                 cont += 1
             else:
                 genero = "M"
             nome = record.getElementsByTagName('TXTNOME')[0].firstChild.data
-            legis_anos = record.getElementsByTagName('LEGISLATURAS')[0].firstChild.data
+            legis_anos = record.getElementsByTagName(
+                'LEGISLATURAS')[0].firstChild.data
             generos[nome] = genero
 
             anos = legis_anos.split(",")
@@ -70,7 +72,7 @@ for arq in arqs:
                     historia[partido] = legis_partidos
                 nums = legis_partidos.get(legislatura, {})
                 if not nums:
-                    nums = {"M":0, "F":0}
+                    nums = {"M": 0, "F": 0}
                     legis_partidos[legislatura] = nums
                 nums[genero] = nums.get(genero, 0) + 1
 
@@ -81,12 +83,12 @@ for arq in arqs:
 
 
             #ordenada = []
-            #for a in legis_partidos.keys():
+            # for a in legis_partidos.keys():
             #    ordenada.append(a)
-            #ordenada.sort()
+            # ordenada.sort()
 
             #prox = None
-            #for l in ordenada:
+            # for l in ordenada:
             #    try:
             #        prox_data = ordenada[ordenada.index(i)+1]
             #        prox = prox_data.partition("-")[0]
@@ -110,5 +112,5 @@ ordenada.sort()
 
 print(lista_partidos)
 
-arq = open("genero_historia_partidos.json","w")
+arq = open("genero_historia_partidos.json", "w")
 json.dump(historia, arq)
