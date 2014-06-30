@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 def main(lista_casas_legislativas):
 
     for casa_legislativa in lista_casas_legislativas:
@@ -13,7 +13,7 @@ def main(lista_casas_legislativas):
 
             importador_cmsp.main()
 
-        elif casa_legislativa == 'sen' :
+        elif casa_legislativa == 'sen':
             from importadores import sen as importador_senado
 
             importador_senado.main()
