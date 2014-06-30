@@ -20,24 +20,26 @@
 from __future__ import unicode_literals
 from django.template import RequestContext
 from django.http import HttpResponse
-from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404, redirect
+from django.shortcuts import render_to_response, get_object_or_404
 from modelagem import models
 from modelagem import utils
 from grafico import JsonAnaliseGenerator
 from analise import AnalisadorTemporal
 import logging
-from django.views.decorators.cache import cache_page
 
 logger = logging.getLogger("radar")
+
 
 def analises(request):
     return render_to_response('analises.html', {}, context_instance=RequestContext(request))
 
+
 def analise(request, nome_curto_casa_legislativa):
     ''' Retorna a lista de partidos para montar a legenda do gráfico'''
     partidos = models.Partido.objects.order_by('numero').all()
-    casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
-    try:     
+    casa_legislativa = get_object_or_404(
+        models.CasaLegislativa, nome_curto=nome_curto_casa_legislativa)
+    try:
         periodicidade = request.GET["periodicidade"]
     except:
         periodicidade = models.BIENIO
@@ -49,20 +51,25 @@ def analise(request, nome_curto_casa_legislativa):
     num_votacao = casa_legislativa.num_votacao()
 
     return render_to_response(
-                'analise.html',
-                {'casa_legislativa':casa_legislativa, 
-                 'partidos':partidos,
-                 'num_votacao':num_votacao, 
-                 'periodicidade':periodicidade, 
-                 'palavras_chave':palavras_chave}, 
-                context_instance=RequestContext(request)
-            )
+        'analise.html',
+        {'casa_legislativa': casa_legislativa,
+         'partidos': partidos,
+         'num_votacao': num_votacao,
+         'periodicidade': periodicidade,
+         'palavras_chave': palavras_chave},
+        context_instance=RequestContext(request)
+    )
 
-def json_analise(request, nome_curto_casa_legislativa, periodicidade, palavras_chave=""):
+
+def json_analise(request, nome_curto_casa_legislativa,
+                 periodicidade, palavras_chave=""):
     """Retorna o JSON com as coordenadas do gráfico PCA"""
-    casa_legislativa = get_object_or_404(models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
-    lista_de_palavras_chave = utils.StringUtils.transforma_texto_em_lista_de_string(palavras_chave)
-    analisador = AnalisadorTemporal(casa_legislativa, periodicidade, lista_de_palavras_chave)
+    casa_legislativa = get_object_or_404(
+        models.CasaLegislativa, nome_curto=nome_curto_casa_legislativa)
+    lista_de_palavras_chave = utils.StringUtils.transforma_texto_em_lista_de_string(
+        palavras_chave)
+    analisador = AnalisadorTemporal(
+        casa_legislativa, periodicidade, lista_de_palavras_chave)
     analise_temporal = analisador.get_analise_temporal()
     gen = JsonAnaliseGenerator(analise_temporal)
     json = gen.get_json()
