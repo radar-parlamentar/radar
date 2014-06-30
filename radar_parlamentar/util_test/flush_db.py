@@ -1,5 +1,4 @@
 # coding=utf8
-
 # Copyright (C) 2012, Eduardo Hideo
 #
 # This file is part of Radar Parlamentar.
@@ -17,13 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.db import (connections,DEFAULT_DB_ALIAS)
+from django.db import (connections, DEFAULT_DB_ALIAS)
 from django.core.management import call_command
 
+
 def flush_db(cls):
-    if getattr(cls,'multi_db',False):
+    if getattr(cls, 'multi_db', False):
         databases = connections
     else:
         databases = [DEFAULT_DB_ALIAS]
     for db_name in databases:
-        call_command('flush',verbosity=0, interactive=False,database=db_name)
+        call_command('flush', verbosity=0, interactive=False, database=db_name)
