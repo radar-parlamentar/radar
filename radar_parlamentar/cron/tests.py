@@ -10,7 +10,8 @@ from modelagem import models
 from importadores.tests.mocks_cdep import mock_obter_proposicao,mock_listar_proposicoes, mock_obter_votacoes, mock_obter_proposicoes_votadas_plenario
 
 
-test_votadas = [[('17338', 'PL 1876/1999')]]
+test_votadas_1 = [[('17338', 'PL 1876/1999')]]
+test_votadas_2 = [[('513512', 'MPV 540/2011')]]
 
 ID = '17338' 
 ANO = '2012'
@@ -18,12 +19,15 @@ SIGLA = 'PL'
 NUM = '1876'
 NOME = 'PL 1876/1999'
 
-# Create your tests here.
-
+ID_ = '513512' 
+ANO_ = '2011'
+SIGLA_ = 'MPV'
+NUM_ = '540'
+NOME_ = 'MPV 540/2011'
 
 class CronTest(TestCase):
 
-    def _import(self):
+    def _import(self,test_votadas):
         votadasParser = cdep.ProposicoesParser(test_votadas)
         votadas = votadasParser.parse()        
         importer = cdep.ImportadorCamara(votadas)
@@ -41,12 +45,15 @@ class CronTest(TestCase):
         code = "cron.ImportadorAnaliseCron"      
         teste_cron = TesteCron()
         teste_cron.save()
-        self._import()
+        print  "++++++++++++ fim da importacao 1 ++++++++++++"
     
     def test_check_duplicate_values(self):
-        #Segunda chamada ao cron
-        teste_cron = TesteCron()
-        teste_cron.save()
-        self._import()
-        query = models.Proposicao.objects.filter(id_prop=ID)
-        self.assertEquals(1,len(query))
+        #Chamada ao importador mockado
+        self._import(test_votadas_1)
+        self._import(test_votadas_1)
+        self._import(test_votadas_2)
+        self._import(test_votadas_2)
+        query_1 = models.Proposicao.objects.filter(id_prop=ID)
+        query_2 = models.Proposicao.objects.filter(id_prop=ID_)
+        self.assertEquals(1,len(query_1))
+        self.assertEquals(1,len(query_2))
