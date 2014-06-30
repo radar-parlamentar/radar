@@ -1,4 +1,4 @@
-#-*- coding:UTF-8 -*-
+# -*- coding:UTF-8 -*-
 
 from os import listdir
 from xml.dom.minidom import parseString
@@ -14,20 +14,22 @@ lista_partidos = []
 cont = 0
 for arq in arqs:
     if arq[0] != ".":
-        ponteiro = open("bios/"+arq)
+        ponteiro = open("bios/" + arq)
         data = ponteiro.read()
         dom = parseString(data)
         records = dom.getElementsByTagName('DATA_RECORD')
 
         for record in records:
-            legis = record.getElementsByTagName('MANDATOSCD')[0].firstChild.data
+            legis = record.getElementsByTagName(
+                'MANDATOSCD')[0].firstChild.data
             if legis.find("Deputada") != -1:
                 genero = "F"
                 cont += 1
             else:
                 genero = "M"
             nome = record.getElementsByTagName('TXTNOME')[0].firstChild.data
-            legis_anos = record.getElementsByTagName('LEGISLATURAS')[0].firstChild.data
+            legis_anos = record.getElementsByTagName(
+                'LEGISLATURAS')[0].firstChild.data
             generos[nome] = genero
 
             anos = legis_anos.split(",")
@@ -68,7 +70,7 @@ for arq in arqs:
                     historia[legislatura] = legis_partidos
                 nums = legis_partidos.get(partido, {})
                 if not nums:
-                    nums = {"M":0, "F":0}
+                    nums = {"M": 0, "F": 0}
                     legis_partidos[partido] = nums
                 nums[genero] = nums.get(genero, 0) + 1
 
@@ -77,5 +79,5 @@ print(cont)
 
 print(historia.keys())
 
-arq = open("genero_comparativo_partidos.json","w")
+arq = open("genero_comparativo_partidos.json", "w")
 json.dump(historia, arq)
