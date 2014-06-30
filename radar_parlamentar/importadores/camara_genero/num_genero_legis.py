@@ -1,14 +1,13 @@
-#-*- coding:UTF-8 -*-
+# -*- coding:UTF-8 -*-
 
 from os import listdir
 from xml.dom.minidom import parseString
 import logging
-  logger = logging.getLogger("radar")
-
+logger = logging.getLogger("radar")
 
 
 arqs = listdir("bios")
-saida = open("saida.csv","w")
+saida = open("saida.csv", "w")
 
 generos = {}
 historia = {}
@@ -16,7 +15,7 @@ historia = {}
 cont = 0
 for arq in arqs:
     if arq[0] != ".":
-        ponteiro = open("bios/"+arq)
+        ponteiro = open("bios/" + arq)
         data = ponteiro.read()
         dom = parseString(data)
         records = dom.getElementsByTagName('DATA_RECORD')
@@ -29,9 +28,8 @@ for arq in arqs:
             else:
                 genero = "M"
             nome = record.getElementsByTagName('TXTNOME')[0].firstChild.data
-            legis_anos = record.getElementsByTagName('LEGISLATURAS')[0].firstChild.data
-            #legis = record.getElementsByTagName('MANDATOSCD')[0].firstChild.data
-            #legis = legis.split(";")
+            legis_anos = record.getElementsByTagName(
+                'LEGISLATURAS')[0].firstChild.data
             generos[nome] = genero
 
             anos = legis_anos.split(",")
@@ -66,16 +64,16 @@ for i in ordenada:
             femi += 1
         else:
             masc += 1
-    
+
     try:
-        prox_data = ordenada[ordenada.index(i)+1]
-    except:ValueError, error :
+        prox_data = ordenada[ordenada.index(i) + 1]
+    except ValueError, error:
         logger.error("ValueError: %s" % error)
-        
+
     prox = prox_data.partition("-")[0]
 
     ano1, e, ano2 = i.partition("-")
-    duracao = int(ano2)-int(ano1)+1
+    duracao = int(ano2) - int(ano1) + 1
     if ano2 == prox:
         duracao -= 1
 
