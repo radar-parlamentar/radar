@@ -35,7 +35,7 @@ mkdir /tmp/django_cache
 cd ~/radar/repo/radar_parlamentar/settings
 source is_prod.sh
 <create settings/production.py>
-mysql -u root  -p
+mysql -u root -p
 CREATE DATABASE radar;
 cd ~/radar/repo/radar_parlamentar
 python manage.py syncdb

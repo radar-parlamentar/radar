@@ -1,7 +1,6 @@
 # License: GPL v3
 # Author: Leonardo Leite (2013, 2014)
 
-include_recipe "mysql::server" # TODO change to MariaDB
 include_recipe "database::mysql"
 
 mysql_database 'radar' do

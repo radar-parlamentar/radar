@@ -209,5 +209,3 @@ Inicie o servidor do Django:
 Considerando que você importou os dados da Convenção Nacional Francesa, acesse **http://127.0.0.1:8000/analises/analise/conv** e verifique se o gráfico aparece corretamente (um gráfico estático com três circunferâncias, dispostos aproximadamente como um triângulo equilátero).
 
 
-
-

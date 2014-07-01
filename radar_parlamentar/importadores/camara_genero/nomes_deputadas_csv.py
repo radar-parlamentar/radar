@@ -1,15 +1,15 @@
-#-*- coding:UTF-8 -*-
+# -*- coding:UTF-8 -*-
 
 from os import listdir
 from xml.dom.minidom import parseString
 
 
 arqs = listdir("bios")
-saida = open("saida.csv","w")
+saida = open("saida.csv", "w")
 
 cont = 0
 for arq in arqs:
-        ponteiro = open("bios/"+arq)
+        ponteiro = open("bios/" + arq)
         data = ponteiro.read()
         dom = parseString(data)
         records = dom.getElementsByTagName('DATA_RECORD')
@@ -22,7 +22,8 @@ for arq in arqs:
             else:
                 genero = "M"
             nome = record.getElementsByTagName('TXTNOME')[0].firstChild.data
-            legis = record.getElementsByTagName('MANDATOSCD')[0].firstChild.data
+            legis = record.getElementsByTagName(
+                'MANDATOSCD')[0].firstChild.data
             legis = legis.split(";")
             saida_legis = ""
             for leg in legis:
