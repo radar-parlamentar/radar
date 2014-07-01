@@ -4,8 +4,8 @@ from modelagem.models import TesteCron
 
 class ImportadorAnaliseCron(CronJobBase):
 
-#Colocar horario para executar o importador
-    RUN_AT_TIMES= ['20:09'] 
+	#Colocar horario para executar o importador
+    RUN_AT_TIMES= ['01:00'] 
     schedule = Schedule(run_at_times = RUN_AT_TIMES) 
     code = "cron.ImportadorAnaliseCron"      
 
