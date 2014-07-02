@@ -9,6 +9,8 @@ O Radar Parlamentar determina "semelhanças" entre partidos políticos baseado n
 
 Site em produção: [Radar Parlamentar](http://radarparlamentar.polignu.org/ "Radar Parlamentar")
 
+Código-fonte do Radar analisado pelo Sonar: http://analiseradar.cloudapp.net/
+
 Licença do projeto: *AGPL v3*
 
 Seja bem vindo,
