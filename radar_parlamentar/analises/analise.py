@@ -120,7 +120,8 @@ class AnalisadorTemporal:
     def votacoes_com_filtro(self):
         votacao_com_filtro = []
         for periodo in self.periodos:
-            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, self.votacoes, self.palavras_chave)
+            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, 
+                periodo, self.votacoes, self.palavras_chave)
             votacao_com_filtro = analisadorPeriodo._inicializa_votacoes()    
         return votacao_com_filtro
 
