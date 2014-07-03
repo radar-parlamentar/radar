@@ -115,7 +115,14 @@ class AnalisadorTemporal:
                 self.analises_periodo[i], self.analises_periodo[i - 1])
             analiseRotacionada = rotacionador.espelha_ou_roda()
             self.analises_periodo[i] = analiseRotacionada
-        logger.info("Rotacionado")
+        logger.info("Rotacionado") 
+
+    def votacoes_com_filtro(self):
+        votos_com_filtro = []
+        for periodo in self.periodos:
+            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, periodo, self.votacoes, self.palavras_chave)
+            votos_com_filtro = analisadorPeriodo._inicializa_votacoes()    
+        return votos_com_filtro
 
     def votacoes_com_filtro(self):
         votacao_com_filtro = []

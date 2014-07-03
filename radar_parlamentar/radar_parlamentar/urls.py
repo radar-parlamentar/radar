@@ -59,7 +59,9 @@ urlpatterns = patterns(
     url(r'^analises/lista_de_votacoes_filtradas/(?P<nome_curto_casa_legislativa>\w*)/$', 
         'analises.views.lista_de_votacoes_filtradas'),
     url(r'^analises/lista_de_votacoes_filtradas/(?P<nome_curto_casa_legislativa>\w*)/(?P<periodicidade>\w*)/(?P<palavras_chave>.*)/$', 
-        'analises.views.lista_de_votacoes_filtradas')
+        'analises.views.lista_de_votacoes_filtradas'),
+    url(r'^analises/lista_de_votacoes_filtradas/(?P<nome_curto_casa_legislativa>\w*)/$', 'analises.views.lista_de_votacoes_filtradas'),
+    url(r'^analises/lista_de_votacoes_filtradas/(?P<nome_curto_casa_legislativa>\w*)/(?P<periodicidade>\w*)/(?P<palavras_chave>.*)/$', 'analises.views.lista_de_votacoes_filtradas')
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

@@ -25,7 +25,6 @@ from modelagem import models
 from modelagem import utils
 from grafico import JsonAnaliseGenerator
 from analise import AnalisadorTemporal
-from filtro import FiltroVotacao
 import datetime
 import logging
 
@@ -77,6 +76,7 @@ def json_analise(request, nome_curto_casa_legislativa,
     json = gen.get_json()
     return HttpResponse(json, mimetype='application/json')
 
+
 def lista_de_votacoes_filtradas(request, nome_curto_casa_legislativa,
                 periodicidade=models.BIENIO, palavras_chave=""):
     ''' Retorna a lista de votações filtradas'''
@@ -94,3 +94,4 @@ def lista_de_votacoes_filtradas(request, nome_curto_casa_legislativa,
                 'analise_temporal': analise_temporal,
                 'periodicidade':periodicidade} 
                 )
+
