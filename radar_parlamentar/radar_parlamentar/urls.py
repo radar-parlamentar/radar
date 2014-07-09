@@ -30,7 +30,10 @@ urlpatterns = patterns(
         'radar_parlamentar.views.votoaberto'),
     url(r'^importadores/$',
         'radar_parlamentar.views.importadores'),
-    url(r'^dados/download/(?P<dado_solicitado>\w*)/$',
+
+    url(r'^dados/$',
+        'radar_parlamentar.views.dados_utilizados'),
+    url(r'^dados/(?P<dado_solicitado>\w*)/$',
         'exportadores.views.download_dados'),
 
     # Páginas do Projeto Gênero do Hackathon da Câmara dos
