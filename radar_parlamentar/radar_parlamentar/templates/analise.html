@@ -36,7 +36,9 @@
         Total de votações existentes nesta casa legislativa: <b>{{num_votacao}} </b> 
         <br/><br/>
         <div id="total_votacoes_filtradas_div" style="display:none">
-          Total de votações filtradas nesta casa legislativa: <b><span id="total_votacoes_filtradas"></span></b> </b> 
+          Total de votações filtradas nesta casa legislativa: <b><span id="total_votacoes_filtradas"></span></b>.  
+                <span id="veja_as_votacoes"><a href="/analises/lista_de_votacoes_filtradas/{{casa_legislativa.nome_curto}}/{{periodicidade}}/{{palavras_chave}}" target="_blank">Veja as votações!</a></span>
+
         <br/><br/>
         </div>
         Dados utilizados nesta análise disponíveis para <a href="/static/sqlite/{{casa_legislativa.nome_curto}}.db">download aqui</a> (atualizados em {{casa_legislativa.atualizacao}}).<br/>
