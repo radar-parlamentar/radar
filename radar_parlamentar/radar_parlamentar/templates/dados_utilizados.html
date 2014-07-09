@@ -1,0 +1,64 @@
+{%extends "base.html"%}
+
+{% block title %}
+   Dados Utilizados
+{% endblock title %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block headerImgClass %}
+    about
+{% endblock headerImgClass %}
+
+{% block nomepagina %}
+    Dados Utilizados
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Tenha os dados utilizados pelo radar!
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}    
+    <li><a href="/index">Home</a> &raquo;</li>
+    <li><a href="/dados">Dados Utilizados</a></li>     
+    
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <article class="aboutDesc">
+        <h1>Dados Utilizados</h1>
+        Os dados listados abaixo são gerados a partir da base de dados utilizada no Radar.
+
+        <h4>Casas Legislativas</h4>
+        <p>Estes são dados referentes às casas legislativas analisadas no radar. Nele estão presentes informações como <b>Nome</b>, <b>Esfera</b> e <b>Atualização</b>, entre outros.</p>
+        <p><a href="/dados/casa_legislativa/">Download</a></p>
+
+        <h4>Legislatura</h4>
+        <p>Um período de tempo contínuo em que um político atua como parlamentar. É diferente de mandato. Um mandato dura 4 anos. Se o titular sai e o suplente assume, temos aí uma troca de legislatura. Neste arquivo temos informações como <b>Parlementar</b>, sua <b>Casa Legislativa</b>, <b>Partido</b> e o <b>Início</b> e <b>Fim</b> de sua legislatura.</p>
+        <p><a href="/dados/legislatura/">Download</a></p>
+
+        <h4>Parlamentar</h4>
+        <p>Dados dos parlamentares, como <b>Nome</b> e <b>Gênero</b>.</p>
+        <p><a href="/dados/parlamentar/">Download</a></p>
+
+        <h4>Partido</h4>
+        <p>Dados dos partidos políticos, como <b>Nome</b>, <b>Número</b> e <b>Cor</b>.</p>
+        <p><a href="/dados/partido/">Download</a></p>
+
+        <h4>Proposição</h4>
+        <p>Esse arquivo contém os dados relacionados às propostas de leis que serão (ou foram) votadas, como <b>Ementa</b>, <b>Descrição</b> e <b>Situação</b>, entre outras informações.</p>
+        <p><a href="/dados/proposicao/">Download</a></p>
+
+        <h4>Votação e Voto</h4>
+        <p>Cada proposição possui uma ou mais votações. Em "votação", temos os dados relacionados à proposição, como <b>Data</b> e <b>Resultado</b> da votação. Já em "voto", temos os votos dados por cada parlamentar, assim podemos analisar diretamente cada parlamentar.</p>
+        <p><a href="/dados/votacao/">Download Votação</a><br>
+            <a href="/dados/voto">Download Voto</a></p>
+    </article>
+
+{% endblock content %}
+
+
+{% block extrascriptsend %}
+    menuActive('dados');   
+{% endblock extrascriptsend %}

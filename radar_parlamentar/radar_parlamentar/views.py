@@ -88,3 +88,8 @@ def genero_futuro(request):
 def genero_perfil_legis(request):
     return render_to_response('perfil_legis.html', {},
                               context_instance=RequestContext(request))
+
+
+def dados_utilizados(request):
+    return render_to_response('dados_utilizados.html', {},
+                              context_instance=RequestContext(request))
