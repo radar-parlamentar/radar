@@ -653,6 +653,11 @@ Plot = (function ($) {
     function plot_total_votacoes_filtradas(dados_gerais) {
         if (dados_gerais["palavras_chaves"].length > 0) {
           total_votacoes_filtradas = dados_gerais["total_votacoes"]
+
+          if (total_votacoes_filtradas == 0) {
+            $("#veja_as_votacoes").attr("hidden", true)
+          }
+
           $( "#total_votacoes_filtradas_div" ).show()
           $( "#total_votacoes_filtradas" ).text(total_votacoes_filtradas);
         }

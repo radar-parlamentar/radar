@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block headerImgClass %}
+    about
+{% endblock headerImgClass %}
+
+{% block nomepagina %}
+    Radar Parlamentar
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Veja a lista de votações filtradas.
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}
+    <li><a href="/index/">Home</a> &raquo;</li>
+    <li><a href="/analises/lista_de_votacoes_filtradas/{{casa_legislativa.nome_curto}}">{{casa_legislativa.nome}}</a></li>
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <h3> {{casa_legislativa.nome}}</h3>
+    <h5>Votações com as palavras-chave utilizadas na busca:
+    {% for palavra in lista_de_palavras_chave %}
+        <b>  {{palavra}} </b>
+    {% endfor %}</h5>
+    <table>
+        <tr>
+            <td align="center"><b>Proposição</b></td>
+            <td align="center"><b>Descricao</b></td>
+            <td align="center"><b>Ementa</b></td>
+            <td align="center"><b>Indexacao</b></td>
+            <td align="center"><b>Descricao da Proposição</b></td>
+        </tr>
+
+    {% for votacao in analise_temporal %}
+        <tr>
+            <td align="justify">{{votacao.proposicao.sigla}}{{votacao.proposicao.numero}}/{{votacao.proposicao.ano}}</td>
+            <td align="justify"><b>{{votacao.data}} </br></b>{{votacao.descricao}}</td>
+            <td align="justify">{{votacao.proposicao.ementa}}</td>
+            <td align="justify">{{votacao.proposicao.indexacao}}</td>
+            <td align="justify">{{votacao.proposicao.descricao}}</td>
+        </tr>
+    {% endfor %}     
+    </table>
+
+{% endblock content %}
+
