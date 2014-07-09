@@ -24,34 +24,22 @@ var svg = d3.select("#animacao").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  // Compute index per node.
+  //Computa cada nó na index
   termos.forEach(function(termo, i) {
 	    matrix[i] = d3.range(n_partidos).map(function(j) { return {x: j, y: i, z: 0}; });
   });
+
+  //Empilha o nome dos partidos
   for (var chave in partidos) {
-	  lista_partidos.push(partidos[chave].name);
+    lista_partidos.unshift(partidos[chave].name)
   }
 	  console.log(matrix);
 
-  // Convert links to matrix; count character occurrences.
+  // Converte os links na matrix
   miserables.links.forEach(function(link) {
     matrix[link.source][link.target].z += link.value;
-    //matrix[link.target][link.source].z += link.value;
-    //matrix[link.source][link.source].z += link.value;
-    //matrix[link.target][link.target].z += link.value;
-    //nodes[link.source].count += link.value;
-    //nodes[link.target].count += link.value;
   });
 
-  // Precompute the orders.
-  //var orders = {
-  //  name: d3.range(n).sort(function(a, b) { return d3.ascending(nodes[a].name, nodes[b].name); }),
-  //  count: d3.range(n).sort(function(a, b) { return 0;}),//nodes[b].count - nodes[a].count; }),
-  //  group: d3.range(n).sort(function(a, b) { return 0;})//nodes[b].group - nodes[a].group; })
-  //};
-
-  // The default sort order.
-  //x.domain(orders.name);
   x.domain(lista_partidos);
 
   svg.append("rect")
@@ -115,30 +103,4 @@ var svg = d3.select("#animacao").append("svg")
     d3.selectAll("text").classed("active", false);
   }
 
-  //d3.select("#order").on("change", function() {
-  //  clearTimeout(timeout);
-  //  order(this.value);
-  //});
-
-  //function order(value) {
-  //  x.domain(orders[value]);
-
-  //  var t = svg.transition().duration(2500);
-
-  //  t.selectAll(".row")
-  //      .delay(function(d, i) { return x(i) * 4; })
-  //      .attr("transform", function(d, i) { return "translate(0," + x(i) + ")"; })
-  //    .selectAll(".cell")
-  //      .delay(function(d) { return x(d.x) * 4; })
-  //      .attr("x", function(d) { return x(d.x); });
-
-  //  t.selectAll(".column")
-  //      .delay(function(d, i) { return x(i) * 4; })
-  //      .attr("transform", function(d, i) { return "translate(" + x(i) + ")rotate(-90)"; });
-  //}
-
-//  var timeout = setTimeout(function() {
-//    order("group");
-//    d3.select("#order").property("selectedIndex", 2).node().focus();
-//  }, 5000);
 });
