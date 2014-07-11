@@ -7,4 +7,5 @@ svgwrite==1.1.2
 wsgiref==0.1.2
 mock==1.0.1
 django-cron==0.3.3
+django-common==0.1.51
 South
