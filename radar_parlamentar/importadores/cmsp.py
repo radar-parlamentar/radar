@@ -291,10 +291,12 @@ class ImportadorCMSP:
 
     @staticmethod
     def abrir_xml(xml_file):
-        f = open(xml_file, 'r')
-        xml = f.read()
-        f.close()
-        return etree.fromstring(xml)
+#         f = open(xml_file, 'r')
+#         xml = f.read()
+#         f.close()
+#         return etree.fromstring(xml)
+        return etree.parse(xml_file).getroot()
+
 
 
 def main():
