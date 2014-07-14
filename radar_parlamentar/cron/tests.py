@@ -45,7 +45,6 @@ class CronTest(TestCase):
         code = "cron.ImportadorAnaliseCron"      
         teste_cron = TesteCron()
         teste_cron.save()
-        print  "++++++++++++ fim da importacao 1 ++++++++++++"
     
     def test_check_duplicate_values(self):
         #Chamada ao importador mockado
