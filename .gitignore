@@ -24,3 +24,7 @@ lib/
 local/
 activate/
 build/
+
+# Sonar config files
+radar_parlamentar/.coverage
+radar_parlamentar/.sonar/pylint/*
