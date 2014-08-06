@@ -9,4 +9,4 @@ install:
   - pip install -r requirements.txt --use-mirrors
 
 # Roda Testes
-script: cd radar_parlamentar/ ; sh ./tests.sh
+script: cd radar_parlamentar/ ; source tests.sh
