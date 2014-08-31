@@ -79,19 +79,19 @@ def json_analise(request, nome_curto_casa_legislativa,
 
 def lista_de_votacoes_filtradas(request, nome_curto_casa_legislativa,
                 periodicidade=models.BIENIO, palavras_chave=""):
-    ''' Retorna a lista de votações filtradas'''
+    '''Exibe a lista de votações filtradas'''
     casa_legislativa = get_object_or_404(
         models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
     lista_de_palavras_chave = utils.StringUtils.transforma_texto_em_lista_de_string(palavras_chave)
     analisador = AnalisadorTemporal(casa_legislativa, periodicidade, 
         lista_de_palavras_chave)
-    analise_temporal = analisador.votacoes_com_filtro()
+    votacoes = analisador.votacoes_filtradas()
 
     return render_to_response(
                 'lista_de_votacoes_filtradas.html',
                 {'casa_legislativa':casa_legislativa,
                 'lista_de_palavras_chave':lista_de_palavras_chave,
-                'analise_temporal': analise_temporal,
+                'votacoes': votacoes,
                 'periodicidade':periodicidade} 
                 )
 

@@ -35,7 +35,7 @@
             <td align="center"><b>Descricao da Proposição</b></td>
         </tr>
 
-    {% for votacao in analise_temporal %}
+    {% for votacao in votacoes %}
         <tr>
             <td align="justify">{{votacao.proposicao.sigla}}{{votacao.proposicao.numero}}/{{votacao.proposicao.ano}}</td>
             <td align="justify"><b>{{votacao.data}} </br></b>{{votacao.descricao}}</td>
