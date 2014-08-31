@@ -70,7 +70,9 @@ sudo /etc/init.d/nginx restart
 **** 
 
 Updating
+tmux attach
+ctrl+c # stop uwsgi
 uwsgi --ini radar_uwsgi.ini # use tmux to let it running
-sudo /etc/init.d/nginx restart
+ctrl+b d # dettach tmux
 rm -rf /tmp/django_cache/*
 
