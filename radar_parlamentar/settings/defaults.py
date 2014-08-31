@@ -1,3 +1,4 @@
+# coding=utf8
 # Django settings for radar_parlamentar project.
 
 ADMINS = (('Leonardo', 'leonardofl87@gmail.com'))
