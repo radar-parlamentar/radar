@@ -31,6 +31,9 @@ urlpatterns = patterns(
     url(r'^importadores/$',
         'radar_parlamentar.views.importadores'),
 
+    url(r'^importador/(?P<nome_curto_casa_legislativa>\w*)/$',
+        'importadores.views.importar'),
+
     url(r'^dados/$',
         'radar_parlamentar.views.dados_utilizados'),
     url(r'^dados/(?P<dado_solicitado>\w*)/$',
