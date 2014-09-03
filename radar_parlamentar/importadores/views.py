@@ -1,6 +1,6 @@
 # coding=utf8
 
-# Copyright (C) 2014, Leonardo Leite
+# Copyright (C) 2014, Leonardo Leite, Saulo Trento
 #
 # This file is part of Radar Parlamentar.
 #
@@ -21,14 +21,16 @@ import threading
 import logging
 from importadores import importador
 from django.http import HttpResponse
+from django.contrib.admin.views.decorators import staff_member_required
 
 logger = logging.getLogger("radar")
 
+@staff_member_required
 def importar(request, nome_curto_casa_legislativa):
     logger.info("Invocando importador de %s assincronamente" % nome_curto_casa_legislativa)
     task = ImportadorAync(nome_curto_casa_legislativa)
     task.start()
-    return HttpResponse('OK')
+    return HttpResponse("OK, invocando importador de %s assincronamente" % nome_curto_casa_legislativa)
 
 class ImportadorAync(threading.Thread):
     
