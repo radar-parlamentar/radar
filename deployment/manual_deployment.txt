@@ -31,6 +31,7 @@ easy_install -U distribute
 pip install -r requirements.txt
 pip install ipython
 mkdir /tmp/django_cache
+export LANG="en_US.UTF-8" # avoids a django bug
 
 cd ~/radar/repo/radar_parlamentar/settings
 source is_prod.sh
@@ -75,4 +76,13 @@ ctrl+c # stop uwsgi
 uwsgi --ini radar_uwsgi.ini # use tmux to let it running
 ctrl+b d # dettach tmux
 rm -rf /tmp/django_cache/*
+
+***
+
+Using manage.py:
+source venv_radar/bin/activate # activate virtual env
+python manage.py ... # whatever
+
+
+
 
