@@ -72,7 +72,7 @@ sudo /etc/init.d/nginx restart
 ****
 
 Generate .sh from .sh.template in cron folder.
-Make cron/*.sh scripts accessible as commands (copy to /usr/bin)
+Make cron/*.sh scripts accessible as commands (ex: sudo cp dump-radar.sh.template /usr/bin/dump-radar; chmod +x dump-radar)
 Apply entries in cron/crontab to the Linux crontab.
 
 **** 

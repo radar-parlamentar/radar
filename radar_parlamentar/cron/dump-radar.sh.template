@@ -1,3 +1,3 @@
 #!/bin/bash
-# $PATH: caminho absoluto para static/files/dumps/
+# $PATH: caminho absoluto para static/files/db-dump/
 mysqldump -u $USER -p$PASSWORD radar > $PATH/radar.sql
