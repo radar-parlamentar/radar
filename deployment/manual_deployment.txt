@@ -32,6 +32,7 @@ pip install -r requirements.txt
 pip install ipython
 mkdir /tmp/django_cache
 export LANG="en_US.UTF-8" # avoids a django bug
+python manage.py createsuperuser
 
 cd ~/radar/repo/radar_parlamentar/settings
 source is_prod.sh
@@ -67,6 +68,12 @@ sudo /etc/init.d/uwsgi start
 cd ~/radar
 uwsgi --ini radar_uwsgi.ini # use tmux to let it running
 sudo /etc/init.d/nginx restart
+
+****
+
+Generate .sh from .sh.template in cron folder.
+Make cron/*.sh scripts accessible as commands (copy to /usr/bin)
+Apply entries in cron/crontab to the Linux crontab.
 
 **** 
 
