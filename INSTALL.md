@@ -101,8 +101,8 @@ Você deve configurar um banco de dados MySQL para ser utilizado pelo Radar.
 Para configurar o MySql como banco de dados:
 Instalação:
 
-	$ sudo apt-get install mysql-server
-	$ sudo apt-get install python-mysqldb
+    $ sudo apt-get install mysql-server
+    $ sudo apt-get install python-mysqldb
 
 Deve-se criar um usuário "root" e o banco dentro do próprio MySQL.
 
@@ -126,7 +126,7 @@ Criar development.py baseado em development.py.template.
 
 Criar production.py baseado em production.py.template.
 
-No ambiente de produção é necessário exportar a variável de ambiente export 	DJANGO_SETTINGS_MODULE='settings.production'. Para isso basta executar o script is_prod.sh. Referência do DJANGO: (https://code.djangoproject.com/wiki/SplitSettings)
+No ambiente de produção é necessário exportar a variável de ambiente export     DJANGO_SETTINGS_MODULE='settings.production'. Para isso basta executar o script is_prod.sh. Referência do DJANGO: (https://code.djangoproject.com/wiki/SplitSettings)
 
 
 *Importante dizer que deve-se atribuir False a variável DEBUG em settings/development.py ou production.py (em ambiente de produção) para ativar a visualização da página de erro default 404.
@@ -178,20 +178,20 @@ South é uma ferramenta que funciona como uma camada de migração, independente
 
 * Instalação:
 
-	$ sudo pip install South 
-	
+    $ sudo pip install South 
+    
 Adicionar o South no `INSTALLED_APPS` no arquivo `settings/defaults.py`.
 
-	$ python manage.py syncdb 
-	$ python manage.py convert_to_south modelagem
+    $ python manage.py syncdb 
+    $ python manage.py convert_to_south modelagem
 
 * Como usar:
 
 Quando ocorrer alterações na model, digite no terminal:
-	
-	$ python manage.py schemamigration modelagem --auto
-	$ python manage.py migrate modelagem
-	
+    
+    $ python manage.py schemamigration modelagem --auto
+    $ python manage.py migrate modelagem
+    
 Observação: Cuidado ao diminuir o tamanho dos campos. Podem existir dados com tamanho superior ao tamanho desejado.
 
 6. Conferindo se está tudo certo
@@ -207,7 +207,5 @@ Inicie o servidor do Django:
     $ python manage.py runserver
 
 Considerando que você importou os dados da Convenção Nacional Francesa, acesse **http://127.0.0.1:8000/analises/analise/conv** e verifique se o gráfico aparece corretamente (um gráfico estático com três circunferâncias, dispostos aproximadamente como um triângulo equilátero).
-
-
 
 
