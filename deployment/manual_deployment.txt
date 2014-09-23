@@ -1,19 +1,14 @@
 MANUAL DEPLOYMENT
-28/01
 
-Main source:
+Target: Linux 3.13.0-34-generic #60-Ubuntu SMP x86_64 GNU/Linux
+
+Main sources:
 https://uwsgi.readthedocs.org/en/latest/tutorials/Django_and_nginx.html
+https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-django-with-postgres-nginx-and-gunicorn
+http://stackoverflow.com/questions/23073829/uwsgi-wont-reload-restart-or-let-me-run-service
 
-sudo aptitude install python-pip python-dev git nginx python-virtualenv tmux
-sudo pip install uwsgi
-
-# mariadb: https://downloads.mariadb.org/mariadb/repositories/#
-sudo apt-get install python-software-properties
-sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
-sudo add-apt-repository 'deb http://mirror.jmu.edu/pub/mariadb/repo/5.5/debian wheezy main'
-sudo apt-get update
-sudo apt-get install mariadb-server # como passar a senha nessa linha?
-sudo apt-get install libmariadbclient-dev
+sudo aptitude install python-pip libpq-dev python-dev git nginx python-virtualenv tmux postgresql postgresql-contrib uwsgi-plugin-python
+sudo pip install uwsgi  
 
 mkdir ~/radar
 touch ~/radar/radar_nginx.conf
@@ -31,16 +26,21 @@ easy_install -U distribute
 pip install -r requirements.txt
 pip install ipython
 mkdir /tmp/django_cache
-export LANG="en_US.UTF-8" # avoids a django bug
-python manage.py createsuperuser
+
+sudo su - postgres
+createdb radar
+createuser radar -P
+psql
+GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
 
 cd ~/radar/repo/radar_parlamentar/settings
 source is_prod.sh
 <create settings/production.py>
-mysql -u root -p
-CREATE DATABASE radar;
 cd ~/radar/repo/radar_parlamentar
 python manage.py syncdb
+
+export LANG="en_US.UTF-8" # avoids a django bug. not necessary of $LANG is already set
+python manage.py createsuperuser (admin / password)
 
 #enables nginx to access the file socket that links it to uwsgi
 sudo usermod -a -G $USER www-data 
@@ -55,18 +55,12 @@ senado.main()
 from importadores import camara
 camara.main()
 
-# configuring uwsgi to start at boot (it seems it is not working quite well)
-wget -O init-deb.sh http://library.linode.com/assets/683-uwsgi-init-deb.sh
-sudo mv init-deb.sh /etc/init.d/uwsgi
-sudo chmod +x /etc/init.d/uwsgi
-sudo chown root:root /etc/init.d/uwsgi
-cd ~/radar
-sudo ln -s radar_uwsgi.ini /etc/default/uwsgi
-sudo /usr/sbin/update-rc.d -f uwsgi defaults
-sudo /etc/init.d/uwsgi start
+# configuring uwsgi to start at boot 
+sudo mkdir -p /var/log/uwsgi
+touch /etc/init/uwsgi.conf
+sudo initctl start uwsgi
+#(sudo restart uwsgi)
 
-cd ~/radar
-uwsgi --ini radar_uwsgi.ini # use tmux to let it running
 sudo /etc/init.d/nginx restart
 
 ****
@@ -77,11 +71,9 @@ Apply entries in cron/crontab to the Linux crontab.
 
 **** 
 
-Updating
-tmux attach
-ctrl+c # stop uwsgi
-uwsgi --ini radar_uwsgi.ini # use tmux to let it running
-ctrl+b d # dettach tmux
+#Updating
+git pull
+sudo restart uwsgi
 rm -rf /tmp/django_cache/*
 
 ***

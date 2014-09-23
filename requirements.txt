@@ -1,5 +1,5 @@
 Django==1.4.5
-MySQL-python
+psycopg2
 argparse
 distribute==0.6.34
 numpy==1.7.1
