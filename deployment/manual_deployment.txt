@@ -38,6 +38,7 @@ source is_prod.sh
 <create settings/production.py>
 cd ~/radar/repo/radar_parlamentar
 python manage.py syncdb
+python manage.py migrate
 
 export LANG="en_US.UTF-8" # avoids a django bug. not necessary of $LANG is already set
 python manage.py createsuperuser (admin / password)
@@ -84,6 +85,11 @@ rm -rf /tmp/django_cache/*
 Using manage.py:
 source venv_radar/bin/activate # activate virtual env
 python manage.py ... # whatever
+
+Exploring the database:
+psql -W radar radar -h localhost
+show tables: \dt
+
 
 
 
