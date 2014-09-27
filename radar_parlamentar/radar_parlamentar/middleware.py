@@ -1,5 +1,5 @@
-class ConsoleExceptionMiddleware:
 
+class ConsoleExceptionMiddleware:
     """Custom middleware to print stack traces on Django console"""
 
     def process_exception(self, request, exception):
@@ -11,9 +11,20 @@ class ConsoleExceptionMiddleware:
         print '\n'.join(exception)
         print "##############################################################"
 
+
+
+import logging
+logger = logging.getLogger("radar")
+
+class ExceptionLoggingMiddleware(object):
+  """Sending log to the log file"""
+    def process_exception(self, request, exception):
+        logger.exception('Exception handling request for ' + request.path)
+
+
+
 from django.middleware.cache import UpdateCacheMiddleware
 import re
-
 
 class SmartUpdateCacheMiddleware(UpdateCacheMiddleware):
     STRIP_RE = re.compile(r'\b(_[^=]+=.+?(?:; |$))')
