@@ -17,7 +17,7 @@ import logging
 logger = logging.getLogger("radar")
 
 class ExceptionLoggingMiddleware(object):
-  """Sending log to the log file"""
+    """Sending log to the log file"""
     def process_exception(self, request, exception):
         logger.exception('Exception handling request for ' + request.path)
 

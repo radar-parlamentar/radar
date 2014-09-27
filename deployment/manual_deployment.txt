@@ -42,8 +42,11 @@ python manage.py syncdb
 export LANG="en_US.UTF-8" # avoids a django bug. not necessary of $LANG is already set
 python manage.py createsuperuser (admin / password)
 
-#enables nginx to access the file socket that links it to uwsgi
-sudo usermod -a -G $USER www-data 
+#add root user to nginx’s group (www-data), or vice-versa, 
+#so that nginx can read and write to the socket properly
+sudo usermod -a -G root www-data 
+sudo usermod -a -G www-data root 
+#obs: "usermod -a -G ftp tony" adds tony user to ftp group
 
 # importing radar data
 cd ~/radar/repo/radar_parlamentar
