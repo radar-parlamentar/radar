@@ -19,7 +19,7 @@ sudo rm /etc/nginx/sites-enabled/default
 
 cd ~/radar
 virtualenv --no-site-packages venv_radar
-source venv_radar/bin/activate
+source venv_radar/bin/activate 
 git clone https://github.com/leonardofl/radar_parlamentar.git repo
 cd repo
 easy_install -U distribute
@@ -32,15 +32,17 @@ createdb radar
 createuser radar -P
 psql
 GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
+echo "localhost:5432:radar:radar:$SENHA" > ~/.pgpass
+chmod 600 .pgpass
 
 cd ~/radar/repo/radar_parlamentar/settings
-source is_prod.sh
+source is_prod.sh # TODO: colocar no .bashrc
 <create settings/production.py>
 cd ~/radar/repo/radar_parlamentar
 python manage.py syncdb
 python manage.py migrate
 
-export LANG="en_US.UTF-8" # avoids a django bug. not necessary of $LANG is already set
+export LANG="en_US.UTF-8" # avoids a django bug. not necessary if $LANG is already set
 python manage.py createsuperuser (admin / password)
 
 #add root user to nginx’s group (www-data), or vice-versa, 
@@ -67,11 +69,13 @@ sudo initctl start uwsgi
 
 sudo /etc/init.d/nginx restart
 
-****
+echo "" >> .bashrc
+echo "#Radar section" >> .bashrc
+echo "export RADAR_HOME=\$HOME/radar/repo/radar_parlamentar" >> .bashrc
+echo "source \$RADAR_HOME/settings/is_prod.sh" >> .bashrc
+echo "export PATH=\$PATH:\$RADAR_HOME/cron" >> .bashrc
 
-Generate .sh from .sh.template in cron folder.
-Make cron/*.sh scripts accessible as commands (ex: sudo cp dump-radar.sh.template /usr/bin/dump-radar; chmod +x dump-radar)
-Apply entries in cron/crontab to the Linux crontab.
+crontab $RADAR_HOME/cron/crontab
 
 **** 
 
@@ -89,7 +93,7 @@ python manage.py ... # whatever
 Exploring the database:
 psql -W radar radar -h localhost
 show tables: \dt
-
+show table schema: \d <table_name>
 
 
 
