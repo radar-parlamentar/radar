@@ -3,7 +3,9 @@
 from __future__ import unicode_literals
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-
+from django.contrib.staticfiles import finders
+import os
+import datetime
 
 def index(request):
     return render_to_response('index.html', {},
@@ -91,5 +93,12 @@ def genero_perfil_legis(request):
 
 
 def dados_utilizados(request):
-    return render_to_response('dados_utilizados.html', {},
+    dump_file_path = finders.find('db-dump/radar.sql')
+    time = os.path.getmtime(dump_file_path)
+    dt = datetime.datetime.fromtimestamp(time)
+    ddmmaa = dt.strftime('%d/%m/%Y')
+    return render_to_response('dados_utilizados.html', {'dumpdate':ddmmaa}, 
                               context_instance=RequestContext(request))
+
+
+
