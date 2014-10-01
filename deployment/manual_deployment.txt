@@ -74,6 +74,7 @@ echo "#Radar section" >> .bashrc
 echo "export RADAR_HOME=\$HOME/radar/repo/radar_parlamentar" >> .bashrc
 echo "source \$RADAR_HOME/settings/is_prod.sh" >> .bashrc
 echo "export PATH=\$PATH:\$RADAR_HOME/cron" >> .bashrc
+echo "source \$HOME/radar/venv_radar/bin/activate" >> .bashrc
 
 crontab $RADAR_HOME/cron/crontab
 
@@ -90,7 +91,7 @@ rm -rf /tmp/django_cache/*
 ***
 
 Using manage.py:
-source venv_radar/bin/activate # activate virtual env
+source venv_radar/bin/activate # activate virtual env if it is not already activated
 python manage.py ... # whatever
 
 Exploring the database:
