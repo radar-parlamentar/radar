@@ -20,6 +20,9 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
+
+# To verify whether the this job got executed successfully or not, check the /var/log/cron file, 
+# which contains information about all the cron jobs that gets executed in your system.
                                                                       
 # crontab -e to edit crontab
 # crontab syntax:
@@ -30,5 +33,5 @@
 # MM = mes(1-12)
 # ss = dia_da_semana(0-6)
 
-0 4 * * 0 dump-radar.sh
+0 4 * * 0 dump-radar.sh > /var/log/radar-cron.log 2>&1
 
