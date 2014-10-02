@@ -14,6 +14,7 @@ mkdir ~/radar
 touch ~/radar/radar_nginx.conf
 touch ~/radar/uwsgi_params
 touch ~/radar/radar_uwsgi.ini 
+touch ~/radar/clear_cache.sh
 sudo ln -s ~/radar/radar_nginx.conf /etc/nginx/sites-enabled/
 sudo rm /etc/nginx/sites-enabled/default
 
@@ -80,12 +81,13 @@ crontab $RADAR_HOME/cron/crontab
 sudo mkdir /var/log/radar
 sudo chown $USER /var/log/radar
 
+
 **** 
 
 #Updating
 git pull
 sudo restart uwsgi
-rm -rf /tmp/django_cache/*
+./clear_cache.sh
 
 ***
 
