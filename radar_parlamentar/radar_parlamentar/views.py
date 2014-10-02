@@ -96,7 +96,7 @@ def dados_utilizados(request):
     dump_file_path = finders.find('db-dump/radar.sql')
     time = os.path.getmtime(dump_file_path)
     dt = datetime.datetime.fromtimestamp(time)
-    dt_str = dt.strftime('%d/%m/%Y %H:%M')
+    dt_str = dt.strftime('%d/%m/%Y')
     return render_to_response('dados_utilizados.html', {'dumpdate':dt_str}, 
                               context_instance=RequestContext(request))
 
