@@ -36,7 +36,6 @@ echo "localhost:5432:radar:radar:$SENHA" > ~/.pgpass
 chmod 600 .pgpass
 
 cd ~/radar/repo/radar_parlamentar/settings
-source is_prod.sh # TODO: colocar no .bashrc
 <create settings/production.py>
 cd ~/radar/repo/radar_parlamentar
 python manage.py syncdb
