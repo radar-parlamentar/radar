@@ -69,11 +69,11 @@ sudo initctl start uwsgi
 sudo /etc/init.d/nginx restart
 
 echo "" >> .bashrc
-echo "#Radar section" >> .bashrc
-echo "export RADAR_HOME=\$HOME/radar/repo/radar_parlamentar" >> .bashrc
-echo "source \$RADAR_HOME/settings/is_prod.sh" >> .bashrc
-echo "export PATH=\$PATH:\$RADAR_HOME/cron" >> .bashrc
-echo "source \$HOME/radar/venv_radar/bin/activate" >> .bashrc
+echo "#Radar section" >> .profile
+echo "export RADAR_HOME=\$HOME/radar/repo/radar_parlamentar" >> .profile
+echo "source \$RADAR_HOME/settings/is_prod.sh" >> .profile
+echo "export PATH=\$PATH:\$RADAR_HOME/cron" >> .profile
+echo "source \$HOME/radar/venv_radar/bin/activate" >> .profile
 
 crontab $RADAR_HOME/cron/crontab
 

@@ -33,5 +33,5 @@
 # MM = mes(1-12)
 # ss = dia_da_semana(0-6)
 
-0 4 * * 0 dump-radar.sh > /var/log/radar-cron.log 2>&1
+0 4 * * 0 dump-radar.sh > /var/log/radar/radar-cron.log 2>&1
 
