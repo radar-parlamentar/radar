@@ -26,6 +26,7 @@ easy_install -U distribute
 pip install -r requirements.txt
 pip install ipython
 mkdir /tmp/django_cache
+sudo chmod 666 -R /tmp/django_cache/
 
 sudo su - postgres
 createdb radar
@@ -86,7 +87,7 @@ sudo chown $USER /var/log/radar
 #Updating
 git pull
 sudo restart uwsgi
-./cron/clear-cache.sh
+clear-cache.sh
 
 ***
 
