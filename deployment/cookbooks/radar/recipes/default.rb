@@ -1,30 +1,43 @@
 # License: GPL v3
 # Author: Leonardo Leite (2013, 2014)
 
-include_recipe "database::mysql"
+# Instala e configura Postgresql com a base de dados "radar"
 
-mysql_database 'radar' do
+include_recipe "database::postgresql"
+
+postgresql_database 'radar' do
   connection(
     :host     => 'localhost',
-    :username => 'root',
-    :password => node['mysql']['server_root_password']
+    :port     => 5432,
+    :username => 'postgres',
+    :password => node['postgresql']['password']['postgres']
   )
+  template 'DEFAULT'
+  encoding 'DEFAULT'
+  tablespace 'DEFAULT'
+  connection_limit '-1'
+  owner 'postgres'
   action :create
 end
 
-mysql_connection_info = {
+postgresql_connection_info = {
   :host     => 'localhost',
-  :username => 'root',
-  :password => node['mysql']['server_root_password']
+  :port     => node['postgresql']['config']['port'],
+  :username => 'postgres',
+  :password => node['postgresql']['password']['postgres']
 }
 
-mysql_database_user 'radar' do
-  connection    mysql_connection_info
-  password      node['radar']['database_user_password']
-  database_name 'radar'
-  host          '%'
-  privileges    [:select,:update,:insert]
-  action        :grant
+postgresql_database_user 'radar' do
+  connection postgresql_connection_info
+  password node['radar']['database_user_password']
+  action :create
 end
 
+postgresql_database_user 'radar' do
+  connection postgresql_connection_info
+  password node['radar']['database_user_password']
+  database_name 'radar'
+  privileges [:all]
+  action :grant
+end
 
