@@ -102,6 +102,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         "client" => { "packages" => ["postgresql-client-common"] }
       },
       "radar" => {
+        "user" => "vagrant",
         "database_user_password" => "123mudar"
       }
     }

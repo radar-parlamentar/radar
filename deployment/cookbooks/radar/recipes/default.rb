@@ -1,7 +1,9 @@
 # License: GPL v3
-# Author: Leonardo Leite (2013, 2014)
+# Author: Leonardo Leite (2014)
 
+#
 # Instala e configura Postgresql com a base de dados "radar"
+#
 
 include_recipe "database::postgresql"
 
@@ -40,4 +42,59 @@ postgresql_database_user 'radar' do
   privileges [:all]
   action :grant
 end
+
+#
+# Instalando pacotes
+#
+
+package "python-pip" do
+  action :install
+end
+
+package "libpq-dev" do
+  action :install
+end
+
+package "python-dev" do
+  action :install
+end
+
+package "git" do
+  action :install
+end
+
+package "nginx" do
+  action :install
+end
+
+package "python-virtualenv" do
+  action :install
+end
+
+package "tmux" do
+  action :install
+end
+
+package "postgresql-contrib" do
+  action :install
+end
+
+package "uwsgi-plugin-python" do
+  action :install
+end
+
+#
+# Variáveis de ambiente
+#
+
+user = node['radar']['user']
+home = "/home/#{user}"
+
+template "#{home}/.profile" do
+  mode '0440'
+  owner 'vagrant'
+  group 'vagrant'
+  source "profile.erb"
+end
+
 
