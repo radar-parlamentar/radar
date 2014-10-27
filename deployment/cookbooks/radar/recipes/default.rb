@@ -1,5 +1,6 @@
 # License: GPL v3
 # Author: Leonardo Leite (2014)
+# Receita de instalação do Radar Parlamentar
 
 #
 # Instala e configura Postgresql com a base de dados "radar"
@@ -92,9 +93,60 @@ home = "/home/#{user}"
 
 template "#{home}/.profile" do
   mode '0440'
-  owner 'vagrant'
-  group 'vagrant'
+  owner user
+  group user
   source "profile.erb"
 end
+
+#
+# Arquivos de configuração
+#
+
+directory "#{home}/radar" do
+  owner user
+  group user
+  mode '0775'
+  action :create
+end
+
+template "#{home}/radar/radar_nginx.conf" do
+  mode '0440'
+  owner user
+  group user
+  source "radar_nginx.conf.erb"
+  variables({
+    :user => user,
+    :server_name => "localhost"
+  })
+end
+
+template "#{home}/radar/radar_uwsgi.ini" do
+  mode '0440'
+  owner user
+  group user
+  source "radar_uwsgi.ini.erb"
+  variables({
+    :user => user
+  })
+end
+
+template "#{home}/radar/uwsgi.conf" do
+  mode '0440'
+  owner user
+  group user
+  source "uwsgi.conf.erb"
+  variables({
+    :user => user
+  })
+end
+
+template "#{home}/radar/uwsgi_params" do
+  mode '0440'
+  owner user
+  group user
+  source "uwsgi_params.erb"
+end
+
+
 
 
