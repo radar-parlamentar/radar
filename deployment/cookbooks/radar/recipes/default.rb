@@ -147,6 +147,12 @@ template "#{home}/radar/uwsgi_params" do
   source "uwsgi_params.erb"
 end
 
+link "/etc/nginx/sites-enabled/radar_nginx.conf" do
+  to "#{home}/radar/radar_nginx.conf"
+end
 
+file "/etc/nginx/sites-enabled/default" do
+  action :delete
+end
 
 
