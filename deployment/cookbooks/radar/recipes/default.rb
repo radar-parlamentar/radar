@@ -175,6 +175,13 @@ python_virtualenv "#{home}/radar/venv_radar" do
   action :create
 end
 
+git "#{home}/radar/repo" do
+  repository "https://github.com/leonardofl/radar_parlamentar.git"
+  user user
+  group user
+  action :sync
+end
+
 #
 # Radar <--> Uwsgi <--> Nginx
 #
