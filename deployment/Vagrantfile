@@ -92,6 +92,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #  chef.data_bags_path = "../my-recipes/data_bags"
     chef.add_recipe "postgresql::server"
     chef.add_recipe "postgresql::client"
+    #chef.add_recipe "python"
     chef.add_recipe "radar"
     #chef.add_role "web"
   

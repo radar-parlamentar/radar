@@ -2,6 +2,9 @@
 # Author: Leonardo Leite (2014)
 # Receita de instalação do Radar Parlamentar
 
+user = node['radar']['user']
+home = "/home/#{user}"
+
 #
 # Instala e configura Postgresql com a base de dados "radar"
 #
@@ -42,6 +45,16 @@ postgresql_database_user 'radar' do
   database_name 'radar'
   privileges [:all]
   action :grant
+end
+
+template "#{home}/.pgpass" do
+  mode '0600'
+  owner user
+  group user
+  source "pgpass.erb"
+  variables({
+    :senha => node[:postgresql][:password][:postgres]
+  })
 end
 
 #
@@ -87,9 +100,6 @@ end
 #
 # Variáveis de ambiente
 #
-
-user = node['radar']['user']
-home = "/home/#{user}"
 
 template "#{home}/.profile" do
   mode '0440'
@@ -154,5 +164,24 @@ end
 file "/etc/nginx/sites-enabled/default" do
   action :delete
 end
+
+#
+# Código do Radar
+#
+
+python_virtualenv "#{home}/radar/venv_radar" do
+  owner user
+  group user
+  interpreter "python2.7"
+  action :create
+end
+
+#
+# Radar <--> Uwsgi <--> Nginx
+#
+
+#python_pip "uwsgi" do
+#  virtualenv "#{home}/radar/venv_radar"
+#end
 
 

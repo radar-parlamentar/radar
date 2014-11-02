@@ -25,6 +25,8 @@ Destruir VM:
 $vagrant destroy
 
 Reexecutar chef-solo:
+$vagrant provision
+ou
 $vagrant reload --provision
 
 Obs: precisa ter o VirtualBox instalado.
