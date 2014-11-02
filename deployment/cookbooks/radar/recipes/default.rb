@@ -172,7 +172,6 @@ end
 python_virtualenv "#{home}/radar/venv_radar" do
   owner user
   group user
-  interpreter "python2.7"
   action :create
 end
 
