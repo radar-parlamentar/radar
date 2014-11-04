@@ -4,6 +4,9 @@
 
 user = node['radar']['user']
 home = "/home/#{user}"
+radar_folder = "#{home}/radar"
+repo_folder = "#{home}/radar/repo"
+venv_folder = "#{home}/radar/venv_radar"
 
 #
 # Instala e configura Postgresql como a base de dados "radar"
@@ -116,14 +119,14 @@ end
 # Arquivos de configuração
 #
 
-directory "#{home}/radar" do
+directory "#{radar_folder}" do
   owner user
   group user
   mode '0775'
   action :create
 end
 
-template "#{home}/radar/radar_nginx.conf" do
+template "#{radar_folder}/radar_nginx.conf" do
   mode '0440'
   owner user
   group user
@@ -134,7 +137,7 @@ template "#{home}/radar/radar_nginx.conf" do
   })
 end
 
-template "#{home}/radar/radar_uwsgi.ini" do
+template "#{radar_folder}/radar_uwsgi.ini" do
   mode '0440'
   owner user
   group user
@@ -144,7 +147,7 @@ template "#{home}/radar/radar_uwsgi.ini" do
   })
 end
 
-template "#{home}/radar/uwsgi.conf" do
+template "#{radar_folder}/uwsgi.conf" do
   mode '0440'
   owner user
   group user
@@ -154,7 +157,7 @@ template "#{home}/radar/uwsgi.conf" do
   })
 end
 
-template "#{home}/radar/uwsgi_params" do
+template "#{radar_folder}/uwsgi_params" do
   mode '0440'
   owner user
   group user
@@ -173,13 +176,13 @@ end
 # Código do Radar
 #
 
-python_virtualenv "#{home}/radar/venv_radar" do
+python_virtualenv "#{venv_folder}" do
   owner user
   group user
   action :create
 end
 
-git "#{home}/radar/repo" do
+git "#{repo_folder}" do
   repository "git://github.com/leonardofl/radar_parlamentar.git"
   reference "master"
   user user
@@ -188,8 +191,8 @@ git "#{home}/radar/repo" do
 end
 
 python_pip "" do
-  virtualenv "#{home}/radar/venv_radar"
-  options "-r #{home}/radar/repo/requirements.txt"
+  virtualenv "#{venv_folder}"
+  options "-r #{repo_folder}/requirements.txt"
 end
 
 #
