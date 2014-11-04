@@ -1,9 +1,9 @@
 Django==1.4.5
-psycopg2
-argparse
+psycopg2==2.5.4
+argparse==1.2.1
 distribute==0.6.34
 numpy==1.7.1
 svgwrite==1.1.2
 wsgiref==0.1.2
 mock==1.0.1
-South
+South==1.0.1

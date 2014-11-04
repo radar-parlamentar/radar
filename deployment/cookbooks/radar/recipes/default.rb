@@ -6,7 +6,7 @@ user = node['radar']['user']
 home = "/home/#{user}"
 
 #
-# Instala e configura Postgresql com a base de dados "radar"
+# Instala e configura Postgresql como a base de dados "radar"
 #
 
 include_recipe "database::postgresql"
@@ -97,6 +97,10 @@ package "uwsgi-plugin-python" do
   action :install
 end
 
+package "vim" do
+  action :install
+end
+
 #
 # Variáveis de ambiente
 #
@@ -176,10 +180,16 @@ python_virtualenv "#{home}/radar/venv_radar" do
 end
 
 git "#{home}/radar/repo" do
-  repository "https://github.com/leonardofl/radar_parlamentar.git"
+  repository "git://github.com/leonardofl/radar_parlamentar.git"
+  reference "master"
   user user
   group user
   action :sync
+end
+
+python_pip "" do
+  virtualenv "#{home}/radar/venv_radar"
+  options "-r #{home}/radar/repo/requirements.txt"
 end
 
 #
