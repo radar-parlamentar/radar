@@ -7,6 +7,8 @@ home = "/home/#{user}"
 radar_folder = "#{home}/radar"
 repo_folder = "#{home}/radar/repo"
 venv_folder = "#{home}/radar/venv_radar"
+cache_folder = "/tmp/django_cache"
+log_folder = "/var/log/radar/radar.log"
 
 #
 # Instala e configura Postgresql como a base de dados "radar"
@@ -173,7 +175,7 @@ file "/etc/nginx/sites-enabled/default" do
 end
 
 #
-# Código do Radar
+# Código e configuração do Radar
 #
 
 python_virtualenv "#{venv_folder}" do
@@ -193,6 +195,27 @@ end
 python_pip "" do
   virtualenv "#{venv_folder}"
   options "-r #{repo_folder}/requirements.txt"
+end
+
+directory "#{cache_folder}" do
+  owner user
+  group user
+  mode '666'
+  action :create
+end
+
+template "#{repo_folder}/radar_parlamentar/settings/production.py" do
+  mode '0440'
+  owner user
+  group user
+  source "production.py.erb"
+  variables({
+    :dbname => 'radar',
+    :dbuser => 'radar',
+    :dbpassword => node['postgresql']['password']['postgres'],
+    :cache_folder => cache_folder,
+    :log_folder => log_folder
+  })
 end
 
 #
