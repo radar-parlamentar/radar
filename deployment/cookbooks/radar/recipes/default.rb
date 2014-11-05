@@ -218,6 +218,8 @@ template "#{repo_folder}/radar_parlamentar/settings/production.py" do
   })
 end
 
+# TODO syncdb, migrate...
+
 #
 # Radar <--> Uwsgi <--> Nginx
 #
