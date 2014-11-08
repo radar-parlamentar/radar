@@ -8,7 +8,8 @@ radar_folder = "#{home}/radar"
 repo_folder = "#{home}/radar/repo"
 venv_folder = "#{home}/radar/venv_radar"
 cache_folder = "/tmp/django_cache"
-log_folder = "/var/log/radar/radar.log"
+log_folder = "/var/log/radar"
+log_file = "#{log_folder}/radar.log"
 
 #
 # Instala e configura Postgresql como a base de dados "radar"
@@ -214,11 +215,34 @@ template "#{repo_folder}/radar_parlamentar/settings/production.py" do
     :dbuser => 'radar',
     :dbpassword => node['postgresql']['password']['postgres'],
     :cache_folder => cache_folder,
-    :log_folder => log_folder
+    :log_file => log_file
   })
 end
 
-# TODO syncdb, migrate...
+directory log_folder do
+  owner user
+  group user
+  mode '0755'
+  action :create
+end
+
+execute "syncdb" do
+  command "#{venv_folder}/bin/python manage.py syncdb --noinput"
+  environment ({"DJANGO_SETTINGS_MODULE" => "settings.production"})
+  cwd "#{repo_folder}/radar_parlamentar"
+  user user
+  group user
+  action :run
+end
+
+execute "migrate" do
+  command "#{venv_folder}/bin/python manage.py migrate"
+  environment ({"DJANGO_SETTINGS_MODULE" => "settings.production"})
+  cwd "#{repo_folder}/radar_parlamentar"
+  user user
+  group user
+  action :run
+end
 
 #
 # Radar <--> Uwsgi <--> Nginx

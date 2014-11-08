@@ -46,5 +46,5 @@ CACHES = {
 here = os.path.abspath(os.path.dirname(__file__))
 TEMPLATE_DIRS = ( os.path.join(here, os.pardir, 'radar_parlamentar/templates/') )
 
-LOGGING['handlers']['file']['filename'] = '<%= @log_folder %>'
+LOGGING['handlers']['file']['filename'] = '<%= @log_file %>'
 
