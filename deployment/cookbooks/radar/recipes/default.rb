@@ -241,7 +241,6 @@ end
 #
 
 python_pip "uwsgi" do
-  virtualenv "#{home}/radar/venv_radar"
 end
 
 directory uwsgi_log_folder do
@@ -262,11 +261,10 @@ template "/etc/init/uwsgi.conf" do
   })
 end
 
-#service "uwsgi" do
-#  provider Chef::Provider::Service::Upstart
-#  supports :status => true, :restart => true, :reload => true
-#  action [ :enable, :start, :reload ]
-#end
+service "uwsgi" do
+  provider Chef::Provider::Service::Upstart
+  action :restart
+end
 
 
 
