@@ -10,6 +10,8 @@ venv_folder = "#{home}/radar/venv_radar"
 cache_folder = "/tmp/django_cache"
 log_folder = "/var/log/radar"
 log_file = "#{log_folder}/radar.log"
+uwsgi_log_folder = "/var/log/"
+uwsgi_log_file = "/var/log/uwsgi.log"
 
 #
 # Instala e configura Postgresql como a base de dados "radar"
@@ -150,16 +152,6 @@ template "#{radar_folder}/radar_uwsgi.ini" do
   })
 end
 
-template "#{radar_folder}/uwsgi.conf" do
-  mode '0440'
-  owner user
-  group user
-  source "uwsgi.conf.erb"
-  variables({
-    :user => user
-  })
-end
-
 template "#{radar_folder}/uwsgi_params" do
   mode '0440'
   owner user
@@ -245,11 +237,37 @@ execute "migrate" do
 end
 
 #
-# Radar <--> Uwsgi <--> Nginx
+# Uwsgi
 #
 
-#python_pip "uwsgi" do
-#  virtualenv "#{home}/radar/venv_radar"
+python_pip "uwsgi" do
+  virtualenv "#{home}/radar/venv_radar"
+end
+
+directory uwsgi_log_folder do
+  owner user
+  group user
+  mode '0755'
+  action :create
+end
+
+template "/etc/init/uwsgi.conf" do
+  mode '0440'
+  owner 'root'
+  group 'root'
+  source "uwsgi.conf.erb"
+  variables({
+    :uwsgi_log_file => uwsgi_log_file,
+    :radar_folder => radar_folder
+  })
+end
+
+#service "uwsgi" do
+#  provider Chef::Provider::Service::Upstart
+#  supports :status => true, :restart => true, :reload => true
+#  action [ :enable, :start, :reload ]
 #end
+
+
 
 
