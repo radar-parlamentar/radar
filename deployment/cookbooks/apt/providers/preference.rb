@@ -19,7 +19,7 @@
 
 # Build preferences.d file contents
 def build_pref(package_name, pin, pin_priority)
-  "Package: #{package_name}\nPin: #{pin}\nPin-Priority: #{pin_priority}\n"
+  preference_content = "Package: #{package_name}\nPin: #{pin}\nPin-Priority: #{pin_priority}\n"
 end
 
 action :add do
@@ -39,7 +39,7 @@ action :add do
     action :nothing
   end
 
-  preference_file = file "/etc/apt/preferences.d/#{new_resource.name}.pref" do
+  preference_file = file "/etc/apt/preferences.d/#{new_resource.name}" do
     owner 'root'
     group 'root'
     mode 00644

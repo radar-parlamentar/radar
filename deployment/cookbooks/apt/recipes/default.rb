@@ -25,28 +25,12 @@
 
 Chef::Log.debug 'apt is not installed. Apt-specific resources will not be executed.' unless apt_installed?
 
-first_run_file = File.join(Chef::Config[:file_cache_path], "apt_compile_time_update_first_run")
-
-# If compile_time_update run apt-get update at compile time
-if node['apt']['compile_time_update'] && ( !::File.exist?('/var/lib/apt/periodic/update-success-stamp') || !::File.exist?(first_run_file) )
-  e = bash 'apt-get-update at compile time' do
-    code <<-EOH
-      apt-get update
-      touch #{first_run_file}
-    EOH
-    ignore_failure true
-    only_if { apt_installed? }
-    action :nothing
-  end
-  e.run_action(:run)
-end
-
 # Run apt-get update to create the stamp file
 execute 'apt-get-update' do
   command 'apt-get update'
   ignore_failure true
   only_if { apt_installed? }
-  not_if { ::File.exist?('/var/lib/apt/periodic/update-success-stamp') }
+  not_if { ::File.exists?('/var/lib/apt/periodic/update-success-stamp') }
 end
 
 # For other recipes to call to force an update
@@ -82,7 +66,7 @@ execute 'apt-get-update-periodic' do
   ignore_failure true
   only_if do
     apt_installed? &&
-    ::File.exist?('/var/lib/apt/periodic/update-success-stamp') &&
+    ::File.exists?('/var/lib/apt/periodic/update-success-stamp') &&
     ::File.mtime('/var/lib/apt/periodic/update-success-stamp') < Time.now - node['apt']['periodic_update_min_delay']
   end
 end

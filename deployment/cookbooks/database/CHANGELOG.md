@@ -1,48 +1,6 @@
-v2.3.0 (2014-08-13)
--------------------
-- [#62] Allow requiring SSL
-
-
-v2.2.0 (2014-05-07)
--------------------
-- [COOK-4626] Add windows users for SQL Server
-- [COOK-4627] Assigning sys_roles in SQL Server
-
-
-v2.1.10 (2014-05-07)
---------------------
-- [COOK-4614] - Update README to reflect gem installation via mysql-chef_gem
-
-
-v2.1.8 (2014-04-23)
--------------------
-- [COOK-4583] - Add ChefSpec matchers
-
-
-v2.1.6 (2014-04-10)
--------------------
-- [COOK-4538] Bump supported Chef version
-
-
-v2.1.4 (2014-04-09)
--------------------
-[COOK-4529] Query action ignores MySQL errors
-
-
-v2.1.2 (2014-04-01)
--------------------
-- Depending on mysql-chef_gem cookbook
-
-
-v2.1.0 (2014-03-31)
--------------------
-- Updating mysql cookbook dependency
-- Enforcing rubocops
-
-
-v2.0.0 (2014-02-25)
--------------------
-[COOK-3441] database_user password argument should not be required
+database Cookbook CHANGELOG
+=======================
+This file is used to list changes made in each version of the database cookbook.
 
 
 v1.6.0

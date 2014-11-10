@@ -31,7 +31,6 @@ module Apt
     #
     # @return [String, nil]
     def which(cmd)
-      ENV["PATH"] = "" if ENV["PATH"].nil?
       paths = (ENV['PATH'].split(::File::PATH_SEPARATOR) + %w(/bin /usr/bin /sbin /usr/sbin))
 
       paths.each do |path|

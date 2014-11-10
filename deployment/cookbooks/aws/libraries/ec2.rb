@@ -40,7 +40,15 @@ module Opscode
       end
 
       def ec2
-        @@ec2 ||= create_aws_interface(RightAws::Ec2)
+        begin
+          require 'right_aws'
+        rescue LoadError
+          Chef::Log.error("Missing gem 'right_aws'. Use the default aws recipe to install it first.")
+        end
+
+        region = instance_availability_zone
+        region = region[0, region.length-1]
+        @@ec2 ||= RightAws::Ec2.new(new_resource.aws_access_key, new_resource.aws_secret_access_key, { :logger => Chef::Log, :region => region })
       end
 
       def instance_id
@@ -53,45 +61,15 @@ module Opscode
 
       private
 
-      def create_aws_interface(aws_interface)
-        begin
-          require 'right_aws'
-        rescue LoadError
-          Chef::Log.error("Missing gem 'right_aws'. Use the default aws recipe to install it first.")
-        end
-
-        region = instance_availability_zone
-        region = region[0, region.length-1]
-
-        if new_resource.aws_access_key and new_resource.aws_secret_access_key
-          aws_interface.new(new_resource.aws_access_key, new_resource.aws_secret_access_key, {:logger => Chef::Log, :region => region})
-        else
-          creds = query_role_credentials
-          aws_interface.new(creds['AccessKeyId'], creds['SecretAccessKey'], {:logger => Chef::Log, :region => region, :token => creds['Token']})
-        end
-      end
-
-      def query_role
-        r = open("http://169.254.169.254/latest/meta-data/iam/security-credentials/").readlines.first
-        r
-      end
-
-      def query_role_credentials(role = query_role)
-        fail "Instance has no IAM role." if role.to_s.empty?
-        creds = open("http://169.254.169.254/latest/meta-data/iam/security-credentials/#{role}",options = {:proxy => false}){|f| JSON.parse(f.string)}
-        Chef::Log.debug("Retrieved instance credentials for IAM role #{role}")
-        creds
-      end
-
       def query_instance_id
-        instance_id = open('http://169.254.169.254/latest/meta-data/instance-id',options = {:proxy => false}){|f| f.gets}
+        instance_id = open('http://169.254.169.254/latest/meta-data/instance-id'){|f| f.gets}
         raise "Cannot find instance id!" unless instance_id
         Chef::Log.debug("Instance ID is #{instance_id}")
         instance_id
       end
 
       def query_instance_availability_zone
-        availability_zone = open('http://169.254.169.254/latest/meta-data/placement/availability-zone/', options = {:proxy => false}){|f| f.gets}
+        availability_zone = open('http://169.254.169.254/latest/meta-data/placement/availability-zone/'){|f| f.gets}
         raise "Cannot find availability zone!" unless availability_zone
         Chef::Log.debug("Instance's availability zone is #{availability_zone}")
         availability_zone

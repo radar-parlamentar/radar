@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: openssl
-# Attributes:: default
+# Cookbook Name:: build-essential
+# Recipe:: fedora
 #
-# Copyright 2014, Chef Software, Inc. <legal@getchef.com>
+# Copyright 2008-2013, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,5 +17,20 @@
 # limitations under the License.
 #
 
-default['openssl']['packages'] = []
-default['openssl']['restart_services'] = []
+%w{
+  autoconf
+  bison
+  flex
+  gcc
+  gcc-c++
+  kernel-devel
+  make
+  m4
+}.each do |pkg|
+
+  r = package pkg do
+    action( node['build_essential']['compiletime'] ? :nothing : :install )
+  end
+  r.run_action(:install) if node['build_essential']['compiletime']
+
+end

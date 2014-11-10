@@ -1,8 +1,7 @@
-source 'https://api.berkshelf.com'
+site :opscode
 
 metadata
 
 group :integration do
-  cookbook 'apt'
-  cookbook 'freebsd'
+  cookbook "apt"
 end

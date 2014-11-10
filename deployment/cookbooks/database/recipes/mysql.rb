@@ -17,4 +17,4 @@
 # limitations under the License.
 #
 
-include_recipe 'mysql-chef_gem'
+include_recipe "mysql::ruby"

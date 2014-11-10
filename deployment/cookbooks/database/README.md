@@ -7,7 +7,7 @@ This cookbook also contains recipes to configure mysql database masters and slav
 
 Requirements
 ------------
-Chef version 0.11+
+Chef version 0.10.10+.
 
 ### Platforms
 * Debian, Ubuntu
@@ -26,7 +26,7 @@ Resources/Providers
 -------------------
 These resources aim to expose an abstraction layer for interacting with different RDBMS in a general way. Currently the cookbook ships with providers for MySQL, PostgreSQL and SQL Server. Please see specific usage in the __Example__ sections below. The providers use specific Ruby gems installed under Chef's Ruby environment to execute commands and carry out actions. These gems will need to be installed before the providers can operate correctly. Specific notes for each RDBS flavor:
 
-- MySQL: leverages the `mysql` gem which is installed as part of the `mysql-chef_gem` recipe. You must declare `include_recipe "database::mysql"` to include this in your recipe.
+- MySQL: leverages the `mysql` gem which is installed as part of the `mysql::ruby` recipe. You must declare `include_recipe "database::mysql"` to include this in your recipe.
 - PostgreSQL: leverages the `pg` gem which is installed as part of the `postgresql::ruby` recipe. You must declare `include_recipe "database::postgresql"` to include this. 
 - SQL Server: leverages the `tiny_tds` gem which is installed as part of the `sql_server::client` recipe.
 
@@ -86,7 +86,7 @@ end
 # create a postgresql database
 postgresql_database 'mr_softie' do
   connection(
-    :host      => '127.0.0.1',
+    :host      => '127.0.0.1'
     :port      => 5432,
     :username  => 'postgres',
     :password  => node['postgresql']['password']['postgres']
@@ -223,125 +223,11 @@ Manage users and user privileges in a RDBMS. Use the proper shortcut resource de
 - username: name attribute. Name of the database user
 - password: password for the user account
 - database_name: Name of the database to interact with
-- connection: hash of connection info. valid keys include :host,
-  :port, :username, :password
-- privileges: array of database privileges to grant user. used by the
-  :grant action. default is :all
-- host: host where user connections are allowed from. used by MySQL
-  provider only. default is 'localhost'
-- table: table to grant privileges on. used by :grant action and MySQL
-  provider only. default is '*' (all tables)
-- require_ssl: true or false to force SSL connections to be used for user
-
-### Providers
-
-- **Chef::Provider::Database::MysqlUser**: shortcut resource
-    `mysql_database_user`
-- **Chef::Provider::Database::PostgresqlUser**: shortcut
-    resource `postgresql_database_user`
-- **Chef::Provider::Database::SqlServerUser**: shortcut resource
-    `sql_server_database_user`
-
-### Examples
-
-    # create connection info as an external ruby hash
-    mysql_connection_info = {:host => "localhost",
-                             :username => 'root',
-                             :password => node['mysql']['server_root_password']}
-    postgresql_connection_info = {:host => "localhost",
-                                  :port => node['postgresql']['config']['port'],
-                                  :username => 'postgres',
-                                  :password => node['postgresql']['password']['postgres']}
-    sql_server_connection_info = {:host => "localhost",
-                                  :port => node['sql_server']['port'],
-                                  :username => 'sa',
-                                  :password => node['sql_server']['server_sa_password']}
-
-    # create a mysql user but grant no privileges
-    mysql_database_user 'disenfranchised' do
-      connection mysql_connection_info
-      password 'super_secret'
-      action :create
-    end
-
-    # do the same but pass the provider to the database resource
-    database_user 'disenfranchised' do
-      connection mysql_connection_info
-      password 'super_secret'
-      provider Chef::Provider::Database::MysqlUser
-      action :create
-    end
-
-    # create a postgresql user but grant no privileges
-    postgresql_database_user 'disenfranchised' do
-      connection postgresql_connection_info
-      password 'super_secret'
-      action :create
-    end
-
-    # do the same but pass the provider to the database resource
-    database_user 'disenfranchised' do
-      connection postgresql_connection_info
-      password 'super_secret'
-      provider Chef::Provider::Database::PostgresqlUser
-      action :create
-    end
-
-    # create a sql server user but grant no privileges
-    sql_server_database_user 'disenfranchised' do
-      connection sql_server_connection_info
-      password 'super_secret'
-      action :create
-    end
-
-    # drop a mysql user
-    mysql_database_user "foo_user" do
-      connection mysql_connection_info
-      action :drop
-    end
-
-    # bulk drop sql server users
-    %w{ disenfranchised foo_user }.each do |user|
-      sql_server_database_user user do
-        connection sql_server_connection_info
-        action :drop
-      end
-    end
-
-    # grant select,update,insert privileges to all tables in foo db from all hosts, requiring connections over SSL
-    mysql_database_user 'foo_user' do
-      connection mysql_connection_info
-      password 'super_secret'
-      database_name 'foo'
-      host '%'
-      privileges [:select,:update,:insert]
-      require_ssl true
-      action :grant
-    end
-
-    # grant all privileges on all databases/tables from localhost
-    mysql_database_user 'super_user' do
-      connection mysql_connection_info
-      password 'super_secret'
-      action :grant
-    end
-
-    # grant all privileges on all tables in foo db
-    postgresql_database_user 'foo_user' do
-      connection postgresql_connection_info
-      database_name 'foo'
-      privileges [:all]
-      action :grant
-    end
-
-    # grant select,update,insert privileges to all tables in foo db
-    sql_server_database_user 'foo_user' do
-      connection sql_server_connection_info
-      password 'super_secret'
-      database_name 'foo'
-      privileges [:select,:update,:insert]
-      action :grant
-    end
+- connection: hash of connection info. valid keys include :host, :port, :username, :password
+- privileges: array of database privileges to grant user. used by the :grant action. default is :all
+- grant_option: appends 'WITH GRANT OPTION' to grant statement. used by MySQL provider only. default is 'false'
+- host: host where user connections are allowed from. used by MySQL provider only. default is 'localhost'
+- table: table to grant privileges on. used by :grant action and MySQL provider only. default is '*' (all tables)
 
 #### Providers
 - `Chef::Provider::Database::MysqlUser`: shortcut resource `mysql_database_user`

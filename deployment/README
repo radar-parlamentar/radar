@@ -18,19 +18,17 @@ ATENÇÃO: ainda não está terminado :)
 
 Usando o Vagrant:
 
+Instalar VirtualBox
+
 Baixar imagem base:
 vagrant box add ubuntu12.04 http://files.vagrantup.com/precise32.box
 
 Criar VM:
 $vagrant up
 
-Destruir VM:
-$vagrant destroy
-
-Reexecutar chef-solo:
+Executar chef-solo:
 $vagrant provision
 
-Obs: precisa ter o VirtualBox instalado.
 
 ==============
 

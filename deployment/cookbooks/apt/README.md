@@ -1,12 +1,5 @@
 apt Cookbook
 ============
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/opscode-cookbooks/apt?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Cookbook Version](http://img.shields.io/cookbook/v/apt.svg)][cookbook]
-[![Build Status](http://img.shields.io/travis/opscode-cookbooks/apt.svg)][travis]
-
-[cookbook]: https://community.opscode.com/cookbooks/apt
-[travis]: http://travis-ci.org/opscode-cookbooks/apt
-
 This cookbook includes recipes to execute apt-get update to ensure the local APT package cache is up to date. There are recipes for managing the apt-cacher-ng caching proxy and proxy clients. It also includes a LWRP for managing APT repositories in /etc/apt/sources.list.d as well as an LWRP for pinning packages via /etc/apt/preferences.d.
 
 
@@ -86,7 +79,6 @@ Attributes
 * `['apt']['cacher_dir']` - directory used by cacher-ng service, default is '/var/cache/apt-cacher-ng'
 * `['apt']['cacher-client']['restrict_environment']` - restrict your node to using the `apt-cacher-ng` server in your Environment, default is 'false'
 * `['apt']['compiletime']` - force the `cacher-client` recipe to run before other recipes. It forces apt to use the proxy before other recipes run. Useful if your nodes have limited access to public apt repositories. This is overridden if the `cacher-ng` recipe is in your run list. Default is 'false'
-* `['apt']['compile_time_update']` - force the default recipe to run `apt-get update` at compile time.
 * `['apt']['cache_bypass']` - array of URLs to bypass the cache. Accepts the URL and protocol to  fetch directly from the remote repository and not attempt to cache
 * `['apt']['periodic_update_min_delay']` - minimum delay (in seconds) beetween two actual executions of `apt-get update` by the `execute[apt-get-update-periodic]` resource, default is '86400' (24 hours)
 
@@ -100,14 +92,14 @@ Resources/Providers
 This LWRP provides an easy way to manage additional APT repositories. Adding a new repository will notify running the `execute[apt-get-update]` resource immediately.
 
 #### Actions
-- :add: creates a repository file and builds the repository listing (default)
+- :add: creates a repository file and builds the repository listing
 - :remove: removes the repository file
 
 #### Attribute Parameters
 - repo_name: name attribute. The name of the channel to discover
 - uri: the base of the Debian distribution
 - distribution: this is usually your release's codename...ie something like `karmic`, `lucid` or `maverick`
-- components: package groupings... when in doubt use `main`
+- components: package groupings..when it doubt use `main`
 - arch: constrain package to a particular arch like `i386`, `amd64` or even `armhf` or `powerpc`. Defaults to nil.
 - trusted: treat all packages from this repository as authenticated regardless of signature
 - deb_src: whether or not to add the repository as a source repo as well - value can be `true` or `false`, default `false`.
@@ -127,12 +119,15 @@ apt_repository 'zenoss' do
 end
 ```
 
-Add the Nginx PPA, autodetect the key and repository url:
+Add the Nginx PPA, grabbing the key from keyserver:
 
 ```ruby
 apt_repository 'nginx-php' do
-  uri          'ppa:nginx/stable'
+  uri          'http://ppa.launchpad.net/nginx/php5/ubuntu'
   distribution node['lsb']['codename']
+  components   ['main']
+  keyserver    'keyserver.ubuntu.com'
+  key          'C300EE8C'
 end
 ```
 
