@@ -18,6 +18,9 @@ ATENÇÃO: ainda não está terminado :)
 
 Usando o Vagrant:
 
+Baixar imagem base:
+vagrant box add ubuntu12.04 http://files.vagrantup.com/precise32.box
+
 Criar VM:
 $vagrant up
 
@@ -26,8 +29,6 @@ $vagrant destroy
 
 Reexecutar chef-solo:
 $vagrant provision
-ou
-$vagrant reload --provision
 
 Obs: precisa ter o VirtualBox instalado.
 
