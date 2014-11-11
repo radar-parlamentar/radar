@@ -266,6 +266,13 @@ service "uwsgi" do
   action :restart
 end
 
+#
+# Nginx
+#
+
+service "nginx" do
+  action :restart
+end
 
 
 
