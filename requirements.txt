@@ -7,3 +7,4 @@ svgwrite==1.1.2
 wsgiref==0.1.2
 mock==1.0.1
 South==1.0.1
+coverage
