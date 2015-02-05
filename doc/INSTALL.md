@@ -11,40 +11,12 @@ A primeira coisa que deve ser feita é o clone do projeto no *Github*. Para isso
 2. Configuração do ambiente
 ------------------------------
 
-Após clonar o repositório você tem as 3 opções abaixo para instalação:
+Instale os pacotes (apt-get):
+    * postgresql
+    * libpq-dev
+    * sqlite3
 
-
-* **Configuração Manual**
-
-    * **Django 1.4.5**: Framework web utilizado no desenvolvimento do projeto. Download: [Django](https://www.djangoproject.com/download/)
-
-    * **numpy**: Biblioteca que permite a criação de arrays de objetos n-dimensionais e realização de operações diversas sobre o mesmo.
-        Download: [numpy](http://sourceforge.net/projects/numpy/files/)
-
-    * **matplotlib**: Biblioteca utilizada no projeto para plotar gráficos 2D que são usados na apresentação dos dados abertos obtidos.
-        Download: [matplotlib](http://matplotlib.org/downloads.html)
-
-    * É preciso também criar o diretório /tmp/django_cache.
-
-
-* **Configuração utilizando Scripts**
-
-    * **Arch Linux**
-
-    Depois de clonar o repositório, basta executar o script específico para o Arch Linux que se encontra no projeto:
-
-        $ ./setup/setup_arch.sh
-
-    E o script fará todo o trabalho para você.
-
-    * **Ubuntu**
-
-    Depois de clonar o repositório, basta executar o script específico para o Ubuntu que se encontra no projeto:
-
-        $ ./setup/setup_ubuntu.sh
-
-    E o script fará todo o trabalho para você.
-
+Crie a pasta /tmp/django_cache
 
 * **Configuração utilizando o virtualenv**
 
@@ -65,9 +37,9 @@ Agora, dentro da nossa pasta do projeto teremos disponíveis todas variáveis de
 
 Para instalar todas as dependencias Python necessárias para o nosso projeto rodar, basta executar:
 
-    $ sudo pip install -r requirements.txt
+    $ sudo pip install -r radar_parlamentar/requirements.txt
 
-Este comando vai buscar todas as dependencias definidas no arquivo *requirements.txt* e as intalará em nosso *conteiner* do *virtualenv*
+Este comando vai buscar todas as dependências definidas no arquivo *requirements.txt* e as intalará em nosso *conteiner* do *virtualenv*
 
 Caso queira sair do *virtualenv* basta digitar:
 
