@@ -12,9 +12,15 @@ A primeira coisa que deve ser feita é o clone do projeto no *Github*. Para isso
 ------------------------------
 
 Instale os pacotes (apt-get):
-    * postgresql
+
     * libpq-dev
+    * postgresql
+    * postgresql-contrib
     * sqlite3
+    * python-dev
+    * curl
+    * python-pip
+    * python-virtualenv
 
 Crie a pasta /tmp/django_cache
 
@@ -22,12 +28,7 @@ Crie a pasta /tmp/django_cache
 
 Para quem não conheçe, o [virtualenv](http://www.virtualenv.org "Virtual Env") cria um *conteiner* com todo um ambiente Python "limpo" para você instalar os pacotes separadamente do seu Sistema Operacional.
 
-Depois de clonar o projeto, vamos preparar o ambiente para utilizar o *virtualenv* e o *pip*, para isto vamos executar as seguintes instalações (os comandos abaixo são baseados em sistemas debian-like, para outros sistemas, basta modificar o gerenciador de pacotes e fazer os ajustes):
-
-    $ sudo apt-get install python-pip
-    $ sudo pip install virtualenv
-
-Feito isso, vamos criar agora o nosso "Virtual Enviroment":
+Depois de clonar o projeto, vamos criar agora o nosso "Virtual Enviroment":
 
     $ virtualenv path/para/a/pasta/do/projeto/clonado
     $ cd path/para/a/pasta/do/projeto/clonado
@@ -37,7 +38,7 @@ Agora, dentro da nossa pasta do projeto teremos disponíveis todas variáveis de
 
 Para instalar todas as dependencias Python necessárias para o nosso projeto rodar, basta executar:
 
-    $ sudo pip install -r radar_parlamentar/requirements.txt
+    $ pip install -r radar_parlamentar/requirements.txt
 
 Este comando vai buscar todas as dependências definidas no arquivo *requirements.txt* e as intalará em nosso *conteiner* do *virtualenv*
 
@@ -45,6 +46,7 @@ Caso queira sair do *virtualenv* basta digitar:
 
     $ deactivate
 
+ATENÇÃO: toda vez que você for trabalhar no radar é preciso ativar o virtual env! (source bin/activate)
 
 Observações
 -------------
@@ -68,48 +70,36 @@ Observações
 3. Banco de dados
 --------------------------
 
-Você deve configurar um banco de dados MySQL para ser utilizado pelo Radar.
+Você deve configurar um banco de dados PostgreSQL para ser utilizado pelo Radar.
 
-Para configurar o MySql como banco de dados:
-Instalação:
+Caso ainda não tenha instalado o PostgreSQL:
 
-	$ sudo apt-get install mysql-server
-	$ sudo apt-get install python-mysqldb
+	$ sudo apt-get install postgresql postgresql-contrib
 
-Deve-se criar um usuário "root" e o banco dentro do próprio MySQL.
+Configurando o banco:
 
-    $ mysql -u root -p 
-    Enter password: root
-    #Entra no shell do mysql
-    
-    mysql>CREATE DATABASE radar;
-    mysql>quit
+    $ sudo su - postgres
+    $ createdb radar
+    $ createuser radar -P
+    escolha a senha
+    $ psql
+    # GRANT ALL PRIVILEGES ON DATABASE radar TO radar;
+    saia do psql (ctrl+d)
+    volte a ser o usuário normal (ctrl+d)
+    $ echo "localhost:5432:radar:radar:<SENHA>" > ~/.pgpass
+    $ chmod 600 ~/.pgpass
 
-Edite o arquivo settings/development.py* e insira a senha do seu usuário do mysql (pode ser o root).
+Crie o arquivo settings/development.py com base no arquivo settings/development.py.template.
+No arquivo development.py, insira a senha do usuário radar do PostgreSQL .
 
 Ao rodar python manage.py runserver no ambiente de desenvolvimento, será usado as configurações settings/development.py.
-
-<b>Em ambiente de desenvolvimento:</b>
-
-Criar development.py baseado em development.py.template.
-
-
-<b>Em ambiente de produção:</b>
-
-Criar production.py baseado em production.py.template.
-
-No ambiente de produção é necessário exportar a variável de ambiente export 	DJANGO_SETTINGS_MODULE='settings.production'. Para isso basta executar o script is_prod.sh. Referência do DJANGO: (https://code.djangoproject.com/wiki/SplitSettings)
-
-
-*Importante dizer que deve-se atribuir False a variável DEBUG em settings/development.py ou production.py (em ambiente de produção) para ativar a visualização da página de erro default 404.
-
     
 Para criar as tabelas do Radar Parlamentar:
 
-    $ python manage.py syncdb #Cria todas as tabelas
+    $ python manage.py syncdb 
+    $ python manage.py migrate
     
 Agora, pode-se importar todos os dados com os Importadores!!
-
 
 
 4. Importação dos Dados
@@ -148,17 +138,6 @@ Recomendamos inicialmente que você realize a importação dos dados Convenção
 
 South é uma ferramenta que funciona como uma camada de migração, independente do banco de dados. Eventualmente, seu models.py vai ser modificado e o South vai identificar e realizar as mudanças correspondentes no seu banco por você, sem a necessidade de utilizar comandos SQL e sem perda de dados.
 
-* Instalação:
-
-	$ sudo pip install South 
-	
-Adicionar o South no `INSTALLED_APPS` no arquivo `settings/defaults.py`.
-
-	$ python manage.py syncdb 
-	$ python manage.py convert_to_south modelagem
-
-* Como usar:
-
 Quando ocorrer alterações na model, digite no terminal:
 	
 	$ python manage.py schemamigration modelagem --auto
@@ -170,8 +149,7 @@ Observação: Cuidado ao diminuir o tamanho dos campos. Podem existir dados com 
 ---------------------------------
 Execute o script de testes e testes unitários:
     
-    $ ./tests.sh
-    $ ./unit_tests.sh
+    $ source tests.sh
 
 
 Inicie o servidor do Django:
