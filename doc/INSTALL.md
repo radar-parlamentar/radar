@@ -21,6 +21,7 @@ Instale os pacotes (apt-get):
     * curl
     * python-pip
     * python-virtualenv
+    * rabbitmq-server
 
 Crie a pasta /tmp/django_cache
 
@@ -98,40 +99,42 @@ Para criar as tabelas do Radar Parlamentar:
 
     $ python manage.py syncdb 
     $ python manage.py migrate
-    
+        
 Agora, pode-se importar todos os dados com os Importadores!!
 
 
 4. Importação dos Dados
 -------------------
 
-Para importar os dados basta digitar o comando:
-$ python manage.py shell
-$ from importadores import importador
+Primeiro crie um usuário administrativo do django:
 
-Para selecionar os dados que serão importados, basta passar como parametro uma lista com os nomes reduzidos das casas legislativas. 
+     $python manage.py createsuperuser
 
-* Convenção Francesa: conv
-* Camara Municipal de São Paulo: cmsp
-* Senado: sen
-* Câmara dos Deputados: cdep
+Depois inicie o Celery na pasta onde fica o manage.py:
 
-Por exemplo, caso deseje importar somente a base Convencao e Senado, então faça:
+     $celery -A importadores worker -l info --concurrency 1
+     
+O Celery é um gerenciador de execução de tarefas assíncronas.
 
-        $importador.main(['conv', 'sen']) 
+Para importar os dados basta acessar a URL: http://127.0.0.1:8000/importar/<nome-curto-da-casa-legislativa>/
 
+Possíveis valores para <nome-curto-da-casa-legislativa>:
 
-Caso deseje importar todos:
+* Convenção Francesa: "conv"
+* Camara Municipal de São Paulo: "cmsp"
+* Senado: "sen"
+* Câmara dos Deputados: "cdep"
 
-        $ importador.main(['conv', 'sen', 'cmsp', 'cdep'])
+Exemplo: para importar dados da Câmara Municipal de São Paulo basta acessar:
+
+http://127.0.0.1:8000/importar/cmsp
+
+Recomendamos inicialmente que você realize a importação dos dados Convenção Nacional Francesa (uma casa legislativa fictícia).
 
 - Criando novos importadores:
 
 http://radarparlamentar.polignu.org/importadores/
 
-
-
-Recomendamos inicialmente que você realize a importação dos dados Convenção Nacional Francesa (uma casa legislativa fictícia).
 
 5. Configuração do South
 -------------------------
