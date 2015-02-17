@@ -131,6 +131,8 @@ http://127.0.0.1:8000/importar/cmsp
 
 Recomendamos inicialmente que você realize a importação dos dados Convenção Nacional Francesa (uma casa legislativa fictícia).
 
+Obs: todas as importações são relativamente rápidas, exceto a da Câmara dos Deputados, que pode levar horas.
+
 - Criando novos importadores:
 
 http://radarparlamentar.polignu.org/importadores/
