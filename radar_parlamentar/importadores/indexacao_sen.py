@@ -1,6 +1,6 @@
 # coding:utf-8
 from __future__ import unicode_literals
-from modelagem.models import Proposicao
+from modelagem.models import Proposicao, CasaLegislativa
 import urllib2
 import xml.etree.ElementTree as etree
 
@@ -21,8 +21,11 @@ def get_materia_xml(proposicao):
 		raise ValueError('Legislatura %s não encontrada' % id_leg)
 	return tree
 
-def main():
-	lista_proposicao = Proposicao.objects.all().filter(casa_legislativa_id=1)
+def indexar_proposicoes():
+	lista_senado = CasaLegislativa.objects.filter(nome_curto="sen")
+	if len(lista_senado) == 0:
+		raise NameError("CasaLegislativa do senado nao encontrado")
+	lista_proposicao = Proposicao.objects.all().filter(casa_legislativa_id=lista_senado[0].id)
 	for proposicao in lista_proposicao:
 		materia_xml = get_materia_xml(proposicao)
 		ementa =  materia_xml.find("Materia").find("DadosBasicosMateria").find("EmentaMateria")
@@ -33,3 +36,6 @@ def main():
 		if index is not None:
 			proposicao.indexacao=index.text
 		proposicao.save()
+
+def main():
+	indexar_proposicoes()
