@@ -329,6 +329,18 @@ Plot = (function ($) {
         }
         
         function change_period() {
+            if(!periodo_anterior_valido()) {
+                go_to_previous.attr("style","opacity: 0.4; filter: alpha(opacity=40);");
+            } else {
+                go_to_previous.attr("style","opacity: 1.0; filter: alpha(opacity=100);");
+            }
+
+            if(!proximo_periodo_valido()) {
+                go_to_next.attr("style","opacity: 0.4; filter: alpha(opacity=40);");
+            } else {
+                go_to_next.attr("style","opacity: 1.0; filter: alpha(opacity=100);");
+            }    
+        
             atualiza_grafico(false);
         }
 
