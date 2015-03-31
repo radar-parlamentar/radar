@@ -205,7 +205,7 @@ Plot = (function ($) {
             .attr("x", 10)
             .attr("width", 113)
             .attr("height", 113);
-
+              
         var go_to_next = grupo_controle_periodos.append("image")
             .attr("xlink:href", "/static/assets/arrow_right.svg")
             .attr("id", "next_period")
@@ -218,9 +218,9 @@ Plot = (function ($) {
         // setando variáveis já declaradas
         partidos = dados.partidos;
         periodos = dados.periodos;
-        periodo_min = 0;
-        periodo_max = periodos.length-1;
-        periodo_atual = periodo_min;
+        periodo_max = 0;
+        periodo_min = periodos.length-1;
+        periodo_atual = periodo_max;
         periodo_para = periodo_atual;
         periodo_de = periodo_atual;        
 
@@ -303,21 +303,29 @@ Plot = (function ($) {
         }
         
         function change_to_next_period() {
-            if (periodo_atual < periodo_max) { 
+            if (proximo_periodo_valido()) { 
                 periodo_de = periodo_atual;
-                periodo_para = periodo_atual + 1;
+                periodo_para = periodo_atual - 1;
                 periodo_atual = periodo_para;
-                change_period();
+                change_period();     
             }
         }
 
         function change_to_previous_period() {
-            if (periodo_atual > periodo_min) {
+            if (periodo_anterior_valido()) {
                 periodo_de = periodo_atual;
-                periodo_para = periodo_atual - 1;
+                periodo_para = periodo_atual + 1;
                 periodo_atual = periodo_para;
-                change_period();
+                change_period();   
             }
+        }
+        
+        function proximo_periodo_valido() {
+            return periodo_atual > periodo_max;
+        }
+        
+        function periodo_anterior_valido() {
+            return periodo_atual < periodo_min;
         }
         
         function change_period() {
