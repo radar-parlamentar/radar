@@ -11,7 +11,7 @@
 	width: 80%;
 
 	position: fixed;
-	z-index: 1002;
+	z-index: 10002;
 }
 
 #popup-content > div + div{ text-align:right; }
@@ -27,6 +27,6 @@
 	position: fixed;
 	top: 0;
 	width: 100%;
-	z-index: 1001;
+	z-index: 10001;
 	display: none;
 }
