@@ -81,10 +81,35 @@ class = "largeSlides"
                 <a href="#" class="next">Next</a>
             </div>
         </section><!-- end of #imageBox -->
+
+        <!-- Popup Tutorial Window -->
+
+        <!-- Fade popup javascript -->
+        <script src="/static/files/codes/js/jquery-1.11.0.min.js"></script>
+        <script src="/static/files/codes/js/popup_win.js"></script>
+        <!-- Popup CSS -->
+        <link rel="stylesheet" type="text/css" href="/static/files/codes/css/popup.css">
+
+        <!-- end of popup tutorial -->
+
     </header><!-- end of #header -->
 {% endblock imageBox %}
 
 {% block content %}
+
+        <!-- Popup windows content -->
+        <div id="popup-content">
+            <div>
+                <input id="modal-close-button" type="button" value="Ok! Entendi!"/>
+            </div>
+        </div>
+        <input id="modal-open-button" type="button" value="Click Aqui"/>
+
+        <!-- Overlay background -->
+        <div = id="overlay-bg"></div>
+
+        <!-- end popup windows content -->
+
 	    <div class="promoMsg">
 	            <h2>
 	                O Radar Parlamentar é um aplicativo que ilustra as semelhanças entre partidos políticos com base na análise matemática dos dados de votações que ocorrem na casa legislativa. As semelhanças são apresentadas em um gráfico bidimensional, em que círculos representam partidos ou parlamentares, e a distância entre esses círculos representa o quão parecido os mesmos votam.
