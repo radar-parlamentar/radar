@@ -107,8 +107,8 @@ class Partido(models.Model):
 
     LISTA_PARTIDOS = os.path.join(MODULE_DIR, 'recursos/partidos.txt')
 
-    nome = models.CharField(max_length=12)
-    numero = models.IntegerField()
+    nome = models.CharField(max_length=12, db_index=True)
+    numero = models.IntegerField(db_index=True)
     cor = models.CharField(max_length=7)
 
     @classmethod
@@ -307,8 +307,8 @@ class Parlamentar(models.Model):
         nome, genero -- strings
     """
     # obs: id_parlamentar não é chave primária!
-    id_parlamentar = models.CharField(max_length=100, blank=True)
-    nome = models.CharField(max_length=100)
+    id_parlamentar = models.CharField(max_length=100, blank=True, db_index=True)
+    nome = models.CharField(max_length=100, db_index=True)
     genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
 
     def __unicode__(self):
@@ -335,8 +335,8 @@ class Legislatura(models.Model):
 
     parlamentar = models.ForeignKey(Parlamentar)
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
-    inicio = models.DateField(null=True)
-    fim = models.DateField(null=True)
+    inicio = models.DateField(null=True, db_index=True)
+    fim = models.DateField(null=True, db_index=True)
     partido = models.ForeignKey(Partido)
     localidade = models.CharField(max_length=100, blank=True)
 
@@ -431,7 +431,7 @@ class Votacao(models.Model):
     # obs: id_vot não é chave primária!
     id_vot = models.CharField(max_length=100, blank=True)
     descricao = models.TextField(blank=True)
-    data = models.DateField(blank=True, null=True)
+    data = models.DateField(blank=True, null=True, db_index=True)
     resultado = models.TextField(blank=True)
     proposicao = models.ForeignKey(Proposicao, null=True)
 

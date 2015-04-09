@@ -120,6 +120,7 @@ INSTALLED_APPS = (
     'exportadores',
     'importadorInterno',
     'testes_integracao',
+    'testes_sistema',
     'south',
 
 )
