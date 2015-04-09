@@ -137,6 +137,12 @@
     cursor: pointer;
 }
 
+.previous.invalid, .next.invalid {
+    opacity: 0.4; 
+	filter: alpha(opacity=40);
+}
+
+
 /* RADAR PARLAMENTAR - PERSONALIZAÇÕES */
 #legenda {
     float:right;
