@@ -330,15 +330,15 @@ Plot = (function ($) {
         
         function change_period() {
             if(!periodo_anterior_valido()) {
-                go_to_previous.attr("style","opacity: 0.4; filter: alpha(opacity=40);");
+                go_to_previous.classed("invalid", true);
             } else {
-                go_to_previous.attr("style","opacity: 1.0; filter: alpha(opacity=100);");
+                go_to_previous.classed("invalid", false);
             }
 
             if(!proximo_periodo_valido()) {
-                go_to_next.attr("style","opacity: 0.4; filter: alpha(opacity=40);");
+                go_to_next.classed("invalid", true);
             } else {
-                go_to_next.attr("style","opacity: 1.0; filter: alpha(opacity=100);");
+                go_to_next.classed("invalid", false);
             }    
         
             atualiza_grafico(false);
@@ -560,7 +560,7 @@ Plot = (function ($) {
 
 
         function mouseover_next() {
-            if (periodo_atual < periodo_max) {
+            if (proximo_periodo_valido()) {
                 go_to_next.classed("active", true);
                 go_to_next.transition()
                     .attr("xlink:href", "/static/assets/arrow_right_focused.svg")
@@ -574,8 +574,8 @@ Plot = (function ($) {
         }
 
         function mouseover_previous() {
-            if (periodo_atual > periodo_min) { 
-                go_to_previous.classed("active", true);
+            if (periodo_anterior_valido()) { 
+				go_to_previous.classed("active", true);
                 go_to_previous.transition()
                     .attr("xlink:href", "/static/assets/arrow_left_focused.svg")
             }
