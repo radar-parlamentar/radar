@@ -1,7 +1,7 @@
 Radar Parlamentar
 ==================
 
-[![Build Status](https://travis-ci.org/leonardofl/radar_parlamentar.png?branch=master)](https://travis-ci.org/leonardofl/radar_parlamentar)
+[![Build Status](https://travis-ci.org/radar-parlamentar/radar.svg?branch=master)](https://travis-ci.org/radar-parlamentar/radar)
 
 Este projeto utiliza dados abertos para analisar os votos de parlamentares em diferentes casas legislativas do Brasil.
 
