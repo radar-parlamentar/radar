@@ -1227,15 +1227,24 @@ ol.list.alphalow{list-style: lower-alpha;}
             width: 980px;
         }
 
-            #footer .copy{
+        #footer .copy{
                 float: left;
                 font-size: 11px;
-                margin: 10px 40px 10px 0;
+                margin: 10px 40px 0 0;
                 width: 470px;
             }
+            
+        #footer .version {
+            font-size: 11px;
+            margin-top: 30px;
+        }
 
+            #footer .version a:focus,
+            #footer .version a:hover,
             #footer .copy a:focus,
-            #footer .copy a:hover{color: #444;}
+            #footer .copy a:hover {
+                color: #444;
+            }
 
             #footer .socialLinks{
                 float: left;
