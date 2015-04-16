@@ -6,6 +6,8 @@ from django.shortcuts import render_to_response
 from django.contrib.staticfiles import finders
 import os
 import datetime
+from modelagem.models import Proposicao
+import json
 
 def index(request):
     return render_to_response('index.html', {},
@@ -53,7 +55,21 @@ def genero(request):
 
 
 def genero_termos_nuvem(request):
-    return render_to_response('genero_tagcloud.html', {},
+    proposicoes = [proposicao_sep.strip().lower() for proposicao in Proposicao.objects.all() for proposicao_sep in proposicao.indexacao.split(',') if len(proposicao_sep) != 0]
+    proposicoes_dict = {}
+
+    for proposicao in proposicoes:
+        if proposicoes_dict.has_key(proposicao):
+            proposicoes_dict[proposicao] = proposicoes_dict[proposicao] + 1
+        else:
+            proposicoes_dict[proposicao] = 1
+
+    proposicoes_list = sorted(proposicoes_dict.items(), reverse=True, key=lambda i: i[1])
+    proposicoes_list = proposicoes_list[:31]
+
+    proposicoes_json = json.dumps(proposicoes_list)
+
+    return render_to_response('genero_tagcloud.html', {'proposicoes': proposicoes_json},
                               context_instance=RequestContext(request))
 
 
