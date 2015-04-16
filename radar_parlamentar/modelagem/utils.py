@@ -113,7 +113,7 @@ class PeriodosRetriever:
         periodos_aceitos = self._filtra_periodos_com_minimo_de_votos(
             periodos_candidatos)
         
-        return periodos_aceitos[::-1] # Reverse list
+        return periodos_aceitos
 
     def _filtra_periodos_com_minimo_de_votos(self, periodos_candidatos):
         return [p for p in periodos_candidatos
