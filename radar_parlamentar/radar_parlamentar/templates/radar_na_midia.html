@@ -22,14 +22,21 @@
     Radar Parlamentar é notícia em todo lugar!
 {% endblock pagedesc %}
 
-{% block breadcrumbs %}    
+{% block breadcrumbs %}
     <li><a href="/index">Home</a> &raquo;</li>
-    <li><a href="/radarnamidia">Radar na Mídia</a></li>	 	
-	
+    <li><a href="/radarnamidia">Radar na Mídia</a></li>
+
 {% endblock breadcrumbs %}
 
 {% block content %}
     <article class="aboutDesc">
+
+        <p>
+        <h3><a href="http://redeglobo.globo.com/como-sera" target="_blank">Como Será? (TV Globo)</a></h3>
+        <h4>Grupo de hackers criou site para acompanhar votações no Senado (03/2015)</h4>
+        Objetivo da iniciativa é fiscalizar o trabalho dos parlamentares brasileiros.
+        <br><a href="http://redeglobo.globo.com/como-sera/noticia/2015/03/grupo-de-hackers-criou-site-para-acompanhar-votacoes-no-senado.html" target="_blank">Matéria completa...</a><br>
+        </p>
 
         <p>
         <h3><a href="http://www.camara.sp.gov.br/index.php?option=com_content&view=article&id=19290&Itemid=366" target="_blank">Apartes (a revista da Câmara Municipal de São Paulo)</a></h3>
@@ -70,7 +77,7 @@
 {% endblock content %}
 
 {% block extrascriptsend %}
-    menuActive('sobre_nos');   
+    menuActive('sobre_nos');
 {% endblock extrascriptsend %}
 
 {% block extrajsend %}
