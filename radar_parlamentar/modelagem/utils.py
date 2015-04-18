@@ -112,6 +112,7 @@ class PeriodosRetriever:
             data_inicial = data_inicial_prox_periodo
         periodos_aceitos = self._filtra_periodos_com_minimo_de_votos(
             periodos_candidatos)
+        
         return periodos_aceitos
 
     def _filtra_periodos_com_minimo_de_votos(self, periodos_candidatos):
