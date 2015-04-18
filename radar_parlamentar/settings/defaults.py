@@ -121,7 +121,7 @@ INSTALLED_APPS = (
     'importadorInterno',
     'testes_integracao',
     'south',
-
+    'radar_parlamentar',
 )
 
 # A sample logging configuration. The only tangible logging

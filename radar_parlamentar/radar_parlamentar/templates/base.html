@@ -296,8 +296,13 @@
             </div><!-- end of .wrap -->
         </div><!-- end of .top -->
         <section class="bottom">
+            
             <div class="contents">
-                <p class="copy">Copyright &copy; 2012 | <a href="http://www.gnu.org/licenses/agpl">Alguns Direitos Reservados: Affero GPL</a> | <a href="https://github.com/leonardofl/radar_parlamentar">Código Fonte deste projeto</a></p>
+                <p class="copy">
+                    Copyright &copy; 2012 | 
+					<a href="http://www.gnu.org/licenses/agpl">Alguns Direitos Reservados: Affero GPL</a> | 
+                    <a href="https://github.com/leonardofl/radar_parlamentar">Código Fonte deste projeto</a> 
+				</p>
                 <ul class="socialLinks">
                     <li class="twitter"><a href="https://twitter.com/#!/RadarParlamento">Twitter</a></li>
                     <li class="facebook"><a href="https://www.facebook.com/RadarParlamentar">Facebook</a></li>
@@ -306,6 +311,11 @@
                     <li class="flickr"><a href="#">Flickr</a></li> -->
 
                 </ul><!-- end of socialLinks -->
+                
+                <p class="version">
+                    {% load versao_radar %}
+                    {% versao_radar %}
+                </p> <!-- end of version -->
             </div><!-- end of .contents -->
         </section><!-- end of .bottom -->
     </footer><!-- end of #footer -->
