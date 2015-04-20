@@ -166,7 +166,7 @@ Considerando que você importou os dados da Convenção Nacional Francesa, acess
 
 
 
-6. Instalação do Elasticsearch
+7. Instalação do Elasticsearch
 -------------------
 
 O Elasticsearch é um sistema de busca full-text em tempo real distribuido, escalável, altamente disponível e open-source.
