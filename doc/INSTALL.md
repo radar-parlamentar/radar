@@ -166,3 +166,25 @@ Considerando que você importou os dados da Convenção Nacional Francesa, acess
 
 
 
+7. Instalação do Elasticsearch
+-------------------
+
+O Elasticsearch é um sistema de busca full-text em tempo real distribuido, escalável, altamente disponível e open-source.
+
+Para instalar, primeiro é necessário baixar e descompactar o Elasticsearch disponível em: http://www.elastic.co/
+
+    $ wget http://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.1.zip
+    $ unzip elasticsearch-1.5.1.zip
+
+Também é necessário instalar o JDK7 do Java
+
+Se o objetivo é iniciar o Elasticsearch apenas em um determinado endereço, é necessário editar o arquivo de configuração. No exemplo abaixo o Elasticsearch é iniciado apenas no endereço local 127.0.0.1.
+
+    $ vim config/elasticsearch.yml
+    descomentar e editar a linha network.bind_host=127.0.0.1
+
+Por fim, iniciar o Elasticsearch
+
+    $ ./bin/elasticsearch -d
+
+checar o endereço http://127.0.0.1:9200 se retorna um json.
