@@ -55,21 +55,27 @@ def genero(request):
 
 
 def genero_termos_nuvem(request):
-    proposicoes = [proposicao_sep.strip().lower() for proposicao in Proposicao.objects.all() for proposicao_sep in proposicao.indexacao.split(',') if len(proposicao_sep) != 0]
-    proposicoes_dict = {}
+    temas = []
+    for proposicao in Proposicao.objects.all():
+        for tema in proposicao.indexacao.split(','):
+            if len(tema) != 0:
+                temas.append(tema.strip().lower())
 
-    for proposicao in proposicoes:
-        if proposicoes_dict.has_key(proposicao):
-            proposicoes_dict[proposicao] = proposicoes_dict[proposicao] + 1
+    temas_dicionario = {}
+
+    for tema in temas:
+        if temas_dicionario.has_key(tema):
+            temas_dicionario[tema] = temas_dicionario[tema] + 1
         else:
-            proposicoes_dict[proposicao] = 1
+            temas_dicionario[tema] = 1
 
-    proposicoes_list = sorted(proposicoes_dict.items(), reverse=True, key=lambda i: i[1])
-    proposicoes_list = proposicoes_list[:31]
+    temas_frequencia = sorted(temas_dicionario.items(), reverse=True, key=lambda i: i[1])
+    temas_frequencia = temas_frequencia[:51]
 
-    proposicoes_json = json.dumps(proposicoes_list)
+    temas_json = json.dumps(temas_frequencia)
 
-    return render_to_response('genero_tagcloud.html', {'proposicoes': proposicoes_json},
+    return render_to_response('genero_tagcloud.html', {'temas': temas_json
+},
                               context_instance=RequestContext(request))
 
 
