@@ -59,7 +59,7 @@ def gerar_json_radar():
     return list_json
 
 def enviar_para_elasticsearch(list_json):
-    host = "ec2-52-10-251-45.us-west-2.compute.amazonaws.com"
+    host = "127.0.0.1"
     port = "9200"
     es = Elasticsearch([{"host":host,"port":port}])
     for item in list_json:
