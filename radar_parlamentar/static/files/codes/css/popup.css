@@ -16,6 +16,7 @@
 
 #popup-content > div + div{ text-align:right; }
 
+#modal-open-button {display:none;}
 #overlay-bg{
 	background-color: #000;
 	height: 100%;
