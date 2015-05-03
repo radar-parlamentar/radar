@@ -22,6 +22,9 @@ from __future__ import unicode_literals
 import modelagem.models as models
 import json
 from elasticsearch import Elasticsearch
+from django.conf import settings
+
+ELASTIC_SEARCH_ADDRESS_DEFAULT = {'host':'localhost','port':'9200'}
 
 class RadarParlamentarIndex():
     def __init__(self,votacao, proposicao,casa_legislativa):
@@ -59,9 +62,12 @@ def gerar_json_radar():
     return list_json
 
 def enviar_para_elasticsearch(list_json):
-    host = "127.0.0.1"
-    port = "9200"
-    es = Elasticsearch([{"host":host,"port":port}])
+    elastic_search_address = None
+    try:
+        elastic_search_address = settings.ELASTIC_SEARCH_ADDRESS
+    except AttributeError:
+        elastic_search_address = ELASTIC_SEARCH_ADDRESS_DEFAULT
+    es = Elasticsearch([elastic_search_address])
     for item in list_json:
         for key in item.keys():
             if item[key] == "":
