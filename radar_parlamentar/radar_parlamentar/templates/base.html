@@ -151,8 +151,7 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        {% block content %}{% csrf_token %}{% endblock content %}
-        
+        {% block content %}{% csrf_token %}{% endblock content %}     
 
         <section class="cols">
             <div class="half">
@@ -232,21 +231,19 @@
                     </div><!-- end of .wrap -->
                 </div><!-- end of .#feedback -->
             </div><!-- end of .half -->
-            <!--div class="half">
+
+            <div class="half">
                 <div class="stHead"><h4>Últimos Tweets</h4></div>
-                <div id="tweets">
-                    <div class="ctrls">
-                        <a href="#" class="prev">Anterior</a>
-                        <a href="#" class="next">Próximo</a>
-                    </div><!-- end of .ctrls -->
-                    <div class="wrap">
-                        <div class="contents">
-                        </div><!-- end of .contents -->
-                    </div><!-- end of .wrap -->
-                </div--><!-- end of .#tweets -->
+                    <div id="tweets">
+                        <a class="twitter-timeline" width="500" height="250" 
+                           href="https://twitter.com/vannessaandrade" data-widget-id="595654612595642370">Tweets by @vannessaandrade
+                        </a>
+                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+                        </script>
+                    </div><!-- end of .tweets -->
+                </div><!-- end of .stHead -->
             </div><!-- end of .half -->
         </section><!-- end of .cols -->
-
     </section><!-- end of #content -->
 
     <footer id="footer">
