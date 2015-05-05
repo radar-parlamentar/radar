@@ -156,11 +156,13 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
-        'file':{
+    'file': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'simple',
-            'filename': 'radar.log'
+            'filename': 'radar.log',
+            'backupCount': 2,
+            'maxBytes': 1024*1024*10, # 10MB
         }
     },
     'loggers': {
