@@ -178,4 +178,4 @@ LOGGING = {
         }
     }
 }
-
+ELASTIC_SEARCH_ADDRESS = {'host':'localhost','port':'9200'}
