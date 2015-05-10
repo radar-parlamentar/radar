@@ -177,3 +177,4 @@ LOGGING = {
     }
 }
 ELASTIC_SEARCH_ADDRESS = {'host':'localhost','port':'9200'}
+ELASTIC_SEARCH_INDEX = "radar_parlamentar"
