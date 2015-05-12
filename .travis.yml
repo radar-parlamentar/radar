@@ -5,8 +5,13 @@ python:
 
 # Dependencias do projeto
 install:
-  # Criar um requirements para o ambiente de testes?
   - pip install -r radar_parlamentar/requirements.txt --use-mirrors
+  - pip install coveralls
 
 # Roda Testes
-script: cd radar_parlamentar/ ; source tests.sh
+script:
+   - cd radar_parlamentar/ ; source tests.sh
+   - coverage run --source=analises manage.py test analises
+
+after_success:
+  - coveralls
