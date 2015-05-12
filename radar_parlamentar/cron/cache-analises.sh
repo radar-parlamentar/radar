@@ -1,18 +1,23 @@
 #!/bin/bash
-# invoca rotinas de análise para que os resultados fiquem guardados no cache
-
-nome_script=`basename "$0"`
-
-echo "Iniciando a execucao do '$nome_script' em '$(date)'"
-inicio=$(date '+%s')
+# Invoca rotinas de análise para que os resultados fiquem guardados no cache
 
 periodicidades=("QUADRIENIO" "BIENIO" "ANO" "SEMESTRE")
 casas_legislativas=("cmsp" "cdep" "sen")
+porta_development=8000
+
+if [[ "$DJANGO_SETTINGS_MODULE" == "settings.development" ]]; then
+	base_url="http://localhost:$porta_development"
+else
+	base_url="http://localhost"
+fi
+
+echo "Iniciando a rotina de cache das analises em '$(date)'"
+inicio=$(date '+%s')
 
 for casa in ${casas_legislativas[*]}; do
     for periodicidade in ${periodicidades[*]}; do
-        url="http://localhost/analises/json_analise/$casa/$periodicidade/"
-        echo "Executando o curl para $url"
+        url="$base_url/analises/json_analise/$casa/$periodicidade/"
+        echo "curl $url"
         curl --fail --silent --show-error $url > /dev/null
         
         rc=$?
@@ -28,5 +33,5 @@ ds=$((dt % 60))
 dm=$(((dt / 60) % 60))
 dh=$((dt / 3600))
 
-echo "Terminando a execucao do '$nome_script' em '$(date)'."
+echo "Finalizando a rotina de cache das analises em '$(date)'."
 printf "Se passaram %dh %02dmin %02ds\n\n" $dh $dm $ds
