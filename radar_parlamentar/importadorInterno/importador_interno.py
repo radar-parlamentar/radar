@@ -40,190 +40,195 @@ def main():
 def deserialize_partido():
     try:
         filepath = os.path.join(MODULE_DIR, 'dados/partido.xml')
-        out = open(filepath, "r")
+        
+        with open(filepath) as out: 
+            data = serializers.deserialize("xml", out)
+            for deserialized_object in data:
+                deserialized_object.save()
+
     except IOError, error:
         logger.error(
             "I/O erro, não há nenhum arquivo de Partido para ser importado: %s"
             % error)
-        return
+        return 
 
-    data = serializers.deserialize("xml", out)
-    for deserialized_object in data:
-        deserialized_object.save()
-
-
+        
 def deserialize_casa_legislativa():
     try:
         filepath = os.path.join(MODULE_DIR, 'dados/casa_legislativa.xml')
-        out = open(filepath, "r")
+        
+        with open(filepath) as out:
+            data = serializers.deserialize("xml", out)
+            for deserialized_object in data:
+                deserialized_object.save()
+
     except IOError, error:
         logger.error(
             "I/O erro, não há nenhum arquivo de CasaLegislativa para ser"
             "importado: %s" % error)
         return
 
-    data = serializers.deserialize("xml", out)
-    for deserialized_object in data:
-        deserialized_object.save()
-
-
 def deserialize_parlamentar():
     try:
         filepath = os.path.join(MODULE_DIR, 'dados/parlamentar.xml')
-        out = open(filepath, "r")
+        
+        with open(filepath) as out:
+            data = serializers.deserialize("xml", out)
+            for deserialized_object in data:
+                deserialized_object.save()
+
     except IOError, error:
         logger.error(
             "I/O erro, não há nenhum arquivo de Parlamentar a ser importado:"
             " %s" % error)
         return
 
-    data = serializers.deserialize("xml", out)
-    for deserialized_object in data:
-        deserialized_object.save()
-
-
 def _deserialize_legislatura():
     try:
         filepath = os.path.join(MODULE_DIR, 'dados/legislatura.xml')
-        out = open(filepath, "r")
+        
+        with open(filepath) as out:
+            data = serializers.deserialize("xml", out)
+            for deserialized_object in data:
+                deserialized_object.save()
+
     except IOError, error:
         logger.error(
             "I/O erro, não há nenhum arquivo de Legislatura a ser importado:"
             " %s" % error)
         return
-
-    data = serializers.deserialize("xml", out)
-    for deserialized_object in data:
-        deserialized_object.save()
-
 
 def _deserialize_proposicao():
     try:
         filepath = os.path.join(MODULE_DIR, 'dados/proposicao.xml')
-        out = open(filepath, "r")
+       
+        with open(filepath) as out:
+            data = serializers.deserialize("xml", out)
+            for deserialized_object in data:
+                deserialized_object.save()
+
     except IOError, error:
         logger.error(
             "I/O erro, não há nenhum arquivo de Proposição para ser importado:"
             " %s" % error)
         return
 
-    data = serializers.deserialize("xml", out)
-    for deserialized_object in data:
-        deserialized_object.save()
-
-
 def _deserialize_votacao():
     try:
         filepath = os.path.join(MODULE_DIR, 'dados/votacao.xml')
-        out = open(filepath, "r")
+        
+        with open(filepath) as out:
+            data = serializers.deserialize("xml", out)
+            for deserialized_object in data:
+                deserialized_object.save()
+
     except IOError, error:
         logger.error(
             "I/O erro, não há nenhum arquivo de Votacação para ser importado:"
             " %s" % error)
-        return
-
-    data = serializers.deserialize("xml", out)
-    for deserialized_object in data:
-        deserialized_object.save()
-
+        return  
 
 def _deserialize_voto():
     try:
         filepath = os.path.join(MODULE_DIR, 'dados/voto.xml')
-        out = open(filepath, "r")
+        
+        with open(filepath) as out:
+            data = serializers.deserialize("xml", out)
+            for deserialized_object in data:
+                deserialized_object.save()
+
     except IOError, error:
         logger.error(
             "I/O erro, não há nenhum arquivo de Voto para ser importado: %s"
             % error)
         return
 
-    data = serializers.deserialize("xml", out)
-    for deserialized_object in data:
-        deserialized_object.save()
-
-
 def _importa_legislatura(nome_casa_curto):
     try:
         filepath = os.path.join(MODULE_DIR, 'dados/legislatura.xml')
-        out = open(filepath, "r")
+        
+        with open(filepath) as out:
+            data = serializers.deserialize("xml", out)
+            for deserialized_object in data:
+                if deserialized_object.object.casa_legislativa.nome_curto == nome_casa_curto:
+                    deserialized_object.save()
+
     except IOError, error:
         logger.error(
             "I/O erro, não há nenhum arquivo de Legislatura a ser importado:"
             " %s" % error)
         return
 
-    data = serializers.deserialize("xml", out)
-    for deserialized_object in data:
-        if deserialized_object.object.casa_legislativa.nome_curto == nome_casa_curto:
-            deserialized_object.save()
-
-
 def _importa_proposicao(nome_casa_curto):
     try:
         filepath = os.path.join(MODULE_DIR, 'dados/proposicao.xml')
-        out = open(filepath, "r")
+        
+        with open(filepath) as out:
+            data = serializers.deserialize("xml", out)
+            for deserialized_object in data:
+                if deserialized_object.object.casa_legislativa.nome_curto == nome_casa_curto:
+                    deserialized_object.save()
+
     except IOError, error:
         logger.error(
             "I/O erro, não há nenhum arquivo de Proposição para ser importado:"
             " %s" % error)
         return
 
-    data = serializers.deserialize("xml", out)
-    for deserialized_object in data:
-        if deserialized_object.object.casa_legislativa.nome_curto == nome_casa_curto:
-            deserialized_object.save()
-
-
 def _importa_votacao(nome_casa_curto):
     try:
         filepath = os.path.join(MODULE_DIR, 'dados/votacao.xml')
-        out = open(filepath, "r")
+        
+        with open(filepath) as out:
+            data = serializers.deserialize("xml", out)
+            for deserialized_object in data:
+                if deserialized_object.object.proposicao.casa_legislativa.nome_curto == nome_casa_curto:
+                    deserialized_object.save()
+
     except IOError, error:
         logger.error(
             "I/O erro, não há nenhum arquivo de Votacação para ser importado:"
             " %s" % error)
         return
 
-    data = serializers.deserialize("xml", out)
-    for deserialized_object in data:
-        if deserialized_object.object.proposicao.casa_legislativa.nome_curto == nome_casa_curto:
-            deserialized_object.save()
-
-
 def _importa_voto(nome_casa_curto):
     try:
         filepath = os.path.join(MODULE_DIR, 'dados/voto.xml')
-        out = open(filepath, "r")
+        
+        with open(filepath) as out:
+            data = serializers.deserialize("xml", out)
+            for deserialized_object in data:
+                if deserialized_object.object.votacao.proposicao.casa_legislativa.nome_curto == nome_casa_curto:
+                    deserialized_object.save()
+
     except IOError, error:
         logger.error(
             "I/O erro, não há nenhum arquivo de Voto para ser importado: %s"
             % error)
         return
 
-    data = serializers.deserialize("xml", out)
-    for deserialized_object in data:
-        if deserialized_object.object.votacao.proposicao.casa_legislativa.nome_curto == nome_casa_curto:
-            deserialized_object.save()
-
-
 def importa_casa_legislativa(nome_casa_curto):
     try:
         filepath = os.path.join(MODULE_DIR, 'dados/casa_legislativa.xml')
-        out = open(filepath, "r")
+        
+        with open(filepath) as out:
+            data = serializers.deserialize("xml", out)
+            for deserialized_object in data:
+                if deserialized_object.object.nome_curto == nome_casa_curto:
+                    models.CasaLegislativa.deleta_casa(nome_casa_curto)
+            deserialized_object.save()
+            deserialize_partido()
+            deserialize_parlamentar()
+            _importa_legislatura(nome_casa_curto)
+            _importa_proposicao(nome_casa_curto)
+            _importa_votacao(nome_casa_curto)
+            _importa_voto(nome_casa_curto)
+
     except IOError, error:
         logger.error(
             "I/O erro, não há nenhum arquivo de CasaLegislativa para ser"
             "importado: %s" % error)
         return
 
-    data = serializers.deserialize("xml", out)
-    for deserialized_object in data:
-        if deserialized_object.object.nome_curto == nome_casa_curto:
-            models.CasaLegislativa.deleta_casa(nome_casa_curto)
-        deserialized_object.save()
-        deserialize_partido()
-        deserialize_parlamentar()
-        _importa_legislatura(nome_casa_curto)
-        _importa_proposicao(nome_casa_curto)
-        _importa_votacao(nome_casa_curto)
-        _importa_voto(nome_casa_curto)
+    
+       
