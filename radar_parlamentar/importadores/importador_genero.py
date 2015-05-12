@@ -13,7 +13,7 @@ import logging
 
 logger = logging.getLogger("radar")
 
-def read(url):
+def ler_url(url):
     text = ''
     try:
         request = urllib2.Request(url)
@@ -24,9 +24,9 @@ def read(url):
         logger.error("urllib2.HTTPError: %s" % error)
     return text
 
-def toXml(url):
+def abrir_xml(url):
     try:
-        xml = read(url)
+        xml = ler_url(url)
         tree = etree.fromstring(xml)
     except etree.ParseError, error:
         logger.error("etree.ParseError: %s" % error)
@@ -60,58 +60,61 @@ def _faz_download(url):
 		
 	return text
 
-def main():
-    '''
-    tree = toXml('http://legis.senado.leg.br/dadosabertos/senador/lista/legislatura/52/54')
-    lista_parlamentares = tree[1][0]
+def insere_genero_parlamentares_senado():
+    URL_DADOS_SENADO = 'http://legis.senado.leg.br/dadosabertos/senador/lista/legislatura/52/54'
+    xml = abrir_xml(URL_DADOS_SENADO)
     
-    total_parlamentares = len(lista_parlamentares)
+    lista_parlamentares_xml = xml[1][0]
     
-    for contador in range(0, total_parlamentares):
+    for parlamentar_xml in lista_parlamentares_xml:
+        nome_parlamentar_xml = parlamentar_xml.find('NomeParlamentar').text.encode('utf-8')
+        sexo_parlamentar_xml = parlamentar_xml.find('SexoParlamentar').text.encode('utf-8')
         
-        parlamentar = lista_parlamentares[contador]
-    
-        nome_parlamentar = parlamentar.find('NomeParlamentar').text.encode('utf-8')
-        sexo_parlamentar = parlamentar.find('SexoParlamentar').text.encode('utf-8')
-        
-        if(sexo_parlamentar == 'Masculino'):
-            sexo_parlamentar = 'M'
+        if(sexo_parlamentar_xml == 'Masculino'):
+            sexo_parlamentar_xml = 'M'
         else:
-            sexo_parlamentar = 'F'
+            sexo_parlamentar_xml = 'F'
         
-        try:
-            parlamentar_salvo_banco = models.Parlamentar.objects.get(nome=nome_parlamentar)
-        except MultipleObjectsReturned:
-            parlamentar_salvo_banco = models.Parlamentar.objects.filter(nome=nome_parlamentar)[0]
-        except ObjectDoesNotExist:
-            logger.info("Parlamentar %s nao existente!" % nome_parlamentar)
+        lista_parlamentar_banco = models.Parlamentar.objects.filter(nome=nome_parlamentar_xml)
         
-        if(parlamentar_salvo_banco is not None):
-            parlamentar_salvo_banco.genero = sexo_parlamentar
-            parlamentar_salvo_banco.save()
-        '''
-        
+        for parlamentar_banco in lista_parlamentar_banco:
+            if((parlamentar_banco.genero == '') or (parlamentar_banco.genero is None)):
+                parlamentar_banco.genero = sexo_parlamentar_xml
+                parlamentar_banco.save()
+                
+                string_log = 'Genero de {0} alterado com sucesso!'.decode().encode('utf-8')
+                string_log = string_log.format(nome_parlamentar_xml)
+                logger.debug(string_log)
+                
+def insere_genero_parlamentares_camara():
     URL_DADOS_CDEP = 'http://www.camara.leg.br/internet/Deputado/DeputadosXML.zip'
     xml = abrir_xml_zipado(url=URL_DADOS_CDEP)
     
     lista_parlamentares_xml = xml[0]
 
     for parlamentar_xml in lista_parlamentares_xml:
-        nome_parlamentar_lista = parlamentar_xml.find('nomeParlamentar').text
-        nome_parlamentar_lista = unicode(nome_parlamentar_lista).title().encode('utf-8')
+        nome_parlamentar_xml = parlamentar_xml.find('nomeParlamentar').text
+        nome_parlamentar_xml = unicode(nome_parlamentar_xml).title().encode('utf-8')
         
-        sexo_parlamentar_lista = parlamentar_xml.find('SEXO').text
-    
-        lista_parlamentar_banco = models.Parlamentar.objects.filter(nome=nome_parlamentar_lista)
+        sexo_parlamentar_xml = parlamentar_xml.find('SEXO').text
+        
+        lista_parlamentar_banco = models.Parlamentar.objects.filter(nome=nome_parlamentar_xml)
         
         for parlamentar_banco in lista_parlamentar_banco:
             if((parlamentar_banco.genero == '') or (parlamentar_banco.genero is None)):
-                parlamentar_banco.genero = sexo_parlamentar_lista
+                parlamentar_banco.genero = sexo_parlamentar_xml
                 parlamentar_banco.save()
                 
-                string_log = 'Genero de {0} adicionado com sucesso!'.decode().encode('utf-8')
-                string_log = string_log.format(nome_parlamentar_lista)
-                logger.info(string_log)
+                string_log = 'Genero de {0} alterado com sucesso!'.decode().encode('utf-8')
+                string_log = string_log.format(nome_parlamentar_xml)
+                logger.debug(string_log)
             
+def main():
+    insere_genero_parlamentares_senado()
+    logger.info('Generos dos parlamentares do Senado alterados com sucesso!')
+    
+    insere_genero_parlamentares_camara()
+    logger.info('Generos dos parlamentares da Camara alterados com sucesso!')
+    
 if __name__ == '__main__':
     main()
