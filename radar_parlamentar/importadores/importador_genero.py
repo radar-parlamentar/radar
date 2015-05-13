@@ -36,7 +36,7 @@ def abrir_xml(url):
 def abrir_xml_zipado(url=None):
 	xml = None
 	try:
-		xml_zip_text = _faz_download(url)
+		xml_zip_text = _faz_download_arquivo_zipado(url)
 		
 		xml_zip_file = StringIO()
 		xml_zip_file.write(xml_zip_text)
@@ -51,7 +51,7 @@ def abrir_xml_zipado(url=None):
 	
 	return xml
 
-def _faz_download(url):
+def _faz_download_arquivo_zipado(url):
 	text = ''
 	try:
 		text = urllib2.urlopen(url).read()
@@ -67,6 +67,7 @@ def insere_genero_parlamentares_senado():
     lista_parlamentares_xml = xml[1][0]
     
     for parlamentar_xml in lista_parlamentares_xml:
+        # Buscando conteúdos das tags NomeParlamentar e SexoParlamentar. 
         nome_parlamentar_xml = parlamentar_xml.find('NomeParlamentar').text.encode('utf-8')
         sexo_parlamentar_xml = parlamentar_xml.find('SexoParlamentar').text.encode('utf-8')
         
@@ -93,10 +94,12 @@ def insere_genero_parlamentares_camara():
     lista_parlamentares_xml = xml[0]
 
     for parlamentar_xml in lista_parlamentares_xml:
+        # Buscando conteúdos das tags nomeParlamentar e SEXO.
         nome_parlamentar_xml = parlamentar_xml.find('nomeParlamentar').text
-        nome_parlamentar_xml = unicode(nome_parlamentar_xml).title().encode('utf-8')
-        
         sexo_parlamentar_xml = parlamentar_xml.find('SEXO').text
+        
+        # Transformando nome do parlamentar no formato title do Python.
+        nome_parlamentar_xml = unicode(nome_parlamentar_xml).title().encode('utf-8')
         
         lista_parlamentar_banco = models.Parlamentar.objects.filter(nome=nome_parlamentar_xml)
         
