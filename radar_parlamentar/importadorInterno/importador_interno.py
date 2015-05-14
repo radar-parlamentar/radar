@@ -210,25 +210,22 @@ def _importa_voto(nome_casa_curto):
 def importa_casa_legislativa(nome_casa_curto):
     try:
         filepath = os.path.join(MODULE_DIR, 'dados/casa_legislativa.xml')
-        
+    
         with open(filepath) as out:
             data = serializers.deserialize("xml", out)
             for deserialized_object in data:
                 if deserialized_object.object.nome_curto == nome_casa_curto:
                     models.CasaLegislativa.deleta_casa(nome_casa_curto)
-            deserialized_object.save()
-            deserialize_partido()
-            deserialize_parlamentar()
-            _importa_legislatura(nome_casa_curto)
-            _importa_proposicao(nome_casa_curto)
-            _importa_votacao(nome_casa_curto)
-            _importa_voto(nome_casa_curto)
+                deserialized_object.save()
+                deserialize_partido()
+                deserialize_parlamentar()
+                _importa_legislatura(nome_casa_curto)
+                _importa_proposicao(nome_casa_curto)
+                _importa_votacao(nome_casa_curto)
+                _importa_voto(nome_casa_curto)
 
     except IOError, error:
         logger.error(
             "I/O erro, não há nenhum arquivo de CasaLegislativa para ser"
             "importado: %s" % error)
         return
-
-    
-       
