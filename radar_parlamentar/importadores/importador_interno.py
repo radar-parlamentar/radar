@@ -26,11 +26,10 @@ def deserialize_partido():
 def deserialize_casa_legislativa():
     print("\nIsso aqui eh :" + MODULE_DIR + "\n")
     filepath = os.path.join(MODULE_DIR, 'dados/casa_legislativa.xml')
-    out = open(filepath, "r")
-
-    for casa_legislativa in serializers.deserialize("xml", out):
-        casa_legislativa.save()
-
+   
+    with open(filepath) as out: 
+        for casa_legislativa in serializers.deserialize("xml", out):
+            casa_legislativa.save()
 
 def deserialize_parlamentar():
     XMLSerializer = serializers.get_serializer("xml")

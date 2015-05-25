@@ -151,8 +151,7 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        {% block content %}{% csrf_token %}{% endblock content %}
-        
+        {% block content %}{% csrf_token %}{% endblock content %}     
 
         <section class="cols">
             <div class="half">
@@ -172,7 +171,7 @@
                                         </p>
                                     </blockquote>
                                     <cite>
-                                        Lei nº 12527/2011
+                                        <a href="http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2011/Lei/L12527.htm" target="_blank">Lei nº 12.527/2011</a>
                                     </cite>
                                 </li>
                                 <li>
@@ -182,7 +181,7 @@
                                         </p>
                                     </blockquote>
                                     <cite>
-                                        Lei nº 12527/2011
+                                        <a href="http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2011/Lei/L12527.htm" target="_blank">Lei nº 12.527/2011</a>
                                     </cite>
                                 </li>
                 <li>
@@ -192,7 +191,7 @@
                                         </p>
                                     </blockquote>
                                     <cite>
-                                        Lei nº 12527/2011
+                                        <a href="http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2011/Lei/L12527.htm" target="_blank">Lei nº 12.527/2011</a>
                                     </cite>
                                 </li>
                 <li>
@@ -202,7 +201,7 @@
                                         </p>
                                     </blockquote>
                                     <cite>
-                                        Lei nº 12527/2011
+                                        <a href="http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2011/Lei/L12527.htm" target="_blank">Lei nº 12.527/2011</a>
                                     </cite>
                                 </li>
                                 <li>
@@ -212,7 +211,7 @@
                                         </p>
                                     </blockquote>
                                     <cite>
-                                        <a href="http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2011/Lei/L12527.htm">LEI Nº 12.527</a>
+                                        <a href="http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2011/Lei/L12527.htm" target="_blank">Lei nº 12.527/2011</a>
                                     </cite>
                                 </li>
                                 <li>
@@ -222,7 +221,7 @@
                                         </p>
                                     </blockquote>
                                     <cite>
-                                        Lei nº 12527/2011
+                                        <a href="http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2011/Lei/L12527.htm" target="_blank">Lei nº 12.527/2011</a>
                                     </cite>
                                 </li>
 
@@ -231,22 +230,29 @@
                         </div><!-- end of .contents -->
                     </div><!-- end of .wrap -->
                 </div><!-- end of .#feedback -->
+
+                <div id="linkLei">
+                    <p>
+                        Texto completo da <a href="http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2011/Lei/L12527.htm" target="_blank">Lei de Acesso à Informação nº 12.527/2011</a>.
+                        <br>Podendo ser encontrada também no portal <a href="http://www.lexml.gov.br/urn/urn:lex:br:federal:lei:2011-11-18;12527" target="_blank">LexML</a>.
+
+                    </p>
+                </div>
             </div><!-- end of .half -->
-            <!--div class="half">
-                <div class="stHead"><h4>Últimos Tweets</h4></div>
-                <div id="tweets">
-                    <div class="ctrls">
-                        <a href="#" class="prev">Anterior</a>
-                        <a href="#" class="next">Próximo</a>
-                    </div><!-- end of .ctrls -->
-                    <div class="wrap">
-                        <div class="contents">
-                        </div><!-- end of .contents -->
-                    </div><!-- end of .wrap -->
-                </div--><!-- end of .#tweets -->
+
+            <div class="half">
+                <div class="stHead">
+					<h4>Últimos Tweets</h4>
+				</div>
+				<div id="tweets">
+					<a class="twitter-timeline" width="500" height="250"
+					   href="https://twitter.com/RadarParlamento" data-widget-id="596339685305262081">Tweets de @RadarParlamento
+					</a>
+					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+					</script>
+				</div><!-- end of .tweets -->
             </div><!-- end of .half -->
         </section><!-- end of .cols -->
-
     </section><!-- end of #content -->
 
     <footer id="footer">
