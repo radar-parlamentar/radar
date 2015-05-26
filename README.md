@@ -13,6 +13,8 @@ Site em produção: [Radar Parlamentar](http://radarparlamentar.polignu.org/ "Ra
 
 Wiki: https://github.com/radar-parlamentar/radar/wiki
 
+Servidor de integração contínua: http://200.144.254.67:60581/
+
 Licença do projeto: *AGPL v3*
 
 Seja bem vindo,
