@@ -7,6 +7,7 @@ from django.contrib.staticfiles import finders
 import os
 import datetime
 from modelagem.models import Proposicao
+from modelagem.models import Parlamentar
 import json
 
 def index(request):
@@ -56,7 +57,8 @@ def genero(request):
 
 def genero_termos_nuvem(request):
     temas = []
-    for proposicao in Proposicao.objects.all():
+    for parlamentar_mulher in Parlamentar.objects.filter(genero = 'F'): 
+      for proposicao in Proposicao.objects.filter(autor_principal = parlamentar_mulher.nome):    
         for tema in proposicao.indexacao.split(','):
             if len(tema) != 0:
                 temas.append(tema.strip().lower())
