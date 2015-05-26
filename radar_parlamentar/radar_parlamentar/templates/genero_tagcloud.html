@@ -78,8 +78,8 @@
         var fill = d3.scale.category20();
         {% autoescape off %}
       d3.layout.cloud().size([width, height])
-          .words({{ temas }}.map(function(d) {
-            return {text: d[0], size: 17 * d[1]};
+          .words({{ temas_mulher }}.map(function(d) {
+            return {text: d[0], size: 19 * d[1]};
           }))
           .padding(5)
           .rotate(function() { return ~~(Math.random() * 2) * 90; })
@@ -115,7 +115,7 @@
         var fill = d3.scale.category20();
         {% autoescape off %}
       d3.layout.cloud().size([width, height])
-          .words({{ temas }}.map(function(d) {
+          .words({{ temas_homem }}.map(function(d) {
             return {text: d[0], size: 5 * d[1]};
           }))
           .padding(5)

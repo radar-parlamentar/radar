@@ -62,7 +62,7 @@ def genero_termos_nuvem(request):
   temas_frequencia_homem = definir_palavras_homem(request)
   temas_json_homem = json.dumps(temas_frequencia_homem)
 
-  return render_to_response('genero_tagcloud.html', {'temas': temas_json_mulher},
+  return render_to_response('genero_tagcloud.html', {'temas_mulher': temas_json_mulher,'temas_homem': temas_json_homem},
                               context_instance=RequestContext(request))
 
 def definir_palavras_mulher(request):
