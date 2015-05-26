@@ -56,12 +56,13 @@ def genero(request):
 
 
 def genero_termos_nuvem(request):
-  temas_frequencia = definir_palavras_mulher(request)
+  temas_frequencia_mulher = definir_palavras_mulher(request)
+  temas_json_mulher = json.dumps(temas_frequencia_mulher)
 
-  temas_json = json.dumps(temas_frequencia)
+  temas_frequencia_homem = definir_palavras_homem(request)
+  temas_json_homem = json.dumps(temas_frequencia_homem)
 
-  return render_to_response('genero_tagcloud.html', {'temas': temas_json
-},
+  return render_to_response('genero_tagcloud.html', {'temas': temas_json_mulher},
                               context_instance=RequestContext(request))
 
 def definir_palavras_mulher(request):
@@ -85,9 +86,7 @@ def definir_palavras_mulher(request):
 
     return temas_frequencia
 
-''' começou 
-
-def genero_termos_nuvem_homem(request):
+def definir_palavras_homem(request):
     temas = []
     for parlamentar_homem in Parlamentar.objects.filter(genero = 'M'): 
       for proposicao in Proposicao.objects.filter(autor_principal = parlamentar_homem.nome):    
@@ -106,14 +105,8 @@ def genero_termos_nuvem_homem(request):
     temas_frequencia = sorted(temas_dicionario.items(), reverse=True, key=lambda i: i[1])
     temas_frequencia = temas_frequencia[:51]
 
-    temas_json = json.dumps(temas_frequencia)
+    return temas_frequencia
 
-    return render_to_response('genero_tagcloud.html', {'temas_homem': temas_json
-},
-                              context_instance=RequestContext(request))
-
-
-'''
 def genero_matriz(request):
     return render_to_response('genero_matriz.html', {},
                               context_instance=RequestContext(request))
