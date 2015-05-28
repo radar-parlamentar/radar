@@ -4,10 +4,9 @@ from __future__ import unicode_literals
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.contrib.staticfiles import finders
+from analises.genero import Genero
 import os
 import datetime
-from modelagem.models import Proposicao
-from modelagem.models import Parlamentar
 import json
 
 def index(request):
@@ -56,56 +55,16 @@ def genero(request):
 
 
 def genero_termos_nuvem(request):
-  temas_frequencia_mulher = definir_palavras_mulher(request)
+  genero = Genero()
+
+  temas_frequencia_mulher = genero.definir_palavras_mulher()
   temas_json_mulher = json.dumps(temas_frequencia_mulher)
 
-  temas_frequencia_homem = definir_palavras_homem(request)
+  temas_frequencia_homem = genero.definir_palavras_homem()
   temas_json_homem = json.dumps(temas_frequencia_homem)
 
   return render_to_response('genero_tagcloud.html', {'temas_mulher': temas_json_mulher,'temas_homem': temas_json_homem},
                               context_instance=RequestContext(request))
-
-def definir_palavras_mulher(request):
-    temas = []
-    for parlamentar_mulher in Parlamentar.objects.filter(genero = 'F'): 
-      for proposicao in Proposicao.objects.filter(autor_principal = parlamentar_mulher.nome):    
-        for tema in proposicao.indexacao.split(','):
-            if len(tema) != 0:
-                temas.append(tema.strip().lower())
-
-    temas_dicionario = {}
-
-    for tema in temas:
-        if temas_dicionario.has_key(tema):
-            temas_dicionario[tema] = temas_dicionario[tema] + 1
-        else:
-            temas_dicionario[tema] = 1
-
-    temas_frequencia = sorted(temas_dicionario.items(), reverse=True, key=lambda i: i[1])
-    temas_frequencia = temas_frequencia[:51]
-
-    return temas_frequencia
-
-def definir_palavras_homem(request):
-    temas = []
-    for parlamentar_homem in Parlamentar.objects.filter(genero = 'M'): 
-      for proposicao in Proposicao.objects.filter(autor_principal = parlamentar_homem.nome):    
-        for tema in proposicao.indexacao.split(','):
-            if len(tema) != 0:
-                temas.append(tema.strip().lower())
-
-    temas_dicionario = {}
-
-    for tema in temas:
-        if temas_dicionario.has_key(tema):
-            temas_dicionario[tema] = temas_dicionario[tema] + 1
-        else:
-            temas_dicionario[tema] = 1
-
-    temas_frequencia = sorted(temas_dicionario.items(), reverse=True, key=lambda i: i[1])
-    temas_frequencia = temas_frequencia[:51]
-
-    return temas_frequencia
 
 def genero_matriz(request):
     return render_to_response('genero_matriz.html', {},
