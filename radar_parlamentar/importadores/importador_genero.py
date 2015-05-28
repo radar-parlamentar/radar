@@ -13,26 +13,6 @@ import logging
 
 logger = logging.getLogger("radar")
 
-def ler_url(url):
-    text = ''
-    try:
-        request = urllib2.Request(url)
-        text = urllib2.urlopen(request).read()
-    except urllib2.URLError, error:
-        logger.error("urllib2.URLError: %s" % error)
-    except urllib2.HTTPError:
-        logger.error("urllib2.HTTPError: %s" % error)
-    return text
-
-def abrir_xml(url):
-    try:
-        xml = ler_url(url)
-        tree = etree.fromstring(xml)
-    except etree.ParseError, error:
-        logger.error("etree.ParseError: %s" % error)
-        return None
-    return tree
-
 def abrir_xml_zipado(url=None):
 	xml = None
 	try:
@@ -60,33 +40,6 @@ def _faz_download_arquivo_zipado(url):
 		
 	return text
 
-def insere_genero_parlamentares_senado():
-    URL_DADOS_SENADO = 'http://legis.senado.leg.br/dadosabertos/senador/lista/legislatura/52/54'
-    xml = abrir_xml(URL_DADOS_SENADO)
-    
-    lista_parlamentares_xml = xml[1][0]
-    
-    for parlamentar_xml in lista_parlamentares_xml:
-        # Buscando conteúdos das tags NomeParlamentar e SexoParlamentar. 
-        nome_parlamentar_xml = parlamentar_xml.find('NomeParlamentar').text.encode('utf-8')
-        sexo_parlamentar_xml = parlamentar_xml.find('SexoParlamentar').text.encode('utf-8')
-        
-        if(sexo_parlamentar_xml == 'Masculino'):
-            sexo_parlamentar_xml = 'M'
-        else:
-            sexo_parlamentar_xml = 'F'
-        
-        lista_parlamentar_banco = models.Parlamentar.objects.filter(nome=nome_parlamentar_xml)
-        
-        for parlamentar_banco in lista_parlamentar_banco:
-            if((parlamentar_banco.genero == '') or (parlamentar_banco.genero is None)):
-                parlamentar_banco.genero = sexo_parlamentar_xml
-                parlamentar_banco.save()
-                
-                string_log = 'Genero de {0} alterado com sucesso!'.decode().encode('utf-8')
-                string_log = string_log.format(nome_parlamentar_xml)
-                logger.debug(string_log)
-                
 def insere_genero_parlamentares_camara():
     URL_DADOS_CDEP = 'http://www.camara.leg.br/internet/Deputado/DeputadosXML.zip'
     xml = abrir_xml_zipado(url=URL_DADOS_CDEP)
@@ -113,9 +66,6 @@ def insere_genero_parlamentares_camara():
                 logger.debug(string_log)
             
 def main():
-    insere_genero_parlamentares_senado()
-    logger.info('Generos dos parlamentares do Senado alterados com sucesso!')
-    
     insere_genero_parlamentares_camara()
     logger.info('Generos dos parlamentares da Camara alterados com sucesso!')
     

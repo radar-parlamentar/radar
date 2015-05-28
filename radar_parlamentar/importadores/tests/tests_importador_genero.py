@@ -15,24 +15,6 @@ class ImportadorGeneroTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        # Criando dados fictícios para parlamentares do Senado
-        cls.parlamentar_senado_test_1 = Parlamentar(
-            id_parlamentar='', nome='Acir Gurgacz', genero='')
-        cls.parlamentar_senado_test_2= Parlamentar(
-            id_parlamentar='', nome='Fernando Ferro', genero='')
-        cls.parlamentar_senado_test_3 = Parlamentar(
-            id_parlamentar='', nome='Magno Malta', genero='')
-        cls.parlamentar_senado_test_4 = Parlamentar(
-            id_parlamentar='', nome='Íris de Araújo', genero='')
-        cls.parlamentar_senado_test_5 = Parlamentar(
-            id_parlamentar='', nome='Mario da Freita', genero='')
-
-        cls.parlamentar_senado_test_1.save()
-        cls.parlamentar_senado_test_2.save()
-        cls.parlamentar_senado_test_3.save()
-        cls.parlamentar_senado_test_4.save()
-        cls.parlamentar_senado_test_5.save()
-        
         # Criando dados fictícios para parlamentares da Camara
         cls.parlamentar_camara_test_1 = Parlamentar(
             id_parlamentar='', nome='Abelardo Camarinha', genero='')
@@ -55,31 +37,6 @@ class ImportadorGeneroTest(TestCase):
     def tearDownClass(cls):
         from util_test import flush_db
         flush_db(cls)
-
-    def test_parlamentares_senado_com_generos_alterados(self):
-        importador_genero.insere_genero_parlamentares_senado()
-        
-        # Resgatando parlamentares no banco de dados.
-        parlamentar_banco_test_1 = Parlamentar.objects.get(nome='Acir Gurgacz')
-        parlamentar_banco_test_2 = Parlamentar.objects.get(nome='Magno Malta')
-        parlamentar_banco_test_3 = Parlamentar.objects.get(nome='Íris de Araújo')
-        
-        
-        # Verificando parlamentares com generos alterados
-        self.assertEquals('M', parlamentar_banco_test_1.genero)
-        self.assertEquals('M', parlamentar_banco_test_2.genero)
-        self.assertEquals('F', parlamentar_banco_test_3.genero)
-    
-    def test_parlamentares_senado_sem_generos_alterados(self):
-        importador_genero.insere_genero_parlamentares_senado()
-    
-        # Resgatando parlamentares no banco de dados.
-        parlamentar_banco_test_1 = Parlamentar.objects.get(nome='Fernando Ferro')
-        parlamentar_banco_test_2 = Parlamentar.objects.get(nome='Mario da Freita')
-        
-        # Verificando parlamentares sem generos alterados
-        self.assertEquals('', parlamentar_banco_test_1.genero)
-        self.assertEquals('', parlamentar_banco_test_2.genero)
     
     def test_parlamentares_camara_com_generos_alterados(self):
         importador_genero.insere_genero_parlamentares_camara()
