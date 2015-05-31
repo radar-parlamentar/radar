@@ -34,7 +34,7 @@
 # ss = dia_da_semana(0-6)
 
 SHELL=/bin/bash
-0 1 * * * clear-cache.sh; source cache-analises.sh >> /var/log/radar/radar-cron.log 2>>&1
+0 1 * * * { $SHELL clear-cache.sh && $SHELL cache-analises.sh; } >> /var/log/radar/radar-cron.log 2>&1
 0 4 * * 0 source ~/.profile; source dump-radar.sh >> /var/log/radar/radar-cron.log 2>>&1
 
 
