@@ -1,7 +1,6 @@
 # coding=utf8
 
-# Copyright (C) 2012, Leonardo Leite, Saulo Trento, Diego Rabatone,
-# Guilherme Januário
+# Copyright (C) 2015, Vanessa Soares, Thaiane Braga
 #
 # This file is part of Radar Parlamentar.
 #
