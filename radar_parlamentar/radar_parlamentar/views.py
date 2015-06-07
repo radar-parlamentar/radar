@@ -25,6 +25,9 @@ from analises.genero import Genero
 import os
 import datetime
 import json
+import logging
+
+logger = logging.getLogger("radar")
 
 def index(request):
     return render_to_response('index.html', {},
@@ -75,6 +78,7 @@ def genero_termos_nuvem(request):
   genero = Genero()
 
   temas_frequencia_mulher = genero.definir_palavras('F')
+ # logger.info("Temasdamulher %s" % (temas_frequencia_mulher))
   temas_json_mulher = json.dumps(temas_frequencia_mulher)
 
   temas_frequencia_homem = genero.definir_palavras('M')
