@@ -23,32 +23,10 @@ from modelagem.models import Parlamentar
 class Genero:
 
 	@staticmethod
-	def definir_palavras_mulher():
+	def definir_palavras(genero):
 	    temas = []
-	    for parlamentar_mulher in Parlamentar.objects.filter(genero = 'F'): 
-	      for proposicao in Proposicao.objects.filter(autor_principal = parlamentar_mulher.nome):    
-	        for tema in proposicao.indexacao.split(','):
-	            if len(tema) != 0:
-	                temas.append(tema.strip().lower())
-
-	    temas_dicionario = {}
-
-	    for tema in temas:
-	        if temas_dicionario.has_key(tema):
-	            temas_dicionario[tema] = temas_dicionario[tema] + 1
-	        else:
-	            temas_dicionario[tema] = 1
-
-	    temas_frequencia = sorted(temas_dicionario.items(), reverse=True, key=lambda i: i[1])
-	    temas_frequencia = temas_frequencia[:51]
-
-	    return temas_frequencia
-
-	@staticmethod
-	def definir_palavras_homem():
-	    temas = []
-	    for parlamentar_homem in Parlamentar.objects.filter(genero = 'M'): 
-	      for proposicao in Proposicao.objects.filter(autor_principal = parlamentar_homem.nome):    
+	    for parlamentar in Parlamentar.objects.filter(genero = genero): 
+	      for proposicao in Proposicao.objects.filter(autor_principal = parlamentar.nome):    
 	        for tema in proposicao.indexacao.split(','):
 	            if len(tema) != 0:
 	                temas.append(tema.strip().lower())
