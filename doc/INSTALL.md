@@ -6,7 +6,7 @@ Passo a Passo da instalação
     
 A primeira coisa que deve ser feita é o clone do projeto no *Github*. Para isso basta fazer:
 
-        $ git clone https://github.com/leonardofl/radar_parlamentar.git
+        $ git clone https://github.com/radar-parlamentar/radar.git
 
 2. Configuração do ambiente
 ------------------------------
