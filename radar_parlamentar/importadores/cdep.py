@@ -418,7 +418,7 @@ class ImportadorCamara:
             votacao.data = date_time
             votacao.proposicao = prop
             votacao.save()
-            if votacao_xml.find('votos'):
+            if votacao_xml.find('votos') is not None:
                 for voto_xml in votacao_xml.find('votos'):
                     self._voto_from_xml(voto_xml, votacao)
             votacao.save()
