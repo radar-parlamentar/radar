@@ -105,7 +105,7 @@
 }
 
 .year.label {
-    font: 500 50px "Helvetica Neue";
+    font: 500 40px "Arial";
     fill: #bbb;
     transition: all 0.5s;
     -moz-transition: all 0.5s;
