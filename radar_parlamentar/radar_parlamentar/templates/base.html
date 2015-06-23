@@ -69,6 +69,20 @@
 </script>
 </head>
 <body>
+
+    <script type="text/javascript">
+    window.onload = function() {
+      mobile_drop();
+    };
+    function mobile_drop() {
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            document.getElementById("genero").href = "javascript:void(0)";
+        } else {
+            document.getElementById("genero").href = "/genero/";
+        }
+    }
+    </script>
+
     <header id="header" {%block headerAttr %} {% endblock headerAttr %}>
         <a href="/sim-voto-aberto"><img alt="Voto aberto: Eu apoio!" src="/static/assets/votoaberto/vaberto_branco.svg" style="position: absolute; top: 12px; right: 0; border: 0; z-index:1000;"></a>
         <div class="bar"></div><!-- the top border -->
@@ -79,11 +93,13 @@
                         <img src="/static/assets/logo_radar.svg" alt="Logo Radar Parlamentar" style="width: 150px; height: 110px; position:absolute; top:4px;">
                     </a>
                 </div>
-                <nav>
+
+                <!-- Navigation Bar -->
+                <nav id="nav" role="navigation">
                     <ul id="menu">
-<!--                        <li id="botao_home"><a href="/index/">Home</a></li> -->
+                        <!-- Análises -->
                         <li id="analises">
-                            <a style="cursor: default;">Gráficos</a>
+                            <a style="cursor: default;" href="javascript:void(0)">Gráficos</a>
                             <ul>
                                 <li id="botao_cmsp"><a href="/analises/analise/cmsp/">Câmara Municipal de São Paulo</a></li>
                                 <li id="botao_cpd"><a href="/analises/analise/cdep/">Câmara dos Deputados</a></li>
@@ -91,8 +107,10 @@
                                 <li><a href="/importadores">Acrescenta mais uma!</a></li>
                             </ul>
                         </li>
-                       	<li id="genero">
-                            <a id="genero" href="/genero/">Gênero</a>
+
+                        <!-- Gênero -->
+                       	<li id="generos">
+                            <a id="genero" href="javascript:void(0)">Gênero</a>
                             <ul>
                                 <li id="perfil_legis"><a href="/genero/perfil/legislaturas/">Perfil Legislaturas</a></li>
                                 <li id="perfil_part"><a href="/genero/perfil/partido/">Perfil Partido</a></li>
@@ -101,22 +119,33 @@
                                 <li id="tematicas_matriz"><a href="/genero/tematica/partido/">Análise: Temáticas Partido</a></li>
                                 <li id="tematicas_treemap"><a href="/genero/tematica/treemap/">Análise: Temáticas dos Gêneros</a></li>
                             </ul>
+                        </li>
+
+                        <!-- Dados -->
                         <li id="dados">
                             <a href="/dados/">Dados</a>
                         </li>
+
+                        <!-- Origem -->
                         <li id="origem">
                             <a href="/origem/">História do Projeto</a>
                         </li>
-                        <li id="botao_votoaberto"><a href="/sim-voto-aberto/">Voto Aberto</a></li>
-                        <li id="sobre_nos">				
-			    <a style="cursor: default;">Sobre Nós</a>
-			    <ul>
-				<li><a href="/ogrupo">O Grupo</a></li>
-				<li><a href="/premiacoes">Premiações</a></li>	
-                <li><a href="/radarnamidia">Radar na Mídia</a></li>		
-			    </ul>
-			</li>
-                    </ul><!-- end of #menu -->
+
+                        <!-- Voto Aberto -->
+                        <li id="botao_votoaberto">
+                            <a href="/sim-voto-aberto/">Voto Aberto</a>
+                        </li>
+
+                        <!-- Sobre Nós -->
+                        <li id="sobre_nos">
+                            <a style="cursor: default;">Sobre Nós</a>
+                            <ul>
+                                <li><a href="/ogrupo">O Grupo</a></li>
+                                <li><a href="/premiacoes">Premiações</a></li>
+                                <li><a href="/radarnamidia">Radar na Mídia</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </nav>
             </div><!-- end of .wrap -->
         </section><!-- end of #nav -->
