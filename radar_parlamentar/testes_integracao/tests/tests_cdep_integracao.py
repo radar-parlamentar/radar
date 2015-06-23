@@ -82,7 +82,7 @@ class CamarawsTest(TestCase):
 
     def test_listar_proposicoes_que_nao_existem(self):
         sigla = 'PEC'
-        ano = '3013'
+        ano = '2013'
         try:
             self.camaraws.listar_proposicoes(sigla, ano)
         except ValueError as e:
