@@ -88,7 +88,8 @@ def conectar_em_elastic_search():
 def remover_indice(nome_indice):
     es = conectar_em_elastic_search()
     client_indice = IndicesClient(es)
-    client_indice.delete(nome_indice)
+    if client_indice.exists(index=[nome_indice]):
+        client_indice.delete(nome_indice)
 
 """
     envia o json do modelo do radar para o elasticSearch
