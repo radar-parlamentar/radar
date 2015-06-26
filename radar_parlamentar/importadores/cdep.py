@@ -179,7 +179,7 @@ class Camaraws:
         Retorna:
         ElementTree correspondente ao XML retornado pelo web service
         Exemplo:
-        http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=PL&numero=&ano=2011&datApresentacaoIni=14/11/2011&datApresentacaoFim=16/11/2011&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=
+        http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=PL&numero=&ano=2011&datApresentacaoIni=14/11/2011&datApresentacaoFim=16/11/2011&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=&idTipoAutor=
         O retorno é uma lista de objetos Element sendo cara item da lista
         uma proposição encontrada
 
@@ -195,7 +195,6 @@ class Camaraws:
         args = {'sigla': sigla, 'ano': ano}
         if kwargs:
             args.update(kwargs)
-        print(args)
         url = self._montar_url_consulta_camara(
             Camaraws.URL_LISTAR_PROPOSICOES, parametros_de_consulta, **args)
         tree = self.url.toXml(url)

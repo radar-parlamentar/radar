@@ -83,6 +83,7 @@ class CamarawsTest(TestCase):
     def test_listar_proposicoes_que_nao_existem(self):
         sigla = 'PEC'
         ano = '2013'
+        caught = False
         try:
             self.camaraws.listar_proposicoes(sigla, ano)
         except ValueError as e:
@@ -109,3 +110,4 @@ class CamarawsTest(TestCase):
             nome_prop_list.append(nomeProp.find('nomeProposicao').text)
         self.assertTrue(NOME_PLENARIO in nome_prop_list)
         self.assertFalse(NOT_NOME_PLENARIO in nome_prop_list)
+
