@@ -48,6 +48,10 @@ def analise(request, nome_curto_casa_legislativa):
         palavras_chave = request.GET["palavras_chave"]
     except:
         palavras_chave = ""
+    try:
+        nome_parlamentar = request.GET["nome_parlamentar"]
+    except:
+        nome_parlamentar = ""
 
     num_votacao = casa_legislativa.num_votacao()
 
@@ -57,7 +61,8 @@ def analise(request, nome_curto_casa_legislativa):
          'partidos': partidos,
          'num_votacao': num_votacao,
          'periodicidade': periodicidade,
-         'palavras_chave': palavras_chave},
+         'palavras_chave': palavras_chave,
+         'nome_parlamentar': nome_parlamentar},
         context_instance=RequestContext(request)
     )
 

@@ -27,7 +27,8 @@ d3.selection.prototype.moveToFront = function() {
 Plot = (function ($) {
 
     // Function to load the data and draw the chart
-    function initialize(nome_curto_casa_legislativa, periodicidade, palavras_chave) {
+    function initialize(nome_curto_casa_legislativa, periodicidade, palavras_chave, nome_parlamentar) {
+        console.log(nome_parlamentar,palavras_chave);
         if (palavras_chave == "") {
             d3.json("/analises/json_analise/" + nome_curto_casa_legislativa + "/" + periodicidade, plot_data);
         } else {

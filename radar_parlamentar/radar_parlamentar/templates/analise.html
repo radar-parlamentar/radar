@@ -55,7 +55,9 @@
             
             <p><label for="palavras_chave">Filtrar votações por temas:</label>
             Separe as palavras-chaves por vírgula.<br>
-            <input type="text" id="palavras_chave" name ="palavras_chave" size="30" placeholder="saúde, educação">
+            <input type="text" id="palavras_chave" name ="palavras_chave" size="30" placeholder="saúde, educação"><br><br>
+            <label for="encontrar_parlamentar"> Encontrar Parlamentar: </label>
+            <input type="text" id="nome_parlamentar" name ="nome_parlamentar" size="30" placeholder="Ricardo Teixeira"><br>
             <input type="submit" value="Filtrar">
             </p>
            
@@ -134,7 +136,7 @@
     
     menuActive("analises");
   $(document).ready(function() {
-    Plot.initialize('{{casa_legislativa.nome_curto}}', '{{periodicidade}}', '{{palavras_chave}}')
+    Plot.initialize('{{casa_legislativa.nome_curto}}', '{{periodicidade}}', '{{palavras_chave}}','{{nome_parlamentar}}')
   });
 {% endblock extrascriptsend %}
 
