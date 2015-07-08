@@ -82,7 +82,7 @@ class CamarawsTest(TestCase):
 
     def test_listar_proposicoes_que_nao_existem(self):
         sigla = 'PEC'
-        ano = '2013'
+        ano = '2113'
         caught = False
         try:
             self.camaraws.listar_proposicoes(sigla, ano)
