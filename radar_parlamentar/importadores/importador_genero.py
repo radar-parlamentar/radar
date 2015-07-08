@@ -41,7 +41,7 @@ def _faz_download_arquivo_zipado(url):
 	return text
 
 def insere_genero_parlamentares_camara():
-    URL_DADOS_CDEP = 'http://www.camara.leg.br/internet/Deputado/DeputadosXML.zip'
+    URL_DADOS_CDEP = 'http://www.camara.leg.br/internet/deputado/DeputadosXML_52a55.zip'
     xml = abrir_xml_zipado(url=URL_DADOS_CDEP)
     
     lista_parlamentares_xml = xml[0]
@@ -68,6 +68,3 @@ def insere_genero_parlamentares_camara():
 def main():
     insere_genero_parlamentares_camara()
     logger.info('Generos dos parlamentares da Camara alterados com sucesso!')
-    
-if __name__ == '__main__':
-    main()

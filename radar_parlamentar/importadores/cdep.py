@@ -25,6 +25,7 @@ from django.utils.dateparse import parse_datetime
 from django.db.utils import DatabaseError
 from modelagem import models
 from datetime import datetime
+from importadores import importador_genero
 import re
 import os
 import xml.etree.ElementTree as etree
@@ -649,7 +650,6 @@ def lista_proposicoes_de_mulheres():
 
 
 def main():
-
     logger.info('IMPORTANDO DADOS DA CAMARA DOS DEPUTADOS')
     propFinder = ProposicoesFinder()
     zip_votadas = propFinder.find_props_disponiveis()
@@ -664,4 +664,6 @@ def main():
         threads.append(thread)
         thread.start()
     wait_threads(threads)
+    
+    importador_genero.main()
     logger.info('IMPORTACAO DE DADOS DA CAMARA DOS DEPUTADOS FINALIZADA')

@@ -6,6 +6,7 @@
 
 {% block extrascripts %}
     <link rel="stylesheet" href="/static/files/codes/css/genero_treemap.css" type="text/css" />
+    
 {% endblock extrascripts %}
 
 {% block extrahead %}
@@ -44,13 +45,11 @@
         Os dados da Câmara dos Deputados utilizados para análise estão disponíveis para <a href="https://github.com/leonardofl/radar_parlamentar/">download aqui</a>.<br/>    
 
         <h4>Mulheres</h4>
-        <figure>
-            <img src="/static/assets/genero/tag_deputadas.png" alt="Wordle: deputadas_br" style="padding:4px;border:1px solid #ddd" width="800px"/>
-        </figure>
+        <div id="tagcloud_mulher">
+        </div>
         <h4>Homens</h4>
-        <figure>
-            <img src="/static/assets/genero/tag_deputadios.png" alt="Wordle: deputados_br" style="padding:4px;border:1px solid #ddd" width="800px"/>
-        </figure>
+        <div id="tagcloud_homem">
+        </div>
     </article>
         <div style="clear:right"/>
 {% endblock content %}
@@ -70,6 +69,82 @@
         </script>
     {% endif %}
     <script src="/static/files/codes/js/genero_treemap.js"></script>
+    <script src="/static/files/codes/js/d3.js"></script>
+    <script src="/static/files/codes/js/d3.layout.cloud.js"></script>
+    
+    <script>
+        var width = 800;
+        var height = 500;
+        var fill = d3.scale.category20();
+        {% autoescape off %}
+      d3.layout.cloud().size([width, height])
+          .words({{ temas_mulher }}.map(function(d) {
+            return {text: d[0], size: 19 * d[1]};
+          }))
+          .padding(5)
+          .rotate(function() { return ~~(Math.random() * 2) * 90; })
+          .font("Impact")
+          .fontSize(function(d) { return d.size; })
+          .on("end", draw)
+          .start();
+
+{% endautoescape %}
+      function draw(words) {
+        d3.select("#tagcloud_mulher").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+          .append("g")
+            .attr("transform", "translate(" + (width/2).toString() +", " + (height/2).toString() + ")")
+          .selectAll("text")
+            .data(words)
+          .enter().append("text")
+            .style("font-size", function(d) { return d.size + "px"; })
+            .style("font-family", "Impact")
+            .style("fill", function(d, i) { return fill(i); })
+            .attr("text-anchor", "middle")
+            .attr("transform", function(d) {
+              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+            })
+            .text(function(d) { return d.text; });
+      }
+    </script>
+
+    <script>
+        var width = 800;
+        var height = 500;
+        var fill = d3.scale.category20();
+        {% autoescape off %}
+      d3.layout.cloud().size([width, height])
+          .words({{ temas_homem }}.map(function(d) {
+            return {text: d[0], size: 5 * d[1]};
+          }))
+          .padding(5)
+          .rotate(function() { return ~~(Math.random() * 2) * 90; })
+          .font("Impact")
+          .fontSize(function(d) { return d.size; })
+          .on("end", draw)
+          .start();
+
+{% endautoescape %}
+      function draw(words) {
+        d3.select("#tagcloud_homem").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+          .append("g")
+            .attr("transform", "translate(" + (width/2).toString() +", " + (height/2).toString() + ")")
+          .selectAll("text")
+            .data(words)
+          .enter().append("text")
+            .style("font-size", function(d) { return d.size + "px"; })
+            .style("font-family", "Impact")
+            .style("fill", function(d, i) { return fill(i); })
+            .attr("text-anchor", "middle")
+            .attr("transform", function(d) {
+              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+            })
+            .text(function(d) { return d.text; });
+      }
+    </script>
 {% endblock extrajsend %}
 
 {% block extrascriptsend %}
