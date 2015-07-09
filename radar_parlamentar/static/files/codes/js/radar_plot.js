@@ -374,7 +374,14 @@ Plot = (function ($) {
                 .on("mouseout", function(d) { mouseout_legend(d); })
                 .on("click", function(d) { click_legend(d); });
             legend_items.exit().remove();
-
+             
+            //Explode o partido do primeiro parlamentar encontrado durante a pesquisa
+            if((nome_parlamentar_busca != "") && (explodir_uma_vez == true)){
+                var partido_parlamentar_pesquisado = destacar_parlamentar_pesquisado();
+                explodir_uma_vez = false;
+                partidos_explodidos.push(partido_parlamentar_pesquisado);
+            }
+            
             // Circles that represent the parties
             partidos_no_periodo = get_partidos_nao_explodidos_no_periodo(periodo_atual);
             var parties = grupo_grafico.selectAll('.party').data(partidos_no_periodo, function(d) { return d.nome });
@@ -522,17 +529,9 @@ Plot = (function ($) {
             
             if (periodo_para == periodo_max) mouseout_next();
             if (periodo_para == periodo_min) mouseout_previous();
-            
-            if((nome_parlamentar_busca != "") && (explodir_uma_vez == true)){
-                var partido_parlamentar_pesquisado = destacar_parlamentar_pesquisado();
-                explodir_uma_vez = false;
-                partidos_explodidos.push(partido_parlamentar_pesquisado);
-                atualiza_grafico(true); 
-            }
         }
         
         function destacar_parlamentar_pesquisado(){
-            console.log("juhuhd");
             partidos_atuais = get_partidos_no_periodo(periodo_atual);
 
             for(var i = 0; i < partidos_atuais.length; i++){    
