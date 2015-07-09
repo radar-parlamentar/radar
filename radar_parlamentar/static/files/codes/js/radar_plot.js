@@ -25,10 +25,12 @@ d3.selection.prototype.moveToFront = function() {
 };
 
 Plot = (function ($) {
-
+    var nome_parlamentar_busca = "";
+    
     // Function to load the data and draw the chart
     function initialize(nome_curto_casa_legislativa, periodicidade, palavras_chave, nome_parlamentar) {
-        console.log(nome_parlamentar,palavras_chave);
+        nome_parlamentar_busca = nome_parlamentar;
+        
         if (palavras_chave == "") {
             d3.json("/analises/json_analise/" + nome_curto_casa_legislativa + "/" + periodicidade, plot_data);
         } else {
@@ -133,7 +135,9 @@ Plot = (function ($) {
         yScale = d3.scale.linear().range([height, 0]),
         xScalePart = d3.scale.linear().range([0, width]), // scale for parties
         yScalePart = d3.scale.linear().range([height, 0]);
-
+    
+    var explodir_uma_vez = true;
+    
     var periodo_min,
         periodo_max,
         periodo_de,
@@ -231,7 +235,7 @@ Plot = (function ($) {
         change_period();
 
         var escala_quadratica = false;
-
+   
         var alternador_escalas = grupo_controle_periodos.append("text")
             .attr("id", "alterna_escalas")
             .attr("class", "alterna_escala")
@@ -264,6 +268,7 @@ Plot = (function ($) {
             yScale.range([height, 0]).domain([-r_maximo, r_maximo]);
             xScalePart.range([0, width]).domain([-r_maximo, r_maximo]); // scale for parties
             yScalePart.range([height, 0]).domain([-r_maximo, r_maximo]);
+
             atualiza_grafico(true);
         }
 
@@ -349,6 +354,8 @@ Plot = (function ($) {
         // explodindo: true quando estamos atualizando o gráfico por causa de uma explosão de partido
         // (explosão de partido é quando se clica no partido para ver seus parlamentares)
         function atualiza_grafico(explodindo) {
+            
+            
             label_nvotacoes.text("Não há votações relacionadas com as palavras chave informadas");
 
             // Legend
@@ -515,8 +522,32 @@ Plot = (function ($) {
             
             if (periodo_para == periodo_max) mouseout_next();
             if (periodo_para == periodo_min) mouseout_previous();
+            
+            if((nome_parlamentar_busca != "") && (explodir_uma_vez == true)){
+                var partido_parlamentar_pesquisado = destacar_parlamentar_pesquisado();
+                explodir_uma_vez = false;
+                partidos_explodidos.push(partido_parlamentar_pesquisado);
+                atualiza_grafico(true); 
+            }
         }
+        
+        function destacar_parlamentar_pesquisado(){
+            console.log("juhuhd");
+            partidos_atuais = get_partidos_no_periodo(periodo_atual);
 
+            for(var i = 0; i < partidos_atuais.length; i++){    
+                parlamentares = partidos_atuais[i].parlamentares;
+
+                for(var j = 0; j < parlamentares.length; j++){
+                    if(parlamentares[j].nome == nome_parlamentar_busca){
+                        console.log("achou " + parlamentares[j].nome);
+
+                        return partidos_atuais[i];
+                    }                      
+                }
+            }
+        }
+        
         function mouseover_legend(party) {
             d3.selectAll("#circle-"+nome(party)).classed("hover",true);
             d3.selectAll("#group-"+nome(party)).moveToFront();
@@ -669,6 +700,7 @@ Plot = (function ($) {
         function get_parlamentares_no_periodo(partido, period) {
             return partido.parlamentares.filter(function (d) {return d.x[periodo_atual] !== null; })
         }
+
     }
 
     function plot_total_votacoes_filtradas(dados_gerais) {
