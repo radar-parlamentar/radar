@@ -1,7 +1,7 @@
 # coding=utf8
 
 # Copyright (C) 2012, Arthur Del Esposte, Leonardo Leite, Aline Santos,
-# Gabriel Augusto, Thallys Martins, Thatiany Lima, Winstein Martins.
+# Gabriel Augusto, Thallys Martins, Thatiany Lima, Winstein Martins, Eduardo Kuroda.
 #
 # This file is part of Radar Parlamentar.
 #
@@ -19,90 +19,45 @@
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals
+from django.test import TestCase
 from modelagem import models
+from elasticsearch import Elasticsearch
+from django.conf import settings
 import re
 
+# TODO
+# es.search(index=settings.ELASTIC_SEARCH_INDEX, q="casa_legislativa_nome_curto:cmsp AND Educação)
+# não retorna a votação 204
+# Mas
+# res = es.search(index=settings.ELASTIC_SEARCH_INDEX, q="casa_legislativa_nome_curto:cmsp AND Educação AND votacao_data:[2013-01-01 TO 2014-01-01]")
+# retorna a votação 204!
+# Como pode um "AND" a mais retornar mais coisas?
 
-class Temas():
+# TODO
+# Que fazer quando o ElasticSearch não retorna resultados?
 
-    def __init__(self):
-        self.dicionario = {}
+class LuceneQueryBuilder():
 
-    @staticmethod
-    def get_temas_padrao():
-        temas = Temas()
-        sinonimos = {}
-        sinonimos['educação'] = [
-            'escola', 'professor', 'aluno', 'EAD', 'universidade', 'cotas']
-        sinonimos['segurança'] = [
-            'policial', 'polícia', 'bandido', 'PM', 'violência', 'presídios']
-        sinonimos['economia'] = [
-            'impostos', 'dívida', 'tributos', 'financeira']
-        sinonimos['saúde'] = [
-            'medicina', 'médicos', 'SUS', 'hospital', 'enfermeiro',
-            'remédios', 'receita']
-        sinonimos['transporte'] = ['trânsito', 'pedágio',
-                                   'congestionamento', 'ônibus',
-                                   'metrô', 'avião']
-        sinonimos['violência'] = ['desarmamento', 'bullying']
-        sinonimos['esporte'] = [
-            'futebol', 'inclusão', 'torcida', 'estádio', 'copa', 'jogo']
-        sinonimos['drogas'] = ['álcool', 'entorpecentes', 'maconha', 'cigarro']
-        sinonimos['turismo'] = ['hotel', 'turista']
-        sinonimos['meio ambiente'] = [
-            'poluição', 'mineração', 'desmatamento', 'energia', 'usina']
-        sinonimos['assistência social'] = ['bolsa', 'família', 'cidadania']
-        sinonimos['tecnologia'] = [
-            'inovação', 'internet', 'rede', 'dados', 'hacker']
-        sinonimos['política'] = [
-            'eleição', 'partido', 'mandato', 'eleitor', 'voto', 'reforma',
-            'prefeito', 'deputado', 'vereador', 'senador', 'presidente',
-            'sistema eleitoral']
-        sinonimos['família'] = [
-            'maternidade', 'mãe', 'pai', 'paternidade', 'adoção']
-        sinonimos['constituição'] = ['PEC', 'constituinte']
-        sinonimos['burocrática'] = [
-            'pauta', 'quorum', 'urgência', 'adiamento', 'sessão']
-        for i in sinonimos:
-            for j in sinonimos[i]:
-                temas.inserir_sinonimo(i, j)
-        return temas
+    def __init__(self, nome_curto_casa_legislativa, periodo_casa_legislativa, palavras_chave):
+        self.nome_curto_casa_legislativa = nome_curto_casa_legislativa
+        self.periodo_casa_legislativa = periodo_casa_legislativa
+        self.palavras_chaves = palavras_chave
 
-    def inserir_sinonimo(self, tema, sinonimo):
-        if tema is None or sinonimo is None:
-            raise ValueError('Impossivel adicionar sinonimo\n')
-        if tema.encode('utf-8') in self.dicionario:
-        # if self.dicionario.has_key(tema.encode('utf-8')):
-            self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
-        else:
-            self.dicionario[tema.encode('utf-8')] = set()
-            self.dicionario[tema.encode('utf-8')].add(sinonimo.encode('utf-8'))
+    def build(self):
+        return "%s AND %s AND %s" % (self._build_nome_curto(), self._build_palavras_chaves(), self._build_range_data())
 
-    def expandir_palavras_chaves(self, palavras_chaves):
-        expandido = []
-        for palavra in palavras_chaves:
-            expandido.extend(self.recuperar_sinonimos(palavra))
-        return expandido
+    def _build_nome_curto(self):
+        return "casa_legislativa_nome_curto:%s" % self.nome_curto_casa_legislativa
 
-    def recuperar_sinonimos(self, palavra):
-        palavra = palavra.encode('utf-8')
-        palavras = []
-        for tema, sinonimos in self.dicionario.items():
-            if palavra in tema or self._palavra_in_sinonimos(palavra, sinonimos):
-                palavras.append(tema)
-                palavras.extend(sinonimos)
-        if not palavras:
-            palavras.append(palavra)
-        return palavras
+    def _build_palavras_chaves(self):
+        return " AND ".join(self.palavras_chaves)
 
-    def _palavra_in_sinonimos(self, palavra, sinonimos):
-        for sinonimo in sinonimos:
-            if palavra in sinonimo:
-                return True
-        return False
+    def _build_range_data(self):
+        return "votacao_data:[%s TO %s]" % (self.periodo_casa_legislativa.ini.isoformat(), self.periodo_casa_legislativa.fim.isoformat())
+        
 
 
-class FiltroVotacao():
+class FiltroVotacao(TestCase):
 
     """Filtra votações pelos campos:
         * votacao.descricao
@@ -124,44 +79,23 @@ class FiltroVotacao():
         self.casa_legislativa = casa_legislativa
         self.periodo_casa_legislativa = periodo_casa_legislativa
         self.palavras_chaves = palavras_chave
-        self.temas = Temas.get_temas_padrao()
         self.votacoes = []
 
     def filtra_votacoes(self):
-        self.votacoes = models.Votacao.por_casa_legislativa(
-            self.casa_legislativa,
-            self.periodo_casa_legislativa.ini,
-            self.periodo_casa_legislativa.fim)
-        if self.palavras_chaves:
-            self.palavras_chaves = self.temas.expandir_palavras_chaves(
-                self.palavras_chaves)
-            self.votacoes = self._filtra_votacoes_por_palavras_chave()
+        if not self.palavras_chaves:
+            self.votacoes = models.Votacao.por_casa_legislativa(
+                self.casa_legislativa,
+                self.periodo_casa_legislativa.ini,
+                self.periodo_casa_legislativa.fim)
+            return self.votacoes
+
+        es = Elasticsearch([settings.ELASTIC_SEARCH_ADDRESS])
+        query_builder = LuceneQueryBuilder(self.casa_legislativa.nome_curto, self.periodo_casa_legislativa, self.palavras_chaves)
+        query = query_builder.build()
+        res = es.search(index=settings.ELASTIC_SEARCH_INDEX, q=query, fields="votacao_id")
+        print res
+        votacoes_ids = [ e["fields"]["votacao_id"][0] for e in res["hits"]["hits"] ]
+        self.votacoes = models.Votacao.objects.filter(id__in=votacoes_ids)
         return self.votacoes
 
-    def _filtra_votacoes_por_palavras_chave(self):
-        votacoes_com_palavras_chave = []
-        for votacao in self.votacoes:
-            if self._verifica_palavras_chave_em_votacao(votacao):
-                votacoes_com_palavras_chave.append(votacao)
-        return votacoes_com_palavras_chave
 
-    def _verifica_palavras_chave_em_votacao(self, votacao):
-        for palavra_chave in self.palavras_chaves:
-            if(self._palavra_existe_em_votacao(votacao, palavra_chave)):
-                return True
-        return False
-
-    def _palavra_existe_em_votacao(self, votacao, palavra_chave):
-        # procura uma substring dentro de uma string
-        proposicao = votacao.proposicao
-        if((re.search(palavra_chave.upper(),
-            proposicao.descricao.upper()) is not None) or
-           (re.search(palavra_chave.upper(),
-            proposicao.ementa.upper()) is not None) or
-           (re.search(palavra_chave.upper(),
-            proposicao.indexacao.upper()) is not None) or
-           (re.search(palavra_chave.upper(),
-                      votacao.descricao.upper()) is not None)):
-            return True
-        else:
-            return False
