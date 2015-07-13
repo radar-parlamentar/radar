@@ -25,11 +25,12 @@ d3.selection.prototype.moveToFront = function() {
 };
 
 Plot = (function ($) {
-    var nome_parlamentar_busca = "";
+
+    var parlamentar_pesquisado = ""; // "Global" armazena o parlamentar pesquisado
     
     // Function to load the data and draw the chart
     function initialize(nome_curto_casa_legislativa, periodicidade, palavras_chave, nome_parlamentar) {
-        nome_parlamentar_busca = nome_parlamentar;
+        parlamentar_pesquisado = nome_parlamentar;
         
         if (palavras_chave == "") {
             d3.json("/analises/json_analise/" + nome_curto_casa_legislativa + "/" + periodicidade, plot_data);
@@ -136,7 +137,7 @@ Plot = (function ($) {
         xScalePart = d3.scale.linear().range([0, width]), // scale for parties
         yScalePart = d3.scale.linear().range([height, 0]);
     
-    var explodir_uma_vez = true;
+    var explodir_partido = true; // Flag para explodir partido do parlamentar pesquisado
     
     var periodo_min,
         periodo_max,
@@ -375,10 +376,10 @@ Plot = (function ($) {
                 .on("click", function(d) { click_legend(d); });
             legend_items.exit().remove();
              
-            //Explode o partido do primeiro parlamentar encontrado durante a pesquisa
-            if((nome_parlamentar_busca != "") && (explodir_uma_vez == true)){
-                var partido_parlamentar_pesquisado = destacar_parlamentar_pesquisado();
-                explodir_uma_vez = false;
+            //Explode o partido do PRIMEIRO parlamentar encontrado durante a pesquisa
+            if((parlamentar_pesquisado != "") && (explodir_partido == true)){
+                var partido_parlamentar_pesquisado = get_partido_parlamentar_pesquisado();
+                explodir_partido = false;
                 partidos_explodidos.push(partido_parlamentar_pesquisado);
             }
             
@@ -531,16 +532,12 @@ Plot = (function ($) {
             if (periodo_para == periodo_min) mouseout_previous();
         }
         
-        function destacar_parlamentar_pesquisado(){
+        function get_partido_parlamentar_pesquisado(){
             partidos_atuais = get_partidos_no_periodo(periodo_atual);
-
             for(var i = 0; i < partidos_atuais.length; i++){    
                 parlamentares = partidos_atuais[i].parlamentares;
-
                 for(var j = 0; j < parlamentares.length; j++){
-                    if(parlamentares[j].nome == nome_parlamentar_busca){
-                        console.log("achou " + parlamentares[j].nome);
-
+                    if(parlamentares[j].nome == parlamentar_pesquisado){
                         return partidos_atuais[i];
                     }                      
                 }
