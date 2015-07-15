@@ -26,11 +26,14 @@ d3.selection.prototype.moveToFront = function() {
 
 Plot = (function ($) {
 
-    var parlamentar_pesquisado = ""; // "Global" armazena o parlamentar pesquisado
+    // Issue#272
+    // "Global" armazena o parlamentar pesquisado
+    var parlamentar_pesquisado = "";
     
     // Function to load the data and draw the chart
     function initialize(nome_curto_casa_legislativa, periodicidade, palavras_chave, nome_parlamentar) {
-        parlamentar_pesquisado = nome_parlamentar;
+        
+        parlamentar_pesquisado = nome_parlamentar; // Issue#272
         
         if (palavras_chave == "") {
             d3.json("/analises/json_analise/" + nome_curto_casa_legislativa + "/" + periodicidade, plot_data);
@@ -137,7 +140,9 @@ Plot = (function ($) {
         xScalePart = d3.scale.linear().range([0, width]), // scale for parties
         yScalePart = d3.scale.linear().range([height, 0]);
     
-    var explodir_partido = true; // Flag para explodir partido do parlamentar pesquisado
+    // Issue#272
+    // Flag para explodir partido do parlamentar pesquisado
+    var explodir_partido = true; 
     
     var periodo_min,
         periodo_max,
@@ -375,8 +380,9 @@ Plot = (function ($) {
                 .on("mouseout", function(d) { mouseout_legend(d); })
                 .on("click", function(d) { click_legend(d); });
             legend_items.exit().remove();
-             
-            //Explode o partido do PRIMEIRO parlamentar encontrado durante a pesquisa
+
+            // Issue#272
+            // Explode o partido do PRIMEIRO parlamentar encontrado durante a pesquisa
             if((parlamentar_pesquisado != "") && (explodir_partido == true)){
                 var partido_parlamentar_pesquisado = get_partido_parlamentar_pesquisado();
                 explodir_partido = false;
@@ -532,6 +538,7 @@ Plot = (function ($) {
             if (periodo_para == periodo_min) mouseout_previous();
         }
         
+        // Issue#272
         function get_partido_parlamentar_pesquisado(){
             partidos_atuais = get_partidos_no_periodo(periodo_atual);
             for(var i = 0; i < partidos_atuais.length; i++){    
