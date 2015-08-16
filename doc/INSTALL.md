@@ -209,15 +209,15 @@ abaixo é mostrada a configuracao necessária para instalar o stem por dicionari
     renomear o arquivo .aff para pt_BR.aff
     renomear o arquivo .dic para pt_BR.dic
     e criar arquivo settings.yml com:
----
-ignore_case:          true
-strict_affix_parsing: true
-
+    ---
+    ignore_case:          true
+    strict_affix_parsing: true
 
 é necessário recriar o índice com a novo analisador. Supondo que o Elasticsearch está em localhost:9200: 
-    curl -XDELETE 'http://localhost:9200/radar_parlamentar/'
-    curl -XPUT http://localhost:9200/radar_parlamentar/ -d '
-{
+    
+    $ curl -XDELETE 'http://localhost:9200/radar_parlamentar/'
+    $ curl -XPUT http://localhost:9200/radar_parlamentar/ -d '
+    {
     "settings": {
         "analysis": {
             "analyzer": {
@@ -241,11 +241,10 @@ strict_affix_parsing: true
                 }
             }
         }
-    }
-}'
+    }}'
 
-    curl -XPUT http://localhost:9200/radar_parlamentar/radar/_mapping?ignore_conflicts=true -d '
-{
+    $ curl -XPUT http://localhost:9200/radar_parlamentar/radar/_mapping?ignore_conflicts=true -d '
+    {
       "radar" : {
         "_all" : {"enabled" : true, "analyzer": "my_analyzer"},
         "properties" : {
@@ -318,12 +317,9 @@ strict_affix_parsing: true
           "votacao_resultado" : {
             "type" : "string"
           }
-    }
-  }
-}
-'
+    }}}'
 
 Por fim, para testar: 
-    curl -XGET 'http://localhost:9200/radar_parlamentar/_analyze?analyzer=my_analyzer&text=ambientes
+    $ curl -XGET 'http://localhost:9200/radar_parlamentar/_analyze?analyzer=my_analyzer&text=ambientes
 onde text é o texto que será analisado.
 
