@@ -192,17 +192,17 @@ checar o endereço http://127.0.0.1:9200 se retorna um json.
 8. Engine de busca do Elasticsearch
 -------------------
 
-Para melhorar a qualidade nos resultados de busca, uma proposta é usar uma estrategia de reducao de palavras chamada de stem.
+Para melhorar a qualidade nos resultados de busca, uma proposta é usar uma estratégia de redução de palavras chamada de stem.
 
 Com o stem, a palavra é reduzida para sua raiz e, através dessa, são buscadas todas suas ramificações. Por exemplo, se o usuário buscar ambientalista, o processo de stem reduzirá ambientalista para ambiental e buscará todas as suas flexões como ambientistas, ambientais, ambientalismo...
 
-Existem duas propostas para essa redução: algoritmo ou dicionário
+Existem duas propostas para essa redução: algoritmo ou dicionário.
 
 O algoritmo define um conjunto de regras para reduzir qualquer palavra. No dicionário, a redução e feita fazendo a busca da palavra em um dicionário.
 
-Comparando o algoritmo com o dicionário,o dicionário e mais preciso, porém o tempo de buscar uma palavra é consideravel, enquanto isso, no algoritmo, a execução e rápida porém com redução na precisão da redução.
+Comparando as duas propostas, o dicionário e mais preciso, porém o tempo de buscar uma palavra é consideravel, enquanto isso, no algoritmo, a execução e rápida porém com redução na precisão da redução.
 
-abaixo é mostrada a configuracao necessária para instalar o stem por dicionario em português num indice do Elasticsearch.
+abaixo é mostrada a configuração necessária para instalar o stem por dicionario em português num índice do Elasticsearch.
 
     $wget https://addons.cdn.mozilla.net/user-media/addons/_attachments/6081/verificador_ortografico_para_portugues_do_brasil-2.5-3.2.12-fx+an+sm+fn+tb.xpi?filehash=sha256%3A4a0e3d4523185a8240bda56164ebb21d8787a563e0832907b27ea7ce39e36ff0
 
