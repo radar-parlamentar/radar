@@ -313,6 +313,13 @@ class MatrizesDeDadosBuilder:
         # chave eh nome do partido, e valor eh VotoPartido
         self._dic_partido_votos = {}
         self._dic_legislaturas_votos = {}  # legislatura.id => voto.opcao
+        self._dic_partidos = {}
+        self.preenche_dic_partidos()
+
+    def preenche_dic_partidos(self):
+        lista_partido = list(models.Partido.objects.all())
+        for partido in lista_partido:
+            self._dic_partidos[partido.id] = partido.nome
 
     def gera_matrizes(self):
         """Cria duas matrizes:
@@ -348,7 +355,7 @@ class MatrizesDeDadosBuilder:
         il = -1  # indice legislatura
         for legislatura in self.legislaturas:
             il += 1
-            self.partido_do_parlamentar.append(legislatura.partido.nome)
+            self.partido_do_parlamentar.append(self.get_legislatura_partido_nome(legislatura))
             if legislatura.id in self._dic_legislaturas_votos:
                 opcao = self._dic_legislaturas_votos[legislatura.id]
                 self.matriz_votacoes[il][iv] = self._opcao_to_double(opcao)
@@ -359,6 +366,9 @@ class MatrizesDeDadosBuilder:
             else:
                 self.matriz_votacoes[il][iv] = 0.
                 self.matriz_presencas[il][iv] = 0.
+
+    def get_legislatura_partido_nome(self,legislatura):
+        return self._dic_partidos[legislatura.partido_id]
 
     def _opcao_to_double(self, opcao):
         if opcao == 'SIM':
