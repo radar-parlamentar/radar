@@ -193,9 +193,13 @@ checar o endereço http://127.0.0.1:9200 se retorna um json.
 -------------------
 
 Para melhorar a qualidade nos resultados de busca, uma proposta é usar uma estrategia de reducao de palavras chamada de stem.
+
 Com o stem, a palavra é reduzida para sua raiz e, através dessa, são buscadas todas suas ramificações. Por exemplo, se o usuário buscar ambientalista, o processo de stem reduzirá ambientalista para ambiental e buscará todas as suas flexões como ambientistas, ambientais, ambientalismo...
+
 Existem duas propostas para essa redução: algoritmo ou dicionário
+
 O algoritmo define um conjunto de regras para reduzir qualquer palavra. No dicionário, a redução e feita fazendo a busca da palavra em um dicionário.
+
 Comparando o algoritmo com o dicionário,o dicionário e mais preciso, porém o tempo de buscar uma palavra é consideravel, enquanto isso, no algoritmo, a execução e rápida porém com redução na precisão da redução.
 
 abaixo é mostrada a configuracao necessária para instalar o stem por dicionario em português num indice do Elasticsearch.
@@ -320,6 +324,7 @@ abaixo é mostrada a configuracao necessária para instalar o stem por dicionari
     }}}'
 
 Por fim, para testar: 
+
     $ curl -XGET 'http://localhost:9200/radar_parlamentar/_analyze?analyzer=my_analyzer&text=ambientes
 onde text é o texto que será analisado.
 
