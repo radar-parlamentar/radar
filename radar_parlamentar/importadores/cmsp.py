@@ -34,11 +34,10 @@ ULTIMA_ATUALIZACAO = parse_datetime('2012-12-31 0:0:0')
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # arquivos com os dados fornecidos pela cmsp
-XML2010 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2010.xml')
-XML2011 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2011.xml')
 XML2012 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2012.xml')
 XML2013 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2013.xml')
 XML2014 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2014.xml')
+XML2015 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2015.xml')
 
 # tipos de proposições encontradas nos XMLs da cmsp
 # esta lista ajuda a identificar as votações que são de proposições
@@ -156,7 +155,7 @@ class XmlCMSP:
             votante = models.Parlamentar()
             votante.save()
             votante.id_parlamentar = id_parlamentar
-            votante.nome = ver_tree.get('NomeParlamentar')
+            votante.nome = ver_tree.get('Nome')
             votante.save()
             if self.verbose:
                 print 'Vereador %s salvo' % votante
@@ -245,7 +244,7 @@ class XmlCMSP:
                     vot.save()
                     vot.id_vot = id_vot
                     vot.descricao = resumo
-                    vot.data = self.converte_data(vot_tree.get('DataDaSessao'))
+                    vot.data = self.data_da_sessao
                     vot.resultado = vot_tree.get('Resultado')
                     self.votos_from_tree(vot_tree, vot)
                     vot.proposicao = prop
@@ -256,6 +255,12 @@ class XmlCMSP:
                     vot.save()
 
                 votacoes.append(vot)
+
+    def sessao_from_tree(self, proposicoes, votacoes, sessao_tree):
+        self.data_da_sessao = self.converte_data(sessao_tree.get('Data'))
+        for vot_tree in sessao_tree.findall('Votacao'):
+            self.votacao_from_tree(proposicoes, votacoes, vot_tree)
+
 
     def progresso(self):
         """Indica progresso na tela"""
@@ -286,15 +291,11 @@ class ImportadorCMSP:
         return votacoes
 
     def analisar_xml(self, proposicoes, votacoes, tree):
-        for vot_tree in tree.getchildren():
-            self.xml_cmsp.votacao_from_tree(proposicoes, votacoes, vot_tree)
+        for sessao_tree in tree.findall('Sessao'):
+            self.xml_cmsp.sessao_from_tree(proposicoes, votacoes, sessao_tree)
 
     @staticmethod
     def abrir_xml(xml_file):
-#         f = open(xml_file, 'r')
-#         xml = f.read()
-#         f.close()
-#         return etree.fromstring(xml)
         return etree.parse(xml_file).getroot()
 
 
@@ -304,6 +305,7 @@ def main():
     gerador_casa = GeradorCasaLegislativa()
     cmsp = gerador_casa.gerar_cmsp()
     importer = ImportadorCMSP(cmsp)
-    for xml in [XML2010, XML2011, XML2012, XML2013, XML2014]:
+    for xml in [XML2012, XML2013, XML2014, XML2015]:
         importer.importar_de(xml)
     print 'Importacao dos dados da Camara Municipal de Sao Paulo (CMSP) terminada'
+

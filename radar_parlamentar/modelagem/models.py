@@ -120,12 +120,20 @@ class Partido(models.Model):
             return None
 
         # procura primeiro no banco de dados
-        p = Partido.objects.filter(nome=nome)
+        nome = cls._normaliza_nome_partido(nome)
+        p = Partido.objects.filter(nome__iexact=nome)
         if p:
             return p[0]
         else:
             # se não estiver no BD, procura hardcoded
             return cls._from_regex(1, nome.strip())
+
+    @classmethod
+    def _normaliza_nome_partido(cls, nome_partido):
+        trocar = { 'DEMOCRATAS' : 'DEM' }
+        nome_partido = nome_partido.upper().replace(' ', '')
+        nome_partido = trocar.get(nome_partido, nome_partido)
+        return nome_partido
 
     @classmethod
     def from_numero(cls, numero):
@@ -160,11 +168,11 @@ class Partido(models.Model):
 
     @classmethod
     def _from_regex(cls, idx, key):
-        PARTIDO_REGEX = '([a-zA-Z]*) *([0-9]{2}) *(#+[0-f]{6})'
+        PARTIDO_REGEX = '([a-zA-Z]*); *([0-9]{2}); *(#+[0-f]{6})'
         f = open(cls.LISTA_PARTIDOS)
         for line in f:
             res = re.search(PARTIDO_REGEX, line)
-            if res and res.group(idx) == key:
+            if res and res.group(idx).upper() == key:
                 partido = Partido()
                 partido.nome = res.group(1)
                 partido.numero = int(res.group(2))
@@ -220,6 +228,10 @@ class CasaLegislativa(models.Model):
         for votacao in votacoes:
             votos += votacao.votos()
         return len(votos)
+
+    def deletar_votacoes(self):
+        votacoes = Votacao.objects.filter(proposicao__casa_legislativa=self)
+        votacoes.delete()
 
     @staticmethod
     def deleta_casa(nome_casa_curto):

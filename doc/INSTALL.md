@@ -112,7 +112,7 @@ Primeiro crie um usuário administrativo do django:
 
 Depois inicie o Celery na pasta onde fica o manage.py:
 
-     $celery -A importadores worker -l info --concurrency 1
+    $./start_celery.sh 
      
 O Celery é um gerenciador de execução de tarefas assíncronas.
 

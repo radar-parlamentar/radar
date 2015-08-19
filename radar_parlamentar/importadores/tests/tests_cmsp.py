@@ -175,14 +175,14 @@ class ModelCMSPCase(TestCase):
 
     def test_salva_vereador_inexistente(self):
         xml_vereador = etree.fromstring(
-            "<Vereador IDParlamentar=\"999\" NomeParlamentar=\"Nao_consta\"/>")
+            "<Vereador IDParlamentar=\"999\" Nome=\"Nao_consta\"/>")
         parlamentar = self.xmlCMSP.votante(xml_vereador)
         self.assertEquals(
             parlamentar, models.Parlamentar.objects.get(id_parlamentar=999))
 
     def test_salva_legislatura_inexistente(self):
         xml_vereador = etree.fromstring(
-            "<Vereador IDParlamentar=\"999\" NomeParlamentar=\"Nao_consta\" Partido=\"PTest\"/>")
+            "<Vereador IDParlamentar=\"999\" Nome=\"Nao_consta\" Partido=\"PTest\"/>")
         legislatura = self.xmlCMSP.legislatura(xml_vereador)
         self.assertEquals(legislatura, models.Legislatura.objects.get(
             parlamentar__id_parlamentar="999", partido__nome="PTest"))
@@ -233,3 +233,4 @@ class IdempotenciaCMSPCase(TestCase):
         self.assertEquals(num_votacoes_depois, num_votacoes_antes)
         self.assertEquals(num_legs_depois, num_legs_antes)
         self.assertEquals(num_parlamentares_depois, num_parlamentares_antes)
+

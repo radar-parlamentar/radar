@@ -197,6 +197,11 @@ class ModelsTest(TestCase):
         psdb = models.Partido.from_numero(45)
         self.assertEquals(psdb.nome, 'PSDB')
         self.assertEquals(psdb.cor, '#0059AB')
+        pcdob = models.Partido.from_nome('PC DO B')
+        self.assertEquals(pcdob.numero, 65)
+        dem = models.Partido.from_nome('DEMOCRATAS')
+        self.assertEquals(dem.nome, 'DEM')
+        self.assertEquals(dem.numero, 25)
 
     def test_partido_from_nome_None(self):
         nome = None
