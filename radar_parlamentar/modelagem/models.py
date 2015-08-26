@@ -130,7 +130,7 @@ class Partido(models.Model):
 
     @classmethod
     def _normaliza_nome_partido(cls, nome_partido):
-        trocar = { 'DEMOCRATAS' : 'DEM' }
+        trocar = { 'DEMOCRATAS' : 'DEM' , 'Solidaried' : 'SD', 'SDD' : 'SD' }
         nome_partido = nome_partido.upper().replace(' ', '')
         nome_partido = trocar.get(nome_partido, nome_partido)
         return nome_partido
@@ -228,10 +228,6 @@ class CasaLegislativa(models.Model):
         for votacao in votacoes:
             votos += votacao.votos()
         return len(votos)
-
-    def deletar_votacoes(self):
-        votacoes = Votacao.objects.filter(proposicao__casa_legislativa=self)
-        votacoes.delete()
 
     @staticmethod
     def deleta_casa(nome_casa_curto):

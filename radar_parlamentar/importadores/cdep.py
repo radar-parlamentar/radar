@@ -154,12 +154,11 @@ class Camaraws:
 
         Argumentos:
         obrigatorio : ano
-        opcional : tipo
 
         Retorna:
         Um objeto ElementTree correspondente ao XML retornado pelo web service
         Exemplo:
-        http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ListarProposicoesVotadasEmPlenario
+        http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx/ListarProposicoesVotadasEmPlenario?ano=1991&tipo=
         """
 
         parametros_de_consulta = ["ano", "tipo"]
@@ -237,7 +236,7 @@ class ProposicoesFinder:
             list_nome.append(nome_prop)
         return zip(list_id_prop, list_nome)
 
-    def find_props_disponiveis(self, ano_min=1991, ano_max=2013,
+    def find_props_disponiveis(self, ano_max=None, ano_min=1991,
                                camaraws=Camaraws()):
         """Retorna uma lista com os ids e nomes das proposicoes disponibilizada
         pela funcionalidade ListarProposicoesVotadasPlenario.
@@ -248,21 +247,18 @@ class ProposicoesFinder:
         today = datetime.today()
         if (ano_max is None):
             ano_max = today.year
-        siglas = camaraws.listar_siglas()
         votadas = []
         for ano in range(ano_min, ano_max + 1):
             logger.info('Procurando em %s' % ano)
-            for sigla in siglas:
-                try:
-                    xml = camaraws.obter_proposicoes_votadas_plenario(ano)
-                    zip_list_prop = self._parse_nomes_lista_proposicoes(xml)
-                    votadas.append(zip_list_prop)
-                    logger.info('%d %ss encontrados' %
-                                (len(zip_list_prop), sigla))
-                except urllib2.URLError, etree.ParseError:
-                    logger.error('access error in %s' % sigla)
-                except ValueError, error:
-                    logger.error("ValueError: %s" % error)
+            try:
+                xml = camaraws.obter_proposicoes_votadas_plenario(ano)
+                zip_list_prop = self._parse_nomes_lista_proposicoes(xml)
+                votadas.append(zip_list_prop)
+                logger.info('%d proposições encontradas' % len(zip_list_prop))
+            except urllib2.URLError, etree.ParseError:
+                logger.error('access error in %s' % sigla)
+            except ValueError, error:
+                logger.error("ValueError: %s" % error)
         return votadas
 
 
@@ -667,3 +663,4 @@ def main():
     
     importador_genero.main()
     logger.info('IMPORTACAO DE DADOS DA CAMARA DOS DEPUTADOS FINALIZADA')
+
