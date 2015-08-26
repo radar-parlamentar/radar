@@ -130,7 +130,7 @@ class Partido(models.Model):
 
     @classmethod
     def _normaliza_nome_partido(cls, nome_partido):
-        trocar = { 'DEMOCRATAS' : 'DEM' , 'Solidaried' : 'SD', 'SDD' : 'SD' }
+        trocar = { 'DEMOCRATAS' : 'DEM' , 'SOLIDARIED' : 'SD', 'SDD' : 'SD' }
         nome_partido = nome_partido.upper().replace(' ', '')
         nome_partido = trocar.get(nome_partido, nome_partido)
         return nome_partido
