@@ -91,6 +91,116 @@ def remover_indice(nome_indice):
     if client_indice.exists(index=[nome_indice]):
         client_indice.delete(nome_indice)
 
+def criar_indice(nome_indice):
+    config_settings = """
+{
+"settings": {
+    "analysis": {
+        "analyzer": {
+            "my_analyzer": {
+                "tokenizer": "standard",
+                "filter": ["standard", "pt_BR", "lowercase","portuguese_stop","asciifolding"]
+        }
+        },
+        "filter": {
+            "my_stemmer": {
+                "type": "stemmer",
+            "name": "brazilian"
+            },
+             "portuguese_stop": {
+                 "type":       "stop",
+                 "stopwords":  "_brazilian_" 
+            },
+             "pt_BR": {
+                 "type":       "hunspell",
+                 "language":  "pt_BR" 
+            }
+        }
+    }
+}
+}
+"""
+    config_mapping = """
+{
+  "radar" : {
+    "_all" : {"enabled" : true, "analyzer": "my_analyzer"},
+    "properties" : {
+      "casa_legilativa_local" : {
+        "type" : "string"
+      },
+      "casa_legislativa_atualizacao" : {
+        "type" : "date",
+        "format" : "dateOptionalTime"
+      },
+      "casa_legislativa_esfera" : {
+        "type" : "string"
+      },
+      "casa_legislativa_id" : {
+        "type" : "long"
+      },
+      "casa_legislativa_nome" : {
+        "type" : "string"
+      },
+      "casa_legislativa_nome_curto" : {
+        "type" : "string"
+      },
+      "proposicao_ano" : {
+        "type" : "string"
+      },
+      "proposicao_data_apresentacao" : {
+        "type" : "date",
+        "format" : "dateOptionalTime"
+      },
+      "proposicao_descricao" : {
+        "type" : "string"
+      },
+      "proposicao_ementa" : {
+        "type" : "string",
+        "analyzer": "my_analyzer"
+      },
+      "proposicao_id" : {
+        "type" : "long"
+      },
+      "proposicao_id_prop" : {
+        "type" : "string"
+      },
+      "proposicao_indexacao" : {
+        "type" : "string",
+        "analyzer": "my_analyzer"
+      },
+      "proposicao_numero" : {
+        "type" : "string"
+      },
+      "proposicao_sigla" : {
+        "type" : "string"
+      },
+      "proposicao_situacao" : {
+        "type" : "string"
+      },
+      "votacao_data" : {
+        "type" : "date",
+        "format" : "dateOptionalTime"
+      },
+      "votacao_descricao" : {
+        "type" : "string",
+        "analyzer": "my_analyzer"
+      },
+      "votacao_id" : {
+        "type" : "long"
+      },
+      "votacao_id_vot" : {
+        "type" : "string"
+      },
+      "votacao_resultado" : {
+        "type" : "string"
+      }
+}}}
+"""
+    es = conectar_em_elastic_search()
+    client_indice = IndicesClient(es)
+    client_indice.create(index=nome_indice,body=config_settings)
+    client_indice.put_mapping(index=nome_indice,doc_type="radar",body=config_mapping)
+
 """
     envia o json do modelo do radar para o elasticSearch
 """
@@ -113,4 +223,5 @@ def obter_indice():
 def main():
    indice = obter_indice()
    remover_indice(indice)
+   criar_indice(indice)
    enviar_para_elasticsearch(gerar_json_radar(),indice)
