@@ -54,7 +54,7 @@ class SenadoWS:
 
     """Acesso aos web services do senado"""
 
-    URL_LEGISLATURA = 'http://legis.senado.gov.br/dadosabertos/senador/lista/legislatura/%s'
+    URL_LEGISLATURA = 'http://legis.senado.gov.br/dadosabertos/senador/lista/legislatura/%s?v=2'
 
     def obter_senadores_from_legislatura(self, id_leg):
         """Obtém senadores de uma legislatura
@@ -65,7 +65,7 @@ class SenadoWS:
         Retorna:
         Um objeto ElementTree correspondente ao XML retornado pelo web service
         Exemplo:
-        http://legis.senado.gov.br/dadosabertos/senador/lista/legislatura/52
+        http://legis.senado.gov.br/dadosabertos/senador/lista/legislatura/52?v=2
 
         Exceções:
             ValueError -- quando legislatura não existe
