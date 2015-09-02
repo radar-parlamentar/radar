@@ -31,6 +31,7 @@ Para quem não conheçe, o [virtualenv](http://www.virtualenv.org "Virtual Env")
 
 Depois de clonar o projeto, vamos criar agora o nosso "Virtual Enviroment":
 
+    $ sudo pip install --upgrade pip
     $ virtualenv path/para/a/pasta/do/projeto/clonado
     $ cd path/para/a/pasta/do/projeto/clonado
     $ source bin/activate
