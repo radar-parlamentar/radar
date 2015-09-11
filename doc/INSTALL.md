@@ -213,6 +213,6 @@ Agora é preciso executar a importação dos dados no elastic search, o que deve
 
 Por fim, para testar: 
 
-    $ curl -XGET 'http://localhost:9200/radar_parlamentar/_analyze?analyzer=my_analyzer&text=ambientes
+    $ curl -XGET 'http://localhost:9200/radar_parlamentar/radar/_search?q=texto
 onde text é o texto que será analisado.
 
