@@ -223,22 +223,6 @@ class ModelsTest(TestCase):
         self.assertTrue(conv.GIRONDINOS in nomes)
         self.assertTrue(conv.MONARQUISTAS in nomes)
 
-    def test_should_find_legislatura(self):
-        dt = datetime.date(1989, 07, 14)
-        try:
-            leg = models.Legislatura.find(dt, 'Pierre')
-            self.assertTrue(leg is not None)
-        except ValueError:
-            self.fail('Legislatura não encontrada')
-
-    def test_should_not_find_legislatura(self):
-        dt = datetime.date(1900, 07, 14)
-        try:
-            models.Legislatura.find(dt, 'Pierre')
-            self.fail('Legislatura não deveria ter sido encontrada')
-        except:
-            self.assertTrue(True)
-
     def test_deleta_casa(self):
 
         partidoTest1 = models.Partido()
@@ -251,17 +235,6 @@ class ModelsTest(TestCase):
         partidoTest2.numero = '02'
         partidoTest1.cor = '#FFFFFF'
         partidoTest2.save()
-
-        parlamentarTest1 = models.Parlamentar()
-        parlamentarTest1.id_parlamentar = ''
-        parlamentarTest1.nome = 'Pierre'
-        parlamentarTest1.genero = ''
-        parlamentarTest1.save()
-        parlamentarTest2 = models.Parlamentar()
-        parlamentarTest2.id_parlamentar = ''
-        parlamentarTest2.nome = 'Napoleao'
-        parlamentarTest2.genero = ''
-        parlamentarTest2.save()
 
         casa_legislativaTest1 = models.CasaLegislativa()
         casa_legislativaTest1.nome = 'Casa1'
@@ -278,22 +251,22 @@ class ModelsTest(TestCase):
         casa_legislativaTest2.atualizacao = '2012-12-31'
         casa_legislativaTest2.save()
 
-        legislaturaTest1 = models.Legislatura()
-        legislaturaTest1.parlamentar = parlamentarTest1
-        legislaturaTest1.casa_legislativa = casa_legislativaTest1
-        legislaturaTest1.inicio = '2013-01-01'
-        legislaturaTest1.fim = '2013-02-01'
-        legislaturaTest1.partido = partidoTest1
-        legislaturaTest1.localidade = 'PB'
-        legislaturaTest1.save()
-        legislaturaTest2 = models.Legislatura()
-        legislaturaTest2.parlamentar = parlamentarTest2
-        legislaturaTest2.casa_legislativa = casa_legislativaTest2
-        legislaturaTest2.inicio = '2013-01-02'
-        legislaturaTest2.fim = '2013-02-02'
-        legislaturaTest2.partido = partidoTest2
-        legislaturaTest2.localidade = 'PR'
-        legislaturaTest2.save()
+        parlamentarTest1 = models.Parlamentar()
+        parlamentarTest1.id_parlamentar = ''
+        parlamentarTest1.nome = 'Pierre'
+        parlamentarTest1.genero = ''
+        parlamentarTest1.casa_legislativa = casa_legislativaTest1
+        parlamentarTest1.partido = partidoTest1
+        parlamentarTest1.localidade = 'PB'
+        parlamentarTest1.save()
+        parlamentarTest2 = models.Parlamentar()
+        parlamentarTest2.id_parlamentar = ''
+        parlamentarTest2.nome = 'Napoleao'
+        parlamentarTest2.genero = ''
+        parlamentarTest2.casa_legislativa = casa_legislativaTest2
+        parlamentarTest2.partido = partidoTest2
+        parlamentarTest2.localidade = 'PR'
+        parlamentarTest2.save()
 
         proposicaoTest1 = models.Proposicao()
         proposicaoTest1.id_prop = '0001'
@@ -318,13 +291,12 @@ class ModelsTest(TestCase):
         votacaoTest1.save()
 
         votoTest1 = models.Voto(
-            votacao=votacaoTest1, legislatura=legislaturaTest1, opcao='TESTE')
+            votacao=votacaoTest1, parlamentar=parlamentarTest1, opcao='TESTE')
         votoTest1.save()
 
         antes_objetos_partido = models.Partido.objects.all()
-        antes_objetos_parlamentar = models.Parlamentar.objects.all()
         antes_objetos_casa = models.CasaLegislativa.objects.all()
-        antes_objetos_legislatura = models.Legislatura.objects.all()
+        antes_objetos_parlamentar = models.Parlamentar.objects.all()
         antes_objetos_proposicao = models.Proposicao.objects.all()
         antes_objetos_voto = models.Voto.objects.all()
         antes_objetos_votacao = models.Votacao.objects.all()
@@ -341,9 +313,9 @@ class ModelsTest(TestCase):
         self.assertTrue('Casa1' in nomes_casa)
         self.assertTrue('Casa2' in nomes_casa)
 
-        nomes_legislatura = [l.localidade for l in antes_objetos_legislatura]
-        self.assertTrue('PB' in nomes_legislatura)
-        self.assertTrue('PR' in nomes_legislatura)
+        localidades = [p.localidade for p in antes_objetos_parlamentar]
+        self.assertTrue('PB' in localidades)
+        self.assertTrue('PR' in localidades)
 
         nomes_proposicao = [lg.sigla for lg in antes_objetos_proposicao]
         self.assertTrue('PR1' in nomes_proposicao)
@@ -360,9 +332,8 @@ class ModelsTest(TestCase):
         models.CasaLegislativa.deleta_casa('cs1')
 
         depois_objetos_partido = models.Partido.objects.all()
-        depois_objetos_parlamentar = models.Parlamentar.objects.all()
         depois_objetos_casa = models.CasaLegislativa.objects.all()
-        depois_objetos_legislatura = models.Legislatura.objects.all()
+        depois_objetos_parlamentar = models.Parlamentar.objects.all()
         depois_objetos_proposicao = models.Proposicao.objects.all()
         depois_objetos_voto = models.Voto.objects.all()
         depois_objetos_votacao = models.Votacao.objects.all()
@@ -379,9 +350,9 @@ class ModelsTest(TestCase):
         self.assertFalse('Casa1' in nomes_casa)
         self.assertTrue('Casa2' in nomes_casa)
 
-        nomes_legislatura = [l.localidade for l in depois_objetos_legislatura]
-        self.assertFalse('PB' in nomes_legislatura)
-        self.assertTrue('PR' in nomes_legislatura)
+        localidades = [p.localidade for p in depois_objetos_parlamentar]
+        self.assertFalse('PB' in localidades)
+        self.assertTrue('PR' in localidades)
 
         nomes_proposicao = [lg.sigla for lg in depois_objetos_proposicao]
         self.assertFalse('PR1' in nomes_proposicao)
