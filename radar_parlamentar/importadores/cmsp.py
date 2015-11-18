@@ -75,9 +75,16 @@ class GeradorCasaLegislativa(object):
 class XmlCMSP:
 
     def __init__(self, cmsp, verbose=False):
-        self.parlamentares = {}
         self.cmsp = cmsp
+        self.parlamentares = self._init_parlamentares()
         self.verbose = verbose
+
+    def _init_parlamentares(self):
+        """retorna dicionário id_parlamentar -> parlamentar"""
+        parlamentares = {}
+        for p in models.Parlamentar.objects.filter(casa_legislativa=self.cmsp):
+            parlamentares[p.id_parlamentar] = p
+        return parlamentares
 
     def converte_data(self, data_str):
         """Converte string "d/m/a para objeto datetime;

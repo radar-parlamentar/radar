@@ -9,19 +9,18 @@ logger = logging.getLogger("radar")
 
 
 def get_materia_xml(proposicao):
-    url = "http://legis.senado.gov.br/dadosabertos/materia/%s/%s/%s" % (proposicao.sigla,proposicao.numero,proposicao.ano)
-    logger.info(url)
+    url = "http://legis.senado.gov.br/dadosabertos/materia/%s/%s/%s" % (proposicao.sigla, proposicao.numero, proposicao.ano)
     try:
         request = urllib2.Request(url)
-        xml = urllib2.urlopen(request).read()
+        materia_xml = urllib2.urlopen(request).read()
     except urllib2.URLError, error:
         logger.error("urllib2.URLError: %s" % error)
-        raise ValueError('Legislatura %s não encontrada' % id_leg)
+        raise ValueError('materia_xml não encontrada para %s %s/%s' % (proposicao.sigla, proposicao.numero, proposicao.ano))
     try:
-        tree = etree.fromstring(xml)
+        tree = etree.fromstring(materia_xml)
     except etree.ParseError, error:
         logger.error("etree.ParseError: %s" % error)
-        raise ValueError('Legislatura %s não encontrada' % id_leg)
+        raise ValueError('materia_xml não encontrada para %s %s/%s' % (proposicao.sigla, proposicao.numero, proposicao.ano))
     return tree
 
 
@@ -36,12 +35,11 @@ def inserirIndex(proposicao):
     proposicao.save()
 
 def indexar_proposicoes():
-    lista_senado = CasaLegislativa.objects.filter(nome_curto="sen")
-    if len(lista_senado) == 0:
-        raise NameError("Casa Legislativa do senado nao encontrada")
-    lista_proposicao = Proposicao.objects.all().filter(casa_legislativa_id=lista_senado[0].id)
-    for proposicao in lista_proposicao:
-      inserirIndex(proposicao)
+    senado = CasaLegislativa.objects.get(nome_curto="sen")
+    proposicoes = Proposicao.objects.filter(casa_legislativa=senado, 
+        indexacao__isnull=True, ementa__isnull=True)
+    for proposicao in proposicoes:
+        inserirIndex(proposicao)
 
 def main():
     indexar_proposicoes()
