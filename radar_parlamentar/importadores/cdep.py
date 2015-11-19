@@ -309,7 +309,7 @@ class ImportadorCamara:
         LOCK.acquire()
         count_cdep = models.CasaLegislativa.objects.filter(
             nome_curto='cdep').count()
-        if (count_cdep == 0):
+        if not count_cdep:
             camara_dos_deputados = models.CasaLegislativa()
             camara_dos_deputados.nome = 'Câmara dos Deputados'
             camara_dos_deputados.nome_curto = 'cdep'
@@ -327,7 +327,7 @@ class ImportadorCamara:
         for p in models.Parlamentar.objects.filter(casa_legislativa=self.camara_dos_deputados):
             parlamentares[self._key(p)] = p
         return parlamentares
-    
+
     def _key(self, parlamentar):
         return parlamentar.nome + parlamentar.partido.nome + parlamentar.localidade
 
@@ -457,7 +457,7 @@ class ImportadorCamara:
     def _deputado(self, voto_xml):
         """Procura primeiro no cache e depois no banco; se não existir,
         cria novo parlamentar"""
-        nome = voto_xml.get('Nome') 
+        nome = voto_xml.get('Nome')
         partido = self._partido(voto_xml.get('Partido'))
         localidade = voto_xml.get('UF')
         key = nome + partido.nome + localidade
