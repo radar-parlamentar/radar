@@ -1,7 +1,7 @@
 # !/usr/bin/python
 # coding=utf8
 
-# Copyright (C) 2012, Leonardo Leite, Diego Rabatone, Saulo Trento, Carolina Ramalho
+# Copyright (C) 2012, Leonardo Leite, Diego Rabatone, Saulo Trento, Carolina Ramalho, Brenddon Gontijo Furtado
 #
 # This file is part of Radar Parlamentar.
 #
