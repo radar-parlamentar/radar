@@ -148,7 +148,7 @@ class XmlCMSP:
             vereador = self.parlamentares[id_parlamentar]
         else:
             partido = self.partido(ver_tree)
-            
+
             vereador = models.Parlamentar()
             vereador.id_parlamentar = id_parlamentar
             vereador.nome = ver_tree.get('Nome')
@@ -190,7 +190,7 @@ class XmlCMSP:
             # vai retornar prop_nome se votação for de proposição
             prop_nome = self.prop_nome(resumo)
             # se a votacao for associavel a uma proposicao, entao..
-            if (prop_nome):
+            if prop_nome:
                 id_vot = vot_tree.get('VotacaoID')
                 votacoes_em_banco = models.Votacao.objects.filter(
                     id_vot=id_vot)

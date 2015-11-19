@@ -240,7 +240,7 @@ class ProposicoesFinder:
         Buscas são feitas por proposições apresentadas desde ano_min, que
         por padrão é 1991, até o presente.
         """
-        if (ano_max is None):
+        if ano_max is None:
             ano_max = datetime.today().year
         votadas = []
         for ano in range(ano_min, ano_max + 1):
@@ -527,7 +527,7 @@ class SeparadorDeLista:
             math.ceil(1.0 * len(lista) / self.numero_de_listas))
         while start < len(lista):
             end = start + chunk_size
-            if (end > len(lista)):
+            if end > len(lista):
                 end = len(lista)
             lista_de_listas.append(lista[start:end])
             start += chunk_size
