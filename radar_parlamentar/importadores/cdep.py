@@ -338,7 +338,7 @@ class ImportadorCamara:
         LOCK_TO_CREATE_CASA.acquire()
         count_cdep = models.CasaLegislativa.objects.filter(
             nome_curto='cdep').count()
-        if (count_cdep == 0):
+        if not count_cdep:
             camara_dos_deputados = models.CasaLegislativa()
             camara_dos_deputados.nome = 'Câmara dos Deputados'
             camara_dos_deputados.nome_curto = 'cdep'
@@ -436,7 +436,7 @@ class ImportadorCamara:
         opcao_str = voto_xml.get('Voto')
         '''Por algum motivo os votos estavam vindo com muitos espaços em branco
         quebrando a importação dos mesmos'''
-        if (opcao_str.find(" ") > -1):
+        if opcao_str.find(" ") > -1:
             voto.opcao = self._opcao_xml_to_model(
                 opcao_str[0:opcao_str.index(" ")])
         else:
