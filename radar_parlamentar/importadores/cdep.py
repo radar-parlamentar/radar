@@ -65,9 +65,9 @@ class Url(object):
             request = urllib2.Request(url)
             text = urllib2.urlopen(request).read()
         except urllib2.URLError, error:
-            logger.error("urllib2.URLError: %s" % error)
+            logger.error("%s ao acessar %s" % (error, url))
         except urllib2.HTTPError:
-            logger.error("urllib2.HTTPError: %s" % error)
+            logger.error("%s ao acessar %s" % (error, url))
         return text
 
 
@@ -217,9 +217,6 @@ class Camaraws:
 
 class ProposicoesFinder:
 
-    def __init__(self, verbose=False):
-        self.verbose = verbose
-
     def _parse_nomes_lista_proposicoes(self, xml):
         """Recebe XML (objeto etree) do web service
         ListarProposicoesVotadasPlenario e devolve uma lista de tuplas,
@@ -296,12 +293,10 @@ class ImportadorCamara:
     Câmara dos Deputados no banco de dados"""
 
 
-    def __init__(self, votadas, verbose=False):
-        """verbose (booleano) -- ativa/desativa prints na tela
-        votadas -- dicionário com id/sigla/num/ano das proposições que tiveram votações
+    def __init__(self, votadas):
+        """votadas -- dicionário com id/sigla/num/ano das proposições que tiveram votações
         """
         self.camara_dos_deputados = self._gera_casa_legislativa()
-        self.verbose = verbose
         self.votadas = votadas
         self.partidos = {} # nome_partido -> Partido
         self.parlamentares = self._init_parlamentares()
