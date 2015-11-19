@@ -55,12 +55,11 @@ class ExportadoresFileTest(TestCase):
 
         casa_legislativaTest1 = models.CasaLegislativa(
             nome='Camara dos Deputados', nome_curto='cdep', esfera='FEDERAL',
-            local='', atualizacao='2012-06-01')
+            local='')
 
         casa_legislativaTest2 = models.CasaLegislativa(
             nome='Camara Municipal de Sao Paulo', nome_curto='cmsp',
-            esfera='MUNICIPAL', local='Sao Paulo - SP',
-            atualizacao='2012-12-31')
+            esfera='MUNICIPAL', local='Sao Paulo - SP')
 
         casa_legislativaTest1.save()
         casa_legislativaTest2.save()
@@ -111,8 +110,7 @@ class ExportadoresFileTest(TestCase):
         self.assertTrue(os.path.isfile(filepath))
 
     def test_verify_file_casa_legislativa(self):
-        casa_legislativa = models.CasaLegislativa.objects.get(
-            atualizacao='2012-12-31')
+        casa_legislativa = models.CasaLegislativa.objects.get()
         filepath = os.path.join(MODULE_DIR, 'dados/casa_legislativa.xml')
         file_xml = open(filepath, 'r')
         file_read = file_xml.read()  # Transforma o arquivo xml em uma string

@@ -241,14 +241,12 @@ class ModelsTest(TestCase):
         casa_legislativaTest1.nome_curto = 'cs1'
         casa_legislativaTest1.esfera = 'FEDERAL'
         casa_legislativaTest1.local = ''
-        casa_legislativaTest1.atualizacao = '2012-06-01'
         casa_legislativaTest1.save()
         casa_legislativaTest2 = models.CasaLegislativa()
         casa_legislativaTest2.nome = 'Casa2'
         casa_legislativaTest2.nome_curto = 'cs2'
         casa_legislativaTest2.esfera = 'MUNICIPAL'
         casa_legislativaTest2.local = 'local2'
-        casa_legislativaTest2.atualizacao = '2012-12-31'
         casa_legislativaTest2.save()
 
         parlamentarTest1 = models.Parlamentar()

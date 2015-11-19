@@ -35,9 +35,6 @@ import sys
 import xml.etree.ElementTree as etree
 import logging
 
-# data em que os arquivos XMLs foram atualizados
-ULTIMA_ATUALIZACAO = parse_datetime('2015-09-02 0:0:0')
-
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # pasta com os arquivos com os dados fornecidos pelo senado
@@ -59,7 +56,6 @@ class CasaLegislativaGerador:
             sen.nome = 'Senado'
             sen.nome_curto = NOME_CURTO
             sen.esfera = models.FEDERAL
-            sen.atualizacao = ULTIMA_ATUALIZACAO
             sen.save()
         else:
             sen = models.CasaLegislativa.objects.get(nome_curto=NOME_CURTO)

@@ -90,7 +90,6 @@ class JsonAnaliseGenerator:
         dict_casa['nome_curto'] = casa_legislativa.nome_curto
         dict_casa['esfera'] = casa_legislativa.esfera
         dict_casa['local'] = casa_legislativa.local
-        dict_casa['atualizacao'] = unicode(casa_legislativa.atualizacao)
         return dict_casa
 
     def _list_periodos(self):

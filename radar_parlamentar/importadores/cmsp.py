@@ -28,9 +28,6 @@ import sys
 import os
 import xml.etree.ElementTree as etree
 
-# data em que os arquivos XMLs foram atualizados
-ULTIMA_ATUALIZACAO = parse_datetime('2012-12-31 0:0:0')
-
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # arquivos com os dados fornecidos pela cmsp
@@ -67,7 +64,6 @@ class GeradorCasaLegislativa(object):
         cmsp.nome_curto = 'cmsp'
         cmsp.esfera = models.MUNICIPAL
         cmsp.local = 'São Paulo - SP'
-        cmsp.atualizacao = ULTIMA_ATUALIZACAO
         cmsp.save()
         return cmsp
 

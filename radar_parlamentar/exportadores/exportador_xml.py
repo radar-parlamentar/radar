@@ -40,8 +40,7 @@ def serialize_casa_legislativa(nome_curto):
     print "\nExportando dados de %s\n" % casa[0].nome
 
     root = Element('CasaLegislativa', nome=casa[0].nome, nome_curto=casa[
-                   0].nome_curto, esfera=casa[0].esfera, local=casa[0].local,
-                   atualizacao=str(casa[0].atualizacao))
+                   0].nome_curto, esfera=casa[0].esfera, local=casa[0].local)
 
     # Identificando a proposição
     proposicao = models.Proposicao.objects.filter(

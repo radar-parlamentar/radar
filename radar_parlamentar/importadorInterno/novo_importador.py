@@ -53,7 +53,6 @@ class importador_interno:
         casaLegislativa.nome = root.attrib.get("nome")
         casaLegislativa.esfera = root.attrib.get("esfera")
         casaLegislativa.local = root.attrib.get("local")
-        casaLegislativa.atualizacao = root.attrib.get("atualizacao")
         casaLegislativa.save()
 
         for child_proposicao in root.iter("Proposicao"):

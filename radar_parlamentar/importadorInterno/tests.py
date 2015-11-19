@@ -51,12 +51,11 @@ class ImportadorInternoTest(TestCase):
 
         casa_legislativaTest1 = models.CasaLegislativa(
             nome='Camara dos Deputados', nome_curto='cdep', esfera='FEDERAL',
-            local='', atualizacao='2012-06-01')
+            local='')
 
         casa_legislativaTest2 = models.CasaLegislativa(
             nome='Camara Municipal de Sao Paulo', nome_curto='cmsp',
-            esfera='MUNICIPAL', local='Sao Paulo - SP',
-            atualizacao='2012-12-31')
+            esfera='MUNICIPAL', local='Sao Paulo - SP')
 
         casa_legislativaTest1.save()
         casa_legislativaTest2.save()

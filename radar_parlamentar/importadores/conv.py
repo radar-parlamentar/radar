@@ -29,8 +29,6 @@ from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
 from modelagem import models
 
-ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
-
 # Eu queria deixar as datas no século de 1700, mas o datetime só lida com
 # datas a partir de 1900
 INICIO_PERIODO = parse_datetime('1989-01-01 0:0:0')
@@ -54,7 +52,6 @@ class ImportadorConvencao:
         conv.nome_curto = 'conv'
         conv.esfera = models.FEDERAL
         conv.local = 'Paris (FR)'
-        conv.atualizacao = ULTIMA_ATUALIZACAO
         conv.save()
         return conv
 

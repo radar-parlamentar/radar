@@ -54,7 +54,6 @@ class RadarParlamentarIndex():
         self.casa_legislativa_nome_curto = casa_legislativa.nome_curto
         self.casa_legislativa_esfera = casa_legislativa.esfera
         self.casa_legilativa_local = casa_legislativa.local
-        self.casa_legislativa_atualizacao = casa_legislativa.atualizacao.strftime("%Y-%m-%d") 
 
 """
     construcao do modelo json baseado no modelo do banco de dados
@@ -127,10 +126,6 @@ def criar_indice(nome_indice):
     "properties" : {
       "casa_legilativa_local" : {
         "type" : "string"
-      },
-      "casa_legislativa_atualizacao" : {
-        "type" : "date",
-        "format" : "dateOptionalTime"
       },
       "casa_legislativa_esfera" : {
         "type" : "string"
