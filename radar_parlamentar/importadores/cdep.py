@@ -242,6 +242,8 @@ class ProposicoesFinder:
         """
         if (ano_max is None):
             ano_max = datetime.today().year
+        ano_max = 1997 # TODO apagar (debug)
+        ano_min = 1997 # TODO apagar (debug)
         votadas = []
         for ano in range(ano_min, ano_max + 1):
             logger.info('Procurando em %s' % ano)
@@ -296,17 +298,21 @@ class ImportadorCamara:
     def __init__(self, votadas):
         """votadas -- dicionário com id/sigla/num/ano das proposições que tiveram votações
         """
-        self.camara_dos_deputados = self._gera_casa_legislativa()
-        self.votadas = votadas
-        self.partidos = {} # nome_partido -> Partido
-        self.parlamentares = self._init_parlamentares()
+        self.iniciado = False
+        LOCK.acquire
+        if not self.iniciado:
+            self.camara_dos_deputados = self._gera_casa_legislativa()
+            self.votadas = votadas
+            self.partidos = {} # nome_partido -> Partido
+            self.parlamentares = self._init_parlamentares()
+            self.iniciado = True
+        LOCK.release
 
     def _gera_casa_legislativa(self):
         """Gera objeto do tipo CasaLegislativa
         Câmara dos Deputados e o salva no banco de dados.
         Caso cdep já exista no banco de dados, retorna o objeto já existente.
         """
-        LOCK.acquire()
         count_cdep = models.CasaLegislativa.objects.filter(
             nome_curto='cdep').count()
         if (count_cdep == 0):
@@ -318,7 +324,6 @@ class ImportadorCamara:
             LOCK.release()
             return camara_dos_deputados
         else:
-            LOCK.release()
             return models.CasaLegislativa.objects.get(nome_curto='cdep')
 
     def _init_parlamentares(self):
@@ -329,7 +334,7 @@ class ImportadorCamara:
         return parlamentares
     
     def _key(self, parlamentar):
-        return parlamentar.nome + parlamentar.partido.nome + parlamentar.localidade
+        return (parlamentar.nome, parlamentar.partido.nome, parlamentar.localidade)
 
     def _converte_data(self, data_str, hora_str='00:00'):
         """Converte string 'd/m/a' para objeto datetime;
@@ -460,8 +465,10 @@ class ImportadorCamara:
         nome = voto_xml.get('Nome') 
         partido = self._partido(voto_xml.get('Partido'))
         localidade = voto_xml.get('UF')
-        key = nome + partido.nome + localidade
+        key = (nome, partido.nome, localidade)
+        LOCK.acquire
         parlamentar = self.parlamentares.get(key)
+        LOCK.release
         if not parlamentar:
             parlamentar = models.Parlamentar()
             parlamentar.id_parlamentar = voto_xml.get('ideCadastro')
@@ -470,7 +477,9 @@ class ImportadorCamara:
             parlamentar.localidade = localidade
             parlamentar.casa_legislativa = self.camara_dos_deputados
             parlamentar.save()
+            LOCK.acquire
             self.parlamentares[key] = parlamentar
+            LOCK.release
         return parlamentar
 
     def _partido(self, nome_partido):

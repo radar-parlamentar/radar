@@ -76,11 +76,14 @@ class XmlCMSP:
         self.verbose = verbose
 
     def _init_parlamentares(self):
-        """retorna dicionário id_parlamentar -> parlamentar"""
+        """retorna dicionário (nome_parlamentar, nome_partido) -> Parlamentar"""
         parlamentares = {}
         for p in models.Parlamentar.objects.filter(casa_legislativa=self.cmsp):
-            parlamentares[p.id_parlamentar] = p
+            parlamentares[self._key(p)] = p
         return parlamentares
+    
+    def _key(self, parlamentar):
+        return (parlamentar.nome, parlamentar.partido.nome)
 
     def converte_data(self, data_str):
         """Converte string "d/m/a para objeto datetime;
@@ -139,22 +142,22 @@ class XmlCMSP:
         return partido
 
     def vereador(self, ver_tree):
-        id_parlamentar = ver_tree.get('IDParlamentar')
-        if id_parlamentar in self.parlamentares:
-            vereador = self.parlamentares[id_parlamentar]
+        nome_vereador = ver_tree.get('Nome')
+        partido = self.partido(ver_tree)
+        key = (nome_vereador, partido.nome)
+        if key in self.parlamentares:
+            vereador = self.parlamentares[key]
         else:
-            partido = self.partido(ver_tree)
-            
+            id_parlamentar = ver_tree.get('IDParlamentar')
             vereador = models.Parlamentar()
             vereador.id_parlamentar = id_parlamentar
-            vereador.nome = ver_tree.get('Nome')
+            vereador.nome = nome_vereador
             vereador.partido = partido
             vereador.casa_legislativa = self.cmsp
-            # TODO vereador.genero
             vereador.save()
             if self.verbose:
                 print 'Vereador %s salvo' % vereador
-            self.parlamentares[id_parlamentar] = vereador
+            self.parlamentares[key] = vereador
         return vereador
 
     def votos_from_tree(self, vot_tree, votacao):

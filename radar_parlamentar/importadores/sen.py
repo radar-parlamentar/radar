@@ -26,7 +26,6 @@ Classes:
 """
 
 from __future__ import unicode_literals
-from django.utils.dateparse import parse_datetime
 from datetime import date
 from modelagem import models
 import re
@@ -72,11 +71,14 @@ class ImportadorVotacoesSenado:
         self.proposicoes = self._init_proposicoes()
 
     def _init_parlamentares(self):
-        """retorna dicionário id_parlamentar -> parlamentar"""
+        """retorna dicionário (nome_parlamentar, nome_partido, localidade) -> Parlamentar"""
         parlamentares = {}
         for p in models.Parlamentar.objects.filter(casa_legislativa=self.senado):
-            parlamentares[p.id_parlamentar] = p
+            parlamentares[self._key(p)] = p
         return parlamentares
+    
+    def _key(self, parlamentar):
+        return (parlamentar.nome, parlamentar.partido.nome, parlamentar.localidade)
 
     def _init_proposicoes(self):
         """retorna dicionário "sigla num/ano" -> Proposicao"""
@@ -128,22 +130,25 @@ class ImportadorVotacoesSenado:
         return partido
 
     def _find_parlamentar(self, voto_parlamentar_tree):
-        codigo = voto_parlamentar_tree.find('CodigoParlamentar').text
-        if codigo in self.parlamentares:
-            senador = self.parlamentares[codigo]
+        nome_senador = voto_parlamentar_tree.find('NomeParlamentar').text
+        nome_partido = voto_parlamentar_tree.find('SiglaPartido').text
+        localidade = voto_parlamentar_tree.find('SiglaUF').text
+        partido = self._find_partido(nome_partido)
+        key = (nome_senador, partido.nome, localidade)
+        if key in self.parlamentares:
+            senador = self.parlamentares[key]
         else:
-            nome = voto_parlamentar_tree.find('NomeParlamentar').text
+            codigo = voto_parlamentar_tree.find('CodigoParlamentar').text
             sexo = voto_parlamentar_tree.find('SexoParlamentar').text
             senador = models.Parlamentar()
             senador.id_parlamentar = codigo
-            senador.nome = nome
+            senador.nome = nome_senador
             senador.genero = sexo
             senador.casa_legislativa = self.senado 
-            sigla_partido = voto_parlamentar_tree.find('SiglaPartido').text
-            senador.partido = self._find_partido(sigla_partido) 
-            senador.localidade = voto_parlamentar_tree.find('SiglaUF').text 
+            senador.partido = partido 
+            senador.localidade = localidade 
             senador.save()
-            self.parlamentares[codigo] = senador
+            self.parlamentares[key] = senador
             self.progresso()
         return senador
 
