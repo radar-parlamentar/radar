@@ -303,7 +303,6 @@ class ImportadorCamara:
         if not self.iniciado:
             self.camara_dos_deputados = self._gera_casa_legislativa()
             self.votadas = votadas
-            self.partidos = {} # nome_partido -> Partido
             self.parlamentares = self._init_parlamentares()
             self.iniciado = True
         LOCK.release
@@ -483,18 +482,11 @@ class ImportadorCamara:
         return parlamentar
 
     def _partido(self, nome_partido):
-        """Procura primeiro no cache e depois no banco; se não existir,
-        cria novo partido"""
         nome_partido = nome_partido.strip()
-        partido = self.partidos.get(nome_partido)
-        if not partido:
-            partido = models.Partido.from_nome(nome_partido)
-            if partido is None:
-                logger.warning('Não achou o partido %s; Usando "sem partido"' % nome_partido)
-                partido = models.Partido.get_sem_partido()
-            else:
-                partido.save()
-                self.partidos[nome_partido] = partido
+        partido = models.Partido.from_nome(nome_partido)
+        if partido is None:
+            logger.warn('Não achou o partido %s' % nome_partido)
+            partido = models.Partido.get_sem_partido()
         return partido
 
     def _progresso(self):
