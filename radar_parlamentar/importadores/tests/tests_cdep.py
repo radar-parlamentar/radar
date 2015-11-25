@@ -21,17 +21,20 @@
 from __future__ import unicode_literals
 from django.test import TestCase
 from importadores import cdep
-from importadores.tests.mocks_cdep import mock_obter_proposicao
-from importadores.tests.mocks_cdep import mock_listar_proposicoes
-from importadores.tests.mocks_cdep import mock_obter_votacoes
-from importadores.tests.mocks_cdep import mock_obter_proposicoes_votadas_plenario
-from mock import Mock
 from modelagem import models
+import os
+import xml.etree.ElementTree as etree
+from mock import Mock
+from importadores.tests.mocks_cdep import mock_obter_proposicoes_votadas_plenario
 
 # constantes relativas ao código florestal
 # Alterar teste para que o mesmo utilize alguma proposicao retornada pela
 # funcionalidade do Plenário.
 # constantes relativas a emenda à consituição
+
+MOCK_PATH = os.path.join(cdep.RESOURCES_FOLDER, 'mocks')
+PROPOSICAO_XML_COD_FLORESTAL = os.path.join(MOCK_PATH, 'proposicao_17338')
+VOTACOES_XML_COD_FLORESTAL = os.path.join(MOCK_PATH, 'votacoes_PL18761999')
 
 ID = '17338'
 ANO = '1999'
@@ -97,17 +100,15 @@ class CamaraTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        # vamos importar apenas as votações das proposições em votadas_test.txt
-        votadasParser = cdep.ProposicoesParser(test_votadas)
-        votadas = votadasParser.parse()
-        importer = cdep.ImportadorCamara(votadas)
-        # dublando a camara
-        camaraWS = cdep.Camaraws()
-        camaraWS.listar_proposicoes = Mock(side_effect=mock_listar_proposicoes)
-        camaraWS.obter_proposicao_por_id = Mock(
-            side_effect=mock_obter_proposicao)
-        camaraWS.obter_votacoes = Mock(side_effect=mock_obter_votacoes)
-        importer.importar(camaraWS)
+        # vamos importar apenas o código florestal
+        with open (PROPOSICAO_XML_COD_FLORESTAL, "r") as f:
+            prop_xml_str = f.read()
+        with open (VOTACOES_XML_COD_FLORESTAL, "r") as f:
+            vots_xml_str = f.read()
+        prop_xml = etree.fromstring(prop_xml_str)
+        vots_xml = etree.fromstring(vots_xml_str)
+        importer = cdep.ImportadorCamara()
+        importer.importar({prop_xml : vots_xml})
 
     @classmethod
     def tearDownClass(cls):
@@ -119,10 +120,8 @@ class CamaraTest(TestCase):
         self.assertEquals(camara.nome, 'Câmara dos Deputados')
 
     def test_prop_cod_florestal(self):
-        votadasParser = cdep.ProposicoesParser(test_votadas)
-        votadas = votadasParser.parse()
-        importer = cdep.ImportadorCamara(votadas)
-        data = importer._converte_data('19/10/1999')
+        # transformar _convert_data em static
+        data = cdep._converte_data('19/10/1999')
         prop_cod_flor = models.Proposicao.objects.get(id_prop=ID)
         self.assertEquals(prop_cod_flor.nome(), NOME)
         self.assertEquals(
@@ -139,8 +138,7 @@ class CamaraTest(TestCase):
         vot = votacoes[0]
         self.assertTrue('REQUERIMENTO DE RETIRADA DE PAUTA' in vot.descricao)
 
-        importer = cdep.ImportadorCamara(votacoes)
-        data = importer._converte_data('24/5/2011')
+        data = cdep._converte_data('24/5/2011')
         vot = votacoes[1]
         self.assertEquals(vot.data.day, data.day)
         self.assertEquals(vot.data.month, data.month)
@@ -149,17 +147,17 @@ class CamaraTest(TestCase):
     def test_votos_cod_florestal(self):
         votacao = models.Votacao.objects.filter(proposicao__id_prop=ID)[0]
         voto1 = [
-            v for v in votacao.votos() if v.legislatura.parlamentar.nome == 'Mara Gabrilli'][0]
+            v for v in votacao.votos() if v.parlamentar.nome == 'Mara Gabrilli'][0]
         voto2 = [
-            v for v in votacao.votos() if v.legislatura.parlamentar.nome == 'Carlos Roberto'][0]
+            v for v in votacao.votos() if v.parlamentar.nome == 'Carlos Roberto'][0]
         self.assertEquals(voto1.opcao, models.SIM)
         self.assertEquals(voto2.opcao, models.NAO)
-        self.assertEquals(voto1.legislatura.partido.nome, 'PSDB')
-        self.assertEquals(voto2.legislatura.localidade, 'SP')
+        self.assertEquals(voto1.parlamentar.partido.nome, 'PSDB')
+        self.assertEquals(voto2.parlamentar.localidade, 'SP')
 
 
 class WsPlenarioTest(TestCase):
-
+ 
     def test_prop_in_xml(self):
         ano_min = 2013
         ano_max = 2013
@@ -172,7 +170,7 @@ class WsPlenarioTest(TestCase):
         prop_test = ('14245', 'PEC 3/1999')
         for x in range(0, len(zip_votadas)):
             self.assertTrue(prop_test in zip_votadas[x])
-
+ 
     def test_prop_in_dict(self):
         ano_min = 2013
         ano_max = 2013

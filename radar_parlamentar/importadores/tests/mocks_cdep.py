@@ -1,7 +1,7 @@
 # !/usr/bin/python
 # coding=utf8
 
-# Copyright (C) 2012, Leonardo Leite, Diego Rabatone
+# Copyright (C) 2012, Eduardo Hideo
 #
 # This file is part of Radar Parlamentar.
 #

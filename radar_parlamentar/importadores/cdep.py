@@ -38,8 +38,7 @@ RESOURCES_FOLDER = os.path.join(MODULE_DIR, 'dados/cdep/')
 
 NUM_THREADS = 16
 
-#ANO_MIN=1991 # só serão buscadas votações a partir de ANO_MIN
-ANO_MIN=2015
+ANO_MIN=1991 # só serão buscadas votações a partir de ANO_MIN
 
 logger = logging.getLogger("radar")
 
@@ -240,8 +239,6 @@ class ProposicoesFinder:
         """
         if ano_max is None:
             ano_max = datetime.today().year
-        ano_max = 1997 # TODO apagar (debug)
-        ano_min = 1997 # TODO apagar (debug)
         votadas = []
         for ano in range(ano_min, ano_max + 1):
             logger.info('Procurando em %s' % ano)
@@ -342,6 +339,22 @@ def wait_threads(threads):
     for t in threads:
         t.join()
 
+def _converte_data(data_str, hora_str='00:00'):
+    """Converte string 'd/m/a' para objeto datetime;
+    retona None se data_str é inválido
+    Pode também receber horário: hora_str como 'h:m'
+    """
+    DATA_REGEX = '(\d\d?)/(\d\d?)/(\d{4})'
+    HORA_REGEX = '(\d\d?):(\d\d?)'
+    dt = re.match(DATA_REGEX, data_str)
+    hr = re.match(HORA_REGEX, hora_str)
+    if dt and hr:
+        new_str = '%s-%s-%s %s:%s:0' % (
+            dt.group(3), dt.group(2), dt.group(1),
+            hr.group(1), hr.group(2))
+        return parse_datetime(new_str)
+    else:
+        return None
 
 class ImportadorCamara:
 
@@ -400,7 +413,8 @@ class ImportadorCamara:
         return (votacao.proposicao.id_prop, votacao.descricao, votacao.data)
         
     def importar(self, xmls):
-        """xmls -- dic proposicao_xml -> votacoes_xml"""
+        """xmls -- dic proposicao_xml -> votacoes_xml
+        * xmls são do tipo etree"""
         for prop_xml, vots_xml in xmls.items():
             try:
                 prop = self._prop_from_xml(prop_xml)
@@ -429,29 +443,12 @@ class ImportadorCamara:
             prop.indexacao = prop_xml.find('Indexacao').text.strip()
             prop.autor_principal = prop_xml.find('Autor').text.strip()
             date_str = prop_xml.find('DataApresentacao').text.strip()
-            prop.data_apresentacao = self._converte_data(date_str)
+            prop.data_apresentacao = _converte_data(date_str)
             prop.situacao = prop_xml.find('Situacao').text.strip()
             prop.casa_legislativa = self.camara_dos_deputados
             prop.save()
             self.proposicoes[id_prop] = prop
         return prop
-
-    def _converte_data(self, data_str, hora_str='00:00'):
-        """Converte string 'd/m/a' para objeto datetime;
-        retona None se data_str é inválido
-        Pode também receber horário: hora_str como 'h:m'
-        """
-        DATA_REGEX = '(\d\d?)/(\d\d?)/(\d{4})'
-        HORA_REGEX = '(\d\d?):(\d\d?)'
-        dt = re.match(DATA_REGEX, data_str)
-        hr = re.match(HORA_REGEX, hora_str)
-        if dt and hr:
-            new_str = '%s-%s-%s %s:%s:0' % (
-                dt.group(3), dt.group(2), dt.group(1),
-                hr.group(1), hr.group(2))
-            return parse_datetime(new_str)
-        else:
-            return None
 
     def _votacao_from_xml(self, votacao_xml, prop):
         """Salva votação no banco de dados.
@@ -467,7 +464,7 @@ class ImportadorCamara:
             votacao_xml.get('Resumo'), votacao_xml.get('ObjVotacao'))
         data_str = votacao_xml.get('Data').strip()
         hora_str = votacao_xml.get('Hora').strip()
-        data = self._converte_data(data_str, hora_str)
+        data = _converte_data(data_str, hora_str)
 
         key = (prop.id_prop, descricao, data)
         if key in self.votacoes:
