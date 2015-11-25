@@ -276,5 +276,5 @@ def main():
     importer = ImportadorVotacoesSenado()
     importer.importar_votacoes()
     logger.info('IMPORTANDO INDICES DO SENADO')
-    import importadores.indexacao_sen as indexacao_senado
+    import importadores.sen_indexacao as indexacao_senado
     indexacao_senado.indexar_proposicoes()
