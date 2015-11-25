@@ -615,8 +615,7 @@ def main():
     importador = ImportadorCamara()
     importador.importar(all_xmls)
     
-
-#    from importadores import importador_genero
-#    importador_genero.main()
+    from importadores import cdep_genero
+    cdep_genero.main()
     logger.info('IMPORTACAO DE DADOS DA CAMARA DOS DEPUTADOS FINALIZADA')
 
