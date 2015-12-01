@@ -1,1 +1,1 @@
-python manage.py test modelagem analises exportadores importadorInterno importadores radar_parlamentar
+python manage.py test modelagem analises importadores radar_parlamentar
