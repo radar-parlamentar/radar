@@ -22,7 +22,6 @@ from django.test import TestCase
 from modelagem.models import Proposicao
 from modelagem.models import Parlamentar
 from analises.genero import Genero
-from modelagem import models
 
 class GeneroTest(TestCase):
 
