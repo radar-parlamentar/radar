@@ -23,9 +23,8 @@ from django.test import TestCase
 from modelagem import models
 from elasticsearch import Elasticsearch
 from django.conf import settings
-import re
 
-# TODO
+# TODO: AND no elasticsearch
 # es.search(index=settings.ELASTIC_SEARCH_INDEX, q="casa_legislativa_nome_curto:cmsp AND Educação)
 # não retorna a votação 204
 # Mas
@@ -33,8 +32,7 @@ import re
 # retorna a votação 204!
 # Como pode um "AND" a mais retornar mais coisas?
 
-# TODO
-# Que fazer quando o ElasticSearch não retorna resultados?
+# TODO: Que fazer quando o ElasticSearch não retorna resultados?
 
 class LuceneQueryBuilder():
 

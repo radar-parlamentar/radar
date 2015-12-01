@@ -46,7 +46,7 @@ class AnalisadorPeriodoTest(TestCase):
         self.partidos = AnalisadorPeriodoTest.importer.partidos
         self.votacoes = models.Votacao.objects.filter(
             proposicao__casa_legislativa__nome_curto='conv')
-        self.legislaturas = models.Legislatura.objects.filter(
+        self.parlamentares = models.Parlamentar.objects.filter(
             casa_legislativa__nome_curto='conv').distinct()
         for partido in self.partidos:
             if partido.nome == conv.GIRONDINOS:
@@ -102,7 +102,7 @@ class MatrizesDeDadosBuilderTest(TestCase):
         self.partidos = MatrizesDeDadosBuilderTest.importer.partidos
         self.votacoes = models.Votacao.objects.filter(
             proposicao__casa_legislativa__nome_curto='conv')
-        self.legislaturas = models.Legislatura.objects.filter(
+        self.parlamentares = models.Parlamentar.objects.filter(
             casa_legislativa__nome_curto='conv').distinct()
 
     def test_matriz_votacoes(self):
@@ -122,7 +122,7 @@ class MatrizesDeDadosBuilderTest(TestCase):
              [-1.,  1.,  1., -1., -1.,  1.,  0.,  0.],
              [-1.,  1.,  1.,  0., -1.,  1.,  1.,  1.]])
         builder = analise.MatrizesDeDadosBuilder(
-            self.votacoes, self.partidos, self.legislaturas)
+            self.votacoes, self.partidos, self.parlamentares)
         builder.gera_matrizes()
         self.assertTrue(
             (builder.matriz_votacoes == MATRIZ_VOTACAO_ESPERADA).all())
@@ -146,7 +146,7 @@ class MatrizesDeDadosBuilderTest(TestCase):
               1.,  1.,  0.,  0.],
              [1.,  1.,  1.,  0.,  1.,  1.,  1.,  1.]])
         builder = analise.MatrizesDeDadosBuilder(
-            self.votacoes, self.partidos, self.legislaturas)
+            self.votacoes, self.partidos, self.parlamentares)
         builder.gera_matrizes()
         self.assertTrue(
             (builder.matriz_presencas == MATRIZ_PRESENCAS_ESPERADA).all())
@@ -170,7 +170,7 @@ class AnalisadorTemporalTest(TestCase):
         self.partidos = AnalisadorTemporalTest.importer.partidos
         self.votacoes = models.Votacao.objects.filter(
             proposicao__casa_legislativa__nome_curto='conv')
-        self.legislaturas = models.Legislatura.objects.filter(
+        self.parlamentares = models.Parlamentar.objects.filter(
             casa_legislativa__nome_curto='conv').distinct()
         for partido in self.partidos:
             if partido.nome == conv.GIRONDINOS:
@@ -238,13 +238,13 @@ class RotacionadorTest(TestCase):
         rotacionador = analise.Rotacionador(
             analise_do_periodo2, analise_do_periodo1)
         analise_rotacionada = rotacionador.espelha_ou_roda()
-        grafico = analise_rotacionada.coordenadas_legislaturas
-        # legislatura 1
+        grafico = analise_rotacionada.coordenadas_parlamentares
+        # parlamentar 1
         self.assertAlmostEqual(grafico[1][0], -0.29498659, 4)
         self.assertAlmostEqual(grafico[1][1], -0.06674737, 4)
-        # legislatura 4
+        # parlamentar 4
         self.assertAlmostEqual(grafico[4][0], -0.11386368, 4)
         self.assertAlmostEqual(grafico[4][1], -0.38797608, 4)
-        # legislatura 9
+        # parlamentar 9
         self.assertAlmostEqual(grafico[9][0], 0.49080368, 4)
         self.assertAlmostEqual(grafico[9][1], -0.20057948, 4)
