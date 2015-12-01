@@ -201,17 +201,16 @@ class JsonAnaliseGenerator:
                 partido, label_periodo)
             dict_partido["r"].append(raio)
         dict_partido["parlamentares"] = []
-        #legislaturas = self.analise_temporal.analises_periodo[0].legislaturas_por_partido[partido.nome]
-        legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(
-            partido=partido).select_related('id', 'localidade', 'partido__nome', 'parlamentar__nome')
-        for leg in legislaturas:
-            dict_partido["parlamentares"].append(self._dict_parlamentar(leg))
+        parlamentares = self.analise_temporal.casa_legislativa.parlamentares().filter(
+            partido=partido).select_related('id', 'localidade', 'partido__nome', 'nome')
+        for parlamentar in parlamentares:
+            dict_partido["parlamentares"].append(self._dict_parlamentar(parlamentar))
         return dict_partido
 
-    def _dict_parlamentar(self, legislatura):
-        leg_id = legislatura.id
-        nome = legislatura.parlamentar.nome
-        localidade = legislatura.localidade
+    def _dict_parlamentar(self, parlamentar):
+        leg_id = parlamentar.id
+        nome = parlamentar.nome
+        localidade = parlamentar.localidade
         dict_parlamentar = {
             "nome": nome, "id": leg_id, "localidade": localidade}
         dict_parlamentar["x"] = []
@@ -219,7 +218,7 @@ class JsonAnaliseGenerator:
         for ap in self.analise_temporal.analises_periodo:
             cache_coords_key = str(ap.periodo)
             coordenadas = self.parlamentaresScaler.scale(
-                ap.coordenadas_legislaturas, cache_coords_key)
+                ap.coordenadas_parlamentares, cache_coords_key)
             if coordenadas.has_key(leg_id):
                 x = coordenadas[leg_id][0]
                 y = coordenadas[leg_id][1]
