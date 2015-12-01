@@ -438,6 +438,7 @@ class ImportadorCamara:
             prop.sigla = prop_xml.get('tipo').strip()
             prop.numero = prop_xml.get('numero').strip()
             prop.ano = prop_xml.get('ano').strip()
+            logger.info("Importando %s %s/%s" % (prop.sigla, prop.numero, prop.ano))
             prop.ementa = prop_xml.find('Ementa').text.strip()
             prop.descricao = prop_xml.find('ExplicacaoEmenta').text.strip()
             prop.indexacao = prop_xml.find('Indexacao').text.strip()
@@ -523,7 +524,8 @@ class ImportadorCamara:
         """Procura primeiro no cache e depois no banco; se não existir,
         cria novo parlamentar"""
         nome = voto_xml.get('Nome')
-        partido = self._partido(voto_xml.get('Partido'))
+        nome_partido = voto_xml.get('Partido')
+        partido = self._partido(nome_partido)
         localidade = voto_xml.get('UF')
         key = (nome, partido.nome, localidade)
         parlamentar = self.parlamentares.get(key)
@@ -535,6 +537,9 @@ class ImportadorCamara:
             parlamentar.localidade = localidade
             parlamentar.casa_legislativa = self.camara_dos_deputados
             parlamentar.save()
+            if partido.numero == 0:
+                logger.warn('Não achou o partido %s' % nome_partido)
+                logger.info('Deputado %s inserido sem partido' % nome)
             self.parlamentares[key] = parlamentar
         return parlamentar
 
@@ -542,7 +547,6 @@ class ImportadorCamara:
         nome_partido = nome_partido.strip()
         partido = models.Partido.from_nome(nome_partido)
         if partido is None:
-            logger.warn('Não achou o partido %s' % nome_partido)
             partido = models.Partido.get_sem_partido()
         return partido
 
