@@ -27,37 +27,28 @@ import xml.etree.ElementTree as etree
 from mock import Mock
 from importadores.tests.mocks_cdep import mock_obter_proposicoes_votadas_plenario
 
-# constantes relativas ao código florestal
-# Alterar teste para que o mesmo utilize alguma proposicao retornada pela
-# funcionalidade do Plenário.
-# constantes relativas a emenda à consituição
 
 MOCK_PATH = os.path.join(cdep.RESOURCES_FOLDER, 'mocks')
-PROPOSICAO_XML_COD_FLORESTAL = os.path.join(MOCK_PATH, 'proposicao_17338')
-VOTACOES_XML_COD_FLORESTAL = os.path.join(MOCK_PATH, 'votacoes_PL18761999')
+PROPOSICAO_XML_COD_FLORESTAL = os.path.join(MOCK_PATH, 'proposicao_17338.xml')
+VOTACOES_XML_COD_FLORESTAL = os.path.join(MOCK_PATH, 'votacoes_PL18761999.xml')
 
-ID = '17338'
-ANO = '1999'
-SIGLA = 'PL'
-NUM = '1876'
-NOME = 'PL 1876/1999'
+ID_FLORESTAL = '17338'
+NOME_FLORESTAL = 'PL 1876/1999'
 
 
-ID_PLENARIO = '584279'
-ANO_PLENARIO = '2013'
-SIGLA_PLENARIO = 'REQ'
-NUM_PLENARIO = '8196'
+class ProposicoesFinderTest(TestCase):
 
-test_votadas = [[('17338', 'PL 1876/1999')]]
-
-
-class ProposicoesParserTest(TestCase):
-
-    def test_parse(self):
-        votadasParser = cdep.ProposicoesParser(test_votadas)
-        votadas = votadasParser.parse()
-        codigo_florestal = {'id': ID, 'sigla': SIGLA, 'num': NUM, 'ano': ANO}
-        self.assertTrue(codigo_florestal in votadas)
+    def test_prop_in_xml(self):
+        ano_min = 2013
+        ano_max = 2013
+        camaraws = cdep.Camaraws()
+        camaraws.obter_proposicoes_votadas_plenario = Mock(
+            side_effect=mock_obter_proposicoes_votadas_plenario)
+        proposicoesFinder = cdep.ProposicoesFinder()
+        dic_votadas = proposicoesFinder.find_props_disponiveis(
+            ano_min, ano_max, camaraws)
+        proposicao = {'id': '14245', 'sigla': 'PEC', 'num': '3', 'ano': '1999'}
+        self.assertTrue(proposicao in dic_votadas)
 
 
 class SeparadorDeListaTest(TestCase):
@@ -96,19 +87,19 @@ class SeparadorDeListaTest(TestCase):
         self.assertEquals(listas[2], [7])
 
 
-class CamaraTest(TestCase):
+class ImportadorCamaraTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
         # vamos importar apenas o código florestal
-        with open (PROPOSICAO_XML_COD_FLORESTAL, "r") as f:
+        with open(PROPOSICAO_XML_COD_FLORESTAL, "r") as f:
             prop_xml_str = f.read()
-        with open (VOTACOES_XML_COD_FLORESTAL, "r") as f:
+        with open(VOTACOES_XML_COD_FLORESTAL, "r") as f:
             vots_xml_str = f.read()
         prop_xml = etree.fromstring(prop_xml_str)
         vots_xml = etree.fromstring(vots_xml_str)
         importer = cdep.ImportadorCamara()
-        importer.importar({prop_xml : vots_xml})
+        importer.importar({prop_xml: vots_xml})
 
     @classmethod
     def tearDownClass(cls):
@@ -120,19 +111,18 @@ class CamaraTest(TestCase):
         self.assertEquals(camara.nome, 'Câmara dos Deputados')
 
     def test_prop_cod_florestal(self):
-        # transformar _convert_data em static
         data = cdep._converte_data('19/10/1999')
-        prop_cod_flor = models.Proposicao.objects.get(id_prop=ID)
-        self.assertEquals(prop_cod_flor.nome(), NOME)
-        self.assertEquals(
-            prop_cod_flor.situacao,
-            'Tranformada no(a) Lei Ordinária 12651/2012')
+        prop_cod_flor = models.Proposicao.objects.get(id_prop=ID_FLORESTAL)
+        self.assertEquals(prop_cod_flor.nome(), NOME_FLORESTAL)
+        self.assertEquals(prop_cod_flor.situacao,
+                          'Tranformada no(a) Lei Ordinária 12651/2012')
         self.assertEquals(prop_cod_flor.data_apresentacao.day, data.day)
         self.assertEquals(prop_cod_flor.data_apresentacao.month, data.month)
         self.assertEquals(prop_cod_flor.data_apresentacao.year, data.year)
 
     def test_votacoes_cod_florestal(self):
-        votacoes = models.Votacao.objects.filter(proposicao__id_prop=ID)
+        votacoes = models.Votacao.objects.filter(
+            proposicao__id_prop=ID_FLORESTAL)
         self.assertEquals(len(votacoes), 5)
 
         vot = votacoes[0]
@@ -145,7 +135,8 @@ class CamaraTest(TestCase):
         self.assertEquals(vot.data.year, data.year)
 
     def test_votos_cod_florestal(self):
-        votacao = models.Votacao.objects.filter(proposicao__id_prop=ID)[0]
+        votacao = models.Votacao.objects.filter(
+            proposicao__id_prop=ID_FLORESTAL)[0]
         voto1 = [
             v for v in votacao.votos() if v.parlamentar.nome == 'Mara Gabrilli'][0]
         voto2 = [
@@ -155,33 +146,15 @@ class CamaraTest(TestCase):
         self.assertEquals(voto1.parlamentar.partido.nome, 'PSDB')
         self.assertEquals(voto2.parlamentar.localidade, 'SP')
 
-
-class WsPlenarioTest(TestCase):
- 
-    def test_prop_in_xml(self):
-        ano_min = 2013
-        ano_max = 2013
-        camaraWS = cdep.Camaraws()
-        camaraWS.obter_proposicoes_votadas_plenario = Mock(
-            side_effect=mock_obter_proposicoes_votadas_plenario)
-        propFinder = cdep.ProposicoesFinder()
-        zip_votadas = propFinder.find_props_disponiveis(
-            ano_min, ano_max, camaraWS)
-        prop_test = ('14245', 'PEC 3/1999')
-        for x in range(0, len(zip_votadas)):
-            self.assertTrue(prop_test in zip_votadas[x])
- 
-    def test_prop_in_dict(self):
-        ano_min = 2013
-        ano_max = 2013
-        camaraWS = cdep.Camaraws()
-        camaraWS.obter_proposicoes_votadas_plenario = Mock(
-            side_effect=mock_obter_proposicoes_votadas_plenario)
-        propFinder = cdep.ProposicoesFinder()
-        zip_votadas = propFinder.find_props_disponiveis(
-            ano_min, ano_max, camaraWS)
-        propParser = cdep.ProposicoesParser(zip_votadas)
-        dict_votadas = propParser.parse()
-        prop_in_dict = {'id': ID_PLENARIO, 'sigla':
-                        SIGLA_PLENARIO, 'num': NUM_PLENARIO, 'ano': ANO_PLENARIO}
-        self.assertTrue(prop_in_dict in dict_votadas)
+    def test_nao_tem_parlamentares_repetidos(self):
+        todos = models.Parlamentar.objects.filter(
+            casa_legislativa__nome_curto='cdep')
+        self.assertTrue(todos.count() > 100)
+        repetidos = []
+        for p in todos:
+            count_p = models.Parlamentar.objects.filter(
+                casa_legislativa__nome_curto='cdep', nome=p.nome, 
+                partido__numero=p.partido.numero, localidade=p.localidade).count()
+            if count_p > 1:
+                repetidos.append(p)
+        self.assertTrue(len(repetidos) == 0)

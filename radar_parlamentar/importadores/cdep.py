@@ -214,72 +214,45 @@ class Camaraws:
 
 class ProposicoesFinder:
 
-    def _parse_nomes_lista_proposicoes(self, xml):
-        """Recebe XML (objeto etree) do web service
-        ListarProposicoesVotadasPlenario e devolve uma lista de tuplas,
-        o primeiro item da tuple é o id da proposição, e o segundo item
-        é o nome da proposição (sigla num/ano).
-        """
-        list_id_prop = []
-        list_nome = []
-        for child in xml:
-            id_prop = child.find('codProposicao').text.strip()
-            nome_prop = child.find('nomeProposicao').text.strip()
-            list_id_prop.append(id_prop)
-            list_nome.append(nome_prop)
-        return zip(list_id_prop, list_nome)
-
     def find_props_disponiveis(self, ano_max=None, ano_min=ANO_MIN,
                                camaraws=Camaraws()):
-        """Retorna uma lista com os ids e nomes das proposicoes disponibilizada
-        pela funcionalidade ListarProposicoesVotadasPlenario.
 
-        Buscas são feitas por proposições apresentadas desde ano_min, que
-        por padrão é 1991, até o presente.
+        """Retorna uma lista com proposicoes que tiveram votações
+        entre ano_min e ano_max.
+        Cada votação é um dicionário com chaves \in {id, sigla, num, ano}.
+        As chaves e valores desses dicionários são strings.
+    
+        ano_min padrão é 1991
         """
         if ano_max is None:
             ano_max = datetime.today().year
-        votadas = []
+        proposicoes_votadas = [] 
         for ano in range(ano_min, ano_max + 1):
             logger.info('Procurando em %s' % ano)
             try:
                 xml = camaraws.obter_proposicoes_votadas_plenario(ano)
-                zip_list_prop = self._parse_nomes_lista_proposicoes(xml)
-                votadas.append(zip_list_prop)
-                logger.info('%d proposições encontradas' % len(zip_list_prop))
+                proposicoes_votadas_no_ano = self._parse_xml(xml)
+                proposicoes_votadas.extend(proposicoes_votadas_no_ano)
+                logger.info('%d proposições encontradas' % len(proposicoes_votadas_no_ano))
             except Exception as e:
                 logger.error(e)
-        return votadas
+        return proposicoes_votadas
 
+    def _parse_xml(self, xml):
+        prop_votadas = []
+        for child in xml:
+            id_prop = child.find('codProposicao').text.strip()
+            nome_prop = child.find('nomeProposicao').text.strip()
+            dic_prop = self._build_dic(id_prop, nome_prop)
+            prop_votadas.append(dic_prop)
+        return prop_votadas
 
-class ProposicoesParser:
+    def _build_dic(self, id_prop, nome_prop):
+        sigla = nome_prop[0:nome_prop.index(" ")]
+        num = nome_prop[nome_prop.index(" ") + 1: nome_prop.index("/")]
+        ano = nome_prop[nome_prop.index("/") + 1: len(nome_prop)]
+        return {'id': id_prop, 'sigla': sigla, 'num': num, 'ano': ano}
 
-    def __init__(self, zip_votadas):
-        self.votadas = zip_votadas
-
-    def parse(self):
-        """
-        Retorna:
-        Uma lista com a identificação das proposições presentes em zip_votadas
-        Cada posição da lista é um dicionário com chaves \in
-        {id, sigla, num, ano}.
-        As chaves e valores desses dicionários são strings.
-
-        formato da lista que será percorrida:
-        Ex:[('604604', 'REQ 9261/2013 => PRC 228/2013'),
-        '604123', 'PL 9261/2013 => PRC 228/2013')]
-        """
-        # Tratar a seta => na hora de inserir na hash
-        proposicoes = []
-        for position in self.votadas:
-            for prop in position:
-                id_prop = prop[0]
-                sigla = prop[1][0:prop[1].index(" ")]
-                num = prop[1][prop[1].index(" ") + 1: prop[1].index("/")]
-                ano = prop[1][prop[1].index("/") + 1: len(prop[1])]
-                proposicoes.append(
-                    {'id': id_prop, 'sigla': sigla, 'num': num, 'ano': ano})
-        return proposicoes
 
 class ProposicoesXmlsCollector:
     
@@ -424,10 +397,9 @@ class ImportadorCamara:
                 logger.error("ValueError: %s" % error)
         
     def _prop_from_xml(self, prop_xml):
-        """Recebe XML representando proposição (objeto etree)
-        e devolve objeto do tipo Proposicao, que é salvo no banco de dados.
-        Caso proposição já exista no banco, é retornada a proposição que
-        já estava no banco.
+        """prop_xml -- tipo etree
+        
+        Retorna proposicao
         """
         id_prop = prop_xml.find('idProposicao').text.strip()
         if id_prop in self.proposicoes:
@@ -452,14 +424,8 @@ class ImportadorCamara:
         return prop
 
     def _votacao_from_xml(self, votacao_xml, prop):
-        """Salva votação no banco de dados.
-
-        Atributos:
-            votacao_xml -- XML representando votação (objeto etree)
-            prop -- objeto do tipo Proposicao
-
-        Retorna:
-            objeto do tipo Votacao
+        """votacao_xml -- XML representando votação (objeto etree)
+           prop -- objeto do tipo Proposicao
         """
         descricao = 'Resumo: [%s]. ObjVotacao: [%s]' % (
             votacao_xml.get('Resumo'), votacao_xml.get('ObjVotacao'))
@@ -468,9 +434,7 @@ class ImportadorCamara:
         data = _converte_data(data_str, hora_str)
 
         key = (prop.id_prop, descricao, data)
-        if key in self.votacoes:
-            votacao = self.votacoes[key]
-        else:
+        if not key in self.votacoes:
             votacao = models.Votacao()
             votacao.proposicao = prop
             votacao.descricao = descricao
@@ -481,17 +445,10 @@ class ImportadorCamara:
                 for voto_xml in votacao_xml.find('votos'):
                     self._voto_from_xml(voto_xml, votacao)
             votacao.save()
-        return votacao
 
     def _voto_from_xml(self, voto_xml, votacao):
-        """Salva voto no banco de dados.
-
-        Atributos:
-            voto_xml -- XML representando voto (objeto etree)
-            votacao -- objeto do tipo Votacao
-
-        Retorna:
-            objeto do tipo Voto
+        """voto_xml -- XML representando voto (objeto etree)
+           votacao -- objeto do tipo Votacao
         """
         opcao_str = voto_xml.get('Voto')
         deputado = self._deputado(voto_xml)
@@ -500,7 +457,6 @@ class ImportadorCamara:
         voto.parlamentar = deputado
         voto.votacao = votacao
         voto.save()
-        return voto
 
     def _opcao_xml_to_model(self, voto):
         """Interpreta voto como tá no XML e responde em adequação a modelagem
@@ -574,7 +530,7 @@ def lista_proposicoes_de_mulheres():
         contagem_proposicoes[ano]['somatotal'] = []
 
         for gen in ['F', 'M']:
-            prop_ano_gen = propFinder._parse_nomes_lista_proposicoes(
+            prop_ano_gen = propFinder._parse_xml(
                 camaraws.listar_proposicoes('PL', str(ano), **{
                     'generoautor': gen}))
             for prop in prop_ano_gen:
@@ -598,9 +554,7 @@ def lista_proposicoes_de_mulheres():
 def main():
     logger.info('IMPORTANDO DADOS DA CAMARA DOS DEPUTADOS')
     propFinder = ProposicoesFinder()
-    zip_votadas = propFinder.find_props_disponiveis()
-    propParser = ProposicoesParser(zip_votadas)
-    dic_votadas = propParser.parse()
+    dic_votadas = propFinder.find_props_disponiveis()
     separador = SeparadorDeLista(NUM_THREADS)
     listas_votadas = separador.separa_lista_em_varias_listas(dic_votadas)
     threads = []
