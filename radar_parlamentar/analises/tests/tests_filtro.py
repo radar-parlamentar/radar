@@ -22,7 +22,6 @@ from django.test import TestCase
 
 from analises import filtro
 from modelagem import models
-from importadores import conv
 from datetime import date
 
 class FiltroVotacaoTest(TestCase):

@@ -1,3 +1,4 @@
+
 # coding=utf8
 
 # Copyright (C) 2012, Leonardo Leite, Eduardo Hideo, Saulo Trento, Diego Rabatone
@@ -194,27 +195,23 @@ class CasaLegislativa(models.Model):
                         ex 'cmsp' para 'Câmara Municipal de São Paulo'
         esfera -- string (municipal, estadual, federal)
         local -- string; ex 'São Paulo' para a CMSP
-        atualizacao -- data em que a base de dados foi atualizada pela
-                            última vez com votações desta casa
     """
 
     nome = models.CharField(max_length=100)
     nome_curto = models.CharField(max_length=50, unique=True)
     esfera = models.CharField(max_length=10, choices=ESFERAS)
     local = models.CharField(max_length=100)
-    atualizacao = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
         return self.nome
 
     def partidos(self):
         """Retorna os partidos existentes nesta casa legislativa"""
-        return Partido.objects.filter(
-            legislatura__casa_legislativa=self).distinct()
+        return Partido.objects.filter(parlamentar__casa_legislativa=self).distinct()
 
-    def legislaturas(self):
-        """Retorna as legislaturas existentes nesta casa legislativa"""
-        return Legislatura.objects.filter(casa_legislativa=self).distinct()
+    def parlamentares(self):
+        """Retorna os parlamentares existentes nesta casa legislativa"""
+        return Parlamentar.objects.filter(casa_legislativa=self).distinct()
 
     def num_votacao(self, data_inicial=None, data_final=None):
         """retorna a quantidade de votacao numa casa legislativa"""
@@ -308,72 +305,27 @@ class PeriodoCasaLegislativa(object):
 
 
 class Parlamentar(models.Model):
-    """Um parlamentar.
+    """Um parlamentar em uma determinada situação.
+    Se o cidadão troca de partido, de casa legislativa ou de localidade,
+    passa a ser um novo Parlamentar.
 
     Atributos:
-        id_parlamentar - string identificadora de acordo a fonte de dados
+        id_parlamentar -- string identificadora de acordo a fonte de dados 
+                        (i.e., pode se repetir entre diferentes casa legislativas)
         nome, genero -- strings
+        casa_legislativa -- tipo CasaLegislativa
+        partido -- tipo Partido
+        localidade -- string, ex: RJ (usado apenas para parlamentares federais)
     """
-    # obs: id_parlamentar não é chave primária!
     id_parlamentar = models.CharField(max_length=100, blank=True)
     nome = models.CharField(max_length=100)
     genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
-
-    def __unicode__(self):
-        return self.nome
-
-
-class Legislatura(models.Model):
-    """Um período de tempo contínuo em que um político atua como parlamentar.
-    É diferente de mandato. Um mandato dura 4 anos. Se o titular sai
-    e o suplente assume, temos aí uma troca de legislatura.
-
-    Atributos:
-        parlamentar -- parlamentar exercendo a legislatura;
-                        objeto do tipo Parlamentar
-        casa_legislativa -- objeto do tipo CasaLegislativa
-        inicio, fim -- datas indicando o período
-        partido -- objeto do tipo Partido
-        localidade -- string; ex 'SP', 'RJ' se for no senado ou
-                                    câmara dos deputados
-
-    Métodos:
-        find -- busca legislatura por data e parlamentar
-    """
-
-    parlamentar = models.ForeignKey(Parlamentar)
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
-    inicio = models.DateField(null=True)
-    fim = models.DateField(null=True)
     partido = models.ForeignKey(Partido)
     localidade = models.CharField(max_length=100, blank=True)
 
-    @staticmethod
-    def find(data, nome_parlamentar):
-        """Busca a legislatura de um parlamentar pelo nome
-            em uma determinada data
-           Argumentos:
-             data -- objeto do tipo date
-             nome_parlamentar -- string
-           Retorno: objeto do tipo Legislatura
-           Se não existir, lança exceção ValueError
-        """
-        # Assumimos que uma pessoa não pode assumir
-            # duas legislaturas em um dado período!
-        legs = Legislatura.objects.filter(parlamentar__nome=nome_parlamentar)
-        for leg in legs:
-            if data >= leg.inicio and data <= leg.fim:
-                return leg
-        raise ValueError('Não achei legislatura para %s em %s' %
-                         (nome_parlamentar, data))
-
     def __unicode__(self):
-        return "%s - %s@%s [%s, %s]" % (
-            self.parlamentar,
-            self.partido,
-            self.casa_legislativa.nome_curto,
-            self.inicio,
-            self.fim)
+        return '%s - %s' % (self.nome, self.partido.nome)
 
 
 class Proposicao(models.Model):
@@ -455,10 +407,7 @@ class Votacao(models.Model):
         """
         dic = {}
         for voto in self.votos():
-            # TODO poderia ser mais complexo:
-                # checar se a data da votação bate com
-                # o período da legislatura mais recente
-            part = voto.legislatura.partido.nome
+            part = voto.parlamentar.partido.nome
             if part not in dic:
                 dic[part] = VotoPartido(part)
             voto_partido = dic[part]
@@ -493,17 +442,17 @@ class Voto(models.Model):
     """Um voto dado por um parlamentar em uma votação.
 
     Atributos:
-        legislatura -- objeto do tipo Legislatura
+        parlamentar -- objeto do tipo Parlamentar
         opcao -- qual foi o voto do parlamentar
                 (sim, não, abstenção, obstrução, não votou)
     """
 
     votacao = models.ForeignKey(Votacao)
-    legislatura = models.ForeignKey(Legislatura)
+    parlamentar = models.ForeignKey(Parlamentar)
     opcao = models.CharField(max_length=10, choices=OPCOES)
 
     def __unicode__(self):
-        return "%s votou %s" % (self.legislatura, self.opcao)
+        return "%s votou %s" % (self.parlamentar, self.opcao)
 
 
 class VotosAgregados:
@@ -574,4 +523,3 @@ class VotoPartido(VotosAgregados):
         VotosAgregados.__init__(self)
         self.partido = partido
 
-# TODO class VotoUF(VotosAgregados):

@@ -28,9 +28,6 @@ import sys
 import os
 import xml.etree.ElementTree as etree
 
-# data em que os arquivos XMLs foram atualizados
-ULTIMA_ATUALIZACAO = parse_datetime('2012-12-31 0:0:0')
-
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # arquivos com os dados fornecidos pela cmsp
@@ -51,18 +48,6 @@ PROP_REGEX = '([a-zA-Z]{1,3}) ([0-9]{1,4}) ?/([0-9]{4})'
 INICIO_PERIODO = parse_datetime('2010-01-01 0:0:0')
 FIM_PERIODO = parse_datetime('2012-12-31 0:0:0')
 
-# TODO: caso o parlamentar pertenca a partidos distintos, ou,
-# mais generciamente, se sua "legislatura" mudar, caso seu ID,
-# provindo do XML de entrada, continue o mesmo, a primeira
-# legislatura que sobrevalecerah para as demais votacoes tambem.
-# Mas, se o ID corretamente mudar, entao tudo estarah perfeito.
-# TODO  Como a LEGISLATURA eh many to many, parece que o parlamentar
-# pode ter varias legislaturas (e ainda por cima no mesmo arquivo entrada).
-# Assim, talvez fosse interessante armazenar a legislatura no VOTO,
-# e não numa lista de legislatura.
-# A nao ser q, a cada voto, o parlamentar esteja relacionada tb a todas as
-# suas legislaturas.
-
 
 class GeradorCasaLegislativa(object):
 
@@ -79,7 +64,6 @@ class GeradorCasaLegislativa(object):
         cmsp.nome_curto = 'cmsp'
         cmsp.esfera = models.MUNICIPAL
         cmsp.local = 'São Paulo - SP'
-        cmsp.atualizacao = ULTIMA_ATUALIZACAO
         cmsp.save()
         return cmsp
 
@@ -87,9 +71,19 @@ class GeradorCasaLegislativa(object):
 class XmlCMSP:
 
     def __init__(self, cmsp, verbose=False):
-        self.parlamentares = {}
         self.cmsp = cmsp
+        self.parlamentares = self._init_parlamentares()
         self.verbose = verbose
+
+    def _init_parlamentares(self):
+        """retorna dicionário (nome_parlamentar, nome_partido) -> Parlamentar"""
+        parlamentares = {}
+        for p in models.Parlamentar.objects.filter(casa_legislativa=self.cmsp):
+            parlamentares[self._key(p)] = p
+        return parlamentares
+    
+    def _key(self, parlamentar):
+        return (parlamentar.nome, parlamentar.partido.nome)
 
     def converte_data(self, data_str):
         """Converte string "d/m/a para objeto datetime;
@@ -147,45 +141,24 @@ class XmlCMSP:
             partido = models.Partido.get_sem_partido()
         return partido
 
-    def votante(self, ver_tree):
-        id_parlamentar = ver_tree.get('IDParlamentar')
-        if id_parlamentar in self.parlamentares:
-            votante = self.parlamentares[id_parlamentar]
-        else:
-            votante = models.Parlamentar()
-            votante.save()
-            votante.id_parlamentar = id_parlamentar
-            votante.nome = ver_tree.get('Nome')
-            votante.save()
-            if self.verbose:
-                print 'Vereador %s salvo' % votante
-            self.parlamentares[id_parlamentar] = votante
-            # TODO genero
-        return votante
-
-    def legislatura(self, ver_tree):
-        """Cria e retorna uma legistura para o partido fornecido"""
-
+    def vereador(self, ver_tree):
+        nome_vereador = ver_tree.get('Nome')
         partido = self.partido(ver_tree)
-        votante = self.votante(ver_tree)
-
-        legs = models.Legislatura.objects.filter(
-            parlamentar=votante, partido=partido, casa_legislativa=self.cmsp)
-        # TODO acima filtrar tb por inicio e fim
-        if legs:
-            leg = legs[0]
+        key = (nome_vereador, partido.nome)
+        if key in self.parlamentares:
+            vereador = self.parlamentares[key]
         else:
-            leg = models.Legislatura()
-            leg.parlamentar = votante
-            leg.partido = partido
-            leg.casa_legislativa = self.cmsp
-            # TODO este período deve ser mais refinado para suportar caras que
-            # trocaram de partido
-            leg.inicio = INICIO_PERIODO
-            leg.fim = FIM_PERIODO
-            leg.save()
-
-        return leg
+            id_parlamentar = ver_tree.get('IDParlamentar')
+            vereador = models.Parlamentar()
+            vereador.id_parlamentar = id_parlamentar
+            vereador.nome = nome_vereador
+            vereador.partido = partido
+            vereador.casa_legislativa = self.cmsp
+            vereador.save()
+            if self.verbose:
+                print 'Vereador %s salvo' % vereador
+            self.parlamentares[key] = vereador
+        return vereador
 
     def votos_from_tree(self, vot_tree, votacao):
         """Extrai lista de votos do XML da votação e as salva no banco de dados
@@ -196,9 +169,9 @@ class XmlCMSP:
         """
         for ver_tree in vot_tree.getchildren():
             if ver_tree.tag == 'Vereador':
-                leg = self.legislatura(ver_tree)
+                vereador = self.vereador(ver_tree)
                 voto = models.Voto()
-                voto.legislatura = leg
+                voto.parlamentar = vereador
                 voto.votacao = votacao
                 voto.opcao = self.voto_cmsp_to_model(ver_tree.get('Voto'))
                 if voto.opcao is not None:
@@ -216,7 +189,7 @@ class XmlCMSP:
             # vai retornar prop_nome se votação for de proposição
             prop_nome = self.prop_nome(resumo)
             # se a votacao for associavel a uma proposicao, entao..
-            if (prop_nome):
+            if prop_nome:
                 id_vot = vot_tree.get('VotacaoID')
                 votacoes_em_banco = models.Votacao.objects.filter(
                     id_vot=id_vot)

@@ -29,8 +29,6 @@ from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
 from modelagem import models
 
-ULTIMA_ATUALIZACAO = parse_datetime('2012-06-01 0:0:0')
-
 # Eu queria deixar as datas no século de 1700, mas o datetime só lida com
 # datas a partir de 1900
 INICIO_PERIODO = parse_datetime('1989-01-01 0:0:0')
@@ -54,7 +52,6 @@ class ImportadorConvencao:
         conv.nome_curto = 'conv'
         conv.esfera = models.FEDERAL
         conv.local = 'Paris (FR)'
-        conv.atualizacao = ULTIMA_ATUALIZACAO
         conv.save()
         return conv
 
@@ -76,25 +73,18 @@ class ImportadorConvencao:
         monarquistas.save()
         self.partidos = {girondinos, jacobinos, monarquistas}
 
-    def _gera_legislaturas(self):
-        self.legs = {}  # nome partido => lista de legislaturas do partido
-        for p in self.partidos:
-            self.legs[p.nome] = []
+    def _gera_parlamentares(self):
+        self.parlamentares = {}  # nome partido => lista de parlamentares do partido
+        for partido in self.partidos:
+            self.parlamentares[partido.nome] = []
             for i in range(0, PARLAMENTARES_POR_PARTIDO):
-
                 parlamentar = models.Parlamentar()
-                parlamentar.id_parlamentar = '%s%s' % (p.nome[0], str(i))
+                parlamentar.id_parlamentar = '%s%s' % (partido.nome[0], str(i))
                 parlamentar.nome = 'Pierre'
+                parlamentar.casa_legislativa = self.casa
+                parlamentar.partido = partido
                 parlamentar.save()
-
-                leg = models.Legislatura()
-                leg.casa_legislativa = self.casa
-                leg.inicio = INICIO_PERIODO
-                leg.fim = FIM_PERIODO
-                leg.partido = p
-                leg.parlamentar = parlamentar
-                leg.save()
-                self.legs[p.nome].append(leg)
+                self.parlamentares[partido.nome].append(parlamentar)
 
     def _gera_proposicao(self, num, descricao):
         prop = models.Proposicao()
@@ -120,7 +110,7 @@ class ImportadorConvencao:
         # opcoes é uma lista de opções (SIM, NÃO ...)
         for i in range(0, PARLAMENTARES_POR_PARTIDO):
             voto = models.Voto()
-            voto.legislatura = self.legs[nome_partido][i]
+            voto.parlamentar = self.parlamentares[nome_partido][i]
             voto.opcao = opcoes[i]
             voto.votacao = votacao
             voto.save()
@@ -273,7 +263,7 @@ class ImportadorConvencao:
     def importar(self):
         self.casa = self._gera_casa_legislativa()
         self._gera_partidos()
-        self._gera_legislaturas()
+        self._gera_parlamentares()
         self._gera_votacao1()
         self._gera_votacao2()
         self._gera_votacao3()

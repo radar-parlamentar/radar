@@ -1,31 +1,30 @@
 # -*- coding: utf-8 -*-
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
 
 from __future__ import unicode_literals
 from django.test import TestCase
-from importadores import importador_genero
+from importadores import cdep_genero
 from modelagem.models import Parlamentar
+from modelagem.models import Partido
 
 class ImportadorGeneroTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
         # Criando dados fictícios para parlamentares da Camara
+        partido = Partido()
+        partido.nome = 'Jacobinos'
+        partido.numero = 42
+        partido.save()
         cls.parlamentar_camara_test_1 = Parlamentar(
-            id_parlamentar='', nome='Abelardo Camarinha', genero='')
+            id_parlamentar='1', nome='Abelardo Camarinha', genero='', partido=partido)
         cls.parlamentar_camara_test_2= Parlamentar(
-            id_parlamentar='', nome='Fernando Rodrigues', genero='')
+            id_parlamentar='2', nome='Fernando Rodrigues', genero='', partido=partido)
         cls.parlamentar_camara_test_3 = Parlamentar(
-            id_parlamentar='', nome='Flávia Morais', genero='')
+            id_parlamentar='3', nome='Flávia Morais', genero='', partido=partido)
         cls.parlamentar_camara_test_4 = Parlamentar(
-            id_parlamentar='', nome='Zulaiê Cobra', genero='')
+            id_parlamentar='4', nome='Zulaiê Cobra', genero='', partido=partido)
         cls.parlamentar_camara_test_5 = Parlamentar(
-            id_parlamentar='', nome='Chiquinho da Silva', genero='')
+            id_parlamentar='5', nome='Chiquinho da Silva', genero='', partido=partido)
 
         cls.parlamentar_camara_test_1.save()
         cls.parlamentar_camara_test_2.save()
@@ -39,7 +38,7 @@ class ImportadorGeneroTest(TestCase):
         flush_db(cls)
     
     def test_parlamentares_camara_com_generos_alterados(self):
-        importador_genero.insere_genero_parlamentares_camara()
+        cdep_genero.insere_genero_parlamentares_camara()
         
         # Resgatando parlamentares no banco de dados.
         parlamentar_banco_test_1 = Parlamentar.objects.get(nome='Abelardo Camarinha')
@@ -52,7 +51,7 @@ class ImportadorGeneroTest(TestCase):
         self.assertEquals('F', parlamentar_banco_test_3.genero)
     
     def test_parlamentares_camara_sem_generos_alterados(self):
-        importador_genero.insere_genero_parlamentares_camara()
+        cdep_genero.insere_genero_parlamentares_camara()
 
         # Resgatando parlamentares no banco de dados.
         parlamentar_banco_test_1 = Parlamentar.objects.get(nome='Fernando Rodrigues')

@@ -78,11 +78,11 @@ class JsonAnaliseGeneratorTest(TestCase):
         ap1.coordenadas_partidos[conv.JACOBINOS] = [-0.4, 0.3]
         ap1.coordenadas_partidos[conv.GIRONDINOS] = [0.9, -0.3]
         ap1.coordenadas_partidos[conv.MONARQUISTAS] = [0.2, 0.1]
-        ap1.legislaturas_por_partido = JsonAnaliseGeneratorTest.importer.legs
-        ap1.coordenadas_legislaturas = {}  # legislatura.id => [x,y]
-        for p, legs in ap1.legislaturas_por_partido.items():
-            for leg in legs:
-                ap1.coordenadas_legislaturas[leg.id] = [random(), random()]
+        ap1.parlamentares_por_partido = JsonAnaliseGeneratorTest.importer.parlamentares
+        ap1.coordenadas_parlamentares = {}  # parlamentar.id => [x,y]
+        for partido, parlamentares in ap1.parlamentares_por_partido.items():
+            for parlamentar in parlamentares:
+                ap1.coordenadas_parlamentares[parlamentar.id] = [random(), random()]
         self.analiseTemporal.analises_periodo.append(ap1)
 
     def test_json(self):

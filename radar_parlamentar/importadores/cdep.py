@@ -22,27 +22,23 @@
 
 from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
-from django.db.utils import DatabaseError
 from modelagem import models
 from datetime import datetime
-from importadores import importador_genero
 import re
 import os
 import xml.etree.ElementTree as etree
 import urllib2
 import logging
 import threading
-import time
 import math
+import sys
 
-# data em que a lista votadas.txt foi atualizada
-ULTIMA_ATUALIZACAO = parse_datetime('2013-07-22 0:0:0')
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 RESOURCES_FOLDER = os.path.join(MODULE_DIR, 'dados/cdep/')
-INICIO_PERIODO = parse_datetime('2004-01-01 0:0:0')
-FIM_PERIODO = parse_datetime('2013-08-01 0:0:0')
 
 NUM_THREADS = 16
+
+ANO_MIN=1991 # só serão buscadas votações a partir de ANO_MIN
 
 logger = logging.getLogger("radar")
 
@@ -66,9 +62,9 @@ class Url(object):
             request = urllib2.Request(url)
             text = urllib2.urlopen(request).read()
         except urllib2.URLError, error:
-            logger.error("urllib2.URLError: %s" % error)
+            logger.error("%s ao acessar %s" % (error, url))
         except urllib2.HTTPError:
-            logger.error("urllib2.HTTPError: %s" % error)
+            logger.error("%s ao acessar %s" % (error, url))
         return text
 
 
@@ -118,7 +114,7 @@ class Camaraws:
         url = self._montar_url_consulta_camara(
             Camaraws.URL_PROPOSICAO, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
-        if tree is None:
+        if tree is None or tree.tag == 'erro':
             raise ValueError('Proposicao %s nao encontrada' % id_prop)
         return tree
 
@@ -143,7 +139,7 @@ class Camaraws:
         url = self._montar_url_consulta_camara(
             Camaraws.URL_VOTACOES, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
-        if tree is None:
+        if tree is None or tree.tag == 'erro':
             raise ValueError(
                 'Votacoes da proposicao %s %s/%s nao encontrada'
                 % (sigla, num, ano))
@@ -166,7 +162,7 @@ class Camaraws:
         url = self._montar_url_consulta_camara(
             Camaraws.URL_PLENARIO, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
-        if tree is None:
+        if tree is None or tree.tag == 'erro':
             raise ValueError('O ano %s nao possui votacoes ainda' % ano)
         return tree
 
@@ -198,7 +194,7 @@ class Camaraws:
         url = self._montar_url_consulta_camara(
             Camaraws.URL_LISTAR_PROPOSICOES, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
-        if tree is None:
+        if tree is None or tree.tag == 'erro':
             raise ValueError(
                 'Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
         return tree
@@ -218,355 +214,70 @@ class Camaraws:
 
 class ProposicoesFinder:
 
-    def __init__(self, verbose=True):
-        self.verbose = verbose
-
-    def _parse_nomes_lista_proposicoes(self, xml):
-        """Recebe XML (objeto etree) do web service
-        ListarProposicoesVotadasPlenario e devolve uma lista de tuplas,
-        o primeiro item da tuple é o id da proposição, e o segundo item
-        é o nome da proposição (sigla num/ano).
-        """
-        list_id_prop = []
-        list_nome = []
-        for child in xml:
-            id_prop = child.find('codProposicao').text.strip()
-            nome_prop = child.find('nomeProposicao').text.strip()
-            list_id_prop.append(id_prop)
-            list_nome.append(nome_prop)
-        return zip(list_id_prop, list_nome)
-
-    def find_props_disponiveis(self, ano_max=None, ano_min=1991,
+    def find_props_disponiveis(self, ano_max=None, ano_min=ANO_MIN,
                                camaraws=Camaraws()):
-        """Retorna uma lista com os ids e nomes das proposicoes disponibilizada
-        pela funcionalidade ListarProposicoesVotadasPlenario.
 
-        Buscas são feitas por proposições apresentadas desde ano_min, que
-        por padrão é 1991, até o presente.
+        """Retorna uma lista com proposicoes que tiveram votações
+        entre ano_min e ano_max.
+        Cada votação é um dicionário com chaves \in {id, sigla, num, ano}.
+        As chaves e valores desses dicionários são strings.
+    
+        ano_min padrão é 1991
         """
-        today = datetime.today()
-        if (ano_max is None):
-            ano_max = today.year
-        votadas = []
+        if ano_max is None:
+            ano_max = datetime.today().year
+        proposicoes_votadas = [] 
         for ano in range(ano_min, ano_max + 1):
             logger.info('Procurando em %s' % ano)
             try:
                 xml = camaraws.obter_proposicoes_votadas_plenario(ano)
-                zip_list_prop = self._parse_nomes_lista_proposicoes(xml)
-                votadas.append(zip_list_prop)
-                logger.info('%d proposições encontradas' % len(zip_list_prop))
-            except urllib2.URLError, etree.ParseError:
-                logger.error('access error in %s' % sigla)
-            except ValueError, error:
-                logger.error("ValueError: %s" % error)
-        return votadas
+                proposicoes_votadas_no_ano = self._parse_xml(xml)
+                proposicoes_votadas.extend(proposicoes_votadas_no_ano)
+                logger.info('%d proposições encontradas' % len(proposicoes_votadas_no_ano))
+            except Exception as e:
+                logger.error(e)
+        return proposicoes_votadas
+
+    def _parse_xml(self, xml):
+        prop_votadas = []
+        for child in xml:
+            id_prop = child.find('codProposicao').text.strip()
+            nome_prop = child.find('nomeProposicao').text.strip()
+            dic_prop = self._build_dic(id_prop, nome_prop)
+            prop_votadas.append(dic_prop)
+        return prop_votadas
+
+    def _build_dic(self, id_prop, nome_prop):
+        sigla = nome_prop[0:nome_prop.index(" ")]
+        num = nome_prop[nome_prop.index(" ") + 1: nome_prop.index("/")]
+        ano = nome_prop[nome_prop.index("/") + 1: len(nome_prop)]
+        return {'id': id_prop, 'sigla': sigla, 'num': num, 'ano': ano}
 
 
-class ProposicoesParser:
-
-    def __init__(self, zip_votadas):
-        self.votadas = zip_votadas
-
-    def parse(self):
+class ProposicoesXmlsCollector:
+    
+    def __init__(self, votadas, camaraws=Camaraws()):
+        """votadas -- dicionário com id/sigla/num/ano das proposições que tiveram votações
         """
-        Retorna:
-        Uma lista com a identificação das proposições presentes em zip_votadas
-        Cada posição da lista é um dicionário com chaves \in
-        {id, sigla, num, ano}.
-        As chaves e valores desses dicionários são strings.
-
-        formato da lista que será percorrida:
-        Ex:[('604604', 'REQ 9261/2013 => PRC 228/2013'),
-        '604123', 'PL 9261/2013 => PRC 228/2013')]
-        """
-        # Tratar a seta => na hora de inserir na hash
-        proposicoes = []
-        for position in self.votadas:
-            for prop in position:
-                id_prop = prop[0]
-                sigla = prop[1][0:prop[1].index(" ")]
-                num = prop[1][prop[1].index(" ") + 1: prop[1].index("/")]
-                ano = prop[1][prop[1].index("/") + 1: len(prop[1])]
-                proposicoes.append(
-                    {'id': id_prop, 'sigla': sigla, 'num': num, 'ano': ano})
-        return proposicoes
-
-LOCK_TO_CREATE_CASA = threading.Lock()
-
-
-class ImportadorCamara:
-
-    """Salva os dados dos web services da
-    Câmara dos Deputados no banco de dados"""
-
-    def __init__(self, votadas, verbose=False):
-        """verbose (booleano) -- ativa/desativa prints na tela"""
-
-        self.verbose = verbose
-        # id/sigla/num/ano das proposições que tiveram votações
         self.votadas = votadas
-        self.total = len(self.votadas)
-        self.importadas = 0  # serve para indicar progresso
-        self.partidos = {}
-            # cache de partidos (chave é nome, e valor é objeto Partido)
-        self.parlamentares = {}
-            # cache de parlamentares (chave é 'nome-partido', e valor é objeto
-            # Parlamentar)
-
-    def _converte_data(self, data_str, hora_str='00:00'):
-        """Converte string 'd/m/a' para objeto datetime;
-        retona None se data_str é inválido
-        Pode também receber horário: hora_str como 'h:m'
-        """
-        DATA_REGEX = '(\d\d?)/(\d\d?)/(\d{4})'
-        HORA_REGEX = '(\d\d?):(\d\d?)'
-        dt = re.match(DATA_REGEX, data_str)
-        hr = re.match(HORA_REGEX, hora_str)
-        if dt and hr:
-            new_str = '%s-%s-%s %s:%s:0' % (
-                dt.group(3), dt.group(2), dt.group(1),
-                hr.group(1), hr.group(2))
-            return parse_datetime(new_str)
-        else:
-            return None
-
-    def _gera_casa_legislativa(self):
-        """Gera objeto do tipo CasaLegislativa
-        Câmara dos Deputados e o salva no banco de dados.
-        Caso cdep já exista no banco de dados, retorna o objeto já existente.
-        """
-        LOCK_TO_CREATE_CASA.acquire()
-        count_cdep = models.CasaLegislativa.objects.filter(
-            nome_curto='cdep').count()
-        if not count_cdep:
-            camara_dos_deputados = models.CasaLegislativa()
-            camara_dos_deputados.nome = 'Câmara dos Deputados'
-            camara_dos_deputados.nome_curto = 'cdep'
-            camara_dos_deputados.esfera = models.FEDERAL
-            camara_dos_deputados.atualizacao = ULTIMA_ATUALIZACAO
-            camara_dos_deputados.save()
-            LOCK_TO_CREATE_CASA.release()
-            return camara_dos_deputados
-        else:
-            LOCK_TO_CREATE_CASA.release()
-            return models.CasaLegislativa.objects.get(nome_curto='cdep')
-
-    def _prop_from_xml(self, prop_xml, id_prop):
-        """Recebe XML representando proposição (objeto etree)
-        e devolve objeto do tipo Proposicao, que é salvo no banco de dados.
-        Caso proposição já exista no banco, é retornada a proposição que
-        já estava no banco.
-        """
-        try:
-            query = models.Proposicao.objects.filter(
-                id_prop=id_prop, casa_legislativa=self.camara_dos_deputados)
-        except DatabaseError, error:
-            logger.error("DatabaseError: %s" % error)
-            # try again
-            time.sleep(1)
-            query = models.Proposicao.objects.filter(
-                id_prop=id_prop, casa_legislativa=self.camara_dos_deputados)
-
-        if query:
-            prop = query[0]
-        else:
-            prop = models.Proposicao()
-            prop.id_prop = id_prop
-            prop.sigla = prop_xml.get('tipo').strip()
-            prop.numero = prop_xml.get('numero').strip()
-            prop.ano = prop_xml.get('ano').strip()
-            prop.ementa = prop_xml.find('Ementa').text.strip()
-            prop.descricao = prop_xml.find('ExplicacaoEmenta').text.strip()
-            prop.indexacao = prop_xml.find('Indexacao').text.strip()
-            prop.autor_principal = prop_xml.find('Autor').text.strip()
-            date_str = prop_xml.find('DataApresentacao').text.strip()
-            prop.data_apresentacao = self._converte_data(date_str)
-            prop.situacao = prop_xml.find('Situacao').text.strip()
-            prop.casa_legislativa = self.camara_dos_deputados
-            prop.save()
-        return prop
-
-    def _votacao_from_xml(self, votacao_xml, prop):
-        """Salva votação no banco de dados.
-
-        Atributos:
-            votacao_xml -- XML representando votação (objeto etree)
-            prop -- objeto do tipo Proposicao
-
-        Retorna:
-            objeto do tipo Votacao
-        """
-        descricao = 'Resumo: [%s]. ObjVotacao: [%s]' % (
-            votacao_xml.get('Resumo'), votacao_xml.get('ObjVotacao'))
-        data_str = votacao_xml.get('Data').strip()
-        hora_str = votacao_xml.get('Hora').strip()
-        date_time = self._converte_data(data_str, hora_str)
-
-        query = models.Votacao.objects.filter(
-            descricao=descricao, data=date_time,
-            proposicao__casa_legislativa=self.camara_dos_deputados)
-        if query:
-            votacao = query[0]
-        else:
-            logger.info('Importando votação ocorrida em %s' % data_str)
-            votacao = models.Votacao()
-            votacao.descricao = descricao
-            votacao.data = date_time
-            votacao.proposicao = prop
-            votacao.save()
-            if votacao_xml.find('votos') is not None:
-                for voto_xml in votacao_xml.find('votos'):
-                    self._voto_from_xml(voto_xml, votacao)
-            votacao.save()
-
-        return votacao
-
-    def _voto_from_xml(self, voto_xml, votacao):
-        """Salva voto no banco de dados.
-
-        Atributos:
-            voto_xml -- XML representando voto (objeto etree)
-            votacao -- objeto do tipo Votacao
-
-        Retorna:
-            objeto do tipo Voto
-        """
-        voto = models.Voto()
-
-        opcao_str = voto_xml.get('Voto')
-        '''Por algum motivo os votos estavam vindo com muitos espaços em branco
-        quebrando a importação dos mesmos'''
-        if opcao_str.find(" ") > -1:
-            voto.opcao = self._opcao_xml_to_model(
-                opcao_str[0:opcao_str.index(" ")])
-        else:
-            voto.opcao = self._opcao_xml_to_model(opcao_str)
-        leg = self._legislatura(voto_xml)
-
-        voto.legislatura = leg
-        voto.votacao = votacao
-        voto.save()
-
-        return voto
-
-    def _opcao_xml_to_model(self, voto):
-        """Interpreta voto como tá no XML e responde em adequação a modelagem
-        em models.py"""
-
-        if voto == 'Não':
-            return models.NAO
-        elif voto == 'Sim':
-            return models.SIM
-        elif voto == 'Obstrução':
-            return models.OBSTRUCAO
-        elif voto == 'Abstenção':
-            return models.ABSTENCAO
-        else:
-            logger.warning(
-                'tipo de voto (%s) desconhecido! Mapeado como ABSTENCAO'
-                % voto)
-            return models.ABSTENCAO
-
-    def _legislatura(self, voto_xml):
-        """Salva legislatura no banco de dados.
-
-        Atributos:
-            voto_xml -- XML representando voto (objeto etree)
-
-        Retorna:
-            objeto do tipo Legislatura
-        """
-        partido = self._partido(voto_xml.get('Partido'))
-        votante = self._votante(voto_xml.get('Nome'), partido.nome)
-
-        # TODO filtrar tb por inicio e fim
-        legs = models.Legislatura.objects.filter(
-            parlamentar=votante, partido=partido,
-            casa_legislativa=self.camara_dos_deputados)
-
-        if legs:
-            leg = legs[0]
-        else:
-            leg = models.Legislatura()
-            leg.parlamentar = votante
-            leg.partido = partido
-            leg.localidade = voto_xml.get('UF')
-            leg.casa_legislativa = self.camara_dos_deputados
-            leg.inicio = INICIO_PERIODO  # TODO refinar
-            leg.fim = FIM_PERIODO  # TODO refinar
-            leg.save()
-
-        return leg
-
-    def _partido(self, nome_partido):
-        """Procura primeiro no cache e depois no banco; se não existir,
-        cria novo partido"""
-        nome_partido = nome_partido.strip()
-        partido = self.partidos.get(nome_partido)
-        if not partido:
-            partido = models.Partido.from_nome(nome_partido)
-            if partido is None:
-                logger.warning(
-                    'Não achou o partido %s; Usando "sem partido"'
-                    % nome_partido)
-                partido = models.Partido.get_sem_partido()
-            else:
-                partido.save()
-                self.partidos[nome_partido] = partido
-
-        return partido
-
-    def _votante(self, nome_dep, nome_partido):
-        """Procura primeiro no cache e depois no banco; se não existir,
-        cria novo parlamentar"""
-        key = '%s-%s' % (nome_dep, nome_partido)
-        parlamentar = self.parlamentares.get(key)
-        if not parlamentar:
-            parlamentares = models.Parlamentar.objects.filter(nome=nome_dep)
-            if parlamentares:
-                parlamentar = parlamentares[0]
-                self.parlamentares[key] = parlamentar
-
-        if not parlamentar:
-            parlamentar = models.Parlamentar()
-            parlamentar.nome = nome_dep
-            parlamentar.save()
-            self.parlamentares[key] = parlamentar
-        return parlamentar
-
-    def _progresso(self):
-        """Indica progresso na tela"""
-        porctg = (int)(1.0 * self.importadas / self.total * 100)
-        logger.info('Progresso: %d / %d proposições (%d%%)' %
-                    (self.importadas, self.total, porctg))
-
-    def importar(self, camaraws=Camaraws()):
-
-        self.camara_dos_deputados = self._gera_casa_legislativa()
-
+        self.camaraws = camaraws
+        self.xmls = {} # proposicao_xml => votacoes_xml 
+    
+    def collect(self):
         f = lambda dic: (dic['id'], dic['sigla'], dic['num'], dic['ano'])
         for id_prop, sigla, num, ano in [f(dic) for dic in self.votadas]:
-
-            logger.info(
-                '############################################################')
-            logger.info('Importando votações da PROPOSIÇÃO %s: %s %s/%s' %
-                        (id_prop, sigla, num, ano))
-
             try:
-                prop_xml = camaraws.obter_proposicao_por_id(id_prop)
-                prop = self._prop_from_xml(prop_xml, id_prop)
-                vots_xml = camaraws.obter_votacoes(sigla, num, ano)
-
-                for child in vots_xml.find('Votacoes'):
-                    self._votacao_from_xml(child, prop)
-
-                self.importadas += 1
+                proposicao_xml = self.camaraws.obter_proposicao_por_id(id_prop)
+                votacoes_xml = self.camaraws.obter_votacoes(sigla, num, ano)
+                self.xmls[proposicao_xml] = votacoes_xml
                 self._progresso()
             except ValueError, error:
                 logger.error("ValueError: %s" % error)
 
-        logger.info(
-            '### Fim da Importação das Votações das Proposições da Câmara dos Deputados.')
+    def _progresso(self):
+        """Indica progresso na tela"""
+        sys.stdout.write('x')
+        sys.stdout.flush()
 
 
 class SeparadorDeLista:
@@ -581,28 +292,223 @@ class SeparadorDeLista:
             math.ceil(1.0 * len(lista) / self.numero_de_listas))
         while start < len(lista):
             end = start + chunk_size
-            if (end > len(lista)):
+            if end > len(lista):
                 end = len(lista)
             lista_de_listas.append(lista[start:end])
             start += chunk_size
         return lista_de_listas
 
+class ProposicoesXmlsCollectorThread(threading.Thread):
 
-class ImportadorCamaraThread(threading.Thread):
-
-    def __init__(self, importer):
+    def __init__(self, proposicoes_xml_collector):
         threading.Thread.__init__(self)
-        self.importer = importer
+        self.proposicoes_xml_collector = proposicoes_xml_collector
 
     def run(self):
-        self.importer.importar()
+        self.proposicoes_xml_collector.collect()
 
 
 def wait_threads(threads):
     for t in threads:
         t.join()
 
+def _converte_data(data_str, hora_str='00:00'):
+    """Converte string 'd/m/a' para objeto datetime;
+    retona None se data_str é inválido
+    Pode também receber horário: hora_str como 'h:m'
+    """
+    DATA_REGEX = '(\d\d?)/(\d\d?)/(\d{4})'
+    HORA_REGEX = '(\d\d?):(\d\d?)'
+    dt = re.match(DATA_REGEX, data_str)
+    hr = re.match(HORA_REGEX, hora_str)
+    if dt and hr:
+        new_str = '%s-%s-%s %s:%s:0' % (
+            dt.group(3), dt.group(2), dt.group(1),
+            hr.group(1), hr.group(2))
+        return parse_datetime(new_str)
+    else:
+        return None
 
+class ImportadorCamara:
+
+    """Salva os dados dos web services da
+    Câmara dos Deputados no banco de dados"""
+
+
+    def __init__(self):
+        self.camara_dos_deputados = self._gera_casa_legislativa()
+        self.parlamentares = self._init_parlamentares()
+        self.proposicoes = self._init_proposicoes()
+        self.votacoes = self._init_votacoes()
+
+    def _gera_casa_legislativa(self):
+        """Gera objeto do tipo CasaLegislativa
+        Câmara dos Deputados e o salva no banco de dados.
+        Caso cdep já exista no banco de dados, retorna o objeto já existente.
+        """
+        count_cdep = models.CasaLegislativa.objects.filter(
+            nome_curto='cdep').count()
+        if not count_cdep:
+            camara_dos_deputados = models.CasaLegislativa()
+            camara_dos_deputados.nome = 'Câmara dos Deputados'
+            camara_dos_deputados.nome_curto = 'cdep'
+            camara_dos_deputados.esfera = models.FEDERAL
+            camara_dos_deputados.save()
+            return camara_dos_deputados
+        else:
+            return models.CasaLegislativa.objects.get(nome_curto='cdep')
+
+    def _init_parlamentares(self):
+        """(nome_parlamentar,nome_partido,localidade) -> Parlamentar"""
+        parlamentares = {}
+        for p in models.Parlamentar.objects.filter(casa_legislativa=self.camara_dos_deputados):
+            parlamentares[self._key_parlamentar(p)] = p
+        return parlamentares
+
+    def _key_parlamentar(self, parlamentar):
+        return (parlamentar.nome, parlamentar.partido.nome, parlamentar.localidade)
+
+    def _init_proposicoes(self):
+        """id_prop -> Proposicao"""
+        proposicoes = {}
+        for p in models.Proposicao.objects.filter(casa_legislativa=self.camara_dos_deputados):
+            proposicoes[p.id_prop] = p
+        return proposicoes
+
+    def _init_votacoes(self):
+        """(id_prop,descricao,data) -> Votacao"""
+        votacoes = {}
+        for v in models.Votacao.objects.filter(proposicao__casa_legislativa=self.camara_dos_deputados):
+            votacoes[self._key_votacao(v)] = v
+        return votacoes
+
+    def _key_votacao(self, votacao):
+        return (votacao.proposicao.id_prop, votacao.descricao, votacao.data)
+        
+    def importar(self, xmls):
+        """xmls -- dic proposicao_xml -> votacoes_xml
+        * xmls são do tipo etree"""
+        for prop_xml, vots_xml in xmls.items():
+            try:
+                prop = self._prop_from_xml(prop_xml)
+                for child in vots_xml.find('Votacoes'):
+                    self._votacao_from_xml(child, prop)
+            except ValueError, error:
+                logger.error("ValueError: %s" % error)
+        
+    def _prop_from_xml(self, prop_xml):
+        """prop_xml -- tipo etree
+        
+        Retorna proposicao
+        """
+        id_prop = prop_xml.find('idProposicao').text.strip()
+        if id_prop in self.proposicoes:
+            prop = self.proposicoes[id_prop]
+        else:
+            prop = models.Proposicao()
+            prop.id_prop = id_prop
+            prop.sigla = prop_xml.get('tipo').strip()
+            prop.numero = prop_xml.get('numero').strip()
+            prop.ano = prop_xml.get('ano').strip()
+            logger.info("Importando %s %s/%s" % (prop.sigla, prop.numero, prop.ano))
+            prop.ementa = prop_xml.find('Ementa').text.strip()
+            prop.descricao = prop_xml.find('ExplicacaoEmenta').text.strip()
+            prop.indexacao = prop_xml.find('Indexacao').text.strip()
+            prop.autor_principal = prop_xml.find('Autor').text.strip()
+            date_str = prop_xml.find('DataApresentacao').text.strip()
+            prop.data_apresentacao = _converte_data(date_str)
+            prop.situacao = prop_xml.find('Situacao').text.strip()
+            prop.casa_legislativa = self.camara_dos_deputados
+            prop.save()
+            self.proposicoes[id_prop] = prop
+        return prop
+
+    def _votacao_from_xml(self, votacao_xml, prop):
+        """votacao_xml -- XML representando votação (objeto etree)
+           prop -- objeto do tipo Proposicao
+        """
+        descricao = 'Resumo: [%s]. ObjVotacao: [%s]' % (
+            votacao_xml.get('Resumo'), votacao_xml.get('ObjVotacao'))
+        data_str = votacao_xml.get('Data').strip()
+        hora_str = votacao_xml.get('Hora').strip()
+        data = _converte_data(data_str, hora_str)
+
+        key = (prop.id_prop, descricao, data)
+        if not key in self.votacoes:
+            votacao = models.Votacao()
+            votacao.proposicao = prop
+            votacao.descricao = descricao
+            votacao.data = data
+            votacao.save()
+            self.votacoes[key] = votacao
+            if votacao_xml.find('votos') is not None:
+                for voto_xml in votacao_xml.find('votos'):
+                    self._voto_from_xml(voto_xml, votacao)
+            votacao.save()
+
+    def _voto_from_xml(self, voto_xml, votacao):
+        """voto_xml -- XML representando voto (objeto etree)
+           votacao -- objeto do tipo Votacao
+        """
+        opcao_str = voto_xml.get('Voto')
+        deputado = self._deputado(voto_xml)
+        voto = models.Voto()
+        voto.opcao = self._opcao_xml_to_model(opcao_str)
+        voto.parlamentar = deputado
+        voto.votacao = votacao
+        voto.save()
+
+    def _opcao_xml_to_model(self, voto):
+        """Interpreta voto como tá no XML e responde em adequação a modelagem
+        em models.py"""
+        voto = voto.strip()
+        if voto == 'Não':
+            return models.NAO
+        elif voto == 'Sim':
+            return models.SIM
+        elif voto == 'Obstrução':
+            return models.OBSTRUCAO
+        elif voto == 'Abstenção':
+            return models.ABSTENCAO
+        else:
+            logger.warning(
+                'tipo de voto (%s) desconhecido! Mapeado como ABSTENCAO'
+                % voto)
+            return models.ABSTENCAO
+
+    def _deputado(self, voto_xml):
+        """Procura primeiro no cache e depois no banco; se não existir,
+        cria novo parlamentar"""
+        nome = voto_xml.get('Nome')
+        nome_partido = voto_xml.get('Partido')
+        partido = self._partido(nome_partido)
+        localidade = voto_xml.get('UF')
+        key = (nome, partido.nome, localidade)
+        parlamentar = self.parlamentares.get(key)
+        if not parlamentar:
+            parlamentar = models.Parlamentar()
+            parlamentar.id_parlamentar = voto_xml.get('ideCadastro')
+            parlamentar.nome = nome
+            parlamentar.partido = partido
+            parlamentar.localidade = localidade
+            parlamentar.casa_legislativa = self.camara_dos_deputados
+            parlamentar.save()
+            if partido.numero == 0:
+                logger.warn('Não achou o partido %s' % nome_partido)
+                logger.info('Deputado %s inserido sem partido' % nome)
+            self.parlamentares[key] = parlamentar
+        return parlamentar
+
+    def _partido(self, nome_partido):
+        nome_partido = nome_partido.strip()
+        partido = models.Partido.from_nome(nome_partido)
+        if partido is None:
+            partido = models.Partido.get_sem_partido()
+        return partido
+
+
+
+# unesed!
 def lista_proposicoes_de_mulheres():
     camaraws = Camaraws()
     propFinder = ProposicoesFinder()
@@ -624,7 +530,7 @@ def lista_proposicoes_de_mulheres():
         contagem_proposicoes[ano]['somatotal'] = []
 
         for gen in ['F', 'M']:
-            prop_ano_gen = propFinder._parse_nomes_lista_proposicoes(
+            prop_ano_gen = propFinder._parse_xml(
                 camaraws.listar_proposicoes('PL', str(ano), **{
                     'generoautor': gen}))
             for prop in prop_ano_gen:
@@ -648,19 +554,26 @@ def lista_proposicoes_de_mulheres():
 def main():
     logger.info('IMPORTANDO DADOS DA CAMARA DOS DEPUTADOS')
     propFinder = ProposicoesFinder()
-    zip_votadas = propFinder.find_props_disponiveis()
-    propParser = ProposicoesParser(zip_votadas)
-    dic_votadas = propParser.parse()
+    dic_votadas = propFinder.find_props_disponiveis()
     separador = SeparadorDeLista(NUM_THREADS)
     listas_votadas = separador.separa_lista_em_varias_listas(dic_votadas)
     threads = []
+    collectors = []
     for lista_votadas in listas_votadas:
-        importer = ImportadorCamara(lista_votadas)
-        thread = ImportadorCamaraThread(importer)
+        collector = ProposicoesXmlsCollector(lista_votadas)
+        collectors.append(collector)
+        thread = ProposicoesXmlsCollectorThread(collector)
         threads.append(thread)
         thread.start()
     wait_threads(threads)
+    all_xmls = {}
+    for collector in collectors:
+        for prop_xml, vots_xml in collector.xmls.items():
+            all_xmls[prop_xml] = vots_xml
+    importador = ImportadorCamara()
+    importador.importar(all_xmls)
     
-    importador_genero.main()
+    from importadores import cdep_genero
+    cdep_genero.main()
     logger.info('IMPORTACAO DE DADOS DA CAMARA DOS DEPUTADOS FINALIZADA')
 

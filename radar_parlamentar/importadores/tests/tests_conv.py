@@ -68,8 +68,7 @@ class ConvencaoTest(TestCase):
 
     def test_check_parlamentares(self):
         NUM_PARLAMENTARES = 3 * 3
-        parlamentares = models.Parlamentar.objects.filter(
-            legislatura__casa_legislativa=self.conv)
+        parlamentares = models.Parlamentar.objects.filter(casa_legislativa=self.conv)
         self.assertEqual(len(parlamentares), NUM_PARLAMENTARES)
         nomes_parlamentares = [p.nome for p in parlamentares]
         self.assertEquals(

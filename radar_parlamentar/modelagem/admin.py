@@ -24,11 +24,6 @@ class ParlamentarAdmin(admin.ModelAdmin):
     list_display = ('__unicode__','genero')
     list_filter = ['genero']
 
-class LegislaturaAdmin(admin.ModelAdmin):
-    list_display = ('parlamentar','casa_legislativa','inicio','fim','partido','localidade')
-    list_filter = ['casa_legislativa','partido','localidade']
-    date_hierarchy = 'inicio'
-
 class ProposicaoAdmin(admin.ModelAdmin):
     list_display = ('__unicode__','sigla','numero','ano','ementa','descricao','indexacao','data_apresentacao','casa_legislativa')
     list_filter= ['ano','casa_legislativa']
@@ -46,7 +41,6 @@ admin.site.register(Indexadores)
 admin.site.register(Partido)
 admin.site.register(CasaLegislativa)
 admin.site.register(Parlamentar, ParlamentarAdmin)
-admin.site.register(Legislatura, LegislaturaAdmin)
 admin.site.register(Proposicao, ProposicaoAdmin)
 admin.site.register(Votacao, VotacaoAdmin)
 admin.site.register(Voto, VotoAdmin)

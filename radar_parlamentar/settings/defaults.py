@@ -118,7 +118,6 @@ INSTALLED_APPS = (
     'importadores',
     'analises',
     'exportadores',
-    'importadorInterno',
     'testes_integracao',
     'south',
     'radar_parlamentar',
