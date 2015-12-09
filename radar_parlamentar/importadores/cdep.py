@@ -114,7 +114,7 @@ class Camaraws:
         url = self._montar_url_consulta_camara(
             Camaraws.URL_PROPOSICAO, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
-        if tree is None:
+        if tree is None or tree.tag == 'erro':
             raise ValueError('Proposicao %s nao encontrada' % id_prop)
         return tree
 
@@ -139,7 +139,7 @@ class Camaraws:
         url = self._montar_url_consulta_camara(
             Camaraws.URL_VOTACOES, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
-        if tree is None:
+        if tree is None or tree.tag == 'erro':
             raise ValueError(
                 'Votacoes da proposicao %s %s/%s nao encontrada'
                 % (sigla, num, ano))
@@ -162,7 +162,7 @@ class Camaraws:
         url = self._montar_url_consulta_camara(
             Camaraws.URL_PLENARIO, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
-        if tree is None:
+        if tree is None or tree.tag == 'erro':
             raise ValueError('O ano %s nao possui votacoes ainda' % ano)
         return tree
 
@@ -194,7 +194,7 @@ class Camaraws:
         url = self._montar_url_consulta_camara(
             Camaraws.URL_LISTAR_PROPOSICOES, parametros_de_consulta, **args)
         tree = self.url.toXml(url)
-        if tree is None:
+        if tree is None or tree.tag == 'erro':
             raise ValueError(
                 'Proposicoes nao encontradas para sigla=%s&ano=%s' % (sigla, ano))
         return tree
