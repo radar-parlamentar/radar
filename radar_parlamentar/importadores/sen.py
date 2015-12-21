@@ -28,6 +28,7 @@ Classes:
 from __future__ import unicode_literals
 from datetime import date
 from modelagem import models
+from django.core.exceptions import ObjectDoesNotExist
 import re
 import os
 import sys
@@ -76,7 +77,7 @@ class ImportadorVotacoesSenado:
         for p in models.Parlamentar.objects.filter(casa_legislativa=self.senado):
             parlamentares[self._key(p)] = p
         return parlamentares
-    
+
     def _key(self, parlamentar):
         return (parlamentar.nome, parlamentar.partido.nome, parlamentar.localidade)
 
@@ -144,9 +145,9 @@ class ImportadorVotacoesSenado:
             senador.id_parlamentar = codigo
             senador.nome = nome_senador
             senador.genero = sexo
-            senador.casa_legislativa = self.senado 
-            senador.partido = partido 
-            senador.localidade = localidade 
+            senador.casa_legislativa = self.senado
+            senador.partido = partido
+            senador.localidade = localidade
             senador.save()
             self.parlamentares[key] = senador
             self.progresso()
@@ -261,11 +262,33 @@ class ImportadorVotacoesSenado:
         return xmls
 
     def importar_votacoes(self):
-        #for xml_file in ['importadores/dados/senado/votacoes/ListaVotacoes2014.xml', 'importadores/dados/senado/votacoes/ListaVotacoes2015.xml']:
+        # for xml_file in ['importadores/dados/senado/votacoes/ListaVotacoes2014.xml', 'importadores/dados/senado/votacoes/ListaVotacoes2015.xml']:
         # facilita debug
         for xml_file in self._xml_file_names():
             logger.info('Importando %s' % xml_file)
             self._from_xml_to_bd(xml_file)
+
+
+class PosImportacao:
+
+    def processar(self):
+        self.consertar_suplicy_sem_partido()
+
+    # Issue #325
+    def consertar_suplicy_sem_partido(self):
+        try:
+            suplicy_sem_partido = models.Parlamentar.objects.get(nome='Eduardo Suplicy',
+                                                                 partido__numero=0,
+                                                                 casa_legislativa__nome_curto='sen')
+            suplicy_do_pt = models.Parlamentar.objects.get(nome='Eduardo Suplicy', partido__numero=13,
+                                                           casa_legislativa__nome_curto='sen')
+            votos = models.Voto.objects.filter(parlamentar=suplicy_sem_partido)
+            for v in votos:
+                v.parlamentar = suplicy_do_pt
+                v.save()
+            suplicy_sem_partido.delete()
+        except ObjectDoesNotExist:
+            logger.warn('Eduardo Suplicy sem partido não existe.')
 
 
 def main():
@@ -275,6 +298,9 @@ def main():
     logger.info('IMPORTANDO VOTAÇÕES DO SENADO')
     importer = ImportadorVotacoesSenado()
     importer.importar_votacoes()
+    logger.info('PROCESSAMENTO PÓS-IMPORTAÇÃO')
+    posImportacao = PosImportacao()
+    posImportacao.processar()
     logger.info('IMPORTANDO INDICES DO SENADO')
     import importadores.sen_indexacao as indexacao_senado
     indexacao_senado.indexar_proposicoes()
