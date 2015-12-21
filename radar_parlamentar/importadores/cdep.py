@@ -22,6 +22,7 @@
 
 from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
+from django.core.exceptions import ObjectDoesNotExist
 from modelagem import models
 from datetime import datetime
 import re
@@ -507,6 +508,21 @@ class ImportadorCamara:
         return partido
 
 
+class PosImportacao:
+    
+    def processar(self):
+        self.remover_votacao_com_deputados_sem_partidos()
+
+    # Issue #256
+    def remover_votacao_com_deputados_sem_partidos(self):
+        try:
+            prop = models.Proposicao.objects.get(sigla='PL', numero='821', ano='1995')
+            obj_votacao = 'SUBEMENDA A EMENDA N. 33'
+            votacao = models.Votacao.objects.get(proposicao=prop, descricao__contains=obj_votacao)
+            votacao.delete()
+        except ObjectDoesNotExist:
+            logger.warn('Votação esperada (em PL 821/1995) não foi encontrada na base de dados.')
+
 
 # unesed!
 def lista_proposicoes_de_mulheres():
@@ -572,6 +588,8 @@ def main():
             all_xmls[prop_xml] = vots_xml
     importador = ImportadorCamara()
     importador.importar(all_xmls)
+    posImportacao = PosImportacao()
+    posImportacao.processar()
     
     from importadores import cdep_genero
     cdep_genero.main()
