@@ -174,8 +174,15 @@ class XmlCMSP:
                 voto.parlamentar = vereador
                 voto.votacao = votacao
                 voto.opcao = self.voto_cmsp_to_model(ver_tree.get('Voto'))
-                if voto.opcao is not None:
+                if voto.opcao is not None and self.nao_eh_repetido(voto):
                     voto.save()
+                    
+    def nao_eh_repetido(self, voto):
+        # Obs: se nos dados aparece que o mesmo parlamentar fez opções distintas na mesma votação,
+        # prevalece o primeiro registro.
+        votos_iguais = models.Voto.objects.filter(votacao=voto.votacao, parlamentar=voto.parlamentar)
+        return len(votos_iguais) == 0 
+                    
 
     def votacao_from_tree(self, proposicoes, votacoes, vot_tree):
         # se é votação nominal

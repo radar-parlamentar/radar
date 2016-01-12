@@ -84,12 +84,11 @@ class ExportadorCSV:
         for votacao in self.votacoes:
             votos = votacao.votos()
             for voto in votos:
-                legislatura = voto.legislatura
-                parlamentar = legislatura.parlamentar
-                partido = legislatura.partido
+                parlamentar = voto.parlamentar
+                partido = parlamentar.partido
                 csv_row = []
                 csv_row.append(votacao.id_vot)
-                csv_row.append(legislatura.id)
+                csv_row.append(parlamentar.id)
                 csv_row.append(parlamentar.nome.encode('UTF-8'))
                 csv_row.append(partido.nome)
                 csv_row.append(self.coalition(partido.nome))
@@ -118,14 +117,15 @@ class ExportadorCSV:
             raise ValueError()
 
     def write_csv(self):
-        filepath = os.path.join(MODULE_DIR, 'dados', CSV_FILE)
+        filepath = os.path.join(MODULE_DIR, 'saida', CSV_FILE)
         with open(filepath, 'wb') as f:
             writer = csv.writer(f, delimiter=',')
             writer.writerows(self.csv_rows)
 
 
 def main():
-    data_ini = parse_datetime('2010-06-09 0:0:0')
-    data_fim = parse_datetime('2010-06-09 23:59:0')
-    exportador = ExportadorCSV('sen', data_ini, data_fim)
+    data_ini = parse_datetime('2015-01-01 0:0:0')
+    data_fim = parse_datetime('2016-01-01 0:0:0')
+    exportador = ExportadorCSV('cmsp', data_ini, data_fim)
     exportador.exportar_csv()
+
