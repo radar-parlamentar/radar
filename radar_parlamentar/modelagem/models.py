@@ -238,9 +238,9 @@ class CasaLegislativa(models.Model):
                     nome_curto=nome_casa_curto).delete()
 
             except CasaLegislativa.DoesNotExist:
-                print 'Casa legislativa ' + nome_casa_curto + ' não existe'
+                logger.info('Casa legislativa ' + nome_casa_curto + ' não existe')
         except:
-            print('Possivelmente a operacao extrapolou o limite de '
+            logger.info('Possivelmente a operacao extrapolou o limite de '
                   'operacoes do SQLite, tente utilizar o MySQL')
 
 

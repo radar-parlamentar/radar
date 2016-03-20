@@ -23,6 +23,9 @@ from django.test import TestCase
 from modelagem import models
 from elasticsearch import Elasticsearch
 from django.conf import settings
+import logging
+
+logger = logging.getLogger("radar")
 
 # TODO: AND no elasticsearch
 # es.search(index=settings.ELASTIC_SEARCH_INDEX, q="casa_legislativa_nome_curto:cmsp AND Educação)
@@ -91,7 +94,7 @@ class FiltroVotacao(TestCase):
         query_builder = LuceneQueryBuilder(self.casa_legislativa.nome_curto, self.periodo_casa_legislativa, self.palavras_chaves)
         query = query_builder.build()
         res = es.search(index=settings.ELASTIC_SEARCH_INDEX, q=query, fields="votacao_id")
-        print res
+        logger.info(res)
         votacoes_ids = [ e["fields"]["votacao_id"][0] for e in res["hits"]["hits"] ]
         self.votacoes = models.Votacao.objects.filter(id__in=votacoes_ids)
         return self.votacoes

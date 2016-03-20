@@ -27,7 +27,9 @@ import re
 import sys
 import os
 import xml.etree.ElementTree as etree
+import logging
 
+logger = logging.getLogger("radar")
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # arquivos com os dados fornecidos pela cmsp
@@ -130,14 +132,14 @@ class XmlCMSP:
         elif voto == 'Abstenção':
             return models.ABSTENCAO
         else:
-            print 'tipo de voto (%s) nao mapeado!' % voto
+            logger.info('tipo de voto (%s) nao mapeado!' % voto)
             return models.ABSTENCAO
 
     def partido(self, ver_tree):
         nome_partido = ver_tree.get('Partido').strip()
         partido = models.Partido.from_nome(nome_partido)
         if partido is None:
-            print 'Nao achou o partido %s' % nome_partido
+            logger.info('Nao achou o partido %s' % nome_partido)
             partido = models.Partido.get_sem_partido()
         return partido
 
@@ -156,7 +158,7 @@ class XmlCMSP:
             vereador.casa_legislativa = self.cmsp
             vereador.save()
             if self.verbose:
-                print 'Vereador %s salvo' % vereador
+                logger.info('Vereador %s salvo' % vereador)
             self.parlamentares[key] = vereador
         return vereador
 
@@ -217,7 +219,7 @@ class XmlCMSP:
                         proposicoes[prop_nome] = prop
 
                     if self.verbose:
-                        print 'Proposicao %s salva' % prop
+                        logger.info('Proposicao %s salva' % prop)
                     prop.save()
                     vot = models.Votacao()
                     # só pra criar a chave primária e poder atribuir o votos
@@ -229,7 +231,7 @@ class XmlCMSP:
                     self.votos_from_tree(vot_tree, vot)
                     vot.proposicao = prop
                     if self.verbose:
-                        print 'Votacao %s salva' % vot
+                        logger.info('Votacao %s salva' % vot)
                     else:
                         self.progresso()
                     vot.save()
@@ -260,7 +262,7 @@ class ImportadorCMSP:
     def importar_de(self, xml_file):
         """Salva no banco de dados do Django e retorna lista das votações"""
         if self.verbose:
-            print "importando de: " + str(xml_file)
+            logger.info("importando de: " + str(xml_file))
 
         tree = ImportadorCMSP.abrir_xml(xml_file)
         proposicoes = {}
@@ -281,11 +283,11 @@ class ImportadorCMSP:
 
 
 def main():
-    print 'IMPORTANDO DADOS DA CAMARA MUNICIPAL DE SAO PAULO (CMSP)'
+    logger.info('IMPORTANDO DADOS DA CAMARA MUNICIPAL DE SAO PAULO (CMSP)')
     gerador_casa = GeradorCasaLegislativa()
     cmsp = gerador_casa.gerar_cmsp()
     importer = ImportadorCMSP(cmsp)
     for xml in [XML2012, XML2013, XML2014, XML2015]:
         importer.importar_de(xml)
-    print 'Importacao dos dados da Camara Municipal de Sao Paulo (CMSP) terminada'
+    logger.info('Importacao dos dados da Camara Municipal de Sao Paulo (CMSP) terminada')
 

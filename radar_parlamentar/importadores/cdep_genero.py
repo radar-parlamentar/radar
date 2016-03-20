@@ -45,7 +45,7 @@ def abrir_xml_zipado(url=None):
 
         xml = etree.fromstring(xml_text)
     except (etree.ParseError, zipfile.BadZipfile) as e:
-        print '%s: %s' % (e.__class__.__name__, e)
+        logger.info('%s: %s' % (e.__class__.__name__, e))
 
     return xml
 
@@ -55,7 +55,7 @@ def _faz_download_arquivo_zipado(url):
     try:
         text = urllib2.urlopen(url).read()
     except (urllib2.URLError, urllib2.HTTPError) as e:
-        print '%s: %s' % (e.__class__.__name__, e)
+        logger.info('%s: %s' % (e.__class__.__name__, e))
 
     return text
 

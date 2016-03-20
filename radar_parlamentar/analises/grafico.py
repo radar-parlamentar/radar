@@ -28,7 +28,7 @@ import json
 import logging
 from math import sqrt, isnan
 from django import db  # para debugar numero de queries, usando
-                        # db.reset_queries() e print len(db.connection.queries)
+                        # db.reset_queries() e len(db.connection.queries)
 import time
 
 logger = logging.getLogger("radar")
@@ -151,13 +151,13 @@ class JsonAnaliseGenerator:
 
     def _list_partidos_instrumented(self):
         db.reset_queries()
-        print 'comecando lista de partidos'
+        logger.info('comecando lista de partidos')
         ttotal1 = time.time()
         list_partidos = self._list_partidos()
-        print 'queries para fazer lista de partidos = '
-        print str(len(db.connection.queries))
-        print 'tempo na lista de partidos = '
-        print str(time.time() - ttotal1) + ' s.'
+        logger.info('queries para fazer lista de partidos = ')
+        logger.info(str(len(db.connection.queries)))
+        logger.info('tempo na lista de partidos = ')
+        logger.info(str(time.time() - ttotal1) + ' s.')
         return list_partidos
 
     def _list_partidos(self):

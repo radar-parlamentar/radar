@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from importadores import importador_elasticsearch
+import logging
+
+logger = logging.getLogger("radar")
 
 def main(lista_casas_legislativas):
 
@@ -26,4 +29,4 @@ def main(lista_casas_legislativas):
             importador_elasticsearch.main()
 
         else:
-            print "Casa %s não encontrada" % casa_legislativa
+            logger.info("Casa %s não encontrada" % casa_legislativa)

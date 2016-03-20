@@ -23,6 +23,10 @@
 from __future__ import unicode_literals
 import json
 import csv
+import logging
+
+logger = logging.getLogger("radar")
+
 
 HEADERS = [
     "codProposicao", "txtProposicao", "txtTipoProposicao", "txtSigla",
@@ -182,7 +186,7 @@ def jsonMatrix_gera_termos_mais_mais():
         lista_termos.append({'name': termo, 'group': 1, 'id': i})
         i += 1
     matrix['termos'] = lista_termos
-    print(matrix['termos'])
+    logger.info(matrix['termos'])
 
 
 def jsonMatrix_gera_links_partidos_termos():

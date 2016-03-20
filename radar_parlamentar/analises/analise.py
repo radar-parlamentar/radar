@@ -493,7 +493,7 @@ class Rotacionador:
         epsilon = 0.001
 
         if not so_espelha:
-            print "Calculando teta1 e teta2..."
+            logger.info("Calculando teta1 e teta2...")
             numerador = 0
             denominador = 0
             for key, coords in dados_meus.items():
@@ -514,7 +514,7 @@ class Rotacionador:
             else:
                 teta1 = numpy.arctan(numerador / denominador) * 180 / 3.141592
                 teta2 = teta1 + 180
-            print "teta 1 = " + str(teta1) + "; teta2 = " + str(teta2)
+            logger.info("teta 1 = " + str(teta1) + "; teta2 = " + str(teta2))
         else:
             teta1 = 0
             teta2 = 180
@@ -529,7 +529,7 @@ class Rotacionador:
                            espelho=1), self._energia(dados_fixos, dados_meus,
                                                      por_partido, graus=teta2,
                                                      espelho=1)])
-        print ex
+        logger.info(ex)
 
         dados_partidos = self.analisePeriodo.coordenadas_partidos
         dados_parlamentares = self.analisePeriodo.coordenadas_parlamentares
@@ -555,7 +555,7 @@ class Rotacionador:
                 coords, self._matrot(campeao[1]))
 
         self.theta = campeao[1]
-        print "campeao = [espelha,theta] = " + str(campeao)
+        logger.info("campeao = [espelha,theta] = " + str(campeao))
 
         analiseRotacionada = copy.copy(self.analisePeriodo)
         analiseRotacionada.coordenadas_partidos = dados_partidos
