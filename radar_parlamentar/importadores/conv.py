@@ -28,6 +28,9 @@ Classes:
 from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
 from modelagem import models
+import logging
+
+logger = logging.getLogger("radar")
 
 # Eu queria deixar as datas no século de 1700, mas o datetime só lida com
 # datas a partir de 1900
@@ -277,6 +280,6 @@ class ImportadorConvencao:
 
 def main():
 
-    print 'IMPORTANDO DADOS DA CONVENÇÃO NACIONAL FRANCESA'
+    logger.info('IMPORTANDO DADOS DA CONVENÇÃO NACIONAL FRANCESA')
     importer = ImportadorConvencao()
     importer.importar()
