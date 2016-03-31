@@ -302,5 +302,5 @@ def main():
     posImportacao = PosImportacao()
     posImportacao.processar()
     logger.info('IMPORTANDO INDICES DO SENADO')
-    import importadores.sen_indexacao as indexacao_senado
+    import importadores.indexacao_sen as indexacao_senado
     indexacao_senado.indexar_proposicoes()
