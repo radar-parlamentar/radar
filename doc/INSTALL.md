@@ -124,9 +124,9 @@ Depois inicie o Celery na pasta onde fica o manage.py:
      
 O Celery é um gerenciador de execução de tarefas assíncronas.
 
-Para importar os dados basta acessar a URL: http://127.0.0.1:8000/importar/<nome-curto-da-casa-legislativa>/
+Para importar os dados basta acessar a URL: `http://127.0.0.1:8000/importar/<nome-curto-da-casa-legislativa>/`
 
-Possíveis valores para <nome-curto-da-casa-legislativa>:
+Possíveis valores para `<nome-curto-da-casa-legislativa>`:
 
 * Convenção Francesa: "conv"
 * Camara Municipal de São Paulo: "cmsp"
