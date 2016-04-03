@@ -103,8 +103,12 @@ Para criar as tabelas do Radar Parlamentar:
 
     $ python manage.py syncdb 
     $ python manage.py migrate
-        
-Agora, pode-se importar todos os dados com os Importadores!!
+
+Agora já podemos iniciar a aplicação! Para isso:
+
+    $python manage.py runserver
+    
+Confira a aplicação rodando pelo navegador usando o endereço `http://127.0.0.1:8000/`.
 
 
 4. Importação dos Dados
