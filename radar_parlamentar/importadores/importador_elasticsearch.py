@@ -20,21 +20,19 @@
 
 from __future__ import unicode_literals
 import modelagem.models as models
+import json
 from elasticsearch import Elasticsearch
 from django.conf import settings
 from elasticsearch.client import IndicesClient
 
-ELASTIC_SEARCH_ADDRESS_DEFAULT = {'host': 'localhost', 'port': '9200'}
+ELASTIC_SEARCH_ADDRESS_DEFAULT = {'host':'localhost','port':'9200'}
 ELASTIC_SEARCH_INDEX_DEFAULT = "radar_parlamentar"
-
+   
 """
     Esse modulo e responsavel por transportar as informacoes que estao no banco de dados do radar parlamentar para uma instancia de Elasticsearch. E feita a coleta atraves dos modelos do django, conversao desse modelo para um objeto RadarParlamentarIndex e, por fim, o envio desse objeto para o Elasticsearch.
 """
-
-
 class RadarParlamentarIndex():
-
-    def __init__(self, votacao, proposicao, casa_legislativa):
+    def __init__(self,votacao, proposicao,casa_legislativa):
         self.votacao_id = votacao.id
         self.votacao_id_vot = votacao.id_vot
         self.votacao_descricao = votacao.descricao
@@ -49,8 +47,7 @@ class RadarParlamentarIndex():
         self.proposicao_descricao = proposicao.descricao
         self.proposicao_indexacao = proposicao.indexacao
         if proposicao.data_apresentacao != None:
-            self.proposicao_data_apresentacao = proposicao.data_apresentacao.strftime(
-                "%Y-%m-%d")
+            self.proposicao_data_apresentacao = proposicao.data_apresentacao.strftime("%Y-%m-%d")
         self.proposicao_situacao = proposicao.situacao
         self.casa_legislativa_id = casa_legislativa.id
         self.casa_legislativa_nome = casa_legislativa.nome
@@ -61,16 +58,13 @@ class RadarParlamentarIndex():
 """
     construcao do modelo json baseado no modelo do banco de dados
 """
-
-
 def gerar_json_radar():
     list_json = []
     votacoes = models.Votacao.objects.all()
     for votacao in votacoes:
         proposicao = votacao.proposicao
         casa_legislativa = proposicao.casa_legislativa
-        radarParlamentarIndex = RadarParlamentarIndex(
-            votacao, proposicao, casa_legislativa)
+        radarParlamentarIndex = RadarParlamentarIndex(votacao,proposicao,casa_legislativa)
         list_json.append(radarParlamentarIndex.__dict__)
     return list_json
 
@@ -78,8 +72,6 @@ def gerar_json_radar():
 """
     faz a abertura de uma conexao com o ElasticSearch
 """
-
-
 def conectar_em_elastic_search():
     elastic_search_address = None
     try:
@@ -92,14 +84,11 @@ def conectar_em_elastic_search():
 """
     remove o indice do Elasticsearch (o indice de elasticsearch e analogo a uma tabela em um SGBD)
 """
-
-
 def remover_indice(nome_indice):
     es = conectar_em_elastic_search()
     client_indice = IndicesClient(es)
     if client_indice.exists(index=[nome_indice]):
         client_indice.delete(nome_indice)
-
 
 def criar_indice(nome_indice):
     config_settings = """
@@ -204,23 +193,20 @@ def criar_indice(nome_indice):
 """
     es = conectar_em_elastic_search()
     client_indice = IndicesClient(es)
-    client_indice.create(index=nome_indice, body=config_settings)
-    client_indice.put_mapping(
-        index=nome_indice, doc_type="radar", body=config_mapping)
+    client_indice.create(index=nome_indice,body=config_settings)
+    client_indice.put_mapping(index=nome_indice,doc_type="radar",body=config_mapping)
 
 """
     envia o json do modelo do radar para o elasticSearch
 """
-
-
-def enviar_para_elasticsearch(list_json, nome_indice):
+def enviar_para_elasticsearch(list_json,nome_indice):
     es = conectar_em_elastic_search()
     for item in list_json:
         for key in item.keys():
             if item[key] == "":
                 item.pop(key)
-        es.index(index=nome_indice, doc_type="radar", body=item)
-
+    	list_es = json.dumps(item)
+    	es.index(index=nome_indice,doc_type="radar",body=item)
 
 def obter_indice():
     try:
@@ -229,9 +215,8 @@ def obter_indice():
         indice = ELASTIC_SEARCH_INDEX_DEFAULT
     return indice
 
-
 def main():
-    indice = obter_indice()
-    remover_indice(indice)
-    criar_indice(indice)
-    enviar_para_elasticsearch(gerar_json_radar(), indice)
+   indice = obter_indice()
+   remover_indice(indice)
+   criar_indice(indice)
+   enviar_para_elasticsearch(gerar_json_radar(),indice)
