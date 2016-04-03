@@ -32,11 +32,14 @@ Para quem não conheçe, o [virtualenv](http://www.virtualenv.org "Virtual Env")
 Depois de clonar o projeto, vamos criar agora o nosso "Virtual Enviroment":
 
     $ sudo pip install --upgrade pip
-    $ virtualenv path/para/a/pasta/do/projeto/clonado
-    $ cd path/para/a/pasta/do/projeto/clonado
+    $ mkdir venv
+    $ virtualenv venv
+    $ cd venv
     $ source bin/activate
 
-Agora, dentro da nossa pasta do projeto teremos disponíveis todas variáveis de ambiente em um conteiner vazio para trabalharmos a vontade sem interferir no nosso Sistema Operacional
+O diretório venv pode ser criado em qualquer lugar do sistema e pode ter qualquer outro nome. Como é algo que não deve ser entregue no repositório, não recomendo que se crie dentro da pasta clonada do radar.
+
+Agora, dentro da pasta do nosso virtual env teremos disponíveis todas variáveis de ambiente em um conteiner vazio para trabalharmos a vontade sem interferir no nosso Sistema Operacional
 
 Para instalar todas as dependencias Python necessárias para o nosso projeto rodar, basta executar:
 
