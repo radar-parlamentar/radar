@@ -26,6 +26,9 @@ import utils
 from util_test import flush_db
 from django.utils.dateparse import parse_datetime
 from modelagem.models import MUNICIPAL, FEDERAL, ESTADUAL, BIENIO
+import logging
+
+logger = logging.getLogger("radar")
 
 
 class MandatoListsTest(TestCase):
@@ -88,23 +91,27 @@ class PeriodosRetrieverTest(TestCase):
     def test_casa_legislativa_periodos_anuais(self):
         retriever = utils.PeriodosRetriever(self.conv, models.ANO)
         periodos = retriever.get_periodos()
-        self.assertEquals(len(periodos), 1)
+        self.assertEquals(len(periodos), 2)
         self.assertEqual(periodos[0].string, '1989')
+        self.assertEqual(periodos[1].string, '1990')
         self.assertEqual(periodos[0].quantidade_votacoes, 8)
+        self.assertEqual(periodos[1].quantidade_votacoes, 1)
 
     def test_casa_legislativa_periodos_mensais(self):
         retriever = utils.PeriodosRetriever(self.conv, models.MES)
         periodos = retriever.get_periodos()
-        self.assertEquals(len(periodos), 2)
+        self.assertEquals(len(periodos), 3)
         self.assertEqual(periodos[0].string, '1989 Fev')
         self.assertEqual(periodos[0].quantidade_votacoes, 4)
         self.assertEqual(periodos[1].string, '1989 Out')
         self.assertEqual(periodos[1].quantidade_votacoes, 4)
+        self.assertEqual(periodos[2].string, '1990 Jan')
+        self.assertEqual(periodos[2].quantidade_votacoes, 1)
 
     def test_casa_legislativa_periodos_semestrais(self):
         retriever = utils.PeriodosRetriever(self.conv, models.SEMESTRE)
         periodos = retriever.get_periodos()
-        self.assertEquals(len(periodos), 2)
+        self.assertEquals(len(periodos), 3)
         d = periodos[0].ini
         self.assertEqual(1989, d.year)
         self.assertEqual(1, d.month)
@@ -117,8 +124,15 @@ class PeriodosRetrieverTest(TestCase):
         d = periodos[1].fim
         self.assertEqual(1989, d.year)
         self.assertEqual(12, d.month)
+        d = periodos[2].ini
+        self.assertEqual(1990, d.year)
+        self.assertEqual(1, d.month)
+        d = periodos[2].fim
+        self.assertEqual(1990, d.year)
+        self.assertEqual(6, d.month)
         self.assertEqual(periodos[0].string, '1989 1o Semestre')
         self.assertEqual(periodos[1].string, '1989 2o Semestre')
+        self.assertEqual(periodos[2].string, '1990 1o Semestre')
 
     def test_periodo_municipal_nao_deve_conter_votacoes_de_dois_mandatos(self):
         self._test_periodos_em_duas_datas(2008, 2009, MUNICIPAL, BIENIO, 2)
@@ -361,6 +375,15 @@ class ModelsTest(TestCase):
 
         nomes_votacao = [vt.id_vot for vt in depois_objetos_votacao]
         self.assertFalse(' 12345' in nomes_votacao)
+
+    def test_uma_votacao_por_casa_legislativa(self):
+        casa_legislativa = models.CasaLegislativa.objects.get(
+            nome_curto='conv')
+        data_inicio = '1990-01-01'
+        data_fim = '1990-01-01'
+        votacoes = models.Votacao.por_casa_legislativa(
+            casa_legislativa, data_inicio, data_fim)
+        self.assertEquals(1, len(votacoes))
 
 
 class StringUtilsTest(TestCase):
