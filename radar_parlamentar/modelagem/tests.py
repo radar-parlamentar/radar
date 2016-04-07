@@ -385,6 +385,15 @@ class ModelsTest(TestCase):
             casa_legislativa, data_inicio, data_fim)
         self.assertEquals(1, len(votacoes))
 
+    def test_nenhuma_votacao_por_casa_legislativa(self):
+        casa_legislativa = models.CasaLegislativa.objects.get(
+            nome_curto='conv')
+        data_inicio = '2010-01-01'
+        data_fim = '2010-01-01'
+        votacoes = models.Votacao.por_casa_legislativa(
+            casa_legislativa, data_inicio, data_fim)
+        self.assertEquals(0, len(votacoes))
+
 
 class StringUtilsTest(TestCase):
 
