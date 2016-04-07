@@ -26,6 +26,9 @@ from modelagem.utils import PeriodosRetriever
 from importadores import conv
 from datetime import date
 import numpy
+import logging
+
+logger = logging.getLogger("radar")
 
 
 class AnalisadorPeriodoTest(TestCase):
@@ -108,19 +111,15 @@ class MatrizesDeDadosBuilderTest(TestCase):
     def test_matriz_votacoes(self):
         # linhas são parlamentares e colunas são votações
         MATRIZ_VOTACAO_ESPERADA = numpy.matrix(
-            [[1., -1., -1.,  1.,  1.,  1.,  1., -1.],
-             [0., -1., -1.,  1.,  1.,  1.,  1., -1.],
-             [-1., -1.,  1.,  1.,
-              0.,  1.,  0., -1.],
-             [1., -1., -1.,  1.,
-              1.,  1.,  1.,  0.],
-             [1., -1., -1.,  0.,  1.,  1.,  1., -1.],
-             [1., -1., -1., -1.,
-              1.,  1.,  1., -1.],
-             [-1.,  1.,  1.,  1.,
-              -1.,  0.,  1.,  1.],
-             [-1.,  1.,  1., -1., -1.,  1.,  0.,  0.],
-             [-1.,  1.,  1.,  0., -1.,  1.,  1.,  1.]])
+            [[1., -1., -1., 1., 1., 1., 1., -1., 1],
+             [0., -1., -1., 1., 1., 1., 1., -1., 1],
+             [-1., -1., 1., 1., 0., 1., 0., -1., 0],
+             [1., -1., -1., 1., 1., 1., 1., 0., 1],
+             [1., -1., -1., 0., 1., 1., 1., -1., 1],
+             [1., -1., -1., -1., 1., 1., 1., -1., 1],
+             [-1., 1., 1., 1., -1., 0., 1., 1., 1],
+             [-1., 1., 1., -1., -1., 1., 0., 0., 0],
+             [-1., 1., 1., 0., -1., 1., 1., 1., 1]])
         builder = analise.MatrizesDeDadosBuilder(
             self.votacoes, self.partidos, self.parlamentares)
         builder.gera_matrizes()
@@ -129,22 +128,16 @@ class MatrizesDeDadosBuilderTest(TestCase):
 
     def test_matriz_presencas(self):
         MATRIZ_PRESENCAS_ESPERADA = numpy.matrix(
-            [[1.,  1.,  1.,  1.,  1.,  1.,  1.,  1.],
-             [1.,  1.,  1.,  1.,
-              1.,  1.,  1.,  1.],
-             [1.,  1.,  1.,  1.,
-              1.,  1.,  1.,  1.],
-             [1.,  1.,  1.,  1.,
-              1.,  1.,  1.,  1.],
-             [1.,  1.,  1.,  1.,
-              1.,  1.,  1.,  1.],
-             [1.,  1.,  1.,  1.,
-              1.,  1.,  1.,  1.],
-             [1.,  1.,  1.,  1.,
-              1.,  0.,  1.,  1.],
-             [1.,  1.,  1.,  1.,
-              1.,  1.,  0.,  0.],
-             [1.,  1.,  1.,  0.,  1.,  1.,  1.,  1.]])
+            [[1., 1., 1., 1., 1., 1., 1., 1., 1],
+             [1., 1., 1., 1., 1., 1., 1., 1., 1],
+             [1., 1., 1., 1., 1., 1., 1., 1., 1],
+             [1., 1., 1., 1., 1., 1., 1., 1., 1],
+             [1., 1., 1., 1., 1., 1., 1., 1., 1],
+             [1., 1., 1., 1., 1., 1., 1., 1., 1],
+             [1., 1., 1., 1., 1., 0., 1., 1., 1],
+             [1., 1., 1., 1., 1., 1., 0., 0., 0],
+             [1., 1., 1., 0., 1., 1., 1., 1., 1]])
+
         builder = analise.MatrizesDeDadosBuilder(
             self.votacoes, self.partidos, self.parlamentares)
         builder.gera_matrizes()
