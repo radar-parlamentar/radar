@@ -177,29 +177,53 @@ class AnalisadorTemporalTest(TestCase):
         analisador_temporal = analise.AnalisadorTemporal(
             self.casa_legislativa, models.SEMESTRE)
         analise_temporal = analisador_temporal.get_analise_temporal()
-        self.assertEqual(analise_temporal.total_votacoes, 8)
+        self.assertEqual(analise_temporal.total_votacoes, 9)
         analises = analise_temporal.analises_periodo
-        self.assertEqual(len(analises), 2)
-        # primeiro semestre
+        self.assertEqual(len(analises), 3)
+        # primeiro semestre de 1989
         coordenadas = analises[0].coordenadas_partidos
-        self.assertAlmostEqual(coordenadas[self.girondinos][0], -0.11788123, 4)
-        self.assertAlmostEqual(coordenadas[self.girondinos][1], -0.29647299, 4)
-        self.assertAlmostEqual(coordenadas[self.jacobinos][0], -0.30596818, 4)
-        self.assertAlmostEqual(coordenadas[self.jacobinos][1], 0.19860293, 4)
+        self.assertAlmostEqual(
+            coordenadas[self.girondinos][0], -0.11788123, 4)
+        self.assertAlmostEqual(
+            coordenadas[self.girondinos][1], -0.29647299, 4)
+        self.assertAlmostEqual(
+            coordenadas[self.jacobinos][0], -0.30596818, 4)
+        self.assertAlmostEqual(
+            coordenadas[self.jacobinos][1], 0.19860293, 4)
         self.assertAlmostEqual(
             coordenadas[self.monarquistas][0], 0.42384941, 4)
         self.assertAlmostEqual(
             coordenadas[self.monarquistas][1], 0.09787006, 4)
-        # segundo semestre
-        coordenadas = analises[0].coordenadas_partidos
-        self.assertAlmostEqual(coordenadas[self.girondinos][0], -0.11788123, 4)
-        self.assertAlmostEqual(coordenadas[self.girondinos][1], -0.29647299, 4)
-        self.assertAlmostEqual(coordenadas[self.jacobinos][0], -0.30596818, 4)
-        self.assertAlmostEqual(coordenadas[self.jacobinos][1], 0.19860293, 4)
+
+        # segundo semestre de 1989
+        coordenadas = analises[1].coordenadas_partidos
         self.assertAlmostEqual(
-            coordenadas[self.monarquistas][0], 0.42384941, 4)
+            coordenadas[self.girondinos][0], -0.217213339209, 4)
         self.assertAlmostEqual(
-            coordenadas[self.monarquistas][1], 0.09787006, 4)
+            coordenadas[self.girondinos][1], 0.162195036556, 4)
+        self.assertAlmostEqual(
+            coordenadas[self.jacobinos][0], -0.234612288891, 4)
+        self.assertAlmostEqual(
+            coordenadas[self.jacobinos][1], -0.173823604055, 4)
+        self.assertAlmostEqual(
+            coordenadas[self.monarquistas][0], 0.45182562815, 4)
+        self.assertAlmostEqual(
+            coordenadas[self.monarquistas][1], 0.011628567499, 4)
+
+        # primeiro semestre de 1990
+        coordenadas = analises[2].coordenadas_partidos
+        self.assertAlmostEqual(
+            coordenadas[self.girondinos][0], -0.222717701594, 4)
+        self.assertAlmostEqual(
+            coordenadas[self.girondinos][1], 0.0, 4)
+        self.assertAlmostEqual(
+            coordenadas[self.jacobinos][0], 0.133630620956, 4)
+        self.assertAlmostEqual(
+            coordenadas[self.jacobinos][1], 0.0, 4)
+        self.assertAlmostEqual(
+            coordenadas[self.monarquistas][0], 0.133630620956, 4)
+        self.assertAlmostEqual(
+            coordenadas[self.monarquistas][1], 0.0, 4)
 
 
 class RotacionadorTest(TestCase):
