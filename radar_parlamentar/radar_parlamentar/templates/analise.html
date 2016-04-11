@@ -42,9 +42,17 @@
         <br/><br/>
         </div>
 
-        <form id="formAnalise" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
+        <div style="width: 15%">
+            <p style="background: none;border: none; color: #1292db; font-weight:bold;cursor:pointer; font-size: 15px;" 
+            onmouseover="this.style.color='#555';"
+            onmouseout="this.style.color='#1292db';" 
+            onclick="mostrarBuscaAvancada();" 
+            id="botao_busca_avancada">  &rarr; Análise Avançada</p>
+        </div>
+
+        <form style="display: none;" id="formAnalise" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
             <p><label for="periodicidade">Periodicidade:</label>
-            <select id="periodicidade" name="periodicidade" onChange="this.form.submit()">
+            <select id="periodicidade" name="periodicidade">
                 <option value="QUADRIENIO">Quadriênio</option>
                 <option value="BIENIO">Biênio</option>
                 <option value="ANO">Ano</option>
@@ -64,9 +72,8 @@
             <label for="encontrar_parlamentar"> Encontrar Parlamentar: </label>
             <input type="text" id="nome_parlamentar" name ="nome_parlamentar" size="30" placeholder="Ricardo Teixeira"><br>
             -->
-
-            <input type="submit" value="Filtrar">
             </p>
+            <input type="submit" value="Buscar">
         </form> 
 
         <!-- Popup windows content -->
@@ -130,6 +137,18 @@
         </script>
     {% endif %}
     <script src="/static/files/codes/js/radar_plot.js"></script>
+    <script type="text/javascript">
+        function mostrarBuscaAvancada(){
+            var visibilidade = document.getElementById("formAnalise").style.display;
+            if(visibilidade == 'none'){
+                document.getElementById("formAnalise").style.display = 'block';
+                document.getElementById("botao_busca_avancada").innerHTML = "&darr; Análise Avançada";
+            }else{
+                document.getElementById("formAnalise").style.display = 'none';
+                document.getElementById("botao_busca_avancada").innerHTML = "&rarr; Análise Avançada";
+            }
+        }
+    </script>
 {% endblock extrajsend %}
 
 {% block extrascriptsend %}
