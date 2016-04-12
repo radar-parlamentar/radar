@@ -123,7 +123,7 @@ def genero_perfil_legis(request):
 
 
 def dados_utilizados(request):
-    dump_file_path = finders.find('db-dump/radar.sql')
+    dump_file_path = finders.find('db-dump/radar.sql.bz2')
     time = os.path.getmtime(dump_file_path)
     dt = datetime.datetime.fromtimestamp(time)
     dt_str = dt.strftime('%d/%m/%Y')
