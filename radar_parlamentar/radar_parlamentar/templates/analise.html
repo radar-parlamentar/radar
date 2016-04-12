@@ -146,8 +146,9 @@
             }else{
                 document.getElementById("formAnalise").style.display = 'none';
                 document.getElementById("botao_busca_avancada").innerHTML = "&rarr; Análise Avançada";
-            }
+            } 
         }
+
     </script>
 {% endblock extrajsend %}
 
@@ -157,11 +158,22 @@
         if(campo_select.options[i].value == '{{periodicidade}}') {
             campo_select.selectedIndex = i;
         }
-    } 
+    }
+
+    var palavras_chave = document.getElementById("palavras_chave");
+    palavras_chave.value = '{{palavras_chave}}';
+
+     url = window.location.href;
+     var pagina_recarregada = url.indexOf("periodicidade");
+
+    if (pagina_recarregada != -1){
+        mostrarBuscaAvancada();
+    }
     
     menuActive("analises");
   $(document).ready(function() {
     Plot.initialize('{{casa_legislativa.nome_curto}}', '{{periodicidade}}', '{{palavras_chave}}','{{nome_parlamentar}}')
+
   });
 {% endblock extrascriptsend %}
 
