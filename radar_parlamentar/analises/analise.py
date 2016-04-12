@@ -120,9 +120,10 @@ class AnalisadorTemporal:
     def votacoes_filtradas(self):
         votacoes_filtradas = []
         for periodo in self.periodos:
-            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa, 
-                periodo, self.votacoes, self.palavras_chave)
-            votacoes_filtradas.extend(analisadorPeriodo._inicializa_votacoes())    
+            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa,
+                                                  periodo, self.votacoes,
+                                                  self.palavras_chave)
+            votacoes_filtradas.extend(analisadorPeriodo._inicializa_votacoes())
         return votacoes_filtradas
 
 class AnalisadorPeriodo:
@@ -161,15 +162,15 @@ class AnalisadorPeriodo:
         self.vetores_presencas = []
         self.tamanhos_partidos = {}
         self.coordenadas_partidos = {}
-        
+
         # array de partido.nome's, um por parlamentar
         self.partido_do_parlamentar = []
-        
-        # parlamentar.id => {True,False}, 
+
+        # parlamentar.id => {True,False},
         # sendo True se estava presente no periodo.
         self.presencas_parlamentares = {}
 
-        # partido.nome => lista de parlamentares do partido 
+        # partido.nome => lista de parlamentares do partido
         # (independente de periodo).
         self.parlamentares_por_partido = {}
 
@@ -212,7 +213,7 @@ class AnalisadorPeriodo:
     def _calcula_parlamentares_2d(self):
         """Retorna mapa com as coordenadas de parlamentares no plano 2D formado
         pelas duas primeiras componentes principais.
-        
+
         A chave do mapa é o id do parlamentar (int) e o valor é uma lista
         de duas posições [x,y].
         """
@@ -330,7 +331,7 @@ class MatrizesDeDadosBuilder:
         A ordenação das linhas segue a ordem de self.partidos ou
         self.parlamentares, e a ordenação das colunas segue a ordem
         de self.votacoes.
-        
+
         Retorna matriz_votacoes
         """
         iv = -1  # índice votação
