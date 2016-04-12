@@ -180,6 +180,7 @@ class AnalisadorTemporalTest(TestCase):
         self.assertEqual(analise_temporal.total_votacoes, 9)
         analises = analise_temporal.analises_periodo
         self.assertEqual(len(analises), 3)
+
         # primeiro semestre de 1989
         coordenadas = analises[0].coordenadas_partidos
         self.assertAlmostEqual(
@@ -210,7 +211,7 @@ class AnalisadorTemporalTest(TestCase):
         self.assertAlmostEqual(
             coordenadas[self.monarquistas][1], 0.011628567499, 4)
 
-        # primeiro semestre de 1990
+        # primeiro semestre de 1990 (nesse período teve só uma votação)
         coordenadas = analises[2].coordenadas_partidos
         self.assertAlmostEqual(
             coordenadas[self.girondinos][0], -0.222717701594, 4)
