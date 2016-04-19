@@ -196,6 +196,12 @@ Plot = (function ($) {
         createBackground(full_radius);
         transitionBackground("linear");
 
+        var label_chefe_executivo = grupo_controle_periodos.append("text")
+            .attr("class", "total_label")
+            .attr("text-anchor", "middle")
+            .attr("y", -5)
+            .attr("x", width/2);    
+
         var label_periodo = grupo_controle_periodos.append("text")
             .attr("class", "year label")
             .attr("text-anchor", "middle")
@@ -528,6 +534,7 @@ Plot = (function ($) {
                 }
             });            
             
+            label_chefe_executivo.text(periodos[periodo_atual].chefe_executivo);
             label_periodo.text(periodos[periodo_atual].nome);
             quantidade_votacoes = periodos[periodo_atual].nvotacoes;
             label_nvotacoes.text(quantidade_votacoes + " votações"); 
