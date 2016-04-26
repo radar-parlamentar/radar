@@ -24,24 +24,18 @@ from analises import filtro
 from modelagem import models
 from datetime import date
 
+
 class FiltroVotacaoTest(TestCase):
 
     def test_build_query_to_elaslicSearch(self):
         nome_curto = "cmsp"
-        ini = date(2000,1,1)
-        fim = date(2010,1,1)
-        periodo = models.PeriodoCasaLegislativa(ini,fim)
-        palavras_chaves = ["Educação","Professor","Escola"]
-        query_builder = filtro.LuceneQueryBuilder(nome_curto, periodo, palavras_chaves)
+        ini = date(2000, 1, 1)
+        fim = date(2010, 1, 1)
+        periodo = models.PeriodoCasaLegislativa(ini, fim)
+        palavras_chaves = ["Educação", "Professor", "Escola"]
+        query_builder = filtro.LuceneQueryBuilder(
+            nome_curto, periodo, palavras_chaves)
         query = query_builder.build()
-        query_esperada = 'casa_legislativa_nome_curto:cmsp AND Educação AND Professor AND Escola AND votacao_data:[2000-01-01 TO 2010-01-01]'
+        query_esperada = 'casa_legislativa_nome_curto:cmsp AND Educação AND \
+        Professor AND Escola AND votacao_data:[2000-01-01 TO 2010-01-01]'
         self.assertEquals(query, query_esperada)
-
-
-
-
-
-
-
-
-

@@ -82,7 +82,8 @@ class JsonAnaliseGeneratorTest(TestCase):
         ap1.coordenadas_parlamentares = {}  # parlamentar.id => [x,y]
         for partido, parlamentares in ap1.parlamentares_por_partido.items():
             for parlamentar in parlamentares:
-                ap1.coordenadas_parlamentares[parlamentar.id] = [random(), random()]
+                ap1.coordenadas_parlamentares[parlamentar.id] = [random(),
+                                                                 random()]
         self.analiseTemporal.analises_periodo.append(ap1)
 
     def test_json(self):
