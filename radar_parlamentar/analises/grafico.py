@@ -108,7 +108,7 @@ class JsonAnaliseGenerator:
             dict_ap['cp1'] = self._dict_cp1(ap)
             dict_ap['cp2'] = self._dict_cp2(ap)
             dict_ap['votacoes'] = self._list_votacoes_do_periodo(ap)
-            dict_ap['chefe_executivo'] = self.get_chefe_executivo()
+            dict_ap['chefe_executivo'] = self.get_chefes_executivos_periodo(ap.periodo)
 
             list_aps.append(dict_ap)
         return list_aps
@@ -238,17 +238,26 @@ class JsonAnaliseGenerator:
                 dict_parlamentar["y"].append(None)
         return dict_parlamentar
 
-    def get_chefe_executivo(self):
+    def get_string_chefes_executivos(self, periodo):
+        dicionario_chefe_executivo = self.create_dicionario_chefe_executivo()
+        ano_inicio = periodo.ini.year
+        ano_fim = periodo.fim.year
+        string_chefes_executivos = self.get_chefes_executivos_by_date(
+            dicionario_chefe_executivo, ano_inicio, ano_fim)
+        return string_chefes_executivos
+
+
+    def create_dicionario_chefe_executivo(self):
         casa_legislativa = self.analise_temporal.casa_legislativa.nome_curto
         if casa_legislativa == "sen" or casa_legislativa == "cdep":
-            string_retorno = "Presidente da República: "
-            for ap in self.analise_temporal.analises_periodo:
-                ano_inicio = ap.periodo.ini.year
-                ano_fim = ap.periodo.fim.year
-                if ano_inicio >= 1990 and ano_inicio <= 1992:
-                    return string_retorno + "Fernando Collor de Mello"
-                else:
-                    return string_retorno + "Presidente"
+            return {'Fernanco Collor de Mello': (1990, 1992), 'Itamar Franco': (1993,1994)}
+        else:
+            return {'Luiza Erundina': (1989, 1992), 'Paulo Maluf': (1993, 1996)}
+
+    # Necessário implementar filtro no dicionário 'chefes_executivos' para retornar os parlamentares
+    # entre os períodos 'ano_inicio' e 'ano_fim'
+    def get_chefes_executivos_by_date(self, chefes_executivos, ano_inicio, ano_fim):
+        return chefes_executivos
 
 
 class MaxRadiusCalculator:
