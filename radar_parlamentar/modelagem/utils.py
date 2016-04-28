@@ -95,8 +95,9 @@ class PeriodosRetriever:
     def get_periodos(self):
         if (self.data_da_primeira_votacao is None):
             # TODO a query abaixo poderia usar um ORDER BY
-            votacao_datas = [votacao.data for votacao in Votacao.objects.filter(
-                proposicao__casa_legislativa=self.casa_legislativa)]
+            votacao_datas = [
+                votacao.data for votacao in Votacao.objects.filter(
+                    proposicao__casa_legislativa=self.casa_legislativa)]
             if not votacao_datas:
                 return []
 
@@ -147,7 +148,8 @@ class PeriodosRetriever:
         mandatos = mandatos_lists.get_mandatos(
             esfera, self.data_da_primeira_votacao, self.data_da_ultima_votacao)
         i = 0
-        while i < len(mandatos) and mandatos[i] < self.data_da_primeira_votacao:
+        while i < len(mandatos) and \
+                mandatos[i] < self.data_da_primeira_votacao:
             ano_inicial = mandatos[i].year
             i += 1
         inicio_primeiro_periodo = datetime.date(
