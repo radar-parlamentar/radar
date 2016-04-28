@@ -279,7 +279,10 @@ class ProposicoesXmlsCollector:
                     dic['sigla'],
                     dic['num'],
                     dic['ano'])
-        
+        'f = lambda dic: (dic['id'],'
+        '#                 dic['sigla'],'
+        '#                 dic['num'],'
+        '#                 dic['ano'])'
         for id_prop, sigla, num, ano in [f(dic) for dic in self.votadas]:
             try:
                 proposicao_xml = self.camaraws.obter_proposicao_por_id(id_prop)
@@ -378,8 +381,8 @@ class ImportadorCamara:
     def _init_parlamentares(self):
         """(nome_parlamentar,nome_partido,localidade) -> Parlamentar"""
         parlamentares = {}
-        for p in models.
-        Parlamentar.objects.filter(casa_legislativa=self.camara_dos_deputados):
+        for p in models.Parlamentar.objects.filter(
+                casa_legislativa=self.camara_dos_deputados):
             parlamentares[self._key_parlamentar(p)] = p
         return parlamentares
 
@@ -391,8 +394,8 @@ class ImportadorCamara:
     def _init_proposicoes(self):
         """id_prop -> Proposicao"""
         proposicoes = {}
-        for p in models.
-        Proposicao.objects.filter(casa_legislativa=self.camara_dos_deputados):
+        for p in models.Proposicao.objects.filter(
+                casa_legislativa=self.camara_dos_deputados):
             proposicoes[p.id_prop] = p
         return proposicoes
 
