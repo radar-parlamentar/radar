@@ -1,4 +1,3 @@
-
 class ConsoleExceptionMiddleware:
     """Custom middleware to print stack traces on Django console"""
 
