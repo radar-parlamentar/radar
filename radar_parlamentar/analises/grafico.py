@@ -108,7 +108,7 @@ class JsonAnaliseGenerator:
             dict_ap['cp1'] = self._dict_cp1(ap)
             dict_ap['cp2'] = self._dict_cp2(ap)
             dict_ap['votacoes'] = self._list_votacoes_do_periodo(ap)
-            dict_ap['chefe_executivo'] = self.get_chefes_executivos_periodo(ap.periodo)
+            dict_ap['chefe_executivo'] = self.get_string_chefes_executivos(ap.periodo)
 
             list_aps.append(dict_ap)
         return list_aps
@@ -238,10 +238,11 @@ class JsonAnaliseGenerator:
                 dict_parlamentar["y"].append(None)
         return dict_parlamentar
 
+
     def get_string_chefes_executivos(self, periodo):
         dicionario_chefe_executivo = self.create_dicionario_chefe_executivo()
-        ano_inicio = periodo.ini.year
-        ano_fim = periodo.fim.year
+        ano_inicio = int(periodo.ini.year)
+        ano_fim = int(periodo.fim.year)
         string_chefes_executivos = self.get_chefes_executivos_by_date(
             dicionario_chefe_executivo, ano_inicio, ano_fim)
         return string_chefes_executivos
@@ -250,14 +251,23 @@ class JsonAnaliseGenerator:
     def create_dicionario_chefe_executivo(self):
         casa_legislativa = self.analise_temporal.casa_legislativa.nome_curto
         if casa_legislativa == "sen" or casa_legislativa == "cdep":
-            return {'Fernanco Collor de Mello': (1990, 1992), 'Itamar Franco': (1993,1994)}
+            dicionario_chefe_executivo = {"Fernanco Collor de Mello": [1990, 1992, "PRN"],
+                                          "Itamar Franco": [1993, 1994, "PMDB"],
+                                          "Fernando Henrique Cardoso": [1995, 2002, "PSDB"],
+                                          "Luis Inacio Lula da Silva": [2003, 2011, "PT"],
+                                          "Dilma Vana Rousseff": [2011, 2016, "PT"]}
         else:
-            return {'Luiza Erundina': (1989, 1992), 'Paulo Maluf': (1993, 1996)}
+            dicionario_chefe_executivo = {"Luiza Erundina": [1989,1992], "Paulo Maluf": [1993,1996]}
+        return dicionario_chefe_executivo
 
     # Necessário implementar filtro no dicionário 'chefes_executivos' para retornar os parlamentares
     # entre os períodos 'ano_inicio' e 'ano_fim'
     def get_chefes_executivos_by_date(self, chefes_executivos, ano_inicio, ano_fim):
-        return chefes_executivos
+        string_chefes_executivos = 'Chefe(s) do executivo: '
+        for k, v in chefes_executivos.items():
+            if int(ano_inicio) >= int(v[0]) and int(ano_inicio) <= int(v[1]) or int(ano_fim) >= int(v[0]) and int(ano_fim) <= int(v[1]):
+                string_chefes_executivos += str(k) + ' - ' + v[2] + ' '
+        return string_chefes_executivos
 
 
 class MaxRadiusCalculator:
