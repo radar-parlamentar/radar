@@ -257,16 +257,28 @@ class JsonAnaliseGenerator:
                                           "Luis Inacio Lula da Silva": [2003, 2011, "PT"],
                                           "Dilma Vana Rousseff": [2011, 2016, "PT"]}
         else:
-            dicionario_chefe_executivo = {"Luiza Erundina": [1989,1992], "Paulo Maluf": [1993,1996]}
+            dicionario_chefe_executivo = {"Luiza Erundina": [1989, 1992, "PT"],
+                                          "Paulo Maluf": [1993, 1996, "PDS"],
+                                          "Celso Pitta": [1997, 2000, "PPB"],
+                                          "Marta Suplicy": [2001, 2005, "PT"],
+                                          "Jose Serra": [2005, 2008, "PSDB"],
+                                          "Gilberto Kassab": [2009, 2012, "PSD"],
+                                          "Fernando Haddad": [2013, 2016, "PT"]}
         return dicionario_chefe_executivo
 
     # Necessário implementar filtro no dicionário 'chefes_executivos' para retornar os parlamentares
     # entre os períodos 'ano_inicio' e 'ano_fim'
     def get_chefes_executivos_by_date(self, chefes_executivos, ano_inicio, ano_fim):
         string_chefes_executivos = 'Chefe(s) do executivo: '
+        mais_de_um_nome = 0
         for k, v in chefes_executivos.items():
-            if int(ano_inicio) >= int(v[0]) and int(ano_inicio) <= int(v[1]) or int(ano_fim) >= int(v[0]) and int(ano_fim) <= int(v[1]):
-                string_chefes_executivos += str(k) + ' - ' + v[2] + ' '
+            if ano_inicio >= v[0] and ano_inicio <= v[1] or ano_fim >= v[0] and ano_fim <= v[1]:
+                if mais_de_um_nome == 1:
+                    string_chefes_executivos += ', '
+                string_chefes_executivos += str(k)
+                mais_de_um_nome = 1
+
+
         return string_chefes_executivos
 
 
