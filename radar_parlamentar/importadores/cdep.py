@@ -378,8 +378,8 @@ class ImportadorCamara:
     def _init_parlamentares(self):
         """(nome_parlamentar,nome_partido,localidade) -> Parlamentar"""
         parlamentares = {}
-        for p in models.
-        Parlamentar.objects.filter(casa_legislativa=self.camara_dos_deputados):
+        for p in models.Parlamentar.objects.filter(
+                casa_legislativa=self.camara_dos_deputados):
             parlamentares[self._key_parlamentar(p)] = p
         return parlamentares
 
@@ -391,16 +391,16 @@ class ImportadorCamara:
     def _init_proposicoes(self):
         """id_prop -> Proposicao"""
         proposicoes = {}
-        for p in models.
-        Proposicao.objects.filter(casa_legislativa=self.camara_dos_deputados):
+        for p in models.Proposicao.objects.filter(
+                casa_legislativa=self.camara_dos_deputados):
             proposicoes[p.id_prop] = p
         return proposicoes
 
     def _init_votacoes(self):
         """(id_prop,descricao,data) -> Votacao"""
         votacoes = {}
-        for v in models.Votacao.
-        objects.filter(proposicao__casa_legislativa=self.camara_dos_deputados):
+        for v in models.Votacao.objects.filter(
+                proposicao__casa_legislativa=self.camara_dos_deputados):
             votacoes[self._key_votacao(v)] = v
         return votacoes
 
@@ -543,9 +543,8 @@ class PosImportacao:
                                                  numero='821',
                                                  ano='1995')
             obj_votacao = 'SUBEMENDA A EMENDA N. 33'
-            votacao =
-            models.Votacao.objects.get(proposicao=prop,
-                                       escricao__contains=obj_votacao)
+            votacao = models.Votacao.objects.get(
+                proposicao=prop, escricao__contains=obj_votacao)
             votacao.delete()
         except ObjectDoesNotExist:
             logger.warn('Votação esperada (em PL 821/1995)\

@@ -141,7 +141,7 @@ class PeriodosRetrieverTest(TestCase):
         self._test_periodos_em_duas_datas(2009, 2010, MUNICIPAL, BIENIO, 1)
 
     def test_inicio_de_periodo_municipal_deve_coincidir_com_inicio_mandato(
-        \self):
+            self):
         self._test_periodos_em_duas_datas(2010, 2011, MUNICIPAL, BIENIO, 2)
 
     def test_periodo_federal_nao_deve_conter_votacoes_de_dois_mandatos(self):
