@@ -128,4 +128,3 @@ def main():
     data_fim = parse_datetime('2016-01-01 0:0:0')
     exportador = ExportadorCSV('cmsp', data_ini, data_fim)
     exportador.exportar_csv()
-

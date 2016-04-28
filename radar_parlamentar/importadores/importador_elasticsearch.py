@@ -28,7 +28,11 @@ ELASTIC_SEARCH_ADDRESS_DEFAULT = {'host': 'localhost', 'port': '9200'}
 ELASTIC_SEARCH_INDEX_DEFAULT = "radar_parlamentar"
 
 """
-    Esse modulo e responsavel por transportar as informacoes que estao no banco de dados do radar parlamentar para uma instancia de Elasticsearch. E feita a coleta atraves dos modelos do django, conversao desse modelo para um objeto RadarParlamentarIndex e, por fim, o envio desse objeto para o Elasticsearch.
+    Esse modulo e responsavel por transportar as informacoes que estao no banco
+    de dados do radar parlamentar para uma instancia de Elasticsearch.
+    E feita a coleta atraves dos modelos do django,
+    conversao desse modelo para um objeto RadarParlamentarIndex e, por fim,
+    o envio desse objeto para o Elasticsearch.
 """
 
 
@@ -48,9 +52,9 @@ class RadarParlamentarIndex():
         self.proposicao_ementa = proposicao.ementa
         self.proposicao_descricao = proposicao.descricao
         self.proposicao_indexacao = proposicao.indexacao
-        if proposicao.data_apresentacao != None:
-            self.proposicao_data_apresentacao = proposicao.data_apresentacao.strftime(
-                "%Y-%m-%d")
+        if proposicao.data_apresentacao is not None:
+            self.proposicao_data_apresentacao = \
+                proposicao.data_apresentacao.strftime("%Y-%m-%d")
         self.proposicao_situacao = proposicao.situacao
         self.casa_legislativa_id = casa_legislativa.id
         self.casa_legislativa_nome = casa_legislativa.nome
@@ -90,7 +94,8 @@ def conectar_em_elastic_search():
     return es
 
 """
-    remove o indice do Elasticsearch (o indice de elasticsearch e analogo a uma tabela em um SGBD)
+    remove o indice do Elasticsearch
+    (o indice de elasticsearch e analogo a uma tabela em um SGBD)
 """
 
 
@@ -109,7 +114,8 @@ def criar_indice(nome_indice):
         "analyzer": {
             "my_analyzer": {
                 "tokenizer": "standard",
-                "filter": ["standard", "pt_BR", "lowercase","portuguese_stop","asciifolding"]
+                "filter": ["standard", "pt_BR", "lowercase","portuguese_stop",
+                           "asciifolding"]
         }
         },
         "filter": {
@@ -119,11 +125,11 @@ def criar_indice(nome_indice):
             },
              "portuguese_stop": {
                  "type":       "stop",
-                 "stopwords":  "_brazilian_" 
+                 "stopwords":  "_brazilian_"
             },
              "pt_BR": {
                  "type":       "hunspell",
-                 "language":  "pt_BR" 
+                 "language":  "pt_BR"
             }
         }
     }

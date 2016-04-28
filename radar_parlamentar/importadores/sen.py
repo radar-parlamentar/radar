@@ -72,19 +72,24 @@ class ImportadorVotacoesSenado:
         self.proposicoes = self._init_proposicoes()
 
     def _init_parlamentares(self):
-        """retorna dicionário (nome_parlamentar, nome_partido, localidade) -> Parlamentar"""
+        """retorna dicionário
+           (nome_parlamentar, nome_partido, localidade) -> Parlamentar"""
         parlamentares = {}
-        for p in models.Parlamentar.objects.filter(casa_legislativa=self.senado):
+        for p in models.Parlamentar.objects.filter(
+                casa_legislativa=self.senado):
             parlamentares[self._key(p)] = p
         return parlamentares
 
     def _key(self, parlamentar):
-        return (parlamentar.nome, parlamentar.partido.nome, parlamentar.localidade)
+        return (parlamentar.nome,
+                parlamentar.partido.nome,
+                parlamentar.localidade)
 
     def _init_proposicoes(self):
         """retorna dicionário "sigla num/ano" -> Proposicao"""
         proposicoes = {}
-        for p in models.Proposicao.objects.filter(casa_legislativa=self.senado):
+        for p in models.Proposicao.objects.filter(
+                casa_legislativa=self.senado):
             proposicoes[p.nome()] = p
         return proposicoes
 
@@ -262,8 +267,10 @@ class ImportadorVotacoesSenado:
         return xmls
 
     def importar_votacoes(self):
-        # for xml_file in ['importadores/dados/senado/votacoes/ListaVotacoes2014.xml', 'importadores/dados/senado/votacoes/ListaVotacoes2015.xml']:
-        # facilita debug
+        """# for xml_file in
+        ['importadores/dados/senado/votacoes/ListaVotacoes2014.xml',
+        'importadores/dados/senado/votacoes/ListaVotacoes2015.xml']:
+        # facilita debug"""
         for xml_file in self._xml_file_names():
             logger.info('Importando %s' % xml_file)
             self._from_xml_to_bd(xml_file)
@@ -277,11 +284,14 @@ class PosImportacao:
     # Issue #325
     def consertar_suplicy_sem_partido(self):
         try:
-            suplicy_sem_partido = models.Parlamentar.objects.get(nome='Eduardo Suplicy',
-                                                                 partido__numero=0,
-                                                                 casa_legislativa__nome_curto='sen')
-            suplicy_do_pt = models.Parlamentar.objects.get(nome='Eduardo Suplicy', partido__numero=13,
-                                                           casa_legislativa__nome_curto='sen')
+            suplicy_sem_partido = models.Parlamentar.objects.get(
+                nome='Eduardo Suplicy',
+                partido__numero=0,
+                casa_legislativa__nome_curto='sen')
+            suplicy_do_pt = models.Parlamentar.objects.get(
+                nome='Eduardo Suplicy',
+                partido__numero=13,
+                casa_legislativa__nome_curto='sen')
             votos = models.Voto.objects.filter(parlamentar=suplicy_sem_partido)
             for v in votos:
                 v.parlamentar = suplicy_do_pt

@@ -4,6 +4,7 @@ import logging
 
 logger = logging.getLogger("radar")
 
+
 def main(lista_casas_legislativas):
 
     for casa_legislativa in lista_casas_legislativas:

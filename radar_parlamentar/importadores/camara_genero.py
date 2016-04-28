@@ -95,7 +95,8 @@ def proposicoes_indexadas(lista_proposicoes):
 
 def parseia_indexacoes(indexacao):
     indexacao1 = [termo.strip()
-                  for termo in indexacao.replace('\n', '').replace('.', '').replace('_', '').split(',')]
+                  for termo in indexacao.replace('\n', '').replace('.', '').
+                  replace('_', '').split(',')]
     indexacao2 = []
     for termo in indexacao1:
         termo = termo.split(' ')
@@ -223,8 +224,8 @@ def principal(fonte=None):
     retorno = {'partidos': PARTIDOS, 'dic_termos':
                DIC_TERMOS, 'lista_proposicoes': lista_proposicoes}
 
-    #export_json(PARTIDOS, 'partidospropositores.json')
-    #export_json(lista_proposicoes, 'lista_proposicoes.json')
+    "#export_json(PARTIDOS, 'partidospropositores.json')"
+    "#export_json(lista_proposicoes, 'lista_proposicoes.json')"
     export_json(DIC_TERMOS, 'dic_termos.json')
 
     return retorno
