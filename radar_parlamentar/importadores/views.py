@@ -24,12 +24,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 from celery import importar_assincronamente
 
 logger = logging.getLogger("radar")
-  
+
+
 @staff_member_required
 def importar(request, nome_curto_casa_legislativa):
-    logger.info("Invocando importador de %s assincronamente" % nome_curto_casa_legislativa)
+    logger.info("Invocando importador de %s assincronamente" %
+                nome_curto_casa_legislativa)
     importar_assincronamente.delay(nome_curto_casa_legislativa)
-    return HttpResponse("OK, invocando importador de %s assincronamente" % nome_curto_casa_legislativa)
-
-        
-        
+    return HttpResponse("OK, invocando importador de %s assincronamente" %
+                        nome_curto_casa_legislativa)

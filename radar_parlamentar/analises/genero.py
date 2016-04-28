@@ -27,7 +27,8 @@ class Genero:
     def definir_palavras(genero):
         temas = []
         for parlamentar in Parlamentar.objects.filter(genero=genero):
-            for proposicao in Proposicao.objects.filter(autor_principal=parlamentar.nome):
+            for proposicao in Proposicao.objects.filter(
+                    autor_principal=parlamentar.nome):
                 for tema in proposicao.indexacao.split(','):
                     if len(tema) != 0:
                         temas.append(tema.strip().lower())

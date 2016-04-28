@@ -25,7 +25,8 @@ from modelagem import models
 import os
 import xml.etree.ElementTree as etree
 from mock import Mock
-from importadores.tests.mocks_cdep import mock_obter_proposicoes_votadas_plenario
+from importadores.tests.mocks_cdep \
+    import mock_obter_proposicoes_votadas_plenario
 
 
 MOCK_PATH = os.path.join(cdep.RESOURCES_FOLDER, 'mocks')
@@ -138,9 +139,11 @@ class ImportadorCamaraTest(TestCase):
         votacao = models.Votacao.objects.filter(
             proposicao__id_prop=ID_FLORESTAL)[0]
         voto1 = [
-            v for v in votacao.votos() if v.parlamentar.nome == 'Mara Gabrilli'][0]
+            v for v in votacao.votos()
+            if v.parlamentar.nome == 'Mara Gabrilli'][0]
         voto2 = [
-            v for v in votacao.votos() if v.parlamentar.nome == 'Carlos Roberto'][0]
+            v for v in votacao.votos()
+            if v.parlamentar.nome == 'Carlos Roberto'][0]
         self.assertEquals(voto1.opcao, models.SIM)
         self.assertEquals(voto2.opcao, models.NAO)
         self.assertEquals(voto1.parlamentar.partido.nome, 'PSDB')
@@ -153,8 +156,9 @@ class ImportadorCamaraTest(TestCase):
         repetidos = []
         for p in todos:
             count_p = models.Parlamentar.objects.filter(
-                casa_legislativa__nome_curto='cdep', nome=p.nome, 
-                partido__numero=p.partido.numero, localidade=p.localidade).count()
+                casa_legislativa__nome_curto='cdep', nome=p.nome,
+                partido__numero=p.partido.numero,
+                localidade=p.localidade).count()
             if count_p > 1:
                 repetidos.append(p)
         self.assertTrue(len(repetidos) == 0)
