@@ -279,10 +279,10 @@ class ProposicoesXmlsCollector:
                     dic['sigla'],
                     dic['num'],
                     dic['ano'])
-        'f = lambda dic: (dic['id'],'
-        '#                 dic['sigla'],'
-        '#                 dic['num'],'
-        '#                 dic['ano'])'
+        # f = lambda dic: (dic['id'],'
+        #                  dic['sigla'],'
+        #                  dic['num'],'
+        #                  dic['ano'])'
         for id_prop, sigla, num, ano in [f(dic) for dic in self.votadas]:
             try:
                 proposicao_xml = self.camaraws.obter_proposicao_por_id(id_prop)
