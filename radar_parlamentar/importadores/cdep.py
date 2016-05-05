@@ -74,14 +74,14 @@ class Url(object):
 class Camaraws:
 
     """Acesso aos Web Services da Câmara dos Deputados"""
-    URL_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx\
-                        /ObterProposicaoPorID?'
-    URL_VOTACOES = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx\
-                    /ObterVotacaoProposicao?'
-    URL_LISTAR_PROPOSICOES = 'http://www.camara.gov.br/SitCamaraWS\
-                                /Proposicoes.asmx/ListarProposicoes?'
-    URL_PLENARIO = 'http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/\
-                    ListarProposicoesVotadasEmPlenario?'
+    URL_PROPOSICAO = 'http://www.camara.gov.br/sitcamaraws/' + \
+        'Proposicoes.asmx/ObterProposicaoPorID?'
+    URL_VOTACOES = 'http://www.camara.gov.br/sitcamaraws/Proposicoes.asmx' + \
+        '/ObterVotacaoProposicao?'
+    URL_LISTAR_PROPOSICOES = 'http://www.camara.gov.br/SitCamaraWS/' + \
+        'Proposicoes.asmx/ListarProposicoes?'
+    URL_PLENARIO = 'http://www.camara.gov.br/SitCamaraWS/' + \
+        'Proposicoes.asmx/ListarProposicoesVotadasEmPlenario?'
 
     def __init__(self, url=Url()):
         self.url = url

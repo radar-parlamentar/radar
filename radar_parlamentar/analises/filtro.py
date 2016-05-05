@@ -56,8 +56,8 @@ class LuceneQueryBuilder():
                                      self._build_range_data())
 
     def _build_nome_curto(self):
-        return
-        "casa_legislativa_nome_curto:%s" % self.nome_curto_casa_legislativa
+        return "casa_legislativa_nome_curto:%s" % \
+            self.nome_curto_casa_legislativa
 
     def _build_palavras_chaves(self):
         return " AND ".join(self.palavras_chaves)

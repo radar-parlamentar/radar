@@ -36,6 +36,8 @@ class FiltroVotacaoTest(TestCase):
         query_builder = filtro.LuceneQueryBuilder(
             nome_curto, periodo, palavras_chaves)
         query = query_builder.build()
-        query_esperada = 'casa_legislativa_nome_curto:cmsp AND Educação AND \
-        Professor AND Escola AND votacao_data:[2000-01-01 TO 2010-01-01]'
+        query_esperada = "casa_legislativa_nome_curto:cmsp AND" + \
+            " Educação AND Professor AND Escola AND " + \
+            "votacao_data:[2000-01-01 TO 2010-01-01]"
+
         self.assertEquals(query, query_esperada)
