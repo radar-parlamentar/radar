@@ -244,28 +244,28 @@ class JsonAnaliseGenerator:
         ano_inicio = int(periodo.ini.year)
         ano_fim = int(periodo.fim.year)
         chefes_executivo_periodo = self.get_chefes_executivos_by_date(
-            dicionario_chefe_executivo, ano_inicio, ano_fim)
+            dicionario_chefe_executivo[1], ano_inicio, ano_fim)
         string_chefes_executivos = self.formata_string_chefes_executivo(
-            chefes_executivo_periodo)
+            chefes_executivo_periodo, dicionario_chefe_executivo[0])
         return string_chefes_executivos
 
 
     def cria_dicionario_chefe_executivo(self):
         casa_legislativa = self.analise_temporal.casa_legislativa.nome_curto
         if casa_legislativa == "sen" or casa_legislativa == "cdep":
-            dicionario_chefe_executivo = ["Presidente(a): ", {"Fernanco Collor de Mello": [1990, 1992, "PRN"],
-                                          "Itamar Franco": [1993, 1994, "PMDB"],
-                                          "Fernando Henrique Cardoso": [1995, 2002, "PSDB"],
-                                          "Luis Inacio Lula da Silva": [2003, 2011, "PT"],
-                                          "Dilma Rousseff": [2011, 2016, "PT"]
+            dicionario_chefe_executivo = ["Presidente", {"Fernanco Collor de Mello": [1990, 1992, "PRN"],
+                                                         "Itamar Franco": [1993, 1994, "PMDB"],
+                                                         "Fernando Henrique Cardoso": [1995, 2002, "PSDB"],
+                                                         "Luis Inacio Lula da Silva": [2003, 2010, "PT"],
+                                                         "Dilma Rousseff": [2011, 2016, "PT"]}]
         else:
-            dicionario_chefe_executivo = {"Luiza Erundina": [1989, 1992, "PT"],
-                                          "Paulo Maluf": [1993, 1996, "PDS"],
-                                          "Celso Pitta": [1997, 2000, "PPB"],
-                                          "Marta Suplicy": [2001, 2005, "PT"],
-                                          "Jose Serra": [2005, 2008, "PSDB"],
-                                          "Gilberto Kassab": [2009, 2012, "PSD"],
-                                          "Fernando Haddad": [2013, 2016, "PT"]}
+            dicionario_chefe_executivo = ["Prefeito", {"Luiza Erundina": [1989, 1992, "PT"],
+                                                       "Paulo Maluf": [1993, 1996, "PDS"],
+                                                       "Celso Pitta": [1997, 2000, "PPB"],
+                                                       "Marta Suplicy": [2001, 2005, "PT"],
+                                                       "Jose Serra": [2005, 2008, "PSDB"],
+                                                       "Gilberto Kassab": [2009, 2012, "PSD"],
+                                                       "Fernando Haddad": [2013, 2016, "PT"]}]
         return dicionario_chefe_executivo
 
     def get_chefes_executivos_by_date(self, 
@@ -280,45 +280,27 @@ class JsonAnaliseGenerator:
             validacao_ano_inicio = ano_inicio_parametro >= ano_inicio_mandato and ano_inicio_parametro <= ano_fim_mandato
             validacao_ano_fim = ano_fim_parametro >= ano_inicio_mandato and ano_fim_parametro <= ano_fim_mandato
             if not validacao_ano_inicio and not validacao_ano_fim:
-                logger.info('tafora' + nome)
                 del chefes_executivos[nome]
-            else:
-                logger.info('tadentro' + nome)
-
         return chefes_executivos
 
-    def formata_string_chefes_executivo(self, chefes_executivo):
-        casa_legislativa = self.analise_temporal.casa_legislativa.nome_curto
-        if casa_legislativa == "sen" or casa_legislativa == "cdep":
-            string_formatada = self.formata_string_presidentes(chefes_executivo)
-            return string_formatada
-        else:
-            string_formatada = self.formata_string_prefeitos(chefes_executivo)
-            return string_formatada
+    def get_descricoes_chefes_executivo(self, chefes_executivo):
+        descricoes_chefes_executivo = []
+        for (nome, dados) in chefes_executivo.items():
+            descricoes_chefes_executivo += ['%s (%s)' % (nome, dados[2])]
+        return descricoes_chefes_executivo
 
-    def formata_string_presidentes(self, chefes_executivo):
+    def formata_string_chefes_executivo(self, chefes_executivo, cargo):
         numero_presidentes = len(chefes_executivo)
         if numero_presidentes > 1:
-            descricoes_presidentes = ['%s (%s)' % (nome, dados[2]) for (nome, dados) in chefes_executivo.items()]
-            string_retorno = "Presidentes: "
-            string_retorno += ", ".join(descricoes_presidentes)
+            descricoes_chefes_executivo = self.get_descricoes_chefes_executivo(chefes_executivo)
+            string_retorno = cargo + "s: "
+            string_retorno += ", ".join(descricoes_chefes_executivo)
+            return string_retorno
         else:
-            string_retorno = "Presidente da República: " + \
-                             str(chefes_executivo.keys()[0]) + "(" + \
-                             str(chefes_executivo.values()[0][2]) + ")"
-        return string_retorno
+            string_retorno = cargo + "(a): " + chefes_executivo.keys()[0]
+            string_retorno += " (" + chefes_executivo.values()[0][2] + ")"
+            return string_retorno
 
-    def formata_string_prefeitos(self, chefes_executivo):
-        numero_prefeitos = len(chefes_executivo)
-        if numero_prefeitos > 1:
-            descricoes_presidentes = ['%s (%s)' % (nome, dados[2]) for (nome, dados) in chefes_executivo.items()]
-            string_retorno = "Prefeitos: "
-            string_retorno += ", ".join(descricoes_presidentes)
-        else:
-            string_retorno = "Prefeito: " + \
-                             str(chefes_executivo.keys()[0]) + "(" + \
-                             str(chefes_executivo.values()[0][2]) + ")"
-        return string_retorno
 
 class MaxRadiusCalculator:
 
