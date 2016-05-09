@@ -228,7 +228,7 @@ class ProposicoesFinder:
         if ano_max is None:
             ano_max = datetime.today().year
         proposicoes_votadas = [] 
-        for ano in range(ano_min, ano_max + 1):
+        for ano in range(ano_max, ano_min - 1, -1):
             logger.info('Procurando em %s' % ano)
             try:
                 xml = camaraws.obter_proposicoes_votadas_plenario(ano)
