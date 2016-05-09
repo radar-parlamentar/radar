@@ -55,3 +55,4 @@ def mock_obter_proposicoes_votadas_plenario(ano):
 def mock_obter_votacoes(sigla, num, ano):
     """retorna etree"""
     return parse_arquivo_xml('votacoes_%s%s%s.xml' % (sigla, num, ano))
+

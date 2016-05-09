@@ -25,12 +25,8 @@ from modelagem import models
 import os
 import xml.etree.ElementTree as etree
 from mock import Mock
-from importadores.tests.mocks_cdep import mock_obter_proposicoes_votadas_plenario
+from importadores.tests.mocks_cdep import *
 
-
-MOCK_PATH = os.path.join(cdep.RESOURCES_FOLDER, 'mocks')
-PROPOSICAO_XML_COD_FLORESTAL = os.path.join(MOCK_PATH, 'proposicao_17338.xml')
-VOTACOES_XML_COD_FLORESTAL = os.path.join(MOCK_PATH, 'votacoes_PL18761999.xml')
 
 ID_FLORESTAL = '17338'
 NOME_FLORESTAL = 'PL 1876/1999'
@@ -51,55 +47,20 @@ class ProposicoesFinderTest(TestCase):
         self.assertTrue(proposicao in dic_votadas)
 
 
-class SeparadorDeListaTest(TestCase):
-
-    def test_separa_lista(self):
-
-        lista = [1, 2, 3, 4, 5, 6]
-
-        separador = cdep.SeparadorDeLista(1)
-        listas = separador.separa_lista_em_varias_listas(lista)
-        self.assertEquals(len(listas), 1)
-        self.assertEquals(listas[0], lista)
-
-        separador = cdep.SeparadorDeLista(2)
-        listas = separador.separa_lista_em_varias_listas(lista)
-        self.assertEquals(len(listas), 2)
-        self.assertEquals(listas[0], [1, 2, 3])
-        self.assertEquals(listas[1], [4, 5, 6])
-
-        separador = cdep.SeparadorDeLista(3)
-        listas = separador.separa_lista_em_varias_listas(lista)
-        self.assertEquals(len(listas), 3)
-        self.assertEquals(listas[0], [1, 2])
-        self.assertEquals(listas[1], [3, 4])
-        self.assertEquals(listas[2], [5, 6])
-
-    def test_separa_lista_quando_nao_eh_multiplo(self):
-
-        lista = [1, 2, 3, 4, 5, 6, 7]
-
-        separador = cdep.SeparadorDeLista(3)
-        listas = separador.separa_lista_em_varias_listas(lista)
-        self.assertEquals(len(listas), 3)
-        self.assertEquals(listas[0], [1, 2, 3])
-        self.assertEquals(listas[1], [4, 5, 6])
-        self.assertEquals(listas[2], [7])
-
-
 class ImportadorCamaraTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
         # vamos importar apenas o código florestal
-        with open(PROPOSICAO_XML_COD_FLORESTAL, "r") as f:
-            prop_xml_str = f.read()
-        with open(VOTACOES_XML_COD_FLORESTAL, "r") as f:
-            vots_xml_str = f.read()
-        prop_xml = etree.fromstring(prop_xml_str)
-        vots_xml = etree.fromstring(vots_xml_str)
-        importer = cdep.ImportadorCamara()
-        importer.importar({prop_xml: vots_xml})
+        dic_votadas = [{'id': '17338', 'sigla': 'PL', 'num': '1876', 'ano': '1999'}]
+        camaraws = cdep.Camaraws()
+        camaraws.obter_proposicao_por_id = Mock(
+            side_effect=mock_obter_proposicao)
+        camaraws.obter_votacoes = Mock(
+            side_effect=mock_obter_votacoes)
+
+        importer = cdep.ImportadorCamara(camaraws)
+        importer.importar(dic_votadas)
 
     @classmethod
     def tearDownClass(cls):
@@ -158,3 +119,4 @@ class ImportadorCamaraTest(TestCase):
             if count_p > 1:
                 repetidos.append(p)
         self.assertTrue(len(repetidos) == 0)
+
