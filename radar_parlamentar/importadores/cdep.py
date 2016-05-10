@@ -21,7 +21,7 @@
 """módulo que cuida da importação dos dados da Câmara dos Deputados"""
 
 from __future__ import unicode_literals
-from django.utils.dateparse import parse_datetime
+from django.utils.dateparse import parse_date
 from django.core.exceptions import ObjectDoesNotExist
 from modelagem import models
 from datetime import datetime
@@ -254,22 +254,19 @@ class ProposicoesFinder:
 
 
 
-def _converte_data(data_str, hora_str='00:00'):
-    """Converte string 'd/m/a' para objeto datetime;
+def _converte_data(data_str):
+    """Converte string 'd/m/a' para objeto datetime.date;
     retona None se data_str é inválido
-    Pode também receber horário: hora_str como 'h:m'
     """
     DATA_REGEX = '(\d\d?)/(\d\d?)/(\d{4})'
-    HORA_REGEX = '(\d\d?):(\d\d?)'
     dt = re.match(DATA_REGEX, data_str)
-    hr = re.match(HORA_REGEX, hora_str)
-    if dt and hr:
-        new_str = '%s-%s-%s %s:%s:0' % (
-            dt.group(3), dt.group(2), dt.group(1),
-            hr.group(1), hr.group(2))
-        return parse_datetime(new_str)
+    if dt:
+        new_str = '%s-%s-%s' % (
+            dt.group(3), dt.group(2), dt.group(1))
+        return parse_date(new_str)
     else:
         return None
+
 
 class ImportadorCamara:
     """Salva os dados dos web services da
@@ -393,8 +390,7 @@ class ImportadorCamara:
         descricao = 'Resumo: [%s]. ObjVotacao: [%s]' % (
             votacao_xml.get('Resumo'), votacao_xml.get('ObjVotacao'))
         data_str = votacao_xml.get('Data').strip()
-        hora_str = votacao_xml.get('Hora').strip()
-        data = _converte_data(data_str, hora_str)
+        data = _converte_data(data_str)
 
         key = (prop.id_prop, descricao, data)
         if not key in self.votacoes:
