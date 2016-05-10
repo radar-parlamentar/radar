@@ -37,6 +37,7 @@ XML2012 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2012.xml')
 XML2013 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2013.xml')
 XML2014 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2014.xml')
 XML2015 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2015.xml')
+XML2016 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2016.xml')
 
 # tipos de proposições encontradas nos XMLs da cmsp
 # esta lista ajuda a identificar as votações que são de proposições
@@ -288,7 +289,7 @@ def main():
     gerador_casa = GeradorCasaLegislativa()
     cmsp = gerador_casa.gerar_cmsp()
     importer = ImportadorCMSP(cmsp)
-    for xml in [XML2012, XML2013, XML2014, XML2015]:
+    for xml in [XML2012, XML2013, XML2014, XML2015, XML2016]:
         importer.importar_de(xml)
     logger.info('Importacao dos dados da \
                 Camara Municipal de Sao Paulo (CMSP) terminada')

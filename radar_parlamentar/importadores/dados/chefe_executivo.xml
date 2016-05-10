@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Presidentes>
+	<Presidente Nome="Fernando Collor" Partido="PRN" AnoInicio="1990" AnoFinal="1992"/>
+	<Presidente Nome="Itamar Franco" Partido="PMDB" AnoInicio="1993" AnoFinal="1994"/>
+  	<Presidente Nome="Fernando Henrique Cardoso" Partido="PSDB" AnoInicio="1995" AnoFinal="2002"/>
+  	<Presidente Nome="Luís Inácio Lula da Silva" Partido="PT" AnoInicio="2003" AnoFinal="2010" />
+  	<Presidente Nome="Dilma Vana Rousseff" Partido="PT" AnoInicio="2011" AnoFinal="2016"/>
+</Presidentes>
+<PrefeitosSP>
+  	<PrefeitoSP Nome="Luiza Erundina" Partido="PT" AnoInicio="1989" AnoFinal="1992"/>
+  	<PrefeitoSP Nome="Paulo Salim Maluf" Partido="PDS" AnoInicio="1993" AnoFinal="1996"/>
+  	<PrefeitoSP Nome="Celso Pitta" Partido="PPB" AnoInicio="1997" AnoFinal="2000"/>
+  	<PrefeitoSP Nome="Marta Suplicy" Partido="PT" AnoInicio="2001" AnoFinal="2005"/>
+  	<PrefeitoSP Nome="José Serra" Partido="PSDB" AnoInicio="2005" AnoFinal="2008"/>
+  	<PrefeitoSP Nome="Gilberto Kassab" Partido="PSD" AnoInicio="2009" AnoFinal="2012"/>
+  	<PrefeitoSP Nome="Fernando Haddad" Partido="PT" AnoInicio="2013" AnoFinal="2016"/>
+</PrefeitosSP>

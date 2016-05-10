@@ -29,7 +29,6 @@ XMLS = glob.glob(os.path.join(MOCK_PATH, '*.xml'))
 
 def parse_arquivo_xml(nome_arquivo):
     """retorna etree"""
-    print nome_arquivo
     for xml in XMLS:
         if nome_arquivo == os.path.basename(xml):
             with open(xml) as arquivo_xml:
@@ -55,3 +54,4 @@ def mock_obter_proposicoes_votadas_plenario(ano):
 def mock_obter_votacoes(sigla, num, ano):
     """retorna etree"""
     return parse_arquivo_xml('votacoes_%s%s%s.xml' % (sigla, num, ano))
+

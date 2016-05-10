@@ -56,11 +56,11 @@ class JsonAnaliseGeneratorTest(TestCase):
             if partido.nome == conv.MONARQUISTAS:
                 self.monarquistas = partido
 
-        self.analiseTemporal = AnaliseTemporal()
-        self.analiseTemporal.casa_legislativa = self.casa
-        self.analiseTemporal.periodicidade = models.BIENIO
-        self.analiseTemporal.analises_periodo = []
-        self.analiseTemporal.total_votacoes = 8
+        analise_temporal = AnaliseTemporal()
+        analise_temporal.casa_legislativa = self.casa
+        analise_temporal.periodicidade = models.BIENIO
+        analise_temporal.analises_periodo = []
+        analise_temporal.total_votacoes = 8
 
         ap1 = AnalisePeriodo()
         periodos_retriever = utils.PeriodosRetriever(self.casa, models.BIENIO)
@@ -78,35 +78,67 @@ class JsonAnaliseGeneratorTest(TestCase):
         ap1.coordenadas_partidos[conv.JACOBINOS] = [-0.4, 0.3]
         ap1.coordenadas_partidos[conv.GIRONDINOS] = [0.9, -0.3]
         ap1.coordenadas_partidos[conv.MONARQUISTAS] = [0.2, 0.1]
-        ap1.parlamentares_por_partido = JsonAnaliseGeneratorTest.importer.parlamentares
+        ap1.parlamentares_por_partido = \
+            JsonAnaliseGeneratorTest.importer.parlamentares
         ap1.coordenadas_parlamentares = {}  # parlamentar.id => [x,y]
         for partido, parlamentares in ap1.parlamentares_por_partido.items():
             for parlamentar in parlamentares:
                 ap1.coordenadas_parlamentares[parlamentar.id] = [random(),
                                                                  random()]
-        self.analiseTemporal.analises_periodo.append(ap1)
+        analise_temporal.analises_periodo.append(ap1)
 
-    def test_json(self):
-        gen = grafico.JsonAnaliseGenerator(self.analiseTemporal)
+        gen = grafico.JsonAnaliseGenerator(analise_temporal)
         generated_json = gen.get_json()
-        dict_analise = json.loads(generated_json)
-        self.assertEquals(dict_analise['geral']['total_votacoes'], 8)
-        dict_casa = dict_analise['geral']['CasaLegislativa']
+        self.dict_analise = json.loads(generated_json)
+
+    def test_total_votacoes(self):
+        self.assertEquals(self.dict_analise['geral']['total_votacoes'], 8)
+
+    def test_nome_casa_legislativa(self):
+        dict_casa = self.dict_analise['geral']['CasaLegislativa']
         self.assertEquals(dict_casa['nome_curto'], self.casa.nome_curto)
-        list_periodos = dict_analise['periodos']
+
+    def test_quantidade_periodos(self):
+        list_periodos = self.dict_analise['periodos']
         self.assertEquals(len(list_periodos), 1)
+
+    def test_chefe_executivo(self):
+        list_periodos = self.dict_analise['periodos']
+        nome_prefeito = list_periodos[0]['chefe_executivo']
+        self.assertEquals('Prefeito(a): Luiza Erundina (PT)', nome_prefeito)
+
+    def test_nome_periodo(self):
+        list_periodos = self.dict_analise['periodos']
         dict_periodo = list_periodos[0]
         self.assertTrue('1989' in dict_periodo['nome'])
-        list_partidos = dict_analise['partidos']
+
+    def test_quantidade_partidos(self):
+        list_partidos = self.dict_analise['partidos']
         self.assertEquals(len(list_partidos), 3)
+
+    def test_nome_partido(self):
+        list_partidos = self.dict_analise['partidos']
         dict_partido = list_partidos[0]
-        toutes_les_parties = [
+        todos_partidos = [
             conv.JACOBINOS, conv.GIRONDINOS, conv.MONARQUISTAS]
-        self.assertTrue(dict_partido['nome'] in toutes_les_parties)
+        self.assertTrue(dict_partido['nome'] in todos_partidos)
+
+    def test_tamanho_partido(self):
+        list_partidos = self.dict_analise['partidos']
+        dict_partido = list_partidos[0]
         list_tamanhos = dict_partido['t']
         self.assertEquals(list_tamanhos[0], 3)
+
+    def test_quantidade_parlamentares(self):
+        list_partidos = self.dict_analise['partidos']
+        dict_partido = list_partidos[0]
         list_parlamentares = dict_partido['parlamentares']
         self.assertEquals(len(list_parlamentares), 3)
+
+    def test_coordenada_parlamentar(self):
+        list_partidos = self.dict_analise['partidos']
+        dict_partido = list_partidos[0]
+        list_parlamentares = dict_partido['parlamentares']
         dict_parlamentar = list_parlamentares[0]
         list_xs = dict_parlamentar['x']
         x = list_xs[0]

@@ -155,7 +155,7 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
-    'file': {
+        'file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'simple',
@@ -171,9 +171,9 @@ LOGGING = {
             'propagate': True,
         },
         'radar': {
-            'handlers': ['console', 'file'],
+            'handlers': ['file'],
             'level': 'DEBUG',
-            'propagate': True,
+            #'propagate': True,
         }
     }
 }
