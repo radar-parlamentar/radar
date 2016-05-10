@@ -37,8 +37,6 @@ import sys
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 RESOURCES_FOLDER = os.path.join(MODULE_DIR, 'dados/cdep/')
 
-NUM_THREADS = 16
-
 ANO_MIN=1991 # só serão buscadas votações a partir de ANO_MIN
 
 logger = logging.getLogger("radar")

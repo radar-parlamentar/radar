@@ -61,6 +61,7 @@ class ImportadorCamaraTest(TestCase):
 
         importer = cdep.ImportadorCamara(camaraws)
         importer.importar(dic_votadas)
+        importer.importar(dic_votadas) # chamando duas vezes pra testar idempotência
 
     @classmethod
     def tearDownClass(cls):
