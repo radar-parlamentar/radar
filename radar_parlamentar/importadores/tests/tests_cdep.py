@@ -26,8 +26,8 @@ import os
 import xml.etree.ElementTree as etree
 from mock import Mock
 from importadores.tests.mocks_cdep \
-    import mock_obter_proposicoes_votadas_plenario
-
+    import mock_obter_proposicoes_votadas_plenario, mock_obter_proposicao, \
+    mock_obter_votacoes
 
 ID_FLORESTAL = '17338'
 NOME_FLORESTAL = 'PL 1876/1999'
