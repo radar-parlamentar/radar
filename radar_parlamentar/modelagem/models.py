@@ -131,7 +131,7 @@ class Partido(models.Model):
 
     @classmethod
     def _normaliza_nome_partido(cls, nome_partido):
-        trocar = { 'DEMOCRATAS' : 'DEM' , 'SOLIDARIED' : 'SD', 'SDD' : 'SD' }
+        trocar = {'DEMOCRATAS': 'DEM', 'SOLIDARIED': 'SD', 'SDD': 'SD'}
         nome_partido = nome_partido.upper().replace(' ', '')
         nome_partido = trocar.get(nome_partido, nome_partido)
         return nome_partido
@@ -242,6 +242,25 @@ class CasaLegislativa(models.Model):
         except:
             logger.info('Possivelmente a operacao extrapolou o limite de '
                   'operacoes do SQLite, tente utilizar o MySQL')
+
+
+class ChefeExecutivo(models.Model):
+    """Atributos:
+        nome -- string; ex Lula
+        genero -- string: ex Masculino
+        partido -- tipo Partido
+        mandato_ano_inicio -- objetos datetime
+        mandato_ano_fim -- objetos datetime
+    """
+
+    nome = models.CharField(max_length=100)
+    genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
+    partido = models.ForeignKey(Partido)
+    mandato_ano_inicio = models.IntegerField()
+    mandato_ano_fim = models.IntegerField()
+
+    def __unicode__(self):
+        return self.nome
 
 
 class PeriodoCasaLegislativa(object):
@@ -481,13 +500,13 @@ class VotosAgregados:
             OBSTRUCAO conta como um voto ABSTENCAO
             AUSENTE não conta como um voto
         """
-        if (voto == SIM):
+        if voto == SIM:
             self.sim += 1
-        if (voto == NAO):
+        if voto == NAO:
             self.nao += 1
-        if (voto == ABSTENCAO):
+        if voto == ABSTENCAO:
             self.abstencao += 1
-        if (voto == OBSTRUCAO):
+        if voto == OBSTRUCAO:
             self.abstencao += 1
         #if (voto == AUSENTE):
         #    self.abstencao += 1
@@ -522,4 +541,3 @@ class VotoPartido(VotosAgregados):
     def __init__(self, partido):
         VotosAgregados.__init__(self)
         self.partido = partido
-
