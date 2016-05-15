@@ -80,12 +80,13 @@ def insere_genero_parlamentares_camara():
             nome=nome_parlamentar_xml)
 
         for parlamentar_banco in lista_parlamentar_banco:
-            if parlamentar_banco.genero == '' or parlamentar_banco.genero is None:
+            if parlamentar_banco.genero == '' or \
+                    parlamentar_banco.genero is None:
                 parlamentar_banco.genero = sexo_parlamentar_xml
                 parlamentar_banco.save()
 
-                string_log = 'Genero de {0} alterado com sucesso!'.decode().encode(
-                    'utf-8')
+                string_log = 'Genero de {0} \
+                    alterado com sucesso!'.decode().encode('utf-8')
                 string_log = string_log.format(nome_parlamentar_xml)
                 logger.debug(string_log)
 

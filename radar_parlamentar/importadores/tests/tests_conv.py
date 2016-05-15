@@ -26,9 +26,10 @@ from modelagem import models
 NUMERO_VOTACOES = 9
 NUMERO_PARTIDOS = 3
 NUMERO_PARLAMENTARES_POR_PARTIDO = 3
-NUMERO_VOTOS_TOTAIS = NUMERO_VOTACOES * NUMERO_PARTIDOS \
-    * NUMERO_PARLAMENTARES_POR_PARTIDO
+NUMERO_VOTOS_TOTAIS = \
+    NUMERO_VOTACOES * NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO
 NUMERO_VOTOS_POR_VOTACAO = NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO
+
 
 class ConvencaoTest(TestCase):
 
@@ -72,8 +73,8 @@ class ConvencaoTest(TestCase):
     def test_check_parlamentares(self):
         parlamentares = models.Parlamentar.objects.filter(
             casa_legislativa=self.conv)
-        self.assertEqual(
-            len(parlamentares), NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO)
+        self.assertEqual(len(parlamentares),
+                         NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO)
         nomes_parlamentares = [p.nome for p in parlamentares]
-        self.assertEquals(
-            nomes_parlamentares.count('Pierre'), NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO)
+        self.assertEquals(nomes_parlamentares.count('Pierre'),
+                          NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO)

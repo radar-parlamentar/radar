@@ -15,7 +15,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.# -*- coding: utf-8 -*-
+# along with Radar Parlamentar.  If not, see
+#               <http://www.gnu.org/licenses/>.# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 from django.template import RequestContext
@@ -28,6 +29,7 @@ import json
 import logging
 
 logger = logging.getLogger("radar")
+
 
 def index(request):
     return render_to_response('index.html', {},
@@ -75,17 +77,18 @@ def genero(request):
 
 
 def genero_termos_nuvem(request):
-  genero = Genero()
+    genero = Genero()
+    temas_frequencia_mulher = genero.definir_palavras('F')
+    # logger.info("Temasdamulher %s" % (temas_frequencia_mulher))
+    temas_json_mulher = json.dumps(temas_frequencia_mulher)
+    temas_frequencia_homem = genero.definir_palavras('M')
+    temas_json_homem = json.dumps(temas_frequencia_homem)
 
-  temas_frequencia_mulher = genero.definir_palavras('F')
- # logger.info("Temasdamulher %s" % (temas_frequencia_mulher))
-  temas_json_mulher = json.dumps(temas_frequencia_mulher)
-
-  temas_frequencia_homem = genero.definir_palavras('M')
-  temas_json_homem = json.dumps(temas_frequencia_homem)
-
-  return render_to_response('genero_tagcloud.html', {'temas_mulher': temas_json_mulher,'temas_homem': temas_json_homem},
+    return render_to_response('genero_tagcloud.html',
+                              {'temas_mulher': temas_json_mulher,
+                               'temas_homem': temas_json_homem},
                               context_instance=RequestContext(request))
+
 
 def genero_matriz(request):
     return render_to_response('genero_matriz.html', {},
@@ -127,8 +130,5 @@ def dados_utilizados(request):
     time = os.path.getmtime(dump_file_path)
     dt = datetime.datetime.fromtimestamp(time)
     dt_str = dt.strftime('%d/%m/%Y')
-    return render_to_response('dados_utilizados.html', {'dumpdate':dt_str}, 
+    return render_to_response('dados_utilizados.html', {'dumpdate': dt_str},
                               context_instance=RequestContext(request))
-
-
-
