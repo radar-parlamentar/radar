@@ -96,8 +96,9 @@ class AnalisadorTemporal:
         for periodo in self.periodos:
             logger.info("Analisando periodo %s a %s." %
                         (str(periodo.ini), str(periodo.fim)))
-            analisadorPeriodo = AnalisadorPeriodo(
-                self.casa_legislativa, periodo, self.votacoes, self.palavras_chave)
+            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa,
+                                                  periodo, self.votacoes,
+                                                  self.palavras_chave)
             if analisadorPeriodo.votacoes:
                 logger.info("O periodo possui %d votações." %
                             len(analisadorPeriodo.votacoes))
@@ -115,7 +116,7 @@ class AnalisadorTemporal:
                 self.analises_periodo[i], self.analises_periodo[i - 1])
             analiseRotacionada = rotacionador.espelha_ou_roda()
             self.analises_periodo[i] = analiseRotacionada
-        logger.info("Rotacionado") 
+        logger.info("Rotacionado")
 
     def votacoes_filtradas(self):
         votacoes_filtradas = []
@@ -125,6 +126,7 @@ class AnalisadorTemporal:
                                                   self.palavras_chave)
             votacoes_filtradas.extend(analisadorPeriodo._inicializa_votacoes())
         return votacoes_filtradas
+
 
 class AnalisadorPeriodo:
 
@@ -197,9 +199,11 @@ class AnalisadorPeriodo:
         analisePeriodo.num_votacoes = self.num_votacoes
         analisePeriodo.pca = self.pca
         analisePeriodo.tamanhos_partidos = self.tamanhos_partidos
-        analisePeriodo.coordenadas_parlamentares = self.coordenadas_parlamentares
+        analisePeriodo.coordenadas_parlamentares = \
+            self.coordenadas_parlamentares
         analisePeriodo.coordenadas_partidos = self.coordenadas_partidos
-        analisePeriodo.parlamentares_por_partido = self.parlamentares_por_partido
+        analisePeriodo.parlamentares_por_partido = \
+            self.parlamentares_por_partido
         return analisePeriodo
 
     def _inicializa_vetores(self):
@@ -299,7 +303,8 @@ class AnalisadorPeriodo:
         analisador_partidos.analisa_partidos()
         self.coordenadas_partidos = analisador_partidos.coordenadas_partidos
         self.tamanhos_partidos = analisador_partidos.tamanhos_partidos
-        self.parlamentares_por_partido = analisador_partidos.parlamentares_por_partido
+        self.parlamentares_por_partido = \
+            analisador_partidos.parlamentares_por_partido
 
 
 class MatrizesDeDadosBuilder:
@@ -442,8 +447,10 @@ class Rotacionador:
 
         if por_partido:
             for p in dados_meus:
-                e += self._zero_if_nan(numpy.dot(dados_fixos[p] - dados_meus[
-                    p], dados_fixos[p] - dados_meus[p]) * self.analisePeriodo.tamanhos_partidos[p])
+                e += self._zero_if_nan(
+                    numpy.dot(dados_fixos[p] - dados_meus[p],
+                              dados_fixos[p] - dados_meus[p]) *
+                    self.analisePeriodo.tamanhos_partidos[p])
         else:
             for l in dados_meus:
                 e += self._zero_if_nan(
@@ -490,7 +497,8 @@ class Rotacionador:
             dados_fixos = self.analisePeriodoReferencia.coordenadas_partidos
         else:
             dados_meus = self.analisePeriodo.coordenadas_parlamentares
-            dados_fixos = self.analisePeriodoReferencia.coordenadas_parlamentares
+            dados_fixos = \
+                self.analisePeriodoReferencia.coordenadas_parlamentares
         epsilon = 0.001
 
         if not so_espelha:
@@ -520,16 +528,14 @@ class Rotacionador:
             teta1 = 0
             teta2 = 180
 
-        ex = numpy.array(
-            [self._energia(
-                dados_fixos, dados_meus, por_partido,
-                graus=teta1, espelho=0), self._energia(
-             dados_fixos, dados_meus, por_partido,
-             graus=teta2, espelho=0),
-             self._energia(dados_fixos, dados_meus, por_partido, graus=teta1,
-                           espelho=1), self._energia(dados_fixos, dados_meus,
-                                                     por_partido, graus=teta2,
-                                                     espelho=1)])
+        ex = numpy.array([self._energia(dados_fixos, dados_meus, por_partido,
+                          graus=teta1, espelho=0),
+                          self._energia(dados_fixos, dados_meus, por_partido,
+                          graus=teta2, espelho=0),
+                          self._energia(dados_fixos, dados_meus, por_partido,
+                          graus=teta1, espelho=1),
+                          self._energia(dados_fixos, dados_meus, por_partido,
+                          graus=teta2, espelho=1)])
         logger.info(ex)
 
         dados_partidos = self.analisePeriodo.coordenadas_partidos

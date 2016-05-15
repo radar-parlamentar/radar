@@ -79,12 +79,13 @@ class XmlCMSP:
         self.verbose = verbose
 
     def _init_parlamentares(self):
-        """retorna dicionário (nome_parlamentar, nome_partido) -> Parlamentar"""
+        """retorna dicionário (nome_parlamentar, nome_partido) ->\
+        Parlamentar"""
         parlamentares = {}
         for p in models.Parlamentar.objects.filter(casa_legislativa=self.cmsp):
             parlamentares[self._key(p)] = p
         return parlamentares
-    
+
     def _key(self, parlamentar):
         return (parlamentar.nome, parlamentar.partido.nome)
 
@@ -110,7 +111,7 @@ class XmlCMSP:
         return None
 
     def votacao_valida(self, nome_prop, texto):
-        return nome_prop in TIPOS_PROPOSICOES and not 'Inversão' in texto
+        return nome_prop in TIPOS_PROPOSICOES and 'Inversão' not in texto
 
     def tipo_num_anoDePropNome(self, prop_nome):
         """Extrai ano de "tipo num/ano" """
@@ -179,15 +180,17 @@ class XmlCMSP:
                 voto.opcao = self.voto_cmsp_to_model(ver_tree.get('Voto'))
                 if voto.opcao is not None and self.nao_eh_repetido(voto):
                     voto.save()
-                    
-    def nao_eh_repetido(self, voto):
-        # Obs: se nos dados aparece que o mesmo parlamentar fez opções distintas na mesma votação,
-        # prevalece o primeiro registro.
-        votos_iguais = models.Voto.objects.filter(votacao=voto.votacao, parlamentar=voto.parlamentar)
-        return len(votos_iguais) == 0 
-                    
 
-    def votacao_from_tree(self, proposicoes, votacoes, vot_tree):
+    def nao_eh_repetido(self, voto):
+        """# Obs: se nos dados aparece que o mesmo parlamentar
+        #fez opções distintas na mesma votação,
+        # prevalece o primeiro registro."""
+        votos_iguais = models.Voto.objects.filter(votacao=voto.votacao,
+                                                  parlamentar=voto.parlamentar)
+        return len(votos_iguais) == 0
+
+    def votacao_from_tree(self, proposicoes,
+                          votacoes, vot_tree):
         # se é votação nominal
         votacao_TipoVotacao = vot_tree.get('TipoVotacao')
         if vot_tree.tag == 'Votacao' and votacao_TipoVotacao == 'Nominal':
@@ -214,8 +217,8 @@ class XmlCMSP:
                     # qnt cadastrar no dicionario.
                     else:
                         prop = models.Proposicao()
-                        prop.sigla, prop.numero, prop.ano = self.tipo_num_anoDePropNome(
-                            prop_nome)
+                        prop.sigla, prop.numero, prop.ano = self. \
+                            tipo_num_anoDePropNome(prop_nome)
                         prop.casa_legislativa = self.cmsp
                         proposicoes[prop_nome] = prop
 
@@ -244,7 +247,6 @@ class XmlCMSP:
         for vot_tree in sessao_tree.findall('Votacao'):
             self.votacao_from_tree(proposicoes, votacoes, vot_tree)
 
-
     def progresso(self):
         """Indica progresso na tela"""
         sys.stdout.write('x')
@@ -267,8 +269,8 @@ class ImportadorCMSP:
 
         tree = ImportadorCMSP.abrir_xml(xml_file)
         proposicoes = {}
-            # chave é string (ex: 'pl 127/2004'); valor é objeto do tipo
-            # Proposicao
+        # chave é string (ex: 'pl 127/2004'); valor é objeto do tipo
+        # Proposicao
         votacoes = []
         self.analisar_xml(proposicoes, votacoes, tree)
         return votacoes
@@ -282,7 +284,6 @@ class ImportadorCMSP:
         return etree.parse(xml_file).getroot()
 
 
-
 def main():
     logger.info('IMPORTANDO DADOS DA CAMARA MUNICIPAL DE SAO PAULO (CMSP)')
     gerador_casa = GeradorCasaLegislativa()
@@ -290,5 +291,5 @@ def main():
     importer = ImportadorCMSP(cmsp)
     for xml in [XML2012, XML2013, XML2014, XML2015, XML2016]:
         importer.importar_de(xml)
-    logger.info('Importacao dos dados da Camara Municipal de Sao Paulo (CMSP) terminada')
-
+    logger.info('Importacao dos dados da \
+                Camara Municipal de Sao Paulo (CMSP) terminada')

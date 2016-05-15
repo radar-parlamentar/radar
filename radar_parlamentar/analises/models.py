@@ -47,6 +47,6 @@ class AnalisePeriodo:
         self.presencas_parlamentares = {}  # parlamentar.id => boolean
         self.coordenadas_parlamentares = {}  # parlamentar.id => [x,y]
 
-        # partido.nome => lista de parlamentares do partido 
+        # partido.nome => lista de parlamentares do partido
         # (independente de periodo).
         self.parlamentares_por_partido = {}

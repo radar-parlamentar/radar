@@ -1,7 +1,8 @@
 
 # coding=utf8
 
-# Copyright (C) 2012, Leonardo Leite, Eduardo Hideo, Saulo Trento, Diego Rabatone
+# Copyright (C) 2012, Leonardo Leite, Eduardo Hideo, Saulo Trento,
+#                     Diego Rabatone
 #
 # This file is part of Radar Parlamentar.
 #
@@ -131,7 +132,7 @@ class Partido(models.Model):
 
     @classmethod
     def _normaliza_nome_partido(cls, nome_partido):
-        trocar = { 'DEMOCRATAS' : 'DEM' , 'SOLIDARIED' : 'SD', 'SDD' : 'SD' }
+        trocar = {'DEMOCRATAS': 'DEM', 'SOLIDARIED': 'SD', 'SDD': 'SD'}
         nome_partido = nome_partido.upper().replace(' ', '')
         nome_partido = trocar.get(nome_partido, nome_partido)
         return nome_partido
@@ -207,7 +208,8 @@ class CasaLegislativa(models.Model):
 
     def partidos(self):
         """Retorna os partidos existentes nesta casa legislativa"""
-        return Partido.objects.filter(parlamentar__casa_legislativa=self).distinct()
+        return Partido.objects.filter(
+            parlamentar__casa_legislativa=self).distinct()
 
     def parlamentares(self):
         """Retorna os parlamentares existentes nesta casa legislativa"""
@@ -238,10 +240,11 @@ class CasaLegislativa(models.Model):
                     nome_curto=nome_casa_curto).delete()
 
             except CasaLegislativa.DoesNotExist:
-                logger.info('Casa legislativa ' + nome_casa_curto + ' não existe')
+                logger.info(
+                    'Casa legislativa ' + nome_casa_curto + ' não existe')
         except:
             logger.info('Possivelmente a operacao extrapolou o limite de '
-                  'operacoes do SQLite, tente utilizar o MySQL')
+                        'operacoes do SQLite, tente utilizar o MySQL')
 
 
 class PeriodoCasaLegislativa(object):
@@ -310,8 +313,9 @@ class Parlamentar(models.Model):
     passa a ser um novo Parlamentar.
 
     Atributos:
-        id_parlamentar -- string identificadora de acordo a fonte de dados 
-                        (i.e., pode se repetir entre diferentes casa legislativas)
+        id_parlamentar --
+                    string identificadora de acordo a fonte de dados
+                    (i.e., pode se repetir entre diferentes casa legislativas)
         nome, genero -- strings
         casa_legislativa -- tipo CasaLegislativa
         partido -- tipo Partido
@@ -357,8 +361,8 @@ class Proposicao(models.Model):
     situacao = models.TextField(blank=True)
     casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
     autor_principal = models.TextField(blank=True)
-    #TODO
-    #autor_principal = models.ForeignKey(
+    # TODO
+    # autor_principal = models.ForeignKey(
     #    Parlamentar,
     #    null=True,
     #    related_name='Autor principal')
@@ -489,7 +493,7 @@ class VotosAgregados:
             self.abstencao += 1
         if (voto == OBSTRUCAO):
             self.abstencao += 1
-        #if (voto == AUSENTE):
+        # if (voto == AUSENTE):
         #    self.abstencao += 1
 
     def total(self):
@@ -522,4 +526,3 @@ class VotoPartido(VotosAgregados):
     def __init__(self, partido):
         VotosAgregados.__init__(self)
         self.partido = partido
-

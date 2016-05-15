@@ -9,6 +9,13 @@ from django.views.generic.simple import redirect_to
 from django.contrib import admin
 admin.autodiscover()
 
+url_analise = 'analises/analise/'
+url_json_analise = 'analises/json_analise/'
+url_lista = 'analises/lista_de_votacoes_filtradas/'
+casa_legislativa = '(?P<nome_curto_casa_legislativa>\w*)/'
+periodicidade = '(?P<periodicidade>\w*)/'
+palavras_chave = '(?P<palavras_chave>.*)/'
+
 urlpatterns = patterns(
     '',
     # Examples:
@@ -55,19 +62,21 @@ urlpatterns = patterns(
     url(r'^genero/tematica/nuvem/$',
         'radar_parlamentar.views.genero_termos_nuvem'),
 
-    # Serivço que retorna conteúdo para plotar o mapa
-    url(r'^analises/analise/(?P<nome_curto_casa_legislativa>\w*)/$',
+    # Serviço que retorna conteúdo para plotar o mapa
+    url(r'^' + url_analise + casa_legislativa + '$',
         'analises.views.analise'),
-    url(r'^analises/json_analise/(?P<nome_curto_casa_legislativa>\w*)/(?P<periodicidade>\w*)/$',
+    url(r'^' + url_json_analise + casa_legislativa + periodicidade + '$',
         'analises.views.json_analise'),
-    url(r'^analises/json_analise/(?P<nome_curto_casa_legislativa>\w*)/(?P<periodicidade>\w*)/(?P<palavras_chave>.*)/$',
+    url(r'^' + url_json_analise + casa_legislativa + periodicidade + palavras_chave + '$',
         'analises.views.json_analise'),
-    url(r'^analises/lista_de_votacoes_filtradas/(?P<nome_curto_casa_legislativa>\w*)/$', 
+    url(r'^' + url_lista + casa_legislativa + '$',
         'analises.views.lista_de_votacoes_filtradas'),
-    url(r'^analises/lista_de_votacoes_filtradas/(?P<nome_curto_casa_legislativa>\w*)/(?P<periodicidade>\w*)/(?P<palavras_chave>.*)/$', 
+    url(r'^' + url_lista + casa_legislativa + periodicidade + palavras_chave + '$',
         'analises.views.lista_de_votacoes_filtradas'),
-    url(r'^analises/lista_de_votacoes_filtradas/(?P<nome_curto_casa_legislativa>\w*)/$', 'analises.views.lista_de_votacoes_filtradas'),
-    url(r'^analises/lista_de_votacoes_filtradas/(?P<nome_curto_casa_legislativa>\w*)/(?P<periodicidade>\w*)/(?P<palavras_chave>.*)/$', 'analises.views.lista_de_votacoes_filtradas'),
+    url(r'^' + url_lista + casa_legislativa + '$',
+        'analises.views.lista_de_votacoes_filtradas'),
+    url(r'^' + url_lista + casa_legislativa + periodicidade + palavras_chave + '$',
+        'analises.views.lista_de_votacoes_filtradas'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

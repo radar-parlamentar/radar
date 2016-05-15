@@ -75,10 +75,12 @@ class ImportadorConvencao:
         monarquistas.numero = 79
         monarquistas.cor = '#800080'
         monarquistas.save()
-        self.partidos = {girondinos, jacobinos, monarquistas}
+        "self.partidos = {girondinos, jacobinos, monarquistas}"
+        self.partidos = [girondinos, jacobinos, monarquistas]
 
     def _gera_parlamentares(self):
-        self.parlamentares = {}  # nome partido => lista de parlamentares do partido
+        # nome partido => lista de parlamentares do partido
+        self.parlamentares = {}
         for partido in self.partidos:
             self.parlamentares[partido.nome] = []
             for i in range(0, PARLAMENTARES_POR_PARTIDO):
