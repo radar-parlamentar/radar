@@ -258,6 +258,8 @@ class ChefeExecutivo(models.Model):
     partido = models.ForeignKey(Partido)
     mandato_ano_inicio = models.IntegerField()
     mandato_ano_fim = models.IntegerField()
+    casas_legislativas = models.ManyToManyField(CasaLegislativa)
+
 
     def __unicode__(self):
         return self.nome
