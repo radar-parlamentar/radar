@@ -214,12 +214,12 @@ Vamos ainda instalar o stem por dicionario em português, para aumentar a qualid
 
 Agora é preciso executar a importação dos dados no elastic search, o que deve ser feito após a importação dos dados das casas legislativas.
 
-  $ python manage.py shell
-  >>> from importadores import importador_elasticsearch as iel
-  >>> iel.main()
+    $ python manage.py shell
+    >>> from importadores import importador_elasticsearch as iel
+    >>> iel.main()
 
 Por fim, para testar: 
 
-    $ curl -XGET 'http://localhost:9200/radar_parlamentar/radar/_search?q=texto
+    $ curl -XGET 'http://localhost:9200/radar_parlamentar/radar/_search?q=texto'
 onde text é o texto que será analisado.
 
