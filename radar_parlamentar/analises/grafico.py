@@ -238,7 +238,6 @@ class JsonAnaliseGenerator:
                 dict_parlamentar["y"].append(None)
         return dict_parlamentar
 
-
     def get_string_chefes_executivos(self, periodo):
         dicionario_chefe_executivo = self.cria_dicionario_chefe_executivo()
         ano_inicio = int(periodo.ini.year)
@@ -248,7 +247,6 @@ class JsonAnaliseGenerator:
         string_chefes_executivos = self.formata_string_chefes_executivo(
             chefes_executivo_periodo, dicionario_chefe_executivo[0])
         return string_chefes_executivos
-
 
     def cria_dicionario_chefe_executivo(self):
         casa_legislativa = self.analise_temporal.casa_legislativa.nome_curto

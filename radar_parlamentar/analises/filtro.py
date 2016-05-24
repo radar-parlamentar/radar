@@ -37,6 +37,7 @@ logger = logging.getLogger("radar")
 
 # TODO: Que fazer quando o ElasticSearch não retorna resultados?
 
+
 class LuceneQueryBuilder():
 
     def __init__(self, nome_curto_casa_legislativa, periodo_casa_legislativa, palavras_chave):
@@ -56,7 +57,6 @@ class LuceneQueryBuilder():
     def _build_range_data(self):
         return "votacao_data:[%s TO %s]" % (self.periodo_casa_legislativa.ini.isoformat(), self.periodo_casa_legislativa.fim.isoformat())
         
-
 
 class FiltroVotacao(TestCase):
 
@@ -99,4 +99,35 @@ class FiltroVotacao(TestCase):
         self.votacoes = models.Votacao.objects.filter(id__in=votacoes_ids)
         return self.votacoes
 
+
+class FiltroChefesExecutivo(TestCase):
+
+    """Filtra votações pelos campos:
+        * votacao.descricao
+        * proposicao.ementa
+        * proposicao.descricao
+        * proposicao.indexacao
+    """
+
+    def __init__(self, casa_legislativa, periodo_casa_legislativa,
+                 palavras_chave):
+        """Argumentos:
+            casa_legislativa -- objeto do tipo CasaLegislativa;
+            somente votações desta casa serão filtradas.
+            periodo_casa_legislativa -- objeto do tipo PeriodoCasaLegislativa;
+            somente votações deste período serão filtradas.
+            palavras_chave -- lista de strings para serem usadas na filtragem
+            das votações.
+        """
+        self.casa_legislativa = casa_legislativa
+        self.periodo_casa_legislativa = periodo_casa_legislativa
+        self.palavras_chaves = palavras_chave
+        self.chefes_executivos = []
+
+    def filtra_chefes_executivo(self):
+        self.chefes_executivo = models.ChefeExecutivo.por_casa_legislativa(
+            self.casa_legislativa,
+            self.periodo_casa_legislativa.ini,
+            self.periodo_casa_legislativa.fim)
+        return self.chefes_executivo
 

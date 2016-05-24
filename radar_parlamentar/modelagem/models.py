@@ -20,6 +20,7 @@
 
 from __future__ import unicode_literals
 from django.db import models
+from django.utils.dateparse import parse_datetime
 import re
 import logging
 import os
@@ -260,9 +261,21 @@ class ChefeExecutivo(models.Model):
     mandato_ano_fim = models.IntegerField()
     casas_legislativas = models.ManyToManyField(CasaLegislativa)
 
-
     def __unicode__(self):
         return self.nome
+
+    @staticmethod
+    def por_casa_legislativa_e_periodo(casa_legislativa,
+                             data_inicial=None,
+                             data_final=None):
+        chefes_executivo = ChefeExecutivo.objects.filter(
+            casas_legislativas__nome_curto=casa_legislativa.nome_curto)
+        ano_inicio = int(data_inicial.year)
+        ano_fim = int(data_final.year)
+        chefes_executivo = chefes_executivo.filter(self.mandato_ano_inicio >= ano_inicio and self.mandato_ano_incio <= ano_fim)
+        chefes_executivo = chefes_executivo.filter(self.mandato_ano_fim >= ano_inicio and self.mandato_ano_fim <= ano_fim)
+        return chefes_executivo
+
 
 
 class PeriodoCasaLegislativa(object):
@@ -444,7 +457,7 @@ class Votacao(models.Model):
         from django.utils.dateparse import parse_datetime
         if data_inicial is not None:
             ini = parse_datetime('%s 0:0:0' % data_inicial)
-            votacoes = votacoes.filter(data__gte=ini)
+                votacoes = votacoes.filter(data__gte=ini)
         if data_final is not None:
             fim = parse_datetime('%s 0:0:0' % data_final)
             votacoes = votacoes.filter(data__lte=fim)

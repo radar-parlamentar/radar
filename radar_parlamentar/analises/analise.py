@@ -75,9 +75,10 @@ class AnalisadorTemporal:
         self.votacoes = []
         self.total_votacoes = 0
         self.json = ""
+        self.chefes_executivo = []
 
     def get_analise_temporal(self):
-        """Retorna instância de AnaliseTemporal"""
+        """Retorna instância de AnaliseTemporal"""s
         if not self.analises_periodo:
             self._faz_analises()
         analise_temporal = AnaliseTemporal()
@@ -125,6 +126,7 @@ class AnalisadorTemporal:
                                                   self.palavras_chave)
             votacoes_filtradas.extend(analisadorPeriodo._inicializa_votacoes())
         return votacoes_filtradas
+
 
 class AnalisadorPeriodo:
 
@@ -200,6 +202,7 @@ class AnalisadorPeriodo:
         analisePeriodo.coordenadas_parlamentares = self.coordenadas_parlamentares
         analisePeriodo.coordenadas_partidos = self.coordenadas_partidos
         analisePeriodo.parlamentares_por_partido = self.parlamentares_por_partido
+        analisePeriodo.chefes_executivo = self.chefes_executivo
         return analisePeriodo
 
     def _inicializa_vetores(self):

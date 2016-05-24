@@ -205,13 +205,13 @@ Plot = (function ($) {
         var label_periodo = grupo_controle_periodos.append("text")
             .attr("class", "year label")
             .attr("text-anchor", "middle")
-            .attr("y", 30 )
+            .attr("y", 35)
             .attr("x", width/2);
 
         var label_nvotacoes = grupo_controle_periodos.append("text")
             .attr("class", "total_label")
             .attr("text-anchor", "middle")
-            .attr("y", 48)
+            .attr("y", 55)
             .attr("x", width/2);
 
         var go_to_previous = grupo_controle_periodos.append("image")
