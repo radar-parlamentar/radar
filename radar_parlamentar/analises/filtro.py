@@ -125,7 +125,7 @@ class FiltroChefesExecutivo(TestCase):
         self.chefes_executivos = []
 
     def filtra_chefes_executivo(self):
-        self.chefes_executivo = models.ChefeExecutivo.por_casa_legislativa(
+        self.chefes_executivo = models.ChefeExecutivo.por_casa_legislativa_e_periodo(
             self.casa_legislativa,
             self.periodo_casa_legislativa.ini,
             self.periodo_casa_legislativa.fim)

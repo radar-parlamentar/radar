@@ -82,7 +82,7 @@ class Indexadores(models.Model):
     """Termos utilizados na indexação de proposições
 
     Atributos:
-        termo -- string; ex: "mulher" ou "partido político"
+        termo -- string; ex: "mulher" ou "partido político"+
         principal -- bool; identifica se o termo é o principal
                     de uma linha de sinônimos, o termo a ser usado.
     """
