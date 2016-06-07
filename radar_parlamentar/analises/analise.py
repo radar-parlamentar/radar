@@ -78,7 +78,7 @@ class AnalisadorTemporal:
         self.chefes_executivo = []
 
     def get_analise_temporal(self):
-        """Retorna instância de AnaliseTemporal"""s
+        """Retorna instância de AnaliseTemporal"""
         if not self.analises_periodo:
             self._faz_analises()
         analise_temporal = AnaliseTemporal()

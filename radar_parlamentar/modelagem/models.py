@@ -270,12 +270,20 @@ class ChefeExecutivo(models.Model):
                              data_final=None):
         chefes_executivo = ChefeExecutivo.objects.filter(
             casas_legislativas__nome_curto=casa_legislativa.nome_curto)
-        ano_inicio = int(data_inicial.year)
-        ano_fim = int(data_final.year)
-        chefes_executivo = chefes_executivo.filter(self.mandato_ano_inicio >= ano_inicio and self.mandato_ano_incio <= ano_fim)
-        chefes_executivo = chefes_executivo.filter(self.mandato_ano_fim >= ano_inicio and self.mandato_ano_fim <= ano_fim)
-        return chefes_executivo
+        
+        chefes = []
+        if data_inicial is not None and data_final is not None:
+            ano_inicio = int(data_inicial.year)
+            ano_fim = int(data_final.year)
+            for chefe in chefes_executivo:
+                valido_ano_inicio = chefe.mandato_ano_inicio >= ano_inicio and chefe.mandato_ano_inicio <= ano_fim
+                valido_ano_fim = chefe.mandato_ano_fim >= ano_inicio and chefe.mandato_ano_fim <= ano_fim
+                if(valido_ano_fim or valido_ano_inicio):
+                    chefes.append(chefe)
+        else:
+            chefes = chefes_executivo
 
+        return chefes
 
 
 class PeriodoCasaLegislativa(object):
@@ -457,7 +465,7 @@ class Votacao(models.Model):
         from django.utils.dateparse import parse_datetime
         if data_inicial is not None:
             ini = parse_datetime('%s 0:0:0' % data_inicial)
-                votacoes = votacoes.filter(data__gte=ini)
+            votacoes = votacoes.filter(data__gte=ini)
         if data_final is not None:
             fim = parse_datetime('%s 0:0:0' % data_final)
             votacoes = votacoes.filter(data__lte=fim)

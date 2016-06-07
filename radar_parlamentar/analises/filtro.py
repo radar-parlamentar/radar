@@ -102,26 +102,17 @@ class FiltroVotacao(TestCase):
 
 class FiltroChefesExecutivo(TestCase):
 
-    """Filtra votações pelos campos:
-        * votacao.descricao
-        * proposicao.ementa
-        * proposicao.descricao
-        * proposicao.indexacao
-    """
+    """Filtra chefes executivos pelo período do mandato e pela casa """
 
-    def __init__(self, casa_legislativa, periodo_casa_legislativa,
-                 palavras_chave):
+    def __init__(self, casa_legislativa, periodo_casa_legislativa):
         """Argumentos:
             casa_legislativa -- objeto do tipo CasaLegislativa;
-            somente votações desta casa serão filtradas.
+            somente chefes executivos desta casa serão filtrados.
             periodo_casa_legislativa -- objeto do tipo PeriodoCasaLegislativa;
-            somente votações deste período serão filtradas.
-            palavras_chave -- lista de strings para serem usadas na filtragem
-            das votações.
+            somente chefes executivos deste período serão filtrados.
         """
         self.casa_legislativa = casa_legislativa
         self.periodo_casa_legislativa = periodo_casa_legislativa
-        self.palavras_chaves = palavras_chave
         self.chefes_executivos = []
 
     def filtra_chefes_executivo(self):
