@@ -75,7 +75,7 @@ class AnalisadorTemporal:
         self.votacoes = []
         self.total_votacoes = 0
         self.json = ""
-        self.chefes_executivo = []
+        self.chefes_executivos = []
 
     def get_analise_temporal(self):
         """Retorna instância de AnaliseTemporal"""
@@ -86,6 +86,7 @@ class AnalisadorTemporal:
         analise_temporal.periodicidade = self.periodicidade
         analise_temporal.analises_periodo = self.analises_periodo
         analise_temporal.votacoes = self.votacoes
+        analise_temporal.chefes_executivos = self.chefes_executivos
         analise_temporal.total_votacoes = self.total_votacoes
         analise_temporal.palavras_chaves = self.palavras_chave
         return analise_temporal
@@ -126,6 +127,14 @@ class AnalisadorTemporal:
                                                   self.palavras_chave)
             votacoes_filtradas.extend(analisadorPeriodo._inicializa_votacoes())
         return votacoes_filtradas
+
+    def chefes_filtrados(self):
+        chefes_filtrados = []
+        for periodo in self.periodos:
+            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa,
+                                                  periodo)
+            chefes_filtrados.extend(analisadorPeriodo._inicializa_chefes_executivo())
+        return chefes_filtrados
 
 
 class AnalisadorPeriodo:
@@ -179,6 +188,9 @@ class AnalisadorPeriodo:
         self.pca_parlamentares = None
         self.coordenadas_parlamentares = {}
 
+        #lista de chefes_executivos
+        self.chefes_executivos = self._inicializa_chefes_executivo()
+
     def _inicializa_votacoes(self):
         """Pega votações deste período no banco de dados filtrando por palavras
         chave e seta a lista self.votacoes"""
@@ -186,6 +198,14 @@ class AnalisadorPeriodo:
             self.casa_legislativa, self.periodo, self.palavras_chave)
         self.votacoes = filtro_votacao.filtra_votacoes()
         return self.votacoes
+
+    def _inicializa_chefes_executivo(self):
+        """Pega chefes executivo deste período no banco de dados filtrando pela casa 
+        legislativa e seta a lista self.chefes_executivo"""
+        filtro_chefe = filtro.FiltroChefesExecutivo(
+            self.casa_legislativa, self.periodo)
+        chefes_executivos = filtro_chefe.filtra_chefes_executivo()
+        return chefes_executivos
 
     def analisa(self):
         """Retorna instância de AnalisePeriodo"""
@@ -202,7 +222,7 @@ class AnalisadorPeriodo:
         analisePeriodo.coordenadas_parlamentares = self.coordenadas_parlamentares
         analisePeriodo.coordenadas_partidos = self.coordenadas_partidos
         analisePeriodo.parlamentares_por_partido = self.parlamentares_por_partido
-        analisePeriodo.chefes_executivo = self.chefes_executivo
+        analisePeriodo.chefes_executivos = self.chefes_executivos
         return analisePeriodo
 
     def _inicializa_vetores(self):
