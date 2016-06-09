@@ -260,14 +260,17 @@ class ChefeExecutivo(models.Model):
     mandato_ano_inicio = models.IntegerField()
     mandato_ano_fim = models.IntegerField()
     casas_legislativas = models.ManyToManyField(CasaLegislativa)
-
+    titulo = None
+    
     def __unicode__(self):
-        return self.nome
+        self.titulo = self.get_titulo_chefe()
+        return self.titulo + ": " + self.nome + " - " + self.partido.nome
 
     @staticmethod
     def por_casa_legislativa_e_periodo(casa_legislativa,
                              data_inicial=None,
                              data_final=None):
+        
         chefes_executivo = ChefeExecutivo.objects.filter(
             casas_legislativas__nome_curto=casa_legislativa.nome_curto)
         
@@ -284,6 +287,24 @@ class ChefeExecutivo(models.Model):
             chefes = chefes_executivo
 
         return chefes
+
+    def get_titulo_chefe(self):
+        titulo = ""
+        casas_legislativas = self.casas_legislativas.all()
+        for casa in casas_legislativas:
+            esfera = casa.esfera  
+            genero_masculino = self.genero == M
+            if(esfera == FEDERAL):
+                if(genero_masculino):
+                    titulo = "Presidente"
+                else:
+                    titulo = "Presidenta"
+            elif(esfera == MUNICIPAL):
+                if(genero_masculino):
+                    titulo = "Prefeito"
+                else:
+                    titulo = "Prefeita"
+        return titulo                
 
 
 class PeriodoCasaLegislativa(object):
