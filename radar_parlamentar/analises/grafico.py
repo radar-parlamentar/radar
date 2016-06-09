@@ -108,7 +108,7 @@ class JsonAnaliseGenerator:
             dict_ap['cp1'] = self._dict_cp1(ap)
             dict_ap['cp2'] = self._dict_cp2(ap)
             dict_ap['votacoes'] = self._list_votacoes_do_periodo(ap)
-            dict_ap['chefe_executivo'] = self.get_string_chefes_executivos(ap.periodo)
+            dict_ap['chefe_executivo'] = self._list_chefes_do_periodo(ap)
 
             list_aps.append(dict_ap)
         return list_aps
@@ -150,7 +150,15 @@ class JsonAnaliseGenerator:
             dict_votacao['id'] = unicode(votacao).replace('"', "'")
             list_votacoes.append(dict_votacao)
         return list_votacoes
-
+    
+    def _list_chefes_do_periodo(self, ap):
+        list_chefes = []
+        for chefe in ap.chefes_executivos:
+            dict_chefe = {}
+            dict_chefe['nome'] = unicode(chefe).replace('"', "'")
+            list_chefes.append(dict_chefe)
+        return list_chefes
+    
     def _list_partidos_instrumented(self):
         db.reset_queries()
         logger.info('comecando lista de partidos')
