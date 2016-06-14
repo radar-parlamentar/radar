@@ -279,8 +279,8 @@ class ChefeExecutivo(models.Model):
             ano_inicio = int(data_inicial.year)
             ano_fim = int(data_final.year)
             for chefe in chefes_executivo:
-                valido_ano_inicio = chefe.mandato_ano_inicio >= ano_inicio and chefe.mandato_ano_inicio <= ano_fim
-                valido_ano_fim = chefe.mandato_ano_fim >= ano_inicio and chefe.mandato_ano_fim <= ano_fim
+                valido_ano_inicio = ano_inicio >= chefe.mandato_ano_inicio and ano_inicio <= chefe.mandato_ano_fim  
+                valido_ano_fim =  ano_fim >= chefe.mandato_ano_inicio and ano_fim <= chefe.mandato_ano_fim 
                 if(valido_ano_fim or valido_ano_inicio):
                     chefes.append(chefe)
         else:

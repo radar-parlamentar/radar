@@ -128,14 +128,6 @@ class AnalisadorTemporal:
             votacoes_filtradas.extend(analisadorPeriodo._inicializa_votacoes())
         return votacoes_filtradas
 
-    def chefes_filtrados(self):
-        chefes_filtrados = []
-        for periodo in self.periodos:
-            analisadorPeriodo = AnalisadorPeriodo(self.casa_legislativa,
-                                                  periodo)
-            chefes_filtrados.extend(analisadorPeriodo._inicializa_chefes_executivo())
-        return chefes_filtrados
-
 
 class AnalisadorPeriodo:
 

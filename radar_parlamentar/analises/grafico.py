@@ -246,67 +246,6 @@ class JsonAnaliseGenerator:
                 dict_parlamentar["y"].append(None)
         return dict_parlamentar
 
-    def get_string_chefes_executivos(self, periodo):
-        dicionario_chefe_executivo = self.cria_dicionario_chefe_executivo()
-        ano_inicio = int(periodo.ini.year)
-        ano_fim = int(periodo.fim.year)
-        chefes_executivo_periodo = self.get_chefes_executivos_by_date(
-            dicionario_chefe_executivo[1], ano_inicio, ano_fim)
-        string_chefes_executivos = self.formata_string_chefes_executivo(
-            chefes_executivo_periodo, dicionario_chefe_executivo[0])
-        return string_chefes_executivos
-
-    def cria_dicionario_chefe_executivo(self):
-        casa_legislativa = self.analise_temporal.casa_legislativa.nome_curto
-        if casa_legislativa == "sen" or casa_legislativa == "cdep":
-            dicionario_chefe_executivo = ["Presidente", {"Fernanco Collor de Mello": [1990, 1992, "PRN"],
-                                                         "Itamar Franco": [1993, 1994, "PMDB"],
-                                                         "Fernando Henrique Cardoso": [1995, 2002, "PSDB"],
-                                                         "Luis Inacio Lula da Silva": [2003, 2010, "PT"],
-                                                         "Dilma Rousseff": [2011, 2016, "PT"]}]
-        else:
-            dicionario_chefe_executivo = ["Prefeito", {"Luiza Erundina": [1989, 1992, "PT"],
-                                                       "Paulo Maluf": [1993, 1996, "PDS"],
-                                                       "Celso Pitta": [1997, 2000, "PPB"],
-                                                       "Marta Suplicy": [2001, 2005, "PT"],
-                                                       "Jose Serra": [2005, 2008, "PSDB"],
-                                                       "Gilberto Kassab": [2009, 2012, "PSD"],
-                                                       "Fernando Haddad": [2013, 2016, "PT"]}]
-        return dicionario_chefe_executivo
-
-    def get_chefes_executivos_by_date(self, 
-                                      chefes_executivos,
-                                      ano_inicio_parametro,
-                                      ano_fim_parametro):
-        logger.info('ano_inicio_parametro' + str(ano_inicio_parametro))
-        logger.info('ano_fim_parametro' + str(ano_fim_parametro))
-        for nome, dados in chefes_executivos.items():
-            ano_inicio_mandato = dados[0]
-            ano_fim_mandato = dados[1]
-            validacao_ano_inicio = ano_inicio_parametro >= ano_inicio_mandato and ano_inicio_parametro <= ano_fim_mandato
-            validacao_ano_fim = ano_fim_parametro >= ano_inicio_mandato and ano_fim_parametro <= ano_fim_mandato
-            if not validacao_ano_inicio and not validacao_ano_fim:
-                del chefes_executivos[nome]
-        return chefes_executivos
-
-    def get_descricoes_chefes_executivo(self, chefes_executivo):
-        descricoes_chefes_executivo = []
-        for (nome, dados) in chefes_executivo.items():
-            descricoes_chefes_executivo += ['%s (%s)' % (nome, dados[2])]
-        return descricoes_chefes_executivo
-
-    def formata_string_chefes_executivo(self, chefes_executivo, cargo):
-        numero_presidentes = len(chefes_executivo)
-        if numero_presidentes > 1:
-            descricoes_chefes_executivo = self.get_descricoes_chefes_executivo(chefes_executivo)
-            string_retorno = cargo + "s: "
-            string_retorno += ", ".join(descricoes_chefes_executivo)
-            return string_retorno
-        else:
-            string_retorno = cargo + "(a): " + chefes_executivo.keys()[0]
-            string_retorno += " (" + chefes_executivo.values()[0][2] + ")"
-            return string_retorno
-
 
 class MaxRadiusCalculator:
 
