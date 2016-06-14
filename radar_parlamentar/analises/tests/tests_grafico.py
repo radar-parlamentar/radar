@@ -48,6 +48,7 @@ class JsonAnaliseGeneratorTest(TestCase):
     def setUp(self):
 
         self.casa = models.CasaLegislativa.objects.get(nome_curto='conv')
+       
         for partido in JsonAnaliseGeneratorTest.importer.partidos:
             if partido.nome == conv.GIRONDINOS:
                 self.girondinos = partido
@@ -62,6 +63,11 @@ class JsonAnaliseGeneratorTest(TestCase):
         analise_temporal.analises_periodo = []
         analise_temporal.total_votacoes = 8
 
+        self.chefe = models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva", genero="M", partido = self.girondinos,
+                                    mandato_ano_inicio = 1989, mandato_ano_fim = 1990)
+        self.chefe.save()
+        self.chefe.casas_legislativas.add(self.casa)
+
         ap1 = AnalisePeriodo()
         periodos_retriever = utils.PeriodosRetriever(self.casa, models.BIENIO)
         periodos = periodos_retriever.get_periodos()
@@ -69,6 +75,8 @@ class JsonAnaliseGeneratorTest(TestCase):
         ap1.periodo = periodos[0]
         ap1.partidos = [self.girondinos, self.jacobinos, self.monarquistas]
         ap1.votacoes = []
+        ap1.chefes_executivos = [self.chefe]
+
         ap1.num_votacoes = 0
         ap1.tamanhos_partidos = {
             self.girondinos: 3, self.jacobinos: 3, self.monarquistas: 3}
@@ -92,6 +100,12 @@ class JsonAnaliseGeneratorTest(TestCase):
     def test_total_votacoes(self):
         self.assertEquals(self.dict_analise['geral']['total_votacoes'], 8)
 
+    def test_chefes_executivos(self):
+        list_periodos = self.dict_analise['periodos']
+        dict_periodo = list_periodos[0]
+        expected = "Presidente: Luiz Inacio Pierre da Silva - Girondinos"
+        self.assertEquals(dict_periodo['chefe_executivo'][0]['nome'], expected)
+
     def test_nome_casa_legislativa(self):
         dict_casa = self.dict_analise['geral']['CasaLegislativa']
         self.assertEquals(dict_casa['nome_curto'], self.casa.nome_curto)
@@ -99,11 +113,6 @@ class JsonAnaliseGeneratorTest(TestCase):
     def test_quantidade_periodos(self):
         list_periodos = self.dict_analise['periodos']
         self.assertEquals(len(list_periodos), 1)
-
-    def test_chefe_executivo(self):
-        list_periodos = self.dict_analise['periodos']
-        nome_prefeito = list_periodos[0]['chefe_executivo']
-        self.assertEquals('Prefeito(a): Luiza Erundina (PT)', nome_prefeito)
 
     def test_nome_periodo(self):
         list_periodos = self.dict_analise['periodos']

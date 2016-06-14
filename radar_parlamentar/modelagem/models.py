@@ -278,13 +278,35 @@ class ChefeExecutivo(models.Model):
         if data_inicial is not None and data_final is not None:
             ano_inicio = int(data_inicial.year)
             ano_fim = int(data_final.year)
-            for chefe in chefes_executivo:
-                valido_ano_inicio = ano_inicio >= chefe.mandato_ano_inicio and ano_inicio <= chefe.mandato_ano_fim  
-                valido_ano_fim =  ano_fim >= chefe.mandato_ano_inicio and ano_fim <= chefe.mandato_ano_fim 
-                if(valido_ano_fim or valido_ano_inicio):
-                    chefes.append(chefe)
+            if(ano_inicio == ano_fim):
+                chefes = ChefeExecutivo.get_chefe_anual(ano_inicio, chefes_executivo)
+            else:
+                chefes = ChefeExecutivo.get_chefe_periodo(ano_inicio, ano_fim, chefes_executivo)
         else:
             chefes = chefes_executivo
+
+        return chefes
+    
+    @staticmethod
+    def get_chefe_anual(ano, chefes_executivo):
+        chefes = []
+        for chefe in chefes_executivo:
+            ano_valido = chefe.mandato_ano_inicio <= ano and chefe.mandato_ano_fim >= ano
+            if(ano_valido):
+                chefes.append(chefe)
+
+        return chefes
+
+    @staticmethod
+    def get_chefe_periodo(ano_inicio, ano_fim, chefes_executivo):
+        chefes = []
+        for chefe in chefes_executivo:
+            ano_inicio_valido =  ano_inicio >= chefe.mandato_ano_inicio and ano_inicio <= chefe.mandato_ano_fim   
+            ano_fim_valido =  ano_fim >= chefe.mandato_ano_inicio and ano_fim <= chefe.mandato_ano_fim
+            mandato_ano_inicio_valido = chefe.mandato_ano_inicio >= ano_inicio and chefe.mandato_ano_inicio <= ano_fim
+            mandato_ano_fim_valido = chefe.mandato_ano_fim >= ano_inicio and chefe.mandato_ano_fim <= ano_fim
+            if(ano_inicio_valido or ano_fim_valido or mandato_ano_inicio_valido or mandato_ano_fim_valido):
+                chefes.append(chefe)
 
         return chefes
 
