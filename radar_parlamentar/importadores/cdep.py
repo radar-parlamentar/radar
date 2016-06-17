@@ -494,7 +494,7 @@ class PosImportacao:
                                                  ano='1995')
             obj_votacao = 'SUBEMENDA A EMENDA N. 33'
             votacao = models.Votacao.objects.get(
-                proposicao=prop, escricao__contains=obj_votacao)
+                proposicao=prop, descricao__contains=obj_votacao)
             votacao.delete()
         except ObjectDoesNotExist:
             logger.warn('Votação esperada (em PL 821/1995)\
