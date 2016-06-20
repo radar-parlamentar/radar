@@ -47,8 +47,8 @@
              <p><label for="casa_legislativa"> Casa Legislativa: </label>
                  <select id="casa_legislativa" name="casas_legislativas_list">
                      <option value="" selected="selected"> Selecione... </option>
-                     {% for casa in casas %}
-                         <option value="{{casa.id}}"> {{ casa.nome|capfirst }} </option>
+                     {% for casa in casas_legislativas %}
+                         <option value="{{casa.id}}"> {{ casa.nome }} </option>
                      {% endfor %}
                  </select>
              </p>
