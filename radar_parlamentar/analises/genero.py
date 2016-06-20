@@ -17,8 +17,15 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from modelagem.models import Proposicao
-from modelagem.models import Parlamentar
+# import sys
+# sys.path.insert(0, '/radar/radar_parlamentar/modelagem')
+# sys.path.append('/radar/radar_parlamentar/modelagem/models.py')
+
+from modelagem.models import CasaLegislativa, Parlamentar, Proposicao
+
+# from radar.radar_parlamentar.modelagem.models import
+# from modelagem.models import modelagem
+# from modelagem.models import CasaLegislativa
 
 
 class Genero:
@@ -46,3 +53,21 @@ class Genero:
         temas_frequencia = temas_frequencia[:51]
 
         return temas_frequencia
+
+
+    '''
+    Retorna as casas legislativas que tenham parlamentares com a informacao de genero
+    '''
+    @staticmethod
+    def get_casas_legislativas_com_genero():
+
+        casas_legislativas = []
+
+        for casa in CasaLegislativa.objects.all():
+            for parlamentar in Parlamentar.objects.filter(casa_legislativa_id=casa.id):
+                if parlamentar.genero != "":
+                    casas_legislativas.append(casa)
+                    break
+
+        return casas_legislativas
+
