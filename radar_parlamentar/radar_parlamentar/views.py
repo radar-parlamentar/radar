@@ -83,10 +83,12 @@ def genero_termos_nuvem(request):
     temas_json_mulher = json.dumps(temas_frequencia_mulher)
     temas_frequencia_homem = genero.definir_palavras('M')
     temas_json_homem = json.dumps(temas_frequencia_homem)
+    casas_legislativas_com_genero = genero.get_casas_legislativas_com_genero()
 
     return render_to_response('genero_tagcloud.html',
                               {'temas_mulher': temas_json_mulher,
-                               'temas_homem': temas_json_homem},
+                               'temas_homem': temas_json_homem,
+                               'casas_legislativas' : casas_legislativas_com_genero},
                               context_instance=RequestContext(request))
 
 
