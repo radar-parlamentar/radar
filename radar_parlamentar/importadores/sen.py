@@ -29,6 +29,7 @@ from __future__ import unicode_literals
 from datetime import date
 from modelagem import models
 from django.core.exceptions import ObjectDoesNotExist
+from chefes_executivos import ImportadorChefesExecutivos
 import re
 import os
 import sys
@@ -42,6 +43,8 @@ DATA_FOLDER = os.path.join(MODULE_DIR, 'dados/senado')
 VOTACOES_FOLDER = os.path.join(DATA_FOLDER, 'votacoes')
 
 NOME_CURTO = 'sen'
+
+XML_FILE = 'dados/chefe_executivo/chefe_executivo_sen.xml'
 
 logger = logging.getLogger("radar")
 
@@ -291,73 +294,12 @@ class PosImportacao:
             logger.warn('Eduardo Suplicy sem partido não existe.')
 
 
-class ImportadorChefesExecutivos:
-
-    def __init__(self):
-        self.senado = models.CasaLegislativa.objects.get(nome_curto=NOME_CURTO)
-
-    def importar_chefes(self):
-        tree = self.abrir_xml()
-        presidentes_tree = tree.find('Presidentes')
-        self.presidente_from_tree(presidentes_tree)
-
-    def abrir_xml(self):
-        xml_chefes = os.path.join(MODULE_DIR, 'dados/chefe_executivo/chefe_executivo_sen.xml')
-        file = open(xml_chefes, 'r')
-        xml = file.read()
-        file.close()
-        return etree.fromstring(xml)
-
-    def presidente_from_tree(self, presidentes_tree):
-        for presidente in presidentes_tree.getchildren():
-            if presidente.tag == 'Presidente':
-                nome = presidente.get('Nome')
-                partido = presidente.get('Partido')
-                ano_inicio = presidente.get('AnoInicio')
-                ano_fim = presidente.get('AnoFinal')
-                genero = presidente.get('Genero')
-                self.criar_chefe_executivo(nome, partido, ano_inicio, ano_fim, genero)
-
-    def criar_chefe_executivo(self, nome, sigla_partido, ano_inicio, ano_fim, genero):      
-        partido = models.Partido()
-        partido = partido.from_nome(sigla_partido)
-
-        chefe = models.ChefeExecutivo(nome=nome, partido=partido, mandato_ano_inicio=ano_inicio, 
-                                        mandato_ano_fim=ano_fim, genero=genero)            
-
-        chefe_existe = self.verificar_chefe_existe(chefe)
-        if not chefe_existe:
-            chefe.save()
-            chefe.casas_legislativas.add(self.senado)
-            logger.info('Adicionando chefe %s' % nome)
-        else:
-            logger.warn('Chefe %s já existe' % nome)
-            
-    def verificar_chefe_existe(self, chefe):
-        
-        chefes = models.ChefeExecutivo.objects.all()
-        if chefes:
-            for chefe_atual in chefes:
-                nome_igual = chefe_atual.nome == chefe.nome
-                partido_igual = chefe_atual.partido.pk == chefe.partido.pk
-                ano_inicio_igual = chefe_atual.mandato_ano_inicio == chefe.mandato_ano_inicio 
-                ano_fim_igual = chefe_atual.mandato_ano_fim == chefe.mandato_ano_fim 
-
-                if(nome_igual and partido_igual and ano_inicio_igual and ano_fim_igual):
-                    chefe_existe = True
-                else:
-                    chefe_existe = False
-        else:
-            chefe_existe = False
-
-        return chefe_existe
-
 def main():
     logger.info('IMPORTANDO DADOS DO SENADO')
     geradorCasaLeg = CasaLegislativaGerador()
     geradorCasaLeg.gera_senado()
     logger.info('IMPORTANDO CHEFES EXECUTIVOS DO SENADO')
-    importer_chefe = ImportadorChefesExecutivos()
+    importer_chefe = ImportadorChefesExecutivos(NOME_CURTO, 'Presidentes', 'Presidente', XML_FILE)
     importer_chefe.importar_chefes()
     logger.info('IMPORTANDO VOTAÇÕES DO SENADO')
     importer = ImportadorVotacoesSenado()
