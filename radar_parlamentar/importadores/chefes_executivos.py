@@ -1,6 +1,7 @@
 # !/usr/bin/python
 # coding=utf8
 
+from __future__ import unicode_literals
 from modelagem import models
 import os
 import xml.etree.ElementTree as etree
@@ -56,7 +57,7 @@ class ImportadorChefesExecutivos:
             chefe.casas_legislativas.add(self.casa)
             logger.info('Adicionando chefe %s' % nome)
         else:
-            logger.warn('Chefe %s ja existe' % nome)
+            logger.warn('Chefe %s já existe' % nome)
 
 
     def verificar_chefe_existe(self, chefe):
