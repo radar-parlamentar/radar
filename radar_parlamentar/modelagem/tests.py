@@ -218,6 +218,50 @@ class ModelsTest(TestCase):
         self.assertEquals(dem.nome, 'DEM')
         self.assertEquals(dem.numero, 25)
 
+    def cria_chefes_executivo(self):
+        pt = models.Partido.from_nome('PT')
+        chefe_masculino = models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva", genero="M", partido = pt,
+                                    mandato_ano_inicio = 1989, mandato_ano_fim = 1990)
+        chefe_masculino.save()
+        chefe_feminino = models.ChefeExecutivo(nome="Dilmé Rouseffé", genero="F", partido = pt,
+                                    mandato_ano_inicio = 1989, mandato_ano_fim = 1990)
+        chefe_feminino.save()
+        chefes = [chefe_masculino, chefe_feminino]
+        return chefes
+
+    def test_chefe_executivo_prefeito(self):
+        chefes = self.cria_chefes_executivo()
+        casa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        casa.esfera = models.MUNICIPAL
+        casa.save()
+        chefes[0].casas_legislativas.add(casa)
+        expected =  "Prefeito: Luiz Inacio Pierre da Silva - PT"
+        self.assertEquals(unicode(chefes[0]), expected)
+
+    def test_chefe_executivo_presidenta(self):
+        chefes = self.cria_chefes_executivo()
+        casa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        chefes[1].casas_legislativas.add(casa)
+        expected = "Presidenta: Dilmé Rouseffé - PT"
+        self.assertEquals(unicode(chefes[1]), expected)
+
+    def test_chefe_executivo_prefeita(self):
+        chefes = self.cria_chefes_executivo()
+        casa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        casa.esfera = models.MUNICIPAL
+        casa.save()
+        chefes[1].casas_legislativas.add(casa)
+        expected =  "Prefeita: Dilmé Rouseffé - PT"
+        self.assertEquals(unicode(chefes[1]), expected)
+
+    def test_chefe_executivo_presidente(self):
+        chefes = self.cria_chefes_executivo()
+        casa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        chefes[0].casas_legislativas.add(casa)
+        expected =  "Presidente: Luiz Inacio Pierre da Silva - PT"
+        self.assertEquals(unicode(chefes[0]), expected)
+
+
     def test_partido_from_nome_None(self):
         nome = None
         partido = models.Partido.from_nome(nome)

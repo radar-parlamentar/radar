@@ -58,6 +58,12 @@ class AnalisadorPeriodoTest(TestCase):
                 self.jacobinos = partido
             if partido.nome == conv.MONARQUISTAS:
                 self.monarquistas = partido
+        
+        self.chefe = models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva", genero="M", partido = self.girondinos,
+                                    mandato_ano_inicio = 1988, mandato_ano_fim = 1992)
+        self.chefe.save()
+        self.chefe.casas_legislativas.add(self.casa_legislativa)
+        
 
     # TODO test_coordenadas_parlamentares
 
@@ -87,7 +93,15 @@ class AnalisadorPeriodoTest(TestCase):
         self.assertEquals(3, len(partidos))
         for p in partidos:
             self.assertEqual(tamanhos[p], tamanho_esperado)
-
+    
+    def test_chefes_executivos(self):
+        periodo = models.PeriodoCasaLegislativa(date(1989, 02, 02), date(1989, 10, 10))
+        analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
+        analise_periodo = analisador.analisa()
+        chefes_executivos = analise_periodo.chefes_executivos
+        chefe_esperado = self.chefe
+        
+        self.assertEquals(unicode(chefes_executivos[0]), unicode(chefe_esperado))
 
 class MatrizesDeDadosBuilderTest(TestCase):
 
@@ -182,6 +196,8 @@ class AnalisadorTemporalTest(TestCase):
         self.assertEqual(analise_temporal.total_votacoes, 9)
         analises = analise_temporal.analises_periodo
         self.assertEqual(len(analises), 3)
+
+        self.assertEqual(analise_temporal.chefes_executivos, [])
 
         # primeiro semestre de 1989
         coordenadas = analises[0].coordenadas_partidos

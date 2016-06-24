@@ -205,13 +205,13 @@ Plot = (function ($) {
         var label_periodo = grupo_controle_periodos.append("text")
             .attr("class", "year label")
             .attr("text-anchor", "middle")
-            .attr("y", 30 )
+            .attr("y", 35)
             .attr("x", width/2);
 
         var label_nvotacoes = grupo_controle_periodos.append("text")
             .attr("class", "total_label")
             .attr("text-anchor", "middle")
-            .attr("y", 48)
+            .attr("y", 55)
             .attr("x", width/2);
 
         var go_to_previous = grupo_controle_periodos.append("image")
@@ -534,7 +534,8 @@ Plot = (function ($) {
                 }
             });            
             
-            label_chefe_executivo.text(periodos[periodo_atual].chefe_executivo);
+            var chefes = get_chefes_executivos();
+            label_chefe_executivo.text(chefes);
             label_periodo.text(periodos[periodo_atual].nome);
             quantidade_votacoes = periodos[periodo_atual].nvotacoes;
             label_nvotacoes.text(quantidade_votacoes + " votações"); 
@@ -545,6 +546,20 @@ Plot = (function ($) {
             if (periodo_para == periodo_min) mouseout_previous();
         }
         
+
+        function get_chefes_executivos(){
+            var chefes = "";
+            chefes_executivos = periodos[periodo_atual].chefe_executivo;
+            for (var i = 0; i < chefes_executivos.length; i++) {
+                if(i != 0){
+                    chefes += " , ";
+                }
+                chefes += chefes_executivos[i]['nome'];
+            }
+
+            return chefes;
+        }
+
         // Issue#272
         function get_partido_parlamentar_pesquisado(){
             partidos_atuais = get_partidos_no_periodo(periodo_atual);

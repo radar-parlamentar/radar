@@ -23,6 +23,7 @@
 from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
 from modelagem import models
+from chefes_executivos import ImportadorChefesExecutivos
 import re
 import sys
 import os
@@ -31,6 +32,9 @@ import logging
 
 logger = logging.getLogger("radar")
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+XML_FILE = 'dados/chefe_executivo/chefe_executivo_cmsp.xml'
+NOME_CURTO = 'cmsp'
 
 # arquivos com os dados fornecidos pela cmsp
 XML2012 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2012.xml')
@@ -56,7 +60,7 @@ class GeradorCasaLegislativa(object):
 
     def gerar_cmsp(self):
         try:
-            cmsp = models.CasaLegislativa.objects.get(nome_curto='cmsp')
+            cmsp = models.CasaLegislativa.objects.get(nome_curto=NOME_CURTO)
         except models.CasaLegislativa.DoesNotExist:
             cmsp = self.salvar_cmsp()
         return cmsp
@@ -289,6 +293,9 @@ def main():
     gerador_casa = GeradorCasaLegislativa()
     cmsp = gerador_casa.gerar_cmsp()
     importer = ImportadorCMSP(cmsp)
+    logger.info('IMPORTANDO CHEFES EXECUTIVOS DA CAMARA MUNICIPAL DE SÃO PAULO')
+    importer_chefe = ImportadorChefesExecutivos(NOME_CURTO, 'PrefeitosSP', 'PrefeitoSP', XML_FILE)
+    importer_chefe.importar_chefes()
     for xml in [XML2012, XML2013, XML2014, XML2015, XML2016]:
         importer.importar_de(xml)
     logger.info('Importacao dos dados da \

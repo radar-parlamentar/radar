@@ -29,6 +29,7 @@ from __future__ import unicode_literals
 from datetime import date
 from modelagem import models
 from django.core.exceptions import ObjectDoesNotExist
+from chefes_executivos import ImportadorChefesExecutivos
 import re
 import os
 import sys
@@ -42,6 +43,8 @@ DATA_FOLDER = os.path.join(MODULE_DIR, 'dados/senado')
 VOTACOES_FOLDER = os.path.join(DATA_FOLDER, 'votacoes')
 
 NOME_CURTO = 'sen'
+
+XML_FILE = 'dados/chefe_executivo/chefe_executivo_sen.xml'
 
 logger = logging.getLogger("radar")
 
@@ -305,6 +308,9 @@ def main():
     logger.info('IMPORTANDO DADOS DO SENADO')
     geradorCasaLeg = CasaLegislativaGerador()
     geradorCasaLeg.gera_senado()
+    logger.info('IMPORTANDO CHEFES EXECUTIVOS DO SENADO')
+    importer_chefe = ImportadorChefesExecutivos(NOME_CURTO, 'Presidentes', 'Presidente', XML_FILE)
+    importer_chefe.importar_chefes()
     logger.info('IMPORTANDO VOTAÇÕES DO SENADO')
     importer = ImportadorVotacoesSenado()
     importer.importar_votacoes()
