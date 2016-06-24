@@ -21,6 +21,7 @@
 
 from __future__ import unicode_literals
 from django.db import models
+from django.utils.dateparse import parse_datetime
 import re
 import logging
 import os
@@ -82,7 +83,7 @@ class Indexadores(models.Model):
     """Termos utilizados na indexação de proposições
 
     Atributos:
-        termo -- string; ex: "mulher" ou "partido político"
+        termo -- string; ex: "mulher" ou "partido político"+
         principal -- bool; identifica se o termo é o principal
                     de uma linha de sinônimos, o termo a ser usado.
     """
@@ -245,6 +246,90 @@ class CasaLegislativa(models.Model):
         except:
             logger.info('Possivelmente a operacao extrapolou o limite de '
                         'operacoes do SQLite, tente utilizar o MySQL')
+
+
+class ChefeExecutivo(models.Model):
+    """Atributos:
+        nome -- string; ex Lula
+        genero -- string: ex Masculino
+        partido -- tipo Partido
+        mandato_ano_inicio -- objetos datetime
+        mandato_ano_fim -- objetos datetime
+    """
+
+    nome = models.CharField(max_length=100)
+    genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
+    partido = models.ForeignKey(Partido)
+    mandato_ano_inicio = models.IntegerField()
+    mandato_ano_fim = models.IntegerField()
+    casas_legislativas = models.ManyToManyField(CasaLegislativa)
+    titulo = None
+    
+    def __unicode__(self):
+        self.titulo = self.get_titulo_chefe()
+        return self.titulo + ": " + self.nome + " - " + self.partido.nome
+
+    @staticmethod
+    def por_casa_legislativa_e_periodo(casa_legislativa,
+                             data_inicial=None,
+                             data_final=None):
+        
+        chefes_executivo = ChefeExecutivo.objects.filter(
+            casas_legislativas__nome_curto=casa_legislativa.nome_curto)
+        
+        chefes = []
+        if data_inicial is not None and data_final is not None:
+            ano_inicio = int(data_inicial.year)
+            ano_fim = int(data_final.year)
+            if(ano_inicio == ano_fim):
+                chefes = ChefeExecutivo.get_chefe_anual(ano_inicio, chefes_executivo)
+            else:
+                chefes = ChefeExecutivo.get_chefe_periodo(ano_inicio, ano_fim, chefes_executivo)
+        else:
+            chefes = chefes_executivo
+
+        return chefes
+    
+    @staticmethod
+    def get_chefe_anual(ano, chefes_executivo):
+        chefes = []
+        for chefe in chefes_executivo:
+            ano_valido = chefe.mandato_ano_inicio <= ano and chefe.mandato_ano_fim >= ano
+            if(ano_valido):
+                chefes.append(chefe)
+
+        return chefes
+
+    @staticmethod
+    def get_chefe_periodo(ano_inicio, ano_fim, chefes_executivo):
+        chefes = []
+        for chefe in chefes_executivo:
+            ano_inicio_valido =  ano_inicio >= chefe.mandato_ano_inicio and ano_inicio <= chefe.mandato_ano_fim   
+            ano_fim_valido =  ano_fim >= chefe.mandato_ano_inicio and ano_fim <= chefe.mandato_ano_fim
+            mandato_ano_inicio_valido = chefe.mandato_ano_inicio >= ano_inicio and chefe.mandato_ano_inicio <= ano_fim
+            mandato_ano_fim_valido = chefe.mandato_ano_fim >= ano_inicio and chefe.mandato_ano_fim <= ano_fim
+            if(ano_inicio_valido or ano_fim_valido or mandato_ano_inicio_valido or mandato_ano_fim_valido):
+                chefes.append(chefe)
+
+        return chefes
+
+    def get_titulo_chefe(self):
+        titulo = ""
+        casas_legislativas = self.casas_legislativas.all()
+        for casa in casas_legislativas:
+            esfera = casa.esfera  
+            genero_masculino = self.genero == M
+            if(esfera == FEDERAL):
+                if(genero_masculino):
+                    titulo = "Presidente"
+                else:
+                    titulo = "Presidenta"
+            elif(esfera == MUNICIPAL):
+                if(genero_masculino):
+                    titulo = "Prefeito"
+                else:
+                    titulo = "Prefeita"
+        return titulo                
 
 
 class PeriodoCasaLegislativa(object):
@@ -485,13 +570,13 @@ class VotosAgregados:
             OBSTRUCAO conta como um voto ABSTENCAO
             AUSENTE não conta como um voto
         """
-        if (voto == SIM):
+        if voto == SIM:
             self.sim += 1
-        if (voto == NAO):
+        if voto == NAO:
             self.nao += 1
-        if (voto == ABSTENCAO):
+        if voto == ABSTENCAO:
             self.abstencao += 1
-        if (voto == OBSTRUCAO):
+        if voto == OBSTRUCAO:
             self.abstencao += 1
         # if (voto == AUSENTE):
         #    self.abstencao += 1

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chefe_executivo>
+    <PrefeitosSP>
+        <PrefeitoSP Nome="Luiza Erundina" Partido="PT" AnoInicio="1989" AnoFinal="1992" Genero="F"/>
+        <PrefeitoSP Nome="Paulo Salim Maluf" Partido="PDS" AnoInicio="1993" AnoFinal="1996" Genero="M"/>
+        <PrefeitoSP Nome="Celso Pitta" Partido="PPB" AnoInicio="1997" AnoFinal="2000" Genero="M"/>
+        <PrefeitoSP Nome="Marta Suplicy" Partido="PT" AnoInicio="2001" AnoFinal="2004" Genero="F"/>
+        <PrefeitoSP Nome="José Serra" Partido="PSDB" AnoInicio="2005" AnoFinal="2008" Genero="M"/>
+        <PrefeitoSP Nome="Gilberto Kassab" Partido="PSD" AnoInicio="2009" AnoFinal="2012" Genero="M"/>
+        <PrefeitoSP Nome="Fernando Haddad" Partido="PT" AnoInicio="2013" AnoFinal="2016" Genero="M"/>
+    </PrefeitosSP>
+</chefe_executivo>

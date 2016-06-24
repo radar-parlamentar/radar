@@ -37,6 +37,7 @@ class AnalisePeriodo:
         self.partidos = []
         self.votacoes = []
         self.num_votacoes = 0
+        self.chefes_executivo = []
 
         self.pca = None
 

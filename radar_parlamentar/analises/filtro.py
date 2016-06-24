@@ -67,7 +67,6 @@ class LuceneQueryBuilder():
             self.periodo_casa_legislativa.ini.isoformat(),
             self.periodo_casa_legislativa.fim.isoformat())
 
-
 class FiltroVotacao(TestCase):
 
     """Filtra votações pelos campos:
@@ -112,3 +111,27 @@ class FiltroVotacao(TestCase):
             e["fields"]["votacao_id"][0] for e in res["hits"]["hits"]]
         self.votacoes = models.Votacao.objects.filter(id__in=votacoes_ids)
         return self.votacoes
+
+
+class FiltroChefesExecutivo(TestCase):
+
+    """Filtra chefes executivos pelo período do mandato e pela casa """
+
+    def __init__(self, casa_legislativa, periodo_casa_legislativa):
+        """Argumentos:
+            casa_legislativa -- objeto do tipo CasaLegislativa;
+            somente chefes executivos desta casa serão filtrados.
+            periodo_casa_legislativa -- objeto do tipo PeriodoCasaLegislativa;
+            somente chefes executivos deste período serão filtrados.
+        """
+        self.casa_legislativa = casa_legislativa
+        self.periodo_casa_legislativa = periodo_casa_legislativa
+        self.chefes_executivos = []
+
+    def filtra_chefes_executivo(self):
+        self.chefes_executivo = models.ChefeExecutivo.por_casa_legislativa_e_periodo(
+            self.casa_legislativa,
+            self.periodo_casa_legislativa.ini,
+            self.periodo_casa_legislativa.fim)
+        return self.chefes_executivo
+
