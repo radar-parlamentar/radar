@@ -17,23 +17,15 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-# import sys
-# sys.path.insert(0, '/radar/radar_parlamentar/modelagem')
-# sys.path.append('/radar/radar_parlamentar/modelagem/models.py')
-
 from modelagem.models import CasaLegislativa, Parlamentar, Proposicao
-
-# from radar.radar_parlamentar.modelagem.models import
-# from modelagem.models import modelagem
-# from modelagem.models import CasaLegislativa
 
 
 class Genero:
 
     @staticmethod
-    def definir_palavras(genero):
+    def definir_palavras(genero, id_casa_legislativa):
         temas = []
-        for parlamentar in Parlamentar.objects.filter(genero=genero):
+        for parlamentar in Parlamentar.objects.filter(genero=genero, casa_legislativa_id=id_casa_legislativa):
             for proposicao in Proposicao.objects.filter(
                     autor_principal=parlamentar.nome):
                 for tema in proposicao.indexacao.split(','):
