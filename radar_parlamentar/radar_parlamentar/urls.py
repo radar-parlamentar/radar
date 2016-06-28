@@ -44,6 +44,9 @@ urlpatterns = patterns(
     url(r'^dados/$',
         'radar_parlamentar.views.dados_utilizados'),
 
+    url(r'^blog/$',
+        'radar_parlamentar.views.blog'),
+
     # Páginas do Projeto Gênero do Hackathon da Câmara dos
     # Deputados em 2013
     url(r'^genero/$', 'radar_parlamentar.views.genero'),

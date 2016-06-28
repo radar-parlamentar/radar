@@ -138,9 +138,10 @@ def dados_utilizados(request):
                               context_instance=RequestContext(request))
 
 def blog(request):
+    number_of_news = 10
     dictionary = DictionaryBlogGenerator.cria_dict_blog()
     my_news = dictionary["items"]
-    paginator = Paginator(my_news,10)
+    paginator = Paginator(my_news, number_of_news)
 
     page = request.GET.get('page')
     try:
