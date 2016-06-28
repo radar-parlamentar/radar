@@ -3,7 +3,15 @@
 from django.test import TestCase
 from radar_parlamentar.templatetags.versao_radar import versao_radar
 import re
+from blog import DictionaryBlogGenerator
 
+
+class BlogTest(TestCase):
+
+	def test_cria_dict_blog(self):
+		dict_blog = DictionaryBlogGenerator.cria_dict_blog()
+		blog_title = dict_blog.feed.title
+		self.assertEquals(blog_title,'PoliGNU - Grupo de Estudos de Software Livre da Poli-USP - Radar Parlamentar')
 
 class VersaoRadarTest(TestCase):
 
