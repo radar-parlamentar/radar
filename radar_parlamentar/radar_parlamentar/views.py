@@ -27,6 +27,10 @@ import os
 import datetime
 import json
 import logging
+from blog import DictionaryBlogGenerator
+import feedparser
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render
 
 logger = logging.getLogger("radar")
 
@@ -131,4 +135,22 @@ def dados_utilizados(request):
     dt = datetime.datetime.fromtimestamp(time)
     dt_str = dt.strftime('%d/%m/%Y')
     return render_to_response('dados_utilizados.html', {'dumpdate': dt_str},
+                              context_instance=RequestContext(request))
+
+def generate_blog_news(request):
+    number_of_news = 10
+    dictionary = DictionaryBlogGenerator.create_dict_blog()
+    my_news = dictionary["items"]
+    paginator = Paginator(my_news, number_of_news)
+
+    page = request.GET.get('page')
+    try:
+        my_news = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        my_news = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        my_news = paginator.page(paginator.num_pages)
+    return render_to_response('blog.html', {'my_news': my_news},
                               context_instance=RequestContext(request))
