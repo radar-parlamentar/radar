@@ -3,9 +3,8 @@ from django.test import TestCase
 import os
 import xml.etree.ElementTree as etree
 import mock
-from datetime import datetime
 
-from importadores import sen
+from importadores import sen, sen_indexacao
 from modelagem import models
 
 XML_TEST = os.path.join(sen.MODULE_DIR, 'dados/senado/ListaVotacoesTest.xml')
@@ -42,3 +41,20 @@ class ImportadorSenadoTest(TestCase):
         partido = models.Partido.objects.get(nome='PMDB')
         self.assertTrue(partido)
         self.assertEquals(parlamentar.partido.nome, 'PMDB')
+
+class IndexacaoSenadoTest(TestCase):
+
+    def setUp(self):
+        casa = sen.CasaLegislativaGerador().gera_senado()
+        self.importer = sen.ImportadorVotacoesSenado()
+        self.importer._xml_file_names = mock.Mock(return_value=[XML_TEST])
+        self.importer.importar_votacoes()
+        sen_indexacao.indexar_proposicoes()
+
+    def test_proposicoes_importadas(self):
+        proposicao = models.Proposicao.objects.get(pk=1)
+        self.assertTrue(proposicao)
+        self.assertEquals(proposicao.ano, '2015')
+        self.assertEquals(proposicao.sigla, 'PLS')
+        self.assertEquals(proposicao.numero, '00131')
+
