@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Blog Radar Parlamentar
+{% endblock title %}
+
+{% block extrascripts %}
+{% endblock extrascripts %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block headerImgClass %}
+    votoaberto
+{% endblock headerImgClass %}
+
+{% block nomepagina %}
+    Campanha Voto Aberto: Eu Apoio!
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Junte-se a nós nessa campanha!
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}
+    <li><a href="/index">Home</a> &raquo;</li>
+    <li><a href="/blog">Blog</a></li>
+{% endblock breadcrumbs %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="/static/files/codes/css/blog.css" />
+    
+    <h2> Blog Radar Parlamentar </h2>
+    {% for news in my_news %}
+        <p>
+        <strong><a href="{{news.link}}" target="_blank">{{news.title}}</a></strong>
+        </p>
+    {% endfor %}
+
+    <div class="pagination">
+    <span class="step-links">
+        {% if my_news.has_previous %}
+            <a href="?page={{ my_news.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Página {{ my_news.number }} de {{ my_news.paginator.num_pages }}.
+        </span>
+
+        {% if my_news.has_next %}
+            <a href="?page={{ my_news.next_page_number }}">Próximo</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock content %}
+
+{% block extrascriptsend %}
+    menuActive("botao_blog");
+{% endblock extrascriptsend %}
