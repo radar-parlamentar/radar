@@ -17,16 +17,15 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from modelagem.models import Proposicao
-from modelagem.models import Parlamentar
+from modelagem.models import CasaLegislativa, Parlamentar, Proposicao
 
 
 class Genero:
 
     @staticmethod
-    def definir_palavras(genero):
+    def definir_palavras(genero, id_casa_legislativa):
         temas = []
-        for parlamentar in Parlamentar.objects.filter(genero=genero):
+        for parlamentar in Parlamentar.objects.filter(genero=genero, casa_legislativa_id=id_casa_legislativa):
             for proposicao in Proposicao.objects.filter(
                     autor_principal=parlamentar.nome):
                 for tema in proposicao.indexacao.split(','):
@@ -46,3 +45,21 @@ class Genero:
         temas_frequencia = temas_frequencia[:51]
 
         return temas_frequencia
+
+
+    '''
+    Retorna as casas legislativas que tenham parlamentares com a informacao de genero
+    '''
+    @staticmethod
+    def get_casas_legislativas_com_genero():
+
+        casas_legislativas = []
+
+        for casa in CasaLegislativa.objects.all():
+            for parlamentar in Parlamentar.objects.filter(casa_legislativa_id=casa.id):
+                if parlamentar.genero != "":
+                    casas_legislativas.append(casa)
+                    break
+
+        return casas_legislativas
+
