@@ -43,7 +43,25 @@ class ViewTest(TestCase):
                             "e homens no total de legislaturas, bem como nas bancadas partidárias."
         self._test_content("genero", radar_genero_text_block)
 
+    def test_genero_futuro_content(self):
+        radar_genero_futuro = "Entenda visualmente participação de mulheres e homens na política"
+        self._test_content("genero_futuro", radar_genero_futuro)
 
+    def test_genero_treemap_content(self):
+        radar_genero_treemap = "Trata-se de uma visualização de dados treemap"
+        self._test_content("genero_treemap", radar_genero_treemap)
+
+    def test_genero_historia_legislaturas_content(self):
+        radar_genero_historia_legislaturas = "O Gráfico mostra, desde o primeiro parlamento, o percentual"
+        self._test_content("genero_historia_legislaturas", radar_genero_historia_legislaturas)
+
+    def test_genero_perfil_partido_content(self):
+        radar_genero_perfil_partido = "Trata-se de uma visualização de dados em que é possível observar o percentual de deputadas e deputados de um determinado partido"
+        self._test_content("genero_perfil_partido", radar_genero_perfil_partido)
+
+    def test_genero_comparativo_partidos_content(self):
+        radar_genero_comparativo_partidos = "Trata-se de uma visualização de dados em que é possível observar o percentual de deputadas e deputados nos diversos partidos de uma legislatura a sua escolha."
+        self._test_content("genero_comparativo_partidos", radar_genero_comparativo_partidos)
 
     def _test_content(self, page, content):
         url = reverse(str(page))
