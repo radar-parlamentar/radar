@@ -25,18 +25,18 @@ urlpatterns = patterns(
     # 'radar_parlamentar.foo.urls')),
 
     # Index
-    url(r'^$', 'radar_parlamentar.views.index'),
+    url(r'^$', 'radar_parlamentar.views.index', name="index"),
     url(r'^index/$', redirect_to, {'url': '/'}),
-    url(r'^origem/$', 'radar_parlamentar.views.origem'),
-    url(r'^ogrupo/$', 'radar_parlamentar.views.ogrupo'),
+    url(r'^origem/$', 'radar_parlamentar.views.origem', name="origem"),
+    url(r'^ogrupo/$', 'radar_parlamentar.views.ogrupo', name="ogrupo"),
     url(r'^premiacoes/$',
-        'radar_parlamentar.views.premiacoes'),
+        'radar_parlamentar.views.premiacoes', name="premiacoes"),
     url(r'^radarnamidia/$',
-        'radar_parlamentar.views.radar_na_midia'),
+        'radar_parlamentar.views.radar_na_midia', name="radar_na_midia"),
     url(r'^sim-voto-aberto/$',
-        'radar_parlamentar.views.votoaberto'),
+        'radar_parlamentar.views.votoaberto', name="votoaberto"),
     url(r'^importadores/$',
-        'radar_parlamentar.views.importadores'),
+        'radar_parlamentar.views.importadores', name="importadores"),
 
     url(r'^importar/(?P<nome_curto_casa_legislativa>\w*)/$',
         'importadores.views.importar'),
@@ -49,7 +49,7 @@ urlpatterns = patterns(
 
     # Páginas do Projeto Gênero do Hackathon da Câmara dos
     # Deputados em 2013
-    url(r'^genero/$', 'radar_parlamentar.views.genero'),
+    url(r'^genero/$', 'radar_parlamentar.views.genero', name="genero"),
     url(r'^genero/tematica/partido/$',
         'radar_parlamentar.views.genero_matriz'),
     url(r'^genero/perfil/partido/$',
