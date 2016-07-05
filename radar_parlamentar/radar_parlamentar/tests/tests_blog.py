@@ -1,6 +1,6 @@
 
 from django.test import TestCase
-from radar_parlamentar.view import *
+from radar_parlamentar.blog import DictionaryBlogGenerator
 
 class BlogTest(TestCase):
 
