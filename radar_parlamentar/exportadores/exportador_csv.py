@@ -116,7 +116,11 @@ class ExportadorCSV:
 
 def main():
     cdep = models.CasaLegislativa.objects.get(nome_curto='cdep')
-    votacoes = models.Votacao.objects.filter(proposicao__casa_legislativa=cdep, proposicao__sigla='PL', proposicao__numero='1876', proposicao__ano='1999')
+    sen = models.CasaLegislativa.objects.get(nome_curto='sen')
+    vs1 = models.Votacao.objects.filter(proposicao__casa_legislativa=cdep, proposicao__sigla='PL', proposicao__numero='1876', proposicao__ano='1999')
+    vs2 = models.Votacao.objects.filter(proposicao__casa_legislativa=sen, proposicao__sigla='PLC', proposicao__numero='00007', proposicao__ano='2010')
+    vs3 = models.Votacao.objects.filter(proposicao__casa_legislativa=sen, proposicao__sigla='PEC', proposicao__numero='00007', proposicao__ano='2015')
+    votacoes = vs1 | vs2 | vs3
     exportador = ExportadorCSV(votacoes)
     exportador.exportar_csv()
 
