@@ -127,8 +127,7 @@ class JsonAnaliseGenerator:
         dict_cp = {}
         try:
             theta = round(ap.theta, 0) % 180 + 90 * idx
-        except AttributeError, error:
-            logger.error("AttributeError: %s" % error)
+        except AttributeError:
             theta = 0
         try:
             var_explicada = round(
