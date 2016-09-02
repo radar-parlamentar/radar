@@ -18,6 +18,7 @@
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals
+from django.utils.dateparse import parse_datetime
 from . import models
 import json
 
@@ -34,8 +35,14 @@ def get_json_proposicao(proposicao):
 
 
 def get_votacoes_serial(votacoes):
+    fields = ['id_vot'] # TODO
     votacoes_serial = []
-    # TODO...
+    for votacao in votacoes:
+        votacao_serial = {}
+        votacao_serial['data'] = parse_datetime('%s' % votacao.data) # isso mesmo?
+        for field in fields:
+            votacao_serial[field] = getattr(votacao, field)
+        votacoes_serial.append(votacao_serial)
     return votacoes_serial
 
 def main():
