@@ -32,9 +32,6 @@ from modelagem.models import ANO, BIENIO, QUADRIENIO
 from analises.analise import AnalisadorPeriodo
 from datetime import datetime
 from operator import itemgetter
-#import logging
-
-#logger = logging.getLogger("radar")
 
 def ordem_dos_parlamentares(proposicao):
     """Recebe um objeto Proposicao, e retorna uma lista de 2-tuplas onde o primeiro

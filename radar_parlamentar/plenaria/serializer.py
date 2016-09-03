@@ -19,10 +19,10 @@
 
 from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
-from . import models
+from modelagem import models
 import json
 
-from analises.ordenacao import ordem_dos_parlamentares
+from ordenacao import ordem_dos_parlamentares
 
 
 class ProposicaoSerializer():

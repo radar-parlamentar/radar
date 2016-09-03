@@ -9,8 +9,8 @@ from django.views.generic.simple import redirect_to
 from django.contrib import admin
 admin.autodiscover()
 
-url_teatro = 'analises/teatro/'
-url_json_teatro = 'analises/json_teatro/'
+url_plenaria = 'analises/plenaria/'
+url_json_plenaria = 'analises/json_plenaria/'
 url_analise = 'analises/analise/'
 url_json_analise = 'analises/json_analise/'
 url_lista = 'analises/lista_de_votacoes_filtradas/'
@@ -87,14 +87,10 @@ urlpatterns = patterns(
         'analises.views.lista_de_votacoes_filtradas'),
 
     # Páginas do Projeto Análise Votações Hackathon 2016
-    url(r'^' + url_teatro + '$',
-        'analises.views.votacoes'),
-    # url(r'^' + url_teatro + casa_legislativa + '$',
-    #     'analises.views.votacao'),
-    url(r'^' + url_teatro + casa_legislativa + cod_proposicao + '$',
-        'analises.views.votacao'),
-    url(r'^' + url_json_teatro + casa_legislativa + cod_proposicao + '$',
-        'analises.views.json_proposicao'),
+    url(r'^' + url_plenaria + '$',
+        'plenaria.views.plenaria'),
+    url(r'^' + url_json_plenaria + casa_legislativa + cod_proposicao + '$',
+        'plenaria.views.json_proposicao'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
