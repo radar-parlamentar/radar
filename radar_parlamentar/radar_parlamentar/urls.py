@@ -9,12 +9,15 @@ from django.views.generic.simple import redirect_to
 from django.contrib import admin
 admin.autodiscover()
 
+url_teatro = 'analises/teatro/'
+url_json_teatro = 'analises/json_teatro/'
 url_analise = 'analises/analise/'
 url_json_analise = 'analises/json_analise/'
 url_lista = 'analises/lista_de_votacoes_filtradas/'
 casa_legislativa = '(?P<nome_curto_casa_legislativa>\w*)/'
 periodicidade = '(?P<periodicidade>\w*)/'
 palavras_chave = '(?P<palavras_chave>.*)/'
+cod_proposicao = '(?P<cod_proposicao>.*)/'
 
 urlpatterns = patterns(
     '',
@@ -82,6 +85,16 @@ urlpatterns = patterns(
         'analises.views.lista_de_votacoes_filtradas'),
     url(r'^' + url_lista + casa_legislativa + periodicidade + palavras_chave + '$',
         'analises.views.lista_de_votacoes_filtradas'),
+
+    # Páginas do Projeto Análise Votações Hackathon 2016
+    url(r'^' + url_teatro + '$',
+        'analises.views.votacoes'),
+    # url(r'^' + url_teatro + casa_legislativa + '$',
+    #     'analises.views.votacao'),
+    url(r'^' + url_teatro + casa_legislativa + cod_proposicao + '$',
+        'analises.views.votacao'),
+    url(r'^' + url_json_teatro + casa_legislativa + cod_proposicao + '$',
+        'analises.views.json_proposicao'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

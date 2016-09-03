@@ -22,33 +22,60 @@ from django.utils.dateparse import parse_datetime
 from . import models
 import json
 
-def get_json_proposicao(proposicao):
-#    fields = ['id_prop', 'sigla', 'numero', 'ano', 'ementa', 'descricao', 'indexacao', 'data_apresentacao', 'situacao']
-    fields = ['id_prop', 'sigla', 'numero', 'ano']
-    proposicao_serial = {}
-    proposicao_serial['nome'] = proposicao.nome()
-    for field in fields:
-        proposicao_serial[field] = getattr(proposicao, field)
-    votacoes = models.Votacao.objects.filter(proposicao=proposicao)
-    proposicao_serial['votacoes'] = get_votacoes_serial(votacoes)
-    return json.dumps(proposicao_serial)
 
+class ProposicaoSerializer():
 
-def get_votacoes_serial(votacoes):
-    fields = ['id_vot'] # TODO
-    votacoes_serial = []
-    for votacao in votacoes:
-        votacao_serial = {}
-        votacao_serial['data'] = parse_datetime('%s' % votacao.data) # isso mesmo?
+    def __init__(self):
+        self.partidos_serial = {}
+
+    def get_json_proposicao(self, proposicao):
+    #    fields = ['id_prop', 'sigla', 'numero', 'ano', 'ementa', 'descricao', 'indexacao', 'data_apresentacao', 'situacao']
+        fields = ['id_prop', 'sigla', 'numero', 'ano', 'descricao', 'ementa']
+        proposicao_serial = {}
+        proposicao_serial['nome'] = proposicao.nome()
         for field in fields:
-            votacao_serial[field] = getattr(votacao, field)
-        votacoes_serial.append(votacao_serial)
-    return votacoes_serial
+            proposicao_serial[field] = getattr(proposicao, field)
+        votacoes = models.Votacao.objects.filter(proposicao=proposicao)
+        proposicao_serial['votacoes'] = self.get_votacoes_serial(votacoes)
+        proposicao_serial['partidos'] = self.partidos_serial
+        return json.dumps(proposicao_serial)
+
+    def get_votacoes_serial(self, votacoes):
+        fields = ['id_vot', 'descricao', 'resultado']  # TODO
+        votacoes_serial = []
+        for votacao in votacoes:
+            votacao_serial = {}
+            votacao_serial['data'] = votacao.data.strftime('%d/%m/%Y')
+            for field in fields:
+                votacao_serial[field] = getattr(votacao, field)
+            votos = votacao.votos()
+            votacao_serial['parlamentares'] = \
+                self.get_parlamentares_serial(votos)
+            votacoes_serial.append(votacao_serial)
+        return votacoes_serial
+
+    def get_parlamentares_serial(self, votos):
+        parlamentares_serial = []
+        for voto in votos:
+            parlamentar_serial = {
+               'voto': voto.opcao,
+               'nome': voto.parlamentar.nome,
+               'id_partido': voto.parlamentar.partido.id,
+            }
+            self.add_in_partidos_serial(voto.parlamentar.partido)
+            parlamentares_serial.append(parlamentar_serial)
+        return parlamentares_serial
+
+    def add_in_partidos_serial(self, partido):
+        self.partidos_serial[partido.id] = {
+            'nome': partido.nome,
+            'numero': partido.numero,
+            'cor': partido.cor
+        }
+
 
 def main():
-    p = models.Proposicao.objects.filter(casa_legislativa__nome_curto='cdep')[147]
+    p = models.Proposicao.objects.filter(casa_legislativa__nome_curto='cmsp')[0]
     json = get_json_proposicao(p)
     print json
- 
-
 

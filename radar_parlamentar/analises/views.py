@@ -22,7 +22,7 @@ from django.template import RequestContext
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from modelagem import models
-from modelagem import utils
+from modelagem import utils, serializer
 from grafico import JsonAnaliseGenerator
 from analise import AnalisadorTemporal
 import datetime
@@ -105,3 +105,32 @@ def lista_de_votacoes_filtradas(request,
                                lista_de_palavras_chave,
                                'votacoes': votacoes,
                                'periodicidade': periodicidade})
+
+
+def votacoes(request):
+    return render_to_response('votacoes.html',
+                              {},
+                              context_instance=RequestContext(request))
+
+
+def votacao(request, nome_curto_casa_legislativa, cod_proposicao):
+    casa_legislativa = \
+        get_object_or_404(models.CasaLegislativa,
+                          nome_curto=nome_curto_casa_legislativa)
+    return render_to_response(
+        'votacao.html',
+        {
+            'casa_legislativa': casa_legislativa,
+            'cod_proposicao': cod_proposicao,
+        },
+        context_instance=RequestContext(request)
+    )
+
+
+def json_proposicao(request, nome_curto_casa_legislativa, cod_proposicao):
+    """Retorna o JSON com os dados de todas as votações de uma proposição."""
+    proposicao = get_object_or_404(
+        models.Proposicao, id=cod_proposicao)
+    proposicao_serializer = serializer.ProposicaoSerializer()
+    dados = proposicao_serializer.get_json_proposicao(proposicao)
+    return HttpResponse(dados, mimetype='application/json')
