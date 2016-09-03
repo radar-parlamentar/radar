@@ -105,10 +105,3 @@ def lista_de_votacoes_filtradas(request,
                                lista_de_palavras_chave,
                                'votacoes': votacoes,
                                'periodicidade': periodicidade})
-
-
-def votacoes(request):
-    return render_to_response('votacoes.html',
-                              {},
-                              context_instance=RequestContext(request))
-
