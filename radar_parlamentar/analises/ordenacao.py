@@ -37,8 +37,8 @@ from operator import itemgetter
 #logger = logging.getLogger("radar")
 
 def ordem_dos_parlamentares(proposicao):
-    """Recebe um objeto Proposicao, e retorna um dicionario onde as chaves são
-    o pk da votação e o valor é uma lista de objetos Parlamentar.
+    """Recebe um objeto Proposicao, e retorna uma lista de 2-tuplas onde o primeiro
+    elemento é uma votação e o segundo é uma lista de objetos Parlamentar.
     A lista conterá os parlamentares que possuem Voto na Votacao.
     A lista estará ordenada conforme o seguinte critério:
       1o. Por partido, sendo que a ordem dos partidos deverá vir da primeira
@@ -50,8 +50,8 @@ def ordem_dos_parlamentares(proposicao):
       4o. Parlamentar que votou mais primeiro.
       5o. Ordem alfabética de parlamentar.
     """
-    retorno = {}
-    votacs = Votacao.objects.filter(proposicao=proposicao)
+    retorno = []
+    votacs = Votacao.objects.filter(proposicao=proposicao).order_by('data')
     casa = proposicao.casa_legislativa
     datas_votacoes = [votac.data for votac in votacs]
     pr = utils.PeriodosRetriever(casa_legislativa = casa,
@@ -66,9 +66,9 @@ def ordem_dos_parlamentares(proposicao):
     dicionario_votantes = ordenar_votantes(proposicao) # parlamtr -> (partido,int (qtas votou))
 
     for votacao in votacs:
-        retorno[votacao.pk] = ordem_dos_parl_por_votacao(votacao,
-                                                         dicionario_votantes,
-                                                         lista_ordenada_partidos)
+        retorno.append((votacao,ordem_dos_parl_por_votacao(votacao,
+                                                           dicionario_votantes,
+                                                           lista_ordenada_partidos)))
     return retorno
 
 def ordem_dos_parl_por_votacao(votacao, dicionario_votantes, lista_ordenada_partidos):
