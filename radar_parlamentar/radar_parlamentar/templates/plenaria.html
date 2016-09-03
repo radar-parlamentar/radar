@@ -1,0 +1,178 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Radar Parlamentar - {{casa_legislativa.nome}}
+{% endblock title %}
+
+{% block extrascripts %}
+    <link rel="stylesheet" href="/static/files/codes/css/radar_d3_graph.css" type="text/css" />
+{% endblock extrascripts %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block headerImgClass %}
+    about
+{% endblock headerImgClass %}
+
+{% block nomepagina %}
+    Radar Parlamentar
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Entenda visualmente afinidades de partidos e parlamentares.
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}
+    <li><a href="/index/">Home</a> &raquo;</li>
+    <li><a href="/analises/">Gráficos</a> &raquo;</li>
+    <li><a href="/analises/analise/{{casa_legislativa.nome_curto}}">{{casa_legislativa.nome}}</a></li>
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <h3>{{casa_legislativa.nome}}</h3>
+    <h3>{{nome_pl}}</h3>
+    <article id="descricao" class="inwrap">
+        Total de votações existentes nesta casa legislativa: <b>{{num_votacao}} </b> 
+        <br/><br/>
+        <div id="total_votacoes_filtradas_div" style="display:none">
+          <b><span id="total_votacoes_filtradas"></span></b> votações encontradas usando filtro <b>"{{palavras_chave}}"</b>.  
+                <span id="veja_as_votacoes"><a href="/analises/lista_de_votacoes_filtradas/{{casa_legislativa.nome_curto}}/{{periodicidade}}/{{palavras_chave}}" target="_blank">Veja as votações!</a></span>
+
+        <br/><br/>
+        </div>
+
+        <div style="width: 15%">
+            <p style="background: none;border: none; color: #1292db; font-weight:bold;cursor:pointer; font-size: 15px;" 
+            onmouseover="this.style.color='#555';"
+            onmouseout="this.style.color='#1292db';" 
+            onclick="mostrarBuscaAvancada();" 
+            id="botao_busca_avancada">  &rarr; Análise Avançada</p>
+        </div>
+
+        <form style="display: none;" id="formAnalise" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
+            <p><label for="periodicidade">Periodicidade:</label>
+            <select id="periodicidade" name="periodicidade">
+                <option value="QUADRIENIO">Quadriênio</option>
+                <option value="BIENIO">Biênio</option>
+                <option value="ANO">Ano</option>
+                <option value="SEMESTRE">Semestre</option>
+                <!-- <option value="MES">Mês</option> Issue #193 -->
+            </select>
+            </p>
+            
+            <p><label for="palavras_chave">Filtrar votações por temas:</label>
+            Separe as palavras-chaves por vírgula.<br>
+            <input type="text" id="palavras_chave" name ="palavras_chave" size="30" placeholder="saúde, educação">
+
+            <!-- REVIEW: Campo referente a issue 272 "Encontrar Parlamentar"
+                Mais informações podem ser encontradas em https://github.com/radar-parlamentar/radar/issues/272
+                Descomente para dar continuidade a feature -->
+            <!--
+            <label for="encontrar_parlamentar"> Encontrar Parlamentar: </label>
+            <input type="text" id="nome_parlamentar" name ="nome_parlamentar" size="30" placeholder="Ricardo Teixeira"><br>
+            -->
+            </p>
+            <input type="submit" value="Buscar">
+        </form> 
+
+        <!-- Popup windows content -->
+        <div id="popup-content">
+            <div class="row">
+                <h3>Clique nos partidos para expandi-los e veja a proximidade entre os parlamentares.</h3>
+                <div id="modal-content">
+                    <img id="recolhido" src="/static/assets/recolhido.png">
+                    <img id="expandido" src="/static/assets/expandido.png">
+                    <input id="modal-close-button" type="button" value="OK! ENTENDI"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overlay background -->
+        <div = id="overlay-bg"></div>
+
+        <!-- end popup windows content -->
+
+        <br><br>
+        <aside id="legenda" class="list" style="width:300px">
+            <p align="left"><b>LEGENDA</b></p>
+            <ul class="legend">
+            </ul>
+        </aside>
+        <div style="width:700px" id="graficopca">
+        <figure id="animacao"><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
+        </div>
+        <aside id="como-funciona" style="margin: 0 90px 10px 20px; padding: 10px; background-color: rgba(220,220,220,0.7); -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">
+            <h4>Entenda o gráfico</h4>
+            <p>Quanto mais próximos dois parlamentares ou partidos, mais parecidos foram seus votos em plenário no período.</br>
+            O centro da circunferência de um partido é o "centróide" de seus parlamentares.</br>
+            Os eixos não possuem significados, apenas as distâncias entre as circunferêcnias.</br>
+            A animação entre dois períodos é só um efeito bacana, o que vale é a "foto" de cada período.</br>
+            A movimentação de um parlamentar ao longo do tempo em relação ao plano de fundo não possue significado,
+            o que vale é a sua distância em relação aos outros parlamentares.</br>
+            Para criar o gráfico, os dados de votações nominais foram tratados através de análises de Componentes Principais.</br>
+            Para saber mais, veja a <a href="https://github.com/radar-parlamentar/radar/raw/a4fd865edfb5b36aebd56070a42f72d8d3551a17/doc/radar_parlamentar.pdf">documentação</a>.  
+            </p>
+        </aside>
+        
+    </article>
+        <div style="clear:right"/>
+{% endblock content %}
+
+{% block extrajsend %}
+    {% if request.get_host == '127.0.0.1:8000' or request.get_host == 'localhost:8000' %}
+        <script src="/static/files/codes/js/d3.min.js"></script>
+        <script src="/static/files/codes/js/d3-tip.js"></script>
+    {% else %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js"></script>
+        <script src="/static/files/codes/js/d3-tip.js"></script>
+        <script type="text/javascript">
+          if (typeof d3 === 'undefined') {
+            var e = document.createElement('script');
+                e.src = '/static/files/codes/js/d3.min.js';
+                e.type='text/javascript';
+            document.getElementsByTagName("head")[0].appendChild(e);
+          }
+        </script>
+    {% endif %}
+    <script src="/static/files/codes/js/plenaria.js"></script>
+    <script type="text/javascript">
+        function mostrarBuscaAvancada(){
+            var visibilidade = document.getElementById("formAnalise").style.display;
+            if(visibilidade == 'none'){
+                document.getElementById("formAnalise").style.display = 'block';
+                document.getElementById("botao_busca_avancada").innerHTML = "&darr; Análise Avançada";
+            }else{
+                document.getElementById("formAnalise").style.display = 'none';
+                document.getElementById("botao_busca_avancada").innerHTML = "&rarr; Análise Avançada";
+            } 
+        }
+
+    </script>
+{% endblock extrajsend %}
+
+{% block extrascriptsend %}
+    var campo_select = document.getElementById("periodicidade");
+    for(var i=0; i < campo_select.options.length; i++) {
+        if(campo_select.options[i].value == '{{periodicidade}}') {
+            campo_select.selectedIndex = i;
+        }
+    }
+
+    var palavras_chave = document.getElementById("palavras_chave");
+    palavras_chave.value = '{{palavras_chave}}';
+
+     url = window.location.href;
+     var pagina_recarregada = url.indexOf("periodicidade");
+
+    if (pagina_recarregada != -1){
+        mostrarBuscaAvancada();
+    }
+    
+    menuActive("analises");
+  $(document).ready(function() {
+    Plot.initialize('{{casa_legislativa.nome_curto}}', '{{cod_proposicao}}')
+
+  });
+{% endblock extrascriptsend %}

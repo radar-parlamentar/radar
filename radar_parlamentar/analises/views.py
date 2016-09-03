@@ -107,18 +107,12 @@ def lista_de_votacoes_filtradas(request,
                                'periodicidade': periodicidade})
 
 
-def votacoes(request):
-    return render_to_response('votacoes.html',
-                              {},
-                              context_instance=RequestContext(request))
-
-
 def votacao(request, nome_curto_casa_legislativa, cod_proposicao):
     casa_legislativa = \
         get_object_or_404(models.CasaLegislativa,
                           nome_curto=nome_curto_casa_legislativa)
     return render_to_response(
-        'votacao.html',
+        'plenaria.html',
         {
             'casa_legislativa': casa_legislativa,
             'cod_proposicao': cod_proposicao,
