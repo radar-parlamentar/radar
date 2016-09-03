@@ -24,6 +24,8 @@ lib/
 local/
 activate/
 build/
+venv/
+env/
 
 # Sonar config files
 radar_parlamentar/.coverage
