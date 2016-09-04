@@ -15,7 +15,7 @@ def plenaria(request, nome_curto_casa_legislativa=None, id_proposicao=None):
             nome_curto=nome_curto_casa_legislativa
         )
         proposicoes = [
-            (prop.id, prop.nome())
+            (str(prop.id), prop.nome())
             for prop in models.Proposicao.objects.filter(
                 casa_legislativa__nome_curto=nome_curto_casa_legislativa
             )

@@ -38,7 +38,7 @@
     <form id="formProposicao" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
         <p>
             <label for="casa_legislativa">Casa Legislativa:</label>
-            <select id="casa_legislativa" name="casa_legislativa" onchange="alert('aaaaaa')">
+            <select id="casa_legislativa" name="casa_legislativa" onchange="route()">
                 {% for nome_curto, nome_longo in casas_legislativas %}
                     <option value="{{nome_curto}}">{{nome_longo}}</option>
                 {% endfor %}
@@ -49,7 +49,9 @@
                 <label for="proposicao">Proposição:</label>
                 <select id="proposicao" name="proposicao" onchange="route()">
                     {% for id, nome in proposicoes %}
-                        <option value="{{id}}">{{nome}}</option>
+                        <option value="{{id}}" {% if id == id_proposicao %} selected{% endif %}>
+                            {{nome}}
+                        </option>
                     {% endfor %}
                 </select>
             {% endif %}
