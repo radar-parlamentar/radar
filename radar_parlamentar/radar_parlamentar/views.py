@@ -157,6 +157,7 @@ def dados_utilizados(request):
         arquivo = False
         return render_to_response('dados_utilizados.html', {'_arquivo_dump': arquivo})
 
+
 def generate_blog_news(request):
     number_of_news = 10
     dictionary = DictionaryBlogGenerator.create_dict_blog()
