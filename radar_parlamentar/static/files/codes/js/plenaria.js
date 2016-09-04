@@ -67,6 +67,9 @@ Plot = (function ($) {
         $("#controle").empty();
         $("#graficoplenaria").empty();
 
+        // Inicialmente remove o spinner de loading
+        $("#loading").remove();
+        document.getElementById('graficoplenaria').scrollIntoView()
         idx_votacao = get_idx_votacao();
 
         document.getElementById('casa_legislativa').scrollIntoView()
@@ -76,6 +79,15 @@ Plot = (function ($) {
             votacao = dado.votacoes[idx_votacao-1],
             parlamentares = votacao.parlamentares;
 
+
+        $('#prop_ementa').html(dado.ementa)
+        $('#votacao_data').html(votacao.data)
+        $('#prop_descr').html(dado.descricao)
+        $('#votacao_descr').html(votacao.descricao)
+        $('#votacao_resultado').html(votacao.resultado)
+
+        len_votacoes = dado.votacoes.length;
+
         var width = 550;
         var height = 300;
 
@@ -84,7 +96,7 @@ Plot = (function ($) {
           .attr("height", height)
           .append("g")
           .attr("transform", "translate(280,270)");
- 
+
         var parlamentares_por_raio = 2,
             raios = [],
             total_de_raios = Math.ceil(parlamentares.length/parlamentares_por_raio);
