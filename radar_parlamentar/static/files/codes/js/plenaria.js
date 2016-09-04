@@ -73,16 +73,47 @@ Plot = (function ($) {
             .selectAll("circle")
                 .data(function(raio){return raio.lista_de_parlamentares})
                 .enter().append("circle")
-                .attr("cx", function(parlamentar, i){ return escala(i);})
-                .attr("r", 5.5) //TODO: Criar uma função para escalar a bolinha proporcionalmente ao número de parlamentares
-                .attr("fill", function(parlamentar){ return partidos[parlamentar.id_partido].cor; })
+                .attr("cx", function(parlamentar, i){
+                    return escala(i);
+                }).attr("r", 5.5) //TODO: Criar uma função para escalar a bolinha proporcionalmente ao número de parlamentares
+                .attr("fill", function(parlamentar){
+                    return partidos[parlamentar.id_partido].cor;
+                }).attr("fill-opacity", 1)
+                .attr("stroke", "#000")
                 .attr("stroke-width", 0)
-                .attr("id", function(parlamentar){return parlamentar.nome;})
-                .attr("data-partido", function(parlamentar){ return partidos[parlamentar.id_partido].nome; })
-                .attr("alt", function(parlamentar){ return parlamentar.nome + " - " + partidos[parlamentar.id_partido].nome; })
-                .attr("title", function(parlamentar){ return parlamentar.nome + " - " + partidos[parlamentar.id_partido].nome; })
-                .attr("data-voto", function(parlamentar){ return parlamentar.voto; })
-                .attr("data-cor-partido", function(parlamentar){ return partidos[parlamentar.id_partido].cor; });
+                .attr("id", function(parlamentar){
+                    return parlamentar.nome;
+                }).attr("data-partido", function(parlamentar){
+                    return partidos[parlamentar.id_partido].nome;
+                }).attr("alt", function(parlamentar){
+                    return parlamentar.nome + " - " + partidos[parlamentar.id_partido].nome;
+                }).attr("title", function(parlamentar){
+                    return parlamentar.nome + " - " + partidos[parlamentar.id_partido].nome;
+                }).attr('data-destacado', 0)
+                .attr("data-voto", function(parlamentar){
+                    return parlamentar.voto;
+                }).attr("data-cor-partido", function(parlamentar){
+                    return partidos[parlamentar.id_partido].cor;
+                }).on('click', function(d){
+                    if (d3.select(this).attr("data-destacado") == 1){
+                        d3.selectAll('circle')
+                          .attr('data-destacado', 0)
+                          .attr('fill-opacity', 1)
+                          .attr('stroke-width', 0);
+                    } else {
+                        d3.selectAll('circle')
+                          .attr('data-destacado', function(c) { return c.nome==d.nome ? 1 : 0 })
+                          .attr('fill-opacity', function(c) { return c.nome==d.nome ? 1 : 0.2 })
+                          .attr('stroke-width', function(c) { return c.nome==d.nome ? 1 : 0 });
+
+                        msg = 'Nome: ' + d.nome + '\n';
+                        msg = msg + 'Partido: ' + partidos[d.id_partido].nome;
+                        msg = msg + ' ('+ partidos[d.id_partido].numero +')\n';
+                        msg = msg + 'Voto: ' + d.voto;
+                        // TODO: Enviar este conteúdo para uma div apresentável ....
+                        console.log(msg);
+                    }
+                });
     }
 
     function get_idx_votacao() {
