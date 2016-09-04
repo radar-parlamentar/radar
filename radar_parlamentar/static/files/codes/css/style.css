@@ -3827,3 +3827,16 @@ port+.pager{margin-top: 40px;}
 #linkLei {
     text-align: center;
 }
+
+/* PLENARIA */
+.aside_votacao {
+    display: flex; /* or inline-flex */
+}
+
+.votoParlamentar {
+
+}
+
+.filtroVotosVotacao {
+
+}

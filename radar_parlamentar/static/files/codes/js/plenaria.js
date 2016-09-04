@@ -96,23 +96,26 @@ Plot = (function ($) {
                 }).attr("data-cor-partido", function(parlamentar){
                     return partidos[parlamentar.id_partido].cor;
                 }).on('click', function(d){
+                    var div = $("#detalheParlamentar");
                     if (d3.select(this).attr("data-destacado") == 1){
                         d3.selectAll('circle')
                           .attr('data-destacado', 0)
+                          .attr("fill", function(c){ return partidos[c.id_partido].cor; })
                           .attr('fill-opacity', 1)
                           .attr('stroke-width', 0);
+                        div.empty();
                     } else {
                         d3.selectAll('circle')
                           .attr('data-destacado', function(c) { return c.nome==d.nome ? 1 : 0 })
+                          .attr("fill", function(c){ return partidos[c.id_partido].cor; })
                           .attr('fill-opacity', function(c) { return c.nome==d.nome ? 1 : 0.2 })
                           .attr('stroke-width', function(c) { return c.nome==d.nome ? 1 : 0 });
 
-                        msg = 'Nome: ' + d.nome + '\n';
-                        msg = msg + 'Partido: ' + partidos[d.id_partido].nome;
-                        msg = msg + ' ('+ partidos[d.id_partido].numero +')\n';
-                        msg = msg + 'Voto: ' + d.voto;
-                        // TODO: Enviar este conteúdo para uma div apresentável ....
-                        console.log(msg);
+                        div.empty();
+                        div.append('<p><b>Nome: </b>' + d.nome + '</p>')
+                        div.append('<p><b>Partido: </b>' + partidos[d.id_partido].nome +
+                                   ' ('+ partidos[d.id_partido].numero +')</p>');
+                        div.append('<p><b>Voto: </b>' + d.voto + '</p>');
                     }
                 });
     }
@@ -131,8 +134,12 @@ Plot = (function ($) {
 })(jQuery);
 
 function destacarVoto(voto){
+    $("#detalheParlamentar").empty();
     d3.selectAll("circle").each(function(d,i){
-        var el = d3.select(this);
+        var el = d3.select(this)
+                   .attr('data-destacado', 0)
+                   .attr('fill-opacity', 1)
+                   .attr('stroke-width', 0);
         if (el.attr("data-voto")==voto) {
             el.attr("fill", el.attr("data-cor-partido"));
         } else {
