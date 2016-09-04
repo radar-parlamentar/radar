@@ -44,7 +44,7 @@ Plot = (function ($) {
 
         var svg = d3.select("#graficoplenaria").append("svg")
           .attr("width", 550)
-          .attr("height", 400)
+          .attr("height", 300)
           .append("g")
           .attr("transform", "translate(280,270)");
 
@@ -71,7 +71,7 @@ Plot = (function ($) {
                 .data(function(raio){return raio.lista_de_parlamentares})
                 .enter().append("circle")
                 .attr("cx", function(parlamentar, i){ return escala(i);})
-                .attr("r", 8.5) //TODO: Criar uma função para escalar a bolinha proporcionalmente ao número de parlamentares
+                .attr("r", 5.5) //TODO: Criar uma função para escalar a bolinha proporcionalmente ao número de parlamentares
                 .attr("fill", function(parlamentar){ return partidos[parlamentar.id_partido].cor; })
                 .attr("stroke-width", 0)
                 .attr("id", function(parlamentar){return parlamentar.nome;})
