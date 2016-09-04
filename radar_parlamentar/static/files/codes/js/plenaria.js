@@ -30,7 +30,9 @@ Plot = (function ($) {
         nome_curto_casa_legislativa = null,
         id_proposicao = null,
         proxima = null,
-        anterior = null;
+        anterior = null,
+        dado = null;
+
 
     // Function to load the data and draw the chart
     function initialize(nome_curto_casa_legislativa_, id_proposicao_) {
@@ -38,34 +40,43 @@ Plot = (function ($) {
         //d3.json("/analises/json_plenaria/cmsp/100", plot_data);
         nome_curto_casa_legislativa = nome_curto_casa_legislativa_; 
         id_proposicao = id_proposicao_;
-        d3.json("/analises/json_plenaria/" + nome_curto_casa_legislativa + "/" + id_proposicao, plot_data);
+        d3.json("/analises/json_plenaria/" + nome_curto_casa_legislativa + "/" + id_proposicao, first_plot);
+    }
+
+    function first_plot(data) {
+        // Inicialmente remove o spinner de loading
+        $("#loading").remove();
+        dado = data;
+        len_votacoes = data.votacoes.length;
+        plot_data();
     }
 
     // Function that draws the chart
-    function plot_data(data) {
+    function plot_data() {
+
+        $("#controle").empty();
+        $("#graficoplenaria").empty();
 
         // Inicialmente remove o spinner de loading
         $("#loading").remove();
         document.getElementById('graficoplenaria').scrollIntoView()
+        idx_votacao = get_idx_votacao();
 
-        idx_votacao = get_idx_votacao()
+        document.getElementById('casa_legislativa').scrollIntoView()
         $( "#votacao" ).text(idx_votacao + 'ª votação');
 
-        var dado = data,
-            partidos = data.partidos,
-            votacao = data.votacoes[idx_votacao-1],
+        var partidos = dado.partidos,
+            votacao = dado.votacoes[idx_votacao-1],
             parlamentares = votacao.parlamentares;
 
-        console.log(dado)
-        console.log(votacao)
 
-        $('#prop_ementa').html(data.ementa)
+        $('#prop_ementa').html(dado.ementa)
         $('#votacao_data').html(votacao.data)
-        $('#prop_descr').html(data.descricao)
+        $('#prop_descr').html(dado.descricao)
         $('#votacao_descr').html(votacao.descricao)
         $('#votacao_resultado').html(votacao.resultado)
 
-        len_votacoes = data.votacoes.length;
+        len_votacoes = dado.votacoes.length;
 
         var width = 550;
         var height = 300;
@@ -240,7 +251,7 @@ Plot = (function ($) {
     function votacao_anterior_valida() {
         return idx_votacao > 1;
     }
-    
+
     function change_votacao() {
         if(!votacao_anterior_valida()) {
             anterior.classed("invalid", true);
@@ -252,16 +263,10 @@ Plot = (function ($) {
             proxima.classed("invalid", true);
         } else {
             proxima.classed("invalid", false);
-        }    
-    
-        atualiza_grafico();
-    }
+        }
 
-    function atualiza_grafico() {
         window.location.hash = idx_votacao;
-        $("#controle").empty();
-        $("#graficoplenaria").empty();
-        initialize(nome_curto_casa_legislativa, id_proposicao);
+        plot_data();
     }
 
 
