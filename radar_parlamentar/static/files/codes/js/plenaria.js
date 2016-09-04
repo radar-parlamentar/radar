@@ -18,24 +18,43 @@
 
 // Versão para o hackathon 2016
 
-// d3.selection.prototype.moveToFront = function() {
-//   return this.each(function(){
-//     this.parentNode.appendChild(this);
-//   });
-// };
+var Plot = (function ($) {
 
-Plot = (function ($) {
+    function set_column_count(el, n) {
+        ['-webkit-', '-moz-', ''].forEach(function (t){el.css(t+'column-count', n)})
+    }
+
+    function get_cor_parl(dados, parlamentar) {
+        return dados.partidos[parlamentar.id_partido].cor
+    }
+
+    function get_cor_voto(parlamentar, cor_sim) {
+        return parlamentar.voto == 'SIM' ? cor_sim : '#FFF0'
+    }
 
     // Function to load the data and draw the chart
     function initialize(nome_curto_casa_legislativa, cod_proposicao) {
-        d3.json("/analises/json_teatro/" + nome_curto_casa_legislativa + "/" + cod_proposicao, plot_data);
+        d3.json("/analises/json_plenaria/" + nome_curto_casa_legislativa + "/" + cod_proposicao, plot_data);
     }
 
     // Function that draws the chart
     function plot_data(dados) {
         // Inicialmente remove o spinner de loading
         $("#loading").remove();
-        alert(dados.nome)
+        console.log(dados)
+        var parlamentares = dados.votacoes[0].parlamentares
+        parlamentares.forEach(function (parlamentar){
+            var cor = get_cor_parl(dados, parlamentar)
+            var cor_voto = get_cor_voto(parlamentar, cor)
+            var partido = dados.partidos[parlamentar.id_partido].nome
+            $('#teatro').append('<div class="parlamentar tooltip" style="background-color:' + cor_voto + ';border: 5px solid '+ cor +';">' + parlamentar.nome[0] + '<span class="tooltiptext">' + parlamentar.nome + ' (' + partido + ')</span></div>')
+        })
+
+        var parl_count = parlamentares.length
+        var num_col = Math.ceil((parl_count*1.68)**0.5)
+        set_column_count($('#teatro'), num_col )
+
+
     }
 
     return {

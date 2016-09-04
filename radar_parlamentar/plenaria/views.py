@@ -13,14 +13,13 @@ def plenaria(request, nome_curto_casa_legislativa, cod_proposicao):
         get_object_or_404(models.CasaLegislativa,
                           nome_curto=nome_curto_casa_legislativa)
     return render_to_response(
-        'votacao.html',
+        'plenaria.html',
         {
             'casa_legislativa': casa_legislativa,
             'cod_proposicao': cod_proposicao,
         },
         context_instance=RequestContext(request)
     )
-
 
 
 def json_proposicao(request, nome_curto_casa_legislativa, cod_proposicao):

@@ -87,7 +87,7 @@ urlpatterns = patterns(
         'analises.views.lista_de_votacoes_filtradas'),
 
     # Páginas do Projeto Análise Votações Hackathon 2016
-    url(r'^' + url_plenaria + '$',
+    url(r'^' + url_plenaria + casa_legislativa + cod_proposicao + '$',
         'plenaria.views.plenaria'),
     url(r'^' + url_json_plenaria + casa_legislativa + cod_proposicao + '$',
         'plenaria.views.json_proposicao'),
