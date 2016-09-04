@@ -44,8 +44,8 @@ Plot = (function ($) {
     // Function that draws the chart
     function plot_data(data) {
 
-       // Inicialmente remove o spinner de loading
-       $("#loading").remove();
+        // Inicialmente remove o spinner de loading
+        $("#loading").remove();
         document.getElementById('graficoplenaria').scrollIntoView()
 
         idx_votacao = get_idx_votacao()
@@ -55,6 +55,15 @@ Plot = (function ($) {
             partidos = data.partidos,
             votacao = data.votacoes[idx_votacao-1],
             parlamentares = votacao.parlamentares;
+
+        console.log(dado)
+        console.log(votacao)
+
+        $('#prop_ementa').html(data.ementa)
+        $('#votacao_data').html(votacao.data)
+        $('#prop_descr').html(data.descricao)
+        $('#votacao_descr').html(votacao.descricao)
+        $('#votacao_resultado').html(votacao.resultado)
 
         len_votacoes = data.votacoes.length;
 
@@ -72,14 +81,14 @@ Plot = (function ($) {
           .attr("height", height)
           .append("g")
           .attr("transform", "translate(280,270)");
- 
+
         anterior = grupo_controle.append("image")
             .attr("xlink:href", "/static/assets/arrow_left.svg")
             .attr("id", "proxima")
             .attr("class", "previous")
             .attr("width", controle_height)
             .attr("height", controle_height);
-              
+
         proxima = grupo_controle.append("image")
             .attr("xlink:href", "/static/assets/arrow_right.svg")
             .attr("id", "anterior")
@@ -196,7 +205,7 @@ Plot = (function ($) {
     }
 
     function mouseover_previous() {
-        if (votacao_anterior_valida()) { 
+        if (votacao_anterior_valida()) {
 			anterior.classed("active", true);
             anterior.transition()
                 .attr("xlink:href", "/static/assets/arrow_left_focused.svg")
@@ -206,28 +215,28 @@ Plot = (function ($) {
     function mouseout_previous() {
         anterior.classed("active", false);
         anterior.transition()
-            .attr("xlink:href", "/static/assets/arrow_left.svg")            
+            .attr("xlink:href", "/static/assets/arrow_left.svg")
     }
 
 
     function proxima_votacao() {
-        if (proxima_votacao_valida()) { 
+        if (proxima_votacao_valida()) {
             idx_votacao = idx_votacao + 1
-            change_votacao();     
+            change_votacao();
         }
     }
 
     function votacao_anterior() {
         if (votacao_anterior_valida()) {
             idx_votacao = idx_votacao - 1
-            change_votacao();   
+            change_votacao();
         }
     }
-    
+
     function proxima_votacao_valida() {
         return idx_votacao < len_votacoes;
     }
-    
+
     function votacao_anterior_valida() {
         return idx_votacao > 1;
     }
