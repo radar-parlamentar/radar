@@ -23,7 +23,6 @@
 //     this.parentNode.appendChild(this);
 //   });
 // };
-
 Plot = (function ($) {
     // Function to load the data and draw the chart
     function initialize(nome_curto_casa_legislativa, id_proposicao) {
@@ -74,11 +73,13 @@ Plot = (function ($) {
                 .attr("cx", function(parlamentar, i){ return escala(i);})
                 .attr("r", 8.5) //TODO: Criar uma função para escalar a bolinha proporcionalmente ao número de parlamentares
                 .attr("fill", function(parlamentar){ return partidos[parlamentar.id_partido].cor; })
-                .attr("stroke", "black")
+                .attr("stroke-width", 0)
                 .attr("id", function(parlamentar){return parlamentar.nome;})
                 .attr("data-partido", function(parlamentar){ return partidos[parlamentar.id_partido].nome; })
                 .attr("alt", function(parlamentar){ return parlamentar.nome + " - " + partidos[parlamentar.id_partido].nome; })
-                .attr("title", function(parlamentar){ return parlamentar.nome + " - " + partidos[parlamentar.id_partido].nome; });
+                .attr("title", function(parlamentar){ return parlamentar.nome + " - " + partidos[parlamentar.id_partido].nome; })
+                .attr("data-voto", function(parlamentar){ return parlamentar.voto; })
+                .attr("data-cor-partido", function(parlamentar){ return partidos[parlamentar.id_partido].cor; });
     }
 
     return {
