@@ -81,10 +81,10 @@ Plot = (function ($) {
 
 
         $('#prop_ementa').html(dado.ementa)
-        $('#votacao_data').html(votacao.data)
         $('#prop_descr').html(dado.descricao)
-        $('#votacao_descr').html(votacao.descricao)
-        $('#votacao_resultado').html(votacao.resultado)
+        $('#votacao_data').html('Data: ' + votacao.data)
+        $('#votacao_descr').html('Descrição: ' + votacao.descricao)
+        $('#votacao_resultado').html('Resultado: ' + votacao.resultado)
 
         len_votacoes = dado.votacoes.length;
 
