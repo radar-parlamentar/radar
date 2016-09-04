@@ -53,10 +53,13 @@ Plot = (function ($) {
         $(dado.votacoes).each(function(idx) {
             jQuery("<input/>", {
                 type: "button",
+                name: 'votacao-'+ idx,
+                class: "botao escolhe-votacao",
                 value: (idx+1) + "ª votação",
-                onClick: "window.location.hash = " + (idx+1) + "; window.plot_data();"
+                onClick: "window.location.hash = " + (idx+1) + "; window.plot_data(); atualiza_botao_votacao(this);"
             }).appendTo('#votacoes');
         });
+        $('[name="votacao-0"]').addClass('ativado');
 
         plot_data();
     }
@@ -179,6 +182,11 @@ Plot = (function ($) {
         initialize: initialize
     };
 })(jQuery);
+
+function atualiza_botao_votacao(el){
+    $(".escolhe-votacao").removeClass("ativado");
+    $(el).addClass("ativado");
+}
 
 function destacarVoto(voto){
     // Limpa dados de um votante específico
