@@ -52,13 +52,14 @@ class ProposicaoSerializer():
         '''
         Recebe votações ordenadas e retorna JSON das votações.
         '''
-        fields = ['id_vot', 'descricao', 'resultado']  # TODO
+        fields = ['id_vot', 'descricao']  # TODO
         votacoes_serial = []
         for votacao, parlamentares in votacoes:
             votacao_serial = {}
             votacao_serial['data'] = votacao.data.strftime('%d/%m/%Y')
             for field in fields:
                 votacao_serial[field] = getattr(votacao, field)
+            votacao_serial['resultado'] = self.formatar_resultado(votacao.resultado)
             votacao_serial['parlamentares'] = self.get_parlamentares_serial(
                 parlamentares,
                 self.get_votos_parlamentares(votacao))
@@ -80,6 +81,16 @@ class ProposicaoSerializer():
             self.add_in_partidos_serial(parlamentar.partido)
             parlamentares_serial.append(parlamentar_serial)
         return parlamentares_serial
+
+    def formatar_resultado(self, resultado):
+        '''
+        Padroniza parte dos valores de resultado.
+        '''
+        tratamentos = {
+            'A': 'aprovado',
+            'R': 'reprovado',
+        }
+        return tratamentos.get(resultado, resultado)
 
     def get_votos_parlamentares(self, votacao):
         '''
