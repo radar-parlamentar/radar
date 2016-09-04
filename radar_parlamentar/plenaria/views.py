@@ -9,6 +9,9 @@ from . import serializer
 
 def plenaria(request, nome_curto_casa_legislativa=None, id_proposicao=None):
     proposicoes = []
+    if not nome_curto_casa_legislativa:
+        nome_curto_casa_legislativa = 'cmsp'
+
     casas_legislativas = [(casa.nome_curto, casa.nome)
                           for casa in models.CasaLegislativa.objects.all()]
     if nome_curto_casa_legislativa:

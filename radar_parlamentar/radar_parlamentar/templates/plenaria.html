@@ -40,7 +40,10 @@
             <label for="casa-legislativa">Casa Legislativa:</label>
             <select id="casa-legislativa" name="casa-legislativa" onchange="route()">
                 {% for nome_curto, nome_longo in casas_legislativas %}
-                    <option value="{{nome_curto}}" {% if nome_curto == casa_legislativa.nome_curto %} selected{% endif %}>{{nome_longo}}</option>
+                <option value="{{nome_curto}}"
+                        {% if nome_curto == casa_legislativa.nome_curto %} selected{% endif %}>
+                    {{nome_longo}}
+                </option>
                 {% endfor %}
             </select>
         </div>
