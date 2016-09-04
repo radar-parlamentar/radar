@@ -181,13 +181,28 @@ Plot = (function ($) {
 })(jQuery);
 
 function destacarVoto(voto){
+    // Limpa dados de um votante específico
     $("#detalheParlamentar").empty();
+    // Configura os botões
+    if (voto == "TODOS") {
+        $(".filtro-voto").removeClass("ativado");
+        $(this).addClass("ativado");
+    } else {
+        if ($(this).hasClass("ativado")) {
+            $(".filtro-voto").removeClass("ativado");
+            $(".filtro-voto.todos").addClass("ativado");
+        } else {
+            $(".filtro-voto").removeClass("ativado");
+            $(this).addClass("ativado");
+        }
+    }
+    situacao_atual = $(".filtro-voto.ativado").val();
     d3.selectAll("circle").each(function(d,i){
         var el = d3.select(this)
-                   .attr('data-destacado', 0)
-                   .attr('fill-opacity', 1)
-                   .attr('stroke-width', 0);
-        if (el.attr("data-voto")==voto) {
+                   .attr("data-destacado", 0)
+                   .attr("fill-opacity", 1)
+                   .attr("stroke-width", 0);
+        if (el.attr("data-voto")==voto || voto=="TODOS" || situacao_atual=="TODOS") {
             el.attr("fill", el.attr("data-cor-partido"));
         } else {
             el.attr("fill", "#ccc");
