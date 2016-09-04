@@ -45,7 +45,7 @@
             </select>
         </div>
         {% if casa_legislativa %}
-            <div>
+            <div class="container_flex">
                 <div>
                     <label for="proposicao">Proposição:</label>
                     <select id="proposicao" name="proposicao" onchange="route()">
@@ -56,7 +56,9 @@
                         {% endfor %}
                     </select>
                 </div>
+                <div class='myflex-spacer'></div>
                 <div>
+                    <label for="votacoes">Votações:</label>
                     <div id="votacoes"></div>
                 </div>
             </div>
@@ -74,20 +76,23 @@
         <article id="descricao" class="inwrap">
             <div style="width:700px" id="graficoplenaria"></div>
         </article>
-        <aside class='aside_votacao'>
-            <div class='votoParlamentar' style='flex-grow: 1;'>
+        <aside class='container_flex'>
+            <div class='filtrosVotosVotacao'>
+                <h3> Filtros </h3>
+                <ul>
+                    <li><input type="button" class="filtro-voto botao" onClick="destacarVoto('SIM')" name="VotoSim", value="Voto Sim"></button></li>
+                    <li><input type="button" class="filtro-voto botao" onClick="destacarVoto('NAO')" name="VotoNão", value="Voto Não"></button></li>
+                    <li><input type="button" class="filtro-voto botao" onClick="destacarVoto('ABSTENCAO')" name="Abstenção", value="Abstenção"></button></li>
+                    <li><input type="button" class="filtro-voto botao todos ativado" onClick="destacarVoto('TODOS')" name="Todos", value="Todos"></button></li>
+                </ul>
+            </div>
+            <div class='myflex-spacer'></div>
+            <div class='votoParlamentar'>
                 <h3>Parlamentar</h3>
                 <div id='detalheParlamentar'></div>
             </div>
-            <div class='filtrosVotosVotacao' style='flex-grow: 2;'>
-                <h3> Filtros </h3>
-                <ul>
-                    <li><input type="button" onClick="destacarVoto('SIM')" name="VotoSim", value="Voto Sim"></button></li>
-                    <li><input type="button" onClick="destacarVoto('NAO')" name="VotoNão", value="Voto Não"></button></li>
-                    <li><input type="button" onClick="destacarVoto('ABSTENCAO')" name="Abstenção", value="Abstenção"></button></li>
-                </ul>
-            </div>
         </aside>
+        <p>Atenção: o significado político de cada opção (sim e não) pode não ser facilmente inferível a partir das descrições apresentadas.</p>
     {% endif %}
     <div style="clear:right"/>
 {% endblock content %}
