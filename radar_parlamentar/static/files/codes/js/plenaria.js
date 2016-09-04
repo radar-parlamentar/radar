@@ -62,7 +62,7 @@ function plot_data(data) {
 
     var parlamentares_por_raio = 2,
         raios = [],
-        total_de_raios = 13;
+        total_de_raios = Math.ceil(parlamentares.length/parlamentares_por_raio);
 
     for(i=0; i<total_de_raios; i++) {
         raios.push({'angulo': -i*180/( total_de_raios - 1), 'nome': i,
