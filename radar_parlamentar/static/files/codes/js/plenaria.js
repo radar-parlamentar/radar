@@ -78,12 +78,6 @@ Plot = (function ($) {
 
         var width = 550;
         var height = 300;
-        var controle_height = 100;
-
-        var grupo_controle = d3.select("#controle").append("svg")
-            .attr("width", width)
-            .attr("height", controle_height)
-            .append("g");
 
         var svg = d3.select("#graficoplenaria").append("svg")
           .attr("width", width)
@@ -91,24 +85,6 @@ Plot = (function ($) {
           .append("g")
           .attr("transform", "translate(280,270)");
  
-        anterior = grupo_controle.append("image")
-            .attr("xlink:href", "/static/assets/arrow_left.svg")
-            .attr("id", "proxima")
-            .attr("class", "previous")
-            .attr("width", controle_height)
-            .attr("height", controle_height);
-              
-        proxima = grupo_controle.append("image")
-            .attr("xlink:href", "/static/assets/arrow_right.svg")
-            .attr("id", "anterior")
-            .attr("class", "next")
-            .attr("x", width - controle_height)
-            .attr("width", controle_height)
-            .attr("height", controle_height);
-
-        configure_proxima();
-        configure_anterior();
-
         var parlamentares_por_raio = 2,
             raios = [],
             total_de_raios = Math.ceil(parlamentares.length/parlamentares_por_raio);
@@ -186,89 +162,6 @@ Plot = (function ($) {
         }
         return parseInt(idx_votacao);
     }
-
-    function configure_proxima() {
-        proxima
-            .on("mouseover", mouseover_next)
-            .on("mouseout", mouseout_next)
-            .on("click", proxima_votacao);
-    }
-
-    function configure_anterior() {
-        anterior
-            .on("mouseover", mouseover_previous)
-            .on("mouseout", mouseout_previous)
-            .on("click", votacao_anterior);
-    }
-
-    function mouseover_next() {
-        if (proxima_votacao_valida()) {
-            proxima.classed("active", true);
-            proxima.transition()
-                .attr("xlink:href", "/static/assets/arrow_right_focused.svg")
-        }
-    }
-
-    function mouseout_next() {
-        proxima.classed("active", false);
-        proxima.transition()
-            .attr("xlink:href", "/static/assets/arrow_right.svg")
-    }
-
-    function mouseover_previous() {
-        if (votacao_anterior_valida()) { 
-			anterior.classed("active", true);
-            anterior.transition()
-                .attr("xlink:href", "/static/assets/arrow_left_focused.svg")
-        }
-    }
-
-    function mouseout_previous() {
-        anterior.classed("active", false);
-        anterior.transition()
-            .attr("xlink:href", "/static/assets/arrow_left.svg")            
-    }
-
-
-    function proxima_votacao() {
-        if (proxima_votacao_valida()) { 
-            idx_votacao = idx_votacao + 1
-            change_votacao();     
-        }
-    }
-
-    function votacao_anterior() {
-        if (votacao_anterior_valida()) {
-            idx_votacao = idx_votacao - 1
-            change_votacao();   
-        }
-    }
-    
-    function proxima_votacao_valida() {
-        return idx_votacao < len_votacoes;
-    }
-    
-    function votacao_anterior_valida() {
-        return idx_votacao > 1;
-    }
-    
-    function change_votacao() {
-        if(!votacao_anterior_valida()) {
-            anterior.classed("invalid", true);
-        } else {
-            anterior.classed("invalid", false);
-        }
-
-        if(!proxima_votacao_valida()) {
-            proxima.classed("invalid", true);
-        } else {
-            proxima.classed("invalid", false);
-        }    
-    
-        window.location.hash = idx_votacao;
-        plot_data();
-    }
-
 
     return {
         initialize: initialize
