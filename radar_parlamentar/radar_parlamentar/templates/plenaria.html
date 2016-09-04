@@ -36,7 +36,7 @@
     <h1>Plenárias</h1>
 
     <form id="formProposicao" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
-        <div>
+        <div class="com-margem">
             <label for="casa-legislativa">Casa Legislativa:</label>
             <select id="casa-legislativa" name="casa-legislativa" onchange="route()">
                 {% for nome_curto, nome_longo in casas_legislativas %}
@@ -46,7 +46,7 @@
         </div>
         {% if casa_legislativa %}
             <div class="container_flex">
-                <div>
+                <div class="com-margem">
                     <label for="proposicao">Proposição:</label>
                     <select id="proposicao" name="proposicao" onchange="route()">
                         {% if not id_proposicao %}<option value="" selected>Escolha uma proposição</option>{% endif %}
@@ -58,10 +58,12 @@
                     </select>
                 </div>
                 <div class='myflex-spacer'></div>
-                <div>
-                    <label for="votacoes">Votações:</label>
-                    <div id="votacoes"></div>
-                </div>
+                {% if id_proposicao %}
+                    <div class="com-margem">
+                        <label for="votacoes">Votações:</label>
+                        <div id="votacoes"></div>
+                    </div>
+                {% endif %}
             </div>
         {% endif %}
     </form>

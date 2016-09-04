@@ -3854,3 +3854,7 @@ port+.pager{margin-top: 40px;}
 .botao.ativado {
     background-color: #444;
 }
+
+.com-margem {
+    margin: 20px;
+}
