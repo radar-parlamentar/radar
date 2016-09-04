@@ -1,6 +1,6 @@
 /*##############################################################################
-#       Copyright (C) 2013  Diego Rabatone Oliveira, Leonardo Leite,           #
-#                           Saulo Trento                                       #
+#       Copyright (C) 2016  Diego Rabatone Oliveira, Leonardo Leite,           #
+#                           Andres                                             #
 #                                                                              #
 #    This program is free software: you can redistribute it and/or modify      #
 # it under the terms of the GNU Affero General Public License as published by  #
@@ -38,9 +38,12 @@ Plot = (function ($) {
        $("#loading").remove();
         document.getElementById('graficoplenaria').scrollIntoView()
 
+        var idx_votacao = get_idx_votacao()
+        $( "#votacao" ).text(idx_votacao + 'ª votação');
+
         var dado = data,
             partidos = data.partidos,
-            votacao = data.votacoes[0],
+            votacao = data.votacoes[idx_votacao-1],
             parlamentares = votacao.parlamentares;
 
         var svg = d3.select("#graficoplenaria").append("svg")
@@ -71,16 +74,55 @@ Plot = (function ($) {
             .selectAll("circle")
                 .data(function(raio){return raio.lista_de_parlamentares})
                 .enter().append("circle")
-                .attr("cx", function(parlamentar, i){ return escala(i);})
-                .attr("r", 5.5) //TODO: Criar uma função para escalar a bolinha proporcionalmente ao número de parlamentares
-                .attr("fill", function(parlamentar){ return partidos[parlamentar.id_partido].cor; })
+                .attr("cx", function(parlamentar, i){
+                    return escala(i);
+                }).attr("r", 5.5) //TODO: Criar uma função para escalar a bolinha proporcionalmente ao número de parlamentares
+                .attr("fill", function(parlamentar){
+                    return partidos[parlamentar.id_partido].cor;
+                }).attr("fill-opacity", 1)
+                .attr("stroke", "#000")
                 .attr("stroke-width", 0)
-                .attr("id", function(parlamentar){return parlamentar.nome;})
-                .attr("data-partido", function(parlamentar){ return partidos[parlamentar.id_partido].nome; })
-                .attr("alt", function(parlamentar){ return parlamentar.nome + " - " + partidos[parlamentar.id_partido].nome; })
-                .attr("title", function(parlamentar){ return parlamentar.nome + " - " + partidos[parlamentar.id_partido].nome; })
-                .attr("data-voto", function(parlamentar){ return parlamentar.voto; })
-                .attr("data-cor-partido", function(parlamentar){ return partidos[parlamentar.id_partido].cor; });
+                .attr("id", function(parlamentar){
+                    return parlamentar.nome;
+                }).attr("data-partido", function(parlamentar){
+                    return partidos[parlamentar.id_partido].nome;
+                }).attr("alt", function(parlamentar){
+                    return parlamentar.nome + " - " + partidos[parlamentar.id_partido].nome;
+                }).attr("title", function(parlamentar){
+                    return parlamentar.nome + " - " + partidos[parlamentar.id_partido].nome;
+                }).attr('data-destacado', 0)
+                .attr("data-voto", function(parlamentar){
+                    return parlamentar.voto;
+                }).attr("data-cor-partido", function(parlamentar){
+                    return partidos[parlamentar.id_partido].cor;
+                }).on('click', function(d){
+                    if (d3.select(this).attr("data-destacado") == 1){
+                        d3.selectAll('circle')
+                          .attr('data-destacado', 0)
+                          .attr('fill-opacity', 1)
+                          .attr('stroke-width', 0);
+                    } else {
+                        d3.selectAll('circle')
+                          .attr('data-destacado', function(c) { return c.nome==d.nome ? 1 : 0 })
+                          .attr('fill-opacity', function(c) { return c.nome==d.nome ? 1 : 0.2 })
+                          .attr('stroke-width', function(c) { return c.nome==d.nome ? 1 : 0 });
+
+                        msg = 'Nome: ' + d.nome + '\n';
+                        msg = msg + 'Partido: ' + partidos[d.id_partido].nome;
+                        msg = msg + ' ('+ partidos[d.id_partido].numero +')\n';
+                        msg = msg + 'Voto: ' + d.voto;
+                        // TODO: Enviar este conteúdo para uma div apresentável ....
+                        console.log(msg);
+                    }
+                });
+    }
+
+    function get_idx_votacao() {
+        var idx_votacao = window.location.hash.substr(1);
+        if (idx_votacao == "") {
+            idx_votacao = 1;
+        }
+        return idx_votacao
     }
 
     return {
