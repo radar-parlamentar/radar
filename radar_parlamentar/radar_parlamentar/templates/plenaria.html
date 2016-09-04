@@ -1,0 +1,130 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Radar Parlamentar - {{casa_legislativa.nome}}
+{% endblock title %}
+
+{% block extrascripts %}
+    <link rel="stylesheet" href="/static/files/codes/css/radar_d3_graph.css" type="text/css" />
+{% endblock extrascripts %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block headerImgClass %}
+    about
+{% endblock headerImgClass %}
+
+{% block nomepagina %}
+    Radar Parlamentar
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Entenda visualmente afinidades de partidos e parlamentares.
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}
+    <li><a href="/index/">Home</a> &raquo;</li>
+    <li><a href="/analises/plenaria">Plenárias</a></li>
+    {% if casa_legislativa %}
+        <li> &raquo; <a href="/analises/plenaria/{{casa_legislativa.nome_curto}}">{{casa_legislativa.nome}}</a></li>
+    {% endif %}
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <h1>Plenárias</h1>
+
+    <form id="formProposicao" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
+        <div>
+            <label for="casa-legislativa">Casa Legislativa:</label>
+            <select id="casa-legislativa" name="casa-legislativa" onchange="route()">
+                {% for nome_curto, nome_longo in casas_legislativas %}
+                    <option value="{{nome_curto}}" {% if nome_curto == casa_legislativa.nome_curto %} selected{% endif %}>{{nome_longo}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% if casa_legislativa %}
+            <div class="container_flex">
+                <div>
+                    <label for="proposicao">Proposição:</label>
+                    <select id="proposicao" name="proposicao" onchange="route()">
+                        {% if not id_proposicao %}<option value="" selected>Escolha uma proposição</option>{% endif %}
+                        {% for id, nome in proposicoes %}
+                            <option value="{{id}}" {% if id == id_proposicao %} selected{% endif %}>
+                                {{nome}}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class='myflex-spacer'></div>
+                <div>
+                    <label for="votacoes">Votações:</label>
+                    <div id="votacoes"></div>
+                </div>
+            </div>
+        {% endif %}
+    </form>
+
+    {% if id_proposicao %}
+    <!-- <h3>{{casa_legislativa.nome}}</h3> -->
+        <p id="prop_descr"></p>
+        <p id="prop_ementa"></p>
+        <p id="votacao_descr"></p>
+        <p id="votacao_data"></p>
+        <p id="votacao_resultado"></p>
+        <article id="descricao" class="inwrap">
+            <div style="width:700px" id="graficoplenaria"></div>
+        </article>
+        <aside class='container_flex'>
+            <div class='filtrosVotosVotacao'>
+                <h3> Filtros </h3>
+                <ul>
+                    <li><input type="button" class="filtro-voto botao" onClick="destacarVoto('SIM')" name="VotoSim", value="Voto Sim"></button></li>
+                    <li><input type="button" class="filtro-voto botao" onClick="destacarVoto('NAO')" name="VotoNão", value="Voto Não"></button></li>
+                    <li><input type="button" class="filtro-voto botao" onClick="destacarVoto('ABSTENCAO')" name="Abstenção", value="Abstenção"></button></li>
+                    <li><input type="button" class="filtro-voto botao todos ativado" onClick="destacarVoto('TODOS')" name="Todos", value="Todos"></button></li>
+                </ul>
+            </div>
+            <div class='myflex-spacer'></div>
+            <div class='votoParlamentar'>
+                <h3>Parlamentar</h3>
+                <div id='detalheParlamentar'></div>
+            </div>
+        </aside>
+        <p>Atenção: o significado político de cada opção (sim e não) pode não ser facilmente inferível a partir das descrições apresentadas.</p>
+    {% endif %}
+    <div style="clear:right"/>
+{% endblock content %}
+
+{% block extrajsend %}
+    {% if request.get_host == '127.0.0.1:8000' or request.get_host == 'localhost:8000' %}
+        <script src="/static/files/codes/js/d3.min.js"></script>
+        <script src="/static/files/codes/js/d3-tip.js"></script>
+    {% else %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.1/d3.v3.min.js"></script>
+        <script src="/static/files/codes/js/d3-tip.js"></script>
+        <script type="text/javascript">
+          if (typeof d3 === 'undefined') {
+            var e = document.createElement('script');
+                e.src = '/static/files/codes/js/d3.min.js';
+                e.type='text/javascript';
+            document.getElementsByTagName("head")[0].appendChild(e);
+          }
+        </script>
+    {% endif %}
+    <script src="/static/files/codes/js/plenaria.js"></script>
+{% endblock extrajsend %}
+
+{% block extrascriptsend %}
+    function route() {
+        var casa = $('#casa-legislativa').val()
+        var prop = $('#proposicao').val()
+        if ("{{casa_legislativa.nome_curto}}" == casa) location.pathname = '/analises/plenaria/' + casa + '/' + prop
+        else location.pathname = '/analises/plenaria/' + casa
+    }
+
+    {% if id_proposicao %}
+        Plot.initialize("{{casa_legislativa.nome_curto}}", {{id_proposicao}});
+    {% endif %}
+{% endblock extrascriptsend %}

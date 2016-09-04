@@ -3834,3 +3834,23 @@ port+.pager{margin-top: 40px;}
 #linkLei {
     text-align: center;
 }
+
+/* PLENARIA */
+.container_flex {
+    display: flex; /* or inline-flex */
+}
+
+/*.votoParlamentar {*/
+    /*flex-grow: 4;*/
+/*}*/
+
+/*.filtrosVotosVotacao {*/
+    /*flex-grow: 3;*/
+/*}*/
+.myflex-spacer {
+    width: 10px;
+}
+
+.botao.ativado {
+    background-color: #444;
+}
