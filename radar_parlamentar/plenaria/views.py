@@ -9,6 +9,8 @@ from . import serializer
 
 def plenaria(request, nome_curto_casa_legislativa=None, id_proposicao=None):
     proposicoes = []
+    casas_legislativas = [(casa.nome_curto, casa.nome)
+                          for casa in models.CasaLegislativa.objects.all()]
     if nome_curto_casa_legislativa:
         casa_legislativa = get_object_or_404(
             models.CasaLegislativa,
@@ -27,7 +29,8 @@ def plenaria(request, nome_curto_casa_legislativa=None, id_proposicao=None):
         {
             'id_proposicao': id_proposicao,
             'casa_legislativa': casa_legislativa,
-            'casas_legislativas': [('cmsp', 'Câmara Municipal de São Paulo')],
+            'casas_legislativas': casas_legislativas,
+            # 'casas_legislativas': [('cmsp', 'Câmara Municipal de São Paulo')],
             'proposicoes': proposicoes,
         },
         context_instance=RequestContext(request)

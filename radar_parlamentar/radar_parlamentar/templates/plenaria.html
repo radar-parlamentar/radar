@@ -40,7 +40,7 @@
             <label for="casa_legislativa">Casa Legislativa:</label>
             <select id="casa_legislativa" name="casa_legislativa" onchange="route()">
                 {% for nome_curto, nome_longo in casas_legislativas %}
-                    <option value="{{nome_curto}}">{{nome_longo}}</option>
+                    <option value="{{nome_curto}}" {% if nome_curto == casa_legislativa.nome_curto %} selected{% endif %}>{{nome_longo}}</option>
                 {% endfor %}
             </select>
         </div>
@@ -115,8 +115,11 @@
     function route() {
         var casa = $('#casa_legislativa').val()
         var prop = $('#proposicao').val()
-        location.pathname = '/analises/plenaria/' + casa + '/' + prop
+        if ("{{casa_legislativa.nome_curto}}" == casa) location.pathname = '/analises/plenaria/' + casa + '/' + prop
+        else location.pathname = '/analises/plenaria/' + casa
     }
 
-    Plot.initialize("{{casa_legislativa.nome_curto}}", {{id_proposicao}});
+    {% if id_proposicao %}
+        Plot.initialize("{{casa_legislativa.nome_curto}}", {{id_proposicao}});
+    {% endif %}
 {% endblock extrascriptsend %}
