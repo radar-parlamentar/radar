@@ -1873,8 +1873,13 @@ ol.list.alphalow{list-style: lower-alpha;}
 
 .caseStd{overflow: hidden;}
 
+    .caseStd > div{
+      width: 32%;
+      display: inline-block;
+    }
+
     .caseStd h3{
-        font-size: 22px;
+        font-size: 18px;
         font-weight: 700;
         margin: 0;
     }
@@ -1883,9 +1888,7 @@ ol.list.alphalow{list-style: lower-alpha;}
 
     .caseStd img{
         display: block;
-        float: left;
         margin-right: 20px;
-        width: 200px;
     }
 
 
