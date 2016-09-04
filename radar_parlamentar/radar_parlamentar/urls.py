@@ -14,10 +14,10 @@ url_json_plenaria = 'analises/json_plenaria/'
 url_analise = 'analises/analise/'
 url_json_analise = 'analises/json_analise/'
 url_lista = 'analises/lista_de_votacoes_filtradas/'
-casa_legislativa = '(?P<nome_curto_casa_legislativa>\w*)/'
+casa_legislativa = '(?P<nome_curto_casa_legislativa>\w+)/'
 periodicidade = '(?P<periodicidade>\w*)/'
 palavras_chave = '(?P<palavras_chave>.*)/'
-id_proposicao = '(?P<id_proposicao>.*)/'
+id_proposicao = '((?P<id_proposicao>\d+)/?)'
 
 urlpatterns = patterns(
     '',
@@ -87,9 +87,8 @@ urlpatterns = patterns(
         'analises.views.lista_de_votacoes_filtradas'),
 
     # Páginas do Projeto Análise Votações Hackathon 2016
-    url(r'^' + url_plenaria + '$',
-        'plenaria.views.plenaria'),
-    url(r'^' + url_plenaria + casa_legislativa + id_proposicao + '$',
+    url(r'^' + url_plenaria + casa_legislativa + '?' + \
+        id_proposicao + '?' + '$',
         'plenaria.views.plenaria'),
     url(r'^' + url_json_plenaria + casa_legislativa + id_proposicao + '$',
         'plenaria.views.json_proposicao'),

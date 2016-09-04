@@ -34,8 +34,9 @@ Plot = (function ($) {
     // Function that draws the chart
     function plot_data(data) {
 
-//        // Inicialmente remove o spinner de loading
-//        $("#loading").remove();
+       // Inicialmente remove o spinner de loading
+       $("#loading").remove();
+        document.getElementById('graficoplenaria').scrollIntoView()
 
         var dado = data,
             partidos = data.partidos,

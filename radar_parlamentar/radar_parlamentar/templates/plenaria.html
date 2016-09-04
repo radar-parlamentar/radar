@@ -26,25 +26,53 @@
 
 {% block breadcrumbs %}
     <li><a href="/index/">Home</a> &raquo;</li>
-    <li><a href="/analises/">Gráficos</a> &raquo;</li>
-    <li><a href="/analises/analise/{{casa_legislativa.nome_curto}}">{{casa_legislativa.nome}}</a></li>
+    <li><a href="/analises/plenaria">Plenárias</a></li>
+    {% if casa_legislativa %}
+        <li> &raquo; <a href="/analises/plenaria/{{casa_legislativa.nome_curto}}">{{casa_legislativa.nome}}</a></li>
+    {% endif %}
 {% endblock breadcrumbs %}
 
 {% block content %}
-    <h3>{{casa_legislativa.nome}}</h3>
-    <h3>{{nome_pl}}</h3>
-    <article id="descricao" class="inwrap">
-        <div style="width:700px" id="graficoplenaria">
-        </div>
-        <div>
-            <ul>
-                <li><input type="button" onClick="destacarVoto('SIM')" name="VotoSim", value="Voto Sim"></button></li>
-                <li><input type="button" onClick="destacarVoto('NAO')" name="VotoNão", value="Voto Não"></button></li>
-                <li><input type="button" onClick="destacarVoto('ABSTENCAO')" name="Abstenção", value="Abstenção"></button></li>
-            </ul>
-        </div>
-    </article>
-        <div style="clear:right"/>
+    <h1>Plenárias</h1>
+
+    <form id="formProposicao" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
+        <p>
+            <label for="casa_legislativa">Casa Legislativa:</label>
+            <select id="casa_legislativa" name="casa_legislativa" onchange="alert('aaaaaa')">
+                {% for nome_curto, nome_longo in casas_legislativas %}
+                    <option value="{{nome_curto}}">{{nome_longo}}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>
+            {% if casa_legislativa %}
+                <label for="proposicao">Proposição:</label>
+                <select id="proposicao" name="proposicao" onchange="route()">
+                    {% for id, nome in proposicoes %}
+                        <option value="{{id}}">{{nome}}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+        </p>
+    </form>
+
+    {% if id_proposicao %}
+        <h3>{{casa_legislativa.nome}}</h3>
+        <h3>{{nome_pl}}</h3>
+        <article id="descricao" class="inwrap">
+            <div style="width:700px" id="graficoplenaria">
+                <figure id="animacao"><center><img id="loading" src="/static/files/images/spinner.gif"></img></center></figure>
+            </div>
+            <div>
+                <ul>
+                    <li><input type="button" onClick="destacarVoto('SIM')" name="VotoSim", value="Voto Sim"></button></li>
+                    <li><input type="button" onClick="destacarVoto('NAO')" name="VotoNão", value="Voto Não"></button></li>
+                    <li><input type="button" onClick="destacarVoto('ABSTENCAO')" name="Abstenção", value="Abstenção"></button></li>
+                </ul>
+            </div>
+        </article>
+            <div style="clear:right"/>
+    {% endif %}
 {% endblock content %}
 
 {% block extrajsend %}
@@ -67,5 +95,11 @@
 {% endblock extrajsend %}
 
 {% block extrascriptsend %}
-Plot.initialize("{{casa_legislativa.nome_curto}}", {{id_proposicao}});
+    function route() {
+        var casa = $('#casa_legislativa').val()
+        var prop = $('#proposicao').val()
+        location.pathname = '/analises/plenaria/' + casa + '/' + prop
+    }
+
+    Plot.initialize("{{casa_legislativa.nome_curto}}", {{id_proposicao}});
 {% endblock extrascriptsend %}

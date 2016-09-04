@@ -4,23 +4,34 @@ from modelagem import models
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
-from modelagem import utils
 from . import serializer
 
 
 def plenaria(request, nome_curto_casa_legislativa=None, id_proposicao=None):
-    casa_legislativa = \
-        get_object_or_404(models.CasaLegislativa,
-                          nome_curto=nome_curto_casa_legislativa)
+    proposicoes = []
+    if nome_curto_casa_legislativa:
+        casa_legislativa = get_object_or_404(
+            models.CasaLegislativa,
+            nome_curto=nome_curto_casa_legislativa
+        )
+        proposicoes = [
+            (prop.id, prop.nome())
+            for prop in models.Proposicao.objects.filter(
+                casa_legislativa__nome_curto=nome_curto_casa_legislativa
+            )
+        ]
+    else:
+        casa_legislativa = None
     return render_to_response(
         'plenaria.html',
         {
-            'casa_legislativa': casa_legislativa,
             'id_proposicao': id_proposicao,
+            'casa_legislativa': casa_legislativa,
+            'casas_legislativas': [('cmsp', 'Câmara Municipal de São Paulo')],
+            'proposicoes': proposicoes,
         },
         context_instance=RequestContext(request)
     )
-
 
 
 def json_proposicao(request, nome_curto_casa_legislativa, id_proposicao):
