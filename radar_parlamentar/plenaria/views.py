@@ -8,25 +8,25 @@ from modelagem import utils
 from . import serializer
 
 
-def plenaria(request, nome_curto_casa_legislativa=None, cod_proposicao=None):
-    # casa_legislativa = \
-        # get_object_or_404(models.CasaLegislativa,
-                          # nome_curto=nome_curto_casa_legislativa)
+def plenaria(request, nome_curto_casa_legislativa=None, id_proposicao=None):
+    casa_legislativa = \
+        get_object_or_404(models.CasaLegislativa,
+                          nome_curto=nome_curto_casa_legislativa)
     return render_to_response(
         'plenaria.html',
-        # {
-            # 'casa_legislativa': casa_legislativa,
-            # 'cod_proposicao': cod_proposicao,
-        # },
+        {
+            'casa_legislativa': casa_legislativa,
+            'id_proposicao': id_proposicao,
+        },
         context_instance=RequestContext(request)
     )
 
 
 
-def json_proposicao(request, nome_curto_casa_legislativa, cod_proposicao):
+def json_proposicao(request, nome_curto_casa_legislativa, id_proposicao):
     """Retorna o JSON com os dados de todas as votações de uma proposição."""
     proposicao = get_object_or_404(
-        models.Proposicao, id=cod_proposicao)
+        models.Proposicao, id=id_proposicao)
     proposicao_serializer = serializer.ProposicaoSerializer()
     dados = proposicao_serializer.get_json_proposicao(proposicao)
     return HttpResponse(dados, mimetype='application/json')
