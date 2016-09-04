@@ -36,26 +36,31 @@
     <h1>Plenárias</h1>
 
     <form id="formProposicao" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
-        <p>
+        <div>
             <label for="casa_legislativa">Casa Legislativa:</label>
             <select id="casa_legislativa" name="casa_legislativa" onchange="route()">
                 {% for nome_curto, nome_longo in casas_legislativas %}
                     <option value="{{nome_curto}}">{{nome_longo}}</option>
                 {% endfor %}
             </select>
-        </p>
-        <p>
-            {% if casa_legislativa %}
-                <label for="proposicao">Proposição:</label>
-                <select id="proposicao" name="proposicao" onchange="route()">
-                    {% for id, nome in proposicoes %}
-                        <option value="{{id}}" {% if id == id_proposicao %} selected{% endif %}>
-                            {{nome}}
-                        </option>
-                    {% endfor %}
-                </select>
-            {% endif %}
-        </p>
+        </div>
+        {% if casa_legislativa %}
+            <div>
+                <div>
+                    <label for="proposicao">Proposição:</label>
+                    <select id="proposicao" name="proposicao" onchange="route()">
+                        {% for id, nome in proposicoes %}
+                            <option value="{{id}}" {% if id == id_proposicao %} selected{% endif %}>
+                                {{nome}}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <div id="votacoes"></div>
+                </div>
+            </div>
+        {% endif %}
     </form>
 
     {% if id_proposicao %}

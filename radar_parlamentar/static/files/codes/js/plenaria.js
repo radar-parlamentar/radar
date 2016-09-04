@@ -44,10 +44,20 @@ Plot = (function ($) {
     }
 
     function first_plot(data) {
+
         // Inicialmente remove o spinner de loading
         $("#loading").remove();
         dado = data;
         len_votacoes = data.votacoes.length;
+
+        $(dado.votacoes).each(function(idx) {
+            jQuery("<input/>", {
+                type: "button",
+                value: (idx+1) + "ª votação",
+                onClick: "window.location.hash = " + (idx+1) + "; window.plot_data();"
+            }).appendTo('#votacoes');
+        });
+
         plot_data();
     }
 
@@ -166,6 +176,8 @@ Plot = (function ($) {
                     }
                 });
     }
+
+    window.plot_data = plot_data
 
     function get_idx_votacao() {
         var idx_votacao = window.location.hash.substr(1);
