@@ -75,17 +75,17 @@
             <div style="width:700px" id="graficoplenaria"></div>
         </article>
         <aside class='aside_votacao'>
-            <div class='votoParlamentar' style='flex-grow: 1;'>
-                <h3>Parlamentar</h3>
-                <div id='detalheParlamentar'></div>
-            </div>
-            <div class='filtrosVotosVotacao' style='flex-grow: 2;'>
+            <div class='filtrosVotosVotacao'>
                 <h3> Filtros </h3>
                 <ul>
                     <li><input type="button" onClick="destacarVoto('SIM')" name="VotoSim", value="Voto Sim"></button></li>
                     <li><input type="button" onClick="destacarVoto('NAO')" name="VotoNão", value="Voto Não"></button></li>
                     <li><input type="button" onClick="destacarVoto('ABSTENCAO')" name="Abstenção", value="Abstenção"></button></li>
                 </ul>
+            </div>
+            <div class='votoParlamentar'>
+                <h3>Parlamentar</h3>
+                <div id='detalheParlamentar'></div>
             </div>
         </aside>
         <p>Atenção: o significado político de cada opção (sim e não) pode não ser facilmente inferível a partir das descrições apresentadas.</p>

@@ -3834,9 +3834,9 @@ port+.pager{margin-top: 40px;}
 }
 
 .votoParlamentar {
-
+    flex-grow: 4;
 }
 
-.filtroVotosVotacao {
-
+.filtrosVotosVotacao {
+    flex-grow: 3;
 }
