@@ -72,16 +72,11 @@ Plot = (function ($) {
 
         // Inicialmente remove o spinner de loading
         $("#loading").remove();
-        document.getElementById('graficoplenaria').scrollIntoView()
         idx_votacao = get_idx_votacao();
-
-        document.getElementById('casa_legislativa').scrollIntoView()
-        $( "#votacao" ).text(idx_votacao + 'ª votação');
 
         var partidos = dado.partidos,
             votacao = dado.votacoes[idx_votacao-1],
             parlamentares = votacao.parlamentares;
-
 
         $('#prop_ementa').html(dado.ementa)
         $('#prop_descr').html(dado.descricao)
@@ -166,6 +161,9 @@ Plot = (function ($) {
                         div.append('<p><b>Voto: </b>' + d.voto + '</p>');
                     }
                 });
+
+        document.getElementById('votacoes').scrollIntoView();
+
     }
 
     window.plot_data = plot_data
