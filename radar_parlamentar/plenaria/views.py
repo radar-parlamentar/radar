@@ -4,20 +4,20 @@ from modelagem import models
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
-from modelagem import utils 
+from modelagem import utils
 from . import serializer
 
 
-def plenaria(request, nome_curto_casa_legislativa, cod_proposicao):
-    casa_legislativa = \
-        get_object_or_404(models.CasaLegislativa,
-                          nome_curto=nome_curto_casa_legislativa)
+def plenaria(request, nome_curto_casa_legislativa=None, cod_proposicao=None):
+    # casa_legislativa = \
+        # get_object_or_404(models.CasaLegislativa,
+                          # nome_curto=nome_curto_casa_legislativa)
     return render_to_response(
-        'votacao.html',
-        {
-            'casa_legislativa': casa_legislativa,
-            'cod_proposicao': cod_proposicao,
-        },
+        'plenaria.html',
+        # {
+            # 'casa_legislativa': casa_legislativa,
+            # 'cod_proposicao': cod_proposicao,
+        # },
         context_instance=RequestContext(request)
     )
 
