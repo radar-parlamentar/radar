@@ -49,6 +49,7 @@
                 <div>
                     <label for="proposicao">Proposição:</label>
                     <select id="proposicao" name="proposicao" onchange="route()">
+                        {% if not id_proposicao %}<option value="" selected>Escolha uma proposição</option>{% endif %}
                         {% for id, nome in proposicoes %}
                             <option value="{{id}}" {% if id == id_proposicao %} selected{% endif %}>
                                 {{nome}}
