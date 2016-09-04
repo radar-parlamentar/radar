@@ -1,6 +1,6 @@
 /*##############################################################################
-#       Copyright (C) 2013  Diego Rabatone Oliveira, Leonardo Leite,           #
-#                           Saulo Trento                                       #
+#       Copyright (C) 2016  Diego Rabatone Oliveira, Leonardo Leite,           #
+#                           Andres                                             #
 #                                                                              #
 #    This program is free software: you can redistribute it and/or modify      #
 # it under the terms of the GNU Affero General Public License as published by  #
@@ -37,9 +37,12 @@ Plot = (function ($) {
 //        // Inicialmente remove o spinner de loading
 //        $("#loading").remove();
 
+        var idx_votacao = get_idx_votacao()
+        $( "#votacao" ).text(idx_votacao + 'ª votação');
+
         var dado = data,
             partidos = data.partidos,
-            votacao = data.votacoes[0],
+            votacao = data.votacoes[idx_votacao-1],
             parlamentares = votacao.parlamentares;
 
         var svg = d3.select("#graficoplenaria").append("svg")
@@ -80,6 +83,14 @@ Plot = (function ($) {
                 .attr("title", function(parlamentar){ return parlamentar.nome + " - " + partidos[parlamentar.id_partido].nome; })
                 .attr("data-voto", function(parlamentar){ return parlamentar.voto; })
                 .attr("data-cor-partido", function(parlamentar){ return partidos[parlamentar.id_partido].cor; });
+    }
+
+    function get_idx_votacao() {
+        var idx_votacao = window.location.hash.substr(1);
+        if (idx_votacao == "") {
+            idx_votacao = 1;
+        }
+        return idx_votacao
     }
 
     return {
