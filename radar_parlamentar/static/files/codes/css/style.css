@@ -1891,6 +1891,10 @@ ol.list.alphalow{list-style: lower-alpha;}
         margin-right: 20px;
     }
 
+    .caseStd .half .inwrap a {
+      display: block;
+      float: left;
+    }
 
     /* ||||||||||   b. About     |||||||||| */
 
