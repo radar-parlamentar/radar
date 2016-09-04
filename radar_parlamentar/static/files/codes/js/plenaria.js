@@ -121,7 +121,7 @@ Plot = (function ($) {
                 .enter().append("circle")
                 .attr("cx", function(parlamentar, i){
                     return escala(i);
-                }).attr("r", 5.5) //TODO: Criar uma função para escalar a bolinha proporcionalmente ao número de parlamentares
+                }).attr("r", 8) //TODO: Criar uma função para escalar a bolinha proporcionalmente ao número de parlamentares
                 .attr("fill", function(parlamentar){
                     return partidos[parlamentar.id_partido].cor;
                 }).attr("fill-opacity", 1)
