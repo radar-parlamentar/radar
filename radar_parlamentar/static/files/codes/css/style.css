@@ -3829,14 +3829,21 @@ port+.pager{margin-top: 40px;}
 }
 
 /* PLENARIA */
-.aside_votacao {
+.container_flex {
     display: flex; /* or inline-flex */
 }
 
-.votoParlamentar {
-    flex-grow: 4;
+/*.votoParlamentar {*/
+    /*flex-grow: 4;*/
+/*}*/
+
+/*.filtrosVotosVotacao {*/
+    /*flex-grow: 3;*/
+/*}*/
+.myflex-spacer {
+    width: 10px;
 }
 
-.filtrosVotosVotacao {
-    flex-grow: 3;
+.botao.ativado {
+    background-color: #444;
 }

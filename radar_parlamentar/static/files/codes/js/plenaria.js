@@ -38,7 +38,7 @@ Plot = (function ($) {
     function initialize(nome_curto_casa_legislativa_, id_proposicao_) {
         //This is just a sample data for tests purposes.
         //d3.json("/analises/json_plenaria/cmsp/100", plot_data);
-        nome_curto_casa_legislativa = nome_curto_casa_legislativa_; 
+        nome_curto_casa_legislativa = nome_curto_casa_legislativa_;
         id_proposicao = id_proposicao_;
         d3.json("/analises/json_plenaria/" + nome_curto_casa_legislativa + "/" + id_proposicao, first_plot);
     }
