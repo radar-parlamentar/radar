@@ -87,3 +87,13 @@ Plot = (function ($) {
     };
 })(jQuery);
 
+function destacarVoto(voto){
+    d3.selectAll("circle").each(function(d,i){
+        var el = d3.select(this);
+        if (el.attr("data-voto")==voto) {
+            el.attr("fill", el.attr("data-cor-partido"));
+        } else {
+            el.attr("fill", "#ccc");
+        }
+    })
+}
