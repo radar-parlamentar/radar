@@ -59,7 +59,9 @@ Plot = (function ($) {
                 onClick: "window.location.hash = " + (idx+1) + "; window.plot_data(); atualiza_botao_votacao(this);"
             }).appendTo('#votacoes');
         });
-        $('[name="votacao-0"]').addClass('ativado');
+        idx_votacao = get_idx_votacao();
+        var botao = idx_votacao - 1
+        $('[name="votacao-'+botao+'"]').addClass('ativado');
 
         plot_data();
     }
