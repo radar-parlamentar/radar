@@ -11,7 +11,7 @@ def plenaria(request, nome_curto_casa_legislativa=None, id_proposicao=None):
 
     cmsp = models.CasaLegislativa.objects.get(nome_curto = 'cmsp')
     sen = models.CasaLegislativa.objects.get(nome_curto = 'sen')
-    casas_legislativas = [cmsp, sen]
+    casas_legislativas = [(cmsp.nome_curto, cmsp.nome), (sen.nome_curto, sen.nome)]
 
     proposicoes = []
     if not nome_curto_casa_legislativa:
