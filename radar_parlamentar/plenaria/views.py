@@ -8,12 +8,14 @@ from . import serializer
 
 
 def plenaria(request, nome_curto_casa_legislativa=None, id_proposicao=None):
+
+    cmsp = models.CasaLegislativa.objects.get(nome_curto = 'cmsp')
+    sen = models.CasaLegislativa.objects.get(nome_curto = 'sen')
+    casas_legislativas = [cmsp, sen]
+
     proposicoes = []
     if not nome_curto_casa_legislativa:
         nome_curto_casa_legislativa = 'cmsp'
-
-    casas_legislativas = [(casa.nome_curto, casa.nome)
-                          for casa in models.CasaLegislativa.objects.all()]
     if nome_curto_casa_legislativa:
         casa_legislativa = get_object_or_404(
             models.CasaLegislativa,
@@ -27,13 +29,13 @@ def plenaria(request, nome_curto_casa_legislativa=None, id_proposicao=None):
         ]
     else:
         casa_legislativa = None
+
     return render_to_response(
         'plenaria.html',
         {
             'id_proposicao': id_proposicao,
             'casa_legislativa': casa_legislativa,
             'casas_legislativas': casas_legislativas,
-            # 'casas_legislativas': [('cmsp', 'Câmara Municipal de São Paulo')],
             'proposicoes': proposicoes,
         },
         context_instance=RequestContext(request)
