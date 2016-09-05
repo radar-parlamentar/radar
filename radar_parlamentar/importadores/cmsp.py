@@ -198,13 +198,11 @@ class XmlCMSP:
         # se é votação nominal
         votacao_TipoVotacao = vot_tree.get('TipoVotacao')
         if vot_tree.tag == 'Votacao' and votacao_TipoVotacao == 'Nominal':
-            resumo = '%s -- %s' % (
-                vot_tree.get('Materia'), vot_tree.get('Ementa'))
             # Prop_nome eh como se identifica internamente as propostas.
             # Queremos saber a que proposicao estah associada a votacao
             # analisanda.
             # vai retornar prop_nome se votação for de proposição
-            prop_nome = self.prop_nome(resumo)
+            prop_nome = self.prop_nome(vot_tree.get('Materia'))
             # se a votacao for associavel a uma proposicao, entao..
             if prop_nome:
                 id_vot = vot_tree.get('VotacaoID')
@@ -223,6 +221,7 @@ class XmlCMSP:
                         prop = models.Proposicao()
                         prop.sigla, prop.numero, prop.ano = self. \
                             tipo_num_anoDePropNome(prop_nome)
+                        prop.ementa = vot_tree.get('Ementa')
                         prop.casa_legislativa = self.cmsp
                         proposicoes[prop_nome] = prop
 
@@ -233,7 +232,7 @@ class XmlCMSP:
                     # só pra criar a chave primária e poder atribuir o votos
                     vot.save()
                     vot.id_vot = id_vot
-                    vot.descricao = resumo
+                    vot.descricao = vot_tree.get('Materia') + ' - ' + vot_tree.get('NotasRodape')
                     vot.data = self.data_da_sessao
                     vot.resultado = vot_tree.get('Resultado')
                     self.votos_from_tree(vot_tree, vot)
