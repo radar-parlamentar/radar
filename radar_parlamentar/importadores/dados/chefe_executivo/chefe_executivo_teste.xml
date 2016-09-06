@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chefe_executivo>
+    <PrefeitosSP>
+        <PrefeitoSP Nome="teste_chefe_cmsp" Partido="PT" AnoInicio="1989" AnoFinal="1992" Genero="F"/>
+    </PrefeitosSP>
+    <Presidentes>
+		<Presidente Nome="teste_chefe_sen" Partido="PT" AnoInicio="1990" AnoFinal="1992" Genero="M"/>
+	</Presidentes>
+</chefe_executivo>

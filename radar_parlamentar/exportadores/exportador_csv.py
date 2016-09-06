@@ -1,7 +1,7 @@
 # !/usr/bin/python
 # coding=utf8
 
-# Copyright (C) 2013, Leonardo Leite
+# Copyright (C) 2016, Leonardo Leite
 #
 # This file is part of Radar Parlamentar.
 #
@@ -18,10 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Exportação para CSV para nossas análises no R.
-   Para ler o arquivo csv no R: read.csv('votes.csv', sep=',', as.is=T)
-   O último argumento impede que as strings sejam importadas como "factors".
-"""
+"""Exportação para CSV com o objetivo de criar uma base de dados com schema simplificado para análises ad-hoc."""
 
 import os
 import csv
@@ -32,100 +29,100 @@ logger = logging.getLogger("radar")
 
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-COALITION_PARTIES = ['PT', 'PCdoB', 'PSB', 'PP', 'PMDB', 'PTB']
-# PR, PDT não são coalition?
+NORTE = 'Norte'
+NORDESTE = 'Nordeste'
+CENTRO_OESTE = 'CentroOeste'
+SUDESTE = 'Sudeste'
+SUL =  'Sul'
 
-ROLLCALL = 'rollcall'
-VOTER_ID = 'voter_id'
-NAME = 'name'
-PARTY = 'party'
-COALITION = 'coalition'
-VOTE = 'vote'
+REGIAO_POR_UF = {
+  'AC' : NORTE,
+  'AL' : NORDESTE,
+  'AP' : NORTE,
+  'AM' : NORTE,
+  'BA' : NORDESTE,
+  'CE' : NORDESTE,
+  'DF' : CENTRO_OESTE,
+  'ES' : SUDESTE,
+  'GO' : CENTRO_OESTE,
+  'MA' : NORTE,
+  'MT' : CENTRO_OESTE,
+  'MS' : CENTRO_OESTE,
+  'MG' : SUDESTE,
+  'PA' : NORTE,
+  'PB' : NORDESTE,
+  'PR' : SUL,
+  'PE' : NORDESTE,
+  'PI' : NORDESTE,
+  'RJ' : SUDESTE,
+  'RN' : NORTE,
+  'RS' : SUL,
+  'RO' : NORTE,
+  'RR' : NORTE,
+  'SC' : NORTE,
+  'SP' : SUDESTE,
+  'SE' : NORDESTE,
+  'TO' : NORTE 
+}
 
-LABELS = [ROLLCALL, VOTER_ID, NAME, PARTY, COALITION, VOTE]
+PROPOSICAO = 'PROPOSICAO'
+VOTACAO = 'VOTACAO'
+PARLAMENTAR_ID = 'PARLAMENTAR_ID'
+PARLAMENTAR_NOME = 'PARLAMENTAR_NOME'
+PARTIDO = 'PARTIDO'
+UF = 'UF'
+REGIAO = 'REGIAO'
+VOTO = 'VOTO'
 
-CSV_FILE = 'votes.csv'
+LABELS = [PROPOSICAO, VOTACAO, PARLAMENTAR_ID, PARLAMENTAR_NOME, PARTIDO, UF, REGIAO, VOTO]
+
+CSV_FILE = 'votacoes.csv'
 
 
 class ExportadorCSV:
 
-    def __init__(self, nome_curto_casa_legislativa, data_ini, data_fim):
-        self.nome_curto = nome_curto_casa_legislativa
-        self.ini = data_ini
-        self.fim = data_fim
-        self.votacoes = None
+    def __init__(self, votacoes):
+        self.votacoes = votacoes
         self.csv_rows = []
 
     def exportar_csv(self):
-        self.retrieve_votacoes()
         self.transform_data()
         self.write_csv()
-
-    def retrieve_votacoes(self):
-        casa = models.CasaLegislativa.objects.get(nome_curto=self.nome_curto)
-        if self.ini is None and self.fim is None:
-            self.votacoes = models.Votacao.objects.filter(
-                proposicao__casa_legislativa=casa).order_by('data')
-        if self.ini is None and self.fim is not None:
-            self.votacoes = models.Votacao.objects.filter(
-                proposicao__casa_legislativa=casa
-            ).filter(data__lte=self.fim).order_by('data')
-        if self.ini is not None and self.fim is None:
-            self.votacoes = models.Votacao.objects.filter(
-                proposicao__casa_legislativa=casa
-            ).filter(data__gte=self.ini).order_by('data')
-        if self.ini is not None and self.fim is not None:
-            self.votacoes = models.Votacao.objects.filter(
-                proposicao__casa_legislativa=casa
-            ).filter(data__gte=self.ini, data__lte=self.fim).order_by('data')
 
     def transform_data(self):
         self.csv_rows.append(LABELS)
         for votacao in self.votacoes:
             votos = votacao.votos()
             for voto in votos:
-                legislatura = voto.legislatura
-                parlamentar = legislatura.parlamentar
-                partido = legislatura.partido
+                parlamentar = voto.parlamentar
+                partido = parlamentar.partido
                 csv_row = []
-                csv_row.append(votacao.id_vot)
-                csv_row.append(legislatura.id)
+                csv_row.append(votacao.proposicao.nome())
+                csv_row.append(votacao.id)
+                csv_row.append(parlamentar.id)
                 csv_row.append(parlamentar.nome.encode('UTF-8'))
                 csv_row.append(partido.nome)
-                csv_row.append(self.coalition(partido.nome))
-                try:
-                    csv_row.append(self.voto(voto.opcao))
-                    self.csv_rows.append(csv_row)
-                except:
-                    print 'Ignorando voto ', voto.opcao
-                    logger.info("Ignorando voto: %s" % voto.opcao)
-
-    def coalition(self, nome_partido):
-        return '1' if nome_partido in COALITION_PARTIES else '0'
-
-    def voto(self, opcao):
-        if opcao == models.SIM:
-            return 1
-        elif opcao == models.NAO:
-            return -1
-        elif opcao == models.ABSTENCAO:
-            return 0
-        elif opcao == models.OBSTRUCAO:
-            return 0
-        elif opcao == models.AUSENTE:
-            return 0
-        else:
-            raise ValueError()
+                csv_row.append(parlamentar.localidade)
+                csv_row.append(REGIAO_POR_UF[parlamentar.localidade])
+                csv_row.append(voto.opcao)
+                self.csv_rows.append(csv_row)
 
     def write_csv(self):
-        filepath = os.path.join(MODULE_DIR, 'dados', CSV_FILE)
+        filepath = os.path.join(MODULE_DIR, 'saida', CSV_FILE)
         with open(filepath, 'wb') as f:
             writer = csv.writer(f, delimiter=',')
             writer.writerows(self.csv_rows)
 
 
 def main():
-    data_ini = parse_datetime('2010-06-09 0:0:0')
-    data_fim = parse_datetime('2010-06-09 23:59:0')
-    exportador = ExportadorCSV('sen', data_ini, data_fim)
+    cdep = models.CasaLegislativa.objects.get(nome_curto='cdep')
+    sen = models.CasaLegislativa.objects.get(nome_curto='sen')
+    vs1 = models.Votacao.objects.filter(proposicao__casa_legislativa=cdep, proposicao__sigla='PL', proposicao__numero='1876', proposicao__ano='1999')
+    vs2 = models.Votacao.objects.filter(proposicao__casa_legislativa=sen, proposicao__sigla='PLC', proposicao__numero='00007', proposicao__ano='2010')
+    vs3 = models.Votacao.objects.filter(proposicao__casa_legislativa=sen, proposicao__sigla='PEC', proposicao__numero='00007', proposicao__ano='2015')
+    votacoes = vs1 | vs2 | vs3
+    exportador = ExportadorCSV(votacoes)
     exportador.exportar_csv()
+
+
+

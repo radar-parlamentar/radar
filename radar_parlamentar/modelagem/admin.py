@@ -20,33 +20,35 @@
 from modelagem.models import *
 from django.contrib import admin
 
+
 class ParlamentarAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__','genero')
+    list_display = ('__unicode__', 'genero')
     list_filter = ['genero']
 
-class LegislaturaAdmin(admin.ModelAdmin):
-    list_display = ('parlamentar','casa_legislativa','inicio','fim','partido','localidade')
-    list_filter = ['casa_legislativa','partido','localidade']
-    date_hierarchy = 'inicio'
 
 class ProposicaoAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__','sigla','numero','ano','ementa','descricao','indexacao','data_apresentacao','casa_legislativa')
-    list_filter= ['ano','casa_legislativa']
-    search_fields = ['sigla','numero','ano','ementa','descricao','indexacao']
+    list_display = ('__unicode__', 'sigla', 'numero', 'ano', 'ementa',
+                    'descricao', 'indexacao', 'data_apresentacao',
+                    'casa_legislativa')
+    list_filter = ['ano', 'casa_legislativa']
+    search_fields = ['sigla', 'numero', 'ano', 'ementa', 'descricao',
+                     'indexacao']
+
 
 class VotacaoAdmin(admin.ModelAdmin):
-    list_display = ('descricao','data','resultado','proposicao')
-    search_fields = ['descricao','proposicao']
+    list_display = ('descricao', 'data', 'resultado', 'proposicao')
+    search_fields = ['descricao', 'proposicao']
     date_hierarchy = 'data'
 
+
 class VotoAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__','votacao')
+    list_display = ('__unicode__', 'votacao')
 
 admin.site.register(Indexadores)
 admin.site.register(Partido)
 admin.site.register(CasaLegislativa)
 admin.site.register(Parlamentar, ParlamentarAdmin)
-admin.site.register(Legislatura, LegislaturaAdmin)
 admin.site.register(Proposicao, ProposicaoAdmin)
 admin.site.register(Votacao, VotacaoAdmin)
 admin.site.register(Voto, VotoAdmin)
+admin.site.register(ChefeExecutivo)

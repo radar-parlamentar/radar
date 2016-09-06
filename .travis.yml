@@ -11,7 +11,7 @@ install:
 # Roda Testes
 script:
    - cd radar_parlamentar/ ; source tests.sh
-   - coverage run --source=modelagem,analises,exportadores,importadorInterno,importadores,radar_parlamentar manage.py test modelagem analises exportadores importadorInterno importadores radar_parlamentar
+   - coverage run --source=modelagem,analises,exportadores,importadores,radar_parlamentar manage.py test modelagem analises exportadores importadores radar_parlamentar
 
 after_success:
   - coveralls

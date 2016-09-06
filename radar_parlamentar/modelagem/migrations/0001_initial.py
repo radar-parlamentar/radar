@@ -187,7 +187,7 @@ class Migration(SchemaMigration):
         'modelagem.casalegislativa': {
             'Meta': {'object_name': 'CasaLegislativa'},
             'atualizacao': ('django.db.models.fields.DateField', [],
-             {'null': 'True', 'blank': 'True'}),
+                            {'null': 'True', 'blank': 'True'}),
             'esfera': ('django.db.models.fields.CharField', [],
                        {'max_length': '10'}),
             'id': ('django.db.models.fields.AutoField', [],

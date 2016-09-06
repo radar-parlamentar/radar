@@ -37,15 +37,17 @@ class AnalisePeriodo:
         self.partidos = []
         self.votacoes = []
         self.num_votacoes = 0
+        self.chefes_executivo = []
 
         self.pca = None
 
         self.tamanhos_partidos = {}  # partido => int
         self.coordenadas_partidos = {}  # partdo => [x,y]
-        # TODO coordenadas_partidos should be partido.nome => [x,y]
+        # TODO: coordenadas_partidos should be partido.nome => [x,y]
 
-        self.presencas_parlamentares = {}  # legislatura.id => boolean
-        self.coordenadas_legislaturas = {}  # legislatura.id => [x,y]
-        self.legislaturas_por_partido = {}
-            # partido.nome => lista das legislaturas do partido (independente
-            # de periodo).
+        self.presencas_parlamentares = {}  # parlamentar.id => boolean
+        self.coordenadas_parlamentares = {}  # parlamentar.id => [x,y]
+
+        # partido.nome => lista de parlamentares do partido
+        # (independente de periodo).
+        self.parlamentares_por_partido = {}

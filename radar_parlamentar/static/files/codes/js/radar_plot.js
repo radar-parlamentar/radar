@@ -26,8 +26,16 @@ d3.selection.prototype.moveToFront = function() {
 
 Plot = (function ($) {
 
+
+    // "Global" armazena o parlamentar pesquisado
+    var parlamentar_pesquisado = "";
+    //var corPartido = cor(Partido);
+
     // Function to load the data and draw the chart
-    function initialize(nome_curto_casa_legislativa, periodicidade, palavras_chave) {
+    function initialize(nome_curto_casa_legislativa, periodicidade, palavras_chave, nome_parlamentar) {
+
+        parlamentar_pesquisado = nome_parlamentar; // Issue#272
+
         if (palavras_chave == "") {
             d3.json("/analises/json_analise/" + nome_curto_casa_legislativa + "/" + periodicidade, plot_data);
         } else {
@@ -42,11 +50,11 @@ Plot = (function ($) {
     function space_to_underline(name) {
         return name.replace(/\s+/g,'_');
     }
-    
-    function cor(d) { return d.cor; }    
-    function nome(d) { return space_to_underline(d.nome); } 
-    function numero(d) { return d.numero; } 
-    
+
+    function cor(d) { return d.cor; }
+    function nome(d) { return space_to_underline(d.nome); }
+    function numero(d) { return d.numero; }
+
     // Creates a "radialGradient"* for each circle
     // and returns the id of the just created gradient.
     // * the "radialGradient" is a SVG element
@@ -54,7 +62,7 @@ Plot = (function ($) {
         DEFAULT_COLOR = "#1F77B4";
         if (color === "#000000") color = DEFAULT_COLOR;
         pct_white = 70;
-        center_color = shadeColor(color,pct_white); 
+        center_color = shadeColor(color,pct_white);
         var identificador = "gradient-" + id;
         var gradient = svg.append("svg:defs")
             .append("svg:radialGradient")
@@ -64,19 +72,19 @@ Plot = (function ($) {
             .attr("x2", "100%")
             .attr("y2", "100%")
             .attr("spreadMethod", "pad");
-        
+
         gradient.append("svg:stop")
             .attr("offset", "0%")
             .attr("stop-color", center_color)
             .attr("stop-opacity", 1);
-        
+
         gradient.append("svg:stop")
             .attr("offset", "70%")
             .attr("stop-color", color)
             .attr("stop-opacity", 1);
         return "url(#" + identificador + ")";
     }
-    
+
     // Add white to the color. from http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color
     function shadeColor(color, percent) {
 
@@ -88,9 +96,9 @@ Plot = (function ($) {
         G = parseInt(G * (100 + percent) / 100);
         B = parseInt(B * (100 + percent) / 100);
 
-        R = (R<255)?R:255;  
-        G = (G<255)?G:255;  
-        B = (B<255)?B:255;  
+        R = (R<255)?R:255;
+        G = (G<255)?G:255;
+        B = (B<255)?B:255;
 
         var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
         var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
@@ -133,6 +141,10 @@ Plot = (function ($) {
         xScalePart = d3.scale.linear().range([0, width]), // scale for parties
         yScalePart = d3.scale.linear().range([height, 0]);
 
+    // Issue#272
+    // Flag para explodir partido do parlamentar pesquisado
+    var explodir_partido = true;
+
     var periodo_min,
         periodo_max,
         periodo_de,
@@ -158,7 +170,7 @@ Plot = (function ($) {
 //        yScalePart.domain([-r_partidos, r_partidos])
         xScalePart.domain([-r_maximo, r_maximo])
         yScalePart.domain([-r_maximo, r_maximo])
-        
+
         // Creates the SVG container and sets the origin.
         var svg_base = d3.select("#animacao").append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -185,16 +197,22 @@ Plot = (function ($) {
         createBackground(full_radius);
         transitionBackground("linear");
 
+        var label_chefe_executivo = grupo_controle_periodos.append("text")
+            .attr("class", "total_label")
+            .attr("text-anchor", "middle")
+            .attr("y", -5)
+            .attr("x", width/2);
+
         var label_periodo = grupo_controle_periodos.append("text")
             .attr("class", "year label")
             .attr("text-anchor", "middle")
-            .attr("y", 30 )
+            .attr("y", 35)
             .attr("x", width/2);
 
         var label_nvotacoes = grupo_controle_periodos.append("text")
             .attr("class", "total_label")
             .attr("text-anchor", "middle")
-            .attr("y", "48")
+            .attr("y", 55)
             .attr("x", width/2);
 
         var go_to_previous = grupo_controle_periodos.append("image")
@@ -205,7 +223,7 @@ Plot = (function ($) {
             .attr("x", 10)
             .attr("width", 113)
             .attr("height", 113);
-              
+
         var go_to_next = grupo_controle_periodos.append("image")
             .attr("xlink:href", "/static/assets/arrow_right.svg")
             .attr("id", "next_period")
@@ -214,7 +232,7 @@ Plot = (function ($) {
             .attr("x", width-113-10)
             .attr("width", 113)
             .attr("height", 113);
-        
+
         // setando variáveis já declaradas
         partidos = dados.partidos;
         periodos = dados.periodos;
@@ -222,7 +240,7 @@ Plot = (function ($) {
         periodo_min = 0;
         periodo_atual = periodo_max;
         periodo_para = periodo_atual;
-        periodo_de = periodo_atual;        
+        periodo_de = periodo_atual;
 
         configure_go_to_next();
         configure_go_to_previous();
@@ -263,6 +281,7 @@ Plot = (function ($) {
             yScale.range([height, 0]).domain([-r_maximo, r_maximo]);
             xScalePart.range([0, width]).domain([-r_maximo, r_maximo]); // scale for parties
             yScalePart.range([height, 0]).domain([-r_maximo, r_maximo]);
+
             atualiza_grafico(true);
         }
 
@@ -285,7 +304,7 @@ Plot = (function ($) {
             .on("click", implode_todos);
 
         // ############## Funções de controle de mudanças de estado ###########
-        
+
         // Função que controla mudança de estado para o estado seguinte
         function configure_go_to_next() {
             go_to_next
@@ -301,13 +320,13 @@ Plot = (function ($) {
                 .on("mouseout", mouseout_previous)
                 .on("click", change_to_previous_period);
         }
-        
+
         function change_to_next_period() {
-            if (proximo_periodo_valido()) { 
+            if (proximo_periodo_valido()) {
                 periodo_de = periodo_atual;
                 periodo_para = periodo_atual + 1;
                 periodo_atual = periodo_para;
-                change_period();     
+                change_period();
             }
         }
 
@@ -316,18 +335,18 @@ Plot = (function ($) {
                 periodo_de = periodo_atual;
                 periodo_para = periodo_atual - 1;
                 periodo_atual = periodo_para;
-                change_period();   
+                change_period();
             }
         }
-        
+
         function proximo_periodo_valido() {
             return periodo_atual < periodo_max;
         }
-        
+
         function periodo_anterior_valido() {
             return periodo_atual > periodo_min;
         }
-        
+
         function change_period() {
             if(!periodo_anterior_valido()) {
                 go_to_previous.classed("invalid", true);
@@ -339,15 +358,50 @@ Plot = (function ($) {
                 go_to_next.classed("invalid", true);
             } else {
                 go_to_next.classed("invalid", false);
-            }    
-        
+            }
+
             atualiza_grafico(false);
         }
+
+
+        /**
+        ** Método da Issue #272, pinta os partidos para diferenciá-los do parlamentar pesquisado. Pinta-os de cinza.
+        ** O partido do parlamentar pesquisado e o unico que nao e pintado
+        **/
+        function pintaPartido(cor, nome){
+            partido_pesquisado = get_partido_parlamentar_pesquisado()
+            if(parlamentar_pesquisado != "" && nome!=partido_pesquisado.nome){
+                return "#D3D3D3"
+            }else{
+                return cor
+          }
+        }
+
+
+        /**
+        ** Método da Issue #272, pinta os parlamentares para diferenciá-los do parlamentar pesquisado. Pinta-os de cinza.
+        ** Pinta o parlamenta pesquisado de Rosa para diferenciá-lo dos demais.
+        **/
+        function delimitaCor(parlamentares, partido){
+            if(parlamentares==parlamentar_pesquisado){
+                 if(parlamentar_pesquisado != ""){
+                    return "#FF00FF"
+                }
+                    return cor(partido)
+            }else if(parlamentar_pesquisado!=""){
+                return "#D3D3D3"
+            }else{
+                return cor(partido)
+            }
+        }
+
 
         // atualiza partidos e deputados no gráfico de acordo com o período atual
         // explodindo: true quando estamos atualizando o gráfico por causa de uma explosão de partido
         // (explosão de partido é quando se clica no partido para ver seus parlamentares)
         function atualiza_grafico(explodindo) {
+
+
             label_nvotacoes.text("Não há votações relacionadas com as palavras chave informadas");
 
             // Legend
@@ -362,10 +416,18 @@ Plot = (function ($) {
                 .attr("class","legend_item")
                 .attr("id", function(d) { return "legend-"+nome(d); })
                 .text(function(d) {return d.numero + " | " + d.nome + " (" + d.t[periodo_atual] + ")"})
-                .on("mouseover", function(d) { mouseover_legend(d); })
+                .on("mouseover", function(d) { mouseover_legend(d);})
                 .on("mouseout", function(d) { mouseout_legend(d); })
                 .on("click", function(d) { click_legend(d); });
             legend_items.exit().remove();
+
+            // Issue#272
+            // Explode o partido do PRIMEIRO parlamentar encontrado durante a pesquisa
+            if((parlamentar_pesquisado != "") && (explodir_partido == true)){
+                var partido_parlamentar_pesquisado = get_partido_parlamentar_pesquisado();
+                explodir_partido = false;
+                partidos_explodidos.push(partido_parlamentar_pesquisado, parlamentar_pesquisado);
+            }
 
             // Circles that represent the parties
             partidos_no_periodo = get_partidos_nao_explodidos_no_periodo(periodo_atual);
@@ -375,7 +437,7 @@ Plot = (function ($) {
             party_tip = d3.tip()
                 .attr('class', 'd3-tip')
                 .offset([-10,0])
-                .html(function(d) { 
+                .html(function(d) {
                     r = "<strong><span style='color:" + d.cor + ";text-shadow: -1px 0 #333, 0 1px #333, 1px 0 #333, 0 -1px #333'>" + d.numero + " - </span>" + d.nome + "</strong></br>";
                     r += "<strong>Parlamentares:</strong> <span style='color:yellow'>" + d.t[periodo_atual] + "</span></br>";
                     r += "<span style='color:yellow'><strong>Clique para expandir!</strong></span>";
@@ -386,7 +448,7 @@ Plot = (function ($) {
             parties.transition()
                 .attr("transform", function(d) { return "translate(" + xScalePart(d.x[periodo_para]) +"," +  yScalePart(d.y[periodo_para]) + ")" })
                 .duration(TEMPO_ANIMACAO);
-            
+
             parties.selectAll(".party_circle").transition()
                 .attr("r", function(d) { return d.r[periodo_para]})
                 .duration(TEMPO_ANIMACAO);
@@ -402,12 +464,12 @@ Plot = (function ($) {
             // title is used for the browser tooltip
 //            new_parties.append("title")
 //                .text(function(d) { return nome(d); });
-    
+
             var new_circles = new_parties.append("circle")
                 .attr("class","party_circle")
                 .attr("id", function(d) { return "circle-" + nome(d); })
                 .attr("r", 0)
-                .attr("fill", function(d) {return gradiente(grupo_grafico, nome(d), cor(d)); });
+                .attr("fill", function(d) {return gradiente(grupo_grafico, nome(d),pintaPartido(cor(d), nome(d)))});
 
             new_parties.append("text")
                 .attr("text-anchor","middle")
@@ -429,7 +491,7 @@ Plot = (function ($) {
 
             new_circles.transition().duration(TEMPO_ANIMACAO)
                 .attr("r", function(d) { return d.r[periodo_atual]; });
-            
+
             // tirar os parlamentares eventualmente explodidos que pertencam a partidos que estejam saindo de cena:
             partidos_ou_parlamentares_no_periodo = get_partidos_no_periodo(periodo_atual);
             var parties2 = grupo_grafico.selectAll('.party').data(partidos_ou_parlamentares_no_periodo, function(d) { return d.nome });
@@ -447,7 +509,7 @@ Plot = (function ($) {
             parlamentar_tip = d3.tip()
                 .attr('class', 'd3-tip')
                 .offset([-10,0])
-                .html(function(d) { 
+                .html(function(d) {
                     var r = "<strong> " + d.nome + " <span style='color:yellow'>" + d.partido + "</span>-<span style='color:yellow'>" + d.localidade + "</span></br>";
                     r += "<span style='color:yellow'><strong>Clique para recolher!</strong></span>";
                     return r;
@@ -471,11 +533,13 @@ Plot = (function ($) {
                              .attr("cx", function(d) { return xScale(d.x[periodo_para]); })
                              .attr("cy", function(d) { return yScale(d.y[periodo_para]); });
 
-                var new_parlamentares = parlamentares.enter().append("circle")
+
+                var  new_parlamentares = parlamentares.enter().append("circle")
                     .attr("class",["parlamentar_circle partido_" + nome(partido)] )
                     .attr("id", function(d) { return "point-" + nome(d); })
                     .attr("r", RAIO_PARLAMENTAR)
-                    .attr("fill", cor(partido))
+                    .attr("fill",function(d){return delimitaCor(d.nome, partido)})
+                    .attr("opacity", 50,50)
                     .on("mouseover", function(d) {d["partido"] = partido.nome; return mouseover_parlamentar(d); })
                     .on("mouseout", function(d) {return mouseout_parlamentar(d); })
                     .on("click", function(d) { return implode_partido(partido); });
@@ -504,16 +568,46 @@ Plot = (function ($) {
 
                     parlamentares.exit().transition().duration(TEMPO_ANIMACAO).attr("r",0).remove();
                 }
-            });            
-            
+            });
+
+            var chefes = get_chefes_executivos();
+            label_chefe_executivo.text(chefes);
             label_periodo.text(periodos[periodo_atual].nome);
             quantidade_votacoes = periodos[periodo_atual].nvotacoes;
-            label_nvotacoes.text(quantidade_votacoes + " votações"); 
-            
+            label_nvotacoes.text(quantidade_votacoes + " votações");
+
             sortAll();
-            
+
             if (periodo_para == periodo_max) mouseout_next();
             if (periodo_para == periodo_min) mouseout_previous();
+        }
+
+
+        function get_chefes_executivos(){
+            var chefes = "";
+            chefes_executivos = periodos[periodo_atual].chefe_executivo;
+            for (var i = 0; i < chefes_executivos.length; i++) {
+                if(i != 0){
+                    chefes += " , ";
+                }
+                chefes += chefes_executivos[i]['nome'];
+            }
+
+            return chefes;
+        }
+
+        // Issue#272
+        function get_partido_parlamentar_pesquisado(){
+            partidos_atuais = get_partidos_no_periodo(periodo_atual);
+            for(var i = 0; i < partidos_atuais.length; i++){
+                parlamentares = partidos_atuais[i].parlamentares;
+                for(var j = 0; j < parlamentares.length; j++){
+                    if((parlamentares[j].nome).localeCompare(parlamentar_pesquisado)==0){
+                        return partidos_atuais[i];
+                    }
+                }
+            }
+            window.alert("Parlamentar nao encontrado")
         }
 
         function mouseover_legend(party) {
@@ -522,7 +616,7 @@ Plot = (function ($) {
             d3.selectAll("#legend-"+nome(party)).classed("active",true);
             d3.selectAll('.partido_' + nome(party)).attr("class",["parlamentar_circle_hover partido_" + nome(party)] );
         }
-        
+
         function mouseout_legend(party) {
             d3.selectAll("#circle-"+nome(party)).classed("hover",false);
             d3.selectAll("#legend-"+nome(party)).classed("active",false);
@@ -536,11 +630,11 @@ Plot = (function ($) {
 
         function mouseover_party(party) {
             var circulo = d3.selectAll("#circle-"+nome(party)).classed("hover",true);
-//            d3.selectAll("#group-"+nome(party)).moveToFront(); // 
+//            d3.selectAll("#group-"+nome(party)).moveToFront(); //
             d3.selectAll("#legend-"+nome(party)).classed("active",true);
             party_tip.show(party);
         }
-        
+
         function mouseout_party(party) {
             d3.selectAll("#circle-"+nome(party)).classed("hover",false);
             d3.selectAll("#legend-"+nome(party)).classed("active",false);
@@ -553,7 +647,8 @@ Plot = (function ($) {
 //            d3.selectAll("#legend-"+nome(party)).classed("active",true);
             parlamentar_tip.show(parlamentar);
         }
-        
+
+
         function mouseout_parlamentar(parlamentar) {
             parlamentar_tip.hide();
         }
@@ -574,7 +669,7 @@ Plot = (function ($) {
         }
 
         function mouseover_previous() {
-            if (periodo_anterior_valido()) { 
+            if (periodo_anterior_valido()) {
 				go_to_previous.classed("active", true);
                 go_to_previous.transition()
                     .attr("xlink:href", "/static/assets/arrow_left_focused.svg")
@@ -584,9 +679,9 @@ Plot = (function ($) {
         function mouseout_previous() {
             go_to_previous.classed("active", false);
             go_to_previous.transition()
-                .attr("xlink:href", "/static/assets/arrow_left.svg")            
+                .attr("xlink:href", "/static/assets/arrow_left.svg")
         }
-        
+
         function sortAll() {
             var circunferencias = grupo_grafico.selectAll(".party, .parlamentar_circle");
             circunferencias.sort(order);
@@ -599,7 +694,7 @@ Plot = (function ($) {
             partidos_explodidos.push(partido);
             atualiza_grafico(true);
         }
-        
+
         function implode_partido(partido) { //partido é o json do partido
             parlamentar_tip.hide();
             remove_from_array(partidos_explodidos,partido);
@@ -615,6 +710,7 @@ Plot = (function ($) {
         function implode_todos() {
             parlamentar_tip.hide();
             partidos_explodidos = [];
+
             atualiza_grafico(true);
         }
 
@@ -637,7 +733,7 @@ Plot = (function ($) {
                 return -1
             return b.t[periodo_atual] - a.t[periodo_atual];
         }
-        
+
         function is_parlamentar(d) {
             // bem hacker ^^
             return (typeof d.cor === "undefined")
@@ -663,11 +759,12 @@ Plot = (function ($) {
         function get_partidos_nao_explodidos_no_periodo(period) {
             return partidos.filter(function(d){ return d.t[period] > 0 && jQuery.inArray(d,partidos_explodidos) == -1;});
         }
-        
+
         // Retorna o json de parlamentares do partido, do qual foram excluídos parlamentares ausentes no dado period.
         function get_parlamentares_no_periodo(partido, period) {
             return partido.parlamentares.filter(function (d) {return d.x[periodo_atual] !== null; })
         }
+
     }
 
     function plot_total_votacoes_filtradas(dados_gerais) {
@@ -693,7 +790,7 @@ Plot = (function ($) {
     }
 
     function transitionBackground(type_of_scale) {
-        // type_of_scale should be a string, either "linear" or "quadratic"                
+        // type_of_scale should be a string, either "linear" or "quadratic"
         var local_radius_array = bg_radius_array; // fallback to linear scale.
         if (type_of_scale == "linear") {
             var local_radius_array = bg_radius_array;

@@ -31,11 +31,15 @@ Para quem não conheçe, o [virtualenv](http://www.virtualenv.org "Virtual Env")
 
 Depois de clonar o projeto, vamos criar agora o nosso "Virtual Enviroment":
 
-    $ virtualenv path/para/a/pasta/do/projeto/clonado
-    $ cd path/para/a/pasta/do/projeto/clonado
+    $ sudo pip install --upgrade pip
+    $ mkdir venv
+    $ virtualenv venv
+    $ cd venv
     $ source bin/activate
 
-Agora, dentro da nossa pasta do projeto teremos disponíveis todas variáveis de ambiente em um conteiner vazio para trabalharmos a vontade sem interferir no nosso Sistema Operacional
+O diretório venv pode ser criado em qualquer lugar do sistema e pode ter qualquer outro nome. Como é algo que não deve ser entregue no repositório, não recomendo que se crie dentro da pasta clonada do radar.
+
+Agora, dentro da pasta do nosso virtual env teremos disponíveis todas variáveis de ambiente em um conteiner vazio para trabalharmos a vontade sem interferir no nosso Sistema Operacional
 
 Para instalar todas as dependencias Python necessárias para o nosso projeto rodar, basta executar:
 
@@ -99,8 +103,12 @@ Para criar as tabelas do Radar Parlamentar:
 
     $ python manage.py syncdb 
     $ python manage.py migrate
-        
-Agora, pode-se importar todos os dados com os Importadores!!
+
+Agora já podemos iniciar a aplicação! Para isso:
+
+    $python manage.py runserver
+    
+Confira a aplicação rodando pelo navegador usando o endereço `http://127.0.0.1:8000/`.
 
 
 4. Importação dos Dados
@@ -112,13 +120,13 @@ Primeiro crie um usuário administrativo do django:
 
 Depois inicie o Celery na pasta onde fica o manage.py:
 
-     $celery -A importadores worker -l info --concurrency 1
+    $./start_celery.sh 
      
 O Celery é um gerenciador de execução de tarefas assíncronas.
 
-Para importar os dados basta acessar a URL: http://127.0.0.1:8000/importar/<nome-curto-da-casa-legislativa>/
+Para importar os dados basta acessar a URL: `http://127.0.0.1:8000/importar/<nome-curto-da-casa-legislativa>/`
 
-Possíveis valores para <nome-curto-da-casa-legislativa>:
+Possíveis valores para `<nome-curto-da-casa-legislativa>`:
 
 * Convenção Francesa: "conv"
 * Camara Municipal de São Paulo: "cmsp"
@@ -183,8 +191,35 @@ Se o objetivo é iniciar o Elasticsearch apenas em um determinado endereço, é 
     $ vim config/elasticsearch.yml
     descomentar e editar a linha network.bind_host=127.0.0.1
 
-Por fim, iniciar o Elasticsearch
+Para iniciar o Elasticsearch:
 
     $ ./bin/elasticsearch -d
 
 checar o endereço http://127.0.0.1:9200 se retorna um json.
+
+Vamos ainda instalar o stem por dicionario em português, para aumentar a qualidade das buscas no elastic search (busca por ambientalista retornará ambiental).
+
+    $wget https://addons.cdn.mozilla.net/user-media/addons/_attachments/6081/verificador_ortografico_para_portugues_do_brasil-2.5-3.2.12-fx+an+sm+fn+tb.xpi?filehash=sha256%3A4a0e3d4523185a8240bda56164ebb21d8787a563e0832907b27ea7ce39e36ff0
+
+    descompactar e copiar arquivos .aff, .dic
+    para pasta /elasticsearch-1.x.x/config/hunspell/pt_BR/
+    onde /elasticsearch-1.x.x é o diretório do Elasticsearch
+
+    renomear o arquivo .aff para pt_BR.aff
+    renomear o arquivo .dic para pt_BR.dic
+    e criar arquivo settings.yml com:
+    ---
+    ignore_case:          true
+    strict_affix_parsing: true
+
+Agora é preciso executar a importação dos dados no elastic search, o que deve ser feito após a importação dos dados das casas legislativas.
+
+    $ python manage.py shell
+    >>> from importadores import importador_elasticsearch as iel
+    >>> iel.main()
+
+Por fim, para testar: 
+
+    $ curl -XGET 'http://localhost:9200/radar_parlamentar/radar/_search?q=texto'
+onde text é o texto que será analisado.
+

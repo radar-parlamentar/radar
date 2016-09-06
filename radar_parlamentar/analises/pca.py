@@ -50,29 +50,31 @@ See also:
     PCA micro-tutorial
     iris-pca .py .png
 
-Source: http://stackoverflow.com/questions/1730600/principal-component-analysis-in-python
+Source: http://stackoverflow.com/questions/1730600/principal-component-analysis
+    -in-python
 """
 
 from __future__ import division
 import numpy as np
+import logging
 dot = np.dot
-    # import bz.numpyutil as nu
-    # dot = nu.pdot
+# import bz.numpyutil as nu
+# dot = nu.pdot
 
 __version__ = "2010-04-14 apr"
 __author_email__ = "denis-bz-py at t-online dot de"
 
-import logging
+
 logger = logging.getLogger("radar")
 
-#.........................................................................
+'#.........................................................................'
 
 
 class PCA:
 
     def __init__(self, A, fraction=0.90):
         assert 0 <= fraction <= 1
-            # A = U . diag(d) . Vt, O( m n^2 ), lapack_lite --
+        # A = U . diag(d) . Vt, O( m n^2 ), lapack_lite --
         self.U, self.d, self.Vt = np.linalg.svd(A, full_matrices=False)
         assert np.all(self.d[:-1] >= self.d[1:])  # sorted
         self.eigen = self.d ** 2
@@ -120,7 +122,7 @@ class Center:
     """ A -= A.mean() /= A.std(), inplace -- use A.copy() if need be
         uncenter(x) == original A . x
     """
-        # mttiw
+    # mttiw
 
     def __init__(self, A, axis=0, scale=True, verbose=1):
         self.mean = A.mean(axis=axis)
@@ -141,12 +143,12 @@ class Center:
         return np.dot(self.A, x * self.std) + np.dot(x, self.mean)
 
 
-#.........................................................................
+'#.........................................................................'""
 if __name__ == "__main__":
     import sys
 
     csv = "iris4.csv"  # wikipedia Iris_flower_data_set
-        # 5.1,3.5,1.4,0.2  # ,Iris-setosa ...
+    # 5.1,3.5,1.4,0.2  # ,Iris-setosa ...
     N = 1000
     K = 20
     fraction = .90

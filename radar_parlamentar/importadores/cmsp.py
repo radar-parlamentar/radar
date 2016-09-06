@@ -23,22 +23,25 @@
 from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
 from modelagem import models
+from chefes_executivos import ImportadorChefesExecutivos
 import re
 import sys
 import os
 import xml.etree.ElementTree as etree
+import logging
 
-# data em que os arquivos XMLs foram atualizados
-ULTIMA_ATUALIZACAO = parse_datetime('2012-12-31 0:0:0')
-
+logger = logging.getLogger("radar")
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
+XML_FILE = 'dados/chefe_executivo/chefe_executivo_cmsp.xml'
+NOME_CURTO = 'cmsp'
+
 # arquivos com os dados fornecidos pela cmsp
-XML2010 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2010.xml')
-XML2011 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2011.xml')
 XML2012 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2012.xml')
 XML2013 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2013.xml')
 XML2014 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2014.xml')
+XML2015 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2015.xml')
+XML2016 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2016.xml')
 
 # tipos de proposições encontradas nos XMLs da cmsp
 # esta lista ajuda a identificar as votações que são de proposições
@@ -52,24 +55,12 @@ PROP_REGEX = '([a-zA-Z]{1,3}) ([0-9]{1,4}) ?/([0-9]{4})'
 INICIO_PERIODO = parse_datetime('2010-01-01 0:0:0')
 FIM_PERIODO = parse_datetime('2012-12-31 0:0:0')
 
-# TODO: caso o parlamentar pertenca a partidos distintos, ou,
-# mais generciamente, se sua "legislatura" mudar, caso seu ID,
-# provindo do XML de entrada, continue o mesmo, a primeira
-# legislatura que sobrevalecerah para as demais votacoes tambem.
-# Mas, se o ID corretamente mudar, entao tudo estarah perfeito.
-# TODO  Como a LEGISLATURA eh many to many, parece que o parlamentar
-# pode ter varias legislaturas (e ainda por cima no mesmo arquivo entrada).
-# Assim, talvez fosse interessante armazenar a legislatura no VOTO,
-# e não numa lista de legislatura.
-# A nao ser q, a cada voto, o parlamentar esteja relacionada tb a todas as
-# suas legislaturas.
-
 
 class GeradorCasaLegislativa(object):
 
     def gerar_cmsp(self):
         try:
-            cmsp = models.CasaLegislativa.objects.get(nome_curto='cmsp')
+            cmsp = models.CasaLegislativa.objects.get(nome_curto=NOME_CURTO)
         except models.CasaLegislativa.DoesNotExist:
             cmsp = self.salvar_cmsp()
         return cmsp
@@ -80,7 +71,6 @@ class GeradorCasaLegislativa(object):
         cmsp.nome_curto = 'cmsp'
         cmsp.esfera = models.MUNICIPAL
         cmsp.local = 'São Paulo - SP'
-        cmsp.atualizacao = ULTIMA_ATUALIZACAO
         cmsp.save()
         return cmsp
 
@@ -88,9 +78,20 @@ class GeradorCasaLegislativa(object):
 class XmlCMSP:
 
     def __init__(self, cmsp, verbose=False):
-        self.parlamentares = {}
         self.cmsp = cmsp
+        self.parlamentares = self._init_parlamentares()
         self.verbose = verbose
+
+    def _init_parlamentares(self):
+        """retorna dicionário (nome_parlamentar, nome_partido) ->\
+        Parlamentar"""
+        parlamentares = {}
+        for p in models.Parlamentar.objects.filter(casa_legislativa=self.cmsp):
+            parlamentares[self._key(p)] = p
+        return parlamentares
+
+    def _key(self, parlamentar):
+        return (parlamentar.nome, parlamentar.partido.nome)
 
     def converte_data(self, data_str):
         """Converte string "d/m/a para objeto datetime;
@@ -114,7 +115,7 @@ class XmlCMSP:
         return None
 
     def votacao_valida(self, nome_prop, texto):
-        return nome_prop in TIPOS_PROPOSICOES and not 'Inversão' in texto
+        return nome_prop in TIPOS_PROPOSICOES and 'Inversão' not in texto
 
     def tipo_num_anoDePropNome(self, prop_nome):
         """Extrai ano de "tipo num/ano" """
@@ -137,56 +138,35 @@ class XmlCMSP:
         elif voto == 'Abstenção':
             return models.ABSTENCAO
         else:
-            print 'tipo de voto (%s) nao mapeado!' % voto
+            logger.info('tipo de voto (%s) nao mapeado!' % voto)
             return models.ABSTENCAO
 
     def partido(self, ver_tree):
         nome_partido = ver_tree.get('Partido').strip()
         partido = models.Partido.from_nome(nome_partido)
         if partido is None:
-            print 'Nao achou o partido %s' % nome_partido
+            logger.info('Nao achou o partido %s' % nome_partido)
             partido = models.Partido.get_sem_partido()
         return partido
 
-    def votante(self, ver_tree):
-        id_parlamentar = ver_tree.get('IDParlamentar')
-        if id_parlamentar in self.parlamentares:
-            votante = self.parlamentares[id_parlamentar]
-        else:
-            votante = models.Parlamentar()
-            votante.save()
-            votante.id_parlamentar = id_parlamentar
-            votante.nome = ver_tree.get('NomeParlamentar')
-            votante.save()
-            if self.verbose:
-                print 'Vereador %s salvo' % votante
-            self.parlamentares[id_parlamentar] = votante
-            # TODO genero
-        return votante
-
-    def legislatura(self, ver_tree):
-        """Cria e retorna uma legistura para o partido fornecido"""
-
+    def vereador(self, ver_tree):
+        nome_vereador = ver_tree.get('Nome')
         partido = self.partido(ver_tree)
-        votante = self.votante(ver_tree)
-
-        legs = models.Legislatura.objects.filter(
-            parlamentar=votante, partido=partido, casa_legislativa=self.cmsp)
-        # TODO acima filtrar tb por inicio e fim
-        if legs:
-            leg = legs[0]
+        key = (nome_vereador, partido.nome)
+        if key in self.parlamentares:
+            vereador = self.parlamentares[key]
         else:
-            leg = models.Legislatura()
-            leg.parlamentar = votante
-            leg.partido = partido
-            leg.casa_legislativa = self.cmsp
-            # TODO este período deve ser mais refinado para suportar caras que
-            # trocaram de partido
-            leg.inicio = INICIO_PERIODO
-            leg.fim = FIM_PERIODO
-            leg.save()
-
-        return leg
+            id_parlamentar = ver_tree.get('IDParlamentar')
+            vereador = models.Parlamentar()
+            vereador.id_parlamentar = id_parlamentar
+            vereador.nome = nome_vereador
+            vereador.partido = partido
+            vereador.casa_legislativa = self.cmsp
+            vereador.save()
+            if self.verbose:
+                logger.info('Vereador %s salvo' % vereador)
+            self.parlamentares[key] = vereador
+        return vereador
 
     def votos_from_tree(self, vot_tree, votacao):
         """Extrai lista de votos do XML da votação e as salva no banco de dados
@@ -197,15 +177,24 @@ class XmlCMSP:
         """
         for ver_tree in vot_tree.getchildren():
             if ver_tree.tag == 'Vereador':
-                leg = self.legislatura(ver_tree)
+                vereador = self.vereador(ver_tree)
                 voto = models.Voto()
-                voto.legislatura = leg
+                voto.parlamentar = vereador
                 voto.votacao = votacao
                 voto.opcao = self.voto_cmsp_to_model(ver_tree.get('Voto'))
-                if voto.opcao is not None:
+                if voto.opcao is not None and self.nao_eh_repetido(voto):
                     voto.save()
 
-    def votacao_from_tree(self, proposicoes, votacoes, vot_tree):
+    def nao_eh_repetido(self, voto):
+        """# Obs: se nos dados aparece que o mesmo parlamentar
+        #fez opções distintas na mesma votação,
+        # prevalece o primeiro registro."""
+        votos_iguais = models.Voto.objects.filter(votacao=voto.votacao,
+                                                  parlamentar=voto.parlamentar)
+        return len(votos_iguais) == 0
+
+    def votacao_from_tree(self, proposicoes,
+                          votacoes, vot_tree):
         # se é votação nominal
         votacao_TipoVotacao = vot_tree.get('TipoVotacao')
         if vot_tree.tag == 'Votacao' and votacao_TipoVotacao == 'Nominal':
@@ -217,7 +206,7 @@ class XmlCMSP:
             # vai retornar prop_nome se votação for de proposição
             prop_nome = self.prop_nome(resumo)
             # se a votacao for associavel a uma proposicao, entao..
-            if (prop_nome):
+            if prop_nome:
                 id_vot = vot_tree.get('VotacaoID')
                 votacoes_em_banco = models.Votacao.objects.filter(
                     id_vot=id_vot)
@@ -232,30 +221,35 @@ class XmlCMSP:
                     # qnt cadastrar no dicionario.
                     else:
                         prop = models.Proposicao()
-                        prop.sigla, prop.numero, prop.ano = self.tipo_num_anoDePropNome(
-                            prop_nome)
+                        prop.sigla, prop.numero, prop.ano = self. \
+                            tipo_num_anoDePropNome(prop_nome)
                         prop.casa_legislativa = self.cmsp
                         proposicoes[prop_nome] = prop
 
                     if self.verbose:
-                        print 'Proposicao %s salva' % prop
+                        logger.info('Proposicao %s salva' % prop)
                     prop.save()
                     vot = models.Votacao()
                     # só pra criar a chave primária e poder atribuir o votos
                     vot.save()
                     vot.id_vot = id_vot
                     vot.descricao = resumo
-                    vot.data = self.converte_data(vot_tree.get('DataDaSessao'))
+                    vot.data = self.data_da_sessao
                     vot.resultado = vot_tree.get('Resultado')
                     self.votos_from_tree(vot_tree, vot)
                     vot.proposicao = prop
                     if self.verbose:
-                        print 'Votacao %s salva' % vot
+                        logger.info('Votacao %s salva' % vot)
                     else:
                         self.progresso()
                     vot.save()
 
                 votacoes.append(vot)
+
+    def sessao_from_tree(self, proposicoes, votacoes, sessao_tree):
+        self.data_da_sessao = self.converte_data(sessao_tree.get('Data'))
+        for vot_tree in sessao_tree.findall('Votacao'):
+            self.votacao_from_tree(proposicoes, votacoes, vot_tree)
 
     def progresso(self):
         """Indica progresso na tela"""
@@ -275,35 +269,34 @@ class ImportadorCMSP:
     def importar_de(self, xml_file):
         """Salva no banco de dados do Django e retorna lista das votações"""
         if self.verbose:
-            print "importando de: " + str(xml_file)
+            logger.info("importando de: " + str(xml_file))
 
         tree = ImportadorCMSP.abrir_xml(xml_file)
         proposicoes = {}
-            # chave é string (ex: 'pl 127/2004'); valor é objeto do tipo
-            # Proposicao
+        # chave é string (ex: 'pl 127/2004'); valor é objeto do tipo
+        # Proposicao
         votacoes = []
         self.analisar_xml(proposicoes, votacoes, tree)
         return votacoes
 
     def analisar_xml(self, proposicoes, votacoes, tree):
-        for vot_tree in tree.getchildren():
-            self.xml_cmsp.votacao_from_tree(proposicoes, votacoes, vot_tree)
+        for sessao_tree in tree.findall('Sessao'):
+            self.xml_cmsp.sessao_from_tree(proposicoes, votacoes, sessao_tree)
 
     @staticmethod
     def abrir_xml(xml_file):
-#         f = open(xml_file, 'r')
-#         xml = f.read()
-#         f.close()
-#         return etree.fromstring(xml)
         return etree.parse(xml_file).getroot()
 
 
-
 def main():
-    print 'IMPORTANDO DADOS DA CAMARA MUNICIPAL DE SAO PAULO (CMSP)'
+    logger.info('IMPORTANDO DADOS DA CAMARA MUNICIPAL DE SAO PAULO (CMSP)')
     gerador_casa = GeradorCasaLegislativa()
     cmsp = gerador_casa.gerar_cmsp()
     importer = ImportadorCMSP(cmsp)
-    for xml in [XML2010, XML2011, XML2012, XML2013, XML2014]:
+    logger.info('IMPORTANDO CHEFES EXECUTIVOS DA CAMARA MUNICIPAL DE SÃO PAULO')
+    importer_chefe = ImportadorChefesExecutivos(NOME_CURTO, 'PrefeitosSP', 'PrefeitoSP', XML_FILE)
+    importer_chefe.importar_chefes()
+    for xml in [XML2012, XML2013, XML2014, XML2015, XML2016]:
         importer.importar_de(xml)
-    print 'Importacao dos dados da Camara Municipal de Sao Paulo (CMSP) terminada'
+    logger.info('Importacao dos dados da \
+                Camara Municipal de Sao Paulo (CMSP) terminada')

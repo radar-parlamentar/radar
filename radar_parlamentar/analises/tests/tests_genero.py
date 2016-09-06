@@ -22,17 +22,17 @@ from django.test import TestCase
 from modelagem.models import Proposicao
 from modelagem.models import Parlamentar
 from analises.genero import Genero
-from modelagem import models
+
 
 class GeneroTest(TestCase):
 
-	def setUp(self):
-		self.parlamentar = Parlamentar(nome='Ana')
-		self.proposicao = Proposicao(autor_principal='Ana',indexacao='mulher')
-		self.genero = Genero()
+    def setUp(self):
+        self.parlamentar = Parlamentar(nome='Ana')
+        self.proposicao = Proposicao(autor_principal='Ana', indexacao='mulher')
+        self.genero = Genero()
 
-	def test_definir_palavra(self):
-		temas_frequencia_mulher = self.genero.definir_palavras('F')
-		self.assertEquals('Ana', self.parlamentar.nome)
-		self.assertEquals('Ana', self.proposicao.autor_principal)
-		self.assertEquals((u'mulher'), self.proposicao.indexacao)
+    def test_definir_palavra(self):
+        # temas_frequencia_mulher = self.genero.definir_palavras('F')
+        self.assertEquals('Ana', self.parlamentar.nome)
+        self.assertEquals('Ana', self.proposicao.autor_principal)
+        self.assertEquals((u'mulher'), self.proposicao.indexacao)

@@ -15,7 +15,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.# -*- coding: utf-8 -*-
+# along with Radar Parlamentar.  If not, see
+#               <http://www.gnu.org/licenses/>.# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 from django.template import RequestContext
@@ -26,8 +27,13 @@ import os
 import datetime
 import json
 import logging
+from blog import DictionaryBlogGenerator
+import feedparser
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render
 
 logger = logging.getLogger("radar")
+
 
 def index(request):
     return render_to_response('index.html', {},
@@ -75,17 +81,35 @@ def genero(request):
 
 
 def genero_termos_nuvem(request):
-  genero = Genero()
 
-  temas_frequencia_mulher = genero.definir_palavras('F')
- # logger.info("Temasdamulher %s" % (temas_frequencia_mulher))
-  temas_json_mulher = json.dumps(temas_frequencia_mulher)
+    genero = Genero()
 
-  temas_frequencia_homem = genero.definir_palavras('M')
-  temas_json_homem = json.dumps(temas_frequencia_homem)
+    casas_legislativas_com_genero = genero.get_casas_legislativas_com_genero()
 
-  return render_to_response('genero_tagcloud.html', {'temas_mulher': temas_json_mulher,'temas_homem': temas_json_homem},
-                              context_instance=RequestContext(request))
+    try:
+        id_casa_legislativa = int(request.GET["casa_legislativa"])
+    except:
+        id_casa_legislativa = ""
+
+    if not isinstance(id_casa_legislativa, int):
+
+        return render_to_response('genero_tagcloud.html',
+                                  {'casas_legislativas': casas_legislativas_com_genero},
+                                  context_instance=RequestContext(request))
+
+    else:
+        temas_frequencia_mulher = genero.definir_palavras('F', id_casa_legislativa)
+        # logger.info("Temasdamulher %s" % (temas_frequencia_mulher))
+        temas_json_mulher = json.dumps(temas_frequencia_mulher)
+        temas_frequencia_homem = genero.definir_palavras('M', id_casa_legislativa)
+        temas_json_homem = json.dumps(temas_frequencia_homem)
+
+        return render_to_response('genero_tagcloud.html',
+                              {'temas_mulher': temas_json_mulher,
+                               'temas_homem': temas_json_homem,
+                               'casas_legislativas' : casas_legislativas_com_genero},
+                               context_instance=RequestContext(request))
+
 
 def genero_matriz(request):
     return render_to_response('genero_matriz.html', {},
@@ -123,12 +147,27 @@ def genero_perfil_legis(request):
 
 
 def dados_utilizados(request):
-    dump_file_path = finders.find('db-dump/radar.sql')
+    dump_file_path = finders.find('db-dump/radar.sql.bz2')
     time = os.path.getmtime(dump_file_path)
     dt = datetime.datetime.fromtimestamp(time)
     dt_str = dt.strftime('%d/%m/%Y')
-    return render_to_response('dados_utilizados.html', {'dumpdate':dt_str}, 
+    return render_to_response('dados_utilizados.html', {'dumpdate': dt_str},
                               context_instance=RequestContext(request))
 
+def generate_blog_news(request):
+    number_of_news = 10
+    dictionary = DictionaryBlogGenerator.create_dict_blog()
+    my_news = dictionary["items"]
+    paginator = Paginator(my_news, number_of_news)
 
-
+    page = request.GET.get('page')
+    try:
+        my_news = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        my_news = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        my_news = paginator.page(paginator.num_pages)
+    return render_to_response('blog.html', {'my_news': my_news},
+                              context_instance=RequestContext(request))

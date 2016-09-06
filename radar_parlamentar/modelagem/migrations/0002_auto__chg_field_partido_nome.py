@@ -21,7 +21,7 @@ class Migration(SchemaMigration):
         'modelagem.casalegislativa': {
             'Meta': {'object_name': 'CasaLegislativa'},
             'atualizacao': ('django.db.models.fields.DateField', [],
-             {'null': 'True', 'blank': 'True'}),
+                            {'null': 'True', 'blank': 'True'}),
             'esfera': ('django.db.models.fields.CharField', [],
                        {'max_length': '10'}),
             'id': ('django.db.models.fields.AutoField', [],
@@ -58,7 +58,7 @@ class Migration(SchemaMigration):
             'parlamentar': ('django.db.models.fields.related.ForeignKey', [],
                             {'to': "orm['modelagem.Parlamentar']"}),
             'partido': ('django.db.models.fields.related.ForeignKey', [],
-                {'to': "orm['modelagem.Partido']"})
+                        {'to': "orm['modelagem.Partido']"})
         },
         'modelagem.parlamentar': {
             'Meta': {'object_name': 'Parlamentar'},
@@ -90,7 +90,8 @@ class Migration(SchemaMigration):
             'autores': ('django.db.models.fields.related.ManyToManyField', [],
                         {'symmetrical': 'False',
                          'related_name': "u'demais_autores'",
-                         'null': 'True', 'to': "orm['modelagem.Parlamentar']"}),
+                         'null': 'True',
+                         'to': "orm['modelagem.Parlamentar']"}),
             'casa_legislativa': ('django.db.models.fields.related.ForeignKey',
                                  [],
                                  {'to': "orm['modelagem.CasaLegislativa']",

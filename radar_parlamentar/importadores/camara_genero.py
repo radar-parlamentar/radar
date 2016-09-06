@@ -23,6 +23,10 @@
 from __future__ import unicode_literals
 import json
 import csv
+import logging
+
+logger = logging.getLogger("radar")
+
 
 HEADERS = [
     "codProposicao", "txtProposicao", "txtTipoProposicao", "txtSigla",
@@ -91,7 +95,8 @@ def proposicoes_indexadas(lista_proposicoes):
 
 def parseia_indexacoes(indexacao):
     indexacao1 = [termo.strip()
-                  for termo in indexacao.replace('\n', '').replace('.', '').replace('_', '').split(',')]
+                  for termo in indexacao.replace('\n', '').replace('.', '').
+                  replace('_', '').split(',')]
     indexacao2 = []
     for termo in indexacao1:
         termo = termo.split(' ')
@@ -182,7 +187,7 @@ def jsonMatrix_gera_termos_mais_mais():
         lista_termos.append({'name': termo, 'group': 1, 'id': i})
         i += 1
     matrix['termos'] = lista_termos
-    print(matrix['termos'])
+    logger.info(matrix['termos'])
 
 
 def jsonMatrix_gera_links_partidos_termos():
@@ -219,8 +224,8 @@ def principal(fonte=None):
     retorno = {'partidos': PARTIDOS, 'dic_termos':
                DIC_TERMOS, 'lista_proposicoes': lista_proposicoes}
 
-    #export_json(PARTIDOS, 'partidospropositores.json')
-    #export_json(lista_proposicoes, 'lista_proposicoes.json')
+    "#export_json(PARTIDOS, 'partidospropositores.json')"
+    "#export_json(lista_proposicoes, 'lista_proposicoes.json')"
     export_json(DIC_TERMOS, 'dic_termos.json')
 
     return retorno

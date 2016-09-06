@@ -27,28 +27,46 @@
 {% block breadcrumbs %}
     <li><a href="/index/">Home</a> &raquo;</li>
     <li><a href="/genero/">Gênero</a> &raquo;</li>
-    <li><a href="/genero/tematica/">Análise: Temáticas por Gênero</a></li>
+    <li><a href="/genero/tematica/nuvem">Análise: Temáticas por Gênero</a></li>
 {% endblock breadcrumbs %}
 
 {% block content %}
+
      <article id="descricao" class="inwrap">
-        O objetivo deste projeto é fazer uma análise gráfica da participação de deputadas e deputados na Câmara Federal.<br/>
-        É propósito observar as participações feminina e masculina na casa legislativa, seja do ponto de vista quantitativo, seja do ponto de vista qualitativo.<br/>
+        O objetivo deste projeto é fazer uma análise gráfica da participação de parlamentares em suas casas legislativas.<br/>
+        Para isso, tem-se a intenção de observar as participações feminina e masculina na casa legislativa, tanto do ponto de vista quantitativo, quanto do ponto de vista qualitativo.<br/>
         <h4 style="margin-bottom:5px;">O que é este gráfico?</h4>
         <aside id="como-funciona" style="margin: 0 90px 10px 20px; padding: 10px; background-color: rgba(220,220,220,0.7); -webkit-border-radius: 20px; -moz-border-radius: 20px; border-radius: 20px;">
-        Trata-se de uma visualização de dados <b>nuvem de palavras</b> em que são apresentadas as palavras 150 temáticas mais frequentes nas indexações de proposições legislativas para cada um dos gêneros. No primeiro gráfico temos as palavras mais recorrentes nas indexações das proposições apresentadas por mulheres enquanto no segundo as palavras mais recorrentes nas indexações de proposições apresentadas por homens.<br/>
+        Trata-se de uma visualização de dados <b>nuvem de palavras</b> em que são apresentadas as 50 palavras temáticas mais frequentes nas indexações de proposições legislativas para cada um dos gêneros. No primeiro gráfico temos as palavras mais recorrentes nas indexações das proposições apresentadas por mulheres enquanto no segundo as palavras mais recorrentes nas indexações de proposições apresentadas por homens.<br/>
         </aside>
         Analise as frequências de temas por Gênero e tire suas próprias conclusões.<br/>
-    
+
         <!--Quantidade de palavras-chave consideradas nesta análise: <b>33</b> palavras.<br/><br/>
         Quantidade de partidos consideradas nesta análise: <b>75</b> partidos.<br/><br/-->
-        Os dados da Câmara dos Deputados utilizados para análise estão disponíveis para <a href="https://github.com/leonardofl/radar_parlamentar/">download aqui</a>.<br/>    
+        Os dados das casas legislativas utilizados para análise estão disponíveis para <a href="https://github.com/radar-parlamentar/radar">download aqui</a>.<br/>
+         <form id="formTagCloud"  method="get" action="" onloadstart="teste()">
+             <p><label for="casa_legislativa_list"> Casa Legislativa: </label>
+                 <select id="casa_legislativa_list" name="casa_legislativa" onchange="enableButton()">
+                     <option value="" selected="selected"> Selecione... </option>
+                     {% for casa in casas_legislativas %}
+                         <option value="{{casa.id}}"> {{ casa.nome }} </option>
+                     {% endfor %}
+                 </select>
+             </p>
+         <input id="button" type="submit" value="Gerar nuvem de palavras!" title="Gerar nuvem de palavras!" disabled="disabled" >
+         </form>
 
-        <h4>Mulheres</h4>
-        <div id="tagcloud_mulher">
-        </div>
-        <h4>Homens</h4>
-        <div id="tagcloud_homem">
+        {% if temas_mulher and temas_homem %}
+        <div id="tagCloudSpan" style="visibility: visible">
+        {% else  %}
+        <div id="tagCloudSpan" style="visibility: hidden">
+        {% endif %}
+            <h4>Mulheres</h4>
+            <div id="tagcloud_mulher">
+            </div>
+            <h4>Homens</h4>
+            <div id="tagcloud_homem">
+            </div>
         </div>
     </article>
         <div style="clear:right"/>
@@ -148,6 +166,27 @@
 {% endblock extrajsend %}
 
 {% block extrascriptsend %}
+
+    setOptionAfterPageLoad();
+
+    function setOptionAfterPageLoad() {
+        var combobox = document.getElementById("casa_legislativa_list");
+        var url = window.location.href;
+        var idcasa = /casa_legislativa=([^&]+)/.exec(url)[1];
+        combobox.value = idcasa;
+    }
+
+    function enableButton() {
+        var combobox = document.getElementById("casa_legislativa_list");
+        var selectedVal = combobox.value;
+
+        if (Number(selectedVal)===parseInt(selectedVal) && !(selectedVal=="")) {
+            var button = document.getElementById("button").removeAttribute('disabled');
+        } else {
+            var button = document.getElementById("button").addAttribute('disabled');
+        }
+    }
+
     menuActive("genero");
     $(document).ready(function() {
     });

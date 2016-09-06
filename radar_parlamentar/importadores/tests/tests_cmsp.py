@@ -21,11 +21,12 @@
 
 from __future__ import unicode_literals
 from django.test import TestCase
-from importadores.cmsp import *
+from importadores.cmsp import GeradorCasaLegislativa, XmlCMSP, ImportadorCMSP
 from importadores import cmsp
 from modelagem import models
 import os
 import xml.etree.ElementTree as etree
+# from modelagem.models import Parlamentar
 
 XML_TEST = os.path.join(cmsp.MODULE_DIR, 'dados/cmsp/cmsp_test.xml')
 
@@ -146,11 +147,9 @@ class ModelCMSPCase(TestCase):
         partido = models.Partido(nome="PTest", numero="1")
         partido.save()
         parlamentar = models.Parlamentar(
-            id_parlamentar="1", nome="Teste_vereador")
+            id_parlamentar="1", nome="Teste_vereador",
+            partido=partido, casa_legislativa=casa)
         parlamentar.save()
-        legislatura = models.Legislatura(
-            parlamentar=parlamentar, partido=partido, casa_legislativa=casa)
-        legislatura.save()
 
     def test_vereador_sem_partido(self):
         xml_vereador = etree.fromstring(
@@ -174,31 +173,16 @@ class ModelCMSPCase(TestCase):
         #    nome = "Teste_vereador"))
 
     def test_salva_vereador_inexistente(self):
-        xml_vereador = etree.fromstring(
-            "<Vereador IDParlamentar=\"999\" NomeParlamentar=\"Nao_consta\"/>")
-        parlamentar = self.xmlCMSP.votante(xml_vereador)
+        xml_vereador = etree.fromstring("<Vereador IDParlamentar=\"999\" \
+            Nome=\"Nao_consta\" Partido=\"PN\"/>")
+        parlamentar = self.xmlCMSP.vereador(xml_vereador)
         self.assertEquals(
             parlamentar, models.Parlamentar.objects.get(id_parlamentar=999))
-
-    def test_salva_legislatura_inexistente(self):
-        xml_vereador = etree.fromstring(
-            "<Vereador IDParlamentar=\"999\" NomeParlamentar=\"Nao_consta\" Partido=\"PTest\"/>")
-        legislatura = self.xmlCMSP.legislatura(xml_vereador)
-        self.assertEquals(legislatura, models.Legislatura.objects.get(
-            parlamentar__id_parlamentar="999", partido__nome="PTest"))
-
-    # def test_retorna_legislatura_existente(self):
-        # TODO: problema com parlamentares duplicados
-        # xml_vereador = etree.fromstring("<Vereador IDParlamentar=\"1\"
-        # NomeParlamentar=\"Teste_vereador\" Partido=\"PTest\"/>")
-        # legislatura = self.xmlCMSP.legislatura(xml_vereador)
-        # self.assertEquals(legislatura,models.Legislatura.objects.get(
-        #    parlamentar__id_parlamentar="1",partido__nome="PTest"))
 
 
 class IdempotenciaCMSPCase(TestCase):
 
-#    def setUp(self):
+    # def setUp(self):
 
     def test_idempotencia_cmsp(self):
 
@@ -213,8 +197,6 @@ class IdempotenciaCMSPCase(TestCase):
             nome_curto='cmsp').count()
         num_votacoes_antes = models.Votacao.objects.filter(
             proposicao__casa_legislativa=casa).count()
-        num_legs_antes = models.Legislatura.objects.filter(
-            casa_legislativa=casa).count()
         num_parlamentares_antes = models.Parlamentar.objects.all().count()
 
         # importa de novo
@@ -224,12 +206,13 @@ class IdempotenciaCMSPCase(TestCase):
             nome_curto='cmsp').count()
         num_votacoes_depois = models.Votacao.objects.filter(
             proposicao__casa_legislativa=casa).count()
-        num_legs_depois = models.Legislatura.objects.filter(
+        num_parlamentares_antes_depois = models.Parlamentar.objects.filter(
             casa_legislativa=casa).count()
         num_parlamentares_depois = models.Parlamentar.objects.all().count()
 
         self.assertEqual(num_casas_antes, 1)
         self.assertEqual(num_casas_depois, 1)
         self.assertEquals(num_votacoes_depois, num_votacoes_antes)
-        self.assertEquals(num_legs_depois, num_legs_antes)
+        self.assertEquals(num_parlamentares_antes_depois,
+                          num_parlamentares_antes)
         self.assertEquals(num_parlamentares_depois, num_parlamentares_antes)

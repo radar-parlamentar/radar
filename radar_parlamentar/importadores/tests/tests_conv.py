@@ -23,6 +23,13 @@ from django.test import TestCase
 from importadores import conv
 from modelagem import models
 
+NUMERO_VOTACOES = 9
+NUMERO_PARTIDOS = 3
+NUMERO_PARLAMENTARES_POR_PARTIDO = 3
+NUMERO_VOTOS_TOTAIS = \
+    NUMERO_VOTACOES * NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO
+NUMERO_VOTOS_POR_VOTACAO = NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO
+
 
 class ConvencaoTest(TestCase):
 
@@ -40,24 +47,21 @@ class ConvencaoTest(TestCase):
         self.conv = models.CasaLegislativa.objects.get(nome_curto='conv')
 
     def test_check_len_votacoes(self):
-        NUM_VOTACOES = 8
         num_votacoes = len(models.Votacao.objects.filter(
             proposicao__casa_legislativa=self.conv))
-        self.assertEquals(num_votacoes, NUM_VOTACOES)
+        self.assertEquals(num_votacoes, NUMERO_VOTACOES)
 
     def test_check_len_votos(self):
-        NUM_VOTOS = 8 * 3 * 3
         num_votos = len(models.Voto.objects.filter(
             votacao__proposicao__casa_legislativa=self.conv))
-        self.assertEquals(num_votos, NUM_VOTOS)
+        self.assertEquals(num_votos, NUMERO_VOTOS_TOTAIS)
 
     def test_check_len_votos_por_votacao(self):
-        NUM_VOTOS_POR_VOTACAO = 3 * 3
         votacoes = models.Votacao.objects.filter(
             proposicao__casa_legislativa=self.conv)
         for votacao in votacoes:
             num_votos = len(models.Voto.objects.filter(votacao=votacao))
-            self.assertEquals(num_votos, NUM_VOTOS_POR_VOTACAO)
+            self.assertEquals(num_votos, NUMERO_VOTOS_POR_VOTACAO)
 
     def test_check_partidos(self):
         partidos = models.Partido.objects.all()
@@ -67,10 +71,10 @@ class ConvencaoTest(TestCase):
         self.assertTrue(conv.MONARQUISTAS in nomes_partidos)
 
     def test_check_parlamentares(self):
-        NUM_PARLAMENTARES = 3 * 3
         parlamentares = models.Parlamentar.objects.filter(
-            legislatura__casa_legislativa=self.conv)
-        self.assertEqual(len(parlamentares), NUM_PARLAMENTARES)
+            casa_legislativa=self.conv)
+        self.assertEqual(len(parlamentares),
+                         NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO)
         nomes_parlamentares = [p.nome for p in parlamentares]
-        self.assertEquals(
-            nomes_parlamentares.count('Pierre'), NUM_PARLAMENTARES)
+        self.assertEquals(nomes_parlamentares.count('Pierre'),
+                          NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO)

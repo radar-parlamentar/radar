@@ -33,18 +33,26 @@
 {% block content %}
     <h3> {{casa_legislativa.nome}}</h3>
     <article id="descricao" class="inwrap">
-        Total de votações existentes nesta casa legislativa: <b>{{num_votacao}} </b> 
+        Total de votações existentes nesta casa legislativa: <b>{{num_votacao}} </b>
         <br/><br/>
         <div id="total_votacoes_filtradas_div" style="display:none">
-          <b><span id="total_votacoes_filtradas"></span></b> votações encontradas usando filtro <b>"{{palavras_chave}}"</b>.  
+          <b><span id="total_votacoes_filtradas"></span></b> votações encontradas usando filtro <b>"{{palavras_chave}}"</b>.
                 <span id="veja_as_votacoes"><a href="/analises/lista_de_votacoes_filtradas/{{casa_legislativa.nome_curto}}/{{periodicidade}}/{{palavras_chave}}" target="_blank">Veja as votações!</a></span>
 
         <br/><br/>
         </div>
 
-        <form id="formAnalise" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
+        <div style="width: 15%">
+            <p style="background: none;border: none; color: #1292db; font-weight:bold;cursor:pointer; font-size: 15px;"
+            onmouseover="this.style.color='#555';"
+            onmouseout="this.style.color='#1292db';"
+            onclick="mostrarBuscaAvancada();"
+            id="botao_busca_avancada">  &rarr; Análise Avançada</p>
+        </div>
+
+        <form style="display: none;" id="formAnalise" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
             <p><label for="periodicidade">Periodicidade:</label>
-            <select id="periodicidade" name="periodicidade" onChange="this.form.submit()">
+            <select id="periodicidade" name="periodicidade">
                 <option value="QUADRIENIO">Quadriênio</option>
                 <option value="BIENIO">Biênio</option>
                 <option value="ANO">Ano</option>
@@ -52,14 +60,20 @@
                 <!-- <option value="MES">Mês</option> Issue #193 -->
             </select>
             </p>
-            
+
             <p><label for="palavras_chave">Filtrar votações por temas:</label>
             Separe as palavras-chaves por vírgula.<br>
             <input type="text" id="palavras_chave" name ="palavras_chave" size="30" placeholder="saúde, educação">
-            <input type="submit" value="Filtrar">
+
+            <!-- REVIEW: Campo referente a issue 272 "Encontrar Parlamentar"
+                Mais informações podem ser encontradas em https://github.com/radar-parlamentar/radar/issues/272
+                Descomente para dar continuidade a feature -->
+
+            <label for="encontrar_parlamentar"> Encontrar Parlamentar: </label>
+            <input type="text" id="nome_parlamentar" name ="nome_parlamentar" size="30" placeholder="Ricardo Teixeira"><br>
             </p>
-           
-        </form> 
+            <input type="submit" value="Buscar">
+        </form>
 
         <!-- Popup windows content -->
         <div id="popup-content">
@@ -70,7 +84,7 @@
                 	<img id="expandido" src="/static/assets/expandido.png">
 					<input id="modal-close-button" type="button" value="OK! ENTENDI"/>
 				</div>
-                
+
             </div>
         </div>
 
@@ -97,10 +111,10 @@
             A movimentação de um parlamentar ao longo do tempo em relação ao plano de fundo não possue significado,
             o que vale é a sua distância em relação aos outros parlamentares.</br>
             Para criar o gráfico, os dados de votações nominais foram tratados através de análises de Componentes Principais.</br>
-            Para saber mais, veja a <a href="https://github.com/leonardofl/radar_parlamentar/raw/a4fd865edfb5b36aebd56070a42f72d8d3551a17/doc/radar_parlamentar.pdf">documentação</a>.  
+            Para saber mais, veja a <a href="https://github.com/radar-parlamentar/radar/raw/a4fd865edfb5b36aebd56070a42f72d8d3551a17/doc/radar_parlamentar.pdf">documentação</a>.
             </p>
         </aside>
-        
+
     </article>
         <div style="clear:right"/>
 {% endblock content %}
@@ -122,6 +136,19 @@
         </script>
     {% endif %}
     <script src="/static/files/codes/js/radar_plot.js"></script>
+    <script type="text/javascript">
+        function mostrarBuscaAvancada(){
+            var visibilidade = document.getElementById("formAnalise").style.display;
+            if(visibilidade == 'none'){
+                document.getElementById("formAnalise").style.display = 'block';
+                document.getElementById("botao_busca_avancada").innerHTML = "&darr; Análise Avançada";
+            }else{
+                document.getElementById("formAnalise").style.display = 'none';
+                document.getElementById("botao_busca_avancada").innerHTML = "&rarr; Análise Avançada";
+            }
+        }
+
+    </script>
 {% endblock extrajsend %}
 
 {% block extrascriptsend %}
@@ -130,11 +157,21 @@
         if(campo_select.options[i].value == '{{periodicidade}}') {
             campo_select.selectedIndex = i;
         }
-    } 
-    
+    }
+
+    var palavras_chave = document.getElementById("palavras_chave");
+    palavras_chave.value = '{{palavras_chave}}';
+
+     url = window.location.href;
+     var pagina_recarregada = url.indexOf("periodicidade");
+
+    if (pagina_recarregada != -1){
+        mostrarBuscaAvancada();
+    }
+
     menuActive("analises");
   $(document).ready(function() {
-    Plot.initialize('{{casa_legislativa.nome_curto}}', '{{periodicidade}}', '{{palavras_chave}}')
+    Plot.initialize('{{casa_legislativa.nome_curto}}', '{{periodicidade}}', '{{palavras_chave}}','{{nome_parlamentar}}')
+
   });
 {% endblock extrascriptsend %}
-

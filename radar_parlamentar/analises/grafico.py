@@ -27,9 +27,12 @@ from __future__ import unicode_literals
 import json
 import logging
 from math import sqrt, isnan
-from django import db  # para debugar numero de queries, usando
-                        # db.reset_queries() e print len(db.connection.queries)
 import time
+
+# para debugar numero de queries, usando
+# db.reset_queries() e len(db.connection.queries)
+from django import db
+
 
 logger = logging.getLogger("radar")
 
@@ -90,7 +93,6 @@ class JsonAnaliseGenerator:
         dict_casa['nome_curto'] = casa_legislativa.nome_curto
         dict_casa['esfera'] = casa_legislativa.esfera
         dict_casa['local'] = casa_legislativa.local
-        dict_casa['atualizacao'] = unicode(casa_legislativa.atualizacao)
         return dict_casa
 
     def _list_periodos(self):
@@ -109,6 +111,8 @@ class JsonAnaliseGenerator:
             dict_ap['cp1'] = self._dict_cp1(ap)
             dict_ap['cp2'] = self._dict_cp2(ap)
             dict_ap['votacoes'] = self._list_votacoes_do_periodo(ap)
+            dict_ap['chefe_executivo'] = self._list_chefes_do_periodo(ap)
+
             list_aps.append(dict_ap)
         return list_aps
 
@@ -149,16 +153,24 @@ class JsonAnaliseGenerator:
             dict_votacao['id'] = unicode(votacao).replace('"', "'")
             list_votacoes.append(dict_votacao)
         return list_votacoes
-
+    
+    def _list_chefes_do_periodo(self, ap):
+        list_chefes = []
+        for chefe in ap.chefes_executivos:
+            dict_chefe = {}
+            dict_chefe['nome'] = unicode(chefe).replace('"', "'")
+            list_chefes.append(dict_chefe)
+        return list_chefes
+    
     def _list_partidos_instrumented(self):
         db.reset_queries()
-        print 'comecando lista de partidos'
+        logger.info('comecando lista de partidos')
         ttotal1 = time.time()
         list_partidos = self._list_partidos()
-        print 'queries para fazer lista de partidos = '
-        print str(len(db.connection.queries))
-        print 'tempo na lista de partidos = '
-        print str(time.time() - ttotal1) + ' s.'
+        logger.info('queries para fazer lista de partidos = ')
+        logger.info(str(len(db.connection.queries)))
+        logger.info('tempo na lista de partidos = ')
+        logger.info(str(time.time() - ttotal1) + ' s.')
         return list_partidos
 
     def _list_partidos(self):
@@ -171,8 +183,9 @@ class JsonAnaliseGenerator:
         return list_partidos
 
     def _dict_partido(self, partido):
-        dict_partido = {
-            "nome": partido.nome, "numero": partido.numero, "cor": partido.cor}
+        dict_partido = {"nome": partido.nome,
+                        "numero": partido.numero,
+                        "cor": partido.cor}
         dict_partido["t"] = []
         dict_partido["r"] = []
         dict_partido["x"] = []
@@ -180,8 +193,8 @@ class JsonAnaliseGenerator:
         for ap in self.analise_temporal.analises_periodo:
             label_periodo = str(ap.periodo)
             cache_coords_key = label_periodo
-            coordenadas = self.partidosScaler.scale(
-                ap.coordenadas_partidos, cache_coords_key)
+            coordenadas = self.partidosScaler.scale(ap.coordenadas_partidos,
+                                                    cache_coords_key)
             try:
                 x = round(coordenadas[partido][0], 2)
                 y = round(coordenadas[partido][1], 2)
@@ -202,25 +215,30 @@ class JsonAnaliseGenerator:
                 partido, label_periodo)
             dict_partido["r"].append(raio)
         dict_partido["parlamentares"] = []
-        #legislaturas = self.analise_temporal.analises_periodo[0].legislaturas_por_partido[partido.nome]
-        legislaturas = self.analise_temporal.casa_legislativa.legislaturas().filter(
-            partido=partido).select_related('id', 'localidade', 'partido__nome', 'parlamentar__nome')
-        for leg in legislaturas:
-            dict_partido["parlamentares"].append(self._dict_parlamentar(leg))
+        parlamentares = \
+            self.analise_temporal.casa_legislativa.parlamentares().filter(
+                partido=partido).select_related('id',
+                                                'localidade',
+                                                'partido__nome',
+                                                'nome')
+        for parlamentar in parlamentares:
+            dict_partido["parlamentares"].append(
+                self._dict_parlamentar(parlamentar))
         return dict_partido
 
-    def _dict_parlamentar(self, legislatura):
-        leg_id = legislatura.id
-        nome = legislatura.parlamentar.nome
-        localidade = legislatura.localidade
-        dict_parlamentar = {
-            "nome": nome, "id": leg_id, "localidade": localidade}
+    def _dict_parlamentar(self, parlamentar):
+        leg_id = parlamentar.id
+        nome = parlamentar.nome
+        localidade = parlamentar.localidade
+        dict_parlamentar = {"nome": nome,
+                            "id": leg_id,
+                            "localidade": localidade}
         dict_parlamentar["x"] = []
         dict_parlamentar["y"] = []
         for ap in self.analise_temporal.analises_periodo:
             cache_coords_key = str(ap.periodo)
             coordenadas = self.parlamentaresScaler.scale(
-                ap.coordenadas_legislaturas, cache_coords_key)
+                ap.coordenadas_parlamentares, cache_coords_key)
             if coordenadas.has_key(leg_id):
                 x = coordenadas[leg_id][0]
                 y = coordenadas[leg_id][1]
@@ -297,14 +315,16 @@ class RaioPartidoCalculator():
         gerada com str(periodo), onde periodo é do tipo PeriodoCasaLegislativa
         """
         self.CONSTANTE_ESCALA_TAMANHO = 120
-        self.tamanhos_dos_partidos_por_periodo = tamanhos_dos_partidos_por_periodo
+        self.tamanhos_dos_partidos_por_periodo = \
+            tamanhos_dos_partidos_por_periodo
         self._init_area_total()
         self.escala = self.CONSTANTE_ESCALA_TAMANHO ** 2. / \
             max(1, self.area_total)
 
     def _init_area_total(self):
         maior_soma = 0
-        for tamanhos_partidos in self.tamanhos_dos_partidos_por_periodo.values():
+        for tamanhos_partidos in self.tamanhos_dos_partidos_por_periodo.values(
+        ):
             soma_dos_tamanhos_dos_partidos = sum(tamanhos_partidos.values())
             if soma_dos_tamanhos_dos_partidos > maior_soma:
                 maior_soma = soma_dos_tamanhos_dos_partidos

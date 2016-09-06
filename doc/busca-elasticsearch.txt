@@ -1,0 +1,136 @@
+Para melhorar a qualidade nos resultados de busca, uma proposta é usar uma estratégia de redução de palavras chamada de stem.
+
+Com o stem, a palavra é reduzida para sua raiz e, através dessa, são buscadas todas suas ramificações. Por exemplo, se o usuário buscar ambientalista, o processo de stem reduzirá ambientalista para ambiental e buscará todas as suas flexões como ambientistas, ambientais, ambientalismo...
+
+Existem duas propostas para essa redução: algoritmo ou dicionário.
+
+O algoritmo define um conjunto de regras para reduzir qualquer palavra. No dicionário, a redução e feita fazendo a busca da palavra em um dicionário.
+
+Comparando as duas propostas, o dicionário e mais preciso, porém o tempo de buscar uma palavra é consideravel, enquanto isso, no algoritmo, a execução e rápida porém com redução na precisão da redução.
+
+abaixo é mostrada a configuração necessária para instalar o stem por dicionario em português num índice do Elasticsearch.
+
+    $wget https://addons.cdn.mozilla.net/user-media/addons/_attachments/6081/verificador_ortografico_para_portugues_do_brasil-2.5-3.2.12-fx+an+sm+fn+tb.xpi?filehash=sha256%3A4a0e3d4523185a8240bda56164ebb21d8787a563e0832907b27ea7ce39e36ff0
+
+    descompactar e copiar arquivos .aff, .dic
+    para pasta /elasticsearch-1.x.x/config/hunspell/pt_BR/
+    onde /elasticsearch-1.x.x é o diretório do Elasticsearch
+
+    renomear o arquivo .aff para pt_BR.aff
+    renomear o arquivo .dic para pt_BR.dic
+    e criar arquivo settings.yml com:
+    ---
+    ignore_case:          true
+    strict_affix_parsing: true
+
+é necessário recriar o índice com a novo analisador. Supondo que o Elasticsearch está em localhost:9200: 
+    
+    $ curl -XDELETE 'http://localhost:9200/radar_parlamentar/'
+    $ curl -XPUT http://localhost:9200/radar_parlamentar/ -d '
+    {
+    "settings": {
+        "analysis": {
+            "analyzer": {
+                "my_analyzer": {
+                    "tokenizer": "standard",
+                    "filter": ["standard", "pt_BR", "lowercase","portuguese_stop","asciifolding"]
+            }
+            },
+            "filter": {
+                "my_stemmer": {
+                    "type": "stemmer",
+                "name": "brazilian"
+                },
+                 "portuguese_stop": {
+                     "type":       "stop",
+                     "stopwords":  "_brazilian_" 
+                },
+                 "pt_BR": {
+                     "type":       "hunspell",
+                     "language":  "pt_BR" 
+                }
+            }
+        }
+    }}'
+
+    $ curl -XPUT http://localhost:9200/radar_parlamentar/radar/_mapping?ignore_conflicts=true -d '
+    {
+      "radar" : {
+        "_all" : {"enabled" : true, "analyzer": "my_analyzer"},
+        "properties" : {
+          "casa_legilativa_local" : {
+            "type" : "string"
+          },
+          "casa_legislativa_atualizacao" : {
+            "type" : "date",
+            "format" : "dateOptionalTime"
+          },
+          "casa_legislativa_esfera" : {
+            "type" : "string"
+          },
+          "casa_legislativa_id" : {
+            "type" : "long"
+          },
+          "casa_legislativa_nome" : {
+            "type" : "string"
+          },
+          "casa_legislativa_nome_curto" : {
+            "type" : "string"
+          },
+          "proposicao_ano" : {
+            "type" : "string"
+          },
+          "proposicao_data_apresentacao" : {
+            "type" : "date",
+            "format" : "dateOptionalTime"
+          },
+          "proposicao_descricao" : {
+            "type" : "string"
+          },
+          "proposicao_ementa" : {
+            "type" : "string",
+            "analyzer": "my_analyzer"
+          },
+          "proposicao_id" : {
+            "type" : "long"
+          },
+          "proposicao_id_prop" : {
+            "type" : "string"
+          },
+          "proposicao_indexacao" : {
+            "type" : "string",
+            "analyzer": "my_analyzer"
+          },
+          "proposicao_numero" : {
+            "type" : "string"
+          },
+          "proposicao_sigla" : {
+            "type" : "string"
+          },
+          "proposicao_situacao" : {
+            "type" : "string"
+          },
+          "votacao_data" : {
+            "type" : "date",
+            "format" : "dateOptionalTime"
+          },
+          "votacao_descricao" : {
+            "type" : "string",
+            "analyzer": "my_analyzer"
+          },
+          "votacao_id" : {
+            "type" : "long"
+          },
+          "votacao_id_vot" : {
+            "type" : "string"
+          },
+          "votacao_resultado" : {
+            "type" : "string"
+          }
+    }}}'
+
+Por fim, para testar: 
+
+    $ curl -XGET 'http://localhost:9200/radar_parlamentar/_analyze?analyzer=my_analyzer&text=ambientes
+onde text é o texto que será analisado.
+

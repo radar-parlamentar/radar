@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chefe_executivo>
+	<Presidentes>
+		<Presidente Nome="Fernando Collor" Partido="PRN" AnoInicio="1990" AnoFinal="1992" Genero="M"/>
+		<Presidente Nome="Itamar Franco" Partido="PMDB" AnoInicio="1993" AnoFinal="1994" Genero="M"/>
+	  	<Presidente Nome="Fernando Henrique Cardoso" Partido="PSDB" AnoInicio="1995" AnoFinal="2002" Genero="M"/>
+	  	<Presidente Nome="Luís Inácio Lula da Silva" Partido="PT" AnoInicio="2003" AnoFinal="2010" Genero="M"/>
+	  	<Presidente Nome="Dilma Vana Rousseff" Partido="PT" AnoInicio="2011" AnoFinal="2016" Genero="F"/>
+	</Presidentes>
+</chefe_executivo>

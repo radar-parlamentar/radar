@@ -110,4 +110,3 @@ class CamarawsTest(TestCase):
             nome_prop_list.append(nomeProp.find('nomeProposicao').text)
         self.assertTrue(NOME_PLENARIO in nome_prop_list)
         self.assertFalse(NOT_NOME_PLENARIO in nome_prop_list)
-

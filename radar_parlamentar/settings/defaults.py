@@ -62,7 +62,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+#   'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -118,7 +118,6 @@ INSTALLED_APPS = (
     'importadores',
     'analises',
     'exportadores',
-    'importadorInterno',
     'testes_integracao',
     'south',
     'radar_parlamentar',
@@ -156,7 +155,7 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
-    'file': {
+        'file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'simple',
@@ -172,9 +171,9 @@ LOGGING = {
             'propagate': True,
         },
         'radar': {
-            'handlers': ['console', 'file'],
+            'handlers': ['file'],
             'level': 'DEBUG',
-            'propagate': True,
+            #'propagate': True,
         }
     }
 }

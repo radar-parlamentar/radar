@@ -32,7 +32,9 @@ logger = logging.getLogger("radar")
 
 
 def analises(request):
-    return render_to_response('analises.html', {}, context_instance=RequestContext(request))
+    return render_to_response('analises.html',
+                              {},
+                              context_instance=RequestContext(request))
 
 
 def analise(request, nome_curto_casa_legislativa):
@@ -48,6 +50,10 @@ def analise(request, nome_curto_casa_legislativa):
         palavras_chave = request.GET["palavras_chave"]
     except:
         palavras_chave = ""
+    try:
+        nome_parlamentar = request.GET["nome_parlamentar"]
+    except:
+        nome_parlamentar = ""
 
     num_votacao = casa_legislativa.num_votacao()
 
@@ -57,7 +63,8 @@ def analise(request, nome_curto_casa_legislativa):
          'partidos': partidos,
          'num_votacao': num_votacao,
          'periodicidade': periodicidade,
-         'palavras_chave': palavras_chave},
+         'palavras_chave': palavras_chave,
+         'nome_parlamentar': nome_parlamentar},
         context_instance=RequestContext(request)
     )
 
@@ -67,8 +74,8 @@ def json_analise(request, nome_curto_casa_legislativa,
     """Retorna o JSON com as coordenadas do gráfico PCA"""
     casa_legislativa = get_object_or_404(
         models.CasaLegislativa, nome_curto=nome_curto_casa_legislativa)
-    lista_de_palavras_chave = utils.StringUtils.transforma_texto_em_lista_de_string(
-        palavras_chave)
+    lista_de_palavras_chave = \
+        utils.StringUtils.transforma_texto_em_lista_de_string(palavras_chave)
     analisador = AnalisadorTemporal(
         casa_legislativa, periodicidade, lista_de_palavras_chave)
     analise_temporal = analisador.get_analise_temporal()
@@ -77,21 +84,24 @@ def json_analise(request, nome_curto_casa_legislativa,
     return HttpResponse(json, mimetype='application/json')
 
 
-def lista_de_votacoes_filtradas(request, nome_curto_casa_legislativa,
-                periodicidade=models.BIENIO, palavras_chave=""):
+def lista_de_votacoes_filtradas(request, 
+                                nome_curto_casa_legislativa,
+                                periodicidade=models.BIENIO,
+                                palavras_chave=""):
     '''Exibe a lista de votações filtradas'''
-    casa_legislativa = get_object_or_404(
-        models.CasaLegislativa,nome_curto=nome_curto_casa_legislativa)
-    lista_de_palavras_chave = utils.StringUtils.transforma_texto_em_lista_de_string(palavras_chave)
-    analisador = AnalisadorTemporal(casa_legislativa, periodicidade, 
-        lista_de_palavras_chave)
+    casa_legislativa = \
+        get_object_or_404(models.CasaLegislativa,
+                          nome_curto=nome_curto_casa_legislativa)
+    lista_de_palavras_chave = \
+        utils.StringUtils.transforma_texto_em_lista_de_string(palavras_chave)
+    analisador = \
+        AnalisadorTemporal(casa_legislativa, periodicidade,
+                           lista_de_palavras_chave)
     votacoes = analisador.votacoes_filtradas()
 
-    return render_to_response(
-                'lista_de_votacoes_filtradas.html',
-                {'casa_legislativa':casa_legislativa,
-                'lista_de_palavras_chave':lista_de_palavras_chave,
-                'votacoes': votacoes,
-                'periodicidade':periodicidade} 
-                )
-
+    return render_to_response('lista_de_votacoes_filtradas.html',
+                              {'casa_legislativa': casa_legislativa,
+                               'lista_de_palavras_chave':
+                               lista_de_palavras_chave,
+                               'votacoes': votacoes,
+                               'periodicidade': periodicidade})

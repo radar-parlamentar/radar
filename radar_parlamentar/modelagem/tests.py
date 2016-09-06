@@ -26,6 +26,9 @@ import utils
 from util_test import flush_db
 from django.utils.dateparse import parse_datetime
 from modelagem.models import MUNICIPAL, FEDERAL, ESTADUAL, BIENIO
+import logging
+
+logger = logging.getLogger("radar")
 
 
 class MandatoListsTest(TestCase):
@@ -88,23 +91,27 @@ class PeriodosRetrieverTest(TestCase):
     def test_casa_legislativa_periodos_anuais(self):
         retriever = utils.PeriodosRetriever(self.conv, models.ANO)
         periodos = retriever.get_periodos()
-        self.assertEquals(len(periodos), 1)
+        self.assertEquals(len(periodos), 2)
         self.assertEqual(periodos[0].string, '1989')
+        self.assertEqual(periodos[1].string, '1990')
         self.assertEqual(periodos[0].quantidade_votacoes, 8)
+        self.assertEqual(periodos[1].quantidade_votacoes, 1)
 
     def test_casa_legislativa_periodos_mensais(self):
         retriever = utils.PeriodosRetriever(self.conv, models.MES)
         periodos = retriever.get_periodos()
-        self.assertEquals(len(periodos), 2)
+        self.assertEquals(len(periodos), 3)
         self.assertEqual(periodos[0].string, '1989 Fev')
         self.assertEqual(periodos[0].quantidade_votacoes, 4)
         self.assertEqual(periodos[1].string, '1989 Out')
         self.assertEqual(periodos[1].quantidade_votacoes, 4)
+        self.assertEqual(periodos[2].string, '1990 Jan')
+        self.assertEqual(periodos[2].quantidade_votacoes, 1)
 
     def test_casa_legislativa_periodos_semestrais(self):
         retriever = utils.PeriodosRetriever(self.conv, models.SEMESTRE)
         periodos = retriever.get_periodos()
-        self.assertEquals(len(periodos), 2)
+        self.assertEquals(len(periodos), 3)
         d = periodos[0].ini
         self.assertEqual(1989, d.year)
         self.assertEqual(1, d.month)
@@ -117,8 +124,15 @@ class PeriodosRetrieverTest(TestCase):
         d = periodos[1].fim
         self.assertEqual(1989, d.year)
         self.assertEqual(12, d.month)
+        d = periodos[2].ini
+        self.assertEqual(1990, d.year)
+        self.assertEqual(1, d.month)
+        d = periodos[2].fim
+        self.assertEqual(1990, d.year)
+        self.assertEqual(6, d.month)
         self.assertEqual(periodos[0].string, '1989 1o Semestre')
         self.assertEqual(periodos[1].string, '1989 2o Semestre')
+        self.assertEqual(periodos[2].string, '1990 1o Semestre')
 
     def test_periodo_municipal_nao_deve_conter_votacoes_de_dois_mandatos(self):
         self._test_periodos_em_duas_datas(2008, 2009, MUNICIPAL, BIENIO, 2)
@@ -126,7 +140,8 @@ class PeriodosRetrieverTest(TestCase):
     def test_periodo_municipal_deve_estar_em_um_mandato(self):
         self._test_periodos_em_duas_datas(2009, 2010, MUNICIPAL, BIENIO, 1)
 
-    def test_inicio_de_periodo_municipal_deve_coincidir_com_inicio_mandato(self):
+    def test_inicio_de_periodo_municipal_deve_coincidir_com_inicio_mandato(
+            self):
         self._test_periodos_em_duas_datas(2010, 2011, MUNICIPAL, BIENIO, 2)
 
     def test_periodo_federal_nao_deve_conter_votacoes_de_dois_mandatos(self):
@@ -197,6 +212,55 @@ class ModelsTest(TestCase):
         psdb = models.Partido.from_numero(45)
         self.assertEquals(psdb.nome, 'PSDB')
         self.assertEquals(psdb.cor, '#0059AB')
+        pcdob = models.Partido.from_nome('PC DO B')
+        self.assertEquals(pcdob.numero, 65)
+        dem = models.Partido.from_nome('DEMOCRATAS')
+        self.assertEquals(dem.nome, 'DEM')
+        self.assertEquals(dem.numero, 25)
+
+    def cria_chefes_executivo(self):
+        pt = models.Partido.from_nome('PT')
+        chefe_masculino = models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva", genero="M", partido = pt,
+                                    mandato_ano_inicio = 1989, mandato_ano_fim = 1990)
+        chefe_masculino.save()
+        chefe_feminino = models.ChefeExecutivo(nome="Dilmé Rouseffé", genero="F", partido = pt,
+                                    mandato_ano_inicio = 1989, mandato_ano_fim = 1990)
+        chefe_feminino.save()
+        chefes = [chefe_masculino, chefe_feminino]
+        return chefes
+
+    def test_chefe_executivo_prefeito(self):
+        chefes = self.cria_chefes_executivo()
+        casa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        casa.esfera = models.MUNICIPAL
+        casa.save()
+        chefes[0].casas_legislativas.add(casa)
+        expected =  "Prefeito: Luiz Inacio Pierre da Silva - PT"
+        self.assertEquals(unicode(chefes[0]), expected)
+
+    def test_chefe_executivo_presidenta(self):
+        chefes = self.cria_chefes_executivo()
+        casa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        chefes[1].casas_legislativas.add(casa)
+        expected = "Presidenta: Dilmé Rouseffé - PT"
+        self.assertEquals(unicode(chefes[1]), expected)
+
+    def test_chefe_executivo_prefeita(self):
+        chefes = self.cria_chefes_executivo()
+        casa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        casa.esfera = models.MUNICIPAL
+        casa.save()
+        chefes[1].casas_legislativas.add(casa)
+        expected =  "Prefeita: Dilmé Rouseffé - PT"
+        self.assertEquals(unicode(chefes[1]), expected)
+
+    def test_chefe_executivo_presidente(self):
+        chefes = self.cria_chefes_executivo()
+        casa = models.CasaLegislativa.objects.get(nome_curto='conv')
+        chefes[0].casas_legislativas.add(casa)
+        expected =  "Presidente: Luiz Inacio Pierre da Silva - PT"
+        self.assertEquals(unicode(chefes[0]), expected)
+
 
     def test_partido_from_nome_None(self):
         nome = None
@@ -218,22 +282,6 @@ class ModelsTest(TestCase):
         self.assertTrue(conv.GIRONDINOS in nomes)
         self.assertTrue(conv.MONARQUISTAS in nomes)
 
-    def test_should_find_legislatura(self):
-        dt = datetime.date(1989, 07, 14)
-        try:
-            leg = models.Legislatura.find(dt, 'Pierre')
-            self.assertTrue(leg is not None)
-        except ValueError:
-            self.fail('Legislatura não encontrada')
-
-    def test_should_not_find_legislatura(self):
-        dt = datetime.date(1900, 07, 14)
-        try:
-            models.Legislatura.find(dt, 'Pierre')
-            self.fail('Legislatura não deveria ter sido encontrada')
-        except:
-            self.assertTrue(True)
-
     def test_deleta_casa(self):
 
         partidoTest1 = models.Partido()
@@ -247,48 +295,35 @@ class ModelsTest(TestCase):
         partidoTest1.cor = '#FFFFFF'
         partidoTest2.save()
 
-        parlamentarTest1 = models.Parlamentar()
-        parlamentarTest1.id_parlamentar = ''
-        parlamentarTest1.nome = 'Pierre'
-        parlamentarTest1.genero = ''
-        parlamentarTest1.save()
-        parlamentarTest2 = models.Parlamentar()
-        parlamentarTest2.id_parlamentar = ''
-        parlamentarTest2.nome = 'Napoleao'
-        parlamentarTest2.genero = ''
-        parlamentarTest2.save()
-
         casa_legislativaTest1 = models.CasaLegislativa()
         casa_legislativaTest1.nome = 'Casa1'
         casa_legislativaTest1.nome_curto = 'cs1'
         casa_legislativaTest1.esfera = 'FEDERAL'
         casa_legislativaTest1.local = ''
-        casa_legislativaTest1.atualizacao = '2012-06-01'
         casa_legislativaTest1.save()
         casa_legislativaTest2 = models.CasaLegislativa()
         casa_legislativaTest2.nome = 'Casa2'
         casa_legislativaTest2.nome_curto = 'cs2'
         casa_legislativaTest2.esfera = 'MUNICIPAL'
         casa_legislativaTest2.local = 'local2'
-        casa_legislativaTest2.atualizacao = '2012-12-31'
         casa_legislativaTest2.save()
 
-        legislaturaTest1 = models.Legislatura()
-        legislaturaTest1.parlamentar = parlamentarTest1
-        legislaturaTest1.casa_legislativa = casa_legislativaTest1
-        legislaturaTest1.inicio = '2013-01-01'
-        legislaturaTest1.fim = '2013-02-01'
-        legislaturaTest1.partido = partidoTest1
-        legislaturaTest1.localidade = 'PB'
-        legislaturaTest1.save()
-        legislaturaTest2 = models.Legislatura()
-        legislaturaTest2.parlamentar = parlamentarTest2
-        legislaturaTest2.casa_legislativa = casa_legislativaTest2
-        legislaturaTest2.inicio = '2013-01-02'
-        legislaturaTest2.fim = '2013-02-02'
-        legislaturaTest2.partido = partidoTest2
-        legislaturaTest2.localidade = 'PR'
-        legislaturaTest2.save()
+        parlamentarTest1 = models.Parlamentar()
+        parlamentarTest1.id_parlamentar = ''
+        parlamentarTest1.nome = 'Pierre'
+        parlamentarTest1.genero = ''
+        parlamentarTest1.casa_legislativa = casa_legislativaTest1
+        parlamentarTest1.partido = partidoTest1
+        parlamentarTest1.localidade = 'PB'
+        parlamentarTest1.save()
+        parlamentarTest2 = models.Parlamentar()
+        parlamentarTest2.id_parlamentar = ''
+        parlamentarTest2.nome = 'Napoleao'
+        parlamentarTest2.genero = ''
+        parlamentarTest2.casa_legislativa = casa_legislativaTest2
+        parlamentarTest2.partido = partidoTest2
+        parlamentarTest2.localidade = 'PR'
+        parlamentarTest2.save()
 
         proposicaoTest1 = models.Proposicao()
         proposicaoTest1.id_prop = '0001'
@@ -313,13 +348,12 @@ class ModelsTest(TestCase):
         votacaoTest1.save()
 
         votoTest1 = models.Voto(
-            votacao=votacaoTest1, legislatura=legislaturaTest1, opcao='TESTE')
+            votacao=votacaoTest1, parlamentar=parlamentarTest1, opcao='TESTE')
         votoTest1.save()
 
         antes_objetos_partido = models.Partido.objects.all()
-        antes_objetos_parlamentar = models.Parlamentar.objects.all()
         antes_objetos_casa = models.CasaLegislativa.objects.all()
-        antes_objetos_legislatura = models.Legislatura.objects.all()
+        antes_objetos_parlamentar = models.Parlamentar.objects.all()
         antes_objetos_proposicao = models.Proposicao.objects.all()
         antes_objetos_voto = models.Voto.objects.all()
         antes_objetos_votacao = models.Votacao.objects.all()
@@ -336,9 +370,9 @@ class ModelsTest(TestCase):
         self.assertTrue('Casa1' in nomes_casa)
         self.assertTrue('Casa2' in nomes_casa)
 
-        nomes_legislatura = [l.localidade for l in antes_objetos_legislatura]
-        self.assertTrue('PB' in nomes_legislatura)
-        self.assertTrue('PR' in nomes_legislatura)
+        localidades = [p.localidade for p in antes_objetos_parlamentar]
+        self.assertTrue('PB' in localidades)
+        self.assertTrue('PR' in localidades)
 
         nomes_proposicao = [lg.sigla for lg in antes_objetos_proposicao]
         self.assertTrue('PR1' in nomes_proposicao)
@@ -355,9 +389,8 @@ class ModelsTest(TestCase):
         models.CasaLegislativa.deleta_casa('cs1')
 
         depois_objetos_partido = models.Partido.objects.all()
-        depois_objetos_parlamentar = models.Parlamentar.objects.all()
         depois_objetos_casa = models.CasaLegislativa.objects.all()
-        depois_objetos_legislatura = models.Legislatura.objects.all()
+        depois_objetos_parlamentar = models.Parlamentar.objects.all()
         depois_objetos_proposicao = models.Proposicao.objects.all()
         depois_objetos_voto = models.Voto.objects.all()
         depois_objetos_votacao = models.Votacao.objects.all()
@@ -374,9 +407,9 @@ class ModelsTest(TestCase):
         self.assertFalse('Casa1' in nomes_casa)
         self.assertTrue('Casa2' in nomes_casa)
 
-        nomes_legislatura = [l.localidade for l in depois_objetos_legislatura]
-        self.assertFalse('PB' in nomes_legislatura)
-        self.assertTrue('PR' in nomes_legislatura)
+        localidades = [p.localidade for p in depois_objetos_parlamentar]
+        self.assertFalse('PB' in localidades)
+        self.assertTrue('PR' in localidades)
 
         nomes_proposicao = [lg.sigla for lg in depois_objetos_proposicao]
         self.assertFalse('PR1' in nomes_proposicao)
@@ -387,6 +420,24 @@ class ModelsTest(TestCase):
 
         nomes_votacao = [vt.id_vot for vt in depois_objetos_votacao]
         self.assertFalse(' 12345' in nomes_votacao)
+
+    def test_uma_votacao_por_casa_legislativa(self):
+        casa_legislativa = models.CasaLegislativa.objects.get(
+            nome_curto='conv')
+        data_inicio = '1990-01-01'
+        data_fim = '1990-01-01'
+        votacoes = models.Votacao.por_casa_legislativa(
+            casa_legislativa, data_inicio, data_fim)
+        self.assertEquals(1, len(votacoes))
+
+    def test_nenhuma_votacao_por_casa_legislativa(self):
+        casa_legislativa = models.CasaLegislativa.objects.get(
+            nome_curto='conv')
+        data_inicio = '2010-01-01'
+        data_fim = '2010-01-01'
+        votacoes = models.Votacao.por_casa_legislativa(
+            casa_legislativa, data_inicio, data_fim)
+        self.assertEquals(0, len(votacoes))
 
 
 class StringUtilsTest(TestCase):

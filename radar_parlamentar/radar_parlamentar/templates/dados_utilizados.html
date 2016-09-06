@@ -26,45 +26,27 @@
 {% endblock breadcrumbs %}
 
 {% block content %}
-    <article class="aboutDesc">
+<article class="aboutDesc">
 
-        <h1>Extrações da base de dados do Radar</h1>
-        <p>Os dados listados abaixo são extraídos da base de dados do Radar. Originalmente os dados são oriundos de suas respectivas casas legislativas, mas uma vez importados na base do radar, todos passam a se adequar ao <a href="https://raw.githubusercontent.com/leonardofl/radar_parlamentar/master/doc/classes.png">modelo de dados</a> do Radar.</p>
+	<h1>Extrações da base de dados do Radar</h1>
 
-        <p>Ao disponibilizar aqui dados brutos oriundos de diferentes casas legislativas sob formatos unificados, esperamos que outras pessoas possam mais facilmente aplicar análises automatizadas sobre os dados das diferentes casas legislativas.</p>
+	<p>
+		Aqui você pode acessar a última extração realizada com todos os dados da base do Radar. Esses dados seguem o <a
+			href="https://raw.githubusercontent.com/radar-parlamentar/radar/master/doc/classes.png">modelo de dados</a> do Radar
+		e estão disponibilizados no formato SQL, sendo extraídos periodicamente de nossa base de dados em PostgreSQL. Para
+		utilizar esses dados, é preciso importá-los em alguma base de dados com suporte a SQL.
+	</p>
+	<p>
+		<a href="/static/db-dump/radar.sql.bz2">Download da base completa do Radar aqui</a> (atualizada em {{dumpdate}}).
+	</p>
 
-        <h2>Dados completos</h2>
-        <p>Aqui você pode acessar a última extração realizada com todos os dados da base do Radar. Esses dados estão disponibilizados no formato SQL e são extraídos periodicamente de nossa base de dados em PostgreSQL. Para utilizar esses dados, é preciso importá-los em alguma base de dados com suporte a SQL.</p>
-        <p><a href="/static/db-dump/radar.sql.bz2">Download da base completa do Radar aqui</a> (atualizada em {{dumpdate}}).</p> 
+	<p>Ao disponibilizar aqui dados brutos oriundos de diferentes casas legislativas sob um formato unificado,
+		esperamos que outras pessoas possam mais facilmente aplicar análises automatizadas sobre os dados das diferentes casas
+		legislativas.</p>
 
-        <h2>Dados específicos</h2>
-        <p>Abaixo você pode acessar tipos de dados específicos contidos na base do radar, tais como parlamentares, votações, etc. Esses dados estão no formato XML.</p>
+    <p>Instruções sobre como importar os dados no Postgresql estão disponíveis <a href="https://github.com/radar-parlamentar/radar/blob/master/doc/importacao-dados.md">aqui</a>.
 
-        <h4>Casas Legislativas</h4>
-        <p>Estes são dados referentes às casas legislativas analisadas no radar. Nele estão presentes informações como <b>Nome</b>, <b>Esfera</b> e <b>Atualização</b>, entre outros.</p>
-        <p><a href="/dados/casa_legislativa/">Download</a></p>
-
-        <h4>Legislatura</h4>
-        <p>Um período de tempo contínuo em que um político atua como parlamentar. É diferente de mandato. Um mandato dura 4 anos. Se o titular sai e o suplente assume, temos aí uma troca de legislatura. Neste arquivo temos informações como <b>Parlamentar</b>, sua <b>Casa Legislativa</b>, <b>Partido</b> e o <b>Início</b> e <b>Fim</b> de sua legislatura.</p>
-        <p><a href="/dados/legislatura/">Download</a></p>
-
-        <h4>Parlamentar</h4>
-        <p>Dados dos parlamentares, como <b>Nome</b> e <b>Gênero</b>.</p>
-        <p><a href="/dados/parlamentar/">Download</a></p>
-
-        <h4>Partido</h4>
-        <p>Dados dos partidos políticos, como <b>Nome</b>, <b>Número</b> e <b>Cor</b>.</p>
-        <p><a href="/dados/partido/">Download</a></p>
-
-        <h4>Proposição</h4>
-        <p>Esse arquivo contém os dados relacionados às propostas de leis que serão (ou foram) votadas, como <b>Ementa</b>, <b>Descrição</b> e <b>Situação</b>, entre outras informações.</p>
-        <p><a href="/dados/proposicao/">Download</a></p>
-
-        <h4>Votação e Voto</h4>
-        <p>Cada proposição possui uma ou mais votações. Em "votação", temos os dados relacionados à proposição, como <b>Data</b> e <b>Resultado</b> da votação. Já em "voto", temos os votos dados por cada parlamentar, assim podemos analisar diretamente cada parlamentar.</p>
-        <p><a href="/dados/votacao/">Download Votação</a><br>
-            <a href="/dados/voto">Download Voto</a></p>
-    </article>
+</article>
 
 {% endblock content %}
 
