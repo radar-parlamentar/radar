@@ -207,7 +207,7 @@ class XmlCMSP:
             if prop_nome:
                 id_vot = vot_tree.get('VotacaoID')
                 votacoes_em_banco = models.Votacao.objects.filter(
-                    id_vot=id_vot)
+                    proposicao__casa_legislativa__nome_curto='cmsp', id_vot=id_vot)
                 if votacoes_em_banco:
                     vot = votacoes_em_banco[0]
                 else:

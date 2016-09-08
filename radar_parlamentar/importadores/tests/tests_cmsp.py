@@ -182,8 +182,6 @@ class ModelCMSPCase(TestCase):
 
 class IdempotenciaCMSPCase(TestCase):
 
-    # def setUp(self):
-
     def test_idempotencia_cmsp(self):
 
         casa = GeradorCasaLegislativa().gerar_cmsp()
