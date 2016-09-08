@@ -37,7 +37,12 @@
 		utilizar esses dados, é preciso importá-los em alguma base de dados com suporte a SQL.
 	</p>
 	<p>
-		<a href="/static/db-dump/radar.sql.bz2">Download da base completa do Radar aqui</a> (atualizada em {{dumpdate}}).
+              {%if variavel %}
+		 <a href="/static/db-dump/radar.sql.bz2">Download da base completa do Radar aqui</a> (atualizada em {{dumpdate}}).
+              {%else%}
+                 <a href="">Download da base completa do Radar aqui</a> (atualizada em {{dumpdate}}).
+              {% endif %}
+
 	</p>
 
 	<p>Ao disponibilizar aqui dados brutos oriundos de diferentes casas legislativas sob um formato unificado,
