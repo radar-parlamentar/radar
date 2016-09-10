@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CMSP>
+    <Sessao Nome="77ª Sessão Extraordinária" Data="10/2/2010">
+        <Votacao VotacaoID="1" Materia="PL 1 /2010" TipoVotacao="Nominal" Resultado="Pendente" Presentes="1" Sim="1" Nao="0" Branco="0" Abstencao="0" Ementa=" " NotasRodape=" ">
+            <Vereador Nome="Teste_vereador" IDParlamentar="1" Partido="PTest" Voto="Não votou"/>
+        </Votacao>
+        <Votacao VotacaoID="961" TipoVotacao="Simbólica" Materia="PL 673/2013, do Ver. MÁRIO COVAS NETO (PSDB)" Ementa="DISPÕE SOBRE O IMPEDIMENTO DAS EMPRESAS DE TRANSPORTE DE ÔNIBUS, MICRO-ÔNIBUS, FRETADOS, COOPERATIVAS E RELACIONADOS DE PRESTAREM SERVIÇOS AO MUNICÍPIO, PARTICIPAR EM LICITAÇÕES E CONCESSÕES PÚBLICAS, CASO POSSUAM EM SEUS QUADROS FUNCIONÁRIOS NÃO REGISTRADOS CONFORME PREVÊ A LEGISLAÇÃO TRABALHISTA BRASILEIRA, E DÁ OUTRAS PROVIDÊNCIAS. . " Resultado="Aprovado" NotasRodape="APROVADO EM PRIMEIRA DISCUSSÃO E VOTAÇÃO NA FORMA DO TEXTO ORIGINAL&#xD;&#xA;&#x9;&#xD;&#xA;&#xD;&#xA;O PROJETO VOLTARÁ EM SEGUNDA DISCUSSÃO E VOTAÇÃO" />
+    </Sessao>
+  <Sessao Nome="288ª Sessão Ordinária" Data="15/12/2015">
+    <Votacao VotacaoID="2089" TipoVotacao="Nominal" Materia="Redução do intersticio do PL 673/2015 do executivo" Ementa="REVOVGA A LEI Nº 13.872 DE 12 DE JULHO DE 2004. " Resultado="Reprovado" Presentes="32" Sim="16" Nao="1" Abstencao="0" Branco="0" NotasRodape="">
+      <Vereador Nome="ALFREDINHO" Partido="PT" IDParlamentar="1447" Voto="Sim" />
+      <Vereador Nome="ANTONIO DONATO" Partido="PT" IDParlamentar="1311" Voto="Sim" />
+      <Vereador Nome="ARI FRIEDENBACH" Partido="PROS" IDParlamentar="1991" Voto="Sim" />
+      <Vereador Nome="ARSELINO TATTO" Partido="PT" IDParlamentar="155" Voto="Sim" />
+      <Vereador Nome="ATILIO FRANCISCO" Partido="PRB" IDParlamentar="676" Voto="Sim" />
+      <Vereador Nome="CONTE LOPES" Partido="PTB" IDParlamentar="2002" Voto="Sim" />
+      <Vereador Nome="DALTON SILVANO" Partido="PV" IDParlamentar="268" Voto="Sim" />
+      <Vereador Nome="EDUARDO TUMA" Partido="PSDB" IDParlamentar="1996" Voto="Não" />
+      <Vereador Nome="JAIR TATTO" Partido="PT" IDParlamentar="2001" Voto="Sim" />
+      <Vereador Nome="JOSÉ POLICE NETO" Partido="PSD" IDParlamentar="1305" Voto="Sim" />
+      <Vereador Nome="JULIANA CARDOSO" Partido="PT" IDParlamentar="1634" Voto="Sim" />
+      <Vereador Nome="PAULO FIORILO" Partido="PT" IDParlamentar="1309" Voto="Sim" />
+      <Vereador Nome="PAULO FRANGE" Partido="PTB" IDParlamentar="267" Voto="Sim" />
+      <Vereador Nome="RICARDO TEIXEIRA" Partido="PV" IDParlamentar="1487" Voto="Sim" />
+      <Vereador Nome="USHITARO KAMIA" Partido="PSD" IDParlamentar="179" Voto="Sim" />
+      <Vereador Nome="VALDECIR CABRABOM" Partido="PTB" IDParlamentar="2127" Voto="Sim" />
+      <Vereador Nome="VAVÁ" Partido="PT" IDParlamentar="1967" Voto="Sim" />
+    </Votacao>
+  </Sessao>
+  <Sessao Nome="298ª Sessão Extraordinária" Data="15/12/2015">
+    <Votacao VotacaoID="2083" TipoVotacao="Nominal" Materia="Redução do intersticio do PL 673/2015 do executivo" Ementa="REVOVGA A LEI Nº 13.872 DE 12 DE JULHO DE 2004. " Resultado="Aprovado" Presentes="50" Sim="32" Nao="10" Abstencao="0" Branco="0" NotasRodape="">
+      <Vereador Nome="ALESSANDRO GUEDES" Partido="PT" IDParlamentar="2000" Voto="Sim" />
+      <Vereador Nome="ALFREDINHO" Partido="PT" IDParlamentar="1447" Voto="Sim" />
+      <Vereador Nome="ANDREA MATARAZZO" Partido="PSDB" IDParlamentar="1994" Voto="Não" />
+      <Vereador Nome="ANIBAL DE FREITAS FILHO" Partido="PSDB" IDParlamentar="1667" Voto="Sim" />
+      <Vereador Nome="ANTONIO DONATO" Partido="PT" IDParlamentar="1311" Voto="Sim" />
+      <Vereador Nome="ARI FRIEDENBACH" Partido="PROS" IDParlamentar="1991" Voto="Sim" />
+      <Vereador Nome="ARSELINO TATTO" Partido="PT" IDParlamentar="155" Voto="Sim" />
+      <Vereador Nome="ATILIO FRANCISCO" Partido="PRB" IDParlamentar="676" Voto="Sim" />
+      <Vereador Nome="AURÉLIO MIGUEL" Partido="PR" IDParlamentar="1299" Voto="Sim" />
+      <Vereador Nome="AURELIO NOMURA" Partido="PSDB" IDParlamentar="224" Voto="Não" />
+      <Vereador Nome="CALVO" Partido="PMDB" IDParlamentar="313" Voto="Sim" />
+      <Vereador Nome="CONTE LOPES" Partido="PTB" IDParlamentar="2002" Voto="Sim" />
+      <Vereador Nome="DALTON SILVANO" Partido="PV" IDParlamentar="268" Voto="Sim" />
+      <Vereador Nome="DAVID SOARES" Partido="PSD" IDParlamentar="1707" Voto="Sim" />
+      <Vereador Nome="EDIR SALES" Partido="PSD" IDParlamentar="1647" Voto="Sim" />
+      <Vereador Nome="EDUARDO TUMA" Partido="PSDB" IDParlamentar="1996" Voto="Não" />
+      <Vereador Nome="ELISEU GABRIEL" Partido="PSB" IDParlamentar="776" Voto="Sim" />
+      <Vereador Nome="GEORGE HATO" Partido="PMDB" IDParlamentar="1989" Voto="Sim" />
+      <Vereador Nome="GILSON BARRETO" Partido="PSDB" IDParlamentar="187" Voto="Não" />
+      <Vereador Nome="JAIR TATTO" Partido="PT" IDParlamentar="2001" Voto="Sim" />
+      <Vereador Nome="JAMIL MURAD" Partido="PC DO B" IDParlamentar="1628" Voto="Sim" />
+      <Vereador Nome="JONAS CAMISA NOVA" Partido="DEMOCRATAS" IDParlamentar="2129" Voto="Sim" />
+      <Vereador Nome="JULIANA CARDOSO" Partido="PT" IDParlamentar="1634" Voto="Sim" />
+      <Vereador Nome="LAÉRCIO BENKO" Partido="PHS" IDParlamentar="1988" Voto="Sim" />
+      <Vereador Nome="MÁRIO COVAS NETO" Partido="PSDB" IDParlamentar="1932" Voto="Não" />
+      <Vereador Nome="MARQUITO" Partido="PTB" IDParlamentar="1927" Voto="Sim" />
+      <Vereador Nome="NATALINI" Partido="PV" IDParlamentar="796" Voto="Não" />
+      <Vereador Nome="NOEMI NONATO" Partido="PROS" IDParlamentar="1316" Voto="Sim" />
+      <Vereador Nome="OTA" Partido="PROS" IDParlamentar="1930" Voto="Sim" />
+      <Vereador Nome="PATRÍCIA BEZERRA" Partido="PSDB" IDParlamentar="1998" Voto="Não" />
+      <Vereador Nome="PAULO FIORILO" Partido="PT" IDParlamentar="1309" Voto="Sim" />
+      <Vereador Nome="PAULO FRANGE" Partido="PTB" IDParlamentar="267" Voto="Sim" />
+      <Vereador Nome="PR. EDEMILSON CHAVES" Partido="PP" IDParlamentar="2003" Voto="Sim" />
+      <Vereador Nome="QUITO FORMIGA" Partido="PSDB" IDParlamentar="1326" Voto="Não" />
+      <Vereador Nome="REIS" Partido="PT" IDParlamentar="1947" Voto="Sim" />
+      <Vereador Nome="RICARDO TEIXEIRA" Partido="PV" IDParlamentar="1487" Voto="Sim" />
+      <Vereador Nome="SALOMÃO PEREIRA" Partido="PSDB" IDParlamentar="1768" Voto="Não" />
+      <Vereador Nome="SANDRA TADEU" Partido="DEMOCRATAS" IDParlamentar="1635" Voto="Sim" />
+      <Vereador Nome="SENIVAL MOURA" Partido="PT" IDParlamentar="1349" Voto="Sim" />
+      <Vereador Nome="TONINHO VESPOLI" Partido="PSOL" IDParlamentar="1999" Voto="Não" />
+      <Vereador Nome="VAVÁ" Partido="PT" IDParlamentar="1967" Voto="Sim" />
+      <Vereador Nome="WADIH MUTRAN" Partido="PDT" IDParlamentar="132" Voto="Sim" />
+    </Votacao>
+  </Sessao>
+  <Sessao Nome="298ª Sessão Extraordinária" Data="15/12/2015">
+    <Votacao VotacaoID="2004" TipoVotacao="Nominal" Materia="PL 673 /2015 , DO EXECUTIVO" Ementa="REVOVGA A LEI Nº 13.872 DE 12 DE JULHO DE 2004. " Resultado="Aprovado" Presentes="53" Sim="41" Nao="0" Abstencao="0" Branco="0" NotasRodape="APROVADO EM PRIMEIRA DISCUSSÃO E VOTAÇÃO NA FORMA DO TEXTO ORIGINAL&#xA;O PROJETO VOLTARÁ EM SEGUNDA DISCUSSÃO E VOTAÇÃO">
+      <Vereador Nome="ABOU ANNI" Partido="PV" IDParlamentar="1297" Voto="Sim" />
+      <Vereador Nome="ADOLFO QUINTAS" Partido="PSDB" IDParlamentar="1310" Voto="Sim" />
+      <Vereador Nome="ALESSANDRO GUEDES" Partido="PT" IDParlamentar="2000" Voto="Sim" />
+      <Vereador Nome="ALFREDINHO" Partido="PT" IDParlamentar="1447" Voto="Sim" />
+      <Vereador Nome="ANTONIO DONATO" Partido="PT" IDParlamentar="1311" Voto="Sim" />
+      <Vereador Nome="ARI FRIEDENBACH" Partido="PROS" IDParlamentar="1991" Voto="Sim" />
+      <Vereador Nome="ARSELINO TATTO" Partido="PT" IDParlamentar="155" Voto="Sim" />
+      <Vereador Nome="ATILIO FRANCISCO" Partido="PRB" IDParlamentar="676" Voto="Sim" />
+      <Vereador Nome="AURÉLIO MIGUEL" Partido="PR" IDParlamentar="1299" Voto="Sim" />
+      <Vereador Nome="CALVO" Partido="PMDB" IDParlamentar="313" Voto="Sim" />
+      <Vereador Nome="CLAUDINHO DE SOUZA" Partido="PSDB" IDParlamentar="1300" Voto="Sim" />
+      <Vereador Nome="CONTE LOPES" Partido="PTB" IDParlamentar="2002" Voto="Sim" />
+      <Vereador Nome="DALTON SILVANO" Partido="PV" IDParlamentar="268" Voto="Sim" />
+      <Vereador Nome="DAVID SOARES" Partido="PSD" IDParlamentar="1707" Voto="Sim" />
+      <Vereador Nome="EDIR SALES" Partido="PSD" IDParlamentar="1647" Voto="Sim" />
+      <Vereador Nome="ELISEU GABRIEL" Partido="PSB" IDParlamentar="776" Voto="Sim" />
+      <Vereador Nome="GEORGE HATO" Partido="PMDB" IDParlamentar="1989" Voto="Sim" />
+      <Vereador Nome="JAIR TATTO" Partido="PT" IDParlamentar="2001" Voto="Sim" />
+      <Vereador Nome="JAMIL MURAD" Partido="PC DO B" IDParlamentar="1628" Voto="Sim" />
+      <Vereador Nome="JONAS CAMISA NOVA" Partido="DEMOCRATAS" IDParlamentar="2129" Voto="Sim" />
+      <Vereador Nome="JOSÉ POLICE NETO" Partido="PSD" IDParlamentar="1305" Voto="Sim" />
+      <Vereador Nome="JULIANA CARDOSO" Partido="PT" IDParlamentar="1634" Voto="Sim" />
+      <Vereador Nome="LAÉRCIO BENKO" Partido="PHS" IDParlamentar="1988" Voto="Sim" />
+      <Vereador Nome="MARQUITO" Partido="PTB" IDParlamentar="1927" Voto="Sim" />
+      <Vereador Nome="MILTON LEITE" Partido="DEMOCRATAS" IDParlamentar="273" Voto="Sim" />
+      <Vereador Nome="NOEMI NONATO" Partido="PROS" IDParlamentar="1316" Voto="Sim" />
+      <Vereador Nome="OTA" Partido="PROS" IDParlamentar="1930" Voto="Sim" />
+      <Vereador Nome="PAULO FIORILO" Partido="PT" IDParlamentar="1309" Voto="Sim" />
+      <Vereador Nome="PR. EDEMILSON CHAVES" Partido="PP" IDParlamentar="2003" Voto="Sim" />
+      <Vereador Nome="QUITO FORMIGA" Partido="PSDB" IDParlamentar="1326" Voto="Sim" />
+      <Vereador Nome="REIS" Partido="PT" IDParlamentar="1947" Voto="Sim" />
+      <Vereador Nome="RICARDO NUNES" Partido="PMDB" IDParlamentar="1990" Voto="Sim" />
+      <Vereador Nome="RICARDO TEIXEIRA" Partido="PV" IDParlamentar="1487" Voto="Sim" />
+      <Vereador Nome="SANDRA TADEU" Partido="DEMOCRATAS" IDParlamentar="1635" Voto="Sim" />
+      <Vereador Nome="SENIVAL MOURA" Partido="PT" IDParlamentar="1349" Voto="Sim" />
+      <Vereador Nome="SOUZA SANTOS" Partido="PSD" IDParlamentar="1633" Voto="Sim" />
+      <Vereador Nome="TONINHO PAIVA" Partido="PR" IDParlamentar="220" Voto="Sim" />
+      <Vereador Nome="USHITARO KAMIA" Partido="PSD" IDParlamentar="179" Voto="Sim" />
+      <Vereador Nome="VALDECIR CABRABOM" Partido="PTB" IDParlamentar="2127" Voto="Sim" />
+      <Vereador Nome="VAVÁ" Partido="PT" IDParlamentar="1967" Voto="Sim" />
+      <Vereador Nome="WADIH MUTRAN" Partido="PDT" IDParlamentar="132" Voto="Sim" />
+    </Votacao>
+  </Sessao>
+
+</CMSP>

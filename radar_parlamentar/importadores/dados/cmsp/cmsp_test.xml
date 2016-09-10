@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<CMSP>
-    <Sessao Nome="77ª Sessão Extraordinária" Data="10/2/2010">
-        <Votacao VotacaoID="1" Materia="PL 1 /2010" TipoVotacao="Nominal" Resultado="Pendente" Presentes="1" Sim="1" Nao="0" Branco="0" Abstencao="0" Ementa=" " NotasRodape=" ">
-            <Vereador Nome="Teste_vereador" IDParlamentar="1" Partido="PTest" Voto="Não votou"/>
-        </Votacao>
-    </Sessao>
-</CMSP>
