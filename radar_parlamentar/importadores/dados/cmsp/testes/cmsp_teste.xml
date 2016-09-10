@@ -173,7 +173,11 @@
       <Vereador Nome="TONINHO PAIVA" Partido="PR" IDParlamentar="220" Voto="Sim" />
       <Vereador Nome="USHITARO KAMIA" Partido="PSD" IDParlamentar="179" Voto="Sim" />
       <Vereador Nome="VALDECIR CABRABOM" Partido="PTB" IDParlamentar="2127" Voto="Sim" />
+      <!-- voto repetido ambíguo -->
+      <Vereador Nome="VALDECIR CABRABOM" Partido="PTB" IDParlamentar="2127" Voto="Não" />
       <Vereador Nome="VAVÁ" Partido="PT" IDParlamentar="1967" Voto="Sim" />
+      <Vereador Nome="WADIH MUTRAN" Partido="PDT" IDParlamentar="132" Voto="Sim" />
+      <!-- voto repetido -->
       <Vereador Nome="WADIH MUTRAN" Partido="PDT" IDParlamentar="132" Voto="Sim" />
     </Votacao>
   </Sessao>

@@ -109,9 +109,27 @@ class ImportadorCMSPCase(TestCase):
         voto = models.Voto.objects.get(votacao=votPl140, parlamentar=toninho)
         self.assertEquals(voto.opcao, models.SIM)
 
-# TODO testar que proposições não se repetem
+    def test_parlamentares_nao_se_repetem(self):
+        parlamentares = models.Parlamentar.objects.all()
+        tuplas_vereadores_list = [ (p.nome, p.partido.nome, p.partido.numero) for p in parlamentares ]
+        tuplas_vereadores_set = set(tuplas_vereadores_list)
+        self.assertEquals(len(tuplas_vereadores_list), len(tuplas_vereadores_set))
 
-# TODO testar que parlamentares não são duplicados
+    def test_tratamento_votos_repetidos_mesma_votacao(self):
+        """VALDECIR CABRABOM deu dois votos (um sim e um não) na votação do PL 140/2015
+        WADIH MUTRAN deu dois votos iguais (sim)  na votação do PL 140/2015
+        """
+        pl140 = models.Proposicao.objects.get(sigla='PL', numero='140', ano='2015')
+        votPl140 = models.Votacao.objects.get(proposicao=pl140)
+        valdecir = models.Parlamentar.objects.get(nome='VALDECIR CABRABOM')
+        votos_count = models.Voto.objects.filter(votacao=votPl140, parlamentar=valdecir).count()
+        self.assertEquals(votos_count, 1) # polêmico, estmoas
+        wadih = models.Parlamentar.objects.get(nome='WADIH MUTRAN')
+        votos_count = models.Voto.objects.filter(votacao=votPl140, parlamentar=wadih).count()
+        self.assertEquals(votos_count, 1)
+
+# TODO testar que proposições não se repetem issue #388
+
 
 
 class EstaticosCMSPCase(TestCase):
