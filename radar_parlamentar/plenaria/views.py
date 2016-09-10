@@ -7,7 +7,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from . import serializer
 
 
-def plenaria(request, nome_curto_casa_legislativa=None, id_proposicao=None):
+def plenaria(request, nome_curto_casa_legislativa=None, identificador_proposicao=None):
+    """identificador_proposicao: 'PL-123-2015'"""
 
     cmsp = models.CasaLegislativa.objects.get(nome_curto = 'cmsp')
     sen = models.CasaLegislativa.objects.get(nome_curto = 'sen')
@@ -22,7 +23,7 @@ def plenaria(request, nome_curto_casa_legislativa=None, id_proposicao=None):
             nome_curto=nome_curto_casa_legislativa
         )
         proposicoes = [
-            (str(prop.id), prop.nome())
+            (identificador(prop), prop.nome())
             for prop in models.Proposicao.objects.filter(
                 casa_legislativa__nome_curto=nome_curto_casa_legislativa
             )
@@ -33,7 +34,7 @@ def plenaria(request, nome_curto_casa_legislativa=None, id_proposicao=None):
     return render_to_response(
         'plenaria.html',
         {
-            'id_proposicao': id_proposicao,
+            'identificador_proposicao': identificador_proposicao,
             'casa_legislativa': casa_legislativa,
             'casas_legislativas': casas_legislativas,
             'proposicoes': proposicoes,
@@ -42,10 +43,26 @@ def plenaria(request, nome_curto_casa_legislativa=None, id_proposicao=None):
     )
 
 
-def json_proposicao(request, nome_curto_casa_legislativa, id_proposicao):
-    """Retorna o JSON com os dados de todas as votações de uma proposição."""
-    proposicao = get_object_or_404(
-        models.Proposicao, id=id_proposicao)
+def identificador(prop):
+    return '-'.join([prop.sigla, prop.numero, prop.ano])
+
+
+def json_proposicao(request, nome_curto_casa_legislativa, identificador_proposicao=None):
+    """Retorna o JSON com os dados de todas as votações de uma proposição.
+        identificador_proposicao: 'PL-123-2015'
+    """
+    sigla_proposicao, numero_proposicao, ano_proposicao = identificador_proposicao.split('-')
+# comentado enquanto não se resolve #388
+#    proposicao = get_object_or_404(
+#        models.Proposicao, casa_legislativa__nome_curto=nome_curto_casa_legislativa,
+#        sigla=sigla_proposicao, numero=numero_proposicao, ano=ano_proposicao)
+    proposicoes = models.Proposicao.objects.filter(casa_legislativa__nome_curto=nome_curto_casa_legislativa,
+        sigla=sigla_proposicao, numero=numero_proposicao, ano=ano_proposicao)
+    if proposicoes:
+        proposicao = proposicoes[0]
+    else:
+        raise Http404
     proposicao_serializer = serializer.ProposicaoSerializer()
     dados = proposicao_serializer.get_json_proposicao(proposicao)
     return HttpResponse(dados, mimetype='application/json')
+

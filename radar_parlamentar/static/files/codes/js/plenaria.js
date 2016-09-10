@@ -28,19 +28,17 @@ Plot = (function ($) {
     var idx_votacao = "",
         len_votacoes = 0,
         nome_curto_casa_legislativa = null,
-        id_proposicao = null,
+        identificador_proposicao = null,
         proxima = null,
         anterior = null,
         dado = null;
 
 
     // Function to load the data and draw the chart
-    function initialize(nome_curto_casa_legislativa_, id_proposicao_) {
-        //This is just a sample data for tests purposes.
-        //d3.json("/analises/json_plenaria/cmsp/100", plot_data);
+    function initialize(nome_curto_casa_legislativa_, identificador_proposicao_) {
         nome_curto_casa_legislativa = nome_curto_casa_legislativa_;
-        id_proposicao = id_proposicao_;
-        d3.json("/analises/json_plenaria/" + nome_curto_casa_legislativa + "/" + id_proposicao, first_plot);
+        identificador_proposicao = identificador_proposicao_;
+        d3.json("/json_plenaria/" + nome_curto_casa_legislativa + "/" + identificador_proposicao, first_plot);
     }
 
     function first_plot(data) {

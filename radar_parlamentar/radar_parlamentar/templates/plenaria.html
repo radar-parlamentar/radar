@@ -26,16 +26,16 @@
 
 {% block breadcrumbs %}
     <li><a href="/index/">Home</a> &raquo;</li>
-    <li><a href="/analises/plenaria">Plenárias</a></li>
+    <li><a href="/plenaria">Plenárias</a></li>
     {% if casa_legislativa %}
-        <li> &raquo; <a href="/analises/plenaria/{{casa_legislativa.nome_curto}}">{{casa_legislativa.nome}}</a></li>
+        <li> &raquo; <a href="/plenaria/{{casa_legislativa.nome_curto}}">{{casa_legislativa.nome}}</a></li>
     {% endif %}
 {% endblock breadcrumbs %}
 
 {% block content %}
     <h1>Plenárias</h1>
 
-    <form id="formProposicao" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
+    <form id="formProposicao" method="GET" action="/plenaria/{{casa_legislativa.nome_curto}}/">
         <div class="com-margem">
             <label for="casa-legislativa">Casa Legislativa:</label>
             <select id="casa-legislativa" name="casa-legislativa" onchange="route()">
@@ -52,16 +52,16 @@
                 <div class="com-margem">
                     <label for="proposicao">Proposição:</label>
                     <select id="proposicao" name="proposicao" onchange="route()">
-                        {% if not id_proposicao %}<option value="" selected>Escolha uma proposição</option>{% endif %}
-                        {% for id, nome in proposicoes %}
-                            <option value="{{id}}" {% if id == id_proposicao %} selected{% endif %}>
+                        {% if not identificador_proposicao %}<option value="" selected>Escolha uma proposição</option>{% endif %}
+                        {% for identificador, nome in proposicoes %}
+                            <option value="{{identificador}}" {% if identificador == identificador_proposicao %} selected{% endif %}>
                                 {{nome}}
                             </option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class='myflex-spacer'></div>
-                {% if id_proposicao %}
+                {% if identificador_proposicao %}
                     <div class="com-margem">
                         <label for="votacoes">Votações:</label>
                         <div id="votacoes"></div>
@@ -71,8 +71,7 @@
         {% endif %}
     </form>
 
-    {% if id_proposicao %}
-    <!-- <h3>{{casa_legislativa.nome}}</h3> -->
+    {% if identificador_proposicao %}
         <p id="prop_descr"></p>
         <p id="prop_ementa"></p>
         <p id="votacao_descr"></p>
@@ -125,11 +124,11 @@
     function route() {
         var casa = $('#casa-legislativa').val()
         var prop = $('#proposicao').val()
-        if ("{{casa_legislativa.nome_curto}}" == casa) location.pathname = '/analises/plenaria/' + casa + '/' + prop
-        else location.pathname = '/analises/plenaria/' + casa
+        if ("{{casa_legislativa.nome_curto}}" == casa) location.pathname = '/plenaria/' + casa + '/' + prop
+        else location.pathname = '/plenaria/' + casa
     }
 
-    {% if id_proposicao %}
-        Plot.initialize("{{casa_legislativa.nome_curto}}", {{id_proposicao}});
+    {% if identificador_proposicao %}
+        Plot.initialize("{{casa_legislativa.nome_curto}}", "{{identificador_proposicao}}");
     {% endif %}
 {% endblock extrascriptsend %}
