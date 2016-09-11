@@ -10,9 +10,11 @@ from . import serializer
 def plenaria(request, nome_curto_casa_legislativa=None, identificador_proposicao=None):
     """identificador_proposicao: 'PL-123-2015'"""
 
-    cmsp = models.CasaLegislativa.objects.get(nome_curto = 'cmsp')
-    sen = models.CasaLegislativa.objects.get(nome_curto = 'sen')
-    casas_legislativas = [(cmsp.nome_curto, cmsp.nome), (sen.nome_curto, sen.nome)]
+    casas_legislativas = []
+    for casa in models.CasaLegislativa.objects.all():
+        casas_legislativas.append((casa.nome_curto, casa.nome))
+
+    #TODO: Aqui precisa de uma verificação para quando não houver nenhuma casa.
 
     proposicoes = []
     if not nome_curto_casa_legislativa:
