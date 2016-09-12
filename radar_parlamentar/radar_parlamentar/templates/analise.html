@@ -26,8 +26,8 @@
 
 {% block breadcrumbs %}
     <li><a href="/index/">Home</a> &raquo;</li>
-    <li><a href="/analises/">Gráficos</a> &raquo;</li>
-    <li><a href="/analises/analise/{{casa_legislativa.nome_curto}}">{{casa_legislativa.nome}}</a></li>
+    <li>Gráficos &raquo;</li>
+    <li><a href="/radar/{{casa_legislativa.nome_curto}}">{{casa_legislativa.nome}}</a></li>
 {% endblock breadcrumbs %}
 
 {% block content %}
@@ -50,7 +50,7 @@
             id="botao_busca_avancada">  &rarr; Análise Avançada</p>
         </div>
 
-        <form style="display: none;" id="formAnalise" method="GET" action="/analises/analise/{{casa_legislativa.nome_curto}}/">
+        <form style="display: none;" id="formAnalise" method="GET" action="/radar/{{casa_legislativa.nome_curto}}/">
             <p><label for="periodicidade">Periodicidade:</label>
             <select id="periodicidade" name="periodicidade">
                 <option value="QUADRIENIO">Quadriênio</option>
