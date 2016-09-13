@@ -524,12 +524,12 @@ class Rotacionador:
             logger.info("Calculando ângulo teta 1 e ângulo teta 2...")
             numerador = 0
             denominador = 0
-            for key, coords in dados_meus.items():
+            for indice, coords in dados_meus.items():
                 meu_polar = self._polar(coords[0], coords[1], 0)
                 alheio_polar = self._polar(
-                    dados_fixos[key][0], dados_fixos[key][1], 0)
+                    dados_fixos[indice][0], dados_fixos[indice][1], 0)
                 tamanho = self.analisePeriodo.tamanhos_partidos[
-                    key] if por_partido else 1
+                    indice] if por_partido else 1
                 numerador += self._zero_if_nan(
                     tamanho * meu_polar[0] * alheio_polar[0] * numpy.sin(
                         alheio_polar[1]))
