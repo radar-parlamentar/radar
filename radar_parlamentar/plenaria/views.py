@@ -12,12 +12,15 @@ def plenaria(request, nome_curto_casa_legislativa=None, identificador_proposicao
 
     casas_legislativas = []
     for casa in models.CasaLegislativa.objects.all():
-        casas_legislativas.append((casa.nome_curto, casa.nome))
+        #TODO: Remover após resolução da issue #377
+        #       ( https://github.com/radar-parlamentar/radar/issues/377 )
+        if casa.nome_curto != "cdep":
+            casas_legislativas.append((casa.nome_curto, casa.nome))
 
     #TODO: Aqui precisa de uma verificação para quando não houver nenhuma casa.
 
     proposicoes = []
-    if not nome_curto_casa_legislativa:
+    if nome_curto_casa_legislativa is None:
         nome_curto_casa_legislativa = 'cmsp'
     if nome_curto_casa_legislativa:
         casa_legislativa = get_object_or_404(
