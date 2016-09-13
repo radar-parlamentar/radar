@@ -94,38 +94,43 @@
                 <!-- Navigation Bar -->
                 <nav id="nav" role="navigation">
                     <ul id="menu">
-                        <!-- Plenárias -->
-                        <li id="plenarias">
-                            <a href="/plenaria/">Plenárias</a>
-                        </li>
-
-                        <!-- Análises -->
-                        <li id="analises">
+                        <!-- Gráficos -->
+                        <li id="graficos">
                             <a style="cursor: default;" href="javascript:void(0)">Gráficos</a>
                             <ul>
-                                <li id="botao_cmsp"><a href="/analises/analise/cmsp/#graficopca">Câmara Municipal de São Paulo</a></li>
-                                <li id="botao_cpd"><a href="/analises/analise/cdep/#graficopca">Câmara dos Deputados</a></li>
-                                <li><a href="/analises/analise/sen/#graficopca">Senado</a></li>
-                                <li><a href="/importadores">Acrescenta mais uma!</a></li>
-                            </ul>
-                        </li>
-
-                        <!-- Gênero -->
-                       	<li id="generos">
-                            <a id="genero" href="javascript:void(0)">Gênero</a>
-                            <ul>
-                                <li id="perfil_legis"><a href="/genero/perfil/legislaturas/">Perfil Legislaturas</a></li>
-                                <li id="perfil_part"><a href="/genero/perfil/partido/">Perfil Partido</a></li>
-                                <li id="comp_part"><a href="/genero/perfil/partido/comparacao/">Comparação Perfis Partidários</a></li>
-                                <li id="tematicas_nuvem"><a href="/genero/tematica/nuvem/">Análise: Temáticas</a></li>
-                                <li id="tematicas_matriz"><a href="/genero/tematica/partido/">Análise: Temáticas por Partido</a></li>
-                                <li id="tematicas_treemap"><a href="/genero/tematica/treemap/">Análise: Temáticas por Gênero</a></li>
+                                <li>
+                                    <a id="genero" href="javascript:void(0)">Gênero</a>
+                                    <ul>
+                                        <li id="perfil_legis"><a href="/genero/perfil/legislaturas/">Perfil Legislaturas</a></li>
+                                        <li id="perfil_part"><a href="/genero/perfil/partido/">Perfil Partido</a></li>
+                                        <li id="comp_part"><a href="/genero/perfil/partido/comparacao/">Comparação Perfis Partidários</a></li>
+                                        <li id="tematicas_nuvem"><a href="/genero/tematica/nuvem/">Análise: Temáticas</a></li>
+                                        <li id="tematicas_matriz"><a href="/genero/tematica/partido/">Análise: Temáticas por Partido</a></li>
+                                        <li id="tematicas_treemap"><a href="/genero/tematica/treemap/">Análise: Temáticas por Gênero</a></li>
+                                    </ul>
+                                </li>
+                                <li id='grafico_radar'>
+                                    <a style="cursor: default;" href="javascript:void(0);">Radar</a>
+                                    <ul>
+                                        <!-- TODO: Automatizar de acordo com as casas presentes na base -->
+                                        <li><a href="/radar/cmsp/#graficopca">Câmara Municipal de São Paulo</a></li>
+                                        <li><a href="/radar/cdep/#graficopca">Câmara dos Deputados</a></li>
+                                        <li><a href="/radar/sen/#graficopca">Senado</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="/plenaria/">Plenárias</a>
+                                </li>
                             </ul>
                         </li>
 
                         <!-- Dados -->
                         <li id="dados">
-                            <a href="/dados/">Dados</a>
+                            <a href="javascript:void(0)">Dados</a>
+                            <ul>
+                                <li><a href="/dados/downloads">Download</a></li>
+                                <li><a href="/dados/importadores">Acrescenta mais uma!</a></li>
+                            </ul>
                         </li>
 
                         <!-- Blog -->
