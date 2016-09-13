@@ -443,6 +443,11 @@ class Rotacionador:
             lista_coordenadas[indice] = numpy.dot(
                 coords, numpy.array([[-1., 0.], [0., 1.]]))
 
+    def _rotacionar_coordenadas(self, theta, lista_coordenadas):
+        for indice, coords in lista_coordenadas.items():
+            lista_coordenadas[indice] = numpy.dot(
+            coords, self._matrot(theta))
+
     def _energia(self, dados_fixos, dados_meus, por_partido,
                  graus=0, espelho=0):
         """Calcula energia envolvida no movimento entre dois instantes
@@ -564,12 +569,8 @@ class Rotacionador:
             campeao[1] = teta1
         else:
             campeao[1] = teta2
-        for partido, coords in dados_partidos.items():
-            dados_partidos[partido] = numpy.dot(
-                coords, self._matrot(campeao[1]))
-        for parlamentar, coords in dados_parlamentares.items():
-            dados_parlamentares[parlamentar] = numpy.dot(
-                coords, self._matrot(campeao[1]))
+        self._rotacionar_coordenadas(campeao[1], dados_partidos)
+        self._rotacionar_coordenadas(campeao[1], dados_parlamentares)
 
         self.theta = campeao[1]
         logger.info("campeao = [espelha,theta] = " + str(campeao))
