@@ -521,7 +521,7 @@ class Rotacionador:
         epsilon = 0.001
 
         if not so_espelha:
-            logger.info("Calculando teta1 e teta2...")
+            logger.info("Calculando ângulo teta 1 e ângulo teta 2...")
             numerador = 0
             denominador = 0
             for key, coords in dados_meus.items():
@@ -537,24 +537,24 @@ class Rotacionador:
                     tamanho * meu_polar[0] * alheio_polar[0] * numpy.cos(
                         alheio_polar[1]))
             if denominador < epsilon and denominador > -epsilon:
-                teta1 = 90
-                teta2 = 270
+                angulo_teta1 = 90
+                angulo_teta2 = 270
             else:
-                teta1 = numpy.arctan(numerador / denominador) * 180 / 3.141592
-                teta2 = teta1 + 180
-            logger.info("teta 1 = " + str(teta1) + "; teta2 = " + str(teta2))
+                angulo_teta1 = numpy.arctan(numerador / denominador) * 180 / 3.141592
+                angulo_teta2 = angulo_teta1 + 180
+            logger.info("angulo_teta 1 = " + str(angulo_teta1) + "; angulo_teta2 = " + str(angulo_teta2))
         else:
-            teta1 = 0
-            teta2 = 180
+            angulo_teta1 = 0
+            angulo_teta2 = 180
 
         ex = numpy.array([self._energia(dados_fixos, dados_meus, por_partido,
-                          graus=teta1, espelho=0),
+                          graus=angulo_teta1, espelho=0),
                           self._energia(dados_fixos, dados_meus, por_partido,
-                          graus=teta2, espelho=0),
+                          graus=angulo_teta2, espelho=0),
                           self._energia(dados_fixos, dados_meus, por_partido,
-                          graus=teta1, espelho=1),
+                          graus=angulo_teta1, espelho=1),
                           self._energia(dados_fixos, dados_meus, por_partido,
-                          graus=teta2, espelho=1)])
+                          graus=angulo_teta2, espelho=1)])
         logger.info(ex)
 
         dados_partidos = self.analisePeriodo.coordenadas_partidos
@@ -565,10 +565,10 @@ class Rotacionador:
             campeao[0] = 1
             self._espelhar_coordenadas(dados_partidos)
             self._espelhar_coordenadas(dados_parlamentares)
-        if ganhou == 0 or ganhou == 2:  # girar de teta1
-            campeao[1] = teta1
+        if ganhou == 0 or ganhou == 2:  # girar de angulo_te1
+            campeao[1] = angulo_teta1
         else:
-            campeao[1] = teta2
+            campeao[1] = angulo_teta2
         self._rotacionar_coordenadas(campeao[1], dados_partidos)
         self._rotacionar_coordenadas(campeao[1], dados_parlamentares)
 
