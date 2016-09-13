@@ -432,12 +432,16 @@ class AnalisadorPartidos:
         mm = numpy.mean(mdat, axis=0)
         return mm.filled(numpy.nan)
 
-
 class Rotacionador:
 
     def __init__(self, analisePeriodo, analisePeriodoReferencia):
         self.analisePeriodo = analisePeriodo
         self.analisePeriodoReferencia = analisePeriodoReferencia
+
+    def _espelhar_coordenadas(self, lista_coordenadas):
+        for indice, coords in lista_coordenadas.items():
+            lista_coordenadas[indice] = numpy.dot(
+                coords, numpy.array([[-1., 0.], [0., 1.]]))
 
     def _energia(self, dados_fixos, dados_meus, por_partido,
                  graus=0, espelho=0):
@@ -450,9 +454,7 @@ class Rotacionador:
         e = 0
         dados_meus = dados_meus.copy()
         if espelho == 1:
-            for partido, coords in dados_meus.items():
-                dados_meus[partido] = numpy.dot(
-                    coords, numpy.array([[-1., 0.], [0., 1.]]))
+            self._espelhar_coordenadas(dados_meus)
         if graus != 0:
             for partido, coords in dados_meus.items():
                 dados_meus[partido] = numpy.dot(coords, self._matrot(graus))
@@ -556,12 +558,8 @@ class Rotacionador:
         campeao = [0, 0]
         if ganhou >= 2:  # espelhar
             campeao[0] = 1
-            for partido, coords in dados_partidos.items():
-                dados_partidos[partido] = numpy.dot(
-                    coords, numpy.array([[-1., 0.], [0., 1.]]))
-            for parlamentar, coords in dados_parlamentares.items():
-                dados_parlamentares[parlamentar] = numpy.dot(
-                    coords, numpy.array([[-1., 0.], [0., 1.]]))
+            self._espelhar_coordenadas(dados_partidos)
+            self._espelhar_coordenadas(dados_parlamentares)
         if ganhou == 0 or ganhou == 2:  # girar de teta1
             campeao[1] = teta1
         else:
