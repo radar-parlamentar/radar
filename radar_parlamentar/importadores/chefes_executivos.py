@@ -51,17 +51,24 @@ class ImportadorChefesExecutivos:
         chefe = models.ChefeExecutivo(nome=nome, partido=partido, mandato_ano_inicio=ano_inicio,
                                       mandato_ano_fim=ano_fim, genero=genero)
 
-        chefe_existe, chefe_atual = self.verificar_chefe_existe(chefe)
+        self.salvar_chefe_executivo(chefe)
 
+
+    def salvar_chefe_executivo(self, chefe)
+
+        chefe_existe, chefe_atual = self.verificar_chefe_existe(chefe) #chefe_atual é recebido para adicionarmos relacão com outra casa
+
+        #Adiciona novo chefe ou adiciona casa a um chefe ja existente ou ignora chefe ja existente de acordo com chefe_existe
         if (chefe_existe == False):
             chefe.save()
             chefe.casas_legislativas.add(self.casa)
             logger.info('Adicionando chefe %s' % nome)
-        elif (chefe_existe == None):
-            chefe_atual.casas_legislativas.add(self.casa)
-            logger.info('Adicionando chefe %s em outra casa' % nome)
-        else:
-            logger.warn('Chefe %s já existe' % nome)
+        elif (chefe_existe == True):
+            if not self.verifica_casa_existe_no_chefe(chefe_atual):
+                chefe_atual.casas_legislativas.add(self.casa)
+                logger.info('Adicionando chefe %s em outra casa' % nome)
+            else:
+                logger.warn('Chefe %s já existe' % nome)
 
 
     def verificar_chefe_existe(self, chefe):
@@ -74,32 +81,16 @@ class ImportadorChefesExecutivos:
                 ano_inicio_igual = chefe_atual.mandato_ano_inicio == chefe.mandato_ano_inicio
                 ano_fim_igual = chefe_atual.mandato_ano_fim == chefe.mandato_ano_fim
 
-                for index in range(len(chefe_atual.casas_legislativas.all())):
-                    if(chefe_atual.casas_legislativas.all()[index] == self.casa):
-                        casa_igual = True
-                        break
-                    else:
-                        casa_igual = False
-                # == self.casa or chefe_atual.casas_legislativas.all()[0] == self.casa
+                if (nome_igual and partido_igual and ano_inicio_igual and ano_fim_igual):
+                    return True, chefe_atual
+
+        return False, None #Quando o chefe não existe no banco, não é necessário retornar o chefe_atual
 
 
-                #print chefe_atual.casas_legislativas.all()[:0].get()
+    def verifica_casa_existe_no_chefe(self, chefe_atual):
 
-
-                if (nome_igual and partido_igual and ano_inicio_igual and ano_fim_igual and casa_igual):
-                    chefe_existe = True
-                    chefeAtual = chefe_atual
-                    print 'entrou tudo igual'
-                    return chefe_existe, chefeAtual
-
-                elif (nome_igual and partido_igual and ano_inicio_igual and ano_fim_igual and casa_igual == False):
-                    chefe_existe = None
-                    print 'entrou menos cas'
-                    chefeAtual = chefe_atual
-                    return chefe_existe, chefeAtual
-            else:
-                chefe_existe = False
-        else:
-            chefe_existe = False
-
-        return chefe_existe, None
+        for index in range(len(chefe_atual.casas_legislativas.all())):
+            if(chefe_atual.casas_legislativas.all()[index] == self.casa): #Quer dizer que o chefe ja tem a casa atual
+                return True
+                break
+        return False
