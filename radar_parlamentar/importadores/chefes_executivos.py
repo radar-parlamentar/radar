@@ -54,7 +54,7 @@ class ImportadorChefesExecutivos:
         self.salvar_chefe_executivo(chefe)
 
 
-    def salvar_chefe_executivo(self, chefe)
+    def salvar_chefe_executivo(self, chefe):
 
         chefe_existe, chefe_atual = self.verificar_chefe_existe(chefe) #chefe_atual é recebido para adicionarmos relacão com outra casa
 
@@ -62,13 +62,13 @@ class ImportadorChefesExecutivos:
         if (chefe_existe == False):
             chefe.save()
             chefe.casas_legislativas.add(self.casa)
-            logger.info('Adicionando chefe %s' % nome)
+            logger.info('Adicionando chefe %s' % chefe.nome)
         elif (chefe_existe == True):
             if not self.verifica_casa_existe_no_chefe(chefe_atual):
                 chefe_atual.casas_legislativas.add(self.casa)
-                logger.info('Adicionando chefe %s em outra casa' % nome)
+                logger.info('Adicionando chefe %s em outra casa' % chefe_atual.nome)
             else:
-                logger.warn('Chefe %s já existe' % nome)
+                logger.warn('Chefe %s já existe' % chefe.nome)
 
 
     def verificar_chefe_existe(self, chefe):
