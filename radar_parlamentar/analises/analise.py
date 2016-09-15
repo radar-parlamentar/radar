@@ -354,11 +354,11 @@ class ConstrutorDeMatrizesDeDados:
         iv = -1  # índice votação
         for votacao in self.votacoes:
             iv += 1
-            self._build_dic_parlamentares_votos(votacao)
+            self._construtor_dicionario_parlamentares_votos(votacao)
             self._preenche_matrizes(votacao, iv)
         return self.matriz_votacoes
 
-    def _build_dic_parlamentares_votos(self, votacao):
+    def _construtor_dicionario_parlamentares_votos(self, votacao):
         # com o "select_related" fazemos uma query eager
         votos = votacao.voto_set.select_related(
             'opcao', 'parlamentar__id').all()
@@ -372,7 +372,7 @@ class ConstrutorDeMatrizesDeDados:
             self.partido_do_parlamentar.append(parlamentar.partido.nome)
             if parlamentar.id in self._dic_parlamentares_votos:
                 opcao = self._dic_parlamentares_votos[parlamentar.id]
-                self.matriz_votacoes[ip][iv] = self._opcao_to_double(opcao)
+                self.matriz_votacoes[ip][iv] = self._converter_opcao_para_valor(opcao)
                 if (opcao == models.AUSENTE):
                     self.matriz_presencas[ip][iv] = 0.
                 else:
@@ -381,7 +381,7 @@ class ConstrutorDeMatrizesDeDados:
                 self.matriz_votacoes[ip][iv] = 0.
                 self.matriz_presencas[ip][iv] = 0.
 
-    def _opcao_to_double(self, opcao):
+    def _converter_opcao_para_valor(self, opcao):
         if opcao == 'SIM':
             return 1.
         if opcao == 'NAO':
@@ -446,7 +446,7 @@ class Rotacionador:
     def _rotacionar_coordenadas(self, theta, lista_coordenadas):
         for indice, coords in lista_coordenadas.items():
             lista_coordenadas[indice] = numpy.dot(
-            coords, self._matrot(theta))
+            coords, self._gerar_matriz_rotacao(theta))
 
     def _energia(self, dados_fixos, dados_meus, por_partido,
                  graus=0, espelho=0):
@@ -462,17 +462,17 @@ class Rotacionador:
             self._espelhar_coordenadas(dados_meus)
         if graus != 0:
             for partido, coords in dados_meus.items():
-                dados_meus[partido] = numpy.dot(coords, self._matrot(graus))
+                dados_meus[partido] = numpy.dot(coords, self._gerar_matriz_rotacao(graus))
 
         if por_partido:
             for p in dados_meus:
-                e += self._zero_if_nan(
+                e += self._retornar_zero_se_nan(
                     numpy.dot(dados_fixos[p] - dados_meus[p],
                               dados_fixos[p] - dados_meus[p]) *
                     self.analisePeriodo.tamanhos_partidos[p])
         else:
             for l in dados_meus:
-                e += self._zero_if_nan(
+                e += self._retornar_zero_se_nan(
                     numpy.dot(dados_fixos[l] - dados_meus[
                         l], dados_fixos[l] - dados_meus[l]))
         return e
@@ -488,7 +488,7 @@ class Rotacionador:
         else:
             return hypot(x, y), atan2(y, x)
 
-    def _matrot(self, graus):
+    def _gerar_matriz_rotacao(self, graus):
         """ Retorna matriz de rotação 2x2 que roda os eixos em graus (0 a 360)
         no sentido anti-horário (como se os pontos girassem no sentido
         horário em torno de eixos fixos)."""
@@ -498,9 +498,13 @@ class Rotacionador:
         s = numpy.sin(rad)
         return numpy.array([[c, -s], [s, c]])
 
-    def _zero_if_nan(self, x):
-        x = x if not numpy.isnan(x) else 0
-        return x
+    def _retornar_zero_se_nan(self, x):
+        """Retorna zero sempre que x não for um número (NaN = Not a Number)
+        Caso x seja um número, retorna x."""
+        if numpy.isnan(x):
+            return 0
+        else:
+            return x
 
     def espelha_ou_roda(self, por_partido=False, so_espelha=True):
         """Retorna nova AnalisePeriodo com coordenadas rotacionadas
@@ -530,10 +534,10 @@ class Rotacionador:
                     dados_fixos[indice][0], dados_fixos[indice][1], 0)
                 tamanho = self.analisePeriodo.tamanhos_partidos[
                     indice] if por_partido else 1
-                numerador += self._zero_if_nan(
+                numerador += self._retornar_zero_se_nan(
                     tamanho * meu_polar[0] * alheio_polar[0] * numpy.sin(
                         alheio_polar[1]))
-                denominador += self._zero_if_nan(
+                denominador += self._retornar_zero_se_nan(
                     tamanho * meu_polar[0] * alheio_polar[0] * numpy.cos(
                         alheio_polar[1]))
             if denominador < epsilon and denominador > -epsilon:
