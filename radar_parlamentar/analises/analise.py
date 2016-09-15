@@ -64,9 +64,9 @@ class AnalisadorTemporal:
     def __init__(self, casa_legislativa, periodicidade,
                  palavras_chave=[], votacoes=[]):
         self.casa_legislativa = casa_legislativa
-        retriever = utils.PeriodosRetriever(
+        recuperador_votacoes = utils.PeriodosRetriever(
             self.casa_legislativa, periodicidade)
-        self.periodos = retriever.get_periodos()
+        self.periodos = recuperador_votacoes.get_periodos()
         self.ini = self.periodos[0].ini
         self.fim = self.periodos[len(self.periodos) - 1].fim
         self.periodicidade = periodicidade
@@ -219,12 +219,12 @@ class AnalisadorPeriodo:
         return analisePeriodo
 
     def _inicializa_vetores(self):
-        matrizesBuilder = MatrizesDeDadosBuilder(
+        construtorMatrizes = ConstrutorDeMatrizesDeDados(
             self.votacoes, self.partidos, self.parlamentares)
-        matrizesBuilder.gera_matrizes()
-        self.vetores_votacao = matrizesBuilder.matriz_votacoes
-        self.vetores_presencas = matrizesBuilder.matriz_presencas
-        self.partido_do_parlamentar = matrizesBuilder.partido_do_parlamentar
+        construtorMatrizes.gera_matrizes()
+        self.vetores_votacao = construtorMatrizes.matriz_votacoes
+        self.vetores_presencas = construtorMatrizes.matriz_presencas
+        self.partido_do_parlamentar = construtorMatrizes.partido_do_parlamentar
 
     def _calcula_parlamentares_2d(self):
         """Retorna mapa com as coordenadas de parlamentares no plano 2D formado
@@ -261,13 +261,13 @@ class AnalisadorPeriodo:
         if not self.pca_parlamentares:
             if not self.vetores_votacao:
                 self._inicializa_vetores()
-            ilnn = self._lista_de_indices_de_parlamentares_nao_nulos()
+            ids_parlamentares_presentes = self._listar_indices_de_parlamentares_presentes()
             matriz = self.vetores_votacao
             # exclui parlamentares ausentes em todas as votações do período
-            matriz = matriz[ilnn, :]
+            matriz = matriz[ids_parlamentares_presentes, :]
             matriz = matriz - matriz.mean(axis=0)  # centraliza dados
             self.pca = pca.PCA(matriz, fraction=1)  # faz o pca
-            self._preenche_pca_de_parlamentares_nulos(ilnn)
+            self._preenche_pca_de_parlamentares_nulos(ids_parlamentares_presentes)
             logger.info("PCA terminada com sucesso. ini=%s, fim=%s" %
                         (str(self.ini), str(self.fim)))
         # Criar dicionario a ser retornado:
@@ -276,7 +276,7 @@ class AnalisadorPeriodo:
             dicionario[parlamentar.id] = vetor
         return dicionario
 
-    def _lista_de_indices_de_parlamentares_nao_nulos(self):
+    def _listar_indices_de_parlamentares_presentes(self):
         return self.vetores_presencas.sum(axis=1).nonzero()[0].tolist()
 
     def _preenche_pca_de_parlamentares_nulos(self, ipnn):
@@ -319,7 +319,7 @@ class AnalisadorPeriodo:
             analisador_partidos.parlamentares_por_partido
 
 
-class MatrizesDeDadosBuilder:
+class ConstrutorDeMatrizesDeDados:
 
     def __init__(self, votacoes, partidos, parlamentares):
         self.votacoes = votacoes

@@ -103,7 +103,7 @@ class AnalisadorPeriodoTest(TestCase):
         
         self.assertEquals(unicode(chefes_executivos[0]), unicode(chefe_esperado))
 
-class MatrizesDeDadosBuilderTest(TestCase):
+class ConstrutorDeMatrizesDeDadosTest(TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -118,7 +118,7 @@ class MatrizesDeDadosBuilderTest(TestCase):
     def setUp(self):
         self.casa_legislativa = models.CasaLegislativa.objects.get(
             nome_curto='conv')
-        self.partidos = MatrizesDeDadosBuilderTest.importer.partidos
+        self.partidos = ConstrutorDeMatrizesDeDadosTest.importer.partidos
         self.votacoes = models.Votacao.objects.filter(
             proposicao__casa_legislativa__nome_curto='conv')
         self.parlamentares = models.Parlamentar.objects.filter(
@@ -136,11 +136,11 @@ class MatrizesDeDadosBuilderTest(TestCase):
              [-1., 1., 1., 1., -1., 0., 1., 1., 1],
              [-1., 1., 1., -1., -1., 1., 0., 0., 0],
              [-1., 1., 1., 0., -1., 1., 1., 1., 1]])
-        builder = analise.MatrizesDeDadosBuilder(
+        construtor = analise.ConstrutorDeMatrizesDeDados(
             self.votacoes, self.partidos, self.parlamentares)
-        builder.gera_matrizes()
+        construtor.gera_matrizes()
         self.assertTrue(
-            (builder.matriz_votacoes == MATRIZ_VOTACAO_ESPERADA).all())
+            (construtor.matriz_votacoes == MATRIZ_VOTACAO_ESPERADA).all())
 
     def test_matriz_presencas(self):
         MATRIZ_PRESENCAS_ESPERADA = numpy.matrix(
@@ -154,11 +154,11 @@ class MatrizesDeDadosBuilderTest(TestCase):
              [1., 1., 1., 1., 1., 1., 0., 0., 0],
              [1., 1., 1., 0., 1., 1., 1., 1., 1]])
 
-        builder = analise.MatrizesDeDadosBuilder(
+        construtor = analise.ConstrutorDeMatrizesDeDados(
             self.votacoes, self.partidos, self.parlamentares)
-        builder.gera_matrizes()
+        construtor.gera_matrizes()
         self.assertTrue(
-            (builder.matriz_presencas == MATRIZ_PRESENCAS_ESPERADA).all())
+            (construtor.matriz_presencas == MATRIZ_PRESENCAS_ESPERADA).all())
 
 
 class AnalisadorTemporalTest(TestCase):
