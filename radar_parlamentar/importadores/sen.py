@@ -44,7 +44,7 @@ VOTACOES_FOLDER = os.path.join(DATA_FOLDER, 'votacoes')
 
 NOME_CURTO = 'sen'
 
-XML_FILE = 'dados/chefe_executivo/chefe_executivo_sen.xml'
+XML_FILE = 'dados/chefe_executivo/chefe_executivo_congresso.xml'
 
 logger = logging.getLogger("radar")
 

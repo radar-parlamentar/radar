@@ -44,7 +44,7 @@ ANO_MIN = 1991
 
 logger = logging.getLogger("radar")
 
-XML_FILE = 'dados/chefe_executivo/chefe_executivo_sen.xml'
+XML_FILE = 'dados/chefe_executivo/chefe_executivo_congresso.xml'
 NOME_CURTO = 'cdep'
 
 
@@ -236,7 +236,7 @@ class ProposicoesFinder:
         """
         if ano_max is None:
             ano_max = datetime.today().year
-        proposicoes_votadas = [] 
+        proposicoes_votadas = []
         for ano in range(ano_max, ano_min - 1, -1):
             logger.info('Procurando em %s' % ano)
             try:
