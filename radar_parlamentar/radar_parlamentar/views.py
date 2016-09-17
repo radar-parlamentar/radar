@@ -24,7 +24,6 @@ from django.shortcuts import render_to_response
 from django.contrib.staticfiles import finders
 from analises.genero import Genero
 import os
-import os.path
 import datetime
 import json
 import logging
@@ -154,10 +153,10 @@ def dados_utilizados(request):
         dt = datetime.datetime.fromtimestamp(time)
         dt_str = dt.strftime('%d/%m/%Y')
         arquivo = True
-        return render_to_response('dados_utilizados.html', {'dumpdate': dt_str, 'variavel': arquivo},context_instance=RequestContext(request))
+        return render_to_response('dados_utilizados.html', {'dumpdate': dt_str, 'arquivo_dump': arquivo},context_instance=RequestContext(request))
     else:
         arquivo = False
-        return render_to_response('dados_utilizados.html', {'variavel': arquivo})
+        return render_to_response('dados_utilizados.html', {'_arquivo_dump': arquivo})
 
 def generate_blog_news(request):
     number_of_news = 10
