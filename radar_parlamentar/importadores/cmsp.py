@@ -111,7 +111,7 @@ class XmlCMSP:
         if res:
             nome = res.group(1).upper()
             if self.votacao_valida(nome, texto):
-                return res.group(0).upper()
+                return res.group(1).upper()+" "+res.group(2).upper()+"/"+res.group(3).upper()
         return None
 
     def votacao_valida(self, nome_prop, texto):
