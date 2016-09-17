@@ -152,7 +152,7 @@ class EstaticosCMSPCase(TestCase):
     def test_prop_nome_valido(self):
         texto = "encontra Proposicoes como PL 1 /1000 no texto"
         pl = self.xmlCMSP.prop_nome(texto)
-        self.assertEquals(pl, "PL 1 /1000")
+        self.assertEquals(pl, "PL 1/1000")
 
     def test_prop_nome_invalido(self):
         texto = "n encontra proposicoes no texto"
