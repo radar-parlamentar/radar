@@ -147,12 +147,16 @@ def genero_perfil_legis(request):
 
 
 def dados_utilizados(request):
-    dump_file_path = finders.find('db-dump/radar.sql.bz2')
-    time = os.path.getmtime(dump_file_path)
-    dt = datetime.datetime.fromtimestamp(time)
-    dt_str = dt.strftime('%d/%m/%Y')
-    return render_to_response('dados_utilizados.html', {'dumpdate': dt_str},
-                              context_instance=RequestContext(request))
+    if finders.find('db-dump/radar.sql.bz2'):
+        dump_file_path = finders.find('db-dump/radar.sql.bz2')
+        time = os.path.getmtime(dump_file_path)
+        dt = datetime.datetime.fromtimestamp(time)
+        dt_str = dt.strftime('%d/%m/%Y')
+        arquivo = True
+        return render_to_response('dados_utilizados.html', {'dumpdate': dt_str, 'arquivo_dump': arquivo},context_instance=RequestContext(request))
+    else:
+        arquivo = False
+        return render_to_response('dados_utilizados.html', {'_arquivo_dump': arquivo})
 
 def generate_blog_news(request):
     number_of_news = 10
