@@ -264,6 +264,8 @@ class ImportadorCMSP:
         """verbose (booleano) -- ativa/desativa prints na tela"""
         self.verbose = verbose
         self.xml_cmsp = XmlCMSP(cmsp, verbose)
+        self.proposicoes = {}
+        self.votacoes = []
 
     def importar_de(self, xml_file):
         """Salva no banco de dados do Django e retorna lista das votações"""
@@ -271,12 +273,8 @@ class ImportadorCMSP:
             logger.info("importando de: " + str(xml_file))
 
         tree = ImportadorCMSP.abrir_xml(xml_file)
-        proposicoes = {}
-        # chave é string (ex: 'pl 127/2004'); valor é objeto do tipo
-        # Proposicao
-        votacoes = []
-        self.analisar_xml(proposicoes, votacoes, tree)
-        return votacoes
+        self.analisar_xml(self.proposicoes, self.votacoes, tree)
+        return self.votacoes
 
     def analisar_xml(self, proposicoes, votacoes, tree):
         for sessao_tree in tree.findall('Sessao'):
