@@ -274,7 +274,7 @@ class ImportadorCMSP:
 
         tree = ImportadorCMSP.abrir_xml(xml_file)
         self.analisar_xml(self.proposicoes, self.votacoes, tree)
-        return votacoes
+        return self.votacoes
 
     def analisar_xml(self, proposicoes, votacoes, tree):
         for sessao_tree in tree.findall('Sessao'):
