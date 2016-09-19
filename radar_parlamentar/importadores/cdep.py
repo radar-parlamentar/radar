@@ -24,6 +24,7 @@
 from __future__ import unicode_literals
 from django.utils.dateparse import parse_date
 from django.core.exceptions import ObjectDoesNotExist
+from chefes_executivos import ImportadorChefesExecutivos
 from modelagem import models
 from datetime import datetime
 import re
@@ -42,6 +43,9 @@ ANO_MIN = 1991
 # só serão buscadas votações a partir de ANO_MIN
 
 logger = logging.getLogger("radar")
+
+XML_FILE = 'dados/chefe_executivo/chefe_executivo_congresso.xml'
+NOME_CURTO = 'cdep'
 
 
 class Url(object):
@@ -232,7 +236,7 @@ class ProposicoesFinder:
         """
         if ano_max is None:
             ano_max = datetime.today().year
-        proposicoes_votadas = [] 
+        proposicoes_votadas = []
         for ano in range(ano_max, ano_min - 1, -1):
             logger.info('Procurando em %s' % ano)
             try:
@@ -554,6 +558,9 @@ def main():
     importador.importar(dic_votadas)
     pos_importacao = PosImportacao()
     pos_importacao.processar()
+    logger.info('IMPORTANDO CHEFES EXECUTIVOS DA CAMARA DOS DEPUTADOS')
+    importer_chefe = ImportadorChefesExecutivos(NOME_CURTO, 'Presidentes', 'Presidente', XML_FILE)
+    importer_chefe.importar_chefes()
 
     from importadores import cdep_genero
     cdep_genero.main()
