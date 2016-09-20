@@ -56,7 +56,7 @@ class ImportadorChefesExecutivos:
 
     def salvar_chefe_executivo(self, chefe):
 
-        chefe_atual = self.verificar_chefe_existe(chefe) #chefe_atual é recebido para adicionarmos relacão com outra casa
+        chefe_atual = self.get_chefe_executivo_do_banco(chefe) #chefe_atual é recebido para adicionarmos relacão com outra casa
 
         #Adiciona novo chefe ou adiciona casa a um chefe ja existente ou ignora chefe ja existente de acordo com chefe_existe
         if (chefe_atual):
@@ -71,18 +71,15 @@ class ImportadorChefesExecutivos:
             logger.info('Adicionando chefe %s' % chefe.nome)
 
 
-    def verificar_chefe_existe(self, chefe):
-        chefes = models.ChefeExecutivo.objects.all()
+    def get_chefe_executivo_do_banco(self, chefe):
+        chefe_banco = models.ChefeExecutivo.objects.filter(
+            nome=chefe.nome,
+            mandato_ano_inicio=chefe.mandato_ano_inicio,
+            mandato_ano_fim=chefe.mandato_ano_fim)
 
-        if chefes:
-            for chefe_atual in chefes:
-                nome_igual = chefe_atual.nome == chefe.nome
-                partido_igual = chefe_atual.partido.pk == chefe.partido.pk
-                ano_inicio_igual = chefe_atual.mandato_ano_inicio == chefe.mandato_ano_inicio
-                ano_fim_igual = chefe_atual.mandato_ano_fim == chefe.mandato_ano_fim
-
-                if (nome_igual and partido_igual and ano_inicio_igual and ano_fim_igual):
-                    return chefe_atual
+        if chefe_banco and chefe_banco[0].partido.pk == chefe.partido.pk:
+            return chefe_banco[0]
+        else:
             return None
 
 
