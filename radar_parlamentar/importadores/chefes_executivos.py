@@ -56,35 +56,31 @@ class ImportadorChefesExecutivos:
 
     def salvar_chefe_executivo(self, chefe):
 
-        chefe_existe, chefe_atual = self.verificar_chefe_existe(chefe) #chefe_atual é recebido para adicionarmos relacão com outra casa
+        chefe_atual = self.get_chefe_executivo_do_banco(chefe) #chefe_atual é recebido para adicionarmos relacão com outra casa
 
         #Adiciona novo chefe ou adiciona casa a um chefe ja existente ou ignora chefe ja existente de acordo com chefe_existe
-        if (chefe_existe == False):
+        if (chefe_atual):
+            if self.verifica_casa_existe_no_chefe(chefe_atual):
+                logger.warn('Chefe %s já existe' % chefe.nome)
+            else:
+                chefe_atual.casas_legislativas.add(self.casa)
+                logger.info('Adicionando chefe %s em outra casa' % chefe_atual.nome)
+        else:
             chefe.save()
             chefe.casas_legislativas.add(self.casa)
             logger.info('Adicionando chefe %s' % chefe.nome)
-        elif (chefe_existe == True):
-            if not self.verifica_casa_existe_no_chefe(chefe_atual):
-                chefe_atual.casas_legislativas.add(self.casa)
-                logger.info('Adicionando chefe %s em outra casa' % chefe_atual.nome)
-            else:
-                logger.warn('Chefe %s já existe' % chefe.nome)
 
 
-    def verificar_chefe_existe(self, chefe):
-        chefes = models.ChefeExecutivo.objects.all()
+    def get_chefe_executivo_do_banco(self, chefe):
+        chefe_banco = models.ChefeExecutivo.objects.filter(
+            nome=chefe.nome,
+            mandato_ano_inicio=chefe.mandato_ano_inicio,
+            mandato_ano_fim=chefe.mandato_ano_fim)
 
-        if chefes:
-            for chefe_atual in chefes:
-                nome_igual = chefe_atual.nome == chefe.nome
-                partido_igual = chefe_atual.partido.pk == chefe.partido.pk
-                ano_inicio_igual = chefe_atual.mandato_ano_inicio == chefe.mandato_ano_inicio
-                ano_fim_igual = chefe_atual.mandato_ano_fim == chefe.mandato_ano_fim
-
-                if (nome_igual and partido_igual and ano_inicio_igual and ano_fim_igual):
-                    return True, chefe_atual
-
-        return False, None #Quando o chefe não existe no banco, não é necessário retornar o chefe_atual
+        if chefe_banco and chefe_banco[0].partido.pk == chefe.partido.pk:
+            return chefe_banco[0]
+        else:
+            return None
 
 
     def verifica_casa_existe_no_chefe(self, chefe_atual):
