@@ -64,9 +64,9 @@ class AnalisadorTemporal:
     def __init__(self, casa_legislativa, periodicidade,
                  palavras_chave=[], votacoes=[]):
         self.casa_legislativa = casa_legislativa
-        retriever = utils.PeriodosRetriever(
+        recuperador_votacoes = utils.PeriodosRetriever(
             self.casa_legislativa, periodicidade)
-        self.periodos = retriever.get_periodos()
+        self.periodos = recuperador_votacoes.get_periodos()
         self.ini = self.periodos[0].ini
         self.fim = self.periodos[len(self.periodos) - 1].fim
         self.periodicidade = periodicidade
@@ -219,12 +219,12 @@ class AnalisadorPeriodo:
         return analisePeriodo
 
     def _inicializa_vetores(self):
-        matrizesBuilder = MatrizesDeDadosBuilder(
+        construtorMatrizes = ConstrutorDeMatrizesDeDados(
             self.votacoes, self.partidos, self.parlamentares)
-        matrizesBuilder.gera_matrizes()
-        self.vetores_votacao = matrizesBuilder.matriz_votacoes
-        self.vetores_presencas = matrizesBuilder.matriz_presencas
-        self.partido_do_parlamentar = matrizesBuilder.partido_do_parlamentar
+        construtorMatrizes.gera_matrizes()
+        self.vetores_votacao = construtorMatrizes.matriz_votacoes
+        self.vetores_presencas = construtorMatrizes.matriz_presencas
+        self.partido_do_parlamentar = construtorMatrizes.partido_do_parlamentar
 
     def _calcula_parlamentares_2d(self):
         """Retorna mapa com as coordenadas de parlamentares no plano 2D formado
@@ -261,13 +261,13 @@ class AnalisadorPeriodo:
         if not self.pca_parlamentares:
             if not self.vetores_votacao:
                 self._inicializa_vetores()
-            ilnn = self._lista_de_indices_de_parlamentares_nao_nulos()
+            ids_parlamentares_presentes = self._listar_indices_de_parlamentares_presentes()
             matriz = self.vetores_votacao
             # exclui parlamentares ausentes em todas as votações do período
-            matriz = matriz[ilnn, :]
+            matriz = matriz[ids_parlamentares_presentes, :]
             matriz = matriz - matriz.mean(axis=0)  # centraliza dados
             self.pca = pca.PCA(matriz, fraction=1)  # faz o pca
-            self._preenche_pca_de_parlamentares_nulos(ilnn)
+            self._preenche_pca_de_parlamentares_nulos(ids_parlamentares_presentes)
             logger.info("PCA terminada com sucesso. ini=%s, fim=%s" %
                         (str(self.ini), str(self.fim)))
         # Criar dicionario a ser retornado:
@@ -276,7 +276,7 @@ class AnalisadorPeriodo:
             dicionario[parlamentar.id] = vetor
         return dicionario
 
-    def _lista_de_indices_de_parlamentares_nao_nulos(self):
+    def _listar_indices_de_parlamentares_presentes(self):
         return self.vetores_presencas.sum(axis=1).nonzero()[0].tolist()
 
     def _preenche_pca_de_parlamentares_nulos(self, ipnn):
@@ -319,7 +319,7 @@ class AnalisadorPeriodo:
             analisador_partidos.parlamentares_por_partido
 
 
-class MatrizesDeDadosBuilder:
+class ConstrutorDeMatrizesDeDados:
 
     def __init__(self, votacoes, partidos, parlamentares):
         self.votacoes = votacoes
@@ -354,11 +354,11 @@ class MatrizesDeDadosBuilder:
         iv = -1  # índice votação
         for votacao in self.votacoes:
             iv += 1
-            self._build_dic_parlamentares_votos(votacao)
+            self._construtor_dicionario_parlamentares_votos(votacao)
             self._preenche_matrizes(votacao, iv)
         return self.matriz_votacoes
 
-    def _build_dic_parlamentares_votos(self, votacao):
+    def _construtor_dicionario_parlamentares_votos(self, votacao):
         # com o "select_related" fazemos uma query eager
         votos = votacao.voto_set.select_related(
             'opcao', 'parlamentar__id').all()
@@ -372,7 +372,7 @@ class MatrizesDeDadosBuilder:
             self.partido_do_parlamentar.append(parlamentar.partido.nome)
             if parlamentar.id in self._dic_parlamentares_votos:
                 opcao = self._dic_parlamentares_votos[parlamentar.id]
-                self.matriz_votacoes[ip][iv] = self._opcao_to_double(opcao)
+                self.matriz_votacoes[ip][iv] = self._converter_opcao_para_valor(opcao)
                 if (opcao == models.AUSENTE):
                     self.matriz_presencas[ip][iv] = 0.
                 else:
@@ -381,7 +381,7 @@ class MatrizesDeDadosBuilder:
                 self.matriz_votacoes[ip][iv] = 0.
                 self.matriz_presencas[ip][iv] = 0.
 
-    def _opcao_to_double(self, opcao):
+    def _converter_opcao_para_valor(self, opcao):
         if opcao == 'SIM':
             return 1.
         if opcao == 'NAO':
@@ -432,12 +432,21 @@ class AnalisadorPartidos:
         mm = numpy.mean(mdat, axis=0)
         return mm.filled(numpy.nan)
 
-
 class Rotacionador:
 
     def __init__(self, analisePeriodo, analisePeriodoReferencia):
         self.analisePeriodo = analisePeriodo
         self.analisePeriodoReferencia = analisePeriodoReferencia
+
+    def _espelhar_coordenadas(self, lista_coordenadas):
+        for indice, coords in lista_coordenadas.items():
+            lista_coordenadas[indice] = numpy.dot(
+                coords, numpy.array([[-1., 0.], [0., 1.]]))
+
+    def _rotacionar_coordenadas(self, theta, lista_coordenadas):
+        for indice, coords in lista_coordenadas.items():
+            lista_coordenadas[indice] = numpy.dot(
+            coords, self._gerar_matriz_rotacao(theta))
 
     def _energia(self, dados_fixos, dados_meus, por_partido,
                  graus=0, espelho=0):
@@ -450,22 +459,20 @@ class Rotacionador:
         e = 0
         dados_meus = dados_meus.copy()
         if espelho == 1:
-            for partido, coords in dados_meus.items():
-                dados_meus[partido] = numpy.dot(
-                    coords, numpy.array([[-1., 0.], [0., 1.]]))
+            self._espelhar_coordenadas(dados_meus)
         if graus != 0:
             for partido, coords in dados_meus.items():
-                dados_meus[partido] = numpy.dot(coords, self._matrot(graus))
+                dados_meus[partido] = numpy.dot(coords, self._gerar_matriz_rotacao(graus))
 
         if por_partido:
             for p in dados_meus:
-                e += self._zero_if_nan(
+                e += self._retornar_zero_se_nan(
                     numpy.dot(dados_fixos[p] - dados_meus[p],
                               dados_fixos[p] - dados_meus[p]) *
                     self.analisePeriodo.tamanhos_partidos[p])
         else:
             for l in dados_meus:
-                e += self._zero_if_nan(
+                e += self._retornar_zero_se_nan(
                     numpy.dot(dados_fixos[l] - dados_meus[
                         l], dados_fixos[l] - dados_meus[l]))
         return e
@@ -481,7 +488,7 @@ class Rotacionador:
         else:
             return hypot(x, y), atan2(y, x)
 
-    def _matrot(self, graus):
+    def _gerar_matriz_rotacao(self, graus):
         """ Retorna matriz de rotação 2x2 que roda os eixos em graus (0 a 360)
         no sentido anti-horário (como se os pontos girassem no sentido
         horário em torno de eixos fixos)."""
@@ -491,9 +498,13 @@ class Rotacionador:
         s = numpy.sin(rad)
         return numpy.array([[c, -s], [s, c]])
 
-    def _zero_if_nan(self, x):
-        x = x if not numpy.isnan(x) else 0
-        return x
+    def _retornar_zero_se_nan(self, x):
+        """Retorna zero sempre que x não for um número (NaN = Not a Number)
+        Caso x seja um número, retorna x."""
+        if numpy.isnan(x):
+            return 0
+        else:
+            return x
 
     def espelha_ou_roda(self, por_partido=False, so_espelha=True):
         """Retorna nova AnalisePeriodo com coordenadas rotacionadas
@@ -514,40 +525,40 @@ class Rotacionador:
         epsilon = 0.001
 
         if not so_espelha:
-            logger.info("Calculando teta1 e teta2...")
+            logger.info("Calculando ângulo teta 1 e ângulo teta 2...")
             numerador = 0
             denominador = 0
-            for key, coords in dados_meus.items():
+            for indice, coords in dados_meus.items():
                 meu_polar = self._polar(coords[0], coords[1], 0)
                 alheio_polar = self._polar(
-                    dados_fixos[key][0], dados_fixos[key][1], 0)
+                    dados_fixos[indice][0], dados_fixos[indice][1], 0)
                 tamanho = self.analisePeriodo.tamanhos_partidos[
-                    key] if por_partido else 1
-                numerador += self._zero_if_nan(
+                    indice] if por_partido else 1
+                numerador += self._retornar_zero_se_nan(
                     tamanho * meu_polar[0] * alheio_polar[0] * numpy.sin(
                         alheio_polar[1]))
-                denominador += self._zero_if_nan(
+                denominador += self._retornar_zero_se_nan(
                     tamanho * meu_polar[0] * alheio_polar[0] * numpy.cos(
                         alheio_polar[1]))
             if denominador < epsilon and denominador > -epsilon:
-                teta1 = 90
-                teta2 = 270
+                angulo_teta1 = 90
+                angulo_teta2 = 270
             else:
-                teta1 = numpy.arctan(numerador / denominador) * 180 / 3.141592
-                teta2 = teta1 + 180
-            logger.info("teta 1 = " + str(teta1) + "; teta2 = " + str(teta2))
+                angulo_teta1 = numpy.arctan(numerador / denominador) * 180 / 3.141592
+                angulo_teta2 = angulo_teta1 + 180
+            logger.info("angulo_teta 1 = " + str(angulo_teta1) + "; angulo_teta2 = " + str(angulo_teta2))
         else:
-            teta1 = 0
-            teta2 = 180
+            angulo_teta1 = 0
+            angulo_teta2 = 180
 
         ex = numpy.array([self._energia(dados_fixos, dados_meus, por_partido,
-                          graus=teta1, espelho=0),
+                          graus=angulo_teta1, espelho=0),
                           self._energia(dados_fixos, dados_meus, por_partido,
-                          graus=teta2, espelho=0),
+                          graus=angulo_teta2, espelho=0),
                           self._energia(dados_fixos, dados_meus, por_partido,
-                          graus=teta1, espelho=1),
+                          graus=angulo_teta1, espelho=1),
                           self._energia(dados_fixos, dados_meus, por_partido,
-                          graus=teta2, espelho=1)])
+                          graus=angulo_teta2, espelho=1)])
         logger.info(ex)
 
         dados_partidos = self.analisePeriodo.coordenadas_partidos
@@ -556,22 +567,14 @@ class Rotacionador:
         campeao = [0, 0]
         if ganhou >= 2:  # espelhar
             campeao[0] = 1
-            for partido, coords in dados_partidos.items():
-                dados_partidos[partido] = numpy.dot(
-                    coords, numpy.array([[-1., 0.], [0., 1.]]))
-            for parlamentar, coords in dados_parlamentares.items():
-                dados_parlamentares[parlamentar] = numpy.dot(
-                    coords, numpy.array([[-1., 0.], [0., 1.]]))
-        if ganhou == 0 or ganhou == 2:  # girar de teta1
-            campeao[1] = teta1
+            self._espelhar_coordenadas(dados_partidos)
+            self._espelhar_coordenadas(dados_parlamentares)
+        if ganhou == 0 or ganhou == 2:  # girar de angulo_te1
+            campeao[1] = angulo_teta1
         else:
-            campeao[1] = teta2
-        for partido, coords in dados_partidos.items():
-            dados_partidos[partido] = numpy.dot(
-                coords, self._matrot(campeao[1]))
-        for parlamentar, coords in dados_parlamentares.items():
-            dados_parlamentares[parlamentar] = numpy.dot(
-                coords, self._matrot(campeao[1]))
+            campeao[1] = angulo_teta2
+        self._rotacionar_coordenadas(campeao[1], dados_partidos)
+        self._rotacionar_coordenadas(campeao[1], dados_parlamentares)
 
         self.theta = campeao[1]
         logger.info("campeao = [espelha,theta] = " + str(campeao))
