@@ -1233,7 +1233,7 @@ ol.list.alphalow{list-style: lower-alpha;}
                 margin: 10px 40px 0 0;
                 width: 470px;
             }
-            
+
         #footer .version {
             font-size: 11px;
             margin-top: 30px;
@@ -3851,8 +3851,28 @@ port+.pager{margin-top: 40px;}
     width: 10px;
 }
 
-.botao.ativado {
+.button {
+    font: normal 12px/1.2 Arial, Helvetica, sans-serif;
+    background: #1292db;
+    border: #000 1px solid;
+    color: #fff;
+    color: rgba(255,255,255,.75);
+    padding: 5px 10px;
+    float:left;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.button.active {
     background-color: #444;
+}
+
+.button:hover {
+    background-color: #444;
+    cursor: default;
 }
 
 .com-margem {
