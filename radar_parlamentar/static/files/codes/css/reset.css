@@ -6,7 +6,7 @@
         Themeforest profile: http://themeforest.net/user/palpaldal/
 
         TABLE OF CONTENTS ------------------
-        
+
                 1.      Style resetting codes (using Eric Meyer's resetter) and some more of developer
                                 http://meyerweb.com/eric/tools/css/reset/
                                 v1.0 | 20080212
@@ -133,7 +133,7 @@ h2 { font-size: 28px;}
 h3 { font-size: 24px;}
 h4 { font-size: 18px;}
 h5 { font-size: 16px;}
-h6 { 
+h6 {
         font-size: 12px;
         text-transform: uppercase;
 }
@@ -246,7 +246,7 @@ input[type="button"]:focus,input[type="button"]:hover,
 input[type="submit"]:focus,input[type="submit"]:hover,
 input[type="reset"]:focus,input[type="reset"]:hover{
         background-color: #444;
-        color: #fff;
+        color: #000;
 }
 
 /*FOR BUTTON STYLES PLEASE CHECK default.css FILE'S 1. Common Theme Elements SECTION*/
