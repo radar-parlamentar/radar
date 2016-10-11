@@ -24,6 +24,7 @@ Instale os pacotes (apt-get):
     * rabbitmq-server
 
 Crie a pasta /tmp/django_cache
+
 Obs.: não criar na pasta tmp do Linux
 
 * **Configuração utilizando o virtualenv**
@@ -77,12 +78,13 @@ Observações
 
     * Abrir o arquivo /settings/development.py e adicionar na linha 2:
 
-        import os
+            import os
 
     * No final do arquivo incluir:
 
-        ere = os.path.abspath(os.path.dirname(__file__))
-        TEMPLATE_DIRS = ( os.path.join(here, os.pardir, 'radar_parlamentar/templates/') )
+            ere = os.path.abspath(os.path.dirname(__file__))
+
+            TEMPLATE_DIRS = ( os.path.join(here, os.pardir, 'radar_parlamentar/templates/') )
 
 
 3. Banco de dados
