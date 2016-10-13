@@ -184,12 +184,13 @@ Plot = (function ($) {
 function atualiza_botao_votacao(el){
     $(".escolhe-votacao").removeClass("ativado");
     $(el).addClass("ativado");
+    $(".filtro-voto").removeClass("ativado");
+    $("#voto_todos").addClass("ativado");
 }
 
 
 $('.botao').click(function() {
     var voto = $(this).attr("data");
-    console.log(voto);
     $("#detalheParlamentar").empty();
     $(".filtro-voto").removeClass("ativado");
     $(this).addClass("ativado");
