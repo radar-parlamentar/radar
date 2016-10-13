@@ -186,22 +186,14 @@ function atualiza_botao_votacao(el){
     $(el).addClass("ativado");
 }
 
-function destacarVoto(voto){
-    // Limpa dados de um votante específico
+
+$('.botao').click(function() {
+    var voto = $(this).attr("data");
+    console.log(voto);
     $("#detalheParlamentar").empty();
-    // Configura os botões
-    if (voto == "TODOS") {
-      $(".filtro-voto").removeClass("ativado");
-      $(this).addClass("ativado")
-    } else {
-      if ($(this).hasClass("ativado")) {
-          $(".filtro-voto").removeClass("ativado");
-          $(".filtro-voto.todos").addClass("ativado");
-        } else {
-          $(".filtro-voto").removeClass("ativado");
-          $(this).addClass("ativado");
-        }
-    }
+    $(".filtro-voto").removeClass("ativado");
+    $(this).addClass("ativado");
+
     situacao_atual = $(".filtro-voto.ativado").val();
     d3.selectAll("circle").each(function(d,i){
         var el = d3.select(this)
@@ -214,4 +206,4 @@ function destacarVoto(voto){
             el.attr("fill", "#ccc");
         }
     })
-}
+});
