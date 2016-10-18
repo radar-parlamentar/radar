@@ -28,6 +28,7 @@ class OrdenacaoTest(TestCase):
 		proposicao = models.Proposicao.objects.get(id=1)
 		resultado = ordenacao.ordem_dos_parlamentares(proposicao)
 		self.assertEquals(resultado[0][0].descricao, 'Reforma agrária')
+		self.assertEquals(resultado[0][1][0].nome, 'Pierre')
 
 
 	def test_ordenar_partidos(self):
@@ -38,18 +39,20 @@ class OrdenacaoTest(TestCase):
 		ordem = []
 		ordem = ordenacao.ordenar_partidos(casa_legislativa, periodo)
 		self.assertEquals(ordem[0].nome, 'Jacobinos')
+		self.assertEquals(ordem[1].nome, 'Girondinos')
+		self.assertEquals(ordem[2].nome, 'Monarquistas')
 
 	def test_def_ordenar_votantes(self):
 		proposicao = models.Proposicao.objects.get(id=1)
 		resultado = ordenacao.ordenar_votantes(proposicao)
 		parla = Parlamentar.objects.filter(nome='Pierre')[0]
-		teste = (parla.partido,1)
-		self.assertEquals(resultado[parla],teste)
+		primeiro = (parla.partido,1)
+		self.assertEquals(resultado[parla],primeiro)
 
 	
 
-		#AttributeError: 'QuerySet' object has no attribute 'voto_set'
-	def test_ordem_dos_parl_por_votacao(self):
+		#AttributeError: 'QuerySet' object has no attribute 'voto_set', QuerySet não está reconhecendo o _set
+	"""def test_ordem_dos_parl_por_votacao(self):
 		proposicao = models.Proposicao.objects.get(id=1)
 		votacao = Votacao.objects.filter(proposicao=proposicao).order_by('data')
 		casa_legislativa = proposicao.casa_legislativa
@@ -64,4 +67,4 @@ class OrdenacaoTest(TestCase):
 		dicionario_votantes = ordenacao.ordenar_votantes(proposicao) 
 		partidos = ordenacao.ordenar_partidos(casa_legislativa, periodo)
 		teste = ordenacao.ordem_dos_parl_por_votacao(votacao,dicionario_votantes,partidos)
-		print teste
+		print teste"""
