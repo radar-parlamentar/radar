@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*- 
 from __future__ import unicode_literals
 from django.test import TestCase
 from modelagem.models import Parlamentar, Proposicao, Votacao, \
@@ -24,6 +24,9 @@ class OrdenacaoTest(TestCase):
 		from util_test import flush_db
 		flush_db(cls)
 
+
+
+
 	def test_ordenar_partidos(self):
 		periodo = models.PeriodoCasaLegislativa(date(1989, 02, 02),
 		date(1989, 10, 10))
@@ -32,3 +35,12 @@ class OrdenacaoTest(TestCase):
 		ordem = []
 		ordem = ordenacao.ordenar_partidos(casa_legislativa, periodo)
 		self.assertEquals(ordem[0].nome, 'Jacobinos')
+
+	def test_def_ordenar_votantes(self):
+		proposicao = models.Proposicao.objects.get(id=1)
+		print proposicao
+		resultado = ordenacao.ordenar_votantes(proposicao)
+		parla = Parlamentar.objects.filter(nome='Pierre')[0]
+		print resultado
+		teste = (parla.partido,1)
+		self.assertEquals(resultado[parla],teste)
