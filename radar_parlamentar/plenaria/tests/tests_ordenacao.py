@@ -23,8 +23,11 @@ class OrdenacaoTest(TestCase):
 	def tearDownClass(cls):
 		from util_test import flush_db
 		flush_db(cls)
-
-
+	
+	def test_ordem_dos_parlamentares(self):
+		proposicao = models.Proposicao.objects.get(id=1)
+		resultado = ordenacao.ordem_dos_parlamentares(proposicao)
+		self.assertEquals(resultado[0][0].descricao, 'Reforma agrária')
 
 
 	def test_ordenar_partidos(self):
@@ -38,9 +41,27 @@ class OrdenacaoTest(TestCase):
 
 	def test_def_ordenar_votantes(self):
 		proposicao = models.Proposicao.objects.get(id=1)
-		print proposicao
 		resultado = ordenacao.ordenar_votantes(proposicao)
 		parla = Parlamentar.objects.filter(nome='Pierre')[0]
-		print resultado
 		teste = (parla.partido,1)
 		self.assertEquals(resultado[parla],teste)
+
+	
+
+		#AttributeError: 'QuerySet' object has no attribute 'voto_set'
+	def test_ordem_dos_parl_por_votacao(self):
+		proposicao = models.Proposicao.objects.get(id=1)
+		votacao = Votacao.objects.filter(proposicao=proposicao).order_by('data')
+		casa_legislativa = proposicao.casa_legislativa
+		datas_votacoes = [votac.data for votac in votacao]
+		pr = utils.PeriodosRetriever(casa_legislativa = casa_legislativa,
+			periodicidade = QUADRIENIO,
+			data_da_primeira_votacao = min(datas_votacoes),
+			data_da_ultima_votacao = max(datas_votacoes),
+			numero_minimo_de_votacoes = 1 )
+		periodo = pr.get_periodos()[-1]
+		lista_ordenada_partidos = ordenacao.ordenar_partidos(casa_legislativa, periodo)
+		dicionario_votantes = ordenacao.ordenar_votantes(proposicao) 
+		partidos = ordenacao.ordenar_partidos(casa_legislativa, periodo)
+		teste = ordenacao.ordem_dos_parl_por_votacao(votacao,dicionario_votantes,partidos)
+		print teste
