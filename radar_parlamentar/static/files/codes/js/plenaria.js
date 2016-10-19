@@ -72,6 +72,8 @@ Plot = (function ($) {
 
         // Inicialmente remove o spinner de loading
         $("#loading").remove();
+        $(".d3-tip").remove(); 
+
         idx_votacao = get_idx_votacao();
 
         var partidos = dado.partidos,
@@ -84,6 +86,16 @@ Plot = (function ($) {
         $('#votacao_descr').html('Descrição: ' + votacao.descricao)
         $('#votacao_resultado').html('Resultado: ' + votacao.resultado)
 
+        parlamentar_tooltip = d3.tip()
+            .attr('class', 'd3-tip')
+            .html(function(parlamentar) {
+                var atributo = "<strong>Nome:</strong> <span style='color:yellow'>" + parlamentar.nome + "</span></br>";
+                atributo += "<strong>Partido:</strong> <span style='color:yellow'>" + partidos[parlamentar.id_partido].nome + "</span></br>";
+                atributo += "<strong>Voto:</strong> <span style='color:yellow'>" + parlamentar.voto + "</span></br>";
+                return atributo;
+            })
+            .style('text-align','left');
+
         len_votacoes = dado.votacoes.length;
 
         var width = 550;
@@ -93,7 +105,8 @@ Plot = (function ($) {
           .attr("width", width)
           .attr("height", height)
           .append("g")
-          .attr("transform", "translate(280,270)");
+          .attr("transform", "translate(280,270)")
+          .call(parlamentar_tooltip);
 
         var parlamentares_por_raio = 2,
             raios = [],
@@ -160,6 +173,11 @@ Plot = (function ($) {
                                    ' ('+ partidos[d.id_partido].numero +')</p>');
                         div.append('<p><b>Voto: </b>' + d.voto + '</p>');
                     }
+                }).on('mouseover', function(parlamentar) { 
+                    return mouseover_parlamentar(parlamentar); 
+                })
+                .on('mouseout', function(parlamentar) { 
+                    return mouseout_parlamentar(parlamentar); 
                 });
 
         document.getElementById('votacoes').scrollIntoView();
@@ -179,6 +197,30 @@ Plot = (function ($) {
     return {
         initialize: initialize
     };
+    function nome(parlamentar){
+        if(parlamentar.nome)
+            return parlamentar.nome.replace(".","");
+        else
+            return "Não possui nome";
+    }
+
+    function mouseover_parlamentar(parlamentar) {
+        d3.selectAll("#parlamentar-"+nome(parlamentar)).classed("hover",true);
+        parlamentar_tooltip.show(parlamentar);
+        
+        /* After show, force the tooltip to stay together with circle
+        using the position of mouse in the page, obtained from d3.event*/
+        d3.select('.d3-tip')
+            .style('left',d3.event.pageX-90+'px')
+            .style('top',d3.event.pageY-80+'px')
+    }
+
+    function mouseout_parlamentar(parlamentar) {
+        d3.selectAll("#parlamentar-"+nome(parlamentar)).classed("hover",false);
+        parlamentar_tooltip.hide(parlamentar);
+    }
+
+
 })(jQuery);
 
 function atualiza_botao_votacao(el){
