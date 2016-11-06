@@ -59,7 +59,7 @@ Plot = (function ($) {
         });
         idx_votacao = get_idx_votacao();
         var botao = idx_votacao - 1
-        $('[name="votacao-'+botao+'"]').addClass('active');
+        $('[name="votacao-'+botao+'"]').addClass('ativado');
 
         plot_data();
     }
@@ -224,34 +224,19 @@ Plot = (function ($) {
 })(jQuery);
 
 function atualiza_botao_votacao(el){
-    $(".escolhe-votacao").removeClass("active");
-    $(el).addClass("active");
+    $(".escolhe-votacao").removeClass("ativado");
+    $(el).addClass("ativado");
+    $(".filtro-voto").removeClass("ativado");
+    $("#voto_todos").addClass("ativado");
 }
 
-$('.button').click(function(){
-    if ($(this).hasClass('active')) {
-        $(this).removeClass('active')
-    } else {
-        $(this).addClass('active')
-    }
-});
 
-function destacarVoto(voto){
-    // Limpa dados de um votante específico
+$('.botao').click(function() {
+    var voto = $(this).attr("data");
     $("#detalheParlamentar").empty();
-    // Configura os botões
-    if (voto == "TODOS") {
-        $(".button").removeClass("active");
-        $(this).addClass("active");
-    } else {
-        if ($(this).hasClass("active")) {
-            $(".button").removeClass("active");
-            $(".button.todos").addClass("active");
-        } else {
-            $(".button").removeClass("active");
-            $(this).addClass("active");
-        }
-    }
+    $(".filtro-voto").removeClass("ativado");
+    $(this).addClass("ativado");
+
     situacao_atual = $(".filtro-voto.ativado").val();
     d3.selectAll("circle").each(function(d,i){
         var el = d3.select(this)
@@ -264,4 +249,4 @@ function destacarVoto(voto){
             el.attr("fill", "#ccc");
         }
     })
-}
+});

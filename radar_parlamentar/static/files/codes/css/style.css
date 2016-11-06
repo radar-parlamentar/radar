@@ -3851,29 +3851,11 @@ port+.pager{margin-top: 40px;}
     width: 10px;
 }
 
-.button {
-    font: normal 12px/1.2 Arial, Helvetica, sans-serif;
-    background: #1292db;
-    border: #000 1px solid;
-    color: #fff;
-    color: rgba(255,255,255,.75);
-    padding: 5px 10px;
-    float:left;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -ms-border-radius: 2px;
-    -o-border-radius: 2px;
-    border-radius: 2px;
-}
 
-.button.active {
+.botao.ativado {
     background-color: #444;
 }
 
-.button:hover {
-    background-color: #444;
-    cursor: default;
-}
 
 .com-margem {
     margin: 20px;
