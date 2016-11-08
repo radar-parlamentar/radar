@@ -22,8 +22,7 @@ from modelagem.models import CasaLegislativa, Parlamentar, Proposicao
 
 class Genero:
 
-    @staticmethod
-    def definir_palavras(genero, id_casa_legislativa):
+    def agrupar_palavras(self, genero, id_casa_legislativa):
         temas = []
         for parlamentar in Parlamentar.objects.filter(genero=genero, casa_legislativa_id=id_casa_legislativa):
             for proposicao in Proposicao.objects.filter(
@@ -31,9 +30,12 @@ class Genero:
                 for tema in proposicao.indexacao.split(','):
                     if len(tema) != 0:
                         temas.append(tema.strip().lower())
+                        # print tema
+        return self.organiza_palavras(temas)
 
+
+    def organiza_palavras(self, temas):
         temas_dicionario = {}
-
         for tema in temas:
             if temas_dicionario.has_key(tema):
                 temas_dicionario[tema] = temas_dicionario[tema] + 1
@@ -43,7 +45,6 @@ class Genero:
         temas_frequencia = sorted(
             temas_dicionario.items(), reverse=True, key=lambda i: i[1])
         temas_frequencia = temas_frequencia[:51]
-
         return temas_frequencia
 
 
@@ -62,4 +63,3 @@ class Genero:
                     break
 
         return casas_legislativas
-
