@@ -198,15 +198,20 @@ class ImportadorVotacoesSenado:
             prop.save()
             self.proposicoes[prop_nome] = prop
         return prop
-
-    def _from_xml_to_bd(self, xml_file):
-        """Salva no banco de dados do Django e retorna lista das votações"""
+    def _read_xml(self, xml_file):
+        #"""Salva no banco de dados do Django e retorna lista das votações"""
 
         f = open(xml_file, 'r')
         xml = f.read()
         f.close()
         tree = etree.fromstring(xml)
+        return tree
 
+
+    def _from_xml_to_bd(self, xml_file):
+
+        tree = self._read_xml(xml_file)
+        
         votacoes = []
         # Pelo q vimos, nesses XMLs não há votações 'inúteis' (homenagens etc)
         # como na cmsp (exceto as secretas)
