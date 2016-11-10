@@ -19,31 +19,33 @@
 
 from modelagem.models import CasaLegislativa, Parlamentar, Proposicao
 
-
 class Genero:
 
-    def agrupar_palavras(self, genero, id_casa_legislativa):
-        temas = []
+    def __init__(self):
+        self.palavras = []
+        self.dicionario_palavras = {}
+
+    def agrupa_palavras(self, genero, id_casa_legislativa):
         for parlamentar in Parlamentar.objects.filter(genero=genero, casa_legislativa_id=id_casa_legislativa):
-            for proposicao in Proposicao.objects.filter(
-                    autor_principal=parlamentar.nome):
-                for tema in proposicao.indexacao.split(','):
-                    if len(tema) != 0:
-                        temas.append(tema.strip().lower())
-                        # print tema
-        return self.organiza_palavras(temas)
+            for proposicao in Proposicao.objects.filter(autor_principal=parlamentar.nome):
+                for palavra in proposicao.indexacao.split(','):
+                    if len(palavra) != 0:
+                        self.palavras.append(palavra.strip().lower())
+        return self.define_chaves_dicionario(self.palavras)
 
 
-    def organiza_palavras(self, temas):
-        temas_dicionario = {}
-        for tema in temas:
-            if temas_dicionario.has_key(tema):
-                temas_dicionario[tema] = temas_dicionario[tema] + 1
+    def define_chaves_dicionario(self, palavras):
+        for palavra in palavras:
+            if self.dicionario_palavras.has_key(palavra):
+                self.dicionario_palavras[palavra] = self.dicionario_palavras[palavra] + 1
             else:
-                temas_dicionario[tema] = 1
+                self.dicionario_palavras[palavra] = 1
+        return self.organiza_lista_palavras(self.dicionario_palavras)
+
+    def organiza_lista_palavras(self, dicionario_palavras):
 
         temas_frequencia = sorted(
-            temas_dicionario.items(), reverse=True, key=lambda i: i[1])
+            dicionario_palavras.items(), reverse=True, key=lambda i: i[1])
         temas_frequencia = temas_frequencia[:51]
         return temas_frequencia
 

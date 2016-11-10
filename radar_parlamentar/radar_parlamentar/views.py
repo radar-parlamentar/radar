@@ -98,10 +98,9 @@ def genero_termos_nuvem(request):
                                   context_instance=RequestContext(request))
 
     else:
-        temas_frequencia_mulher = genero.agrupar_palavras('F', id_casa_legislativa)
-        # logger.info("Temasdamulher %s" % (temas_frequencia_mulher))
+        temas_frequencia_mulher = genero.agrupa_palavras('F', id_casa_legislativa)
         temas_json_mulher = json.dumps(temas_frequencia_mulher)
-        temas_frequencia_homem = genero.agrupar_palavras('M', id_casa_legislativa)
+        temas_frequencia_homem = genero.agrupa_palavras('M', id_casa_legislativa)
         temas_json_homem = json.dumps(temas_frequencia_homem)
 
         return render_to_response('genero_tagcloud.html',
