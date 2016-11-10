@@ -43,10 +43,12 @@ class Genero:
         return self.organiza_lista_palavras(self.dicionario_palavras)
 
     def organiza_lista_palavras(self, dicionario_palavras):
-
+        # O código já estava com esse numero mágico, sem explicação nenhuma.
+        # Analisando o mesmo, conclui que seria o numero máximo de palavras para a visualização ficar ok.
+        numero_maximo_de_palavras = 51
         temas_frequencia = sorted(
             dicionario_palavras.items(), reverse=True, key=lambda i: i[1])
-        temas_frequencia = temas_frequencia[:51]
+        temas_frequencia = temas_frequencia[:numero_maximo_de_palavras]
         return temas_frequencia
 
 
