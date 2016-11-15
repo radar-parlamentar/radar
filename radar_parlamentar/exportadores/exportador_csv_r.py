@@ -87,7 +87,7 @@ class ExportadorCSV:
                 parlamentar = voto.parlamentar
                 partido = parlamentar.partido
                 csv_row = []
-                csv_row.append(votacao.id_vot)
+                csv_row.append(votacao.id)
                 csv_row.append(parlamentar.id)
                 csv_row.append(parlamentar.nome.encode('UTF-8'))
                 csv_row.append(partido.nome)
@@ -124,7 +124,8 @@ class ExportadorCSV:
 
 
 def main():
-    data_ini = parse_datetime('2015-01-01 0:0:0')
-    data_fim = parse_datetime('2016-01-01 0:0:0')
-    exportador = ExportadorCSV('cmsp', data_ini, data_fim)
+    data_ini = parse_datetime('2007-01-01 0:0:0')
+    data_fim = parse_datetime('2011-01-01 0:0:0')
+    exportador = ExportadorCSV('cdep', data_ini, data_fim)
     exportador.exportar_csv()
+
