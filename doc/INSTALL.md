@@ -23,9 +23,6 @@ Instale os pacotes (apt-get):
     * python-virtualenv
     * rabbitmq-server
 
-Crie a pasta /tmp/django_cache
-
-Obs.: não criar na pasta tmp do Linux
 
 * **Configuração utilizando o virtualenv**
 
