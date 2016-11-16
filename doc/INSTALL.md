@@ -25,6 +25,8 @@ Instale os pacotes (apt-get):
 
 Crie a pasta /tmp/django_cache
 
+Obs.: não criar na pasta tmp do Linux
+
 * **Configuração utilizando o virtualenv**
 
 Para quem não conheçe, o [virtualenv](http://www.virtualenv.org "Virtual Env") cria um *conteiner* com todo um ambiente Python "limpo" para você instalar os pacotes separadamente do seu Sistema Operacional.
@@ -72,6 +74,19 @@ Observações
             
             LISTA_PARTIDOS = os.path.join('recursos/partidos.txt',MODULE_DIR).decode("utf-8")
 
+* Caso ocorra o erro **Missing Template**:
+
+    * Abrir o arquivo /settings/development.py e adicionar na linha 2:
+
+            import os
+
+    * No final do arquivo incluir:
+
+            ere = os.path.abspath(os.path.dirname(__file__))
+
+            TEMPLATE_DIRS = ( os.path.join(here, os.pardir, 'radar_parlamentar/templates/') )
+
+
 3. Banco de dados
 --------------------------
 
@@ -109,6 +124,10 @@ Agora já podemos iniciar a aplicação! Para isso:
     $python manage.py runserver
     
 Confira a aplicação rodando pelo navegador usando o endereço `http://127.0.0.1:8000/`.
+
+Acesse o painel de administração do Django:  http://127.0.0.1:8000/admin/. Se um erro como 'Template does not exist' for encontrado, rode o comando:
+
+    $ pip install -r requirements.txt —ignore-installed —force-reinstall —upgrade —no-cache-dir
 
 
 4. Importação dos Dados
@@ -189,7 +208,7 @@ Também é necessário instalar o JDK7 do Java
 Se o objetivo é iniciar o Elasticsearch apenas em um determinado endereço, é necessário editar o arquivo de configuração. No exemplo abaixo o Elasticsearch é iniciado apenas no endereço local 127.0.0.1.
 
     $ vim config/elasticsearch.yml
-    descomentar e editar a linha network.bind_host=127.0.0.1
+    descomentar e editar a linha network.bind_host: 127.0.0.1
 
 Para iniciar o Elasticsearch:
 
