@@ -220,13 +220,20 @@ class ImportadorVotacoesSenado:
         else:
             return False
 
-    def _creating_and_setting_votacao(self, votacao_tree):
+    def _creating_votacao(self, votacao_tree):
         proposicao = self._proposicao_from_tree(votacao_tree)
         self.progresso()
         votacao = models.Votacao()
         votacao.id_vot = self._find_the_votation_code(votacao_tree)
         # save só pra criar a chave primária e poder atribuir os votos
         votacao.save()
+
+        return votacao
+
+    def _setting_votacao(self, votacao_tree):
+        
+        proposicao = self._proposicao_from_tree(votacao_tree)
+        votacao = self._creating_votacao(votacao_tree)
 
         result_tree = votacao_tree.find('Resultado')
         if result_tree is not None:
@@ -236,9 +243,9 @@ class ImportadorVotacoesSenado:
 
         return votacao
 
-    def _add_voting_to_model(self, votacao_tree):
+    def _add_votacao_to_model(self, votacao_tree):
 
-        votacao = self._creating_and_setting_votacao(votacao_tree)
+        votacao = self._setting_votacao(votacao_tree)
 
         votos_tree = votacao_tree.find('Votos')
         #In case there is no votos_tree, gives a waring and return.
@@ -283,7 +290,7 @@ class ImportadorVotacoesSenado:
                 votacao = votacoes_query[0]
                 votacoes.append(votacao)
             else:
-                sucess_status, votacao = self._add_voting_to_model(votacao_tree)
+                sucess_status, votacao = self._add_votacao_to_model(votacao_tree)
                 if sucess_status is True and votacao is not None:
                     votacoes.append(votacao)
 
