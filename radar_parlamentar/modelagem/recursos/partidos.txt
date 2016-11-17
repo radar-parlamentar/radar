@@ -22,7 +22,7 @@ PSDC; 27; #ffff6b
 PRTB; 28; #312dc1
 PCO; 29; #610100
 PHS; 31; #65a4fb
-PMN; 33; #D51500 
+PMN; 33; #D51500
 PRN; 36; #0066ff
 PTC; 36; #0066ff
 PSB; 40; #ff8d00
