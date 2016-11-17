@@ -207,6 +207,48 @@ class ImportadorVotacoesSenado:
         tree = etree.fromstring(xml)
         return tree
 
+    def _find_the_votation_code(self, votacao_tree):
+        codigo = votacao_tree.find('CodigoSessaoVotacao').text
+        return codigo
+
+    def _code_exists_in_votacao_in_model(self, votacao_tree):
+        codigo = self._find_the_votation_code(votacao_tree)
+        votacoes_query = models.Votacao.objects.filter(id_vot=codigo)
+        if votacoes_query:
+            return True
+        else:
+            return False
+
+    def _add_voting_to_model(self, votacao_tree):
+        proposicao = self._proposicao_from_tree(votacao_tree)
+        self.progresso()
+        votacao = models.Votacao()
+        votacao.id_vot = self._find_the_votation_code(votacao_tree)
+        # só pra criar a chave primária e poder atribuir os votos
+        votacao.save()        
+        
+        if votacao_tree.find('Resultado') is not None:
+            votacao.resultado = votacao_tree.find('Resultado').text
+        votacao.proposicao = proposicao
+        votos_tree = votacao_tree.find('Votos')
+        if votos_tree is not None:
+            votos = self._votos_from_tree(votos_tree, votacao)
+            if not votos:
+                logger.warn('Votação desconsiderada (sem votos)')
+                votacao.delete()
+                return False, None
+            else:
+                #setando atributos da votação a serem salvos caso ela não seja nula e tenha votos
+                votacao.descricao = votacao_tree.find('DescricaoVotacao').text
+                votacao.data = self._converte_data(votacao_tree.find('DataSessao').text)
+                votacao.save()
+                return True, votacao
+
+        else:
+            logger.warn(
+                'Votação desconsiderada (votos_tree nulo)')
+            votacao.delete()
+            return False, None
 
     def _from_xml_to_bd(self, xml_file):
 
@@ -216,49 +258,23 @@ class ImportadorVotacoesSenado:
         # Pelo q vimos, nesses XMLs não há votações 'inúteis' (homenagens etc)
         # como na cmsp (exceto as secretas)
         votacoes_tree = tree.find('Votacoes')
-        if votacoes_tree is not None:
-            for votacao_tree in votacoes_tree:
-                # se votação não é secreta
-                votacao_secreta = votacao_tree.find('Secreta').text
-                if votacao_tree.tag == 'Votacao' and votacao_secreta == 'N':
+        #caso a árvore de votações seja vazia, a função é encerrada
+        if votacoes_tree is None:
+            return votacoes 
+        for votacao_tree in votacoes_tree:
+            votacao_secreta = votacao_tree.find('Secreta').text
+            #caso nao seja uma votação ou seja uma votação secreta, a função é encerrada
+            if votacao_tree.tag != 'Votacao' or votacao_secreta != 'N':
+                return votacoes
+            #caso o codigo já exista na model
+            if self._code_exists_in_votacao_in_model(votacao_tree):
+                votacao = votacoes_query[0]
+                votacoes.append(votacao)
+            else:
+                sucess_status, votacao = self._add_voting_to_model(votacao_tree)
+                if sucess_status is True and votacao is not None:
+                    votacoes.append(votacao)
 
-                    codigo = votacao_tree.find('CodigoSessaoVotacao').text
-                    votacoes_query = models.Votacao.objects.filter(
-                        id_vot=codigo)
-
-                    if votacoes_query:
-                        votacao = votacoes_query[0]
-                        votacoes.append(votacao)
-                    else:
-                        proposicao = self._proposicao_from_tree(votacao_tree)
-                        self.progresso()
-                        votacao = models.Votacao()
-                        votacao.id_vot = codigo
-                        # só pra criar a chave primária e poder atribuir o
-                        # votos
-                        votacao.save()
-                        votacao.descricao = votacao_tree.find(
-                            'DescricaoVotacao').text
-                        votacao.data = self._converte_data(
-                            votacao_tree.find('DataSessao').text)
-                        if votacao_tree.find('Resultado') is not None:
-                            votacao.resultado = votacao_tree.find(
-                                'Resultado').text
-                        votacao.proposicao = proposicao
-                        votos_tree = votacao_tree.find('Votos')
-                        if votos_tree is not None:
-                            votos = self._votos_from_tree(votos_tree, votacao)
-                            if not votos:
-                                logger.warn(
-                                    'Votação desconsiderada (sem votos)')
-                                votacao.delete()
-                            else:
-                                votacao.save()
-                                votacoes.append(votacao)
-                        else:
-                            logger.warn(
-                                'Votação desconsiderada (votos_tree nulo)')
-                            votacao.delete()
         return votacoes
 
     def progresso(self):
