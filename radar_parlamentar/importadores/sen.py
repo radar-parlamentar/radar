@@ -231,7 +231,6 @@ class ImportadorVotacoesSenado:
         return votacao
 
     def _setting_votacao(self, votacao_tree):
-        
         proposicao = self._proposicao_from_tree(votacao_tree)
         votacao = self._creating_votacao(votacao_tree)
 
@@ -243,29 +242,40 @@ class ImportadorVotacoesSenado:
 
         return votacao
 
-    def _add_votacao_to_model(self, votacao_tree):
-
-        votacao = self._setting_votacao(votacao_tree)
-
-        votos_tree = votacao_tree.find('Votos')
-        #In case there is no votos_tree, gives a waring and return.
+    def _check_null_votos_tree(self, votos_tree, votacao):
         if votos_tree is  None:
             logger.warn(
                 'Votação desconsiderada (votos_tree nulo)')
             votacao.delete()
-            return False, None
+            return True
+        return False
 
+    def _check_null_votos(self, votos_tree, votacao):
         votos = self._votos_from_tree(votos_tree, votacao)
         if not votos:
             logger.warn('Votação desconsiderada (sem votos)')
             votacao.delete()
+            return True
+        return False
+
+    def _add_votacao_to_model(self, votacao_tree):
+
+        votacao = self._setting_votacao(votacao_tree)
+        votos_tree = votacao_tree.find('Votos')
+
+        #In case there is no votos_tree, gives a warning and return.
+        if self._check_null_votos_tree(votos_tree, votacao):
             return False, None
-        else:
-            #setando atributos da votação a serem salvos caso ela não seja nula e tenha votos
-            votacao.descricao = votacao_tree.find('DescricaoVotacao').text
-            votacao.data = self._converte_data(votacao_tree.find('DataSessao').text)
-            votacao.save()
-            return True, votacao
+
+        #In case there is no votos, gives a warning and return.
+        if self._check_null_votos(votos_tree, votacao):
+            return False, None
+
+        #setando atributos da votação a serem salvos caso ela não seja nula e tenha votos
+        votacao.descricao = votacao_tree.find('DescricaoVotacao').text
+        votacao.data = self._converte_data(votacao_tree.find('DataSessao').text)
+        votacao.save()
+        return True, votacao
 
 
 
