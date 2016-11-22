@@ -216,9 +216,9 @@ class ImportadorVotacoesSenado:
         codigo = self._find_the_votacao_code(votacao_tree)
         votacoes_query = models.Votacao.objects.filter(id_vot=codigo)
         if votacoes_query:
-            return True
+            return True, votacoes_query
         else:
-            return False
+            return False, votacoes_query
 
     def _creating_votacao(self, votacao_tree):
         proposicao = self._proposicao_from_tree(votacao_tree)
@@ -281,7 +281,7 @@ class ImportadorVotacoesSenado:
         if self._save_votacao(votacao_tree, votacao):
             return True, votacao
 
-    def _from_xml_to_bd(self, xml_file):
+    def _save_votacao_in_db(self, xml_file):
 
         tree = self._read_xml(xml_file)
 
@@ -298,8 +298,9 @@ class ImportadorVotacoesSenado:
             if votacao_tree.tag != 'Votacao' or votacao_secreta != 'N':
                 return votacoes
             #caso o codigo já exista na model
-            if self._code_exists_in_votacao_in_model(votacao_tree):
-                votacao = votacoes_query[0]
+            code_exists, votacoes_query = self._code_exists_in_votacao_in_model(votacao_tree)
+            if code_exists:
+                votacao = result2[0]
                 votacoes.append(votacao)
             else:
                 sucess_status, votacao = self._add_votacao_to_model(votacao_tree)
@@ -328,7 +329,7 @@ class ImportadorVotacoesSenado:
         # facilita debug"""
         for xml_file in self._xml_file_names():
             logger.info('Importando %s' % xml_file)
-            self._from_xml_to_bd(xml_file)
+            self._save_votacao_in_db(xml_file)
 
 
 class PosImportacao:
