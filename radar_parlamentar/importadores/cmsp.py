@@ -202,10 +202,10 @@ class XmlCMSP:
             # analisanda.
             # vai retornar prop_nome se votação for de proposição
             prop_nome = self.prop_nome(vot_tree.get('Materia'))
-            self.busca_Votacoes(proposicoes, votacoes, vot_tree, prop_nome)
+            self.find_voting(proposicoes, votacoes, vot_tree, prop_nome)
             # se a votacao for associavel a uma proposicao, entao..
     
-    def busca_Votacoes(self, proposicoes, votacoes, vot_tree, prop_nome):
+    def find_voting(self, proposicoes, votacoes, vot_tree, prop_nome):
         if prop_nome:
             id_vot = vot_tree.get('VotacaoID')
             votacoes_em_banco = models.Votacao.objects.filter(
@@ -216,48 +216,48 @@ class XmlCMSP:
             else:
                 # a proposicao a qual a votacao sob analise se refere jah
                 # estava no dicionario (eba!)
-                self.garante_existencia_de_proposicao(proposicoes, votacoes, vot_tree, prop_nome, id_vot)
+                self.guarantee_existence_of_proposition(proposicoes, votacoes, vot_tree, prop_nome, id_vot)
 
-    def garante_existencia_de_proposicao(self, proposicoes, votacoes, vot_tree, prop_nome, id_vot):
+    def guarantee_existence_of_proposition(self, proposicoes, votacoes, vot_tree, prop_nome, id_vot):
         if prop_nome in proposicoes:
-            prop = proposicoes[prop_nome]
-        # a prop. nao estava ainda, entao devemo-la tanto  criar
-        # qnt cadastrar no dicionario.
+            proposicao = proposicoes[prop_nome]
         else:
-            prop = self.cria_Proposicao(proposicoes,prop_nome,vot_tree)
+            # a prop. nao estava criada ainda, entao devemos tanto criar
+            # qnt cadastrar no dicionario.
+            proposicao = self.create_proposition(proposicoes,prop_nome,vot_tree)
             
         if self.verbose:
-            logger.info('Proposicao %s salva' % prop)
-        prop.save()
-        vot = self.cria_Votacao(prop,vot_tree,id_vot)
+            logger.info('Proposicao %s salva' % proposicao)
+        proposicao.save()
+        vot = self.create_voting(proposicao,vot_tree,id_vot)
         vot.save()
         votacoes.append(vot)
 
 
-    def cria_Proposicao(self, proposicoes, prop_nome,vot_tree):
-        prop = models.Proposicao()
-        prop.sigla, prop.numero, prop.ano = self. \
+    def create_proposition(self, proposicoes, prop_nome,vot_tree):
+        proposicao = models.Proposicao()
+        proposicao.sigla, proposicao.numero, proposicao.ano = self. \
             tipo_num_anoDePropNome(prop_nome)
-        prop.ementa = vot_tree.get('Ementa')
-        prop.casa_legislativa = self.cmsp
-        proposicoes[prop_nome] = prop
-        return prop
+        proposicao.ementa = vot_tree.get('Ementa')
+        proposicao.casa_legislativa = self.cmsp
+        proposicoes[prop_nome] = proposicao
+        return proposicao
 
-    def cria_Votacao(self,prop,vot_tree,id_vot):
-        vot = models.Votacao()
+    def create_voting(self,prop,vot_tree,id_vot):
+        votacao = models.Votacao()
         # só pra criar a chave primária e poder atribuir o votos
-        vot.save()
-        vot.id_vot = id_vot
-        vot.descricao = vot_tree.get('Materia') + ' - ' + vot_tree.get('NotasRodape')
-        vot.data = self.data_da_sessao
-        vot.resultado = vot_tree.get('Resultado')
-        self.votos_from_tree(vot_tree, vot)
-        vot.proposicao = prop
+        votacao.save()
+        votacao.id_vot = id_vot
+        votacao.descricao = vot_tree.get('Materia') + ' - ' + vot_tree.get('NotasRodape')
+        votacao.data = self.data_da_sessao
+        votacao.resultado = vot_tree.get('Resultado')
+        self.votos_from_tree(vot_tree, votacao)
+        votacao.proposicao = prop
         if self.verbose:
-            logger.info('Votacao %s salva' % vot)
+            logger.info('Votacao %s salva' % votacao)
         else:
             self.progresso()
-        return vot
+        return votacao
 
 
     def sessao_from_tree(self, proposicoes, votacoes, sessao_tree):
