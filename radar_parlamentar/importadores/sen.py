@@ -208,12 +208,12 @@ class ImportadorVotacoesSenado:
         tree = etree.fromstring(xml)
         return tree
 
-    def _find_the_votation_code(self, votacao_tree):
+    def _find_the_votacao_code(self, votacao_tree):
         codigo = votacao_tree.find('CodigoSessaoVotacao').text
         return codigo
 
     def _code_exists_in_votacao_in_model(self, votacao_tree):
-        codigo = self._find_the_votation_code(votacao_tree)
+        codigo = self._find_the_votacao_code(votacao_tree)
         votacoes_query = models.Votacao.objects.filter(id_vot=codigo)
         if votacoes_query:
             return True
@@ -224,7 +224,7 @@ class ImportadorVotacoesSenado:
         proposicao = self._proposicao_from_tree(votacao_tree)
         self.progresso()
         votacao = models.Votacao()
-        votacao.id_vot = self._find_the_votation_code(votacao_tree)
+        votacao.id_vot = self._find_the_votacao_code(votacao_tree)
         # save só pra criar a chave primária e poder atribuir os votos
         votacao.save()
 
@@ -258,6 +258,13 @@ class ImportadorVotacoesSenado:
             return True
         return False
 
+    def _save_votacao(self, votacao_tree, votacao):
+          #setando atributos da votação a serem salvos caso ela não seja nula e tenha votos
+        votacao.descricao = votacao_tree.find('DescricaoVotacao').text
+        votacao.data = self._converte_data(votacao_tree.find('DataSessao').text)
+        votacao.save()
+        return True, votacao
+
     def _add_votacao_to_model(self, votacao_tree):
 
         votacao = self._setting_votacao(votacao_tree)
@@ -271,13 +278,8 @@ class ImportadorVotacoesSenado:
         if self._check_null_votos(votos_tree, votacao):
             return False, None
 
-        #setando atributos da votação a serem salvos caso ela não seja nula e tenha votos
-        votacao.descricao = votacao_tree.find('DescricaoVotacao').text
-        votacao.data = self._converte_data(votacao_tree.find('DataSessao').text)
-        votacao.save()
-        return True, votacao
-
-
+        if self._save_votacao(votacao_tree, votacao):
+            return True, votacao
 
     def _from_xml_to_bd(self, xml_file):
 
