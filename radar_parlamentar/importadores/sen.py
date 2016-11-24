@@ -294,17 +294,17 @@ class ImportadorVotacoesSenado:
         for votacao_tree in votacoes_tree:
             votacao_secreta = votacao_tree.find('Secreta').text
             #caso nao seja uma votação ou seja uma votação secreta, a função é encerrada
-            if votacao_tree.tag != 'Votacao' or votacao_secreta != 'N':
-                return votacoes
-            #caso o codigo já exista na model
-            code_exists, votacoes_query = self._code_exists_in_votacao_in_model(votacao_tree)
-            if votacoes_query:
-                votacao = votacoes_query[0]
-                votacoes.append(votacao)
-            else:
-                sucess_status, votacao = self._add_votacao_to_model(votacao_tree)
-                if sucess_status is True and votacao is not None:
+            if votacao_tree.tag == 'Votacao' and votacao_secreta == 'N':
+                    
+                #caso o codigo já exista na model
+                code_exists, votacoes_query = self._code_exists_in_votacao_in_model(votacao_tree)
+                if votacoes_query:
+                    votacao = votacoes_query[0]
                     votacoes.append(votacao)
+                else:
+                    sucess_status, votacao = self._add_votacao_to_model(votacao_tree)
+                    if sucess_status is True and votacao is not None:
+                        votacoes.append(votacao)
 
         return votacoes
 
