@@ -298,7 +298,7 @@ class ImportadorVotacoesSenado:
                 return votacoes
             #caso o codigo já exista na model
             code_exists, votacoes_query = self._code_exists_in_votacao_in_model(votacao_tree)
-            if code_exists:
+            if votacoes_query:
                 votacao = votacoes_query[0]
                 votacoes.append(votacao)
             else:
