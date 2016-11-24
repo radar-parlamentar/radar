@@ -231,14 +231,13 @@ class ImportadorVotacoesSenado:
         return votacao
 
     def _setting_votacao(self, votacao_tree):
-        proposicao = self._proposicao_from_tree(votacao_tree)
         votacao = self._creating_votacao(votacao_tree)
 
         result_tree = votacao_tree.find('Resultado')
         if result_tree is not None:
             votacao.resultado = votacao_tree.find('Resultado').text
 
-        votacao.proposicao = proposicao
+        votacao.proposicao = self._proposicao_from_tree(votacao_tree)
 
         return votacao
 
@@ -300,7 +299,7 @@ class ImportadorVotacoesSenado:
             #caso o codigo já exista na model
             code_exists, votacoes_query = self._code_exists_in_votacao_in_model(votacao_tree)
             if code_exists:
-                votacao = result2[0]
+                votacao = votacoes_query[0]
                 votacoes.append(votacao)
             else:
                 sucess_status, votacao = self._add_votacao_to_model(votacao_tree)
