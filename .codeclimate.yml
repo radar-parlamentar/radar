@@ -13,7 +13,8 @@ engines:
     enabled: true
 ratings:
   paths:
-  - "**.py"
+    - "radar_parlamentar/**/*"
+    - "**.py"
 exclude_paths:
-- tests/
-- radar_parlamentar/testes_integracao/
+  - "**/tests/**/*"
+  - radar_parlamentar/testes_integracao/
