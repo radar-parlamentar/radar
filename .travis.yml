@@ -6,7 +6,6 @@ python:
 # Dependencias do projeto
 install:
   - pip install -r radar_parlamentar/requirements.txt
-  - pip install coveralls
 
 # Roda Testes
 script:
