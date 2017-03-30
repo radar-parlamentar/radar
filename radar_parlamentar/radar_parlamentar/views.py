@@ -70,9 +70,9 @@ def importadores(request):
                               context_instance=RequestContext(request))
 
 
-def grafico_alternativo(request):
-    return render_to_response('grafico_alternativo.html', {},
-                              context_instance=RequestContext(request))
+# def grafico_alternativo(request):
+#     return render_to_response('grafico_alternativo.html', {},
+#                               context_instance=RequestContext(request))
 
 
 def genero(request):
@@ -140,9 +140,9 @@ def genero_futuro(request):
                               context_instance=RequestContext(request))
 
 
-def genero_perfil_legis(request):
-    return render_to_response('perfil_legis.html', {},
-                              context_instance=RequestContext(request))
+# def genero_perfil_legis(request):
+#     return render_to_response('perfil_legis.html', {},
+#                               context_instance=RequestContext(request))
 
 
 def dados_utilizados(request):
