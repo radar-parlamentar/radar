@@ -18,7 +18,7 @@
 # along with Radar Parlamentar.  If not, see
 #               <http://www.gnu.org/licenses/>.# -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
+
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.contrib.staticfiles import finders
@@ -27,7 +27,7 @@ import os
 import datetime
 import json
 import logging
-from blog import DictionaryBlogGenerator
+from .blog import DictionaryBlogGenerator
 import feedparser
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render

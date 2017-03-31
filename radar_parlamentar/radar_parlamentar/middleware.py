@@ -11,9 +11,9 @@ class ConsoleExceptionMiddleware:
         import sys
         exc_info = sys.exc_info()
         exception = traceback.format_exception(*(exc_info or sys.exc_info()))
-        print "######################## Exception ###########################"
-        print '\n'.join(exception)
-        print "##############################################################"
+        print("######################## Exception ###########################")
+        print('\n'.join(exception))
+        print("##############################################################")
 
 logger = logging.getLogger("radar")
 
