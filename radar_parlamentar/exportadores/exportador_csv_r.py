@@ -62,7 +62,10 @@ class ExportadorCSV:
         self.write_csv()
 
     def retrieve_votacoes(self):
-        casa = models.CasaLegislativa.objects.get(nome_curto=self.nome_curto)
+        try:
+            casa = models.CasaLegislativa.objects.get(nome_curto='cdep')
+        except:
+            casa = None
         if self.ini is None and self.fim is None:
             self.votacoes = models.Votacao.objects.filter(
                 proposicao__casa_legislativa=casa).order_by('data')
@@ -96,7 +99,7 @@ class ExportadorCSV:
                     csv_row.append(self.voto(voto.opcao))
                     self.csv_rows.append(csv_row)
                 except:
-                    print 'Ignorando voto ', voto.opcao
+                    print('Ignorando voto ', voto.opcao)
                     logger.info("Ignorando voto: %s" % voto.opcao)
 
     def coalition(self, nome_partido):
