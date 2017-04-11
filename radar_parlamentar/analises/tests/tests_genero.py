@@ -36,3 +36,7 @@ class GeneroTest(TestCase):
         self.assertEquals('Ana', self.parlamentar.nome)
         self.assertEquals('Ana', self.proposicao.autor_principal)
         self.assertEquals((u'mulher'), self.proposicao.indexacao)
+
+    def test_organiza_lista_palavras(self):
+        self.dicionario_palavras = {"Saude":2, "Educacao":1, "Transporte":26}
+        self.assertEquals(self.genero.organiza_lista_palavras(self.dicionario_palavras), [(u'Transporte', 26), (u'Saude', 2), (u'Educacao', 1)] )
