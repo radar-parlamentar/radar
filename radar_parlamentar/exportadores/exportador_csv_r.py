@@ -99,7 +99,7 @@ class ExportadorCSV:
                     csv_row.append(self.voto(voto.opcao))
                     self.csv_rows.append(csv_row)
                 except:
-                    print('Ignorando voto ', voto.opcao)
+                    print(('Ignorando voto ', voto.opcao))
                     logger.info("Ignorando voto: %s" % voto.opcao)
 
     def coalition(self, nome_partido):

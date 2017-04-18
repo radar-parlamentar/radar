@@ -27,5 +27,5 @@ class ExportacaoClass(TestCase):
                 readers = csv.reader(arquivo, delimiter=',')
                 for row in readers:
                     colunas_csv = row
-	    self.assertEquals(True, existe)
-            self.assertEquals(colunas_csv, colunas)
+	    self.assertEqual(True, existe)
+            self.assertEqual(colunas_csv, colunas)
