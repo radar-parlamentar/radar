@@ -40,3 +40,7 @@ class GeneroTest(TestCase):
     def test_organiza_lista_palavras(self):
         self.dicionario_palavras = {"Saude":2, "Educacao":1, "Transporte":26}
         self.assertEquals(self.genero.organiza_lista_palavras(self.dicionario_palavras), [(u'Transporte', 26), (u'Saude', 2), (u'Educacao', 1)] )
+
+    def test_define_chaves_dicionario(self):
+        self.dicionario_ordenado = ["Saude", "Saude", "Educacao"]
+        self.assertEquals(self.genero.define_chaves_dicionario(self.dicionario_ordenado), [("Saude",2), ("Educacao",1)])
