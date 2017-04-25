@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-from __future__ import unicode_literals
+
 from django.test import TestCase
 from modelagem.models import Parlamentar, Proposicao, Votacao, \
         PeriodoCasaLegislativa, Voto
@@ -27,27 +27,27 @@ class OrdenacaoTest(TestCase):
 	def test_ordem_dos_parlamentares(self):
 		proposicao = models.Proposicao.objects.get(id=1)
 		resultado = ordenacao.ordem_dos_parlamentares(proposicao)
-		self.assertEquals(resultado[0][0].descricao, 'Reforma agrária')
-		self.assertEquals(resultado[0][1][0].nome, 'Pierre')
+		self.assertEqual(resultado[0][0].descricao, 'Reforma agrária')
+		self.assertEqual(resultado[0][1][0].nome, 'Pierre')
 
 
 	def test_ordenar_partidos(self):
-		periodo = models.PeriodoCasaLegislativa(date(1989, 02, 02),
+		periodo = models.PeriodoCasaLegislativa(date(1989, 0o2, 0o2),
 		date(1989, 10, 10))
 		casa_legislativa = models.CasaLegislativa.objects.get(
 		nome_curto='conv')
 		ordem = []
 		ordem = ordenacao.ordenar_partidos(casa_legislativa, periodo)
-		self.assertEquals(ordem[0].nome, 'Jacobinos')
-		self.assertEquals(ordem[1].nome, 'Girondinos')
-		self.assertEquals(ordem[2].nome, 'Monarquistas')
+		self.assertEqual(ordem[0].nome, 'Jacobinos')
+		self.assertEqual(ordem[1].nome, 'Girondinos')
+		self.assertEqual(ordem[2].nome, 'Monarquistas')
 
 	def test_def_ordenar_votantes(self):
 		proposicao = models.Proposicao.objects.get(id=1)
 		resultado = ordenacao.ordenar_votantes(proposicao)
 		parla = Parlamentar.objects.filter(nome='Pierre')[0]
 		primeiro = (parla.partido,1)
-		self.assertEquals(resultado[parla],primeiro)
+		self.assertEqual(resultado[parla],primeiro)
 
 	
 

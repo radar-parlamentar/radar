@@ -1,2 +1,2 @@
-from tests_ordenacao import *
-from tests_views import *
+from .tests_ordenacao import *
+from .tests_views import *

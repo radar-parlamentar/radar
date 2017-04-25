@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-from __future__ import unicode_literals
+
 from django.test import TestCase
 from modelagem.models import Parlamentar, Proposicao, Votacao, \
         PeriodoCasaLegislativa, Voto
@@ -25,7 +25,7 @@ class ViewsTest(TestCase):
 		flush_db(cls)
 
 	def test_identificador(self):
-		proposicao = models.Proposicao.objects.get(id=3)
+		proposicao = models.Proposicao.objects.get(id=1)
 		#proposicao.ano = "1990"
 		resultado = views.identificador(proposicao)
-		self.assertEquals(resultado, "PL-1-")
+		self.assertEqual(resultado, "PL-1-")
