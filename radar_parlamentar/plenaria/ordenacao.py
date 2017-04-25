@@ -24,7 +24,7 @@ O mapa de parlamentares precisa de uma ordem dos parlamentares,
 agrupados por partido, para que os partidos fiquem coesosno mapa."""
 
 
-from __future__ import unicode_literals
+
 from modelagem.models import Parlamentar, Proposicao, Votacao, \
     PeriodoCasaLegislativa, Voto
 from modelagem import utils
@@ -91,7 +91,7 @@ def ordenar_partidos(casa, periodo):
     analise_periodo = analisador.analisa()
     coords = analise_periodo.coordenadas_partidos
     coords_list = []
-    for k in coords.iteritems():
+    for k in coords.items():
         coords_list.append(k)
     partidos = sorted([(x[0],x[1][0]) for x in coords_list], key=itemgetter(1,0))
     return [p[0] for p in partidos]
