@@ -48,3 +48,6 @@ class GeneroTest(TestCase):
 
     def test_agrupa_palavras(self):
         self.assertEquals(self.genero.agrupa_palavras(self.genero, self.id_casa_legislativa), [])
+
+    def test_get_casas_legislativas_com_genero(self):
+        self.assertEquals(self.genero.get_casas_legislativas_com_genero(), [])
