@@ -27,7 +27,7 @@ class OrdenacaoTest(TestCase):
 	def test_ordem_dos_parlamentares(self):
 		proposicao = models.Proposicao.objects.get(id=1)
 		resultado = ordenacao.ordem_dos_parlamentares(proposicao)
-		self.assertEqual(resultado[0][0].descricao, 'Reforma agrária')
+		self.assertEqual(resultado[0][0].descricao, u'Reforma agrária')
 		self.assertEqual(resultado[0][1][0].nome, 'Pierre')
 
 
