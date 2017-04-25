@@ -29,6 +29,7 @@ class GeneroTest(TestCase):
     def setUp(self):
         self.parlamentar = Parlamentar(nome='Ana')
         self.proposicao = Proposicao(autor_principal='Ana', indexacao='mulher')
+        self.id_casa_legislativa = 1
         self.genero = Genero()
 
     def test_definir_palavra(self):
@@ -44,3 +45,6 @@ class GeneroTest(TestCase):
     def test_define_chaves_dicionario(self):
         self.dicionario_ordenado = ["Saude", "Saude", "Educacao"]
         self.assertEquals(self.genero.define_chaves_dicionario(self.dicionario_ordenado), [("Saude",2), ("Educacao",1)])
+
+    def test_agrupa_palavras(self):
+        self.assertEquals(self.genero.agrupa_palavras(self.genero, self.id_casa_legislativa), [])
