@@ -1,10 +1,7 @@
 Radar Parlamentar
 ==================
-
-[![Build Status](https://travis-ci.org/radar-parlamentar/radar.svg?branch=master)](https://travis-ci.org/radar-parlamentar/radar)
-[![Code Climate](https://codeclimate.com/github/radar-parlamentar/radar/badges/gpa.svg)](https://codeclimate.com/github/radar-parlamentar/radar)
-[![Coverage Status](https://coveralls.io/repos/radar-parlamentar/radar/badge.svg?branch=master)](https://coveralls.io/r/radar-parlamentar/radar?branch=master) (app modelagem)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a475de527a3d40d69fbddda77d08a730)](https://www.codacy.com/app/diraol/radar?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=radar-parlamentar/radar&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/RadarParlamentar-MES2017-1/radar.svg?branch=master)](https://travis-ci.org/RadarParlamentar-MES2017-1/radar)
+[![Coverage Status](https://coveralls.io/repos/github/RadarParlamentar-MES2017-1/radar/badge.svg?branch=master)](https://coveralls.io/github/RadarParlamentar-MES2017-1/radar?branch=master)
 
 Este projeto utiliza dados abertos para analisar os votos de parlamentares em diferentes casas legislativas do Brasil.
 
