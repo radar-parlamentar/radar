@@ -15,4 +15,3 @@ elasticsearch<1.0.0
 ipython<6.0
 codacy-coverage
 coveralls
-
