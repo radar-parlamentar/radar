@@ -12,6 +12,6 @@ coverage==3.7.1
 celery==3.1.17
 feedparser==5.2.1
 elasticsearch<1.0.0
-ipython
+ipython<6.0
 codacy-coverage
 coveralls
