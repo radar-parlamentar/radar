@@ -1,6 +1,6 @@
 from django.test import TestCase
 from importadores.camara_genero import _null_to_none
-from importadores.camara_genero import multiple_null_remove
+from importadores.camara_genero import multiple_null_remove, proposicoes_indexadas
 
 class CamaraTest(TestCase):
 
@@ -8,6 +8,11 @@ class CamaraTest(TestCase):
         proposicao = {"Casa":"NULL"}
         self.assertEquals(_null_to_none(proposicao), {"Casa":None})
 
-    def test__multiple_null_remove(self):
+    def test_multiple_null_remove(self):
         lista_proposicoes = [{"Casa":1}, {"Educacao":2}, {"Transporte":"NULL"}]
         self.assertEquals(multiple_null_remove(lista_proposicoes), [{"Casa":1}, {"Educacao":2}, {"Transporte":None}])
+
+    def test_proposicoes_indexadas(self):
+    	indexados = [{'txtIndexacao':1, 'txtSiglaPartido': "AL"}]
+    	lista_proposicoes = [{'txtIndexacao':1, 'txtSiglaPartido': "AL"}]
+    	self.assertEquals(proposicoes_indexadas(lista_proposicoes), indexados)
