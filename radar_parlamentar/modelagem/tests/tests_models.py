@@ -321,6 +321,14 @@ class ModelsTest(TestCase):
        # self.assertFalse(models.SIM in votos_dos_parlamentares)
         #self.assertTrue(models.NAO in votos_dos_parlamentares)
 
+    def test_por_casa_legislativa_e_periodo_com_datas_none(self):
+        chefe = modelagem.models.ChefeExecutivo()
+        casa_legislativa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
+        data_inicial = None
+        data_final = None
+        resultado = modelagem.models.ChefeExecutivo.por_casa_legislativa_e_periodo(casa_legislativa, data_inicial, data_final)
+        self.assertEquals(list(resultado), []) 
+
     #### Classe Proposicao ####
     def test_nome(self):
         proposicao = modelagem.models.Proposicao.objects.get(id=1)
@@ -366,3 +374,19 @@ class ModelsTest(TestCase):
         voto_agregado.add('SIM')
         total = voto_agregado.total()
         self.assertEquals(total, 4)
+
+    def test_voto_medio_com_votos_sim_nao(self):
+        voto_agregado = modelagem.models.VotosAgregados()
+        voto_agregado.add('SIM')
+        voto_agregado.add('NAO')
+        voto_agregado.add('NAO')
+        voto_agregado.add('SIM')
+        total = voto_agregado.total()
+        voto_medio = voto_agregado.voto_medio()
+        self.assertEquals(voto_medio, 0.0)
+
+    def test_voto_medio_votos_nulos(self):
+        voto_agregado = modelagem.models.VotosAgregados()
+        total = voto_agregado.total()
+        voto_medio = voto_agregado.voto_medio()
+        self.assertEquals(voto_medio, 0)
