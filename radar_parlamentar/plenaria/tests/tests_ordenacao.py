@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 from django.test import TestCase
 from modelagem.models import Parlamentar, Proposicao, Votacao, \
@@ -12,7 +12,7 @@ from datetime import date
 from importadores import conv
 from operator import itemgetter
 
-class OrdenacaoTest(TestCase):	
+class OrdenacaoTest(TestCase):
 
 	@classmethod
 	def setUpClass(cls):
@@ -23,7 +23,7 @@ class OrdenacaoTest(TestCase):
 	def tearDownClass(cls):
 		from util_test import flush_db
 		flush_db(cls)
-	
+
 	def test_ordem_dos_parlamentares(self):
 		proposicao = models.Proposicao.objects.get(id=1)
 		resultado = ordenacao.ordem_dos_parlamentares(proposicao)
@@ -32,7 +32,7 @@ class OrdenacaoTest(TestCase):
 
 
 	def test_ordenar_partidos(self):
-		periodo = models.PeriodoCasaLegislativa(date(1989, 0o2, 0o2),
+		periodo = models.PeriodoCasaLegislativa(date(1989, 2, 2),
 		date(1989, 10, 10))
 		casa_legislativa = models.CasaLegislativa.objects.get(
 		nome_curto='conv')
@@ -49,7 +49,7 @@ class OrdenacaoTest(TestCase):
 		primeiro = (parla.partido,1)
 		self.assertEqual(resultado[parla],primeiro)
 
-	
+
 
 		#AttributeError: 'QuerySet' object has no attribute 'voto_set', QuerySet não está reconhecendo o _set
 	"""def test_ordem_dos_parl_por_votacao(self):
@@ -64,7 +64,7 @@ class OrdenacaoTest(TestCase):
 			numero_minimo_de_votacoes = 1 )
 		periodo = pr.get_periodos()[-1]
 		lista_ordenada_partidos = ordenacao.ordenar_partidos(casa_legislativa, periodo)
-		dicionario_votantes = ordenacao.ordenar_votantes(proposicao) 
+		dicionario_votantes = ordenacao.ordenar_votantes(proposicao)
 		partidos = ordenacao.ordenar_partidos(casa_legislativa, periodo)
 		teste = ordenacao.ordem_dos_parl_por_votacao(votacao,dicionario_votantes,partidos)
 		print teste"""
