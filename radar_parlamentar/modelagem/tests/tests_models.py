@@ -334,4 +334,35 @@ class ModelsTest(TestCase):
         self.assertEquals(resultado, "[PL 1/] Reforma agrária")
 
     #### Classe VotosAgregados ####
+    def test_add_sim(self):
+        voto_agregado = modelagem.models.VotosAgregados()
+        voto_agregado.add('SIM')
+        voto_agregado.add('SIM')
+        self.assertEquals(voto_agregado.sim, 2)
 
+    def test_add_nao(self):
+        voto_agregado = modelagem.models.VotosAgregados()
+        voto_agregado.add('NAO')
+        self.assertEquals(voto_agregado.nao, 1)
+
+    def test_add_abstencao(self):
+        voto_agregado = modelagem.models.VotosAgregados()
+        voto_agregado.add('ABSTENCAO')
+        voto_agregado.add('ABSTENCAO')
+        voto_agregado.add('ABSTENCAO')
+        self.assertEquals(voto_agregado.abstencao, 3)
+
+    def test_add_obstrucao(self):
+        voto_agregado = modelagem.models.VotosAgregados()
+        voto_agregado.add('OBSTRUCAO')
+        voto_agregado.add('ABSTENCAO')
+        self.assertEquals(voto_agregado.abstencao, 2)
+
+    def test_total(self):
+        voto_agregado = modelagem.models.VotosAgregados()
+        voto_agregado.add('OBSTRUCAO')
+        voto_agregado.add('ABSTENCAO')
+        voto_agregado.add('NAO')
+        voto_agregado.add('SIM')
+        total = voto_agregado.total()
+        self.assertEquals(total, 4)
