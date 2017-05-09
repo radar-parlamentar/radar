@@ -129,6 +129,20 @@ class ModelsTest(TestCase):
         self.assertEquals(partido.numero, 0)
         self.assertEquals(partido.cor, '#000000')
 
+    def test_normaliza_nome_partido(self):
+        nome_partido1 = 'democratas'
+        nome_partido2 = 'trabalhadores'
+        resultado1 = modelagem.models.Partido._normaliza_nome_partido(nome_partido1)
+        resultado2 = modelagem.models.Partido._normaliza_nome_partido(nome_partido2)
+        self.assertEquals(resultado1, 'DEM')
+        self.assertEquals(resultado2, 'TRABALHADORES')
+
+    def test_from_regex_none(self):
+        resultado = modelagem.models.Partido._from_regex(1, "PT")
+        self.assertEquals(resultado.nome, "PT")
+        self.assertEquals(resultado.numero, 13)
+        self.assertEquals(resultado.cor, "#FF0000")
+
 
     #################################
     #### Classe Casa Legislativa ####
@@ -326,10 +340,6 @@ class ModelsTest(TestCase):
         votacao = modelagem.models.Votacao.objects.get(descricao='Institui o Dia de Carlos Magno')
         votos = modelagem.models.Votacao.votos(votacao)
         self.assertEquals(len(votos), 9)
-        votos_dos_parlamentares = [voto for voto in votos]
-        #print votos_dos_parlamentares
-       # self.assertFalse(models.SIM in votos_dos_parlamentares)
-        #self.assertTrue(models.NAO in votos_dos_parlamentares)
 
     def test_por_casa_legislativa_e_periodo_com_datas_none(self):
         casa_legislativa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
@@ -338,14 +348,11 @@ class ModelsTest(TestCase):
         resultado = modelagem.models.ChefeExecutivo.por_casa_legislativa_e_periodo(casa_legislativa, data_inicial, data_final)
         self.assertEquals(list(resultado), []) 
 
-    #def test_por_casa_legislativa_e_periodo_com_datas(self):
-        #casa_legislativa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
-        #chefes_executivo = modelagem.models.ChefeExecutivo.objects.filter(
-        #data_inicio = datetime.date(1989, 1, 1)
-        #data_fim = datetime.date(1990, 1, 1)
-        #resultado = modelagem.models.ChefeExecutivo.por_casa_legislativa_e_periodo(casa_legislativa, data_inicio, data_fim)
-        #print len(resultado)
-        #self.assertEquals(list(resultado), []) 
+    #def test_por_partido(self):
+    #    votacao = modelagem.models.Votacao.objects.get(descricao='Institui o Dia de Carlos Magno')
+    #    resultado = votacao.por_partido()
+    #    votos = resultado["Girondinos"]
+    #    self.assertEquals(votos, modelagem.models.VotoPartido("Girondinos"))
 
     def test_get_chefe_anual(self):
         ano = 1989
