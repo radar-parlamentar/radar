@@ -1,6 +1,6 @@
 from django.test import TestCase
-from importadores.camara_genero import _null_to_none
-from importadores.camara_genero import multiple_null_remove, proposicoes_indexadas, parseia_indexacoes
+from importadores.camara_genero import _null_to_none, multiple_null_remove, proposicoes_indexadas, parseia_indexacoes
+from importadores.camara_genero import parsear_indexacoes_de_proposicoes
 
 class CamaraTest(TestCase):
 
