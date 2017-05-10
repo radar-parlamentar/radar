@@ -318,7 +318,7 @@ class ModelsTest(TestCase):
 
 
     ################################
-    #### Classe ChefeExecutivo ####
+    #### Classe ChefeExecutivo #####
     ################################
 
     def test_get_chefe_anual(self):
@@ -429,7 +429,7 @@ class ModelsTest(TestCase):
 
 
     #########################################
-    #### Classe PeriodoCasaLegislativa ####
+    #### Classe PeriodoCasaLegislativa #####
     #########################################
 
     def test_build_string_periodo_quadrienio(self):
@@ -505,7 +505,18 @@ class ModelsTest(TestCase):
         votacao = modelagem.models.Votacao.objects.get(descricao='Institui o Dia de Carlos Magno')
         votos = modelagem.models.Votacao.votos(votacao)
         self.assertEquals(len(votos), 9)
-        
+
+    def test_por_partido(self):
+        votacao = modelagem.models.Votacao.objects.get(descricao='Institui o Dia de Carlos Magno')
+        votos = modelagem.models.Votacao.votos(votacao)
+        dicionario = votacao.por_partido()
+        valor_votos = dicionario.get("Monarquistas")
+        self.assertEquals(valor_votos.sim, 3)
+        self.assertEquals(valor_votos.nao, 0)
+        self.assertEquals(valor_votos.abstencao, 0) 
+        self.assertEquals(valor_votos.total(), 3)
+        self.assertEquals(dicionario.keys(), ["Monarquistas", "Girondinos", "Jacobinos"])
+   
 
     ###############################
     #### Classe VotosAgregados ####
