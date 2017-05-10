@@ -137,15 +137,19 @@ class ModelsTest(TestCase):
         self.assertEquals(resultado1, 'DEM')
         self.assertEquals(resultado2, 'TRABALHADORES')
 
-    def test_from_regex_none(self):
+    def test_from_regex(self):
         resultado = modelagem.models.Partido._from_regex(1, "PT")
         self.assertEquals(resultado.nome, "PT")
         self.assertEquals(resultado.numero, 13)
         self.assertEquals(resultado.cor, "#FF0000")
 
+    def test_from_regex_none(self):
+        resultado = modelagem.models.Partido._from_regex(1, "PVT")
+        self.assertFalse(resultado, "PVT")
+
 
     #################################
-    #### Classe Casa Legislativa ####
+    #### Classe CasaLegislativa #####
     #################################
 
     def test_partidos(self):
@@ -175,7 +179,6 @@ class ModelsTest(TestCase):
         self.assertEquals(votos, 9)
         
     def test_deleta_casa(self):
-
         partidoTest1 = modelagem.models.Partido()
         partidoTest1.nome = 'PA'
         partidoTest1.numero = '01'
@@ -314,45 +317,9 @@ class ModelsTest(TestCase):
         self.assertFalse(' 12345' in nomes_votacao)
 
 
-    ########################
-    #### Classe Votacao ####
-    ########################
-
-    def test_uma_votacao_por_casa_legislativa(self):
-        casa_legislativa = modelagem.models.CasaLegislativa.objects.get(
-            nome_curto='conv')
-        data_inicio = '1990-01-01'
-        data_fim = '1990-01-01'
-        votacoes = modelagem.models.Votacao.por_casa_legislativa(
-            casa_legislativa, data_inicio, data_fim)
-        self.assertEquals(1, len(votacoes))
-
-    def test_nenhuma_votacao_por_casa_legislativa(self):
-        casa_legislativa = modelagem.models.CasaLegislativa.objects.get(
-            nome_curto='conv')
-        data_inicio = '2010-01-01'
-        data_fim = '2010-01-01'
-        votacoes = modelagem.models.Votacao.por_casa_legislativa(
-            casa_legislativa, data_inicio, data_fim)
-        self.assertEquals(0, len(votacoes))  
-
-    def test_votos(self):
-        votacao = modelagem.models.Votacao.objects.get(descricao='Institui o Dia de Carlos Magno')
-        votos = modelagem.models.Votacao.votos(votacao)
-        self.assertEquals(len(votos), 9)
-
-    def test_por_casa_legislativa_e_periodo_com_datas_none(self):
-        casa_legislativa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
-        data_inicial = None
-        data_final = None
-        resultado = modelagem.models.ChefeExecutivo.por_casa_legislativa_e_periodo(casa_legislativa, data_inicial, data_final)
-        self.assertEquals(list(resultado), []) 
-
-    #def test_por_partido(self):
-    #    votacao = modelagem.models.Votacao.objects.get(descricao='Institui o Dia de Carlos Magno')
-    #    resultado = votacao.por_partido()
-    #    votos = resultado["Girondinos"]
-    #    self.assertEquals(votos, modelagem.models.VotoPartido("Girondinos"))
+    ################################
+    #### Classe ChefeExecutivo ####
+    ################################
 
     def test_get_chefe_anual(self):
         ano = 1989
@@ -414,6 +381,32 @@ class ModelsTest(TestCase):
         titulo = chefes[0].get_titulo_chefe()
         self.assertEquals(titulo, "Prefeito")
 
+    def test_get_titulo_chefe_feminino_municipal(self):
+        pt = modelagem.models.Partido.from_nome('PT')
+        chefe = modelagem.models.ChefeExecutivo(nome="Ana Lucia Mendes", genero=modelagem.models.F, partido = pt,
+                                    mandato_ano_inicio = 1992, mandato_ano_fim = 1995)
+        chefe.save()
+        chefes = [chefe]
+        casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
+        casa.esfera = modelagem.models.MUNICIPAL
+        casa.save()
+        chefes[0].casas_legislativas.add(casa)
+        titulo = chefes[0].get_titulo_chefe()
+        self.assertEquals(titulo, "Prefeita")
+
+    def test_get_titulo_chefe_masculino_federal(self):
+        pt = modelagem.models.Partido.from_nome('PT')
+        chefe = modelagem.models.ChefeExecutivo(nome="Luis Inacio Peter da Silva", genero=modelagem.models.M, partido = pt,
+                                    mandato_ano_inicio = 1990, mandato_ano_fim = 1994)
+        chefe.save()
+        chefes = [chefe]
+        casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
+        casa.esfera = modelagem.models.FEDERAL
+        casa.save()
+        chefes[0].casas_legislativas.add(casa)
+        titulo = chefes[0].get_titulo_chefe()
+        self.assertEquals(titulo, "Presidente")
+
     def test_get_titulo_chefe_feminino_federal(self):
         pt = modelagem.models.Partido.from_nome('PT')
         chefe = modelagem.models.ChefeExecutivo(nome="Dilmé Rouseffé", genero=modelagem.models.F, partido = pt,
@@ -427,6 +420,53 @@ class ModelsTest(TestCase):
         titulo = chefes[0].get_titulo_chefe()
         self.assertEquals(titulo, "Presidenta")
 
+    def test_por_casa_legislativa_e_periodo_com_datas_none(self):
+        casa_legislativa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
+        data_inicial = None
+        data_final = None
+        resultado = modelagem.models.ChefeExecutivo.por_casa_legislativa_e_periodo(casa_legislativa, data_inicial, data_final)
+        self.assertEquals(list(resultado), []) 
+
+
+    #########################################
+    #### Classe PeriodoCasaLegislativa ####
+    #########################################
+
+    def test_build_string_periodo_quadrienio(self):
+        data_inicio = datetime.date(1992, 1, 21) 
+        data_fim = datetime.date(1996, 1, 21)
+        obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
+        obj._build_string()
+        self.assertEquals(obj.string, "1992 a 1996")
+
+    def test_build_string_periodo_bienio(self):
+        data_inicio = datetime.date(1992, 1, 21) 
+        data_fim = datetime.date(1994, 1, 21)
+        obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
+        obj._build_string()
+        self.assertEquals(obj.string, "1992 e 1994")
+
+    def test_build_string_periodo_anual(self):
+        data_inicio = datetime.date(1992, 1, 1) 
+        data_fim = datetime.date(1993, 1, 1)
+        obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
+        obj._build_string()
+        self.assertEquals(obj.string, "1992")
+
+    def test_build_string_periodo_semestral(self):
+        data_inicio = datetime.date(1992, 1, 1) 
+        data_fim = datetime.date(1992, 7, 1)
+        obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
+        obj._build_string()
+        self.assertEquals(obj.string, "1992 1o Semestre")
+
+    def test_build_string_periodo_mensal(self):
+        data_inicio = datetime.date(1992, 1, 1) 
+        data_fim = datetime.date(1992, 2, 1)
+        obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
+        obj._build_string()
+        self.assertEquals(obj.string, "1992 Jan")
+
 
     ###########################
     #### Classe Proposicao ####
@@ -438,11 +478,34 @@ class ModelsTest(TestCase):
         resultado = proposicao.nome()
         self.assertEquals(resultado, "PL 1/1990")
 
-    def test__unicode__proposicao(self):
-        proposicao = modelagem.models.Proposicao.objects.get(id=1)
-        resultado = proposicao.__unicode__()
-        self.assertEquals(resultado, "[PL 1/] Reforma agrária")
 
+    ########################
+    #### Classe Votacao ####
+    ########################
+
+    def test_uma_votacao_por_casa_legislativa(self):
+        casa_legislativa = modelagem.models.CasaLegislativa.objects.get(
+            nome_curto='conv')
+        data_inicio = '1990-01-01'
+        data_fim = '1990-01-01'
+        votacoes = modelagem.models.Votacao.por_casa_legislativa(
+            casa_legislativa, data_inicio, data_fim)
+        self.assertEquals(1, len(votacoes))
+
+    def test_nenhuma_votacao_por_casa_legislativa(self):
+        casa_legislativa = modelagem.models.CasaLegislativa.objects.get(
+            nome_curto='conv')
+        data_inicio = '2010-01-01'
+        data_fim = '2010-01-01'
+        votacoes = modelagem.models.Votacao.por_casa_legislativa(
+            casa_legislativa, data_inicio, data_fim)
+        self.assertEquals(0, len(votacoes))  
+
+    def test_votos(self):
+        votacao = modelagem.models.Votacao.objects.get(descricao='Institui o Dia de Carlos Magno')
+        votos = modelagem.models.Votacao.votos(votacao)
+        self.assertEquals(len(votos), 9)
+        
 
     ###############################
     #### Classe VotosAgregados ####
