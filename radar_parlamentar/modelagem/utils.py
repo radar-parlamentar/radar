@@ -17,10 +17,10 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
-from models import MUNICIPAL, ESTADUAL, FEDERAL, MES
-from models import SEMESTRE, ANO, BIENIO, QUADRIENIO
-from models import Votacao, PeriodoCasaLegislativa
+
+from .models import MUNICIPAL, ESTADUAL, FEDERAL, MES
+from .models import SEMESTRE, ANO, BIENIO, QUADRIENIO
+from .models import Votacao, PeriodoCasaLegislativa
 import datetime
 import logging
 

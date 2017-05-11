@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.test import TestCase
 from importadores import conv
 import datetime
@@ -49,16 +49,16 @@ class ModelsTest(TestCase):
 
     def test_partido(self):
         pt = modelagem.models.Partido.from_nome('PT')
-        self.assertEquals(pt.numero, 13)
-        self.assertEquals(pt.cor, '#FF0000')
+        self.assertEqual(pt.numero, 13)
+        self.assertEqual(pt.cor, '#FF0000')
         psdb = modelagem.models.Partido.from_numero(45)
-        self.assertEquals(psdb.nome, 'PSDB')
-        self.assertEquals(psdb.cor, '#0059AB')
+        self.assertEqual(psdb.nome, 'PSDB')
+        self.assertEqual(psdb.cor, '#0059AB')
         pcdob = modelagem.models.Partido.from_nome('PC DO B')
-        self.assertEquals(pcdob.numero, 65)
+        self.assertEqual(pcdob.numero, 65)
         dem = modelagem.models.Partido.from_nome('DEMOCRATAS')
-        self.assertEquals(dem.nome, 'DEM')
-        self.assertEquals(dem.numero, 25)
+        self.assertEqual(dem.nome, 'DEM')
+        self.assertEqual(dem.numero, 25)
 
     def cria_chefes_executivo(self):
         pt = modelagem.models.Partido.from_nome('PT')
@@ -71,38 +71,6 @@ class ModelsTest(TestCase):
         chefes = [chefe_masculino, chefe_feminino]
         return chefes
 
-    def test_chefe_executivo_prefeito(self):
-        chefes = self.cria_chefes_executivo()
-        casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
-        casa.esfera = modelagem.models.MUNICIPAL
-        casa.save()
-        chefes[0].casas_legislativas.add(casa)
-        expected =  "Prefeito: Luiz Inacio Pierre da Silva - PT"
-        self.assertEquals(unicode(chefes[0]), expected)
-
-    def test_chefe_executivo_presidenta(self):
-        chefes = self.cria_chefes_executivo()
-        casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
-        chefes[1].casas_legislativas.add(casa)
-        expected = "Presidenta: Dilmé Rouseffé - PT"
-        self.assertEquals(unicode(chefes[1]), expected)
-
-    def test_chefe_executivo_prefeita(self):
-        chefes = self.cria_chefes_executivo()
-        casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
-        casa.esfera = modelagem.models.MUNICIPAL
-        casa.save()
-        chefes[1].casas_legislativas.add(casa)
-        expected =  "Prefeita: Dilmé Rouseffé - PT"
-        self.assertEquals(unicode(chefes[1]), expected)
-
-    def test_chefe_executivo_presidente(self):
-        chefes = self.cria_chefes_executivo()
-        casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
-        chefes[0].casas_legislativas.add(casa)
-        expected =  "Presidente: Luiz Inacio Pierre da Silva - PT"
-        self.assertEquals(unicode(chefes[0]), expected)
-
     def test_partido_from_nome_None(self):
         nome_partido = None
         partido = modelagem.models.Partido.from_nome(nome_partido)
@@ -111,7 +79,7 @@ class ModelsTest(TestCase):
     def test_partido_from_nome(self):
         nome_partido = 'PT'
         partido = modelagem.models.Partido.from_nome(nome_partido)
-        self.assertEquals(partido.nome, 'PT' )
+        self.assertEqual(partido.nome, 'PT' )
 
     def test_partido_from_numero_None(self):
         numero_partido = None
@@ -121,27 +89,27 @@ class ModelsTest(TestCase):
     def test_partido_from_numero(self):
         numero = 13
         partido = modelagem.models.Partido.from_numero(numero)
-        self.assertEquals(partido.numero, 13)
+        self.assertEqual(partido.numero, 13)
 
     def test_get_sem_partido(self):
         partido = modelagem.models.Partido.get_sem_partido()
-        self.assertEquals(partido.nome, 'Sem partido')
-        self.assertEquals(partido.numero, 0)
-        self.assertEquals(partido.cor, '#000000')
+        self.assertEqual(partido.nome, 'Sem partido')
+        self.assertEqual(partido.numero, 0)
+        self.assertEqual(partido.cor, '#000000')
 
     def test_normaliza_nome_partido(self):
         nome_partido1 = 'democratas'
         nome_partido2 = 'trabalhadores'
         resultado1 = modelagem.models.Partido._normaliza_nome_partido(nome_partido1)
         resultado2 = modelagem.models.Partido._normaliza_nome_partido(nome_partido2)
-        self.assertEquals(resultado1, 'DEM')
-        self.assertEquals(resultado2, 'TRABALHADORES')
+        self.assertEqual(resultado1, 'DEM')
+        self.assertEqual(resultado2, 'TRABALHADORES')
 
     def test_from_regex(self):
         resultado = modelagem.models.Partido._from_regex(1, "PT")
-        self.assertEquals(resultado.nome, "PT")
-        self.assertEquals(resultado.numero, 13)
-        self.assertEquals(resultado.cor, "#FF0000")
+        self.assertEqual(resultado.nome, "PT")
+        self.assertEqual(resultado.numero, 13)
+        self.assertEqual(resultado.cor, "#FF0000")
 
     def test_from_regex_none(self):
         resultado = modelagem.models.Partido._from_regex(1, "PVT")
@@ -155,7 +123,7 @@ class ModelsTest(TestCase):
     def test_partidos(self):
         casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
         partidos = casa.partidos()
-        self.assertEquals(len(partidos), 3)
+        self.assertEqual(len(partidos), 3)
         nomes = [p.nome for p in partidos]
         self.assertTrue(conv.JACOBINOS in nomes)
         self.assertTrue(conv.GIRONDINOS in nomes)
@@ -164,19 +132,19 @@ class ModelsTest(TestCase):
     def test_parlamentares(self):
         casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
         parlamentares = casa.parlamentares()
-        self.assertEquals(len(parlamentares), 9)
+        self.assertEqual(len(parlamentares), 9)
         nomes = [p.nome for p in parlamentares]
         self.assertTrue('Pierre' in nomes)
 
     def test_num_votacao(self):
         casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
         votacoes = casa.num_votacao(data_inicial='1990-01-01', data_final='1990-01-01')
-        self.assertEquals(votacoes, 1)
+        self.assertEqual(votacoes, 1)
 
     def test_num_votos(self):
         casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
         votos = casa.num_votos(data_inicio='1990-01-01', data_fim='1990-01-01')
-        self.assertEquals(votos, 9)
+        self.assertEqual(votos, 9)
         
     def test_deleta_casa(self):
         partidoTest1 = modelagem.models.Partido()
@@ -332,8 +300,8 @@ class ModelsTest(TestCase):
         chefe_feminino.save()
         chefes = [chefe_masculino, chefe_feminino]
         resultado = modelagem.models.ChefeExecutivo.get_chefe_anual(ano, chefes)
-        self.assertEquals(len(resultado), 1)
-        self.assertEquals(chefes[0].nome, "Luiz Inacio Pierre da Silva")        
+        self.assertEqual(len(resultado), 1)
+        self.assertEqual(chefes[0].nome, "Luiz Inacio Pierre da Silva")        
 
     def test_get_chefe_periodo(self):
         ano_inicio = 1990
@@ -362,11 +330,11 @@ class ModelsTest(TestCase):
         chefe5.save()
         chefes = [chefe1, chefe2, chefe3, chefe4, chefe5]
         resultado = modelagem.models.ChefeExecutivo.get_chefe_periodo(ano_inicio, ano_fim, chefes)
-        self.assertEquals(len(resultado), 4)
-        self.assertEquals(chefes[0].nome, "Luiz Inacio Pierre da Silva") 
-        self.assertEquals(chefes[1].nome, "Dilmé Rouseffé") 
-        self.assertEquals(chefes[2].nome, "Jose Genuino") 
-        self.assertEquals(chefes[3].nome, "Joseh Gennuinno") 
+        self.assertEqual(len(resultado), 4)
+        self.assertEqual(chefes[0].nome, "Luiz Inacio Pierre da Silva") 
+        self.assertEqual(chefes[1].nome, "Dilmé Rouseffé") 
+        self.assertEqual(chefes[2].nome, "Jose Genuino") 
+        self.assertEqual(chefes[3].nome, "Joseh Gennuinno") 
 
     def test_get_titulo_chefe_masculino_municipal(self):
         pt = modelagem.models.Partido.from_nome('PT')
@@ -379,7 +347,7 @@ class ModelsTest(TestCase):
         casa.save()
         chefes[0].casas_legislativas.add(casa)
         titulo = chefes[0].get_titulo_chefe()
-        self.assertEquals(titulo, "Prefeito")
+        self.assertEqual(titulo, "Prefeito")
 
     def test_get_titulo_chefe_feminino_municipal(self):
         pt = modelagem.models.Partido.from_nome('PT')
@@ -392,7 +360,7 @@ class ModelsTest(TestCase):
         casa.save()
         chefes[0].casas_legislativas.add(casa)
         titulo = chefes[0].get_titulo_chefe()
-        self.assertEquals(titulo, "Prefeita")
+        self.assertEqual(titulo, "Prefeita")
 
     def test_get_titulo_chefe_masculino_federal(self):
         pt = modelagem.models.Partido.from_nome('PT')
@@ -405,7 +373,7 @@ class ModelsTest(TestCase):
         casa.save()
         chefes[0].casas_legislativas.add(casa)
         titulo = chefes[0].get_titulo_chefe()
-        self.assertEquals(titulo, "Presidente")
+        self.assertEqual(titulo, "Presidente")
 
     def test_get_titulo_chefe_feminino_federal(self):
         pt = modelagem.models.Partido.from_nome('PT')
@@ -418,14 +386,14 @@ class ModelsTest(TestCase):
         casa.save()
         chefes[0].casas_legislativas.add(casa)
         titulo = chefes[0].get_titulo_chefe()
-        self.assertEquals(titulo, "Presidenta")
+        self.assertEqual(titulo, "Presidenta")
 
     def test_por_casa_legislativa_e_periodo_com_datas_none(self):
         casa_legislativa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
         data_inicial = None
         data_final = None
         resultado = modelagem.models.ChefeExecutivo.por_casa_legislativa_e_periodo(casa_legislativa, data_inicial, data_final)
-        self.assertEquals(list(resultado), []) 
+        self.assertEqual(list(resultado), []) 
 
 
     #########################################
@@ -437,35 +405,35 @@ class ModelsTest(TestCase):
         data_fim = datetime.date(1996, 1, 21)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
         obj._build_string()
-        self.assertEquals(obj.string, "1992 a 1996")
+        self.assertEqual(obj.string, "1992 a 1996")
 
     def test_build_string_periodo_bienio(self):
         data_inicio = datetime.date(1992, 1, 21) 
         data_fim = datetime.date(1994, 1, 21)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
         obj._build_string()
-        self.assertEquals(obj.string, "1992 e 1994")
+        self.assertEqual(obj.string, "1992 e 1994")
 
     def test_build_string_periodo_anual(self):
         data_inicio = datetime.date(1992, 1, 1) 
         data_fim = datetime.date(1993, 1, 1)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
         obj._build_string()
-        self.assertEquals(obj.string, "1992")
+        self.assertEqual(obj.string, "1992")
 
     def test_build_string_periodo_semestral(self):
         data_inicio = datetime.date(1992, 1, 1) 
         data_fim = datetime.date(1992, 7, 1)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
         obj._build_string()
-        self.assertEquals(obj.string, "1992 1o Semestre")
+        self.assertEqual(obj.string, "1992 1o Semestre")
 
     def test_build_string_periodo_mensal(self):
         data_inicio = datetime.date(1992, 1, 1) 
         data_fim = datetime.date(1992, 2, 1)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
         obj._build_string()
-        self.assertEquals(obj.string, "1992 Jan")
+        self.assertEqual(obj.string, "1992 Jan")
 
 
     ###########################
@@ -476,7 +444,7 @@ class ModelsTest(TestCase):
         proposicao = modelagem.models.Proposicao.objects.get(id=1)
         proposicao.ano = "1990"
         resultado = proposicao.nome()
-        self.assertEquals(resultado, "PL 1/1990")
+        self.assertEqual(resultado, "PL 1/1990")
 
 
     ########################
@@ -490,7 +458,7 @@ class ModelsTest(TestCase):
         data_fim = '1990-01-01'
         votacoes = modelagem.models.Votacao.por_casa_legislativa(
             casa_legislativa, data_inicio, data_fim)
-        self.assertEquals(1, len(votacoes))
+        self.assertEqual(1, len(votacoes))
 
     def test_nenhuma_votacao_por_casa_legislativa(self):
         casa_legislativa = modelagem.models.CasaLegislativa.objects.get(
@@ -499,23 +467,23 @@ class ModelsTest(TestCase):
         data_fim = '2010-01-01'
         votacoes = modelagem.models.Votacao.por_casa_legislativa(
             casa_legislativa, data_inicio, data_fim)
-        self.assertEquals(0, len(votacoes))  
+        self.assertEqual(0, len(votacoes))  
 
     def test_votos(self):
         votacao = modelagem.models.Votacao.objects.get(descricao='Institui o Dia de Carlos Magno')
         votos = modelagem.models.Votacao.votos(votacao)
-        self.assertEquals(len(votos), 9)
+        self.assertEqual(len(votos), 9)
 
     def test_por_partido(self):
         votacao = modelagem.models.Votacao.objects.get(descricao='Institui o Dia de Carlos Magno')
         votos = modelagem.models.Votacao.votos(votacao)
         dicionario = votacao.por_partido()
         valor_votos = dicionario.get("Monarquistas")
-        self.assertEquals(valor_votos.sim, 3)
-        self.assertEquals(valor_votos.nao, 0)
-        self.assertEquals(valor_votos.abstencao, 0) 
-        self.assertEquals(valor_votos.total(), 3)
-        self.assertEquals(dicionario.keys(), ["Monarquistas", "Girondinos", "Jacobinos"])
+        self.assertEqual(valor_votos.sim, 3)
+        self.assertEqual(valor_votos.nao, 0)
+        self.assertEqual(valor_votos.abstencao, 0) 
+        self.assertEqual(valor_votos.total(), 3)
+        self.assertEqual(list(dicionario.keys()), ["Monarquistas", "Girondinos", "Jacobinos"])
    
 
     ###############################
@@ -526,25 +494,25 @@ class ModelsTest(TestCase):
         voto_agregado = modelagem.models.VotosAgregados()
         voto_agregado.add('SIM')
         voto_agregado.add('SIM')
-        self.assertEquals(voto_agregado.sim, 2)
+        self.assertEqual(voto_agregado.sim, 2)
 
     def test_add_nao(self):
         voto_agregado = modelagem.models.VotosAgregados()
         voto_agregado.add('NAO')
-        self.assertEquals(voto_agregado.nao, 1)
+        self.assertEqual(voto_agregado.nao, 1)
 
     def test_add_abstencao(self):
         voto_agregado = modelagem.models.VotosAgregados()
         voto_agregado.add('ABSTENCAO')
         voto_agregado.add('ABSTENCAO')
         voto_agregado.add('ABSTENCAO')
-        self.assertEquals(voto_agregado.abstencao, 3)
+        self.assertEqual(voto_agregado.abstencao, 3)
 
     def test_add_obstrucao(self):
         voto_agregado = modelagem.models.VotosAgregados()
         voto_agregado.add('OBSTRUCAO')
         voto_agregado.add('ABSTENCAO')
-        self.assertEquals(voto_agregado.abstencao, 2)
+        self.assertEqual(voto_agregado.abstencao, 2)
 
     def test_total(self):
         voto_agregado = modelagem.models.VotosAgregados()
@@ -553,7 +521,7 @@ class ModelsTest(TestCase):
         voto_agregado.add('NAO')
         voto_agregado.add('SIM')
         total = voto_agregado.total()
-        self.assertEquals(total, 4)
+        self.assertEqual(total, 4)
 
     def test_voto_medio_com_votos_sim_nao(self):
         voto_agregado = modelagem.models.VotosAgregados()
@@ -563,10 +531,10 @@ class ModelsTest(TestCase):
         voto_agregado.add('SIM')
         total = voto_agregado.total()
         voto_medio = voto_agregado.voto_medio()
-        self.assertEquals(voto_medio, 0.0)
+        self.assertEqual(voto_medio, 0.0)
 
     def test_voto_medio_votos_nulos(self):
         voto_agregado = modelagem.models.VotosAgregados()
         total = voto_agregado.total()
         voto_medio = voto_agregado.voto_medio()
-        self.assertEquals(voto_medio, 0)
+        self.assertEqual(voto_medio, 0)

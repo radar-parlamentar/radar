@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.db import models
 from django.utils.dateparse import parse_datetime
 import re
@@ -345,7 +345,7 @@ class PeriodoCasaLegislativa(object):
         self.fim = data_fim
         self.quantidade_votacoes = quantidade_votacoes
         self.string = ""
-        self.string = unicode(self)
+        self.string = str(self)
 
     def __str__(self):
         return self.__unicode__()
@@ -597,7 +597,7 @@ class VotosAgregados:
         return '(%s, %s, %s)' % (self.sim, self.nao, self.abstencao)
 
     def __str__(self):
-        return unicode(self).encode('utf-8')
+        return str(self).encode('utf-8')
 
 
 class VotoPartido(VotosAgregados):

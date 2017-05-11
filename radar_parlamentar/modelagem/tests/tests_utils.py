@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.test import TestCase
 from importadores import conv
 import datetime
@@ -38,21 +38,21 @@ class MandatoListsTest(TestCase):
         fim_date = datetime.date(2013, 10, 10)
         mandato_lists = modelagem.utils.MandatoLists()
         mandatos = mandato_lists.get_mandatos(MUNICIPAL, ini_date, fim_date)
-        self.assertEquals(len(mandatos), 3)
-        self.assertEquals(mandatos[0].year, 2005)
-        self.assertEquals(mandatos[1].year, 2009)
-        self.assertEquals(mandatos[2].year, 2013)
+        self.assertEqual(len(mandatos), 3)
+        self.assertEqual(mandatos[0].year, 2005)
+        self.assertEqual(mandatos[1].year, 2009)
+        self.assertEqual(mandatos[2].year, 2013)
         for mandato in mandatos:
-            self.assertEquals(mandato.day, 1)
-            self.assertEquals(mandato.month, 1)
+            self.assertEqual(mandato.day, 1)
+            self.assertEqual(mandato.month, 1)
 
     def test_get_mandatos_municipais_soh_um(self):
         ini_date = parse_datetime('2009-10-10 0:0:0')
         fim_date = parse_datetime('2012-10-10 0:0:0')
         mandato_lists = modelagem.utils.MandatoLists()
         mandatos = mandato_lists.get_mandatos(MUNICIPAL, ini_date, fim_date)
-        self.assertEquals(len(mandatos), 1)
-        self.assertEquals(mandatos[0].year, 2009)
+        self.assertEqual(len(mandatos), 1)
+        self.assertEqual(mandatos[0].year, 2009)
 
     def test_get_mandatos_federais(self):
         self._test_get_mandatos_federais_ou_estaduais(FEDERAL)
@@ -65,13 +65,13 @@ class MandatoListsTest(TestCase):
         fim_date = datetime.date(2015, 10, 10)
         mandato_lists = modelagem.utils.MandatoLists()
         mandatos = mandato_lists.get_mandatos(esfera, ini_date, fim_date)
-        self.assertEquals(len(mandatos), 3)
-        self.assertEquals(mandatos[0].year, 2007)
-        self.assertEquals(mandatos[1].year, 2011)
-        self.assertEquals(mandatos[2].year, 2015)
+        self.assertEqual(len(mandatos), 3)
+        self.assertEqual(mandatos[0].year, 2007)
+        self.assertEqual(mandatos[1].year, 2011)
+        self.assertEqual(mandatos[2].year, 2015)
         for mandato in mandatos:
-            self.assertEquals(mandato.day, 1)
-            self.assertEquals(mandato.month, 1)
+            self.assertEqual(mandato.day, 1)
+            self.assertEqual(mandato.month, 1)
 
 
 class PeriodosRetrieverTest(TestCase):
@@ -91,7 +91,7 @@ class PeriodosRetrieverTest(TestCase):
     def test_casa_legislativa_periodos_anuais(self):
         retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.ANO)
         periodos = retriever.get_periodos()
-        self.assertEquals(len(periodos), 2)
+        self.assertEqual(len(periodos), 2)
         self.assertEqual(periodos[0].string, '1989')
         self.assertEqual(periodos[1].string, '1990')
         self.assertEqual(periodos[0].quantidade_votacoes, 8)
@@ -100,7 +100,7 @@ class PeriodosRetrieverTest(TestCase):
     def test_casa_legislativa_periodos_mensais(self):
         retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.MES)
         periodos = retriever.get_periodos()
-        self.assertEquals(len(periodos), 3)
+        self.assertEqual(len(periodos), 3)
         self.assertEqual(periodos[0].string, '1989 Fev')
         self.assertEqual(periodos[0].quantidade_votacoes, 4)
         self.assertEqual(periodos[1].string, '1989 Out')
@@ -111,7 +111,7 @@ class PeriodosRetrieverTest(TestCase):
     def test_casa_legislativa_periodos_semestrais(self):
         retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.SEMESTRE)
         periodos = retriever.get_periodos()
-        self.assertEquals(len(periodos), 3)
+        self.assertEqual(len(periodos), 3)
         d = periodos[0].ini
         self.assertEqual(1989, d.year)
         self.assertEqual(1, d.month)
@@ -158,8 +158,8 @@ class PeriodosRetrieverTest(TestCase):
 
     def _test_periodos_em_duas_datas(self, ano_ini, ano_fim, esfera,
                                      periodicidade, expected_periodos_len):
-        UMA_DATA = datetime.date(ano_ini, 02, 02)
-        OUTRA_DATA = datetime.date(ano_fim, 10, 02)
+        UMA_DATA = datetime.date(ano_ini, 0o2, 0o2)
+        OUTRA_DATA = datetime.date(ano_fim, 10, 0o2)
         votacoes = modelagem.models.Votacao.objects.all()
         half = len(votacoes) / 2
         datas_originais = {}  # votacao.id => data
@@ -177,7 +177,7 @@ class PeriodosRetrieverTest(TestCase):
             v.save()
         retriever = modelagem.utils.PeriodosRetriever(self.conv, periodicidade)
         periodos = retriever.get_periodos()
-        self.assertEquals(len(periodos), expected_periodos_len)
+        self.assertEqual(len(periodos), expected_periodos_len)
         self._restore(esfera_original, votacoes, datas_originais)
 
     def _restore(self, esfera_original, votacoes, datas_originais):
@@ -191,49 +191,49 @@ class PeriodosRetrieverTest(TestCase):
         casa_nova = modelagem.models.CasaLegislativa(nome="Casa Nova")
         retriever = modelagem.utils.PeriodosRetriever(casa_nova, modelagem.models.ANO)
         periodos = retriever.get_periodos()
-        self.assertEquals(len(periodos), 0)
+        self.assertEqual(len(periodos), 0)
 
     def test_data_inicio_prox_periodo_mes_menor_12(self):
         retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.MES)
         data_inicio_periodo = datetime.date(1989, 2, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
-        self.assertEquals(resultado, datetime.date(1989, 3, 1))
+        self.assertEqual(resultado, datetime.date(1989, 3, 1))
 
     def test_data_inicio_prox_periodo_mes_igual_a_12(self):
         retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.MES)
         data_inicio_periodo = datetime.date(1989, 12, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
-        self.assertEquals(resultado, datetime.date(1990, 1, 1))
+        self.assertEqual(resultado, datetime.date(1990, 1, 1))
 
     def test_data_inicio_prox_periodo_semestre_com_inicio_mes_menor_7(self):
         retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.SEMESTRE)
         data_inicio_periodo = datetime.date(1989, 1, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
-        self.assertEquals(resultado, datetime.date(1989, 7, 1))
+        self.assertEqual(resultado, datetime.date(1989, 7, 1))
 
     def test_data_inicio_prox_periodo_semestre_com_inicio_mes_maior_igual_7(self):
         retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.SEMESTRE)
         data_inicio_periodo = datetime.date(1989, 7, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
-        self.assertEquals(resultado, datetime.date(1990, 1, 1))
+        self.assertEqual(resultado, datetime.date(1990, 1, 1))
 
     def test_data_inicio_prox_periodo_ano(self):
         retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.ANO)
         data_inicio_periodo = datetime.date(1989, 2, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
-        self.assertEquals(resultado, datetime.date(1990, 1, 1))
+        self.assertEqual(resultado, datetime.date(1990, 1, 1))
         
     def test_data_inicio_prox_periodo_bienio(self):
         retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.BIENIO)
         data_inicio_periodo = datetime.date(1989, 7, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
-        self.assertEquals(resultado, datetime.date(1991, 1, 1))
+        self.assertEqual(resultado, datetime.date(1991, 1, 1))
 
     def test_data_inicio_prox_periodo_quadrienio(self):
         retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.QUADRIENIO)
         data_inicio_periodo = datetime.date(1989, 7, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
-        self.assertEquals(resultado, datetime.date(1993, 1, 1))
+        self.assertEqual(resultado, datetime.date(1993, 1, 1))
         
 
 class StringUtilsTest(TestCase):
@@ -241,17 +241,17 @@ class StringUtilsTest(TestCase):
     def test_transforma_texto_em_lista_de_string_texto_vazio(self):
         lista_string = modelagem.utils.StringUtils.transforma_texto_em_lista_de_string(
             "")
-        self.assertEquals(0, len(lista_string))
+        self.assertEqual(0, len(lista_string))
 
     def test_transforma_texto_em_lista_de_string_texto_nulo(self):
         lista_string = modelagem.utils.StringUtils.transforma_texto_em_lista_de_string(
             None)
-        self.assertEquals(0, len(lista_string))
+        self.assertEqual(0, len(lista_string))
 
     def test_transforma_texto_em_lista_de_string(self):
         lista_string = modelagem.utils.StringUtils.transforma_texto_em_lista_de_string(
             "educação, saúde, desmatamento")
-        self.assertEquals(3, len(lista_string))
-        self.assertEquals("educação", lista_string[0])
-        self.assertEquals("saúde", lista_string[1])
-        self.assertEquals("desmatamento", lista_string[2])
+        self.assertEqual(3, len(lista_string))
+        self.assertEqual("educação", lista_string[0])
+        self.assertEqual("saúde", lista_string[1])
+        self.assertEqual("desmatamento", lista_string[2])
