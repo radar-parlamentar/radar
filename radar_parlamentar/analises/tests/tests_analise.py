@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.test import TestCase
 
 from analises import analise
@@ -69,7 +69,7 @@ class AnalisadorPeriodoTest(TestCase):
 
     # TODO mover test_coordenadas_partidos para AnalisadorPartidosTest
     def test_coordenadas_partidos(self):
-        periodo = models.PeriodoCasaLegislativa(date(1989, 02, 02),
+        periodo = models.PeriodoCasaLegislativa(date(1989, 0o2, 0o2),
                                                 date(1989, 10, 10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
@@ -83,25 +83,25 @@ class AnalisadorPeriodoTest(TestCase):
 
     # TODO mover test_tamanho_partidos para AnalisadorPartidosTest
     def test_tamanho_partidos(self):
-        periodo = models.PeriodoCasaLegislativa(date(1989, 02, 02),
+        periodo = models.PeriodoCasaLegislativa(date(1989, 0o2, 0o2),
                                                 date(1989, 10, 10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
         tamanhos = analise_periodo.tamanhos_partidos
         tamanho_esperado = conv.PARLAMENTARES_POR_PARTIDO
         partidos = AnalisadorPeriodoTest.importer.partidos
-        self.assertEquals(3, len(partidos))
+        self.assertEqual(3, len(partidos))
         for p in partidos:
             self.assertEqual(tamanhos[p], tamanho_esperado)
     
     def test_chefes_executivos(self):
-        periodo = models.PeriodoCasaLegislativa(date(1989, 02, 02), date(1989, 10, 10))
+        periodo = models.PeriodoCasaLegislativa(date(1989, 0o2, 0o2), date(1989, 10, 10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
         chefes_executivos = analise_periodo.chefes_executivos
         chefe_esperado = self.chefe
         
-        self.assertEquals(unicode(chefes_executivos[0]), unicode(chefe_esperado))
+        self.assertEqual(str(chefes_executivos[0]), str(chefe_esperado))
 
 class ConstrutorDeMatrizesDeDadosTest(TestCase):
 

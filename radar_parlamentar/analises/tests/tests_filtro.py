@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.test import TestCase
 
 from analises import filtro
@@ -42,7 +42,7 @@ class FiltroVotacaoTest(TestCase):
         query_builder = filtro.LuceneQueryBuilder(nome_curto, periodo, palavras_chaves)
         query = query_builder.build()
         query_esperada = 'casa_legislativa_nome_curto:cmsp AND Educação AND Professor AND Escola AND votacao_data:[2000-01-01 TO 2010-01-01]'
-        self.assertEquals(query, query_esperada)
+        self.assertEqual(query, query_esperada)
 
 class FiltroChefeExecutivoTest(TestCase):
 
@@ -84,15 +84,15 @@ class FiltroChefeExecutivoTest(TestCase):
         filtro_chefe = filtro.FiltroChefesExecutivo(self.casa, self.periodo)
         result = filtro_chefe.filtra_chefes_executivo()
         expected = "Presidente: " + self.chefe.nome + " - " + self.partido.nome
-        self.assertEquals(unicode(result[0]), expected)
+        self.assertEqual(str(result[0]), expected)
 
     def test_filtra_chefes_executivo_varios_chefes(self):
         filtro_chefe = filtro.FiltroChefesExecutivo(self.casa, self.periodo)
         result = filtro_chefe.filtra_chefes_executivo()
         expected_chefe_1 = "Presidente: " + self.chefe.nome + " - " + self.partido.nome
-        self.assertEquals(unicode(result[0]), expected_chefe_1)
+        self.assertEqual(str(result[0]), expected_chefe_1)
         expected_chefe_2 = "Presidente: " + self.chefe2.nome + " - " + self.partido.nome
-        self.assertEquals(unicode(result[1]), expected_chefe_2)
+        self.assertEqual(str(result[1]), expected_chefe_2)
 
     def test_filtra_chefes_executivo_com_chefes_de_outros_periodos(self):
 
@@ -100,6 +100,6 @@ class FiltroChefeExecutivoTest(TestCase):
         result = filtro_chefe.filtra_chefes_executivo()
     
         chefes_no_periodo = 2
-        self.assertEquals(len(result), chefes_no_periodo)
+        self.assertEqual(len(result), chefes_no_periodo)
 
 
