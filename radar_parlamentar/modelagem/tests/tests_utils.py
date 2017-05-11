@@ -193,6 +193,49 @@ class PeriodosRetrieverTest(TestCase):
         periodos = retriever.get_periodos()
         self.assertEquals(len(periodos), 0)
 
+    def test_data_inicio_prox_periodo_mes_menor_12(self):
+        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.MES)
+        data_inicio_periodo = datetime.date(1989, 2, 1)
+        resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
+        self.assertEquals(resultado, datetime.date(1989, 3, 1))
+
+    def test_data_inicio_prox_periodo_mes_igual_a_12(self):
+        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.MES)
+        data_inicio_periodo = datetime.date(1989, 12, 1)
+        resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
+        self.assertEquals(resultado, datetime.date(1990, 1, 1))
+
+    def test_data_inicio_prox_periodo_semestre_com_inicio_mes_menor_7(self):
+        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.SEMESTRE)
+        data_inicio_periodo = datetime.date(1989, 1, 1)
+        resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
+        self.assertEquals(resultado, datetime.date(1989, 7, 1))
+
+    def test_data_inicio_prox_periodo_semestre_com_inicio_mes_maior_igual_7(self):
+        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.SEMESTRE)
+        data_inicio_periodo = datetime.date(1989, 7, 1)
+        resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
+        self.assertEquals(resultado, datetime.date(1990, 1, 1))
+
+    def test_data_inicio_prox_periodo_ano(self):
+        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.ANO)
+        data_inicio_periodo = datetime.date(1989, 2, 1)
+        resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
+        self.assertEquals(resultado, datetime.date(1990, 1, 1))
+        
+    def test_data_inicio_prox_periodo_bienio(self):
+        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.BIENIO)
+        data_inicio_periodo = datetime.date(1989, 7, 1)
+        resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
+        self.assertEquals(resultado, datetime.date(1991, 1, 1))
+
+    def test_data_inicio_prox_periodo_quadrienio(self):
+        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.QUADRIENIO)
+        data_inicio_periodo = datetime.date(1989, 7, 1)
+        resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
+        self.assertEquals(resultado, datetime.date(1993, 1, 1))
+        
+
 class StringUtilsTest(TestCase):
 
     def test_transforma_texto_em_lista_de_string_texto_vazio(self):
