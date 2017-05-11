@@ -17,14 +17,14 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from modelagem import models
 from modelagem import utils
-from grafico import JsonAnaliseGenerator
-from analise import AnalisadorTemporal
+from .grafico import JsonAnaliseGenerator
+from .analise import AnalisadorTemporal
 import datetime
 import logging
 

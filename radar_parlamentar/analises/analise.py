@@ -21,15 +21,15 @@
 
 """Módulo analise"""
 
-from __future__ import unicode_literals
+
 from math import hypot, atan2, pi
-from models import AnalisePeriodo, AnaliseTemporal
+from .models import AnalisePeriodo, AnaliseTemporal
 from modelagem import models
 from modelagem import utils
 from analises import filtro
 import logging
 import numpy
-import pca
+from . import pca
 import copy
 # import time # timetrack
 
@@ -236,18 +236,18 @@ class AnalisadorPeriodo:
         if not self.analise_ja_feita:
             self.coordenadas_parlamentares = self._pca_parlamentares()
             if self.num_votacoes > 1:
-                for partido in self.coordenadas_parlamentares.keys():
+                for partido in list(self.coordenadas_parlamentares.keys()):
                     self.coordenadas_parlamentares[partido] = (
                         self.coordenadas_parlamentares[partido])[0:2]
             # se só tem 1 votação, só tem 1 C.P. Jogar tudo zero na segunda CP.
             elif self.num_votacoes == 1:
-                for partido in self.coordenadas_parlamentares.keys():
+                for partido in list(self.coordenadas_parlamentares.keys()):
                     self.coordenadas_parlamentares[partido] = numpy.array(
                         [(self.coordenadas_parlamentares[partido])[0], 0.])
             # Zero votações no período. Os partidos são todos iguais. Tudo
             # zero.
             else:
-                for parlamentar in self.coordenadas_parlamentares.keys():
+                for parlamentar in list(self.coordenadas_parlamentares.keys()):
                     self.coordenadas_parlamentares[
                         parlamentar] = numpy.array([0., 0.])
         return self.coordenadas_parlamentares
@@ -439,12 +439,12 @@ class Rotacionador:
         self.analisePeriodoReferencia = analisePeriodoReferencia
 
     def _espelhar_coordenadas(self, lista_coordenadas):
-        for indice, coords in lista_coordenadas.items():
+        for indice, coords in list(lista_coordenadas.items()):
             lista_coordenadas[indice] = numpy.dot(
                 coords, numpy.array([[-1., 0.], [0., 1.]]))
 
     def _rotacionar_coordenadas(self, theta, lista_coordenadas):
-        for indice, coords in lista_coordenadas.items():
+        for indice, coords in list(lista_coordenadas.items()):
             lista_coordenadas[indice] = numpy.dot(
             coords, self._gerar_matriz_rotacao(theta))
 
@@ -461,7 +461,7 @@ class Rotacionador:
         if espelho == 1:
             self._espelhar_coordenadas(dados_meus)
         if graus != 0:
-            for partido, coords in dados_meus.items():
+            for partido, coords in list(dados_meus.items()):
                 dados_meus[partido] = numpy.dot(coords, self._gerar_matriz_rotacao(graus))
 
         if por_partido:
@@ -528,7 +528,7 @@ class Rotacionador:
             logger.info("Calculando ângulo teta 1 e ângulo teta 2...")
             numerador = 0
             denominador = 0
-            for indice, coords in dados_meus.items():
+            for indice, coords in list(dados_meus.items()):
                 meu_polar = self._polar(coords[0], coords[1], 0)
                 alheio_polar = self._polar(
                     dados_fixos[indice][0], dados_fixos[indice][1], 0)

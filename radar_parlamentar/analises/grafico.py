@@ -23,7 +23,7 @@ Responsável por cuidar das coisas relacionadas à apresentação do PCA para
 o usuário final, dado que os cálculos do PCA já foram realizados
 """
 
-from __future__ import unicode_literals
+
 import json
 import logging
 from math import sqrt, isnan
@@ -149,7 +149,7 @@ class JsonAnaliseGenerator:
         list_votacoes = []
         for votacao in ap.votacoes:
             dict_votacao = {}
-            dict_votacao['id'] = unicode(votacao).replace('"', "'")
+            dict_votacao['id'] = str(votacao).replace('"', "'")
             list_votacoes.append(dict_votacao)
         return list_votacoes
     
@@ -157,7 +157,7 @@ class JsonAnaliseGenerator:
         list_chefes = []
         for chefe in ap.chefes_executivos:
             dict_chefe = {}
-            dict_chefe['nome'] = unicode(chefe).replace('"', "'")
+            dict_chefe['nome'] = str(chefe).replace('"', "'")
             list_chefes.append(dict_chefe)
         return list_chefes
     
@@ -204,7 +204,7 @@ class JsonAnaliseGenerator:
                 else:
                     dict_partido["x"].append(0.)
                     dict_partido["y"].append(0.)
-            except KeyError, error:
+            except KeyError as error:
                 logger.error("KeyError: %s" % error)
                 dict_partido["x"].append(0.)
                 dict_partido["y"].append(0.)
@@ -238,7 +238,7 @@ class JsonAnaliseGenerator:
             cache_coords_key = str(ap.periodo)
             coordenadas = self.parlamentaresScaler.scale(
                 ap.coordenadas_parlamentares, cache_coords_key)
-            if coordenadas.has_key(leg_id):
+            if leg_id in coordenadas:
                 x = coordenadas[leg_id][0]
                 y = coordenadas[leg_id][1]
                 self.max_parlamentar_radius_calculator.add_point(x, y)
@@ -282,7 +282,7 @@ class GraphScaler:
         """Changes X,Y scale from [-1,1] to [-100,100]
         coords -- key => [x, y]
         """
-        if cache_key in self.cache.keys():
+        if cache_key in list(self.cache.keys()):
             return self.cache[cache_key]
         scaled = self._scale(coords)
         self.cache[cache_key] = scaled
@@ -290,7 +290,7 @@ class GraphScaler:
 
     def _scale(self, coords):
         scaled = {}
-        for key, coord in coords.items():
+        for key, coord in list(coords.items()):
             x = coord[0]
             try:
                 y = coord[1]
@@ -322,8 +322,8 @@ class RaioPartidoCalculator():
 
     def _init_area_total(self):
         maior_soma = 0
-        for tamanhos_partidos in self.tamanhos_dos_partidos_por_periodo.values(
-        ):
+        for tamanhos_partidos in list(self.tamanhos_dos_partidos_por_periodo.values(
+        )):
             soma_dos_tamanhos_dos_partidos = sum(tamanhos_partidos.values())
             if soma_dos_tamanhos_dos_partidos > maior_soma:
                 maior_soma = soma_dos_tamanhos_dos_partidos

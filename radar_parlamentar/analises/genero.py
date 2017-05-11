@@ -36,7 +36,7 @@ class Genero:
 
     def define_chaves_dicionario(self, palavras):
         for palavra in palavras:
-            if self.dicionario_palavras.has_key(palavra):
+            if palavra in self.dicionario_palavras:
                 self.dicionario_palavras[palavra] = self.dicionario_palavras[palavra] + 1
             else:
                 self.dicionario_palavras[palavra] = 1
@@ -45,7 +45,7 @@ class Genero:
     def organiza_lista_palavras(self, dicionario_palavras):
         numero_maximo_de_palavras = 51
         temas_frequencia = sorted(
-            dicionario_palavras.items(), reverse=True, key=lambda i: i[1])
+            list(dicionario_palavras.items()), reverse=True, key=lambda i: i[1])
         temas_frequencia = temas_frequencia[:numero_maximo_de_palavras]
         return temas_frequencia
 
