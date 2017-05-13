@@ -18,7 +18,7 @@
 # along with Radar Parlamentar.  If not, see
 #               <http://www.gnu.org/licenses/>.# -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
+
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.contrib.staticfiles import finders
@@ -27,7 +27,7 @@ import os
 import datetime
 import json
 import logging
-from blog import DictionaryBlogGenerator
+from .blog import DictionaryBlogGenerator
 import feedparser
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
@@ -70,9 +70,9 @@ def importadores(request):
                               context_instance=RequestContext(request))
 
 
-def grafico_alternativo(request):
-    return render_to_response('grafico_alternativo.html', {},
-                              context_instance=RequestContext(request))
+# def grafico_alternativo(request):
+#     return render_to_response('grafico_alternativo.html', {},
+#                               context_instance=RequestContext(request))
 
 
 def genero(request):
@@ -140,9 +140,9 @@ def genero_futuro(request):
                               context_instance=RequestContext(request))
 
 
-def genero_perfil_legis(request):
-    return render_to_response('perfil_legis.html', {},
-                              context_instance=RequestContext(request))
+# def genero_perfil_legis(request):
+#     return render_to_response('perfil_legis.html', {},
+#                               context_instance=RequestContext(request))
 
 
 def dados_utilizados(request):

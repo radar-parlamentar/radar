@@ -63,6 +63,14 @@ class ViewTest(TestCase):
         radar_genero_comparativo_partidos = "Trata-se de uma visualização de dados em que é possível observar o percentual de deputadas e deputados nos diversos partidos de uma legislatura a sua escolha."
         self._test_content("genero_comparativo_partidos", radar_genero_comparativo_partidos)
 
+    def test_genero_termos_nuvem(self):
+        radar_genero_termos_nuvem = "Entenda visualmente participação de mulheres e homens na política"
+        self._test_content("genero_termos_nuvem", radar_genero_termos_nuvem)
+
+    def test_genero_matriz(self):
+        radar_genero_matriz = "Entenda visualmente participação de mulheres e homens na política"
+        self._test_content("genero_matriz", radar_genero_matriz)
+
     def _test_content(self, page, content):
         url = reverse(str(page))
         request = self.client.get(url)

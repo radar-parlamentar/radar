@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.test import TestCase
 from importadores import cdep
 
@@ -40,18 +40,18 @@ class CamarawsTest(TestCase):
     def test_obter_proposicao(self):
         codigo_florestal_xml = self.camaraws.obter_proposicao_por_id(ID)
         nome = codigo_florestal_xml.find('nomeProposicao').text
-        self.assertEquals(nome, NOME)
+        self.assertEqual(nome, NOME)
 
     def test_obter_votacoes(self):
         codigo_florestal_xml = self.camaraws.obter_votacoes(SIGLA, NUM, ANO)
         data_vot_encontrada = codigo_florestal_xml.find(
             'Votacoes').find('Votacao').get('Data')
-        self.assertEquals(data_vot_encontrada, '11/5/2011')
+        self.assertEqual(data_vot_encontrada, '11/5/2011')
 
     def test_listar_proposicoes(self):
         pecs_2011_xml = self.camaraws.listar_proposicoes('PEC', '2011')
         pecs_elements = pecs_2011_xml.findall('proposicao')
-        self.assertEquals(len(pecs_elements), 135)
+        self.assertEqual(len(pecs_elements), 135)
         # 135 obtido por conferência manual com:
         # http://www.camara.gov.br/SitCamaraWS/Proposicoes.asmx/ListarProposicoes?sigla=PEC&numero=&ano=2011&datApresentacaoIni=&datApresentacaoFim=&autor=&parteNomeAutor=&siglaPartidoAutor=&siglaUFAutor=&generoAutor=&codEstado=&codOrgaoEstado=&emTramitacao=
 
@@ -61,7 +61,7 @@ class CamarawsTest(TestCase):
         try:
             self.camaraws.obter_proposicao_por_id(id_que_nao_existe)
         except ValueError as e:
-            self.assertEquals(
+            self.assertEqual(
                 e.message, 'Proposicao %s nao encontrada' % id_que_nao_existe)
             caught = True
         self.assertTrue(caught)
@@ -74,7 +74,7 @@ class CamarawsTest(TestCase):
         try:
             self.camaraws.obter_votacoes(sigla, num, ano)
         except ValueError as e:
-            self.assertEquals(
+            self.assertEqual(
                 e.message, 'Votacoes da proposicao %s %s/%s nao encontrada'
                 % (sigla, num, ano))
             caught = True
@@ -87,7 +87,7 @@ class CamarawsTest(TestCase):
         try:
             self.camaraws.listar_proposicoes(sigla, ano)
         except ValueError as e:
-            self.assertEquals(
+            self.assertEqual(
                 e.message, 'Proposicoes nao encontradas para sigla=%s&ano=%s'
                 % (sigla, ano))
             caught = True

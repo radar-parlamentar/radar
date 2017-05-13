@@ -1,1 +1,1 @@
-from tests_cdep_integracao import *
+from .tests_cdep_integracao import *

@@ -1,1 +1,1 @@
-from flush_db import *
+from .flush_db import *

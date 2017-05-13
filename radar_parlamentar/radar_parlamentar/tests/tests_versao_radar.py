@@ -3,7 +3,6 @@
 from django.test import TestCase
 from radar_parlamentar.templatetags.versao_radar import versao_radar
 import re
-from radar_parlamentar.radar_parlamentar.blog import DictionaryBlogGenerator
 
 class VersaoRadarTest(TestCase):
 
