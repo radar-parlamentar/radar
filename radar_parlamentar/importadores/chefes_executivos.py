@@ -1,7 +1,7 @@
 # !/usr/bin/python
 # coding=utf8
 
-from __future__ import unicode_literals
+
 from modelagem import models
 import os
 import xml.etree.ElementTree as etree

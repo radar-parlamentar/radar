@@ -20,7 +20,7 @@
 
 """módulo que cuida da importação dos dados da Câmara dos Deputados"""
 
-from __future__ import unicode_literals
+
 import json
 import csv
 import logging
@@ -71,7 +71,7 @@ def converte_csv_para_json(nome_arquivo_entrada):
 
 
 def _null_to_none(proposicao):
-    for atributo in proposicao.keys():
+    for atributo in list(proposicao.keys()):
         if proposicao[atributo] == "NULL":
             proposicao[atributo] = None
     return proposicao
@@ -183,7 +183,7 @@ def jsonMatrix_gera_termos_mais_mais():
     global matrix
     matrix['termos'] = []
     for termo in PALAVRAS_MAIS_MAIS:
-        print(termo, i)
+        print((termo, i))
         lista_termos.append({'name': termo, 'group': 1, 'id': i})
         i += 1
     matrix['termos'] = lista_termos
@@ -216,7 +216,7 @@ def principal(fonte=None):
     # ordena_palavras_partido()
     jsonMatrix_gera_partidos()
     jsonMatrix_gera_termos_mais_mais()
-    print(matrix['termos'])
+    print((matrix['termos']))
     jsonMatrix_gera_links_partidos_termos()
     with open('matrix.json', 'w') as arqMatrix:
         arqMatrix.write(json.dumps(matrix, indent=4))

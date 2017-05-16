@@ -1,7 +1,7 @@
 # !/usr/bin/python
 # coding=utf8
 
-from __future__ import unicode_literals
+
 from django.test import TestCase
 from importadores.chefes_executivos import *
 from modelagem import models
@@ -26,11 +26,11 @@ class ImportadorChefesExecutivosTeste(TestCase):
         importer_chefe.importar_chefes()
         chefe = models.ChefeExecutivo.objects.get(nome="teste_chefe_cmsp")
 
-        self.assertEquals(chefe.nome, "teste_chefe_cmsp")
-        self.assertEquals(chefe.partido.nome, "PT")
-        self.assertEquals(chefe.mandato_ano_inicio, 1989)
-        self.assertEquals(chefe.mandato_ano_fim, 1992)
-        self.assertEquals(chefe.genero, "F")
+        self.assertEqual(chefe.nome, "teste_chefe_cmsp")
+        self.assertEqual(chefe.partido.nome, "PT")
+        self.assertEqual(chefe.mandato_ano_inicio, 1989)
+        self.assertEqual(chefe.mandato_ano_fim, 1992)
+        self.assertEqual(chefe.genero, "F")
 
 
     def test_chefe_sen_importado(self):
@@ -40,8 +40,8 @@ class ImportadorChefesExecutivosTeste(TestCase):
         importer_chefe.importar_chefes()
         chefe = models.ChefeExecutivo.objects.get(nome="teste_chefe_sen")
 
-        self.assertEquals(chefe.nome, "teste_chefe_sen")
-        self.assertEquals(chefe.partido.nome, "PT")
-        self.assertEquals(chefe.mandato_ano_inicio, 1990)
-        self.assertEquals(chefe.mandato_ano_fim, 1992)
-        self.assertEquals(chefe.genero, "M")
+        self.assertEqual(chefe.nome, "teste_chefe_sen")
+        self.assertEqual(chefe.partido.nome, "PT")
+        self.assertEqual(chefe.mandato_ano_inicio, 1990)
+        self.assertEqual(chefe.mandato_ano_fim, 1992)
+        self.assertEqual(chefe.genero, "M")

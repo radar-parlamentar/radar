@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 import modelagem.models as models
 from elasticsearch import Elasticsearch
 from django.conf import settings
@@ -222,7 +222,7 @@ def criar_indice(nome_indice):
 def enviar_para_elasticsearch(list_json, nome_indice):
     es = conectar_em_elastic_search()
     for item in list_json:
-        for key in item.keys():
+        for key in list(item.keys()):
             if item[key] == "":
                 item.pop(key)
         es.index(index=nome_indice, doc_type="radar", body=item)

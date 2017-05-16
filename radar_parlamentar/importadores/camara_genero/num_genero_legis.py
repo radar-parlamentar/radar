@@ -48,7 +48,7 @@ for arq in arqs:
 
 print(cont)
 ordenada = []
-for a in historia.keys():
+for a in list(historia.keys()):
     ordenada.append(a)
 ordenada.sort()
 
@@ -67,7 +67,7 @@ for i in ordenada:
 
     try:
         prox_data = ordenada[ordenada.index(i) + 1]
-    except ValueError, error:
+    except ValueError as error:
         logger.error("ValueError: %s" % error)
 
     prox = prox_data.partition("-")[0]

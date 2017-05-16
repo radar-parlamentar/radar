@@ -25,7 +25,7 @@ Classes:
     Convenção Nacional Francesa
 """
 
-from __future__ import unicode_literals
+
 from django.utils.dateparse import parse_datetime
 from modelagem import models
 import logging

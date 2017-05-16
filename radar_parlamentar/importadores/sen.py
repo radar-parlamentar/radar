@@ -25,11 +25,11 @@ Classes:
     ImportadorVotacoesSenado
 """
 
-from __future__ import unicode_literals
+
 from datetime import date
 from modelagem import models
 from django.core.exceptions import ObjectDoesNotExist
-from chefes_executivos import ImportadorChefesExecutivos
+from .chefes_executivos import ImportadorChefesExecutivos
 import re
 import os
 import sys
@@ -317,8 +317,8 @@ class ImportadorVotacoesSenado:
         """Retorna uma lista com os caminhos dos arquivos XMLs contidos
         na pasta VOTACOES_FOLDER"""
         files = os.listdir(VOTACOES_FOLDER)
-        xmls = filter(lambda name: name.endswith('.xml'), files)
-        xmls = map(lambda name: os.path.join(VOTACOES_FOLDER, name), xmls)
+        xmls = [name for name in files if name.endswith('.xml')]
+        xmls = [os.path.join(VOTACOES_FOLDER, name) for name in xmls]
         return xmls
 
     def importar_votacoes(self):

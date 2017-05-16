@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.test import TestCase
 from importadores import cdep
 from modelagem import models
@@ -71,31 +71,31 @@ class ImportadorCamaraTest(TestCase):
 
     def test_casa_legislativa(self):
         camara = models.CasaLegislativa.objects.get(nome_curto='cdep')
-        self.assertEquals(camara.nome, 'Câmara dos Deputados')
+        self.assertEqual(camara.nome, 'Câmara dos Deputados')
 
     def test_prop_cod_florestal(self):
         data = cdep._converte_data('19/10/1999')
         prop_cod_flor = models.Proposicao.objects.get(id_prop=ID_FLORESTAL)
-        self.assertEquals(prop_cod_flor.nome(), NOME_FLORESTAL)
-        self.assertEquals(prop_cod_flor.situacao,
+        self.assertEqual(prop_cod_flor.nome(), NOME_FLORESTAL)
+        self.assertEqual(prop_cod_flor.situacao,
                           'Tranformada no(a) Lei Ordinária 12651/2012')
-        self.assertEquals(prop_cod_flor.data_apresentacao.day, data.day)
-        self.assertEquals(prop_cod_flor.data_apresentacao.month, data.month)
-        self.assertEquals(prop_cod_flor.data_apresentacao.year, data.year)
+        self.assertEqual(prop_cod_flor.data_apresentacao.day, data.day)
+        self.assertEqual(prop_cod_flor.data_apresentacao.month, data.month)
+        self.assertEqual(prop_cod_flor.data_apresentacao.year, data.year)
 
     def test_votacoes_cod_florestal(self):
         votacoes = models.Votacao.objects.filter(
             proposicao__id_prop=ID_FLORESTAL)
-        self.assertEquals(len(votacoes), 5)
+        self.assertEqual(len(votacoes), 5)
 
         vot = votacoes[0]
         self.assertTrue('REQUERIMENTO DE RETIRADA DE PAUTA' in vot.descricao)
 
         data = cdep._converte_data('24/5/2011')
         vot = votacoes[1]
-        self.assertEquals(vot.data.day, data.day)
-        self.assertEquals(vot.data.month, data.month)
-        self.assertEquals(vot.data.year, data.year)
+        self.assertEqual(vot.data.day, data.day)
+        self.assertEqual(vot.data.month, data.month)
+        self.assertEqual(vot.data.year, data.year)
 
     def test_votos_cod_florestal(self):
         votacao = models.Votacao.objects.filter(
@@ -106,10 +106,10 @@ class ImportadorCamaraTest(TestCase):
         voto2 = [
             v for v in votacao.votos()
             if v.parlamentar.nome == 'Carlos Roberto'][0]
-        self.assertEquals(voto1.opcao, models.SIM)
-        self.assertEquals(voto2.opcao, models.NAO)
-        self.assertEquals(voto1.parlamentar.partido.nome, 'PSDB')
-        self.assertEquals(voto2.parlamentar.localidade, 'SP')
+        self.assertEqual(voto1.opcao, models.SIM)
+        self.assertEqual(voto2.opcao, models.NAO)
+        self.assertEqual(voto1.parlamentar.partido.nome, 'PSDB')
+        self.assertEqual(voto2.parlamentar.localidade, 'SP')
 
     def test_nao_tem_parlamentares_repetidos(self):
         todos = models.Parlamentar.objects.filter(

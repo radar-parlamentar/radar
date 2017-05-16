@@ -20,8 +20,8 @@
 """# Celery/Django HOW-TO:
 #http://celery.readthedocs.org/en/latest/django/first-steps-with-django.html"""
 
-from __future__ import unicode_literals
-from __future__ import absolute_import
+
+
 from celery import Celery
 import os
 from django.conf import settings

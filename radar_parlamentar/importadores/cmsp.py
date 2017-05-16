@@ -20,10 +20,10 @@
 
 """módulo cmsp (Câmara Municipal de São Paulo)"""
 
-from __future__ import unicode_literals
+
 from django.utils.dateparse import parse_datetime
 from modelagem import models
-from chefes_executivos import ImportadorChefesExecutivos
+from .chefes_executivos import ImportadorChefesExecutivos
 import re
 import sys
 import os

@@ -106,7 +106,7 @@ for arq in arqs:
 
 print(cont)
 ordenada = []
-for a in historia.keys():
+for a in list(historia.keys()):
     ordenada.append(a)
 ordenada.sort()
 

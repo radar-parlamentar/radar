@@ -1,7 +1,7 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 from modelagem.models import Proposicao, CasaLegislativa
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import xml.etree.ElementTree as etree
 import logging
 
@@ -12,16 +12,16 @@ def get_materia_xml(proposicao):
     url = "http://legis.senado.gov.br/dadosabertos/materia/%s/%s/%s" % \
         (proposicao.sigla, proposicao.numero, proposicao.ano)
     try:
-        request = urllib2.Request(url)
-        materia_xml = urllib2.urlopen(request).read()
-    except urllib2.URLError, error:
+        request = urllib.request.Request(url)
+        materia_xml = urllib.request.urlopen(request).read()
+    except urllib.error.URLError as error:
         logger.error("urllib2.URLError: %s" % error)
         raise ValueError(
             'materia_xml não encontrada para %s %s/%s' %
             (proposicao.sigla, proposicao.numero, proposicao.ano))
     try:
         tree = etree.fromstring(materia_xml)
-    except etree.ParseError, error:
+    except etree.ParseError as error:
         logger.error("etree.ParseError: %s" % error)
         raise ValueError(
             'materia_xml não encontrada para %s %s/%s' %

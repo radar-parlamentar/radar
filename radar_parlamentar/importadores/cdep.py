@@ -21,16 +21,16 @@
 
 """módulo que cuida da importação dos dados da Câmara dos Deputados"""
 
-from __future__ import unicode_literals
+
 from django.utils.dateparse import parse_date
 from django.core.exceptions import ObjectDoesNotExist
-from chefes_executivos import ImportadorChefesExecutivos
+from .chefes_executivos import ImportadorChefesExecutivos
 from modelagem import models
 from datetime import datetime
 import re
 import os
 import xml.etree.ElementTree as etree
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import logging
 import threading
 import math
@@ -56,7 +56,7 @@ class Url(object):
         try:
             xml = self.read(url)
             tree = etree.fromstring(xml)
-        except etree.ParseError, error:
+        except etree.ParseError as error:
             logger.error("etree.ParseError: %s" % error)
             return None
         return tree
@@ -64,11 +64,11 @@ class Url(object):
     def read(self, url):
         text = ''
         try:
-            request = urllib2.Request(url)
-            text = urllib2.urlopen(request).read()
-        except urllib2.URLError, error:
+            request = urllib.request.Request(url)
+            text = urllib.request.urlopen(request).read()
+        except urllib.error.URLError as error:
             logger.error("%s ao acessar %s" % (error, url))
-        except urllib2.HTTPError:
+        except urllib.error.HTTPError:
             logger.error("%s ao acessar %s" % (error, url))
         return text
 
@@ -91,12 +91,12 @@ class Camaraws:
     def _montar_url_consulta_camara(self, base_url, url_params, **kwargs):
         built_url = base_url
 
-        for par in kwargs.keys():
+        for par in list(kwargs.keys()):
             if type(par) == str:
                 kwargs[par] = kwargs[par].lower()
 
         for par in url_params:
-            if par in kwargs.keys():
+            if par in list(kwargs.keys()):
                 built_url += str(par) + "=" + str(kwargs[par]) + "&"
             else:
                 built_url += str(par) + "=&"
@@ -372,7 +372,7 @@ class ImportadorCamara:
             votacoes_xml = self.camaraws.obter_votacoes(sigla, num, ano)
             for child in votacoes_xml.find('Votacoes'):
                 self._votacao_from_xml(child, prop)
-        except ValueError, error:
+        except ValueError as error:
             logger.error("ValueError: %s" % error)
 
     def _prop_from_xml(self, prop_xml):

@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.test import TestCase
 from importadores import conv
 from modelagem import models
@@ -49,19 +49,19 @@ class ConvencaoTest(TestCase):
     def test_check_len_votacoes(self):
         num_votacoes = len(models.Votacao.objects.filter(
             proposicao__casa_legislativa=self.conv))
-        self.assertEquals(num_votacoes, NUMERO_VOTACOES)
+        self.assertEqual(num_votacoes, NUMERO_VOTACOES)
 
     def test_check_len_votos(self):
         num_votos = len(models.Voto.objects.filter(
             votacao__proposicao__casa_legislativa=self.conv))
-        self.assertEquals(num_votos, NUMERO_VOTOS_TOTAIS)
+        self.assertEqual(num_votos, NUMERO_VOTOS_TOTAIS)
 
     def test_check_len_votos_por_votacao(self):
         votacoes = models.Votacao.objects.filter(
             proposicao__casa_legislativa=self.conv)
         for votacao in votacoes:
             num_votos = len(models.Voto.objects.filter(votacao=votacao))
-            self.assertEquals(num_votos, NUMERO_VOTOS_POR_VOTACAO)
+            self.assertEqual(num_votos, NUMERO_VOTOS_POR_VOTACAO)
 
     def test_check_partidos(self):
         partidos = models.Partido.objects.all()
@@ -76,5 +76,5 @@ class ConvencaoTest(TestCase):
         self.assertEqual(len(parlamentares),
                          NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO)
         nomes_parlamentares = [p.nome for p in parlamentares]
-        self.assertEquals(nomes_parlamentares.count('Pierre'),
+        self.assertEqual(nomes_parlamentares.count('Pierre'),
                           NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO)

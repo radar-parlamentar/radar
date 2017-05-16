@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
+
 from django.test import TestCase
 from importadores import cdep_genero
 from modelagem.models import Parlamentar
@@ -55,9 +55,9 @@ class ImportadorGeneroTest(TestCase):
             nome='Zulaiê Cobra')
 
         # Verificando parlamentares com generos alterados
-        self.assertEquals('M', parlamentar_banco_test_1.genero)
-        self.assertEquals('F', parlamentar_banco_test_2.genero)
-        self.assertEquals('F', parlamentar_banco_test_3.genero)
+        self.assertEqual('M', parlamentar_banco_test_1.genero)
+        self.assertEqual('F', parlamentar_banco_test_2.genero)
+        self.assertEqual('F', parlamentar_banco_test_3.genero)
 
     def test_parlamentares_camara_sem_generos_alterados(self):
         cdep_genero.insere_genero_parlamentares_camara()
@@ -69,5 +69,5 @@ class ImportadorGeneroTest(TestCase):
             nome='Chiquinho da Silva')
 
         # Verificando parlamentares sem generos alterados
-        self.assertEquals('', parlamentar_banco_test_1.genero)
-        self.assertEquals('', parlamentar_banco_test_2.genero)
+        self.assertEqual('', parlamentar_banco_test_1.genero)
+        self.assertEqual('', parlamentar_banco_test_2.genero)
