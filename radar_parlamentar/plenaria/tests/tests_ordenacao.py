@@ -25,9 +25,9 @@ class OrdenacaoTest(TestCase):
 		flush_db(cls)
 
 	def test_ordem_dos_parlamentares(self):
-		proposicao = models.Proposicao.objects.get(id=1)
+		proposicao = models.Proposicao.objects.get(id=3)
 		resultado = ordenacao.ordem_dos_parlamentares(proposicao)
-		self.assertEqual(resultado[0][0].descricao, u'Reforma agrária')
+		self.assertEqual(resultado[0][0].descricao,'Institui o Dia de Carlos Magno')
 		self.assertEqual(resultado[0][1][0].nome, 'Pierre')
 
 
