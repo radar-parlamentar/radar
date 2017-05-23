@@ -127,13 +127,13 @@ class Center:
     def __init__(self, A, axis=0, scale=True, verbose=1):
         self.mean = A.mean(axis=axis)
         if verbose:
-            print("Center -= A.mean:", self.mean)
+            print(("Center -= A.mean:", self.mean))
         A -= self.mean
         if scale:
             std = A.std(axis=axis)
             self.std = np.where(std, std, 1.)
             if verbose:
-                print("Center /= A.std:", self.std)
+                print(("Center /= A.std:", self.std))
             A /= self.std
         else:
             self.std = np.ones(A.shape[-1])
@@ -163,35 +163,35 @@ if __name__ == "__main__":
         A = np.random.normal(size=(N, K))  # gen correlated ?
         logger.error("IOError: %s" % error)
 
-    print("csv: %s  N: %d  K: %d  fraction: %.2g" % (csv, N, K, fraction))
+    print(("csv: %s  N: %d  K: %d  fraction: %.2g" % (csv, N, K, fraction)))
     Center(A)
-    print("A:", A)
+    print(("A:", A))
 
     
     print("PCA ... \n")
     p = PCA(A, fraction=fraction)
-    print("npc:", p.npc)
-    print("% variance:", p.sumvariance * 100)
+    print(("npc:", p.npc))
+    print(("% variance:", p.sumvariance * 100))
 
-    print("Vt[0], weights that give PC 0:", p.Vt[0])
-    print("A . Vt[0]:", dot(A, p.Vt[0]))
-    print("pc:", p.pc())
+    print(("Vt[0], weights that give PC 0:", p.Vt[0]))
+    print(("A . Vt[0]:", dot(A, p.Vt[0])))
+    print(("pc:", p.pc()))
 
     print("\nobs <-> pc <-> x: with fraction=1, diffs should be ~ 0")
     x = np.ones(K)
     # x = np.ones(( 3, K ))
-    print("x:", x)
+    print(("x:", x))
     pc = p.vars_pc(x)  # d' Vt' x
-    print("vars_pc(x):", pc)
-    print("back to ~ x:", p.pc_vars(pc))
+    print(("vars_pc(x):", pc))
+    print(("back to ~ x:", p.pc_vars(pc)))
 
     Ax = dot(A, x.T)
     pcx = p.obs(x)  # U' d' Vt' x
-    print("Ax:", Ax)
-    print("A'x:", pcx)
-    print("max |Ax - A'x|: %.2g" % np.linalg.norm(Ax - pcx, np.inf))
+    print(("Ax:", Ax))
+    print(("A'x:", pcx))
+    print(("max |Ax - A'x|: %.2g" % np.linalg.norm(Ax - pcx, np.inf)))
 
     b = Ax  # ~ back to original x, Ainv A x
     back = p.vars(b)
-    print("~ back again:", back)
-    print("max |back - x|: %.2g" % np.linalg.norm(back - x, np.inf))
+    print(("~ back again:", back))
+    print(("max |back - x|: %.2g" % np.linalg.norm(back - x, np.inf)))

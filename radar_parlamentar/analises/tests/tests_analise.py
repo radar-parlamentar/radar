@@ -58,18 +58,18 @@ class AnalisadorPeriodoTest(TestCase):
                 self.jacobinos = partido
             if partido.nome == conv.MONARQUISTAS:
                 self.monarquistas = partido
-        
+
         self.chefe = models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva", genero="M", partido = self.girondinos,
                                     mandato_ano_inicio = 1988, mandato_ano_fim = 1992)
         self.chefe.save()
         self.chefe.casas_legislativas.add(self.casa_legislativa)
-        
+
 
     # TODO test_coordenadas_parlamentares
 
     # TODO mover test_coordenadas_partidos para AnalisadorPartidosTest
     def test_coordenadas_partidos(self):
-        periodo = models.PeriodoCasaLegislativa(date(1989, 0o2, 0o2),
+        periodo = models.PeriodoCasaLegislativa(date(1989, 02, 02),
                                                 date(1989, 10, 10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
@@ -83,7 +83,7 @@ class AnalisadorPeriodoTest(TestCase):
 
     # TODO mover test_tamanho_partidos para AnalisadorPartidosTest
     def test_tamanho_partidos(self):
-        periodo = models.PeriodoCasaLegislativa(date(1989, 0o2, 0o2),
+        periodo = models.PeriodoCasaLegislativa(date(1989, 02, 02),
                                                 date(1989, 10, 10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
@@ -93,14 +93,14 @@ class AnalisadorPeriodoTest(TestCase):
         self.assertEqual(3, len(partidos))
         for p in partidos:
             self.assertEqual(tamanhos[p], tamanho_esperado)
-    
+
     def test_chefes_executivos(self):
-        periodo = models.PeriodoCasaLegislativa(date(1989, 0o2, 0o2), date(1989, 10, 10))
+        periodo = models.PeriodoCasaLegislativa(date(1989, 02, 02), date(1989, 10, 10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
         chefes_executivos = analise_periodo.chefes_executivos
         chefe_esperado = self.chefe
-        
+
         self.assertEqual(str(chefes_executivos[0]), str(chefe_esperado))
 
 class ConstrutorDeMatrizesDeDadosTest(TestCase):
