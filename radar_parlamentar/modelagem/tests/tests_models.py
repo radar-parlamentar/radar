@@ -404,36 +404,36 @@ class ModelsTest(TestCase):
         data_inicio = datetime.date(1992, 1, 21) 
         data_fim = datetime.date(1996, 1, 21)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
-        obj._build_string()
-        self.assertEqual(obj.string, "1992 a 1996")
+        string = obj._build_string()
+        self.assertEqual(string, "1992 a 1996")
 
     def test_build_string_periodo_bienio(self):
         data_inicio = datetime.date(1992, 1, 21) 
         data_fim = datetime.date(1994, 1, 21)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
-        obj._build_string()
-        self.assertEqual(obj.string, "1992 e 1994")
+        string = obj._build_string()
+        self.assertEqual(string, "1992 e 1994")
 
     def test_build_string_periodo_anual(self):
         data_inicio = datetime.date(1992, 1, 1) 
         data_fim = datetime.date(1993, 1, 1)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
-        obj._build_string()
-        self.assertEqual(obj.string, "1992")
+        string = obj._build_string()
+        self.assertEqual(string, "1992")
 
     def test_build_string_periodo_semestral(self):
         data_inicio = datetime.date(1992, 1, 1) 
         data_fim = datetime.date(1992, 7, 1)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
-        obj._build_string()
-        self.assertEqual(obj.string, "1992 1o Semestre")
+        string = obj._build_string()
+        self.assertEqual(string, "1992 1o Semestre")
 
     def test_build_string_periodo_mensal(self):
         data_inicio = datetime.date(1992, 1, 1) 
         data_fim = datetime.date(1992, 2, 1)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
-        obj._build_string()
-        self.assertEqual(obj.string, "1992 Jan")
+        string = obj._build_string()
+        self.assertEqual(string, "1992 Jan")
 
 
     ###########################

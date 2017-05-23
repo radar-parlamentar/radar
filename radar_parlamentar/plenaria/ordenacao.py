@@ -89,15 +89,12 @@ def ordenar_partidos(casa, periodo):
     analisador = AnalisadorPeriodo(casa_legislativa = casa,
                                    periodo = periodo)
     analise_periodo = analisador.analisa()
-    # coords = analise_periodo.coordenadas_partidos
-    # coords_list = []
-    # for k in list(coords.items()):
-    #     coords_list.append(k)
-    # partidos = sorted([(x[0],x[1][0]) for x in coords_list], key=itemgetter(1,0))
-    # return [p[0] for p in partidos]
-
     coords = analise_periodo.coordenadas_partidos
-    return sorted(list(coords.keys()), key=itemgetter(1,0))
+    coords_list = []
+    for k in list(coords.items()):
+        coords_list.append(k)
+    partidos = sorted([(x[0],x[1][0]) for x in coords_list], key=itemgetter(1,0))
+    return [p[0] for p in partidos]
 
 def ordenar_votantes(proposicao):
     """Retorna um dicionario Parlamentar -> (partido,int)

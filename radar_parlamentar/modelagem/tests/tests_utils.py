@@ -92,8 +92,10 @@ class PeriodosRetrieverTest(TestCase):
         retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.ANO)
         periodos = retriever.get_periodos()
         self.assertEqual(len(periodos), 2)
-        self.assertEqual(periodos[0].string, '1989')
-        self.assertEqual(periodos[1].string, '1990')
+        string1 = periodos[0]._build_string()
+        string2 = periodos[1]._build_string()
+        self.assertEqual(string1, '1989')
+        self.assertEqual(string2, '1990')
         self.assertEqual(periodos[0].quantidade_votacoes, 8)
         self.assertEqual(periodos[1].quantidade_votacoes, 1)
 
@@ -101,11 +103,14 @@ class PeriodosRetrieverTest(TestCase):
         retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.MES)
         periodos = retriever.get_periodos()
         self.assertEqual(len(periodos), 3)
-        self.assertEqual(periodos[0].string, '1989 Fev')
+        string1 = periodos[0]._build_string()
+        string2 = periodos[1]._build_string()
+        string3 = periodos[2]._build_string()
+        self.assertEqual(string1, '1989 Fev')
         self.assertEqual(periodos[0].quantidade_votacoes, 4)
-        self.assertEqual(periodos[1].string, '1989 Out')
+        self.assertEqual(string2, '1989 Out')
         self.assertEqual(periodos[1].quantidade_votacoes, 4)
-        self.assertEqual(periodos[2].string, '1990 Jan')
+        self.assertEqual(string3, '1990 Jan')
         self.assertEqual(periodos[2].quantidade_votacoes, 1)
 
     def test_casa_legislativa_periodos_semestrais(self):
@@ -130,9 +135,12 @@ class PeriodosRetrieverTest(TestCase):
         d = periodos[2].fim
         self.assertEqual(1990, d.year)
         self.assertEqual(6, d.month)
-        self.assertEqual(periodos[0].string, '1989 1o Semestre')
-        self.assertEqual(periodos[1].string, '1989 2o Semestre')
-        self.assertEqual(periodos[2].string, '1990 1o Semestre')
+        string1 = periodos[0]._build_string()
+        string2 = periodos[1]._build_string()
+        string3 = periodos[2]._build_string()
+        self.assertEqual(string1, '1989 1o Semestre')
+        self.assertEqual(string2, '1989 2o Semestre')
+        self.assertEqual(string3, '1990 1o Semestre')
 
     def test_periodo_municipal_nao_deve_conter_votacoes_de_dois_mandatos(self):
         self._test_periodos_em_duas_datas(2008, 2009, MUNICIPAL, BIENIO, 2)

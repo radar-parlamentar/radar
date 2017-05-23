@@ -344,15 +344,6 @@ class PeriodoCasaLegislativa(object):
         self.ini = data_inicio
         self.fim = data_fim
         self.quantidade_votacoes = quantidade_votacoes
-        self.string = str(self)
-
-    def __str__(self):
-        return self.__unicode__()
-
-    def __unicode__(self):
-        if not self.string:
-            self._build_string()
-        return self.string
 
     def _build_string(self):
         data_string = ''
@@ -388,7 +379,7 @@ class PeriodoCasaLegislativa(object):
         elif delta.days < 1500:  # periodo é um quadriênio
             data_string += str(self.ini.year) + " a "
             data_string += str(self.fim.year)
-        self.string = data_string
+        return data_string
 
 
 class Parlamentar(models.Model):
