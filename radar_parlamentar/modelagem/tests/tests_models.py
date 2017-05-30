@@ -145,7 +145,7 @@ class ModelsTest(TestCase):
         casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
         votos = casa.num_votos(data_inicio='1990-01-01', data_fim='1990-01-01')
         self.assertEqual(votos, 9)
-        
+
     def test_deleta_casa(self):
         partidoTest1 = modelagem.models.Partido()
         partidoTest1.nome = 'PA'
@@ -301,7 +301,7 @@ class ModelsTest(TestCase):
         chefes = [chefe_masculino, chefe_feminino]
         resultado = modelagem.models.ChefeExecutivo.get_chefe_anual(ano, chefes)
         self.assertEqual(len(resultado), 1)
-        self.assertEqual(chefes[0].nome, "Luiz Inacio Pierre da Silva")        
+        self.assertEqual(chefes[0].nome, "Luiz Inacio Pierre da Silva")
 
     def test_get_chefe_periodo(self):
         ano_inicio = 1990
@@ -331,10 +331,10 @@ class ModelsTest(TestCase):
         chefes = [chefe1, chefe2, chefe3, chefe4, chefe5]
         resultado = modelagem.models.ChefeExecutivo.get_chefe_periodo(ano_inicio, ano_fim, chefes)
         self.assertEqual(len(resultado), 4)
-        self.assertEqual(chefes[0].nome, "Luiz Inacio Pierre da Silva") 
-        self.assertEqual(chefes[1].nome, "Dilmé Rouseffé") 
-        self.assertEqual(chefes[2].nome, "Jose Genuino") 
-        self.assertEqual(chefes[3].nome, "Joseh Gennuinno") 
+        self.assertEqual(chefes[0].nome, "Luiz Inacio Pierre da Silva")
+        self.assertEqual(chefes[1].nome, "Dilmé Rouseffé")
+        self.assertEqual(chefes[2].nome, "Jose Genuino")
+        self.assertEqual(chefes[3].nome, "Joseh Gennuinno")
 
     def test_get_titulo_chefe_masculino_municipal(self):
         pt = modelagem.models.Partido.from_nome('PT')
@@ -393,7 +393,7 @@ class ModelsTest(TestCase):
         data_inicial = None
         data_final = None
         resultado = modelagem.models.ChefeExecutivo.por_casa_legislativa_e_periodo(casa_legislativa, data_inicial, data_final)
-        self.assertEqual(list(resultado), []) 
+        self.assertEqual(list(resultado), [])
 
 
     #########################################
@@ -401,38 +401,38 @@ class ModelsTest(TestCase):
     #########################################
 
     def test_build_string_periodo_quadrienio(self):
-        data_inicio = datetime.date(1992, 1, 21) 
+        data_inicio = datetime.date(1992, 1, 21)
         data_fim = datetime.date(1996, 1, 21)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
-        string = obj._build_string()
+        string = str(obj)
         self.assertEqual(string, "1992 a 1996")
 
     def test_build_string_periodo_bienio(self):
-        data_inicio = datetime.date(1992, 1, 21) 
+        data_inicio = datetime.date(1992, 1, 21)
         data_fim = datetime.date(1994, 1, 21)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
-        string = obj._build_string()
+        string = str(obj)
         self.assertEqual(string, "1992 e 1994")
 
     def test_build_string_periodo_anual(self):
-        data_inicio = datetime.date(1992, 1, 1) 
+        data_inicio = datetime.date(1992, 1, 1)
         data_fim = datetime.date(1993, 1, 1)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
-        string = obj._build_string()
+        string = str(obj)
         self.assertEqual(string, "1992")
 
     def test_build_string_periodo_semestral(self):
-        data_inicio = datetime.date(1992, 1, 1) 
+        data_inicio = datetime.date(1992, 1, 1)
         data_fim = datetime.date(1992, 7, 1)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
-        string = obj._build_string()
+        string = str(obj)
         self.assertEqual(string, "1992 1o Semestre")
 
     def test_build_string_periodo_mensal(self):
-        data_inicio = datetime.date(1992, 1, 1) 
+        data_inicio = datetime.date(1992, 1, 1)
         data_fim = datetime.date(1992, 2, 1)
         obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
-        string = obj._build_string()
+        string = str(obj)
         self.assertEqual(string, "1992 Jan")
 
 
@@ -467,7 +467,7 @@ class ModelsTest(TestCase):
         data_fim = '2010-01-01'
         votacoes = modelagem.models.Votacao.por_casa_legislativa(
             casa_legislativa, data_inicio, data_fim)
-        self.assertEqual(0, len(votacoes))  
+        self.assertEqual(0, len(votacoes))
 
     def test_votos(self):
         votacao = modelagem.models.Votacao.objects.get(descricao='Institui o Dia de Carlos Magno')
@@ -481,10 +481,10 @@ class ModelsTest(TestCase):
         valor_votos = dicionario.get("Monarquistas")
         self.assertEqual(valor_votos.sim, 3)
         self.assertEqual(valor_votos.nao, 0)
-        self.assertEqual(valor_votos.abstencao, 0) 
+        self.assertEqual(valor_votos.abstencao, 0)
         self.assertEqual(valor_votos.total(), 3)
         self.assertEqual(list(dicionario.keys()), ["Monarquistas", "Girondinos", "Jacobinos"])
-   
+
 
     ###############################
     #### Classe VotosAgregados ####

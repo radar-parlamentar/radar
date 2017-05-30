@@ -345,7 +345,7 @@ class PeriodoCasaLegislativa(object):
         self.fim = data_fim
         self.quantidade_votacoes = quantidade_votacoes
 
-    def _build_string(self):
+    def __str__(self):
         data_string = ''
 #       data_string = str(self.ini.year) # sempre começa com o ano
         delta = self.fim - self.ini

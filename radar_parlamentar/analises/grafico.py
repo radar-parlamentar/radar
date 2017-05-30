@@ -106,7 +106,7 @@ class JsonAnaliseGenerator:
             var_explicada = round(
                 (eigen0 + eigen1) / ap.pca.eigen.sum() * 100, 1)
             dict_ap['nvotacoes'] = ap.num_votacoes
-            dict_ap['nome'] = ap.periodo.string
+            dict_ap['nome'] = str(ap.periodo)
             dict_ap['var_explicada'] = var_explicada
             dict_ap['cp1'] = self._dict_cp1(ap)
             dict_ap['cp2'] = self._dict_cp2(ap)
@@ -152,7 +152,7 @@ class JsonAnaliseGenerator:
             dict_votacao['id'] = unicode(votacao).replace('"', "'")
             list_votacoes.append(dict_votacao)
         return list_votacoes
-    
+
     def _list_chefes_do_periodo(self, ap):
         list_chefes = []
         for chefe in ap.chefes_executivos:
@@ -160,7 +160,7 @@ class JsonAnaliseGenerator:
             dict_chefe['nome'] = unicode(chefe).replace('"', "'")
             list_chefes.append(dict_chefe)
         return list_chefes
-    
+
     def _list_partidos_instrumented(self):
         db.reset_queries()
         logger.info('comecando lista de partidos')
