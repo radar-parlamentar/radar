@@ -115,7 +115,6 @@ class ExportadorCSV:
 
 
 def main():
-    print((models.CasaLegislativa))
     try:
       cdep = models.CasaLegislativa.objects.get(nome_curto='cdep')
     except models.CasaLegislativa.DoesNotExist:
