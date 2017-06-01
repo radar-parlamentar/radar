@@ -169,7 +169,8 @@ class PeriodosRetrieverTest(TestCase):
         UMA_DATA = datetime.date(ano_ini, 0o2, 0o2)
         OUTRA_DATA = datetime.date(ano_fim, 10, 0o2)
         votacoes = modelagem.models.Votacao.objects.all()
-        half = len(votacoes) / 2
+        halfFloat = len(votacoes) / 2
+        half = int(halfFloat)
         datas_originais = {}  # votacao.id => data
         esfera_original = self.conv.esfera
         self.conv.esfera = esfera

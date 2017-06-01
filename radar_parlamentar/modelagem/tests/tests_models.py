@@ -483,7 +483,8 @@ class ModelsTest(TestCase):
         self.assertEqual(valor_votos.nao, 0)
         self.assertEqual(valor_votos.abstencao, 0)
         self.assertEqual(valor_votos.total(), 3)
-        self.assertEqual(list(dicionario.keys()), ["Monarquistas", "Girondinos", "Jacobinos"])
+        self.assertTrue('Girondinos' in dicionario.keys()) 
+        self.assertTrue('Jacobinos' in dicionario.keys())
 
 
     ###############################
