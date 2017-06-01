@@ -69,7 +69,7 @@ class AnalisadorPeriodoTest(TestCase):
 
     # TODO mover test_coordenadas_partidos para AnalisadorPartidosTest
     def test_coordenadas_partidos(self):
-        periodo = models.PeriodoCasaLegislativa(date(1989, 02, 02),
+        periodo = models.PeriodoCasaLegislativa(date(1989, 0o2, 0o2),
                                                 date(1989, 10, 10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
@@ -83,7 +83,7 @@ class AnalisadorPeriodoTest(TestCase):
 
     # TODO mover test_tamanho_partidos para AnalisadorPartidosTest
     def test_tamanho_partidos(self):
-        periodo = models.PeriodoCasaLegislativa(date(1989, 02, 02),
+        periodo = models.PeriodoCasaLegislativa(date(1989, 0o2, 0o2),
                                                 date(1989, 10, 10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
@@ -95,7 +95,7 @@ class AnalisadorPeriodoTest(TestCase):
             self.assertEqual(tamanhos[p], tamanho_esperado)
 
     def test_chefes_executivos(self):
-        periodo = models.PeriodoCasaLegislativa(date(1989, 02, 02), date(1989, 10, 10))
+        periodo = models.PeriodoCasaLegislativa(date(1989, 0o2, 0o2), date(1989, 10, 10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
         chefes_executivos = analise_periodo.chefes_executivos
