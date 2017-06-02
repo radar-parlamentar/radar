@@ -20,11 +20,11 @@
 
 """Módulo ordenacao.
 Este módulo foi criado na hackaton sprinklr set/2016 para resolver a issue 331.
-O mapa de parlamentares precisa de uma ordem dos parlamentares, 
+O mapa de parlamentares precisa de uma ordem dos parlamentares,
 agrupados por partido, para que os partidos fiquem coesosno mapa."""
 
 
-from __future__ import unicode_literals
+
 from modelagem.models import Parlamentar, Proposicao, Votacao, \
     PeriodoCasaLegislativa, Voto
 from modelagem import utils
@@ -91,11 +91,11 @@ def ordenar_partidos(casa, periodo):
     analise_periodo = analisador.analisa()
     coords = analise_periodo.coordenadas_partidos
     coords_list = []
-    for k in coords.iteritems():
+    for k in list(coords.items()):
         coords_list.append(k)
     partidos = sorted([(x[0],x[1][0]) for x in coords_list], key=itemgetter(1,0))
     return [p[0] for p in partidos]
-    
+
 def ordenar_votantes(proposicao):
     """Retorna um dicionario Parlamentar -> (partido,int)
     onde o inteiro é o número de vezes que o parlamentar votou SIM ou NAO,
@@ -109,5 +109,3 @@ def ordenar_votantes(proposicao):
     for prl in parlams:
         retorno[prl] = (prl.partido,len([vv for vv in votos_prop if vv.parlamentar == prl]))
     return retorno
-
-    

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 from modelagem import models
 from django.http import HttpResponse
 from django.template import RequestContext

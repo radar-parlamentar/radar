@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.db import models
 from django.utils.dateparse import parse_datetime
 import re
@@ -264,7 +264,7 @@ class ChefeExecutivo(models.Model):
     mandato_ano_fim = models.IntegerField()
     casas_legislativas = models.ManyToManyField(CasaLegislativa)
     titulo = None
-    
+
     def __unicode__(self):
         self.titulo = self.get_titulo_chefe()
         return self.titulo + ": " + self.nome + " - " + self.partido.nome
@@ -273,10 +273,10 @@ class ChefeExecutivo(models.Model):
     def por_casa_legislativa_e_periodo(casa_legislativa,
                              data_inicial=None,
                              data_final=None):
-        
+
         chefes_executivo = ChefeExecutivo.objects.filter(
             casas_legislativas__nome_curto=casa_legislativa.nome_curto)
-        
+
         chefes = []
         if data_inicial is not None and data_final is not None:
             ano_inicio = int(data_inicial.year)
@@ -289,7 +289,7 @@ class ChefeExecutivo(models.Model):
             chefes = chefes_executivo
 
         return chefes
-    
+
     @staticmethod
     def get_chefe_anual(ano, chefes_executivo):
         chefes = []
@@ -304,7 +304,7 @@ class ChefeExecutivo(models.Model):
     def get_chefe_periodo(ano_inicio, ano_fim, chefes_executivo):
         chefes = []
         for chefe in chefes_executivo:
-            ano_inicio_valido =  ano_inicio >= chefe.mandato_ano_inicio and ano_inicio <= chefe.mandato_ano_fim   
+            ano_inicio_valido =  ano_inicio >= chefe.mandato_ano_inicio and ano_inicio <= chefe.mandato_ano_fim
             ano_fim_valido =  ano_fim >= chefe.mandato_ano_inicio and ano_fim <= chefe.mandato_ano_fim
             mandato_ano_inicio_valido = chefe.mandato_ano_inicio >= ano_inicio and chefe.mandato_ano_inicio <= ano_fim
             mandato_ano_fim_valido = chefe.mandato_ano_fim >= ano_inicio and chefe.mandato_ano_fim <= ano_fim
@@ -317,7 +317,7 @@ class ChefeExecutivo(models.Model):
         titulo = ""
         casas_legislativas = self.casas_legislativas.all()
         for casa in casas_legislativas:
-            esfera = casa.esfera  
+            esfera = casa.esfera
             genero_masculino = self.genero == M
             if(esfera == FEDERAL):
                 if(genero_masculino):
@@ -329,7 +329,7 @@ class ChefeExecutivo(models.Model):
                     titulo = "Prefeito"
                 else:
                     titulo = "Prefeita"
-        return titulo                
+        return titulo
 
 
 class PeriodoCasaLegislativa(object):
@@ -344,18 +344,8 @@ class PeriodoCasaLegislativa(object):
         self.ini = data_inicio
         self.fim = data_fim
         self.quantidade_votacoes = quantidade_votacoes
-        self.string = ""
-        self.string = unicode(self)
 
     def __str__(self):
-        return self.__unicode__()
-
-    def __unicode__(self):
-        if not self.string:
-            self._build_string()
-        return self.string
-
-    def _build_string(self):
         data_string = ''
 #       data_string = str(self.ini.year) # sempre começa com o ano
         delta = self.fim - self.ini
@@ -389,7 +379,7 @@ class PeriodoCasaLegislativa(object):
         elif delta.days < 1500:  # periodo é um quadriênio
             data_string += str(self.ini.year) + " a "
             data_string += str(self.fim.year)
-        self.string = data_string
+        return data_string
 
 
 class Parlamentar(models.Model):
@@ -597,7 +587,7 @@ class VotosAgregados:
         return '(%s, %s, %s)' % (self.sim, self.nao, self.abstencao)
 
     def __str__(self):
-        return unicode(self).encode('utf-8')
+        return str(self).encode('utf-8')
 
 
 class VotoPartido(VotosAgregados):
