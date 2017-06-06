@@ -92,9 +92,8 @@ class Camaraws:
         built_url = base_url
 
         for par in list(kwargs.keys()):
-            if type(par) == str:
+            if isinstance(kwargs[par], str):
                 kwargs[par] = kwargs[par].lower()
-
         for par in url_params:
             if par in list(kwargs.keys()):
                 built_url += str(par) + "=" + str(kwargs[par]) + "&"
