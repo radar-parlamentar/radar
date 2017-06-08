@@ -134,7 +134,7 @@ class ImportadorVotacoesSenado:
         nome_partido = nome_partido.strip()
         partido = models.Partido.from_nome(nome_partido)
         if partido is None:
-            logger.warn('Não achou o partido %s' % nome_partido)
+            logger.warning('Não achou o partido %s' % nome_partido)
             partido = models.Partido.get_sem_partido()
         return partido
 
