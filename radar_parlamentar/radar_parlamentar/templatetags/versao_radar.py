@@ -28,8 +28,8 @@ def versao_radar():
 
         versao_radar = 'Versão: <a href="https://github.com/radar-parlamentar/'
         versao_radar += 'radar/commit/{0}" target="_blank">{1}</a> de {2}' \
-                        .format(hash_ultimo_commit, hash_abrev_ultimo_commit,
-                                data_ultimo_commit)
+                        .format(hash_ultimo_commit.decode("utf-8"), hash_abrev_ultimo_commit.decode("utf-8"),
+                                data_ultimo_commit.decode("utf-8"))
 
     except (IndexError, subprocess.CalledProcessError) as e:
         logger.error('Erro ao pegar o hash ou' +
