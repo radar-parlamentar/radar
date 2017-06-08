@@ -121,7 +121,7 @@ class ExportadorCSV:
 
     def write_csv(self):
         filepath = os.path.join(MODULE_DIR, 'saida', CSV_FILE)
-        with open(filepath, 'wb') as f:
+        with open(filepath, 'w') as f:
             writer = csv.writer(f, delimiter=',')
             writer.writerows(self.csv_rows)
 
@@ -131,4 +131,3 @@ def main():
     data_fim = parse_datetime('2011-01-01 0:0:0')
     exportador = ExportadorCSV('cdep', data_ini, data_fim)
     exportador.exportar_csv()
-

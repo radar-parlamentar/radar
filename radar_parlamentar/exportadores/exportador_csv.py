@@ -62,7 +62,7 @@ REGIAO_POR_UF = {
   'SC' : NORTE,
   'SP' : SUDESTE,
   'SE' : NORDESTE,
-  'TO' : NORTE 
+  'TO' : NORTE
 }
 
 PROPOSICAO = 'PROPOSICAO'
@@ -109,7 +109,7 @@ class ExportadorCSV:
 
     def write_csv(self):
         filepath = os.path.join(MODULE_DIR, 'saida', CSV_FILE)
-        with open(filepath, 'wb') as f:
+        with open(filepath, 'w') as f:
             writer = csv.writer(f, delimiter=',')
             writer.writerows(self.csv_rows)
 
@@ -129,7 +129,3 @@ def main():
     votacoes = vs1 | vs2 | vs3
     exportador = ExportadorCSV(votacoes)
     exportador.exportar_csv()
-
-
-
-

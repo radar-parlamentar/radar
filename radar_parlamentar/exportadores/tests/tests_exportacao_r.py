@@ -22,7 +22,7 @@ class ExportacaoRClass(TestCase):
 		existe = False
 		existe = os.path.isfile(CAMINHO)
 		colunas = ["rollcall","voter_id","name","party","coalition","vote"]
-		with open(CAMINHO,'rb') as arquivo:
+		with open(CAMINHO,'r') as arquivo:
 			readers = csv.reader(arquivo, delimiter=',')
 			for row in readers:
 				colunas_csv = row
