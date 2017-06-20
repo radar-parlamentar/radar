@@ -341,7 +341,7 @@ class ImportadorCamara:
         return (votacao.proposicao.id_prop, votacao.descricao, votacao.data)
 
     def importar(self, votadas):
-        """votadas -- lista de dicionários com 
+        """votadas -- lista de dicionários com
             id/sigla/num/ano das proposições que tiveram votações
         """
         self.total_proposicoes = len(votadas)
@@ -353,16 +353,18 @@ class ImportadorCamara:
 
     def _progresso(self):
         self.proposicoes_importadas += 1
-        porcentagem=100.0*self.proposicoes_importadas/self.total_proposicoes
+        fracao = self.proposicoes_importadas / self.total_proposicoes
+        porcentagem = 100.0 * fracao
         if porcentagem > self.imprimir_quando_progresso:
             logger.info('Progresso: %.1f%%' % porcentagem)
             self.imprimir_quando_progresso += 5
 
     def _importar(self, dic_proposicao):
-        """dic_proposicao -- dicionário com 
+        """dic_proposicao -- dicionário com
             id/sigla/num/ano de uma proposição a ser importada
         """
-        f = lambda dic: (dic['id'], dic['sigla'], dic['num'], dic['ano'])
+
+        def f(dic): (dic['id'], dic['sigla'], dic['num'], dic['ano'])
         id_prop, sigla, num, ano = f(dic_proposicao)
 
         try:
@@ -389,7 +391,8 @@ class ImportadorCamara:
         prop.sigla = prop_xml.get('tipo').strip()
         prop.numero = prop_xml.get('numero').strip()
         prop.ano = prop_xml.get('ano').strip()
-        logger.info("Importando %s %s/%s" % (prop.sigla, prop.numero, prop.ano))
+        logger.info("Importando %s %s/%s" % (
+            prop.sigla, prop.numero, prop.ano))
         prop.ementa = prop_xml.find('Ementa').text.strip()
         prop.descricao = prop_xml.find('ExplicacaoEmenta').text.strip()
         prop.indexacao = prop_xml.find('Indexacao').text.strip()
@@ -562,7 +565,8 @@ def main():
     pos_importacao = PosImportacao()
     pos_importacao.processar()
     logger.info('IMPORTANDO CHEFES EXECUTIVOS DA CAMARA DOS DEPUTADOS')
-    importer_chefe = ImportadorChefesExecutivos(NOME_CURTO, 'Presidentes', 'Presidente', XML_FILE)
+    importer_chefe = ImportadorChefesExecutivos(
+        NOME_CURTO, 'Presidentes', 'Presidente', XML_FILE)
     importer_chefe.importar_chefes()
 
     from importadores import cdep_genero
