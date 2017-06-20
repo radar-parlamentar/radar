@@ -534,12 +534,11 @@ class Rotacionador:
                     dados_fixos[indice][0], dados_fixos[indice][1], 0)
                 tamanho = self.analisePeriodo.tamanhos_partidos[
                     indice] if por_partido else 1
-                numerador += self._retornar_zero_se_nan(
+                _zero_se_nan = self._retornar_zero_se_nan(
                     tamanho * meu_polar[0] * alheio_polar[0] * numpy.sin(
-                        alheio_polar[1]))
-                denominador += self._retornar_zero_se_nan(
-                    tamanho * meu_polar[0] * alheio_polar[0] * numpy.cos(
-                        alheio_polar[1]))
+                        alheio_polar[1])) 
+                numerador += _zero_se_nan
+                denominador += _zero_se_nan
             if denominador < epsilon and denominador > -epsilon:
                 angulo_teta1 = 90
                 angulo_teta2 = 270
