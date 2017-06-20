@@ -341,7 +341,8 @@ class ImportadorCamara:
         return (votacao.proposicao.id_prop, votacao.descricao, votacao.data)
 
     def importar(self, votadas):
-        """votadas -- lista de dicionários com id/sigla/num/ano das proposições que tiveram votações
+        """votadas -- lista de dicionários com 
+            id/sigla/num/ano das proposições que tiveram votações
         """
         self.total_proposicoes = len(votadas)
         self.proposicoes_importadas = 0
@@ -352,13 +353,14 @@ class ImportadorCamara:
 
     def _progresso(self):
         self.proposicoes_importadas += 1
-        porcentagem = 100.0 * self.proposicoes_importadas / self.total_proposicoes
+        porcentagem=100.0*self.proposicoes_importadas/self.total_proposicoes
         if porcentagem > self.imprimir_quando_progresso:
             logger.info('Progresso: %.1f%%' % porcentagem)
             self.imprimir_quando_progresso += 5
 
     def _importar(self, dic_proposicao):
-        """dic_proposicao -- dicionário com id/sigla/num/ano de uma proposição a ser importada
+        """dic_proposicao -- dicionário com 
+            id/sigla/num/ano de uma proposição a ser importada
         """
         f = lambda dic: (dic['id'], dic['sigla'], dic['num'], dic['ano'])
         id_prop, sigla, num, ano = f(dic_proposicao)
