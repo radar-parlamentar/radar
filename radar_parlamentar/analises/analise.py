@@ -181,7 +181,7 @@ class AnalisadorPeriodo:
         self.pca_parlamentares = None
         self.coordenadas_parlamentares = {}
 
-        #lista de chefes_executivos
+        # lista de chefes_executivos
         self.chefes_executivos = self._inicializa_chefes_executivo()
 
     def _inicializa_votacoes(self):
@@ -193,7 +193,7 @@ class AnalisadorPeriodo:
         return self.votacoes
 
     def _inicializa_chefes_executivo(self):
-        """Pega chefes executivo deste período no banco de dados filtrando pela casa 
+        """Pega chefes executivo deste período no banco de dados filtrando pela casa
         legislativa e seta a lista self.chefes_executivo"""
         filtro_chefe = filtro.FiltroChefesExecutivo(
             self.casa_legislativa, self.periodo)
@@ -267,7 +267,8 @@ class AnalisadorPeriodo:
             matriz = matriz[ids_parlamentares_presentes, :]
             matriz = matriz - matriz.mean(axis=0)  # centraliza dados
             self.pca = pca.PCA(matriz, fraction=1)  # faz o pca
-            self._preenche_pca_de_parlamentares_nulos(ids_parlamentares_presentes)
+            self._preenche_pca_de_parlamentares_nulos(
+            	ids_parlamentares_presentes)
             logger.info("PCA terminada com sucesso. ini=%s, fim=%s" %
                         (str(self.ini), str(self.fim)))
         # Criar dicionario a ser retornado:
@@ -432,6 +433,7 @@ class AnalisadorPartidos:
         mm = numpy.mean(mdat, axis=0)
         return mm.filled(numpy.nan)
 
+
 class Rotacionador:
 
     def __init__(self, analisePeriodo, analisePeriodoReferencia):
@@ -446,7 +448,7 @@ class Rotacionador:
     def _rotacionar_coordenadas(self, theta, lista_coordenadas):
         for indice, coords in list(lista_coordenadas.items()):
             lista_coordenadas[indice] = numpy.dot(
-            coords, self._gerar_matriz_rotacao(theta))
+            	coords, self._gerar_matriz_rotacao(theta))
 
     def _energia(self, dados_fixos, dados_meus, por_partido,
                  graus=0, espelho=0):
@@ -462,7 +464,9 @@ class Rotacionador:
             self._espelhar_coordenadas(dados_meus)
         if graus != 0:
             for partido, coords in list(dados_meus.items()):
-                dados_meus[partido] = numpy.dot(coords, self._gerar_matriz_rotacao(graus))
+            	matriz_rotacao 
+                dados_meus[partido] = numpy.dot(
+                	coords, self._gerar_matriz_rotacao(graus))
 
         if por_partido:
             for p in dados_meus:
@@ -508,11 +512,11 @@ class Rotacionador:
 
     def espelha_ou_roda(self, por_partido=False, so_espelha=True):
         """Retorna nova AnalisePeriodo com coordenadas rotacionadas
-        se por_partido == True:
+        se por_partido = True:
         a operacao minimiza o quanto os partidos caminharam
-        se por_partido == False:
+        se por_partido = False:
         minimiza o quanto os parlamentares em si caminham
-        se so_espelha == True:
+        se so_espelha = True:
         nao se faz rotacao, apenas espelha as componentes se necessario.
         """
         if por_partido:
@@ -536,16 +540,18 @@ class Rotacionador:
                     indice] if por_partido else 1
                 _zero_se_nan = self._retornar_zero_se_nan(
                     tamanho * meu_polar[0] * alheio_polar[0] * numpy.sin(
-                        alheio_polar[1])) 
+                        alheio_polar[1]))
                 numerador += _zero_se_nan
                 denominador += _zero_se_nan
             if denominador < epsilon and denominador > -epsilon:
                 angulo_teta1 = 90
                 angulo_teta2 = 270
             else:
-                angulo_teta1 = numpy.arctan(numerador / denominador) * 180 / 3.141592
+                angulo_teta1 = numpy.arctan(
+                	numerador / denominador) * 180 / 3.141592
                 angulo_teta2 = angulo_teta1 + 180
-            logger.info("angulo_teta 1 = " + str(angulo_teta1) + "; angulo_teta2 = " + str(angulo_teta2))
+            logger.info("angulo_teta 1 = " + str(angulo_teta1) + 
+            	"; angulo_teta2 = " + str(angulo_teta2))
         else:
             angulo_teta1 = 0
             angulo_teta2 = 180
