@@ -268,7 +268,7 @@ class AnalisadorPeriodo:
             matriz = matriz - matriz.mean(axis=0)  # centraliza dados
             self.pca = pca.PCA(matriz, fraction=1)  # faz o pca
             self._preenche_pca_de_parlamentares_nulos(
-            	ids_parlamentares_presentes)
+                ids_parlamentares_presentes)
             logger.info("PCA terminada com sucesso. ini=%s, fim=%s" %
                         (str(self.ini), str(self.fim)))
         # Criar dicionario a ser retornado:
@@ -448,7 +448,7 @@ class Rotacionador:
     def _rotacionar_coordenadas(self, theta, lista_coordenadas):
         for indice, coords in list(lista_coordenadas.items()):
             lista_coordenadas[indice] = numpy.dot(
-            	coords, self._gerar_matriz_rotacao(theta))
+                coords, self._gerar_matriz_rotacao(theta))
 
     def _energia(self, dados_fixos, dados_meus, por_partido,
                  graus=0, espelho=0):
@@ -464,9 +464,9 @@ class Rotacionador:
             self._espelhar_coordenadas(dados_meus)
         if graus != 0:
             for partido, coords in list(dados_meus.items()):
-            	matriz_rotacao 
+                matriz_rotacao
                 dados_meus[partido] = numpy.dot(
-                	coords, self._gerar_matriz_rotacao(graus))
+                    coords, self._gerar_matriz_rotacao(graus))
 
         if por_partido:
             for p in dados_meus:
@@ -548,10 +548,10 @@ class Rotacionador:
                 angulo_teta2 = 270
             else:
                 angulo_teta1 = numpy.arctan(
-                	numerador / denominador) * 180 / 3.141592
+                    numerador / denominador) * 180 / 3.141592
                 angulo_teta2 = angulo_teta1 + 180
-            logger.info("angulo_teta 1 = " + str(angulo_teta1) + 
-            	"; angulo_teta2 = " + str(angulo_teta2))
+            logger.info("angulo_teta 1 = " + 
+                str(angulo_teta1) + "; angulo_teta2 = " + str(angulo_teta2))
         else:
             angulo_teta1 = 0
             angulo_teta2 = 180
