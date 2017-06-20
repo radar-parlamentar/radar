@@ -20,8 +20,8 @@ class Migration(SchemaMigration):
         db.send_create_signal('modelagem', ['ChefeExecutivo'])
 
         # Adding M2M table for field casas_legislativas on 'ChefeExecutivo'
-        m2m_table_name = db.shorten_name('modelagem_chefeexecutivo_casas_legislativas')
-        db.create_table(m2m_table_name, (
+        table_name = db.shorten_name('modelagem_chefeexecutivo_casas_legislativas')
+        db.create_table(table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
             ('chefeexecutivo', models.ForeignKey(orm['modelagem.chefeexecutivo'], null=False)),
             ('casalegislativa', models.ForeignKey(orm['modelagem.casalegislativa'], null=False))
