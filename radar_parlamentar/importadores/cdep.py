@@ -30,7 +30,9 @@ from datetime import datetime
 import re
 import os
 import xml.etree.ElementTree as etree
-import urllib.request, urllib.error, urllib.parse
+import urllib.request
+import urllib.error
+import urllib.parse
 import logging
 import threading
 import math
