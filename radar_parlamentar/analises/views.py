@@ -83,8 +83,7 @@ def json_analise(request, nome_curto_casa_legislativa,
     json = gen.get_json()
     return HttpResponse(json, mimetype='application/json')
 
-
-def lista_de_votacoes_filtradas(request, 
+def lista_de_votacoes_filtradas(request,
                                 nome_curto_casa_legislativa,
                                 periodicidade=models.BIENIO,
                                 palavras_chave=""):
