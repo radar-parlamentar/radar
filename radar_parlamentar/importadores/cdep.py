@@ -440,25 +440,36 @@ class ImportadorCamara:
         voto.save()
 
     def _opcao_xml_to_model(self, voto):
-        """Interpreta voto como tá no XML e responde em adequação a modelagem
-        em models.py"""
         voto = voto.strip()
-        if voto == 'Não':
+
+        def voto_nao():
             return models.NAO
-        elif voto == 'Sim':
+
+        def voto_sim():
             return models.SIM
-        elif voto == 'Obstrução':
+
+        def voto_obstrucao():
             return models.OBSTRUCAO
-        elif voto == 'Abstenção':
+
+        def voto_abstencao():
             return models.ABSTENCAO
-        # presidente da casa não pode votar
-        elif voto == 'Art. 17':
+
+        def voto_art17():
             return models.ABSTENCAO
-        else:
+
+        def default():
             logger.warning(
-                'opção de voto "%s" desconhecido! Mapeado como ABSTENCAO'
+                'opção de voto "%s" desconhecido! Mapeado como ABSTENCAO' 
                 % voto)
             return models.ABSTENCAO
+
+        dict = {'Não' : voto_nao, 'Sim' : voto_sim, 'Obstrução' : voto_obstrucao, 'Abstenção' : voto_abstencao, 'Art. 17' : voto_art17}
+
+        def switch(voto):
+            try:
+                dict[voto]()
+            except:
+                default()
 
     def _deputado(self, voto_xml):
         """Procura primeiro no cache e depois no banco; se não existir,
