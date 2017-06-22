@@ -122,6 +122,7 @@ class JsonAnaliseGenerator:
     def _dict_cp2(self, ap):
         return self._dict_cp(ap, 1)
 
+    @classmethod
     def _dict_cp(self, ap, idx):
         """ap -- AnalisePeriodo; idx == 0 para cp1 and idx == 1 para cp2"""
         dict_cp = {}
@@ -145,6 +146,7 @@ class JsonAnaliseGenerator:
         # o JsonGenerator não deveria entender dessas cosias.
         return dict_cp
 
+    @classmethod
     def _list_votacoes_do_periodo(self, ap):
         list_votacoes = []
         for votacao in ap.votacoes:
@@ -153,6 +155,7 @@ class JsonAnaliseGenerator:
             list_votacoes.append(dict_votacao)
         return list_votacoes
 
+    @classmethod
     def _list_chefes_do_periodo(self, ap):
         list_chefes = []
         for chefe in ap.chefes_executivos:
@@ -205,7 +208,7 @@ class JsonAnaliseGenerator:
                     dict_partido["x"].append(0.)
                     dict_partido["y"].append(0.)
             except KeyError as error:
-                logger.error("KeyError: %s" % error)
+                logger.error("KeyError: %s", error)
                 dict_partido["x"].append(0.)
                 dict_partido["y"].append(0.)
             tamanho = ap.tamanhos_partidos[partido]
@@ -266,6 +269,7 @@ class MaxRadiusCalculator:
             r2 = x ** 2 + y ** 2
             self.max_r2 = max(self.max_r2, r2)
 
+    @classmethod
     def _valid(self, value):
         return value is not None and not isnan(value)
 
