@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Exportação para CSV com o objetivo de criar uma base de dados com 
+"""Exportação para CSV com o objetivo de criar uma base de dados com
 schema simplificado para análises ad-hoc."""
 
 
@@ -77,12 +77,14 @@ UF = 'UF'
 REGIAO = 'REGIAO'
 VOTO = 'VOTO'
 
-LABELS = [PROPOSICAO, VOTACAO, PARLAMENTAR_ID, 
+LABELS = [
+    PROPOSICAO, VOTACAO, PARLAMENTAR_ID,
     PARLAMENTAR_NOME, PARTIDO, UF, REGIAO, VOTO]
 
 CSV_FILE = 'votacoes.csv'
 
 class ExportadorCSV(object):
+
 
     def __init__(self, votacoes):
         self.votacoes = votacoes
@@ -128,12 +130,14 @@ def main():
     except models.CasaLegislativa.DoesNotExist:
         sen = None
     vs1 = models.Votacao.objects.filter(
-        proposicao__casa_legislativa=cdep, proposicao__sigla='PL', 
+        proposicao__casa_legislativa=cdep, proposicao__sigla='PL',
         proposicao__numero='1876', proposicao__ano='1999')
-    vs2 = models.Votacao.objects.filter(proposicao__casa_legislativa=sen, 
-        proposicao__sigla='PLC', proposicao__numero='00007', proposicao__ano='2010')
-    vs3 = models.Votacao.objects.filter(proposicao__casa_legislativa=sen, 
-        proposicao__sigla='PEC', proposicao__numero='00007', proposicao__ano='2015')
+    vs2 = models.Votacao.objects.filter(
+        proposicao__casa_legislativa=sen, proposicao__sigla='PLC',
+        proposicao__numero='00007', proposicao__ano='2010')
+    vs3 = models.Votacao.objects.filter(
+        proposicao__casa_legislativa=sen, proposicao__sigla='PEC',
+        proposicao__numero='00007', proposicao__ano='2015')
     votacoes = vs1 | vs2 | vs3
     exportador = ExportadorCSV(votacoes)
     exportador.exportar_csv()
