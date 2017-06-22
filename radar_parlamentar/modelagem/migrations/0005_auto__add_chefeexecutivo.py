@@ -26,7 +26,7 @@ class Migration(SchemaMigration):
             ('chefeexecutivo', models.ForeignKey(orm['modelagem.chefeexecutivo'], null=False)),
             ('casalegislativa', models.ForeignKey(orm['modelagem.casalegislativa'], null=False))
         ))
-        db.create_unique(m2m_table_name, ['chefeexecutivo_id', 'casalegislativa_id'])
+        db.create_unique(table_name, ['chefeexecutivo_id', 'casalegislativa_id'])
 
 
     def backwards(self, orm):

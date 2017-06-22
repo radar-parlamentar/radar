@@ -464,7 +464,6 @@ class Rotacionador:
             self._espelhar_coordenadas(dados_meus)
         if graus != 0:
             for partido, coords in list(dados_meus.items()):
-                matriz_rotacao
                 dados_meus[partido] = numpy.dot(
                     coords, self._gerar_matriz_rotacao(graus))
 
@@ -538,11 +537,12 @@ class Rotacionador:
                     dados_fixos[indice][0], dados_fixos[indice][1], 0)
                 tamanho = self.analisePeriodo.tamanhos_partidos[
                     indice] if por_partido else 1
-                _zero_se_nan = self._retornar_zero_se_nan(
+                numerador += self._retornar_zero_se_nan(
                     tamanho * meu_polar[0] * alheio_polar[0] * numpy.sin(
                         alheio_polar[1]))
-                numerador += _zero_se_nan
-                denominador += _zero_se_nan
+                denominador += self._retornar_zero_se_nan(
+                    tamanho * meu_polar[0] * alheio_polar[0] * numpy.cos(
+                        alheio_polar[1]))
             if denominador < epsilon and denominador > -epsilon:
                 angulo_teta1 = 90
                 angulo_teta2 = 270
@@ -550,7 +550,7 @@ class Rotacionador:
                 angulo_teta1 = numpy.arctan(
                     numerador / denominador) * 180 / 3.141592
                 angulo_teta2 = angulo_teta1 + 180
-            logger.info("angulo_teta 1 = " + 
+            logger.info("angulo_teta 1 = " +
                 str(angulo_teta1) + "; angulo_teta2 = " + str(angulo_teta2))
         else:
             angulo_teta1 = 0
