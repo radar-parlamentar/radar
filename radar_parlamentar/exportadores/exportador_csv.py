@@ -83,8 +83,8 @@ LABELS = [
 
 CSV_FILE = 'votacoes.csv'
 
-class ExportadorCSV(object):
 
+class ExportadorCSV(object):
 
     def __init__(self, votacoes):
         self.votacoes = votacoes
