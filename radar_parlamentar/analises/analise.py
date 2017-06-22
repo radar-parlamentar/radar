@@ -212,9 +212,11 @@ class AnalisadorPeriodo:
         analisePeriodo.num_votacoes = self.num_votacoes
         analisePeriodo.pca = self.pca
         analisePeriodo.tamanhos_partidos = self.tamanhos_partidos
-        analisePeriodo.coordenadas_parlamentares = self.coordenadas_parlamentares
+        analisePeriodo.coordenadas_parlamentares = \
+            self.coordenadas_parlamentares
         analisePeriodo.coordenadas_partidos = self.coordenadas_partidos
-        analisePeriodo.parlamentares_por_partido = self.parlamentares_por_partido
+        analisePeriodo.parlamentares_por_partido = \
+            self.parlamentares_por_partido
         analisePeriodo.chefes_executivos = self.chefes_executivos
         return analisePeriodo
 
@@ -261,7 +263,8 @@ class AnalisadorPeriodo:
         if not self.pca_parlamentares:
             if not self.vetores_votacao:
                 self._inicializa_vetores()
-            ids_parlamentares_presentes = self._listar_indices_de_parlamentares_presentes()
+            ids_parlamentares_presentes = \
+                self._listar_indices_de_parlamentares_presentes()
             matriz = self.vetores_votacao
             # exclui parlamentares ausentes em todas as votações do período
             matriz = matriz[ids_parlamentares_presentes, :]
@@ -373,7 +376,8 @@ class ConstrutorDeMatrizesDeDados:
             self.partido_do_parlamentar.append(parlamentar.partido.nome)
             if parlamentar.id in self._dic_parlamentares_votos:
                 opcao = self._dic_parlamentares_votos[parlamentar.id]
-                self.matriz_votacoes[ip][iv] = self._converter_opcao_para_valor(opcao)
+                self.matriz_votacoes[ip][iv] = \
+                    self._converter_opcao_para_valor(opcao)
                 if (opcao == models.AUSENTE):
                     self.matriz_presencas[ip][iv] = 0.
                 else:
@@ -551,7 +555,8 @@ class Rotacionador:
                     numerador / denominador) * 180 / 3.141592
                 angulo_teta2 = angulo_teta1 + 180
             logger.info("angulo_teta 1 = " +
-                str(angulo_teta1) + "; angulo_teta2 = " + str(angulo_teta2))
+                        str(angulo_teta1) + "; angulo_teta2 = " +
+                        str(angulo_teta2))
         else:
             angulo_teta1 = 0
             angulo_teta2 = 180
