@@ -4,6 +4,7 @@ from django.test import TestCase
 from radar_parlamentar.templatetags.versao_radar import versao_radar
 import re
 
+
 class VersaoRadarTest(TestCase):
 
     def setUp(self):

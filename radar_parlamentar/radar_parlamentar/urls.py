@@ -128,35 +128,35 @@ urlpatterns = patterns(
     # Serviço que retorna conteúdo para plotar o mapa
     url(r'^analises/analise/' + casa_legislativa + '$',
         redirect, {'url': '/' + url_radar +
-                      "%(nome_curto_casa_legislativa)s/"}),
+                   "%(nome_curto_casa_legislativa)s/"}),
     url(r'^analises/json_analise/' + casa_legislativa + periodicidade + '$',
         redirect, {'url': '/' + url_json_radar +
-                      "%(nome_curto_casa_legislativa)s/%(periodicidade)s/"}),
+                   "%(nome_curto_casa_legislativa)s/%(periodicidade)s/"}),
     url(r'^analises/json_analise/' + casa_legislativa + periodicidade +
         palavras_chave + '$',
         redirect, {'url': '/' + url_json_radar +
-                      "%(nome_curto_casa_legislativa)s/%(periodicidade)s/" +
-                      "%(palavras_chave)s/"}),
+                   "%(nome_curto_casa_legislativa)s/%(periodicidade)s/" +
+                   "%(palavras_chave)s/"}),
     url(r'^analises/lista_de_votacoes_filtradas/' + casa_legislativa + '$',
         redirect, {'url': '/' + url_lista +
-                      "%(nome_curto_casa_legislativa)s/"}),
+                   "%(nome_curto_casa_legislativa)s/"}),
     url(r'^analises/lista_de_votacoes_filtradas/' + casa_legislativa +
         periodicidade + palavras_chave + '$',
         redirect, {'url': '/' + url_lista +
-                      "%(nome_curto_casa_legislativa)s/%(periodicidade)s/" +
-                      "%(palavras_chave)s/"}),
+                   "%(nome_curto_casa_legislativa)s/%(periodicidade)s/" +
+                   "%(palavras_chave)s/"}),
 
     # Páginas da Plenária - Hackathon Eleições 2016
     url(r'^analises/' + url_plenaria + casa_legislativa + '?' +
         identificador_proposicao + '?/$',
         redirect, {'url': '/' + url_plenaria +
-                      "%(nome_curto_casa_legislativa)s/" +
-                      "%(identificador_proposicao)s/"}),
+                   "%(nome_curto_casa_legislativa)s/" +
+                   "%(identificador_proposicao)s/"}),
     url(r'^json_plenaria/' + casa_legislativa +
         identificador_proposicao + '$',
         redirect, {'url': '/' + url_json_plenaria +
-                      "%(nome_curto_casa_legislativa)s/" +
-                      "%(identificador_proposicao)s/"}),
+                   "%(nome_curto_casa_legislativa)s/" +
+                   "%(identificador_proposicao)s/"}),
 
     url(r'^dados$',
         redirect, {'url': '/dados/downloads/'}),
