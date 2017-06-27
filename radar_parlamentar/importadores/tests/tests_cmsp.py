@@ -18,8 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
 from django.test import TestCase
 from importadores.cmsp import GeradorCasaLegislativa, XmlCMSP, ImportadorCMSP
 from importadores import cmsp
@@ -81,18 +79,24 @@ class ImportadorCMSPCase(TestCase):
     def test_proposicoes_importadas(self):
         """PL 673/2015 e PL 140 /2015"""
         self.assertEqual(2, models.Proposicao.objects.count())
-        pl140 = models.Proposicao.objects.get(sigla='PL', numero='140', ano='2015')
-        self.assertTrue('REFORMA E REGULARIZAÇÃO DE EQUIPAMENTOS PÚBLICOS DE EDUCAÇÃO, SAÚDE E ASSISTÊNCIA SOCIAL' in pl140.ementa)
+        pl140 = models.Proposicao.objects.get(
+            sigla='PL', numero='140', ano='2015')
+        self.assertTrue(
+            'REFORMA E REGULARIZAÇÃO DE EQUIPAMENTOS PÚBLICOS DE EDUCAÇÃO, SAÚDE E ASSISTÊNCIA SOCIAL' in pl140.ementa)
 
     def test_votacoes_importadas(self):
         """PL 673/2015 : 2 votações
         PL 140 /2015: 1 votação
         """
         self.assertEqual(3, models.Votacao.objects.count())
-        pl673 = models.Proposicao.objects.get(sigla='PL', numero='673', ano='2015')
-        self.assertEqual(2, models.Votacao.objects.filter(proposicao=pl673).count())
-        pl140 = models.Proposicao.objects.get(sigla='PL', numero='140', ano='2015')
-        self.assertEqual(1, models.Votacao.objects.filter(proposicao=pl140).count())
+        pl673 = models.Proposicao.objects.get(
+            sigla='PL', numero='673', ano='2015')
+        self.assertEqual(2, models.Votacao.objects.filter(
+            proposicao=pl673).count())
+        pl140 = models.Proposicao.objects.get(
+            sigla='PL', numero='140', ano='2015')
+        self.assertEqual(
+            1, models.Votacao.objects.filter(proposicao=pl140).count())
         votPl140 = models.Votacao.objects.get(proposicao=pl140)
         self.assertEqual(votPl140.id_vot, '2015')
         self.assertEqual(votPl140.resultado, 'Aprovado')
@@ -102,34 +106,40 @@ class ImportadorCMSPCase(TestCase):
     def test_parlamentares_importados(self):
         self.assertTrue(models.Parlamentar.objects.count() < 60)
         toninho = models.Parlamentar.objects.get(nome='TONINHO PAIVA')
-        self.assertEqual(toninho.id_parlamentar, '220') 
+        self.assertEqual(toninho.id_parlamentar, '220')
         self.assertEqual(toninho.partido.nome, 'PR')
-        pl140 = models.Proposicao.objects.get(sigla='PL', numero='140', ano='2015')
+        pl140 = models.Proposicao.objects.get(
+            sigla='PL', numero='140', ano='2015')
         votPl140 = models.Votacao.objects.get(proposicao=pl140)
         voto = models.Voto.objects.get(votacao=votPl140, parlamentar=toninho)
         self.assertEqual(voto.opcao, models.SIM)
 
     def test_parlamentares_nao_se_repetem(self):
         parlamentares = models.Parlamentar.objects.all()
-        tuplas_vereadores_list = [ (p.nome, p.partido.nome, p.partido.numero) for p in parlamentares ]
+        tuplas_vereadores_list = [(p.nome, p.partido.nome,
+                                  p.partido.numero) for p in parlamentares]
         tuplas_vereadores_set = set(tuplas_vereadores_list)
-        self.assertEqual(len(tuplas_vereadores_list), len(tuplas_vereadores_set))
+        self.assertEqual(len(tuplas_vereadores_list),
+                         len(tuplas_vereadores_set))
 
     def test_tratamento_votos_repetidos_mesma_votacao(self):
         """VALDECIR CABRABOM deu dois votos (um sim e um não) na votação do PL 140/2015
         WADIH MUTRAN deu dois votos iguais (sim)  na votação do PL 140/2015
         """
-        pl140 = models.Proposicao.objects.get(sigla='PL', numero='140', ano='2015')
+        pl140 = models.Proposicao.objects.get(
+            sigla='PL', numero='140', ano='2015')
         votPl140 = models.Votacao.objects.get(proposicao=pl140)
         valdecir = models.Parlamentar.objects.get(nome='VALDECIR CABRABOM')
-        votos_count = models.Voto.objects.filter(votacao=votPl140, parlamentar=valdecir).count()
-        self.assertEqual(votos_count, 1) # polêmico, estmoas
+        votos_count = models.Voto.objects.filter(
+            votacao=votPl140, parlamentar=valdecir).count()
+        # polêmico, estmoas
+        self.assertEqual(votos_count, 1)
         wadih = models.Parlamentar.objects.get(nome='WADIH MUTRAN')
-        votos_count = models.Voto.objects.filter(votacao=votPl140, parlamentar=wadih).count()
+        votos_count = models.Voto.objects.filter(
+            votacao=votPl140, parlamentar=wadih).count()
         self.assertEqual(votos_count, 1)
 
 # TODO testar que proposições não se repetem issue #388
-
 
 
 class EstaticosCMSPCase(TestCase):
@@ -257,6 +267,5 @@ class IdempotenciaCMSPCase(TestCase):
         self.assertEqual(num_casas_depois, 1)
         self.assertEqual(num_votacoes_depois, num_votacoes_antes)
         self.assertEqual(num_parlamentares_antes_depois,
-                          num_parlamentares_antes)
+                         num_parlamentares_antes)
         self.assertEqual(num_parlamentares_depois, num_parlamentares_antes)
-

@@ -77,4 +77,4 @@ class ConvencaoTest(TestCase):
                          NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO)
         nomes_parlamentares = [p.nome for p in parlamentares]
         self.assertEqual(nomes_parlamentares.count('Pierre'),
-                          NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO)
+                         NUMERO_PARTIDOS * NUMERO_PARLAMENTARES_POR_PARTIDO)

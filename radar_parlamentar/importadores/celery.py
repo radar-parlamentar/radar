@@ -21,7 +21,6 @@
 #http://celery.readthedocs.org/en/latest/django/first-steps-with-django.html"""
 
 
-
 from celery import Celery
 import os
 from django.conf import settings

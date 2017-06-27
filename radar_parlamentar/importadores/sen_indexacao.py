@@ -1,7 +1,10 @@
 # coding:utf-8
 
-from modelagem.models import Proposicao, CasaLegislativa
-import urllib.request, urllib.error, urllib.parse
+from modelagem.models import Proposicao
+from modelagem.models import CasaLegislativa
+import urllib.request
+import urllib.error
+import urllib.parse
 import xml.etree.ElementTree as etree
 import logging
 

@@ -21,6 +21,7 @@ class GeradorSenadoTest(TestCase):
         casa2 = sen.CasaLegislativaGerador().gera_senado()
         self.assertEqual(casa1.pk, casa2.pk)
 
+
 class ImportadorSenadoTest(TestCase):
 
     def setUp(self):
@@ -42,6 +43,7 @@ class ImportadorSenadoTest(TestCase):
         self.assertTrue(partido)
         self.assertEqual(parlamentar.partido.nome, 'PMDB')
 
+
 class IndexacaoSenadoTest(TestCase):
 
     def setUp(self):
@@ -57,4 +59,3 @@ class IndexacaoSenadoTest(TestCase):
         self.assertEqual(proposicao.ano, '2015')
         self.assertEqual(proposicao.sigla, 'PLS')
         self.assertEqual(proposicao.numero, '00131')
-

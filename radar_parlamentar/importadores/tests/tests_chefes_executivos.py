@@ -10,7 +10,8 @@ from importadores.sen import CasaLegislativaGerador
 import os
 import xml.etree.ElementTree as etree
 
-XML_TEST = os.path.join(MODULE_DIR, 'dados/chefe_executivo/chefe_executivo_teste.xml')
+XML_TEST = os.path.join(
+    MODULE_DIR, 'dados/chefe_executivo/chefe_executivo_teste.xml')
 
 
 class ImportadorChefesExecutivosTeste(TestCase):
@@ -22,7 +23,8 @@ class ImportadorChefesExecutivosTeste(TestCase):
     def test_chefe_cmsp_importado(self):
         gerador = GeradorCasaLegislativa()
         casa = gerador.gerar_cmsp()
-        importer_chefe = ImportadorChefesExecutivos(casa.nome_curto, 'PrefeitosSP', 'PrefeitoSP', XML_TEST)
+        importer_chefe = ImportadorChefesExecutivos(
+            casa.nome_curto, 'PrefeitosSP', 'PrefeitoSP', XML_TEST)
         importer_chefe.importar_chefes()
         chefe = models.ChefeExecutivo.objects.get(nome="teste_chefe_cmsp")
 
@@ -32,11 +34,11 @@ class ImportadorChefesExecutivosTeste(TestCase):
         self.assertEqual(chefe.mandato_ano_fim, 1992)
         self.assertEqual(chefe.genero, "F")
 
-
     def test_chefe_sen_importado(self):
         gerador = CasaLegislativaGerador()
         casa = gerador.gera_senado()
-        importer_chefe = ImportadorChefesExecutivos(casa.nome_curto, 'Presidentes', 'Presidente', XML_TEST)
+        importer_chefe = ImportadorChefesExecutivos(
+            casa.nome_curto, 'Presidentes', 'Presidente', XML_TEST)
         importer_chefe.importar_chefes()
         chefe = models.ChefeExecutivo.objects.get(nome="teste_chefe_sen")
 

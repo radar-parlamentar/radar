@@ -25,7 +25,9 @@ from modelagem import models
 
 import xml.etree.ElementTree as etree
 import zipfile
-import urllib.request, urllib.error, urllib.parse
+import urllib.request
+import urllib.error
+import urllib.parse
 import logging
 
 logger = logging.getLogger("radar")

@@ -53,7 +53,8 @@ class ImportadorCamaraTest(TestCase):
     @classmethod
     def setUpClass(cls):
         # vamos importar apenas o código florestal
-        dic_votadas = [{'id': '17338', 'sigla': 'PL', 'num': '1876', 'ano': '1999'}]
+        dic_votadas = [{'id': '17338', 'sigla': 'PL',
+                        'num': '1876', 'ano': '1999'}]
         camaraws = cdep.Camaraws()
         camaraws.obter_proposicao_por_id = Mock(
             side_effect=mock_obter_proposicao)
@@ -62,7 +63,8 @@ class ImportadorCamaraTest(TestCase):
 
         importer = cdep.ImportadorCamara(camaraws)
         importer.importar(dic_votadas)
-        importer.importar(dic_votadas) # chamando duas vezes pra testar idempotência
+        # chamando duas vezes pra testar idempotência
+        importer.importar(dic_votadas)
 
     @classmethod
     def tearDownClass(cls):
@@ -78,7 +80,7 @@ class ImportadorCamaraTest(TestCase):
         prop_cod_flor = models.Proposicao.objects.get(id_prop=ID_FLORESTAL)
         self.assertEqual(prop_cod_flor.nome(), NOME_FLORESTAL)
         self.assertEqual(prop_cod_flor.situacao,
-                          'Tranformada no(a) Lei Ordinária 12651/2012')
+                         'Tranformada no(a) Lei Ordinária 12651/2012')
         self.assertEqual(prop_cod_flor.data_apresentacao.day, data.day)
         self.assertEqual(prop_cod_flor.data_apresentacao.month, data.month)
         self.assertEqual(prop_cod_flor.data_apresentacao.year, data.year)
@@ -124,4 +126,3 @@ class ImportadorCamaraTest(TestCase):
             if count_p > 1:
                 repetidos.append(p)
         self.assertTrue(len(repetidos) == 0)
-

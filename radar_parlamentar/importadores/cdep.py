@@ -454,18 +454,21 @@ class ImportadorCamara:
         def voto_abstencao():
             return models.ABSTENCAO
 
-        #presidente da casa não pode votar
+        # presidente da casa não pode votar
         def voto_art17():
             return models.ABSTENCAO
 
         def default():
             logger.warning(
-                'opção de voto "%s" desconhecido! Mapeado como ABSTENCAO' 
+                'opção de voto "%s" desconhecido! Mapeado como ABSTENCAO'
                 % voto)
             return models.ABSTENCAO
 
-        dict = {'Não': voto_nao,'Sim': voto_sim,'Obstrução': voto_obstrucao,
-            'Abstenção': voto_abstencao,'Art. 17': voto_art17}
+        dict = {'Não': voto_nao,
+                'Sim': voto_sim,
+                'Obstrução': voto_obstrucao,
+                'Abstenção': voto_abstencao,
+                'Art. 17': voto_art17}
 
         def switch(voto):
             try:

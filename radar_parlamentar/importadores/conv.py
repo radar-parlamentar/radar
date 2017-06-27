@@ -122,22 +122,26 @@ class ImportadorConvencao:
             voto.save()
 
     def _gera_dados(self, dictionary):
-        prop = self._gera_proposicao(dictionary['numero_proposicao'], dictionary['descricao_proposicao'])
-        votacao = self._gera_votacao(dictionary['numero_proposicao'], dictionary['descricao_proposicao'],
+        prop = self._gera_proposicao(dictionary['numero_proposicao'],
+                                     dictionary['descricao_proposicao'])
+        votacao = self._gera_votacao(dictionary['numero_proposicao'],
+                                     dictionary['descricao_proposicao'],
                                      DATA_NO_PRIMEIRO_SEMESTRE, prop)
         self._gera_votos(votacao, GIRONDINOS, dictionary['votos_girondinos'])
         self._gera_votos(votacao, JACOBINOS, dictionary['votos_jacobinos'])
-        self._gera_votos(votacao, MONARQUISTAS, dictionary['votos_monarquistas'])
+        self._gera_votos(
+            votacao, MONARQUISTAS, dictionary['votos_monarquistas'])
 
-    def _cria_dicionario_dados(self, numero_proposicao, descricao_proposicao,
-        votos_girondinos, votos_jacobinos, votos_monarquistas):
+    def _cria_dicionario_dados(self, numero_proposicao,
+                               descricao_proposicao, votos_girondinos,
+                               votos_jacobinos, votos_monarquistas):
 
         dictionary = {}
-        dictionary['numero_proposicao']=numero_proposicao
-        dictionary['descricao_proposicao']=descricao_proposicao
-        dictionary['votos_girondinos']=votos_girondinos
-        dictionary['votos_jacobinos']=votos_jacobinos
-        dictionary['votos_monarquistas']=votos_monarquistas
+        dictionary['numero_proposicao'] = numero_proposicao
+        dictionary['descricao_proposicao'] = descricao_proposicao
+        dictionary['votos_girondinos'] = votos_girondinos
+        dictionary['votos_jacobinos'] = votos_jacobinos
+        dictionary['votos_monarquistas'] = votos_monarquistas
 
         return dictionary
 
@@ -146,25 +150,36 @@ class ImportadorConvencao:
         votos_sim = [models.SIM, models.SIM, models.SIM]
         votos_nao = [models.NAO, models.NAO, models.NAO]
         votos_sim_abs_nao = [models.SIM, models.ABSTENCAO, models.NAO]
-        votos_sim_sim_abs =[models.SIM, models.SIM, models.ABSTENCAO]
+        votos_sim_sim_abs = [models.SIM, models.SIM, models.ABSTENCAO]
         votos_sim_ause_sim = [models.SIM, models.AUSENTE, models.SIM]
 
-        self._gera_dados(self._cria_dicionario_dados('1', 'Reforma agrária',
-            votos_sim_abs_nao,votos_sim, votos_nao))
-        self._gera_dados(self._cria_dicionario_dados('2', 'Aumento da pensão dos nobres',
-            votos_nao, votos_nao, votos_sim))
-        self._gera_dados(self._cria_dicionario_dados('3', 'Institui o Dia de Carlos Magno',
-            [models.NAO, models.NAO, models.SIM], votos_nao, votos_sim))
-        self._gera_dados(self._cria_dicionario_dados('4', 'Diminuição de impostos sobre a indústria',
-            votos_sim, votos_sim_abs_nao, [models.SIM, models.NAO, models.AUSENTE]))
-        self._gera_dados(self._cria_dicionario_dados('5', 'Guilhotinar o Conde Pierre',
-            votos_sim_sim_abs, votos_sim, votos_nao))
-        self._gera_dados(self._cria_dicionario_dados('6', 'Criação de novas escolas', 
-            votos_sim, votos_sim, [models.AUSENTE, models.SIM, models.SIM]))
-        self._gera_dados(self._cria_dicionario_dados('7', 'Aumento do efetivo militar',
-            votos_sim_sim_abs, votos_sim, votos_sim_ause_sim))
-        self._gera_dados(self._cria_dicionario_dados('9', 'Contratar médicos para a capital',
-            votos_sim_sim_abs, votos_sim, votos_sim_ause_sim))
+        self._gera_dados(self._cria_dicionario_dados(
+                         '1', 'Reforma agrária',
+                         votos_sim_abs_nao, votos_sim, votos_nao))
+        self._gera_dados(self._cria_dicionario_dados(
+                         '2', 'Aumento da pensão dos nobres',
+                         votos_nao, votos_nao, votos_sim))
+        self._gera_dados(self._cria_dicionario_dados(
+                         '3', 'Institui o Dia de Carlos Magno',
+                         [models.NAO, models.NAO, models.SIM],
+                         votos_nao, votos_sim))
+        self._gera_dados(self._cria_dicionario_dados(
+                         '4', 'Diminuição de impostos sobre a indústria',
+                         votos_sim, votos_sim_abs_nao,
+                         [models.SIM, models.NAO, models.AUSENTE]))
+        self._gera_dados(self._cria_dicionario_dados(
+                         '5', 'Guilhotinar o Conde Pierre',
+                         votos_sim_sim_abs, votos_sim, votos_nao))
+        self._gera_dados(self._cria_dicionario_dados(
+                         '6', 'Criação de novas escolas',
+                         votos_sim, votos_sim,
+                         [models.AUSENTE, models.SIM, models.SIM]))
+        self._gera_dados(self._cria_dicionario_dados(
+                         '7', 'Aumento do efetivo militar',
+                         votos_sim_sim_abs, votos_sim, votos_sim_ause_sim))
+        self._gera_dados(self._cria_dicionario_dados(
+                         '9', 'Contratar médicos para a capital',
+                         votos_sim_sim_abs, votos_sim, votos_sim_ause_sim))
 
     # votação com atributos diferentes para teste
     def _gera_dados_customizados(self):
