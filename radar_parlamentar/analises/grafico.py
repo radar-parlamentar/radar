@@ -292,6 +292,7 @@ class GraphScaler:
         self.cache[cache_key] = scaled
         return scaled
 
+    @classmethod
     def _scale(self, coords):
         scaled = {}
         for key, coord in list(coords.items()):
@@ -326,8 +327,8 @@ class RaioPartidoCalculator():
 
     def _init_area_total(self):
         maior_soma = 0
-        for tamanhos_partidos in list(self.tamanhos_dos_partidos_por_periodo.values(
-        )):
+        for tamanhos_partidos in list(
+                self.tamanhos_dos_partidos_por_periodo.values()):
             soma_dos_tamanhos_dos_partidos = sum(tamanhos_partidos.values())
             if soma_dos_tamanhos_dos_partidos > maior_soma:
                 maior_soma = soma_dos_tamanhos_dos_partidos
