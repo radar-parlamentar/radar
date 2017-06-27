@@ -364,7 +364,7 @@ class ImportadorCamara:
             id/sigla/num/ano de uma proposição a ser importada
         """
 
-        def f(dic): (dic['id'], dic['sigla'], dic['num'], dic['ano'])
+        f = lambda dic: (dic['id'], dic['sigla'], dic['num'], dic['ano'])
         id_prop, sigla, num, ano = f(dic_proposicao)
 
         try:
@@ -470,11 +470,11 @@ class ImportadorCamara:
                 'Abstenção': voto_abstencao,
                 'Art. 17': voto_art17}
 
-        def switch(voto):
-            try:
-                dict[voto]()
-            except:
-                default()
+        
+        try:
+            return dict[voto]()
+        except:
+            return default()
 
     def _deputado(self, voto_xml):
         """Procura primeiro no cache e depois no banco; se não existir,
