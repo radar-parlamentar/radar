@@ -39,15 +39,23 @@ class GeneroTest(TestCase):
         self.assertEqual(('mulher'), self.proposicao.indexacao)
 
     def test_organiza_lista_palavras(self):
-        self.dicionario_palavras = {"Saude":2, "Educacao":1, "Transporte":26}
-        self.assertEqual(self.genero.organiza_lista_palavras(self.dicionario_palavras), [('Transporte', 26), ('Saude', 2), ('Educacao', 1)] )
+        self.dicionario_palavras = {"Saude": 2, "Educacao": 1,
+                                    "Transporte": 26}
+        self.assertEqual(
+                self.genero.organiza_lista_palavras(
+                    self.dicionario_palavras), [('Transporte', 26),
+                                                ('Saude', 2), ('Educacao', 1)])
 
     def test_define_chaves_dicionario(self):
         self.dicionario_ordenado = ["Saude", "Saude", "Educacao"]
-        self.assertEqual(self.genero.define_chaves_dicionario(self.dicionario_ordenado), [("Saude",2), ("Educacao",1)])
+        self.assertEqual(
+                self.genero.define_chaves_dicionario(
+                    self.dicionario_ordenado), [("Saude", 2), ("Educacao", 1)])
 
     def test_agrupa_palavras(self):
-        self.assertEqual(self.genero.agrupa_palavras(self.genero, self.id_casa_legislativa), [])
+        self.assertEqual(
+            self.genero.agrupa_palavras(
+                self.genero, self.id_casa_legislativa), [])
 
     def test_get_casas_legislativas_com_genero(self):
         self.assertEqual(self.genero.get_casas_legislativas_com_genero(), [])
