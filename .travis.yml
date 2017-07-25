@@ -9,6 +9,3 @@ script:
   manage.py test modelagem analises exportadores importadores radar_parlamentar
 after_success:
 - coveralls
-before_install:
-- openssl aes-256-cbc -K $encrypted_cc20ddfd025e_key -iv $encrypted_cc20ddfd025e_iv
-  -in fake.pem.enc -out fake.pem -d
