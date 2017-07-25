@@ -1,6 +1,6 @@
 language: python
 python:
-- '2.7'
+- '3.3'
 install:
 - pip install -r radar_parlamentar/requirements.txt
 script:
