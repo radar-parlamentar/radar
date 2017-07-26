@@ -24,7 +24,7 @@ from elasticsearch import Elasticsearch
 from django.conf import settings
 from elasticsearch.client import IndicesClient
 
-ELASTIC_SEARCH_ADDRESS_DEFAULT = {'host': 'localhost', 'port': '9200'}
+ELASTIC_SEARCH_ADDRESS_DEFAULT = {'host': 'localhost', 'port': '8000'}
 ELASTIC_SEARCH_INDEX_DEFAULT = "radar_parlamentar"
 
 """
