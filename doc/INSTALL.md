@@ -3,7 +3,7 @@ Passo a Passo da instalação
 
 1. Clonando o repositório
 ------------------------------
-    
+
 A primeira coisa que deve ser feita é o clone do projeto no *Github*. Para isso basta fazer:
 
         $ git clone https://github.com/radar-parlamentar/radar.git
@@ -23,6 +23,19 @@ Instale os pacotes (apt-get):
     * python-virtualenv
     * rabbitmq-server
 
+
+_OBSERVAÇÃO_: O radar foi homologado para rodar em distribuições Debian like.
+Nesses ambientes, pacotes que rodam como serviços, são inicializados
+automaticamente. Caso o seu ambiente não seja Debian like, provavelmente
+você terá que inicializar tais serviços manualmente. Um exemplo é o pacote
+rabbitmq-server. Se sua distribuição utilizar o _systemd_ como gerenciador
+de serviços, basta fazer:
+
+	`sudo systemctl start rabbitmq-server`
+
+Para checar se o servidor do rabbitmq está rodando basta fazer:
+
+	`systemctl status rabbitmq-server`
 
 * **Configuração utilizando o virtualenv**
 
@@ -68,7 +81,7 @@ Observações
             LISTA_PARTIDOS = os.path.join('recursos/partidos.txt',MODULE_DIR)
 
         adicione um *.decode("utf-8")* no final, ficando da seguinte forma:
-            
+
             LISTA_PARTIDOS = os.path.join('recursos/partidos.txt',MODULE_DIR).decode("utf-8")
 
 * Caso ocorra o erro **Missing Template**:
@@ -110,16 +123,16 @@ Crie o arquivo settings/development.py com base no arquivo settings/development.
 No arquivo development.py, insira a senha do usuário radar do PostgreSQL .
 
 Ao rodar python manage.py runserver no ambiente de desenvolvimento, será usado as configurações settings/development.py.
-    
+
 Para criar as tabelas do Radar Parlamentar:
 
-    $ python manage.py syncdb 
+    $ python manage.py syncdb
     $ python manage.py migrate
 
 Agora já podemos iniciar a aplicação! Para isso:
 
     $python manage.py runserver
-    
+
 Confira a aplicação rodando pelo navegador usando o endereço `http://127.0.0.1:8000/`.
 
 Acesse o painel de administração do Django:  http://127.0.0.1:8000/admin/. Se um erro como 'Template does not exist' for encontrado, rode o comando:
@@ -136,8 +149,8 @@ Primeiro crie um usuário administrativo do django:
 
 Depois inicie o Celery na pasta onde fica o manage.py:
 
-    $./start_celery.sh 
-     
+    $./start_celery.sh
+
 O Celery é um gerenciador de execução de tarefas assíncronas.
 
 Para importar os dados basta acessar a URL: `http://127.0.0.1:8000/importar/<nome-curto-da-casa-legislativa>/`
@@ -168,16 +181,16 @@ http://radarparlamentar.polignu.org/importadores/
 South é uma ferramenta que funciona como uma camada de migração, independente do banco de dados. Eventualmente, seu models.py vai ser modificado e o South vai identificar e realizar as mudanças correspondentes no seu banco por você, sem a necessidade de utilizar comandos SQL e sem perda de dados.
 
 Quando ocorrer alterações na model, digite no terminal:
-	
+
 	$ python manage.py schemamigration modelagem --auto
 	$ python manage.py migrate modelagem
-	
+
 Observação: Cuidado ao diminuir o tamanho dos campos. Podem existir dados com tamanho superior ao tamanho desejado.
 
 6. Conferindo se está tudo certo
 ---------------------------------
 Execute o script de testes e testes unitários:
-    
+
     $ source tests.sh
 
 
@@ -234,7 +247,7 @@ Agora é preciso executar a importação dos dados no elastic search, o que deve
     >>> from importadores import importador_elasticsearch as iel
     >>> iel.main()
 
-Por fim, para testar: 
+Por fim, para testar:
 
     $ curl -XGET 'http://localhost:9200/radar_parlamentar/radar/_search?q=texto'
 onde text é o texto que será analisado.

@@ -86,10 +86,12 @@ class PeriodosRetrieverTest(TestCase):
         flush_db(cls)
 
     def setUp(self):
-        self.conv = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
+        self.conv = modelagem.models.CasaLegislativa.objects.get(
+            nome_curto='conv')
 
     def test_casa_legislativa_periodos_anuais(self):
-        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.ANO)
+        retriever = modelagem.utils.PeriodosRetriever(
+            self.conv, modelagem.models.ANO)
         periodos = retriever.get_periodos()
         self.assertEqual(len(periodos), 2)
         string1 = str(periodos[0])
@@ -100,7 +102,8 @@ class PeriodosRetrieverTest(TestCase):
         self.assertEqual(periodos[1].quantidade_votacoes, 1)
 
     def test_casa_legislativa_periodos_mensais(self):
-        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.MES)
+        retriever = modelagem.utils.PeriodosRetriever(
+            self.conv, modelagem.models.MES)
         periodos = retriever.get_periodos()
         self.assertEqual(len(periodos), 3)
         string1 = str(periodos[0])
@@ -114,7 +117,8 @@ class PeriodosRetrieverTest(TestCase):
         self.assertEqual(periodos[2].quantidade_votacoes, 1)
 
     def test_casa_legislativa_periodos_semestrais(self):
-        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.SEMESTRE)
+        retriever = modelagem.utils.PeriodosRetriever(
+            self.conv, modelagem.models.SEMESTRE)
         periodos = retriever.get_periodos()
         self.assertEqual(len(periodos), 3)
         d = periodos[0].ini
@@ -169,7 +173,8 @@ class PeriodosRetrieverTest(TestCase):
         UMA_DATA = datetime.date(ano_ini, 0o2, 0o2)
         OUTRA_DATA = datetime.date(ano_fim, 10, 0o2)
         votacoes = modelagem.models.Votacao.objects.all()
-        half = len(votacoes) / 2
+        halfFloat = len(votacoes) / 2
+        half = int(halfFloat)
         datas_originais = {}  # votacao.id => data
         esfera_original = self.conv.esfera
         self.conv.esfera = esfera
@@ -197,48 +202,56 @@ class PeriodosRetrieverTest(TestCase):
 
     def test_casa_legislativa_periodos_sem_lista_votacoes(self):
         casa_nova = modelagem.models.CasaLegislativa(nome="Casa Nova")
-        retriever = modelagem.utils.PeriodosRetriever(casa_nova, modelagem.models.ANO)
+        retriever = modelagem.utils.PeriodosRetriever(
+            casa_nova, modelagem.models.ANO)
         periodos = retriever.get_periodos()
         self.assertEqual(len(periodos), 0)
 
     def test_data_inicio_prox_periodo_mes_menor_12(self):
-        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.MES)
+        retriever = modelagem.utils.PeriodosRetriever(
+            self.conv, modelagem.models.MES)
         data_inicio_periodo = datetime.date(1989, 2, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
         self.assertEqual(resultado, datetime.date(1989, 3, 1))
 
     def test_data_inicio_prox_periodo_mes_igual_a_12(self):
-        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.MES)
+        retriever = modelagem.utils.PeriodosRetriever(
+            self.conv, modelagem.models.MES)
         data_inicio_periodo = datetime.date(1989, 12, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
         self.assertEqual(resultado, datetime.date(1990, 1, 1))
 
     def test_data_inicio_prox_periodo_semestre_com_inicio_mes_menor_7(self):
-        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.SEMESTRE)
+        retriever = modelagem.utils.PeriodosRetriever(
+            self.conv, modelagem.models.SEMESTRE)
         data_inicio_periodo = datetime.date(1989, 1, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
         self.assertEqual(resultado, datetime.date(1989, 7, 1))
 
-    def test_data_inicio_prox_periodo_semestre_com_inicio_mes_maior_igual_7(self):
-        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.SEMESTRE)
+    def test_data_inicio_prox_periodo_semestre_inicio_mes_maior_igual_7(self):
+        retriever = modelagem.utils.PeriodosRetriever(
+            self.conv, modelagem.models.SEMESTRE)
         data_inicio_periodo = datetime.date(1989, 7, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
         self.assertEqual(resultado, datetime.date(1990, 1, 1))
 
     def test_data_inicio_prox_periodo_ano(self):
-        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.ANO)
+        retriever = modelagem.utils.PeriodosRetriever(
+            self.conv, modelagem.models.ANO)
         data_inicio_periodo = datetime.date(1989, 2, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
         self.assertEqual(resultado, datetime.date(1990, 1, 1))
 
     def test_data_inicio_prox_periodo_bienio(self):
-        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.BIENIO)
+        retriever = modelagem.utils.PeriodosRetriever(
+            self.conv, modelagem.models.BIENIO)
         data_inicio_periodo = datetime.date(1989, 7, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
         self.assertEqual(resultado, datetime.date(1991, 1, 1))
 
     def test_data_inicio_prox_periodo_quadrienio(self):
-        retriever = modelagem.utils.PeriodosRetriever(self.conv, modelagem.models.QUADRIENIO)
+        retriever = modelagem.utils.PeriodosRetriever(
+            self.conv, modelagem.models.QUADRIENIO)
         data_inicio_periodo = datetime.date(1989, 7, 1)
         resultado = retriever._data_inicio_prox_periodo(data_inicio_periodo)
         self.assertEqual(resultado, datetime.date(1993, 1, 1))
@@ -247,19 +260,19 @@ class PeriodosRetrieverTest(TestCase):
 class StringUtilsTest(TestCase):
 
     def test_transforma_texto_em_lista_de_string_texto_vazio(self):
-        lista_string = modelagem.utils.StringUtils.transforma_texto_em_lista_de_string(
+        lsta = modelagem.utils.StringUtils.transforma_texto_em_lista_de_string(
             "")
-        self.assertEqual(0, len(lista_string))
+        self.assertEqual(0, len(lsta))
 
     def test_transforma_texto_em_lista_de_string_texto_nulo(self):
-        lista_string = modelagem.utils.StringUtils.transforma_texto_em_lista_de_string(
+        lsta = modelagem.utils.StringUtils.transforma_texto_em_lista_de_string(
             None)
-        self.assertEqual(0, len(lista_string))
+        self.assertEqual(0, len(lsta))
 
     def test_transforma_texto_em_lista_de_string(self):
-        lista_string = modelagem.utils.StringUtils.transforma_texto_em_lista_de_string(
+        lsta = modelagem.utils.StringUtils.transforma_texto_em_lista_de_string(
             "educação, saúde, desmatamento")
-        self.assertEqual(3, len(lista_string))
-        self.assertEqual("educação", lista_string[0])
-        self.assertEqual("saúde", lista_string[1])
-        self.assertEqual("desmatamento", lista_string[2])
+        self.assertEqual(3, len(lsta))
+        self.assertEqual("educação", lsta[0])
+        self.assertEqual("saúde", lsta[1])
+        self.assertEqual("desmatamento", lsta[2])

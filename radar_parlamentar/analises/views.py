@@ -19,7 +19,7 @@
 
 
 from django.template import RequestContext
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from modelagem import models
 from modelagem import utils
@@ -84,7 +84,7 @@ def json_analise(request, nome_curto_casa_legislativa,
     return HttpResponse(json, mimetype='application/json')
 
 
-def lista_de_votacoes_filtradas(request, 
+def lista_de_votacoes_filtradas(request,
                                 nome_curto_casa_legislativa,
                                 periodicidade=models.BIENIO,
                                 palavras_chave=""):
@@ -105,3 +105,62 @@ def lista_de_votacoes_filtradas(request,
                                lista_de_palavras_chave,
                                'votacoes': votacoes,
                                'periodicidade': periodicidade})
+
+def redirect_json_analise(request, nome_curto_casa_legislativa, periodicidade):
+    url = (
+            "/json/radar/{}/{}/"
+            .format(nome_curto_casa_legislativa, periodicidade)
+        )
+    return HttpResponseRedirect(url)
+
+def redirect_analise(request, nome_curto_casa_legislativa):
+    url = (
+            "/radar/{}"
+            .format(nome_curto_casa_legislativa)
+        )
+    return HttpResponseRedirect(url)
+
+def redirect_json_analise_p_chave(request, nome_curto_casa_legislativa, 
+                                  periodicidade, palavras_chave): 
+    url = (
+            "/json/radar/{}/{}/{}"
+            .format(nome_curto_casa_legislativa, periodicidade, palavras_chave)
+        )
+    return HttpResponseRedirect(url)
+
+def redirect_votacoes_filtradas(request, nome_curto_casa_legislativa):
+    url = (
+            "/dados/votacoes/{}"
+            .format(nome_curto_casa_legislativa)
+        )
+    return HttpResponseRedirect(url)
+
+def redirect_lista_votacoes_p_chave(request, nome_curto_casa_legislativa, 
+                                    periodicidade, palavras_chave): 
+    url = (
+            "/dados/votacoes/{}/{}/{}"
+            .format(nome_curto_casa_legislativa, periodicidade, palavras_chave)
+        )
+    return HttpResponseRedirect(url)
+
+def redirect_plenaria(request, nome_curto_casa_legislativa, 
+                      identificador_proposicao): 
+    url = (
+            "/plenaria/{}/{}"
+            .format(nome_curto_casa_legislativa, identificador_proposicao)
+        )
+    return HttpResponseRedirect(url)
+
+def redirect_json_plenaria(request, nome_curto_casa_legislativa, 
+                      identificador_proposicao): 
+    url = (
+            "/json/plenaria/{}/{}"
+            .format(nome_curto_casa_legislativa, identificador_proposicao)
+        )
+    return HttpResponseRedirect(url)
+
+def redirect_dados(request): 
+    return HttpResponseRedirect("/dados/downloads")
+
+def redirect_importadores(request): 
+    return HttpResponseRedirect("/dados/importadores")

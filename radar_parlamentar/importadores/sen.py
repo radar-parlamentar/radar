@@ -25,11 +25,11 @@ Classes:
     ImportadorVotacoesSenado
 """
 
-from __future__ import unicode_literals
+
 from datetime import date
 from modelagem import models
 from django.core.exceptions import ObjectDoesNotExist
-from chefes_executivos import ImportadorChefesExecutivos
+from .chefes_executivos import ImportadorChefesExecutivos
 import re
 import os
 import sys
@@ -134,7 +134,7 @@ class ImportadorVotacoesSenado:
         nome_partido = nome_partido.strip()
         partido = models.Partido.from_nome(nome_partido)
         if partido is None:
-            logger.warn('Não achou o partido %s' % nome_partido)
+            logger.warning('Não achou o partido %s' % nome_partido)
             partido = models.Partido.get_sem_partido()
         return partido
 
@@ -200,7 +200,7 @@ class ImportadorVotacoesSenado:
         return prop
 
     def _read_xml(self, xml_file):
-        #"""Salva no banco de dados do Django e retorna lista das votações"""
+        """Salva no banco de dados do Django e retorna lista das votações"""
 
         f = open(xml_file, 'r')
         xml = f.read()
@@ -242,7 +242,7 @@ class ImportadorVotacoesSenado:
         return votacao
 
     def _check_null_votos_tree(self, votos_tree, votacao):
-        if votos_tree is  None:
+        if votos_tree is None:
             logger.warn(
                 'Votação desconsiderada (votos_tree nulo)')
             votacao.delete()
@@ -258,9 +258,12 @@ class ImportadorVotacoesSenado:
         return False
 
     def _save_votacao(self, votacao_tree, votacao):
-          #setando atributos da votação a serem salvos caso ela não seja nula e tenha votos
-        votacao.descricao = votacao_tree.find('DescricaoVotacao').text
-        votacao.data = self._converte_data(votacao_tree.find('DataSessao').text)
+        '''setando atributos da votação a serem
+          salvos caso ela não seja nula e tenha votos'''
+        votacao.descricao = votacao_tree.find(
+            'DescricaoVotacao').text
+        votacao.data = self._converte_data(
+            votacao_tree.find('DataSessao').text)
         votacao.save()
         return True, votacao
 
@@ -269,11 +272,11 @@ class ImportadorVotacoesSenado:
         votacao = self._setting_votacao(votacao_tree)
         votos_tree = votacao_tree.find('Votos')
 
-        #In case there is no votos_tree, gives a warning and return.
+        # In case there is no votos_tree, gives a warning and return.
         if self._check_null_votos_tree(votos_tree, votacao):
             return False, None
 
-        #In case there is no votos, gives a warning and return.
+        # In case there is no votos, gives a warning and return.
         if self._check_null_votos(votos_tree, votacao):
             return False, None
 
@@ -288,21 +291,24 @@ class ImportadorVotacoesSenado:
         # Pelo q vimos, nesses XMLs não há votações 'inúteis' (homenagens etc)
         # como na cmsp (exceto as secretas)
         votacoes_tree = tree.find('Votacoes')
-        #caso a árvore de votações seja vazia, a função é encerrada
+        # caso a árvore de votações seja vazia, a função é encerrada
         if votacoes_tree is None:
             return votacoes
         for votacao_tree in votacoes_tree:
             votacao_secreta = votacao_tree.find('Secreta').text
-            #caso nao seja uma votação ou seja uma votação secreta, a função é encerrada
+            ''' caso nao seja uma votação ou seja uma
+            votação secreta, a função é encerrada'''
             if votacao_tree.tag == 'Votacao' and votacao_secreta == 'N':
-                    
-                #caso o codigo já exista na model
-                code_exists, votacoes_query = self._code_exists_in_votacao_in_model(votacao_tree)
+                # caso o codigo já exista na model
+                code_exists = self._code_exists_in_votacao_in_model(
+                    votacao_tree)
+                votacoes_query = code_exists
                 if votacoes_query:
                     votacao = votacoes_query[0]
                     votacoes.append(votacao)
                 else:
-                    sucess_status, votacao = self._add_votacao_to_model(votacao_tree)
+                    sucess_status = self._add_votacao_to_model(votacao_tree)
+                    votacao = sucess_status
                     if sucess_status is True and votacao is not None:
                         votacoes.append(votacao)
 
@@ -317,8 +323,8 @@ class ImportadorVotacoesSenado:
         """Retorna uma lista com os caminhos dos arquivos XMLs contidos
         na pasta VOTACOES_FOLDER"""
         files = os.listdir(VOTACOES_FOLDER)
-        xmls = filter(lambda name: name.endswith('.xml'), files)
-        xmls = map(lambda name: os.path.join(VOTACOES_FOLDER, name), xmls)
+        xmls = [name for name in files if name.endswith('.xml')]
+        xmls = [os.path.join(VOTACOES_FOLDER, name) for name in xmls]
         return xmls
 
     def importar_votacoes(self):
@@ -361,7 +367,8 @@ def main():
     geradorCasaLeg = CasaLegislativaGerador()
     geradorCasaLeg.gera_senado()
     logger.info('IMPORTANDO CHEFES EXECUTIVOS DO SENADO')
-    importer_chefe = ImportadorChefesExecutivos(NOME_CURTO, 'Presidentes', 'Presidente', XML_FILE)
+    importer_chefe = ImportadorChefesExecutivos(
+        NOME_CURTO, 'Presidentes', 'Presidente', XML_FILE)
     importer_chefe.importar_chefes()
     logger.info('IMPORTANDO VOTAÇÕES DO SENADO')
     importer = ImportadorVotacoesSenado()

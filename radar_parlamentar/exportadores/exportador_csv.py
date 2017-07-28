@@ -18,13 +18,16 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Exportação para CSV com o objetivo de criar uma base de dados com schema simplificado para análises ad-hoc."""
+"""Exportação para CSV com o objetivo de criar uma base de dados com
+schema simplificado para análises ad-hoc."""
+
 
 import os
 import csv
+import logging
 from modelagem import models
 from django.utils.dateparse import parse_datetime
-import logging
+
 logger = logging.getLogger("radar")
 
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -33,36 +36,36 @@ NORTE = 'Norte'
 NORDESTE = 'Nordeste'
 CENTRO_OESTE = 'CentroOeste'
 SUDESTE = 'Sudeste'
-SUL =  'Sul'
+SUL = 'Sul'
 
 REGIAO_POR_UF = {
-  'AC' : NORTE,
-  'AL' : NORDESTE,
-  'AP' : NORTE,
-  'AM' : NORTE,
-  'BA' : NORDESTE,
-  'CE' : NORDESTE,
-  'DF' : CENTRO_OESTE,
-  'ES' : SUDESTE,
-  'GO' : CENTRO_OESTE,
-  'MA' : NORTE,
-  'MT' : CENTRO_OESTE,
-  'MS' : CENTRO_OESTE,
-  'MG' : SUDESTE,
-  'PA' : NORTE,
-  'PB' : NORDESTE,
-  'PR' : SUL,
-  'PE' : NORDESTE,
-  'PI' : NORDESTE,
-  'RJ' : SUDESTE,
-  'RN' : NORTE,
-  'RS' : SUL,
-  'RO' : NORTE,
-  'RR' : NORTE,
-  'SC' : NORTE,
-  'SP' : SUDESTE,
-  'SE' : NORDESTE,
-  'TO' : NORTE 
+    'AC': NORTE,
+    'AL': NORDESTE,
+    'AP': NORTE,
+    'AM': NORTE,
+    'BA': NORDESTE,
+    'CE': NORDESTE,
+    'DF': CENTRO_OESTE,
+    'ES': SUDESTE,
+    'GO': CENTRO_OESTE,
+    'MA': NORTE,
+    'MT': CENTRO_OESTE,
+    'MS': CENTRO_OESTE,
+    'MG': SUDESTE,
+    'PA': NORTE,
+    'PB': NORDESTE,
+    'PR': SUL,
+    'PE': NORDESTE,
+    'PI': NORDESTE,
+    'RJ': SUDESTE,
+    'RN': NORTE,
+    'RS': SUL,
+    'RO': NORTE,
+    'RR': NORTE,
+    'SC': NORTE,
+    'SP': SUDESTE,
+    'SE': NORDESTE,
+    'TO': NORTE
 }
 
 PROPOSICAO = 'PROPOSICAO'
@@ -74,17 +77,20 @@ UF = 'UF'
 REGIAO = 'REGIAO'
 VOTO = 'VOTO'
 
-LABELS = [PROPOSICAO, VOTACAO, PARLAMENTAR_ID, PARLAMENTAR_NOME, PARTIDO, UF, REGIAO, VOTO]
+LABELS = [
+    PROPOSICAO, VOTACAO, PARLAMENTAR_ID,
+    PARLAMENTAR_NOME, PARTIDO, UF, REGIAO, VOTO]
 
 CSV_FILE = 'votacoes.csv'
 
 
-class ExportadorCSV:
+class ExportadorCSV(object):
 
     def __init__(self, votacoes):
         self.votacoes = votacoes
         self.csv_rows = []
 
+    #
     def exportar_csv(self):
         self.transform_data()
         self.write_csv()
@@ -109,27 +115,29 @@ class ExportadorCSV:
 
     def write_csv(self):
         filepath = os.path.join(MODULE_DIR, 'saida', CSV_FILE)
-        with open(filepath, 'wb') as f:
+        with open(filepath, 'w') as f:
             writer = csv.writer(f, delimiter=',')
             writer.writerows(self.csv_rows)
 
 
 def main():
     try:
-      cdep = models.CasaLegislativa.objects.get(nome_curto='cdep')
+        cdep = models.CasaLegislativa.objects.get(nome_curto='cdep')
     except models.CasaLegislativa.DoesNotExist:
-      cdep = None
+        cdep = None
     try:
-      sen = models.CasaLegislativa.objects.get(nome_curto='sen')
+        sen = models.CasaLegislativa.objects.get(nome_curto='sen')
     except models.CasaLegislativa.DoesNotExist:
-      sen = None
-    vs1 = models.Votacao.objects.filter(proposicao__casa_legislativa=cdep, proposicao__sigla='PL', proposicao__numero='1876', proposicao__ano='1999')
-    vs2 = models.Votacao.objects.filter(proposicao__casa_legislativa=sen, proposicao__sigla='PLC', proposicao__numero='00007', proposicao__ano='2010')
-    vs3 = models.Votacao.objects.filter(proposicao__casa_legislativa=sen, proposicao__sigla='PEC', proposicao__numero='00007', proposicao__ano='2015')
+        sen = None
+    vs1 = models.Votacao.objects.filter(
+        proposicao__casa_legislativa=cdep, proposicao__sigla='PL',
+        proposicao__numero='1876', proposicao__ano='1999')
+    vs2 = models.Votacao.objects.filter(
+        proposicao__casa_legislativa=sen, proposicao__sigla='PLC',
+        proposicao__numero='00007', proposicao__ano='2010')
+    vs3 = models.Votacao.objects.filter(
+        proposicao__casa_legislativa=sen, proposicao__sigla='PEC',
+        proposicao__numero='00007', proposicao__ano='2015')
     votacoes = vs1 | vs2 | vs3
     exportador = ExportadorCSV(votacoes)
     exportador.exportar_csv()
-
-
-
-

@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import patterns, url
-from django.conf.urls.defaults import *
-from django.views.generic.simple import redirect_to
+from django.conf.urls import *
+from django.shortcuts import redirect
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -41,7 +41,7 @@ urlpatterns = patterns(
 
     # Index
     url(r'^$', 'radar_parlamentar.views.index', name="index"),
-    url(r'^index/$', redirect_to, {'url': '/'}),
+    url(r'^index/$', redirect, {'url': '/'}),
     url(r'^origem/$', 'radar_parlamentar.views.origem', name="origem"),
     url(r'^ogrupo/$', 'radar_parlamentar.views.ogrupo', name="ogrupo"),
     url(r'^premiacoes/$',
@@ -126,42 +126,40 @@ urlpatterns = patterns(
     # serão mais utilizadas.
     #
     # Serviço que retorna conteúdo para plotar o mapa
+
     url(r'^analises/analise/' + casa_legislativa + '$',
-        redirect_to, {'url': '/' + url_radar +
-                      "%(nome_curto_casa_legislativa)s/"}),
+        "analises.views.redirect_analise",
+        name="redirect_analise"),
+
     url(r'^analises/json_analise/' + casa_legislativa + periodicidade + '$',
-        redirect_to, {'url': '/' + url_json_radar +
-                      "%(nome_curto_casa_legislativa)s/%(periodicidade)s/"}),
+        "analises.views.redirect_json_analise", name="redirect_json_analise"),
+
+
     url(r'^analises/json_analise/' + casa_legislativa + periodicidade +
         palavras_chave + '$',
-        redirect_to, {'url': '/' + url_json_radar +
-                      "%(nome_curto_casa_legislativa)s/%(periodicidade)s/" +
-                      "%(palavras_chave)s/"}),
+        "analises.views.redirect_json_analise_p_chave",
+        name="redirect_json_analise_p_chave"),
+
     url(r'^analises/lista_de_votacoes_filtradas/' + casa_legislativa + '$',
-        redirect_to, {'url': '/' + url_lista +
-                      "%(nome_curto_casa_legislativa)s/"}),
+        "analises.views.redirect_votacoes_filtradas",
+        name="redirect_votacoes_filtradas"),
+
     url(r'^analises/lista_de_votacoes_filtradas/' + casa_legislativa +
         periodicidade + palavras_chave + '$',
-        redirect_to, {'url': '/' + url_lista +
-                      "%(nome_curto_casa_legislativa)s/%(periodicidade)s/" +
-                      "%(palavras_chave)s/"}),
+        "analises.views.redirect_lista_votacoes_p_chave", 
+        name="redirect_lista_votacoes_p_chave"),
 
     # Páginas da Plenária - Hackathon Eleições 2016
-    url(r'^analises/' + url_plenaria + casa_legislativa + '?' +
-        identificador_proposicao + '?/$',
-        redirect_to, {'url': '/' + url_plenaria +
-                      "%(nome_curto_casa_legislativa)s/" +
-                      "%(identificador_proposicao)s/"}),
+    url(r'^analises/' + url_plenaria + casa_legislativa +
+        identificador_proposicao + '$',
+        "analises.views.redirect_plenaria", name="redirect_plenaria"),
+
     url(r'^json_plenaria/' + casa_legislativa +
         identificador_proposicao + '$',
-        redirect_to, {'url': '/' + url_json_plenaria +
-                      "%(nome_curto_casa_legislativa)s/" +
-                      "%(identificador_proposicao)s/"}),
+        "analises.views.redirect_json_plenaria", name="redirect_json_plenaria"),
 
-    url(r'^dados$',
-        redirect_to, {'url': '/dados/downloads/'}),
+    url(r'^dados$', "analises.views.redirect_dados", name="redirect_dados"),
 
     url(r'^importadores/$',
-        redirect_to, {'url': '/dados/importadores/'}),
-
+        "analises.views.redirect_importadores", name="redirect_importadores")
 )

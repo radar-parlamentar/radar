@@ -19,13 +19,15 @@
 
 """Módulo responsável por importar dados de gênero da CDEP"""
 
-from __future__ import unicode_literals
-from StringIO import StringIO
+
+from io import BytesIO
 from modelagem import models
 
 import xml.etree.ElementTree as etree
 import zipfile
-import urllib2
+import urllib.request
+import urllib.error
+import urllib.parse
 import logging
 
 logger = logging.getLogger("radar")
@@ -36,7 +38,7 @@ def abrir_xml_zipado(url=None):
     try:
         xml_zip_text = _faz_download_arquivo_zipado(url)
 
-        xml_zip_file = StringIO()
+        xml_zip_file = BytesIO()
         xml_zip_file.write(xml_zip_text)
 
         xml_zip = zipfile.ZipFile(xml_zip_file)
@@ -53,8 +55,8 @@ def abrir_xml_zipado(url=None):
 def _faz_download_arquivo_zipado(url):
     text = ''
     try:
-        text = urllib2.urlopen(url).read()
-    except (urllib2.URLError, urllib2.HTTPError) as e:
+        text = urllib.request.urlopen(url).read()
+    except (urllib.error.URLError, urllib.error.HTTPError) as e:
         logger.info('%s: %s' % (e.__class__.__name__, e))
 
     return text
@@ -73,7 +75,7 @@ def insere_genero_parlamentares_camara():
         sexo_parlamentar_xml = parlamentar_xml.find('SEXO').text
 
         # Transformando nome do parlamentar no formato title do Python.
-        nome_parlamentar_xml = unicode(
+        nome_parlamentar_xml = str(
             nome_parlamentar_xml).title().encode('utf-8')
 
         lista_parlamentar_banco = models.Parlamentar.objects.filter(
@@ -86,7 +88,7 @@ def insere_genero_parlamentares_camara():
                 parlamentar_banco.save()
 
                 string_log = 'Genero de {0} \
-                    alterado com sucesso!'.decode().encode('utf-8')
+                    alterado com sucesso!'
                 string_log = string_log.format(nome_parlamentar_xml)
                 logger.debug(string_log)
 

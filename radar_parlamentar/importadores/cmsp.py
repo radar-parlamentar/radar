@@ -20,10 +20,10 @@
 
 """módulo cmsp (Câmara Municipal de São Paulo)"""
 
-from __future__ import unicode_literals
+
 from django.utils.dateparse import parse_datetime
 from modelagem import models
-from chefes_executivos import ImportadorChefesExecutivos
+from .chefes_executivos import ImportadorChefesExecutivos
 import re
 import sys
 import os
@@ -204,7 +204,7 @@ class XmlCMSP:
             prop_nome = self.prop_nome(vot_tree.get('Materia'))
             self.find_voting(proposicoes, votacoes, vot_tree, prop_nome)
             # se a votacao for associavel a uma proposicao, entao..
-    
+
     def find_voting(self, proposicoes, votacoes, vot_tree, prop_nome):
         if prop_nome:
             id_vot = vot_tree.get('VotacaoID')
@@ -216,25 +216,27 @@ class XmlCMSP:
             else:
                 # a proposicao a qual a votacao sob analise se refere jah
                 # estava no dicionario (eba!)
-                self.guarantee_existence_of_proposition(proposicoes, votacoes, vot_tree, prop_nome, id_vot)
+                self.guarantee_existence_of_proposition(
+                    proposicoes, votacoes, vot_tree, prop_nome, id_vot)
 
-    def guarantee_existence_of_proposition(self, proposicoes, votacoes, vot_tree, prop_nome, id_vot):
+    def guarantee_existence_of_proposition(self,
+                                           proposicoes, votacoes,
+                                           vot_tree, prop_nome, id_vot):
         if prop_nome in proposicoes:
             proposicao = proposicoes[prop_nome]
         else:
             # a prop. nao estava criada ainda, entao devemos tanto criar
             # qnt cadastrar no dicionario.
-            proposicao = self.create_proposition(proposicoes,prop_nome,vot_tree)
-            
+            proposicao = self.create_proposition(
+                proposicoes, prop_nome, vot_tree)
         if self.verbose:
             logger.info('Proposicao %s salva' % proposicao)
         proposicao.save()
-        vot = self.create_voting(proposicao,vot_tree,id_vot)
+        vot = self.create_voting(proposicao, vot_tree, id_vot)
         vot.save()
         votacoes.append(vot)
 
-
-    def create_proposition(self, proposicoes, prop_nome,vot_tree):
+    def create_proposition(self, proposicoes, prop_nome, vot_tree):
         proposicao = models.Proposicao()
         proposicao.sigla, proposicao.numero, proposicao.ano = self. \
             tipo_num_anoDePropNome(prop_nome)
@@ -243,12 +245,13 @@ class XmlCMSP:
         proposicoes[prop_nome] = proposicao
         return proposicao
 
-    def create_voting(self,prop,vot_tree,id_vot):
+    def create_voting(self, prop, vot_tree, id_vot):
         votacao = models.Votacao()
         # só pra criar a chave primária e poder atribuir o votos
         votacao.save()
         votacao.id_vot = id_vot
-        votacao.descricao = vot_tree.get('Materia') + ' - ' + vot_tree.get('NotasRodape')
+        votacao.descricao = vot_tree.get(
+            'Materia') + ' - ' + vot_tree.get('NotasRodape')
         votacao.data = self.data_da_sessao
         votacao.resultado = vot_tree.get('Resultado')
         self.votos_from_tree(vot_tree, votacao)
@@ -258,7 +261,6 @@ class XmlCMSP:
         else:
             self.progresso()
         return votacao
-
 
     def sessao_from_tree(self, proposicoes, votacoes, sessao_tree):
         self.data_da_sessao = self.converte_data(sessao_tree.get('Data'))
@@ -305,8 +307,10 @@ def main():
     gerador_casa = GeradorCasaLegislativa()
     cmsp = gerador_casa.gerar_cmsp()
     importer = ImportadorCMSP(cmsp)
-    logger.info('IMPORTANDO CHEFES EXECUTIVOS DA CAMARA MUNICIPAL DE SÃO PAULO')
-    importer_chefe = ImportadorChefesExecutivos(NOME_CURTO, 'PrefeitosSP', 'PrefeitoSP', XML_FILE)
+    logger.info(
+        'IMPORTANDO CHEFES EXECUTIVOS DA CAMARA MUNICIPAL DE SÃO PAULO')
+    importer_chefe = ImportadorChefesExecutivos(
+        NOME_CURTO, 'PrefeitosSP', 'PrefeitoSP', XML_FILE)
     importer_chefe.importar_chefes()
     for xml in [XML2012, XML2013, XML2014, XML2015, XML2016]:
         importer.importar_de(xml)

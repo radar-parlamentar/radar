@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 from django.test import TestCase
 from modelagem.models import Parlamentar, Proposicao, Votacao, \
@@ -12,20 +12,21 @@ from importadores import conv
 from operator import itemgetter
 from plenaria import views
 
+
 class ViewsTest(TestCase):
 
-	@classmethod
-	def setUpClass(cls):
-		cls.importer = conv.ImportadorConvencao()
-		cls.importer.importar()
+    @classmethod
+    def setUpClass(cls):
+        cls.importer = conv.ImportadorConvencao()
+        cls.importer.importar()
 
-	@classmethod
-	def tearDownClass(cls):
-		from util_test import flush_db
-		flush_db(cls)
+    @classmethod
+    def tearDownClass(cls):
+        from util_test import flush_db
+        flush_db(cls)
 
-	def test_identificador(self):
-		proposicao = models.Proposicao.objects.get(id=1)
-		#proposicao.ano = "1990"
-		resultado = views.identificador(proposicao)
-		self.assertEqual(resultado, "PL-1-")
+    def test_identificador(self):
+        proposicao = models.Proposicao.objects.get(id=1)
+        # proposicao.ano = "1990"
+        resultado = views.identificador(proposicao)
+        self.assertEqual(resultado, "PL-1-")

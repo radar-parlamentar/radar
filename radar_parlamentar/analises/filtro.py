@@ -67,6 +67,7 @@ class LuceneQueryBuilder():
             self.periodo_casa_legislativa.ini.isoformat(),
             self.periodo_casa_legislativa.fim.isoformat())
 
+
 class FiltroVotacao(TestCase):
 
     """Filtra votações pelos campos:
@@ -129,9 +130,9 @@ class FiltroChefesExecutivo(TestCase):
         self.chefes_executivos = []
 
     def filtra_chefes_executivo(self):
-        self.chefes_executivo = models.ChefeExecutivo.por_casa_legislativa_e_periodo(
-            self.casa_legislativa,
-            self.periodo_casa_legislativa.ini,
-            self.periodo_casa_legislativa.fim)
+        self.chefes_executivo = \
+            models.ChefeExecutivo.por_casa_legislativa_e_periodo(
+                self.casa_legislativa,
+                self.periodo_casa_legislativa.ini,
+                self.periodo_casa_legislativa.fim)
         return self.chefes_executivo
-

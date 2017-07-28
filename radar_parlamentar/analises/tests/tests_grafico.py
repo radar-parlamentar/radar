@@ -48,7 +48,7 @@ class JsonAnaliseGeneratorTest(TestCase):
     def setUp(self):
 
         self.casa = models.CasaLegislativa.objects.get(nome_curto='conv')
-       
+
         for partido in JsonAnaliseGeneratorTest.importer.partidos:
             if partido.nome == conv.GIRONDINOS:
                 self.girondinos = partido
@@ -63,8 +63,10 @@ class JsonAnaliseGeneratorTest(TestCase):
         analise_temporal.analises_periodo = []
         analise_temporal.total_votacoes = 8
 
-        self.chefe = models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva", genero="M", partido = self.girondinos,
-                                    mandato_ano_inicio = 1989, mandato_ano_fim = 1990)
+        self.chefe = models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva",
+                                           genero="M", partido=self.girondinos,
+                                           mandato_ano_inicio=1989,
+                                           mandato_ano_fim=1990)
         self.chefe.save()
         self.chefe.casas_legislativas.add(self.casa)
 
@@ -89,7 +91,8 @@ class JsonAnaliseGeneratorTest(TestCase):
         ap1.parlamentares_por_partido = \
             JsonAnaliseGeneratorTest.importer.parlamentares
         ap1.coordenadas_parlamentares = {}  # parlamentar.id => [x,y]
-        for partido, parlamentares in list(ap1.parlamentares_por_partido.items()):
+        for partido, parlamentares in list(
+                ap1.parlamentares_por_partido.items()):
             for parlamentar in parlamentares:
                 ap1.coordenadas_parlamentares[parlamentar.id] = [random(),
                                                                  random()]

@@ -167,7 +167,6 @@ if __name__ == "__main__":
     Center(A)
     print("A:", A)
 
-
     print("PCA ... \n")
     p = PCA(A, fraction=fraction)
     print("npc:", p.npc)

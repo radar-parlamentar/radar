@@ -31,6 +31,7 @@ import datetime
 
 logger = logging.getLogger("radar")
 
+
 class ModelsTest(TestCase):
 
     @classmethod
@@ -42,10 +43,7 @@ class ModelsTest(TestCase):
     def tearDownClass(cls):
         flush_db(cls)
 
-
-    ########################
-    #### Classe Partido ####
-    ########################
+    # Classe Partido #
 
     def test_partido(self):
         pt = modelagem.models.Partido.from_nome('PT')
@@ -62,11 +60,13 @@ class ModelsTest(TestCase):
 
     def cria_chefes_executivo(self):
         pt = modelagem.models.Partido.from_nome('PT')
-        chefe_masculino = modelagem.models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva", genero="M", partido = pt,
-                                    mandato_ano_inicio = 1989, mandato_ano_fim = 1990)
+        chefe_masculino = modelagem.models.ChefeExecutivo(
+            nome="Luiz Inacio Pierre da Silva", genero="M", partido=pt,
+            mandato_ano_inicio=1989, mandato_ano_fim=1990)
         chefe_masculino.save()
-        chefe_feminino = modelagem.models.ChefeExecutivo(nome="Dilmé Rouseffé", genero="F", partido = pt,
-                                    mandato_ano_inicio = 1989, mandato_ano_fim = 1990)
+        chefe_feminino = modelagem.models.ChefeExecutivo(
+            nome="Dilmé Rouseffé", genero="F", partido=pt,
+            mandato_ano_inicio=1989, mandato_ano_fim=1990)
         chefe_feminino.save()
         chefes = [chefe_masculino, chefe_feminino]
         return chefes
@@ -79,7 +79,7 @@ class ModelsTest(TestCase):
     def test_partido_from_nome(self):
         nome_partido = 'PT'
         partido = modelagem.models.Partido.from_nome(nome_partido)
-        self.assertEqual(partido.nome, 'PT' )
+        self.assertEqual(partido.nome, 'PT')
 
     def test_partido_from_numero_None(self):
         numero_partido = None
@@ -100,8 +100,10 @@ class ModelsTest(TestCase):
     def test_normaliza_nome_partido(self):
         nome_partido1 = 'democratas'
         nome_partido2 = 'trabalhadores'
-        resultado1 = modelagem.models.Partido._normaliza_nome_partido(nome_partido1)
-        resultado2 = modelagem.models.Partido._normaliza_nome_partido(nome_partido2)
+        resultado1 = modelagem.models.Partido._normaliza_nome_partido(
+            nome_partido1)
+        resultado2 = modelagem.models.Partido._normaliza_nome_partido(
+            nome_partido2)
         self.assertEqual(resultado1, 'DEM')
         self.assertEqual(resultado2, 'TRABALHADORES')
 
@@ -115,10 +117,7 @@ class ModelsTest(TestCase):
         resultado = modelagem.models.Partido._from_regex(1, "PVT")
         self.assertFalse(resultado, "PVT")
 
-
-    #################################
-    #### Classe CasaLegislativa #####
-    #################################
+    # Classe CasaLegislativa
 
     def test_partidos(self):
         casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
@@ -138,7 +137,8 @@ class ModelsTest(TestCase):
 
     def test_num_votacao(self):
         casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
-        votacoes = casa.num_votacao(data_inicial='1990-01-01', data_final='1990-01-01')
+        votacoes = casa.num_votacao(
+            data_inicial='1990-01-01', data_final='1990-01-01')
         self.assertEqual(votacoes, 1)
 
     def test_num_votos(self):
@@ -284,22 +284,22 @@ class ModelsTest(TestCase):
         nomes_votacao = [vt.id_vot for vt in depois_objetos_votacao]
         self.assertFalse(' 12345' in nomes_votacao)
 
-
-    ################################
-    #### Classe ChefeExecutivo #####
-    ################################
+    # Classe ChefeExecutivo
 
     def test_get_chefe_anual(self):
         ano = 1989
         pt = modelagem.models.Partido.from_nome('PT')
-        chefe_masculino = modelagem.models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva", genero="M", partido = pt,
-                                    mandato_ano_inicio = 1989, mandato_ano_fim = 1990)
+        chefe_masculino = modelagem.models.ChefeExecutivo(
+            nome="Luiz Inacio Pierre da Silva", genero="M", partido=pt,
+            mandato_ano_inicio=1989, mandato_ano_fim=1990)
         chefe_masculino.save()
-        chefe_feminino = modelagem.models.ChefeExecutivo(nome="Dilmé Rouseffé", genero="F", partido = pt,
-                                    mandato_ano_inicio = 1991, mandato_ano_fim = 1992)
+        chefe_feminino = modelagem.models.ChefeExecutivo(
+            nome="Dilmé Rouseffé", genero="F", partido=pt,
+            mandato_ano_inicio=1991, mandato_ano_fim=1992)
         chefe_feminino.save()
         chefes = [chefe_masculino, chefe_feminino]
-        resultado = modelagem.models.ChefeExecutivo.get_chefe_anual(ano, chefes)
+        resultado = modelagem.models.ChefeExecutivo.get_chefe_anual(
+            ano, chefes)
         self.assertEqual(len(resultado), 1)
         self.assertEqual(chefes[0].nome, "Luiz Inacio Pierre da Silva")
 
@@ -308,28 +308,34 @@ class ModelsTest(TestCase):
         ano_fim = 1992
         pt = modelagem.models.Partido.from_nome('PT')
 
-        #teste ano_inicio_valido
-        chefe1 = modelagem.models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva", genero="M", partido = pt,
-                                    mandato_ano_inicio = 1989, mandato_ano_fim = 1991)
+        # teste ano_inicio_valido
+        chefe1 = modelagem.models.ChefeExecutivo(
+            nome="Luiz Inacio Pierre da Silva", genero="M", partido=pt,
+            mandato_ano_inicio=1989, mandato_ano_fim=1991)
         chefe1.save()
-        #teste ano_fim_valido
-        chefe2 = modelagem.models.ChefeExecutivo(nome="Dilmé Rouseffé", genero="F", partido = pt,
-                                    mandato_ano_inicio = 1991, mandato_ano_fim = 1992)
+        # teste ano_fim_valido
+        chefe2 = modelagem.models.ChefeExecutivo(
+            nome="Dilmé Rouseffé", genero="F", partido=pt,
+            mandato_ano_inicio=1991, mandato_ano_fim=1992)
         chefe2.save()
-        #teste mandato_ano_inicio_valido
-        chefe3 = modelagem.models.ChefeExecutivo(nome="Jose Genuino", genero="M", partido = pt,
-                                    mandato_ano_inicio = 1991, mandato_ano_fim = 1992)
+        # teste mandato_ano_inicio_valido
+        chefe3 = modelagem.models.ChefeExecutivo(
+            nome="Jose Genuino", genero="M", partido=pt,
+            mandato_ano_inicio=1991, mandato_ano_fim=1992)
         chefe3.save()
-        #teste mandato_ano_fim_valido
-        chefe4 = modelagem.models.ChefeExecutivo(nome="Joseh Gennuinno", genero="M", partido = pt,
-                                    mandato_ano_inicio = 1990, mandato_ano_fim = 1991)
+        # teste mandato_ano_fim_valido
+        chefe4 = modelagem.models.ChefeExecutivo(
+            nome="Joseh Gennuinno", genero="M", partido=pt,
+            mandato_ano_inicio=1990, mandato_ano_fim=1991)
         chefe4.save()
-        #teste falha
-        chefe5 = modelagem.models.ChefeExecutivo(nome="Carlos Andrades", genero="M", partido = pt,
-                                    mandato_ano_inicio = 1993, mandato_ano_fim = 1996)
+        # teste falha
+        chefe5 = modelagem.models.ChefeExecutivo(
+            nome="Carlos Andrades", genero="M", partido=pt,
+            mandato_ano_inicio=1993, mandato_ano_fim=1996)
         chefe5.save()
         chefes = [chefe1, chefe2, chefe3, chefe4, chefe5]
-        resultado = modelagem.models.ChefeExecutivo.get_chefe_periodo(ano_inicio, ano_fim, chefes)
+        resultado = modelagem.models.ChefeExecutivo.get_chefe_periodo(
+            ano_inicio, ano_fim, chefes)
         self.assertEqual(len(resultado), 4)
         self.assertEqual(chefes[0].nome, "Luiz Inacio Pierre da Silva")
         self.assertEqual(chefes[1].nome, "Dilmé Rouseffé")
@@ -338,8 +344,9 @@ class ModelsTest(TestCase):
 
     def test_get_titulo_chefe_masculino_municipal(self):
         pt = modelagem.models.Partido.from_nome('PT')
-        chefe = modelagem.models.ChefeExecutivo(nome="Carlos Andrades", genero=modelagem.models.M, partido = pt,
-                                    mandato_ano_inicio = 1993, mandato_ano_fim = 1996)
+        chefe = modelagem.models.ChefeExecutivo(
+            nome="Carlos Andrades", genero=modelagem.models.M, partido=pt,
+            mandato_ano_inicio=1993, mandato_ano_fim=1996)
         chefe.save()
         chefes = [chefe]
         casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
@@ -351,8 +358,10 @@ class ModelsTest(TestCase):
 
     def test_get_titulo_chefe_feminino_municipal(self):
         pt = modelagem.models.Partido.from_nome('PT')
-        chefe = modelagem.models.ChefeExecutivo(nome="Ana Lucia Mendes", genero=modelagem.models.F, partido = pt,
-                                    mandato_ano_inicio = 1992, mandato_ano_fim = 1995)
+        chefe = modelagem.models.ChefeExecutivo(
+            nome="Ana Lucia Mendes",
+            genero=modelagem.models.F, partido=pt,
+            mandato_ano_inicio=1992, mandato_ano_fim=1995)
         chefe.save()
         chefes = [chefe]
         casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
@@ -364,8 +373,10 @@ class ModelsTest(TestCase):
 
     def test_get_titulo_chefe_masculino_federal(self):
         pt = modelagem.models.Partido.from_nome('PT')
-        chefe = modelagem.models.ChefeExecutivo(nome="Luis Inacio Peter da Silva", genero=modelagem.models.M, partido = pt,
-                                    mandato_ano_inicio = 1990, mandato_ano_fim = 1994)
+        chefe = modelagem.models.ChefeExecutivo(
+            nome="Luis Inacio Peter da Silva",
+            genero=modelagem.models.M, partido=pt,
+            mandato_ano_inicio=1990, mandato_ano_fim=1994)
         chefe.save()
         chefes = [chefe]
         casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
@@ -377,8 +388,10 @@ class ModelsTest(TestCase):
 
     def test_get_titulo_chefe_feminino_federal(self):
         pt = modelagem.models.Partido.from_nome('PT')
-        chefe = modelagem.models.ChefeExecutivo(nome="Dilmé Rouseffé", genero=modelagem.models.F, partido = pt,
-                                    mandato_ano_inicio = 1993, mandato_ano_fim = 1996)
+        chefe = modelagem.models.ChefeExecutivo(
+            nome="Dilmé Rouseffé",
+            genero=modelagem.models.F, partido=pt,
+            mandato_ano_inicio=1993, mandato_ano_fim=1996)
         chefe.save()
         chefes = [chefe]
         casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
@@ -389,56 +402,57 @@ class ModelsTest(TestCase):
         self.assertEqual(titulo, "Presidenta")
 
     def test_por_casa_legislativa_e_periodo_com_datas_none(self):
-        casa_legislativa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
+        casa_legislativa = modelagem.models.CasaLegislativa.objects.get(
+            nome_curto='conv')
         data_inicial = None
         data_final = None
-        resultado = modelagem.models.ChefeExecutivo.por_casa_legislativa_e_periodo(casa_legislativa, data_inicial, data_final)
-        self.assertEqual(list(resultado), [])
+        res = modelagem.models.ChefeExecutivo.por_casa_legislativa_e_periodo(
+            casa_legislativa, data_inicial, data_final)
+        self.assertEqual(list(res), [])
 
-
-    #########################################
-    #### Classe PeriodoCasaLegislativa #####
-    #########################################
+    # Classe PeriodoCasaLegislativa
 
     def test_build_string_periodo_quadrienio(self):
         data_inicio = datetime.date(1992, 1, 21)
         data_fim = datetime.date(1996, 1, 21)
-        obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
+        obj = modelagem.models.PeriodoCasaLegislativa(
+            data_inicio=data_inicio, data_fim=data_fim)
         string = str(obj)
         self.assertEqual(string, "1992 a 1996")
 
     def test_build_string_periodo_bienio(self):
         data_inicio = datetime.date(1992, 1, 21)
         data_fim = datetime.date(1994, 1, 21)
-        obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
+        obj = modelagem.models.PeriodoCasaLegislativa(
+            data_inicio=data_inicio, data_fim=data_fim)
         string = str(obj)
         self.assertEqual(string, "1992 e 1994")
 
     def test_build_string_periodo_anual(self):
         data_inicio = datetime.date(1992, 1, 1)
         data_fim = datetime.date(1993, 1, 1)
-        obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
+        obj = modelagem.models.PeriodoCasaLegislativa(
+            data_inicio=data_inicio, data_fim=data_fim)
         string = str(obj)
         self.assertEqual(string, "1992")
 
     def test_build_string_periodo_semestral(self):
         data_inicio = datetime.date(1992, 1, 1)
         data_fim = datetime.date(1992, 7, 1)
-        obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
+        obj = modelagem.models.PeriodoCasaLegislativa(
+            data_inicio=data_inicio, data_fim=data_fim)
         string = str(obj)
         self.assertEqual(string, "1992 1o Semestre")
 
     def test_build_string_periodo_mensal(self):
         data_inicio = datetime.date(1992, 1, 1)
         data_fim = datetime.date(1992, 2, 1)
-        obj = modelagem.models.PeriodoCasaLegislativa(data_inicio= data_inicio, data_fim = data_fim)
+        obj = modelagem.models.PeriodoCasaLegislativa(
+            data_inicio=data_inicio, data_fim=data_fim)
         string = str(obj)
         self.assertEqual(string, "1992 Jan")
 
-
-    ###########################
-    #### Classe Proposicao ####
-    ###########################
+    # Classe Proposicao
 
     def test_nome(self):
         proposicao = modelagem.models.Proposicao.objects.get(id=1)
@@ -446,10 +460,7 @@ class ModelsTest(TestCase):
         resultado = proposicao.nome()
         self.assertEqual(resultado, "PL 1/1990")
 
-
-    ########################
-    #### Classe Votacao ####
-    ########################
+    # Classe Votacao
 
     def test_uma_votacao_por_casa_legislativa(self):
         casa_legislativa = modelagem.models.CasaLegislativa.objects.get(
@@ -470,12 +481,14 @@ class ModelsTest(TestCase):
         self.assertEqual(0, len(votacoes))
 
     def test_votos(self):
-        votacao = modelagem.models.Votacao.objects.get(descricao='Institui o Dia de Carlos Magno')
+        votacao = modelagem.models.Votacao.objects.get(
+            descricao='Institui o Dia de Carlos Magno')
         votos = modelagem.models.Votacao.votos(votacao)
         self.assertEqual(len(votos), 9)
 
     def test_por_partido(self):
-        votacao = modelagem.models.Votacao.objects.get(descricao='Institui o Dia de Carlos Magno')
+        votacao = modelagem.models.Votacao.objects.get(
+            descricao='Institui o Dia de Carlos Magno')
         votos = modelagem.models.Votacao.votos(votacao)
         dicionario = votacao.por_partido()
         valor_votos = dicionario.get("Monarquistas")
@@ -483,12 +496,10 @@ class ModelsTest(TestCase):
         self.assertEqual(valor_votos.nao, 0)
         self.assertEqual(valor_votos.abstencao, 0)
         self.assertEqual(valor_votos.total(), 3)
-        self.assertEqual(list(dicionario.keys()), ["Monarquistas", "Girondinos", "Jacobinos"])
+        self.assertTrue('Girondinos' in dicionario.keys())
+        self.assertTrue('Jacobinos' in dicionario.keys())
 
-
-    ###############################
-    #### Classe VotosAgregados ####
-    ###############################
+    # Classe VotosAgregados #
 
     def test_add_sim(self):
         voto_agregado = modelagem.models.VotosAgregados()
