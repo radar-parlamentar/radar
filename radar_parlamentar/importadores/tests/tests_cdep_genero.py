@@ -2,6 +2,7 @@
 
 
 from django.test import TestCase
+from unittest import skip
 from importadores import cdep_genero
 from modelagem.models import Parlamentar
 from modelagem.models import Partido
@@ -43,6 +44,7 @@ class ImportadorGeneroTest(TestCase):
         from util_test import flush_db
         flush_db(cls)
 
+    @skip("Faz sentido um teste unitário que baixa coisas da internet?")
     def test_parlamentares_camara_com_generos_alterados(self):
         cdep_genero.insere_genero_parlamentares_camara()
 
@@ -59,6 +61,7 @@ class ImportadorGeneroTest(TestCase):
         self.assertEqual('F', parlamentar_banco_test_2.genero)
         self.assertEqual('F', parlamentar_banco_test_3.genero)
 
+    @skip("Faz sentido um teste unitário que baixa coisas da internet?")
     def test_parlamentares_camara_sem_generos_alterados(self):
         cdep_genero.insere_genero_parlamentares_camara()
 

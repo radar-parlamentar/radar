@@ -202,10 +202,9 @@ class ImportadorVotacoesSenado:
     def _read_xml(self, xml_file):
         """Salva no banco de dados do Django e retorna lista das votações"""
 
-        f = open(xml_file, 'r')
-        xml = f.read()
-        f.close()
-        tree = etree.fromstring(xml)
+        tree = None
+        with open(xml_file, encoding="iso-8859-1") as f:
+            tree = etree.fromstring(f.read())
         return tree
 
     def _find_the_votacao_code(self, votacao_tree):
@@ -333,7 +332,7 @@ class ImportadorVotacoesSenado:
         'importadores/dados/senado/votacoes/ListaVotacoes2015.xml']:
         # facilita debug"""
         for xml_file in self._xml_file_names():
-            logger.info('Importando %s' % xml_file)
+            logger.debug('Importando %s' % xml_file)
             self._save_votacao_in_db(xml_file)
 
 
