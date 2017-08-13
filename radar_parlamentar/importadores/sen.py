@@ -299,9 +299,8 @@ class ImportadorVotacoesSenado:
             votação secreta, a função é encerrada'''
             if votacao_tree.tag == 'Votacao' and votacao_secreta == 'N':
                 # caso o codigo já exista na model
-                code_exists = self._code_exists_in_votacao_in_model(
+                _, votacoes_query = self._code_exists_in_votacao_in_model(
                     votacao_tree)
-                votacoes_query = code_exists
                 if votacoes_query:
                     votacao = votacoes_query[0]
                     votacoes.append(votacao)
