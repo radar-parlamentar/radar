@@ -4,7 +4,7 @@ psycopg2==2.5.4
 argparse==1.2.1
 numpy==1.7.1
 svgwrite==1.1.2
-wsgiref==0.1.2
+#wsgiref==0.1.2
 mock==1.0.1
 South==1.0.1
 coverage==3.7.1

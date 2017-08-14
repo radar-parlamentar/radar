@@ -29,8 +29,9 @@ import xml.etree.ElementTree as etree
 import datetime
 # from modelagem.models import Parlamentar
 
-XML_TEST = os.path.join(cmsp.MODULE_DIR, 'dados/cmsp/testes/cmsp_teste.xml')
-
+XML_TEST_PATH = os.path.join(cmsp.MODULE_DIR, 'dados/cmsp/testes/cmsp_teste.xml')
+with open(XML_TEST_PATH,'r') as f:
+    XML_TEST = f.read()
 
 class AprendizadoEtreeCase(TestCase):
 
@@ -102,7 +103,7 @@ class ImportadorCMSPCase(TestCase):
     def test_parlamentares_importados(self):
         self.assertTrue(models.Parlamentar.objects.count() < 60)
         toninho = models.Parlamentar.objects.get(nome='TONINHO PAIVA')
-        self.assertEquals(toninho.id_parlamentar, '220') 
+        self.assertEquals(toninho.id_parlamentar, '220')
         self.assertEquals(toninho.partido.nome, 'PR')
         pl140 = models.Proposicao.objects.get(sigla='PL', numero='140', ano='2015')
         votPl140 = models.Votacao.objects.get(proposicao=pl140)
@@ -259,4 +260,3 @@ class IdempotenciaCMSPCase(TestCase):
         self.assertEquals(num_parlamentares_antes_depois,
                           num_parlamentares_antes)
         self.assertEquals(num_parlamentares_depois, num_parlamentares_antes)
-

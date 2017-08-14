@@ -8,5 +8,6 @@
         <PrefeitoSP Nome="José Serra" Partido="PSDB" AnoInicio="2005" AnoFinal="2008" Genero="M"/>
         <PrefeitoSP Nome="Gilberto Kassab" Partido="PSD" AnoInicio="2009" AnoFinal="2012" Genero="M"/>
         <PrefeitoSP Nome="Fernando Haddad" Partido="PT" AnoInicio="2013" AnoFinal="2016" Genero="M"/>
+        <PrefeitoSP Nome="João Dória" Partido="PSDB" AnoInicio="2017" AnoFinal="2020" Genero="M"/>
     </PrefeitosSP>
 </chefe_executivo>
