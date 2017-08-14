@@ -1,4 +1,3 @@
-#--no-binary Django==1.4.5 # source install allows template loading in older django installs
 Django
 psycopg2
 argparse

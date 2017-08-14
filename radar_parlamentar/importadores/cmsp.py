@@ -29,6 +29,7 @@ import sys
 import os
 import xml.etree.ElementTree as etree
 import logging
+import urllib2
 
 logger = logging.getLogger("radar")
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -37,11 +38,8 @@ XML_FILE = 'dados/chefe_executivo/chefe_executivo_cmsp.xml'
 NOME_CURTO = 'cmsp'
 
 # arquivos com os dados fornecidos pela cmsp
-XML2012 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2012.xml')
-XML2013 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2013.xml')
-XML2014 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2014.xml')
-XML2015 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2015.xml')
-XML2016 = os.path.join(MODULE_DIR, 'dados/cmsp/cmsp2016.xml')
+XML_URL = 'https://splegispdarmazenamento.blob.core.windows.net/containersip/VOTACOES_%d.xml'
+ANOS_DISPONIVEIS = [2012, 2013, 2014, 2015, 2016, 2017]
 
 # tipos de proposições encontradas nos XMLs da cmsp
 # esta lista ajuda a identificar as votações que são de proposições
@@ -227,8 +225,8 @@ class XmlCMSP:
         else:
             # a prop. nao estava criada ainda, entao devemos tanto criar
             # qnt cadastrar no dicionario.
-            proposicao = self.create_proposition(
-                proposicoes, prop_nome, vot_tree)
+            proposicao = self.create_proposition(proposicoes, prop_nome,
+                                                 vot_tree)
         if self.verbose:
             logger.info('Proposicao %s salva' % proposicao)
         proposicao.save()
@@ -284,22 +282,29 @@ class ImportadorCMSP:
         self.proposicoes = {}
         self.votacoes = []
 
-    def importar_de(self, xml_file):
+    def importar_de_url(self, xml_url):
+        text = ''
+        try:
+            request = urllib2.Request(xml_url)
+            xml_text = urllib2.urlopen(request).read()
+            self.importar_de(xml_text)
+        except urllib2.URLError, error:
+            logger.error("%s ao acessar %s" % (error, url))
+        except urllib2.HTTPError:
+            logger.error("%s ao acessar %s" % (error, url))
+
+    def importar_de(self, xml_text):
         """Salva no banco de dados do Django e retorna lista das votações"""
         if self.verbose:
             logger.info("importando de: " + str(xml_file))
 
-        tree = ImportadorCMSP.abrir_xml(xml_file)
+        tree = etree.fromstring(xml_text)
         self.analisar_xml(self.proposicoes, self.votacoes, tree)
         return self.votacoes
 
     def analisar_xml(self, proposicoes, votacoes, tree):
         for sessao_tree in tree.findall('Sessao'):
             self.xml_cmsp.sessao_from_tree(proposicoes, votacoes, sessao_tree)
-
-    @staticmethod
-    def abrir_xml(xml_file):
-        return etree.parse(xml_file).getroot()
 
 
 def main():
@@ -312,7 +317,8 @@ def main():
     importer_chefe = ImportadorChefesExecutivos(
         NOME_CURTO, 'PrefeitosSP', 'PrefeitoSP', XML_FILE)
     importer_chefe.importar_chefes()
-    for xml in [XML2012, XML2013, XML2014, XML2015, XML2016]:
-        importer.importar_de(xml)
+    for ano in ANOS_DISPONIVEIS:
+        xml_url = XML_URL % ano
+        importer.importar_de_url(xml_url)
     logger.info('Importacao dos dados da \
                 Camara Municipal de Sao Paulo (CMSP) terminada')

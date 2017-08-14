@@ -27,8 +27,9 @@ import xml.etree.ElementTree as etree
 import datetime
 # from modelagem.models import Parlamentar
 
-XML_TEST = os.path.join(cmsp.MODULE_DIR, 'dados/cmsp/testes/cmsp_teste.xml')
-
+XML_TEST_PATH = os.path.join(cmsp.MODULE_DIR, 'dados/cmsp/testes/cmsp_teste.xml')
+with open(XML_TEST_PATH,'r') as f:
+    XML_TEST = f.read()
 
 class AprendizadoEtreeCase(TestCase):
 
@@ -108,8 +109,8 @@ class ImportadorCMSPCase(TestCase):
         toninho = models.Parlamentar.objects.get(nome='TONINHO PAIVA')
         self.assertEqual(toninho.id_parlamentar, '220')
         self.assertEqual(toninho.partido.nome, 'PR')
-        pl140 = models.Proposicao.objects.get(
-            sigla='PL', numero='140', ano='2015')
+        pl140 = models.Proposicao.objects.get(sigla='PL', numero='140',
+                                              ano='2015')
         votPl140 = models.Votacao.objects.get(proposicao=pl140)
         voto = models.Voto.objects.get(votacao=votPl140, parlamentar=toninho)
         self.assertEqual(voto.opcao, models.SIM)
