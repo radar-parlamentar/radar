@@ -23,6 +23,7 @@ Instale os pacotes (apt-get):
     * python3-virtualenv
     * rabbitmq-server
 
+Certifique-se que o RabbitMQ e o PostgreSQL estão rodando e que serão iniciados automaticamente quando seu computador ligar.
 
 _OBSERVAÇÃO_: O radar foi homologado para rodar em distribuições Debian like.
 Nesses ambientes, pacotes que rodam como serviços, são inicializados
@@ -136,7 +137,7 @@ Confira a aplicação rodando pelo navegador usando o endereço `http://127.0.0.
 
 Acesse o painel de administração do Django:  http://127.0.0.1:8000/admin/. Se um erro como 'Template does not exist' for encontrado, rode o comando:
 
-    $ pip install -r requirements.txt —ignore-installed —force-reinstall —upgrade —no-cache-dir
+    $ pip install -r requirements.txt --ignore-installed --force-reinstall --upgrade --no-cache-dir
 
 
 4. Importação dos Dados
