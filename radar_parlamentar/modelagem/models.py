@@ -453,7 +453,6 @@ class Proposicao(models.Model):
     #    related_name='Autor principal')
     autores = models.ManyToManyField(
         Parlamentar,
-        null=True,
         related_name='demais_autores')
 
     def nome(self):
