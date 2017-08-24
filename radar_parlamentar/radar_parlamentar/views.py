@@ -20,7 +20,7 @@
 
 
 from django.template import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.contrib.staticfiles import finders
 from analises.genero import Genero
 import os
@@ -36,48 +36,40 @@ logger = logging.getLogger("radar")
 
 
 def index(request):
-    return render_to_response('index.html', {},
-                              context_instance=RequestContext(request))
+    return render(request, 'index.html')
 
 
 def origem(request):
-    return render_to_response('origem.html', {},
-                              context_instance=RequestContext(request))
+    return render(request, 'origem.html')
 
 
 def ogrupo(request):
-    return render_to_response('grupo.html', {},
-                              context_instance=RequestContext(request))
+    return render(request, 'grupo.html')
 
 
 def premiacoes(request):
-    return render_to_response('premiacoes.html', {},
-                              context_instance=RequestContext(request))
+    return render(request,'premiacoes.html')
 
 
 def radar_na_midia(request):
-    return render_to_response('radar_na_midia.html', {},
-                              context_instance=RequestContext(request))
+    return render(request,'radar_na_midia.html')
 
 
 def votoaberto(request):
-    return render_to_response('votoaberto.html', {},
-                              context_instance=RequestContext(request))
+    return render(request,'votoaberto.html')
 
 
 def importadores(request):
-    return render_to_response('importadores.html', {},
-                              context_instance=RequestContext(request))
+    return render(request,'importadores.html')
 
 
 # def grafico_alternativo(request):
-#     return render_to_response('grafico_alternativo.html', {},
+#     return render(request,'grafico_alternativo.html', {},
 #                               context_instance=RequestContext(request))
 
 
 def genero(request):
-    return render_to_response('genero.html', {},
-                              context_instance=RequestContext(request))
+    return render(request,'genero.html')
 
 
 def genero_termos_nuvem(request):
@@ -93,10 +85,8 @@ def genero_termos_nuvem(request):
 
     if not isinstance(id_casa_legislativa, int):
 
-        return render_to_response('genero_tagcloud.html',
-                                  {'casas_legislativas':
-                                   casas_legislativas_com_genero},
-                                  context_instance=RequestContext(request))
+        return render(request,'genero_tagcloud.html',
+                      {'casas_legislativas': casas_legislativas_com_genero})
 
     else:
         temas_frequencia_mulher = genero.agrupa_palavras('F',
@@ -106,46 +96,38 @@ def genero_termos_nuvem(request):
                                                         id_casa_legislativa)
         temas_json_homem = json.dumps(temas_frequencia_homem)
 
-        return render_to_response('genero_tagcloud.html',
-                                  {'temas_mulher': temas_json_mulher,
-                                   'temas_homem': temas_json_homem,
-                                   'casas_legislativas':
-                                   casas_legislativas_com_genero},
-                                  context_instance=RequestContext(request))
+        return render(request,'genero_tagcloud.html',
+                      {'temas_mulher': temas_json_mulher,
+                       'temas_homem': temas_json_homem,
+                       'casas_legislativas': casas_legislativas_com_genero})
 
 
 def genero_matriz(request):
-    return render_to_response('genero_matriz.html', {},
-                              context_instance=RequestContext(request))
+    return render(request,'genero_matriz.html')
 
 
 def genero_treemap(request):
-    return render_to_response('genero_treemap.html', {},
-                              context_instance=RequestContext(request))
+    return render(request,'genero_treemap.html')
 
 
 def genero_historia_legislaturas(request):
-    return render_to_response('genero_historia.html', {},
-                              context_instance=RequestContext(request))
+    return render(request,'genero_historia.html')
 
 
 def genero_perfil_partido(request):
-    return render_to_response('genero_perfil_partido.html', {},
-                              context_instance=RequestContext(request))
+    return render(request,'genero_perfil_partido.html')
 
 
 def genero_comparativo_partidos(request):
-    return render_to_response('genero_comparativo_partidos.html', {},
-                              context_instance=RequestContext(request))
+    return render(request,'genero_comparativo_partidos.html')
 
 
 def genero_futuro(request):
-    return render_to_response('genero_futuro.html', {},
-                              context_instance=RequestContext(request))
+    return render(request,'genero_futuro.html')
 
 
 # def genero_perfil_legis(request):
-#     return render_to_response('perfil_legis.html', {},
+#     return render(request,'perfil_legis.html', {},
 #                               context_instance=RequestContext(request))
 
 
@@ -156,13 +138,12 @@ def dados_utilizados(request):
         dt = datetime.datetime.fromtimestamp(time)
         dt_str = dt.strftime('%d/%m/%Y')
         arquivo = True
-        return render_to_response('dados_utilizados.html', {'dumpdate': dt_str,
-                                  'arquivo_dump': arquivo},
-                                  context_instance=RequestContext(request))
+        return render(request,'dados_utilizados.html',
+                      {'dumpdate': dt_str, 'arquivo_dump': arquivo})
     else:
         arquivo = False
-        return render_to_response('dados_utilizados.html',
-                                  {'_arquivo_dump': arquivo})
+        return render(request,'dados_utilizados.html',
+                      {'_arquivo_dump': arquivo})
 
 
 def generate_blog_news(request):
@@ -180,5 +161,4 @@ def generate_blog_news(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         my_news = paginator.page(paginator.num_pages)
-    return render_to_response('blog.html', {'my_news': my_news},
-                              context_instance=RequestContext(request))
+    return render(request,'blog.html', {'my_news': my_news})

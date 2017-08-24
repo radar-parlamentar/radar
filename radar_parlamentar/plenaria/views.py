@@ -3,14 +3,13 @@
 from modelagem import models
 from django.http import HttpResponse
 from django.template import RequestContext
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from modelagem import utils
 from . import serializer
 
 
-def plenaria(request,
-             nome_curto_casa_legislativa=None,
+def plenaria(request, nome_curto_casa_legislativa=None,
              identificador_proposicao=None):
     """identificador_proposicao: 'PL-123-2015'"""
 
@@ -40,16 +39,11 @@ def plenaria(request,
     else:
         casa_legislativa = None
 
-    return render_to_response(
-        'plenaria.html',
-        {
-            'identificador_proposicao': identificador_proposicao,
-            'casa_legislativa': casa_legislativa,
-            'casas_legislativas': casas_legislativas,
-            'proposicoes': proposicoes,
-        },
-        context_instance=RequestContext(request)
-    )
+    return render(request, 'plenaria.html',
+                  {'identificador_proposicao': identificador_proposicao,
+                   'casa_legislativa': casa_legislativa,
+                   'casas_legislativas': casas_legislativas,
+                   'proposicoes': proposicoes,})
 
 
 def identificador(prop):
