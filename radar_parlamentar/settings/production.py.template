@@ -43,8 +43,4 @@ CACHES = {
     }
 }
 
-here = os.path.abspath(os.path.dirname(__file__))
-TEMPLATE_DIRS = ( os.path.join(here, os.pardir, 'radar_parlamentar/templates/') )
-
 LOGGING['handlers']['file']['filename'] = '/var/log/radar/radar.log'
-
