@@ -19,7 +19,7 @@
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import modelagem.models as models
+from django.db import models
 from elasticsearch import Elasticsearch
 from django.conf import settings
 from elasticsearch.client import IndicesClient
