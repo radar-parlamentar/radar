@@ -119,7 +119,7 @@ INSTALLED_APPS = (
     'analises',
     'exportadores',
     'testes_integracao',
-    'south',
+    #'south',
     'radar_parlamentar',
     'plenaria',
 )
