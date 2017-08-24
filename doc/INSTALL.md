@@ -17,10 +17,10 @@ Instale os pacotes (apt-get):
     * postgresql
     * postgresql-contrib
     * sqlite3
-    * python-dev
+    * python3-dev
     * curl
-    * python-pip
-    * python-virtualenv
+    * python3-pip
+    * python3-virtualenv
     * rabbitmq-server
 
 
@@ -43,9 +43,9 @@ Para quem não conheçe, o [virtualenv](http://www.virtualenv.org "Virtual Env")
 
 Depois de clonar o projeto, vamos criar agora o nosso "Virtual Enviroment":
 
-    $ sudo pip install --upgrade pip
+    $ sudo pip3 install --upgrade pip
     $ mkdir venv
-    $ virtualenv venv
+    $ python3 -m venv venv
     $ cd venv
     $ source bin/activate
 
@@ -126,7 +126,6 @@ Ao rodar python manage.py runserver no ambiente de desenvolvimento, será usado 
 
 Para criar as tabelas do Radar Parlamentar:
 
-    $ python manage.py syncdb
     $ python manage.py migrate
 
 Agora já podemos iniciar a aplicação! Para isso:
