@@ -706,10 +706,47 @@ Plot = (function ($) {
 //            });
 //        }
 
-
         // Retorna partidos excluindo partidos ausentes no período
         function get_partidos_no_periodo(period) {
-            return partidos.filter(function(d){ return d.t[period] > 0;});
+            var partidos_periodo = partidos.filter(function(d){ return d.t[period] > 0;});
+            
+            //Criação de uma lista inicialmente vazia
+            var partidos_filtrados = [];
+            
+            //Percorre por toda a lista de partidos no período          
+            for(var contador_partidos = 0; contador_partidos < partidos_periodo.length; contador_partidos++)
+            {
+                /* Se a lista de partidos filtrados estiver vazia, já adiciona-se o primeiro partido 
+                da lista de partidos no períodos*/
+                if(partidos_filtrados.length == 0)
+                {
+                    partidos_filtrados.push(partidos_periodo[contador_partidos]);
+                }
+
+                /* Caso contrário, busca em toda a lista de filtrados, elemento por elemento, e adiciona 
+                apenas se o partido atual não for encontrado */
+                else
+                {
+                    var encontrou_partido_igual = false;
+                    
+                    for(var i = 0; i < partidos_filtrados.length; i++)
+                    {
+                        //A comparação é feita através do nome do partido em ambas as listas
+                        if(partidos_filtrados[i].nome == partidos_periodo[contador_partidos].nome)
+                        {
+                            console.log('O partido ' + partidos_filtrados[i].nome + ' já existe.');
+                            encontrou_partido_igual = true;
+                        }    
+                    }
+                    
+                    if(encontrou_partido_igual == false)
+                    {
+                        partidos_filtrados.push(partidos_periodo[contador_partidos]);
+                    }
+                }
+            }
+            
+            return partidos_filtrados;
         }
 
         function get_partidos_ausentes_no_periodo(period) {
