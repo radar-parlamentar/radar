@@ -2,7 +2,7 @@
 from django.test import TestCase
 import os
 import xml.etree.ElementTree as etree
-import mock
+from unittest.mock import Mock
 
 from importadores import sen, sen_indexacao
 from modelagem import models
@@ -27,11 +27,11 @@ class ImportadorSenadoTest(TestCase):
     def setUp(self):
         casa = sen.CasaLegislativaGerador().gera_senado()
         self.importer = sen.ImportadorVotacoesSenado()
-        self.importer._xml_file_names = mock.Mock(return_value=[XML_TEST])
+        self.importer._xml_file_names = Mock(return_value=[XML_TEST])
         self.importer.importar_votacoes()
 
     def test_votacao_importada(self):
-        votacao = models.Votacao.objects.get(pk=1)
+        votacao = models.Votacao.objects.first()
         self.assertEqual(votacao.resultado, "R")
 
     def test_parlamentar_importado(self):
@@ -49,12 +49,12 @@ class IndexacaoSenadoTest(TestCase):
     def setUp(self):
         casa = sen.CasaLegislativaGerador().gera_senado()
         self.importer = sen.ImportadorVotacoesSenado()
-        self.importer._xml_file_names = mock.Mock(return_value=[XML_TEST])
+        self.importer._xml_file_names = Mock(return_value=[XML_TEST])
         self.importer.importar_votacoes()
         sen_indexacao.indexar_proposicoes()
 
     def test_proposicoes_importadas(self):
-        proposicao = models.Proposicao.objects.get(pk=1)
+        proposicao = models.Proposicao.objects.first()
         self.assertTrue(proposicao)
         self.assertEqual(proposicao.ano, '2015')
         self.assertEqual(proposicao.sigla, 'PLS')
