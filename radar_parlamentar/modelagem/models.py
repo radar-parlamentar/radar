@@ -90,7 +90,7 @@ class Indexadores(models.Model):
     termo = models.CharField(max_length=120)
     principal = models.BooleanField()
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s-%s-%s' % (self.nome, self.numero, self.cor)
 
 
@@ -184,7 +184,7 @@ class Partido(models.Model):
                 return partido
         return None
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s-%s' % (self.nome, self.numero)
 
 
@@ -204,7 +204,7 @@ class CasaLegislativa(models.Model):
     esfera = models.CharField(max_length=10, choices=ESFERAS)
     local = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nome
 
     def partidos(self):
@@ -265,7 +265,7 @@ class ChefeExecutivo(models.Model):
     casas_legislativas = models.ManyToManyField(CasaLegislativa)
     titulo = None
 
-    def __unicode__(self):
+    def __str__(self):
         self.titulo = self.get_titulo_chefe()
         return self.titulo + ": " + self.nome + " - " + self.partido.nome
 
@@ -414,7 +414,7 @@ class Parlamentar(models.Model):
     partido = models.ForeignKey(Partido, on_delete=models.CASCADE)
     localidade = models.CharField(max_length=100, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s - %s' % (self.nome, self.partido.nome)
 
 
@@ -460,7 +460,7 @@ class Proposicao(models.Model):
     def nome(self):
         return "%s %s/%s" % (self.sigla, self.numero, self.ano)
 
-    def __unicode__(self):
+    def __str__(self):
         return "[%s] %s" % (self.nome(), self.ementa)
 
 
@@ -522,7 +522,7 @@ class Votacao(models.Model):
 
     # TODO def por_uf(self):
 
-    def __unicode__(self):
+    def __str__(self):
         if self.data:
             return "[%s] %s" % (self.data, self.descricao)
         else:
@@ -542,7 +542,7 @@ class Voto(models.Model):
     parlamentar = models.ForeignKey(Parlamentar, on_delete=models.CASCADE)
     opcao = models.CharField(max_length=10, choices=OPCOES)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s votou %s" % (self.parlamentar, self.opcao)
 
 
@@ -595,11 +595,9 @@ class VotosAgregados:
         else:
             return 0
 
-    def __unicode__(self):
+    def __str__(self):
         return '(%s, %s, %s)' % (self.sim, self.nao, self.abstencao)
 
-    def __str__(self):
-        return str(self).encode('utf-8')
 
 
 class VotoPartido(VotosAgregados):
