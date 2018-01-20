@@ -72,4 +72,4 @@ def json_proposicao(request, nome_curto_casa_legislativa,
         raise Http404
     proposicao_serializer = serializer.ProposicaoSerializer()
     dados = proposicao_serializer.get_json_proposicao(proposicao)
-    return HttpResponse(dados, mimetype='application/json')
+    return HttpResponse(dados, content_type='application/json')

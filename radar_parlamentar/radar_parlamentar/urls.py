@@ -17,11 +17,9 @@ identificador_proposicao = '((?P<identificador_proposicao>\w+-\d+-\d{4})/)'
 
 url_radar = 'radar/'
 url_genero = 'genero/'
-url_plenaria = 'plenaria/'
 
 url_json = 'json/'
 url_json_radar = url_json + url_radar
-url_json_plenaria = url_json + url_plenaria
 
 url_lista = 'dados/votacoes/'
 
@@ -29,7 +27,6 @@ url_lista = 'dados/votacoes/'
 raiz_analise_legada = 'analises/'
 url_lista_legada = 'lista_de_votacoes_filtradas/'
 url_json_analise_legada = 'json_analise/'
-url_json_plenaria_legada = 'json_plenaria/'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -43,6 +40,7 @@ urlpatterns = [
     path('blog/', radar_views.generate_blog_news, name="blog"),
     path('dados/downloads/', radar_views.dados_utilizados),
     path('dados', radar_views.dados_utilizados),  # URL legada
+    path('plenaria/', include('plenaria.urls'))
 ]
 
 urlpatterns += [
@@ -81,14 +79,6 @@ urlpatterns += [
     path(url_lista + casa_legislativa + periodicidade + palavras_chave,
          analises_views.lista_de_votacoes_filtradas),
 
-    # Páginas da Plenária - Hackathon Eleições 2016
-    path(url_plenaria, plenaria_views.plenaria),
-    path(url_plenaria + casa_legislativa, plenaria_views.plenaria),
-    path(url_plenaria + casa_legislativa + identificador_proposicao,
-         plenaria_views.plenaria),
-    path(url_json_plenaria + casa_legislativa + identificador_proposicao,
-         plenaria_views.json_proposicao),
-
     ###########################################################################
     # URLS legadas
     #
@@ -117,16 +107,6 @@ urlpatterns += [
          analises_views.redirect_lista_votacoes_p_chave,
          name="redirect_lista_votacoes_p_chave"),
 
-    # Páginas da Plenária - Hackathon Eleições 2016
-    path('analises/' + url_plenaria + casa_legislativa +
-         identificador_proposicao,
-         analises_views.redirect_plenaria, name="redirect_plenaria"),
-
-    path('json_plenaria/' + casa_legislativa + identificador_proposicao,
-         analises_views.redirect_json_plenaria, name="redirect_json_plenaria"),
-
-    path('dados', analises_views.redirect_dados, name="redirect_dados"),
-
-    path('importadores/',
-         analises_views.redirect_importadores, name="redirect_importadores")
+    path('importadores/', analises_views.redirect_importadores,
+         name="redirect_importadores")
 ]

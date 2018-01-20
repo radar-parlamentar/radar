@@ -38,7 +38,7 @@ Plot = (function ($) {
     function initialize(nome_curto_casa_legislativa_, identificador_proposicao_) {
         nome_curto_casa_legislativa = nome_curto_casa_legislativa_;
         identificador_proposicao = identificador_proposicao_;
-        d3.json("/json_plenaria/" + nome_curto_casa_legislativa + "/" + identificador_proposicao, first_plot);
+        d3.json("/plenaria/json/" + nome_curto_casa_legislativa + "/" + identificador_proposicao + "/", first_plot);
     }
 
     function first_plot(data) {
@@ -72,7 +72,7 @@ Plot = (function ($) {
 
         // Inicialmente remove o spinner de loading
         $("#loading").remove();
-        $(".d3-tip").remove(); 
+        $(".d3-tip").remove();
 
         idx_votacao = get_idx_votacao();
 
@@ -173,11 +173,11 @@ Plot = (function ($) {
                                    ' ('+ partidos[d.id_partido].numero +')</p>');
                         div.append('<p><b>Voto: </b>' + d.voto + '</p>');
                     }
-                }).on('mouseover', function(parlamentar) { 
-                    return mouseover_parlamentar(parlamentar); 
+                }).on('mouseover', function(parlamentar) {
+                    return mouseover_parlamentar(parlamentar);
                 })
-                .on('mouseout', function(parlamentar) { 
-                    return mouseout_parlamentar(parlamentar); 
+                .on('mouseout', function(parlamentar) {
+                    return mouseout_parlamentar(parlamentar);
                 });
 
         document.getElementById('votacoes').scrollIntoView();
@@ -207,7 +207,7 @@ Plot = (function ($) {
     function mouseover_parlamentar(parlamentar) {
         d3.selectAll("#parlamentar-"+nome(parlamentar)).classed("hover",true);
         parlamentar_tooltip.show(parlamentar);
-        
+
         /* After show, force the tooltip to stay together with circle
         using the position of mouse in the page, obtained from d3.event*/
         d3.select('.d3-tip')

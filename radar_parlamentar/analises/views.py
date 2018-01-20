@@ -148,13 +148,10 @@ def redirect_plenaria(request, nome_curto_casa_legislativa,
 def redirect_json_plenaria(request, nome_curto_casa_legislativa,
                       identificador_proposicao):
     url = (
-            "/json/plenaria/{}/{}"
+            "/plenaria/json/{}/{}"
             .format(nome_curto_casa_legislativa, identificador_proposicao)
         )
     return HttpResponseRedirect(url)
-
-def redirect_dados(request):
-    return HttpResponseRedirect("/dados/downloads")
 
 def redirect_importadores(request):
     return HttpResponseRedirect("/dados/importadores")
