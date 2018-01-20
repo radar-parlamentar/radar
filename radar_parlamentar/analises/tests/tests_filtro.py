@@ -63,7 +63,7 @@ class FiltroChefeExecutivoTest(TestCase):
     def setUp(self):
         self.casa = models.CasaLegislativa.objects.get(nome_curto='conv')
         self.periodo = get_periodo_casa_legislativa()
-        self.partido = models.Partido.objects.get(id=1)
+        self.partido = models.Partido.objects.first()
 
         # Chefe no período testado
         self.chefe = models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva",
