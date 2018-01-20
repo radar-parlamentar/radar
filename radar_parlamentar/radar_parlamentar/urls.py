@@ -4,19 +4,10 @@ from django.shortcuts import redirect
 from . import views as radar_views
 from analises import views as analises_views
 from importadores import views as importadores_views
-from plenaria import views as plenaria_views
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
-
-casa_legislativa = '((?P<nome_curto_casa_legislativa>\w+)/)'
-periodicidade = '(?P<periodicidade>\w*)/'
-palavras_chave = '(?P<palavras_chave>.*)/'
-identificador_proposicao = '((?P<identificador_proposicao>\w+-\d+-\d{4})/)'
-
-# urls legadas
-raiz_analise_legada = 'analises/'
 
 genero_patterns = [
     path('', radar_views.genero, name="genero"),
