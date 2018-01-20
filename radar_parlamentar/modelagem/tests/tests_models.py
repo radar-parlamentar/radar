@@ -143,8 +143,8 @@ class ModelsTest(TestCase):
 
     def test_num_votos(self):
         casa = modelagem.models.CasaLegislativa.objects.get(nome_curto='conv')
-        votos = casa.num_votos(data_inicio='1990-01-01', data_fim='1990-01-01')
-        self.assertEqual(votos, 9)
+        votos = casa.num_votos(data_inicio='1989-10-10', data_fim='1989-10-10')
+        self.assertEqual(votos, 36)
 
     def test_deleta_casa(self):
         partidoTest1 = modelagem.models.Partido()
