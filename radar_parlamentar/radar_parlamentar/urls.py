@@ -16,7 +16,6 @@ palavras_chave = '(?P<palavras_chave>.*)/'
 identificador_proposicao = '((?P<identificador_proposicao>\w+-\d+-\d{4})/)'
 
 url_radar = 'radar/'
-url_genero = 'genero/'
 
 url_json = 'json/'
 url_json_radar = url_json + url_radar
@@ -27,6 +26,28 @@ url_lista = 'dados/votacoes/'
 raiz_analise_legada = 'analises/'
 url_lista_legada = 'lista_de_votacoes_filtradas/'
 url_json_analise_legada = 'json_analise/'
+
+genero_patterns = [
+    path('', radar_views.genero, name="genero"),
+    path('tematica/partido/', radar_views.genero_matriz,
+         name="genero_matriz"),
+    path('perfil/partido/', radar_views.genero_perfil_partido,
+         name="genero_perfil_partido"),
+    path('perfil/partido/comparacao/',
+         radar_views.genero_comparativo_partidos,
+         name="genero_comparativo_partidos"),
+    path('perfil/legislaturas/',
+         radar_views.genero_historia_legislaturas,
+         name="genero_historia_legislaturas"),
+    path('tematica/treemap/', radar_views.genero_treemap,
+         name="genero_treemap"),
+    path('tematica/legislador/', radar_views.genero_futuro,
+         name="genero_futuro"),
+    path('tematica/nuvem/', radar_views.genero_termos_nuvem,
+         name="genero_termos_nuvem"),
+    path('tematica/nuvem/?Pcasa_legislativa=',
+         radar_views.genero_termos_nuvem),
+]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -40,7 +61,8 @@ urlpatterns = [
     path('blog/', radar_views.generate_blog_news, name="blog"),
     path('dados/downloads/', radar_views.dados_utilizados),
     path('dados', radar_views.dados_utilizados),  # URL legada
-    path('plenaria/', include('plenaria.urls'))
+    path('plenaria/', include('plenaria.urls')),
+    path('genero/', include(genero_patterns))
 ]
 
 urlpatterns += [
@@ -48,25 +70,6 @@ urlpatterns += [
     path('importar/<nome_curto_casa_legislativa>/',
          importadores_views.importar),
     # Páginas do Projeto Gênero do Hackathon da Câmara dos Deputados em 2013
-    path('genero/', radar_views.genero, name="genero"),
-    path('genero/tematica/partido/', radar_views.genero_matriz,
-         name="genero_matriz"),
-    path('genero/perfil/partido/', radar_views.genero_perfil_partido,
-         name="genero_perfil_partido"),
-    path('genero/perfil/partido/comparacao/',
-         radar_views.genero_comparativo_partidos,
-         name="genero_comparativo_partidos"),
-    path('genero/perfil/legislaturas/',
-         radar_views.genero_historia_legislaturas,
-         name="genero_historia_legislaturas"),
-    path('genero/tematica/treemap/', radar_views.genero_treemap,
-         name="genero_treemap"),
-    path('genero/tematica/legislador/', radar_views.genero_futuro,
-         name="genero_futuro"),
-    path('genero/tematica/nuvem/', radar_views.genero_termos_nuvem,
-         name="genero_termos_nuvem"),
-    path('genero/tematica/nuvem/?Pcasa_legislativa=',
-         radar_views.genero_termos_nuvem),
 
     # Serviço que retorna conteúdo para plotar o mapa
     path(url_radar + casa_legislativa, analises_views.analise),
