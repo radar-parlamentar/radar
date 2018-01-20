@@ -76,7 +76,7 @@ def json_analise(request, nome_curto_casa_legislativa,
     analise_temporal = analisador.get_analise_temporal()
     gen = JsonAnaliseGenerator(analise_temporal)
     json = gen.get_json()
-    return HttpResponse(json, mimetype='application/json')
+    return HttpResponse(json, content_type='application/json')
 
 
 def lista_de_votacoes_filtradas(request,
@@ -102,7 +102,7 @@ def lista_de_votacoes_filtradas(request,
 
 def redirect_json_analise(request, nome_curto_casa_legislativa, periodicidade):
     url = (
-            "/json/radar/{}/{}/"
+            "/radar/json/{}/{}/"
             .format(nome_curto_casa_legislativa, periodicidade)
         )
     return HttpResponseRedirect(url)
@@ -117,14 +117,14 @@ def redirect_analise(request, nome_curto_casa_legislativa):
 def redirect_json_analise_p_chave(request, nome_curto_casa_legislativa,
                                   periodicidade, palavras_chave):
     url = (
-            "/json/radar/{}/{}/{}"
+            "/radar/json/{}/{}/{}"
             .format(nome_curto_casa_legislativa, periodicidade, palavras_chave)
         )
     return HttpResponseRedirect(url)
 
 def redirect_votacoes_filtradas(request, nome_curto_casa_legislativa):
     url = (
-            "/dados/votacoes/{}"
+            "/votacoes/{}"
             .format(nome_curto_casa_legislativa)
         )
     return HttpResponseRedirect(url)
@@ -132,7 +132,7 @@ def redirect_votacoes_filtradas(request, nome_curto_casa_legislativa):
 def redirect_lista_votacoes_p_chave(request, nome_curto_casa_legislativa,
                                     periodicidade, palavras_chave):
     url = (
-            "/dados/votacoes/{}/{}/{}"
+            "/votacoes/{}/{}/{}"
             .format(nome_curto_casa_legislativa, periodicidade, palavras_chave)
         )
     return HttpResponseRedirect(url)

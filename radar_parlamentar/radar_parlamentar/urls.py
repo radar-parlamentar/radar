@@ -15,17 +15,8 @@ periodicidade = '(?P<periodicidade>\w*)/'
 palavras_chave = '(?P<palavras_chave>.*)/'
 identificador_proposicao = '((?P<identificador_proposicao>\w+-\d+-\d{4})/)'
 
-url_radar = 'radar/'
-
-url_json = 'json/'
-url_json_radar = url_json + url_radar
-
-url_lista = 'dados/votacoes/'
-
 # urls legadas
 raiz_analise_legada = 'analises/'
-url_lista_legada = 'lista_de_votacoes_filtradas/'
-url_json_analise_legada = 'json_analise/'
 
 genero_patterns = [
     path('', radar_views.genero, name="genero"),
@@ -49,6 +40,21 @@ genero_patterns = [
          radar_views.genero_termos_nuvem),
 ]
 
+radar_patterns = [
+    path("<nome_curto_casa_legislativa>/", analises_views.analise),
+    path("json/<nome_curto_casa_legislativa>/<periodicidade>/",
+         analises_views.json_analise),
+    path("json/<nome_curto_casa_legislativa>/<periodicidade>/<palavras_chave>/",
+         analises_views.json_analise),
+]
+
+votacoes_patterns = [
+    path("<nome_curto_casa_legislativa>/",
+         analises_views.lista_de_votacoes_filtradas),
+    path("<nome_curto_casa_legislativa>/<periodicidade>/<palavras_chave>/",
+         analises_views.lista_de_votacoes_filtradas),
+]
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', radar_views.index, name="index"),
@@ -59,28 +65,19 @@ urlpatterns = [
     path('radarnamidia/', radar_views.radar_na_midia, name="radar_na_midia"),
     path('sim-voto-aberto/', radar_views.votoaberto, name="votoaberto"),
     path('blog/', radar_views.generate_blog_news, name="blog"),
+    path('dados/', radar_views.dados_utilizados),  # URL legada
     path('dados/downloads/', radar_views.dados_utilizados),
-    path('dados', radar_views.dados_utilizados),  # URL legada
-    path('plenaria/', include('plenaria.urls')),
-    path('genero/', include(genero_patterns))
-]
-
-urlpatterns += [
     path('dados/importadores/', radar_views.importadores, name="importadores"),
     path('importar/<nome_curto_casa_legislativa>/',
          importadores_views.importar),
-    # Páginas do Projeto Gênero do Hackathon da Câmara dos Deputados em 2013
+    path('plenaria/', include('plenaria.urls')),
+    path('genero/', include(genero_patterns)),
+    path('radar/', include(radar_patterns)),
+    path('votacoes/', include(votacoes_patterns)),
+]
 
-    # Serviço que retorna conteúdo para plotar o mapa
-    path(url_radar + casa_legislativa, analises_views.analise),
-    path(url_json_radar + casa_legislativa + periodicidade,
-         analises_views.json_analise),
-    path(url_json_radar + casa_legislativa + periodicidade + palavras_chave,
-         analises_views.json_analise),
-    path(url_lista + casa_legislativa,
-         analises_views.lista_de_votacoes_filtradas),
-    path(url_lista + casa_legislativa + periodicidade + palavras_chave,
-         analises_views.lista_de_votacoes_filtradas),
+urlpatterns += [
+
 
     ###########################################################################
     # URLS legadas
