@@ -455,7 +455,7 @@ class ModelsTest(TestCase):
     # Classe Proposicao
 
     def test_nome(self):
-        proposicao = modelagem.models.Proposicao.objects.get(id=1)
+        proposicao = modelagem.models.Proposicao.objects.first()
         proposicao.ano = "1990"
         resultado = proposicao.nome()
         self.assertEqual(resultado, "PL 1/1990")
