@@ -77,7 +77,7 @@ def ordem_dos_parl_por_votacao(votacao, dicionario_votantes, lista_ordenada_part
     lista_ordenada_partidos -- lista de objetos Partido, ja bem ordenada.
     """
     retorno = []
-    votos = votacao.voto_set.select_related('parlamentar','parlamentar__partido')
+    votos = votacao.voto_set.select_related('parlamentar__partido')
     parlamentares = [v.parlamentar for v in votos]
     ordenado = sorted([(lista_ordenada_partidos.index(p.partido),dicionario_votantes[p][1],p.nome,p) for p in parlamentares], key=itemgetter(2))
     ordenado = sorted(ordenado, key=itemgetter(1), reverse=True)
@@ -101,7 +101,7 @@ def ordenar_votantes(proposicao):
     onde o inteiro é o número de vezes que o parlamentar votou SIM ou NAO,
     mas nao se absteve ou faltou, nas votacoes da proposicao, e partido é o
     seu partido."""
-    votos_prop = Voto.objects.filter(votacao__proposicao = proposicao).select_related("parlamentar", "parlamentar__partido")
+    votos_prop = Voto.objects.filter(votacao__proposicao = proposicao).select_related("parlamentar__partido")
     parlams = set()
     for v in votos_prop:
         parlams.add(v.parlamentar)

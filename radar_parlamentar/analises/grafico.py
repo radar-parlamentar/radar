@@ -178,7 +178,7 @@ class JsonAnaliseGenerator:
     def _list_partidos(self):
         list_partidos = []
         partidos = self.analise_temporal.casa_legislativa.partidos(
-        ).select_related('nome', 'numero', 'cor')
+        )
         #  self.analise_temporal.analises_periodo[0].partidos:
         for partido in partidos:
             list_partidos.append(self._dict_partido(partido))
@@ -219,10 +219,7 @@ class JsonAnaliseGenerator:
         dict_partido["parlamentares"] = []
         parlamentares = \
             self.analise_temporal.casa_legislativa.parlamentares().filter(
-                partido=partido).select_related('id',
-                                                'localidade',
-                                                'partido__nome',
-                                                'nome')
+                partido=partido).select_related('partido')
         for parlamentar in parlamentares:
             dict_partido["parlamentares"].append(
                 self._dict_parlamentar(parlamentar))

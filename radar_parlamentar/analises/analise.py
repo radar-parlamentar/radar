@@ -364,8 +364,7 @@ class ConstrutorDeMatrizesDeDados:
 
     def _construtor_dicionario_parlamentares_votos(self, votacao):
         # com o "select_related" fazemos uma query eager
-        votos = votacao.voto_set.select_related(
-            'opcao', 'parlamentar__id').all()
+        votos = votacao.voto_set.select_related('parlamentar').all()
         for voto in votos:
             self._dic_parlamentares_votos[voto.parlamentar.id] = voto.opcao
 
