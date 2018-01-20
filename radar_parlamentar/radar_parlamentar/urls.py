@@ -75,38 +75,3 @@ urlpatterns = [
     path('radar/', include(radar_patterns)),
     path('votacoes/', include(votacoes_patterns)),
 ]
-
-urlpatterns += [
-
-
-    ###########################################################################
-    # URLS legadas
-    #
-    # Aqui temos definidas algumas urls com redirects para manter
-    # compatibilidade com links já divulgados publicamente com urls que não
-    # serão mais utilizadas.
-    #
-    # Serviço que retorna conteúdo para plotar o mapa
-
-    path('analises/analise/' + casa_legislativa,
-         analises_views.redirect_analise, name="redirect_analise"),
-
-    path('analises/json_analise/' + casa_legislativa + periodicidade,
-         analises_views.redirect_json_analise, name="redirect_json_analise"),
-
-    path('analises/json_analise/' + casa_legislativa + periodicidade +
-         palavras_chave, analises_views.redirect_json_analise_p_chave,
-         name="redirect_json_analise_p_chave"),
-
-    path('analises/lista_de_votacoes_filtradas/' + casa_legislativa,
-         analises_views.redirect_votacoes_filtradas,
-         name="redirect_votacoes_filtradas"),
-
-    path('analises/lista_de_votacoes_filtradas/' + casa_legislativa +
-         periodicidade + palavras_chave,
-         analises_views.redirect_lista_votacoes_p_chave,
-         name="redirect_lista_votacoes_p_chave"),
-
-    path('importadores/', analises_views.redirect_importadores,
-         name="redirect_importadores")
-]
