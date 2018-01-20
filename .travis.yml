@@ -1,7 +1,7 @@
 language: python
 
 python:
-  - "3.5.3"
+  - "3.6.3"
 
 # Dependencias do projeto
 install:
@@ -9,7 +9,7 @@ install:
 
 # Roda Testes
 script:
-   - cd radar_parlamentar/ ; source tests.sh
+   - cd radar_parlamentar/ ; python manage.py test
    - coverage run --source=modelagem,analises,exportadores,importadores,radar_parlamentar manage.py test modelagem analises exportadores importadores radar_parlamentar
 
 after_success:
