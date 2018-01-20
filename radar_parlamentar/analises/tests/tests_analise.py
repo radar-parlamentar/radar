@@ -21,7 +21,8 @@
 from django.test import TestCase
 
 from analises import analise
-from modelagem import models
+from modelagem.models import (CasaLegislativa, ChefeExecutivo, Parlamentar,
+                              PeriodoCasaLegislativa, Votacao, SEMESTRE)
 from modelagem.utils import PeriodosRetriever
 from importadores import conv
 from datetime import date
@@ -44,12 +45,11 @@ class AnalisadorPeriodoTest(TestCase):
         flush_db(cls)
 
     def setUp(self):
-        self.casa_legislativa = models.CasaLegislativa.objects.get(
-            nome_curto='conv')
+        self.casa_legislativa = CasaLegislativa.objects.get(nome_curto='conv')
         self.partidos = AnalisadorPeriodoTest.importer.partidos
-        self.votacoes = models.Votacao.objects.filter(
+        self.votacoes = Votacao.objects.filter(
             proposicao__casa_legislativa__nome_curto='conv')
-        self.parlamentares = models.Parlamentar.objects.filter(
+        self.parlamentares = Parlamentar.objects.filter(
             casa_legislativa__nome_curto='conv').distinct()
         for partido in self.partidos:
             if partido.nome == conv.GIRONDINOS:
@@ -59,10 +59,10 @@ class AnalisadorPeriodoTest(TestCase):
             if partido.nome == conv.MONARQUISTAS:
                 self.monarquistas = partido
 
-        self.chefe = models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva",
-                                           genero="M", partido=self.girondinos,
-                                           mandato_ano_inicio=1988,
-                                           mandato_ano_fim=1992)
+        self.chefe = ChefeExecutivo(nome="Luiz Inacio Pierre da Silva",
+                                    genero="M", partido=self.girondinos,
+                                    mandato_ano_inicio=1988,
+                                    mandato_ano_fim=1992)
         self.chefe.save()
         self.chefe.casas_legislativas.add(self.casa_legislativa)
 
@@ -70,8 +70,8 @@ class AnalisadorPeriodoTest(TestCase):
 
     # TODO mover test_coordenadas_partidos para AnalisadorPartidosTest
     def test_coordenadas_partidos(self):
-        periodo = models.PeriodoCasaLegislativa(date(1989, 0o2, 0o2),
-                                                date(1989, 10, 10))
+        periodo = PeriodoCasaLegislativa(date(1989, 2, 2),
+                                         date(1989, 10, 10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
         coordenadas = analise_periodo.coordenadas_partidos
@@ -84,8 +84,8 @@ class AnalisadorPeriodoTest(TestCase):
 
     # TODO mover test_tamanho_partidos para AnalisadorPartidosTest
     def test_tamanho_partidos(self):
-        periodo = models.PeriodoCasaLegislativa(date(1989, 0o2, 0o2),
-                                                date(1989, 10, 10))
+        periodo = PeriodoCasaLegislativa(date(1989, 2, 2),
+                                         date(1989, 10, 10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
         tamanhos = analise_periodo.tamanhos_partidos
@@ -96,8 +96,8 @@ class AnalisadorPeriodoTest(TestCase):
             self.assertEqual(tamanhos[p], tamanho_esperado)
 
     def test_chefes_executivos(self):
-        periodo = models.PeriodoCasaLegislativa(
-                  date(1989, 0o2, 0o2), date(1989, 10, 10))
+        periodo = PeriodoCasaLegislativa(date(1989, 2, 2),
+                                         date(1989, 10, 10))
         analisador = analise.AnalisadorPeriodo(self.casa_legislativa, periodo)
         analise_periodo = analisador.analisa()
         chefes_executivos = analise_periodo.chefes_executivos
@@ -119,12 +119,11 @@ class ConstrutorDeMatrizesDeDadosTest(TestCase):
         flush_db(cls)
 
     def setUp(self):
-        self.casa_legislativa = models.CasaLegislativa.objects.get(
-            nome_curto='conv')
+        self.casa_legislativa = CasaLegislativa.objects.get(nome_curto='conv')
         self.partidos = ConstrutorDeMatrizesDeDadosTest.importer.partidos
-        self.votacoes = models.Votacao.objects.filter(
+        self.votacoes = Votacao.objects.filter(
             proposicao__casa_legislativa__nome_curto='conv')
-        self.parlamentares = models.Parlamentar.objects.filter(
+        self.parlamentares = Parlamentar.objects.filter(
             casa_legislativa__nome_curto='conv').distinct()
 
     def test_matriz_votacoes(self):
@@ -157,8 +156,9 @@ class ConstrutorDeMatrizesDeDadosTest(TestCase):
              [1., 1., 1., 1., 1., 1., 0., 0., 0],
              [1., 1., 1., 0., 1., 1., 1., 1., 1]])
 
-        construtor = analise.ConstrutorDeMatrizesDeDados(
-            self.votacoes, self.partidos, self.parlamentares)
+        construtor = analise.ConstrutorDeMatrizesDeDados(self.votacoes,
+                                                         self.partidos,
+                                                         self.parlamentares)
         construtor.gera_matrizes()
         self.assertTrue(
             (construtor.matriz_presencas == MATRIZ_PRESENCAS_ESPERADA).all())
@@ -177,12 +177,11 @@ class AnalisadorTemporalTest(TestCase):
         flush_db(cls)
 
     def setUp(self):
-        self.casa_legislativa = models.CasaLegislativa.objects.get(
-            nome_curto='conv')
+        self.casa_legislativa = CasaLegislativa.objects.get(nome_curto='conv')
         self.partidos = AnalisadorTemporalTest.importer.partidos
-        self.votacoes = models.Votacao.objects.filter(
+        self.votacoes = Votacao.objects.filter(
             proposicao__casa_legislativa__nome_curto='conv')
-        self.parlamentares = models.Parlamentar.objects.filter(
+        self.parlamentares = Parlamentar.objects.filter(
             casa_legislativa__nome_curto='conv').distinct()
         for partido in self.partidos:
             if partido.nome == conv.GIRONDINOS:
@@ -193,8 +192,8 @@ class AnalisadorTemporalTest(TestCase):
                 self.monarquistas = partido
 
     def test_analisador_temporal(self):
-        analisador_temporal = analise.AnalisadorTemporal(
-            self.casa_legislativa, models.SEMESTRE)
+        analisador_temporal = analise.AnalisadorTemporal(self.casa_legislativa,
+                                                         SEMESTRE)
         analise_temporal = analisador_temporal.get_analise_temporal()
         self.assertEqual(analise_temporal.total_votacoes, 9)
         analises = analise_temporal.analises_periodo
@@ -204,48 +203,41 @@ class AnalisadorTemporalTest(TestCase):
 
         # primeiro semestre de 1989
         coordenadas = analises[0].coordenadas_partidos
-        self.assertAlmostEqual(
-            coordenadas[self.girondinos][0], -0.11788123, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.girondinos][1], -0.29647299, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.jacobinos][0], -0.30596818, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.jacobinos][1], 0.19860293, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.monarquistas][0], 0.42384941, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.monarquistas][1], 0.09787006, 4)
+        self.assertAlmostEqual(coordenadas[self.girondinos][0], -0.11788123, 4)
+        self.assertAlmostEqual(coordenadas[self.girondinos][1], -0.29647299, 4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][0], -0.30596818, 4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][1], 0.19860293, 4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][0], 0.42384941,
+                               4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][1], 0.09787006,
+                               4)
 
         # segundo semestre de 1989
         coordenadas = analises[1].coordenadas_partidos
-        self.assertAlmostEqual(
-            coordenadas[self.girondinos][0], -0.217213339209, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.girondinos][1], 0.162195036556, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.jacobinos][0], -0.234612288891, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.jacobinos][1], -0.173823604055, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.monarquistas][0], 0.45182562815, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.monarquistas][1], 0.011628567499, 4)
+        self.assertAlmostEqual(coordenadas[self.girondinos][0],
+                               -0.217213339209, 4)
+        self.assertAlmostEqual(coordenadas[self.girondinos][1], 0.162195036556,
+                               4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][0], -0.234612288891,
+                               4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][1], -0.173823604055,
+                               4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][0],
+                               0.45182562815, 4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][1],
+                               0.011628567499, 4)
 
         # primeiro semestre de 1990 (nesse período teve só uma votação)
         coordenadas = analises[2].coordenadas_partidos
-        self.assertAlmostEqual(
-            coordenadas[self.girondinos][0], -0.222717701594, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.girondinos][1], 0.0, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.jacobinos][0], 0.133630620956, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.jacobinos][1], 0.0, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.monarquistas][0], 0.133630620956, 4)
-        self.assertAlmostEqual(
-            coordenadas[self.monarquistas][1], 0.0, 4)
+        self.assertAlmostEqual(coordenadas[self.girondinos][0],
+                               -0.222717701594, 4)
+        self.assertAlmostEqual(coordenadas[self.girondinos][1], 0.0, 4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][0], 0.133630620956,
+                               4)
+        self.assertAlmostEqual(coordenadas[self.jacobinos][1], 0.0, 4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][0],
+                               0.133630620956, 4)
+        self.assertAlmostEqual(coordenadas[self.monarquistas][1], 0.0, 4)
 
 
 class RotacionadorTest(TestCase):
@@ -261,29 +253,28 @@ class RotacionadorTest(TestCase):
         flush_db(cls)
 
     def setUp(self):
-        self.casa_legislativa = models.CasaLegislativa.objects.get(
-            nome_curto='conv')
+        self.casa_legislativa = CasaLegislativa.objects.get(nome_curto='conv')
 
     def test_rotacao(self):
-        periodosRetriever = PeriodosRetriever(
-            self.casa_legislativa, models.SEMESTRE)
+        periodosRetriever = PeriodosRetriever(self.casa_legislativa, SEMESTRE)
         periodos = periodosRetriever.get_periodos()
-        analisador1 = analise.AnalisadorPeriodo(
-            self.casa_legislativa, periodo=periodos[0])
+        analisador1 = analise.AnalisadorPeriodo(self.casa_legislativa,
+                                                periodo=periodos[0])
         analise_do_periodo1 = analisador1.analisa()
-        analisador2 = analise.AnalisadorPeriodo(
-            self.casa_legislativa, periodo=periodos[1])
+        analisador2 = analise.AnalisadorPeriodo(self.casa_legislativa,
+                                                periodo=periodos[1])
         analise_do_periodo2 = analisador2.analisa()
-        rotacionador = analise.Rotacionador(
-            analise_do_periodo2, analise_do_periodo1)
+        rotacionador = analise.Rotacionador(analise_do_periodo2,
+                                            analise_do_periodo1)
         analise_rotacionada = rotacionador.espelha_ou_roda()
         grafico = analise_rotacionada.coordenadas_parlamentares
+        parlamentares = sorted([p.id for p in Parlamentar.objects.all()])
         # parlamentar 1
-        self.assertAlmostEqual(grafico[1][0], -0.29498659, 4)
-        self.assertAlmostEqual(grafico[1][1], -0.06674737, 4)
+        self.assertAlmostEqual(grafico[parlamentares[0]][0], -0.29498659, 4)
+        self.assertAlmostEqual(grafico[parlamentares[0]][1], -0.06674737, 4)
         # parlamentar 4
-        self.assertAlmostEqual(grafico[4][0], -0.11386368, 4)
-        self.assertAlmostEqual(grafico[4][1], -0.38797608, 4)
+        self.assertAlmostEqual(grafico[parlamentares[3]][0], -0.11386368, 4)
+        self.assertAlmostEqual(grafico[parlamentares[3]][1], -0.38797608, 4)
         # parlamentar 9
-        self.assertAlmostEqual(grafico[9][0], 0.49080368, 4)
-        self.assertAlmostEqual(grafico[9][1], -0.20057948, 4)
+        self.assertAlmostEqual(grafico[parlamentares[8]][0], 0.49080368, 4)
+        self.assertAlmostEqual(grafico[parlamentares[8]][1], -0.20057948, 4)
