@@ -29,7 +29,7 @@ import sys
 import os
 import xml.etree.ElementTree as etree
 import logging
-import urllib2
+import requests
 
 logger = logging.getLogger("radar")
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -285,13 +285,10 @@ class ImportadorCMSP:
     def importar_de_url(self, xml_url):
         text = ''
         try:
-            request = urllib2.Request(xml_url)
-            xml_text = urllib2.urlopen(request).read()
+            xml_text = requests.get(xml_url).text()
             self.importar_de(xml_text)
-        except urllib2.URLError, error:
-            logger.error("%s ao acessar %s" % (error, url))
-        except urllib2.HTTPError:
-            logger.error("%s ao acessar %s" % (error, url))
+        except RequestException as error:
+            logger.error("%s ao acessar %s", error, xml_url)
 
     def importar_de(self, xml_text):
         """Salva no banco de dados do Django e retorna lista das votações"""

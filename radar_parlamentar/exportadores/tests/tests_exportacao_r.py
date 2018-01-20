@@ -9,7 +9,7 @@ import csv
 class ExportacaoRClass(TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    def setUpTestData(cls):
         exportador_csv_r.main()
 
     # @classmethod

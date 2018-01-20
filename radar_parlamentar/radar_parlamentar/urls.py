@@ -1,8 +1,4 @@
-# Create your views here.
-# -*- coding: utf-8 -*-
-
-from django.conf.urls import url
-from django.conf.urls import *
+from django.urls import include, path
 from django.conf.urls.i18n import i18n_patterns
 from django.shortcuts import redirect
 
@@ -40,92 +36,71 @@ urlpatterns = i18n_patterns(
     # Change the admin prefix here to use an alternate URL for the
     # admin interface, which would be marginally more secure.
     # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    # path('admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
-
+    path('admin/', admin.site.urls),
 )
 
 urlpatterns += [
     # Examples:
-    # url(r'^$',
+    # path('',
     #     radar_views.home, name='home'),
-    # url(r'^radar_parlamentar/', include(
+    # path('radar_parlamentar/', include(
     # 'radar_parlamentar.foo.urls')),
 
     # Index
-    url(r'^$', radar_views.index, name="index"),
-    url(r'^index/$', redirect, {'url': '/'}),
-    url(r'^origem/$', radar_views.origem, name="origem"),
-    url(r'^ogrupo/$', radar_views.ogrupo, name="ogrupo"),
-    url(r'^premiacoes/$',
-        radar_views.premiacoes, name="premiacoes"),
-    url(r'^radarnamidia/$',
-        radar_views.radar_na_midia, name="radar_na_midia"),
-    url(r'^sim-voto-aberto/$',
-        radar_views.votoaberto, name="votoaberto"),
-    url(r'^dados/importadores/$',
-        radar_views.importadores, name="importadores"),
-
-    url(r'^importar/(?P<nome_curto_casa_legislativa>\w*)/$',
-        importadores_views.importar),
-
-    url(r'^dados/downloads/$',
-        radar_views.dados_utilizados),
-
-    url(r'^blog/$',
-        radar_views.generate_blog_news, name="blog"),
-
-    # Páginas do Projeto Gênero do Hackathon da Câmara dos
-    # Deputados em 2013
-    url(r'^genero/$', radar_views.genero, name="genero"),
-    url(r'^genero/tematica/partido/$',
-        radar_views.genero_matriz, name="genero_matriz"),
-    url(r'^genero/perfil/partido/$',
-        radar_views.genero_perfil_partido,
-        name="genero_perfil_partido"),
-    url(r'^genero/perfil/partido/comparacao/$',
-        radar_views.genero_comparativo_partidos,
-        name="genero_comparativo_partidos"),
-    url(r'^genero/perfil/legislaturas/$',
-        radar_views.genero_historia_legislaturas,
-        name="genero_historia_legislaturas"),
-    url(r'^genero/tematica/treemap/$',
-        radar_views.genero_treemap, name="genero_treemap"),
-    url(r'^genero/tematica/legislador/$',
-        radar_views.genero_futuro, name="genero_futuro"),
-    url(r'^genero/tematica/nuvem/$',
-        radar_views.genero_termos_nuvem,
-        name="genero_termos_nuvem"),
-    url(r'^genero/tematica/nuvem/?Pcasa_legislativa=$',
-        radar_views.genero_termos_nuvem),
+    path('', radar_views.index, name="index"),
+    path('index/', redirect, {'url': '/'}),
+    path('origem/', radar_views.origem, name="origem"),
+    path('ogrupo/', radar_views.ogrupo, name="ogrupo"),
+    path('premiacoes/', radar_views.premiacoes, name="premiacoes"),
+    path('radarnamidia/', radar_views.radar_na_midia, name="radar_na_midia"),
+    path('sim-voto-aberto/', radar_views.votoaberto, name="votoaberto"),
+    path('dados/importadores/', radar_views.importadores, name="importadores"),
+    path('importar/<nome_curto_casa_legislativa>/',
+         importadores_views.importar),
+    path('dados/downloads/', radar_views.dados_utilizados),
+    path('blog/', radar_views.generate_blog_news, name="blog"),
+    # Páginas do Projeto Gênero do Hackathon da Câmara dos Deputados em 2013
+    path('genero/', radar_views.genero, name="genero"),
+    path('genero/tematica/partido/', radar_views.genero_matriz,
+         name="genero_matriz"),
+    path('genero/perfil/partido/', radar_views.genero_perfil_partido,
+         name="genero_perfil_partido"),
+    path('genero/perfil/partido/comparacao/',
+         radar_views.genero_comparativo_partidos,
+         name="genero_comparativo_partidos"),
+    path('genero/perfil/legislaturas/',
+         radar_views.genero_historia_legislaturas,
+         name="genero_historia_legislaturas"),
+    path('genero/tematica/treemap/', radar_views.genero_treemap,
+         name="genero_treemap"),
+    path('genero/tematica/legislador/', radar_views.genero_futuro,
+         name="genero_futuro"),
+    path('genero/tematica/nuvem/', radar_views.genero_termos_nuvem,
+         name="genero_termos_nuvem"),
+    path('genero/tematica/nuvem/?Pcasa_legislativa=',
+         radar_views.genero_termos_nuvem),
 
     # Serviço que retorna conteúdo para plotar o mapa
-    url(r'^' + url_radar + casa_legislativa + '$',
-        analises_views.analise),
-    url(r'^' + url_json_radar + casa_legislativa + periodicidade + '$',
-        analises_views.json_analise),
-    url(r'^' + url_json_radar + casa_legislativa + periodicidade +
-        palavras_chave + '$',
-        analises_views.json_analise),
-    url(r'^' + url_lista + casa_legislativa + '$',
-        analises_views.lista_de_votacoes_filtradas),
-    url(r'^' + url_lista + casa_legislativa + periodicidade +
-        palavras_chave + '$',
-        analises_views.lista_de_votacoes_filtradas),
+    path(url_radar + casa_legislativa, analises_views.analise),
+    path(url_json_radar + casa_legislativa + periodicidade,
+         analises_views.json_analise),
+    path(url_json_radar + casa_legislativa + periodicidade + palavras_chave,
+         analises_views.json_analise),
+    path(url_lista + casa_legislativa,
+         analises_views.lista_de_votacoes_filtradas),
+    path(url_lista + casa_legislativa + periodicidade + palavras_chave,
+         analises_views.lista_de_votacoes_filtradas),
 
     # Páginas da Plenária - Hackathon Eleições 2016
-    url(r'^' + url_plenaria + '$',
-        plenaria_views.plenaria),
-    url(r'^' + url_plenaria + casa_legislativa + '$',
-        plenaria_views.plenaria),
-    url(r'^' + url_plenaria + casa_legislativa + identificador_proposicao +
-        '$',
-        plenaria_views.plenaria),
-    url(r'^' + url_json_plenaria + casa_legislativa +
-        identificador_proposicao + '$',
-        plenaria_views.json_proposicao),
+    path(url_plenaria, plenaria_views.plenaria),
+    path(url_plenaria + casa_legislativa, plenaria_views.plenaria),
+    path(url_plenaria + casa_legislativa + identificador_proposicao,
+         plenaria_views.plenaria),
+    path(url_json_plenaria + casa_legislativa + identificador_proposicao,
+         plenaria_views.json_proposicao),
 
     ###########################################################################
     # URLS legadas
@@ -136,39 +111,35 @@ urlpatterns += [
     #
     # Serviço que retorna conteúdo para plotar o mapa
 
-    url(r'^analises/analise/' + casa_legislativa + '$',
-        analises_views.redirect_analise,
-        name="redirect_analise"),
+    path('analises/analise/' + casa_legislativa,
+         analises_views.redirect_analise, name="redirect_analise"),
 
-    url(r'^analises/json_analise/' + casa_legislativa + periodicidade + '$',
-        analises_views.redirect_json_analise, name="redirect_json_analise"),
+    path('analises/json_analise/' + casa_legislativa + periodicidade,
+         analises_views.redirect_json_analise, name="redirect_json_analise"),
 
+    path('analises/json_analise/' + casa_legislativa + periodicidade +
+         palavras_chave, analises_views.redirect_json_analise_p_chave,
+         name="redirect_json_analise_p_chave"),
 
-    url(r'^analises/json_analise/' + casa_legislativa + periodicidade +
-        palavras_chave + '$',
-        analises_views.redirect_json_analise_p_chave,
-        name="redirect_json_analise_p_chave"),
+    path('analises/lista_de_votacoes_filtradas/' + casa_legislativa,
+         analises_views.redirect_votacoes_filtradas,
+         name="redirect_votacoes_filtradas"),
 
-    url(r'^analises/lista_de_votacoes_filtradas/' + casa_legislativa + '$',
-        analises_views.redirect_votacoes_filtradas,
-        name="redirect_votacoes_filtradas"),
-
-    url(r'^analises/lista_de_votacoes_filtradas/' + casa_legislativa +
-        periodicidade + palavras_chave + '$',
-        analises_views.redirect_lista_votacoes_p_chave,
-        name="redirect_lista_votacoes_p_chave"),
+    path('analises/lista_de_votacoes_filtradas/' + casa_legislativa +
+         periodicidade + palavras_chave,
+         analises_views.redirect_lista_votacoes_p_chave,
+         name="redirect_lista_votacoes_p_chave"),
 
     # Páginas da Plenária - Hackathon Eleições 2016
-    url(r'^analises/' + url_plenaria + casa_legislativa +
-        identificador_proposicao + '$',
-        analises_views.redirect_plenaria, name="redirect_plenaria"),
+    path('analises/' + url_plenaria + casa_legislativa +
+         identificador_proposicao,
+         analises_views.redirect_plenaria, name="redirect_plenaria"),
 
-    url(r'^json_plenaria/' + casa_legislativa +
-        identificador_proposicao + '$',
-        analises_views.redirect_json_plenaria, name="redirect_json_plenaria"),
+    path('json_plenaria/' + casa_legislativa + identificador_proposicao,
+         analises_views.redirect_json_plenaria, name="redirect_json_plenaria"),
 
-    url(r'^dados$', analises_views.redirect_dados, name="redirect_dados"),
+    path('dados', analises_views.redirect_dados, name="redirect_dados"),
 
-    url(r'^importadores/$',
-        analises_views.redirect_importadores, name="redirect_importadores")
+    path('importadores/',
+         analises_views.redirect_importadores, name="redirect_importadores")
 ]

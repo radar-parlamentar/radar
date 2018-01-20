@@ -11,3 +11,4 @@ elasticsearch
 ipython
 codacy-coverage
 coveralls
+requests
