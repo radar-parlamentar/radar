@@ -23,6 +23,7 @@
 
 from django.utils.dateparse import parse_datetime
 from modelagem import models
+from requests.exceptions import RequestException
 from .chefes_executivos import ImportadorChefesExecutivos
 import re
 import sys
@@ -285,7 +286,7 @@ class ImportadorCMSP:
     def importar_de_url(self, xml_url):
         text = ''
         try:
-            xml_text = requests.get(xml_url).text()
+            xml_text = requests.get(xml_url).text
             self.importar_de(xml_text)
         except RequestException as error:
             logger.error("%s ao acessar %s", error, xml_url)
