@@ -1,7 +1,3 @@
-# !/usr/bin/python
-# coding=utf8
-
-
 from modelagem import models
 import os
 import xml.etree.ElementTree as etree

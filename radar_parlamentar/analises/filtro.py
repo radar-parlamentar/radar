@@ -1,5 +1,3 @@
-# coding=utf8
-
 # Copyright (C) 2012, Arthur Del Esposte, Leonardo Leite, Aline Santos,
 # Gabriel Augusto, Thallys Martins, Thatiany Lima, Winstein Martins,
 # Eduardo Kuroda.

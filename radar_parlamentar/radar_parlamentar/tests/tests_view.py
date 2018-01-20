@@ -1,5 +1,3 @@
-# !/usr/bin/python
-# coding=utf8
 from django.urls import reverse
 from django.test import TestCase
 from radar_parlamentar.views import *

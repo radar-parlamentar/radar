@@ -1,4 +1,3 @@
-# coding=utf8
 # Django settings for radar_parlamentar project.
 from pathlib import Path
 

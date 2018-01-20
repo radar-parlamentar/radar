@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright (C) 2014, Leonardo Leite
 #
 # This file is part of Radar Parlamentar.

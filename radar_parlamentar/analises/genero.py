@@ -1,5 +1,3 @@
-# coding=utf8
-
 # Copyright (C) 2015, Vanessa Soares, Thaiane Braga
 #
 # This file is part of Radar Parlamentar.

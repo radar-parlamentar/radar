@@ -1,6 +1,3 @@
-
-# coding=utf8
-
 # Copyright (C) 2012, Leonardo Leite, Eduardo Hideo, Saulo Trento,
 #                     Diego Rabatone
 #

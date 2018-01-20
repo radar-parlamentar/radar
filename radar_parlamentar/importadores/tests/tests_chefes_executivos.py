@@ -1,7 +1,3 @@
-# !/usr/bin/python
-# coding=utf8
-
-
 from django.test import TestCase
 from importadores.chefes_executivos import *
 from modelagem import models

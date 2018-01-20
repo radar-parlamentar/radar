@@ -1,5 +1,3 @@
-# coding:utf-8
-
 from modelagem.models import Proposicao
 from modelagem.models import CasaLegislativa
 import urllib.request

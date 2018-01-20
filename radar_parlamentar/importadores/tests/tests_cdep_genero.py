@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 from django.test import TestCase
 from unittest import skip
 from importadores import cdep_genero

@@ -1,6 +1,3 @@
-# !/usr/bin/python
-# coding=utf8
-
 # Copyright (C) 2013, Leonardo Leite
 #
 # This file is part of Radar Parlamentar.

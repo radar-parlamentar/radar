@@ -1,5 +1,3 @@
-# -*- coding: utf8 -*-
-
 from django.test import TestCase
 from radar_parlamentar.templatetags.versao_radar import versao_radar
 import re

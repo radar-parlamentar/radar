@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from importadores import importador_elasticsearch
 import logging
 

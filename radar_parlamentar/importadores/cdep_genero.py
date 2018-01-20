@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2015,
 # Diego Rabatone Oliveira, Matheus Fonseca, Brenddon Gontijo Furtado
 #

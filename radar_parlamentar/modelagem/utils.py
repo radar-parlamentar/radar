@@ -1,5 +1,3 @@
-# coding=utf8
-
 # Copyright (C) 2013, Leonardo Leite, Eduardo Hideo
 #
 # This file is part of Radar Parlamentar.

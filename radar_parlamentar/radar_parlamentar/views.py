@@ -1,5 +1,3 @@
-# coding=utf8
-
 # Copyright (C) 2015, Vanessa Soares, Thaiane Braga
 #
 # This file is part of Radar Parlamentar.
@@ -16,7 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see
-#               <http://www.gnu.org/licenses/>.# -*- coding: utf-8 -*-
+#               <http://www.gnu.org/licenses/>.
 
 
 from django.template import RequestContext
