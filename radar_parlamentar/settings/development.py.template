@@ -1,4 +1,4 @@
-from defaults import *
+from .defaults import *
 
 print('Starting DEVELOPMENT environment ...')
 
