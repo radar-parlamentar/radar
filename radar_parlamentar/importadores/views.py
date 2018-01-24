@@ -19,7 +19,7 @@
 import logging
 from django.http import HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
-from .celery import importar_assincronamente
+from importadores.celery_tasks import importar_assincronamente
 
 logger = logging.getLogger("radar")
 
