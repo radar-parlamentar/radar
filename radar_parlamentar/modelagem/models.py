@@ -75,22 +75,6 @@ PERIODOS = (
 SEM_PARTIDO = 'Sem partido'
 COR_PRETA = '#000000'
 
-
-class Indexadores(models.Model):
-    """Termos utilizados na indexação de proposições
-
-    Atributos:
-        termo -- string; ex: "mulher" ou "partido político"+
-        principal -- bool; identifica se o termo é o principal
-                    de uma linha de sinônimos, o termo a ser usado.
-    """
-    termo = models.CharField(max_length=120)
-    principal = models.BooleanField()
-
-    def __str__(self):
-        return '%s-%s-%s' % (self.nome, self.numero, self.cor)
-
-
 class Partido(models.Model):
     """Partido político.
 

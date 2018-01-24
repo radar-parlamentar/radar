@@ -42,7 +42,6 @@ class VotacaoAdmin(admin.ModelAdmin):
 class VotoAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'votacao')
 
-admin.site.register(Indexadores)
 admin.site.register(Partido)
 admin.site.register(CasaLegislativa)
 admin.site.register(Parlamentar, ParlamentarAdmin)
