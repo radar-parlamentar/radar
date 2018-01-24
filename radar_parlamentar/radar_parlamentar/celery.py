@@ -7,7 +7,7 @@ from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
 
-# set the default Django settings module for the 'celery' program.
+# DJANGO_SETTINGS_MODULE já deve estar configurado como uma variável de ambiente.
 # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.defaults')
 
 app = Celery('radar_parlamentar')
