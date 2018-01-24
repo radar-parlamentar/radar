@@ -7,7 +7,7 @@ mock
 coverage
 celery
 feedparser
-elasticsearch
+elasticsearch<1.0.0
 ipython
 codacy-coverage
 coveralls
