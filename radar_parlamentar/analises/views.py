@@ -38,18 +38,9 @@ def analise(request, nome_curto_casa_legislativa):
     partidos = models.Partido.objects.order_by('numero').all()
     casa_legislativa = get_object_or_404(
         models.CasaLegislativa, nome_curto=nome_curto_casa_legislativa)
-    try:
-        periodicidade = request.GET["periodicidade"]
-    except:
-        periodicidade = models.BIENIO
-    try:
-        palavras_chave = request.GET["palavras_chave"]
-    except:
-        palavras_chave = ""
-    try:
-        nome_parlamentar = request.GET["nome_parlamentar"]
-    except:
-        nome_parlamentar = ""
+    periodicidade = request.GET.get('periodicidade', models.BIENIO)
+    palavras_chave = request.GET.get('palavras_chave', '')
+    nome_parlamentar = request.GET.get('nome_parlamentar', '')
 
     num_votacao = casa_legislativa.num_votacao()
 
