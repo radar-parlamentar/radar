@@ -1,7 +1,8 @@
 # Django settings for radar_parlamentar project.
 from pathlib import Path
 
-ADMINS = (('Leonardo', 'leonardofl87@gmail.com'))
+ADMINS = (('Leonardo', 'leonardofl87@gmail.com'),
+          ('Diego', 'diraol@diraol.eng.br'))
 MANAGERS = ADMINS
 
 # Local time zone for this installation. Choices can be found here:
@@ -93,10 +94,15 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-#    'radar_parlamentar.middleware.ConsoleExceptionMiddleware',
+    'radar_parlamentar.middleware.ConsoleExceptionMiddleware',
+    'radar_parlamentar.middleware.ExceptionLoggingMiddleware'
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+CACHE_MIDDLEWARE_SECONDS = 10000000
+CACHE_MIDDLEWARE_KEY_PREFIX = 'site_cache'
 
 ROOT_URLCONF = 'radar_parlamentar.urls'
 
@@ -177,5 +183,5 @@ LOGGING = {
         }
     }
 }
-ELASTIC_SEARCH_ADDRESS = {'host':'localhost','port':'9200'}
+ELASTIC_SEARCH_ADDRESS = {'host':'localhost', 'port':'9200'}
 ELASTIC_SEARCH_INDEX = "radar_parlamentar"

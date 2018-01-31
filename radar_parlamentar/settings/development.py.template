@@ -5,14 +5,16 @@ print('Starting DEVELOPMENT environment ...')
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'radar',                      # Or path to database file if using sqlite3.
-        'USER': 'radar',                       # Not used with sqlite3.
-        'PASSWORD': 'coloque_a_senha_aqui',   # Not used with sqlite3.
-        'HOST': 'localhost',                           # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                           # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': '<DB_NAME>',          # Or path to database file if using sqlite3.
+        'USER': '<DB_USER>',          # Not used with sqlite3.
+        'PASSWORD': '<DB_PASSWORD>',  # Not used with sqlite3.
+        'HOST': 'localhost',          # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                   # Set to empty string for default. Not used with sqlite3.
     }
 }
 

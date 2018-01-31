@@ -6,35 +6,23 @@ print('Starting PRODUCTION environment ...')
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+ALLOWED_HOSTS = ['radarparlamentar.polignu.org']
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'radar',                      # Or path to database file if using sqlite3.
-        'USER': 'root',                       # Not used with sqlite3.
-        'PASSWORD': 'coloque_a_senha_aqui',   # Not used with sqlite3.
-        'HOST': 'localhost',                           # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                           # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': '<DB_NAME>',       # Or path to database file if using sqlite3.
+        'USER': '<USERNAME>',      # Not used with sqlite3.
+        'PASSWORD': '<PASSWORD>',  # Not used with sqlite3.
+        'HOST': 'localhost',       # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                # Set to empty string for default. Not used with sqlite3.
     }
 }
 
-
-MIDDLEWARE_CLASSES = [
-    'radar_parlamentar.middleware.SmartUpdateCacheMiddleware', 
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'radar_parlamentar.middleware.ConsoleExceptionMiddleware',
-    'radar_parlamentar.middleware.ExceptionLoggingMiddleware'
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+MIDDLEWARE_CLASSES.insert(0, 'django.middleware.cache.UpdateCacheMiddleware')
 
 CACHE_MIDDLEWARE_SECONDS = 10000000
 CACHE_MIDDLEWARE_KEY_PREFIX = 'site_cache'
-
 
 CACHES = {
     'default': {

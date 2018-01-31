@@ -19,6 +19,7 @@
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.cache import cache_page
 from modelagem import models
 from modelagem import utils
 from .grafico import JsonAnaliseGenerator
@@ -53,6 +54,7 @@ def analise(request, nome_curto_casa_legislativa):
                    'nome_parlamentar': nome_parlamentar})
 
 
+@cache_page(60*60*24*2)
 def json_analise(request, nome_curto_casa_legislativa,
                  periodicidade, palavras_chave=""):
     """Retorna o JSON com as coordenadas do gráfico PCA"""
