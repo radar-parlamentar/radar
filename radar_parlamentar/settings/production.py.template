@@ -19,7 +19,7 @@ DATABASES = {
     }
 }
 
-MIDDLEWARE_CLASSES.insert(0, 'django.middleware.cache.UpdateCacheMiddleware')
+MIDDLEWARE.insert(0, 'django.middleware.cache.UpdateCacheMiddleware')
 
 CACHE_MIDDLEWARE_SECONDS = 10000000
 CACHE_MIDDLEWARE_KEY_PREFIX = 'site_cache'
