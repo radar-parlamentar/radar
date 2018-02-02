@@ -1,5 +1,4 @@
 from .defaults import *
-import os
 
 print('Starting PRODUCTION environment ...')
 
@@ -19,16 +18,28 @@ DATABASES = {
     }
 }
 
+# First one on the list
 MIDDLEWARE.insert(0, 'django.middleware.cache.UpdateCacheMiddleware')
+# Last one on the list
+MIDDLEWARE.append('django.middleware.cache.FetchFromCacheMiddleware')
 
-CACHE_MIDDLEWARE_SECONDS = 10000000
-CACHE_MIDDLEWARE_KEY_PREFIX = 'site_cache'
-
+# Timeout here is the time that the django-server will hold the cached files
+# on the server, it is not directly related to the http headers timeout
+# information (defined below).
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': '/tmp/django_cache',
+        'TIMEOUT': 60*60*48,
     }
 }
+
+# This is the browser expiration cached info.
+# UpdateCacheMiddleware automatically sets a few headers in each HttpResponse:
+#   Sets the Expires header to the current date/time plus the defined
+#   CACHE_MIDDLEWARE_SECONDS. Sets the Cache-Control header to give a max age
+#   for the page – again, from the CACHE_MIDDLEWARE_SECONDS setting.
+# https://docs.djangoproject.com/en/2.0/topics/cache/#the-per-site-cache
+CACHE_MIDDLEWARE_SECONDS = 60*60
 
 LOGGING['handlers']['file']['filename'] = '/var/log/radar/radar.log'

@@ -100,10 +100,6 @@ MIDDLEWARE = [
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-CACHE_MIDDLEWARE_SECONDS = 10000000
-CACHE_MIDDLEWARE_KEY_PREFIX = 'site_cache'
-
 ROOT_URLCONF = 'radar_parlamentar.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -183,5 +179,6 @@ LOGGING = {
         }
     }
 }
+
 ELASTIC_SEARCH_ADDRESS = {'host':'localhost', 'port':'9200'}
 ELASTIC_SEARCH_INDEX = "radar_parlamentar"
