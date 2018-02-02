@@ -54,7 +54,6 @@ def analise(request, nome_curto_casa_legislativa):
                    'nome_parlamentar': nome_parlamentar})
 
 
-@cache_page(60*60*24*2)
 def json_analise(request, nome_curto_casa_legislativa,
                  periodicidade, palavras_chave=""):
     """Retorna o JSON com as coordenadas do gráfico PCA"""
