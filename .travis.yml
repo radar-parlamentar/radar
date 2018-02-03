@@ -5,6 +5,7 @@ python:
 
 # Dependencias do projeto
 install:
+  - pip install -U pip setuptools wheel
   - pip install -r radar_parlamentar/requirements.txt
 
 # Roda Testes
