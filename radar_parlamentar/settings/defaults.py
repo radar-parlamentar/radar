@@ -1,4 +1,5 @@
-# Django settings for radar_parlamentar project.
+"""Django settings for radar_parlamentar project."""
+import os
 from pathlib import Path
 
 ADMINS = (('Leonardo', 'leonardofl87@gmail.com'),
@@ -10,8 +11,6 @@ MANAGERS = ADMINS
 # although not all choices may be available on all operating systems.
 # On Unix systems, a value of None will cause Django to use the same
 # timezone as the operating system.
-# If running in a Windows environment this must be set to the same as your
-# system time zone.
 TIME_ZONE = 'America/Sao_Paulo'
 
 # Language code for this installation. All choices can be found here:
@@ -67,7 +66,8 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '&amp;bt*nmd1d(+8*rm^nm9#0ge$iepd8!vw(2#v9+z3!e9iel^ls8' # [TOOO] Remover daqui, colocar em um arquivo de config local.
+SECRET_KEY = os.getenv('RADAR_SECRET_KEY',
+                       '&amp;bt*nmd1d(+8*rm^nm9#0ge$iepd8!vw(#v9+z3!e9iel^ls8')
 
 TEMPLATES = [
     {

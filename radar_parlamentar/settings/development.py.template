@@ -1,3 +1,4 @@
+import os
 from .defaults import *
 
 print('Starting DEVELOPMENT environment ...')
@@ -10,10 +11,10 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': '<DB_NAME>',          # Or path to database file if using sqlite3.
-        'USER': '<DB_USER>',          # Not used with sqlite3.
-        'PASSWORD': '<DB_PASSWORD>',  # Not used with sqlite3.
-        'HOST': 'localhost',          # Set to empty string for localhost. Not used with sqlite3.
+        'NAME': os.getenv('RADAR_DB_NAME'),          # Or path to database file if using sqlite3.
+        'USER': os.getenv('RADAR_DB_USER'),          # Not used with sqlite3.
+        'PASSWORD': os.getenv('RADAR_DB_PASSWORD', 'localhost'),  # Not used with sqlite3.
+        'HOST': os.getenv('RADAR_DB_HOST'),          # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                   # Set to empty string for default. Not used with sqlite3.
     }
 }
