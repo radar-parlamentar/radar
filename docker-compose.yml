@@ -1,0 +1,48 @@
+# EXAMPLE AT: https://github.com/nevercaution/docker-django-uwsgi-nginx
+version: "3.1"
+
+volumes:
+    volume_radar_pg_data:
+    volume_django_static:
+
+services:
+
+  postgres:
+    image: postgres:10.2-alpine
+    environment:
+        - POSTGRES_USER=radar
+        - POSTGRES_PASSWORD=${RADAR_DB_PASSWORD}
+        - POSTGRES_DB=radar
+          #    volumes:
+          # - "volume_radar_pg_data:/var/lib/postgresql/data/pgdata"
+ 
+  nginx:
+    image: nginx:1.13.9-alpine
+    volumes:
+        - volume_django_static:/radar/radar_parlamentar/static
+        - ./deploy/uwsgi_params:/radar/deploy/uwsgi_params
+        - ./deploy/radar.nginx.conf:/etc/nginx/sites-enabled/radar.conf
+    ports:
+        - "80:80"
+        - "443:443"
+    links:
+        - django
+
+  django:
+    image: radarparlamentar
+    build: .
+    volumes:
+        - .:/radar
+        - volume_django_static:/radar/radar_parlamentar/static
+    links:
+        - postgres
+    depends_on:
+        - postgres
+    command: >
+        bash -c "python manage.py migrate &&
+        python manage.py collectstatic &&
+        python manage.py runserver 0.0.0.0:8765
+        "
+    ports:
+        - '8765:8765'
+

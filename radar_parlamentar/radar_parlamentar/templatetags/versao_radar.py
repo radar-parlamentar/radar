@@ -1,5 +1,5 @@
 import subprocess
-import settings
+from radar_parlamentar import settings
 import logging
 from django import template
 register = template.Library()

@@ -54,8 +54,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/radar/radar_parlamentar/static',
-    '/radar/radar_parlamentar/radar_parlamentar/static'
+    '/radar/radar_parlamentar/radar_parlamentar/static',
 )
 
 # List of finder classes that know how to find static files in
@@ -183,3 +182,52 @@ LOGGING = {
 
 ELASTIC_SEARCH_ADDRESS = {'host':'localhost', 'port':'9200'}
 ELASTIC_SEARCH_INDEX = "radar_parlamentar"
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'radar',
+        'USER': 'radar',
+        'PASSWORD': os.getenv('RADAR_DB_PASSWORD', 'radar'),
+        'HOST': 'postgres'
+    }
+}
+
+ALLOWED_HOSTS = ['radarparlamentar.polignu.org', 'localhost']
+
+DEBUG = True
+
+is_production = bool(os.getenv('RADAR_IS_PRODUCTION', 'False'))
+if is_production:
+
+    print('Starting PRODUCTION environment ...')
+
+    DEBUG = False
+
+    # First one on the list
+    MIDDLEWARE.insert(0, 'django.middleware.cache.UpdateCacheMiddleware')
+    # Last one on the list
+    MIDDLEWARE.append('django.middleware.cache.FetchFromCacheMiddleware')
+
+    # Timeout here is the time that the django-server will hold the cached files
+    # on the server, it is not directly related to the http headers timeout
+    # information (defined below).
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+            'LOCATION': '/tmp/django_cache',
+            'TIMEOUT': 60*60*48,
+        }
+    }
+
+    # This is the browser expiration cached info.
+    # UpdateCacheMiddleware automatically sets a few headers in each HttpResponse:
+    #   Sets the Expires header to the current date/time plus the defined
+    #   CACHE_MIDDLEWARE_SECONDS. Sets the Cache-Control header to give a max age
+    #   for the page – again, from the CACHE_MIDDLEWARE_SECONDS setting.
+    # https://docs.djangoproject.com/en/2.0/topics/cache/#the-per-site-cache
+    CACHE_MIDDLEWARE_SECONDS = 60*60
+
+ #   LOGGING['handlers']['file']['filename'] = '/var/log/radar/radar.log'
+
+TEMPLATE_DEBUG = DEBUG
