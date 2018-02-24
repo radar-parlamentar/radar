@@ -21,7 +21,7 @@ from importadores import cdep
 from modelagem import models
 import os
 import xml.etree.ElementTree as etree
-from mock import Mock
+from unittest.mock import Mock
 from importadores.tests.mocks_cdep \
     import mock_obter_proposicoes_votadas_plenario, mock_obter_proposicao, \
     mock_obter_votacoes

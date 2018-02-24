@@ -3,7 +3,6 @@ psycopg2
 argparse
 numpy
 svgwrite
-mock
 coverage
 celery
 feedparser
