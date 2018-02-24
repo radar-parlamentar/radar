@@ -1,5 +1,5 @@
 import subprocess
-from radar_parlamentar import settings
+from radar_parlamentar.settings import TIME_ZONE
 import logging
 from django import template
 register = template.Library()
@@ -10,7 +10,7 @@ logger = logging.getLogger("radar")
 
 @register.simple_tag
 def versao_radar():
-    time_zone = settings.defaults.TIME_ZONE
+    time_zone = TIME_ZONE
     versao_radar = ''
 
     try:

@@ -1,5 +1,6 @@
 """Django settings for radar_parlamentar project."""
 import os
+import sys
 from pathlib import Path
 
 ADMINS = (('Leonardo', 'leonardofl87@gmail.com'),
