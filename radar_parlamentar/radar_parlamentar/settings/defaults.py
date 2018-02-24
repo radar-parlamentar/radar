@@ -197,8 +197,7 @@ ALLOWED_HOSTS = ['radarparlamentar.polignu.org', 'localhost']
 
 DEBUG = True
 
-is_production = bool(os.getenv('RADAR_IS_PRODUCTION', 'False'))
-if is_production:
+if os.getenv('RADAR_IS_PRODUCTION'):
 
     print('Starting PRODUCTION environment ...')
 
@@ -228,6 +227,15 @@ if is_production:
     # https://docs.djangoproject.com/en/2.0/topics/cache/#the-per-site-cache
     CACHE_MIDDLEWARE_SECONDS = 60*60
 
- #   LOGGING['handlers']['file']['filename'] = '/var/log/radar/radar.log'
+    # LOGGING['handlers']['file']['filename'] = '/var/log/radar/radar.log'
+
+if (len(sys.argv) >= 2 and sys.argv[1]):
+    print('Starting TEST environment ...')
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'radar_parlamentar.db',
+        }
+    }
 
 TEMPLATE_DEBUG = DEBUG
