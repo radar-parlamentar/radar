@@ -11,142 +11,56 @@ A primeira coisa que deve ser feita é o clone do projeto no *Github*. Para isso
 2. Configuração do ambiente
 ------------------------------
 
-Instale os pacotes (apt-get):
+O Radar Parlamentar funciona, tanto em produção quanto em desenvolvimento,
+utilizando containers docker.
+Para tanto, você precisa ter instalado em seu sistema operacional tanto o
+*Docker* quanto o *docker-compose*.
+Nossa instalação foi testada utilizando:
 
-    * libpq-dev
-    * postgresql
-    * postgresql-contrib
-    * sqlite3
-    * python3-dev
-    * curl
-    * python3-pip
-    * python3-virtualenv
-    * rabbitmq-server
-
-Certifique-se que o RabbitMQ e o PostgreSQL estão rodando e que serão iniciados automaticamente quando seu computador ligar.
-
-_OBSERVAÇÃO_: O radar foi homologado para rodar em distribuições Debian like.
-Nesses ambientes, pacotes que rodam como serviços, são inicializados
-automaticamente. Caso o seu ambiente não seja Debian like, provavelmente
-você terá que inicializar tais serviços manualmente. Um exemplo é o pacote
-rabbitmq-server. Se sua distribuição utilizar o _systemd_ como gerenciador
-de serviços, basta fazer:
-
-	`sudo systemctl start rabbitmq-server`
-
-Para checar se o servidor do rabbitmq está rodando basta fazer:
-
-	`systemctl status rabbitmq-server`
-
-* **Configuração utilizando o virtualenv**
-
-Para quem não conheçe, o [virtualenv](http://www.virtualenv.org "Virtual Env") cria um *conteiner* com todo um ambiente Python "limpo" para você instalar os pacotes separadamente do seu Sistema Operacional.
-
-Depois de clonar o projeto, vamos criar agora o nosso "Virtual Enviroment":
-
-    $ sudo pip3 install --upgrade pip
-    $ mkdir venv
-    $ python3 -m venv venv
-    $ cd venv
-    $ source bin/activate
-
-O diretório venv pode ser criado em qualquer lugar do sistema e pode ter qualquer outro nome. Como é algo que não deve ser entregue no repositório, não recomendo que se crie dentro da pasta clonada do radar.
-
-Agora, dentro da pasta do nosso virtual env teremos disponíveis todas variáveis de ambiente em um conteiner vazio para trabalharmos a vontade sem interferir no nosso Sistema Operacional
-
-Para instalar todas as dependencias Python necessárias para o nosso projeto rodar, basta executar:
-
-    $ pip install -r radar_parlamentar/requirements.txt
-
-Este comando vai buscar todas as dependências definidas no arquivo *requirements.txt* e as intalará em nosso *conteiner* do *virtualenv*
-
-Caso queira sair do *virtualenv* basta digitar:
-
-    $ deactivate
-
-ATENÇÃO: toda vez que você for trabalhar no radar é preciso ativar o virtual env! (source bin/activate)
-
-Observações
--------------
-
-* Se por algum motivo a versão do *Django* instalada for a 1.5, possivelmente um erro ocorrerá devido a depreciação de uma lib utilizada no projeto. Este erro pode ser visto ao executar o programa.
-
-* Caso ao tentar executar o *manage.py* um erro parecido com o abaixo ocorra:
-
-    * **UnicodeDecodeError**: *'ascii' codec can't decode byte 0xc3 in position 47: ordinal not in range(128)*, existe um problema na leitura do python em relação a caracteres especiais. Bem provavel que esse erro ocorra caso a pasta que você criou para alocar as pastas do projeto esteja com c cedilha ou acentos. Esse erro provavelmente acontecerá no arquivo *models.py* dentro da pasta *modelagem*.
-    Você pode seguir a solução abaixo ou simplesmente renomear a pasta.
-
-    * **Solução para o problema acima**:
-        Abra o arquivo *models.py* e na seguinte linha:
-
-            LISTA_PARTIDOS = os.path.join('recursos/partidos.txt',MODULE_DIR)
-
-        adicione um *.decode("utf-8")* no final, ficando da seguinte forma:
-
-            LISTA_PARTIDOS = os.path.join('recursos/partidos.txt',MODULE_DIR).decode("utf-8")
-
-* Caso ocorra o erro **Missing Template**:
-
-    * Abrir o arquivo /settings/development.py e adicionar na linha 2:
-
-            import os
-
-    * No final do arquivo incluir:
-
-            ere = os.path.abspath(os.path.dirname(__file__))
-
-            TEMPLATE_DIRS = ( os.path.join(here, os.pardir, 'radar_parlamentar/templates/') )
-
+    * Docker 18.02.0-ce (Community Edition) build __fc4de44__
+    * docker-compose 1.17.1
 
 3. Banco de dados
 --------------------------
 
-Você deve configurar um banco de dados PostgreSQL para ser utilizado pelo Radar.
+Para subir o banco de dados basta rodar o comando:
 
-Caso ainda não tenha instalado o PostgreSQL:
+`RADAR_DB_PASSWORD=radar docker-compose up -d postgres`
 
-	$ sudo apt-get install postgresql postgresql-contrib
+Obs.: trocar a senha para ambiente de produção.
 
-Configurando o banco:
+4. Rodar o projeto
+------------------
 
-    $ sudo su - postgres
-    $ createdb radar
-    $ createuser radar -P
-    escolha a senha
-    $ psql
-    # GRANT ALL PRIVILEGES ON DATABASE radar TO radar;
-    saia do psql (ctrl+d)
-    volte a ser o usuário normal (ctrl+d)
-    $ echo "localhost:5432:radar:radar:<SENHA>" > ~/.pgpass
-    $ chmod 600 ~/.pgpass
+Para rodar o projeto, agora precisamos de mais dois containers. O container
+(**django**) que tem o projeto do radar em si e o servidor de aplicação (**uwsgi**) e o
+container que possui o webserver (**nginx**).
 
-Crie o arquivo settings/development.py com base no arquivo settings/development.py.template.
-No arquivo development.py, insira a senha do usuário radar do PostgreSQL .
+Primeiro iniciaremos o servidor de aplicação.
 
-Ao rodar python manage.py runserver no ambiente de desenvolvimento, será usado as configurações settings/development.py.
+`docker-compose up -d django` (caso deseje ver os logs no terminal/console, não
+utilize a flag `-d` após o parâmetro `up`).
 
-Para criar as tabelas do Radar Parlamentar:
+Agora iniciaremos o servidor nginx. (Se você manteve o output do container do
+django em foreground, você precisará rodar este comando numa nova janela)
 
-    $ python manage.py migrate
+`docker-compose up -d nginx` (caso deseje ver os logs no terminal/console, não
+utilize a flag `-d` após o parâmetro `up`).
 
-Agora já podemos iniciar a aplicação! Para isso:
+Pronto, o projeto já deve estar acessível via "http://localhost". =)
 
-    $python manage.py runserver
+Para limpar tudo, rode o comando:
 
-Confira a aplicação rodando pelo navegador usando o endereço `http://127.0.0.1:8000/`.
+    docker-compose rm -fsv; docker volume prune -f
 
-Acesse o painel de administração do Django:  http://127.0.0.1:8000/admin/. Se um erro como 'Template does not exist' for encontrado, rode o comando:
-
-    $ pip install -r requirements.txt --ignore-installed --force-reinstall --upgrade --no-cache-dir
-
-
-4. Importação dos Dados
+5. Importação dos Dados
 -------------------
 
 Primeiro crie um usuário administrativo do django:
 
-     $python manage.py createsuperuser
+     docker-compose exec django python manage.py createsuperuser
 
+## CONTINUAR A REFATORAR DAQUI: 
 Depois inicie o Celery na pasta onde fica o manage.py:
 
     $./start_celery.sh
@@ -174,34 +88,11 @@ Obs: todas as importações são relativamente rápidas, exceto a da Câmara dos
 
 http://radarparlamentar.polignu.org/importadores/
 
-
-5. Configuração do South
--------------------------
-
-South é uma ferramenta que funciona como uma camada de migração, independente do banco de dados. Eventualmente, seu models.py vai ser modificado e o South vai identificar e realizar as mudanças correspondentes no seu banco por você, sem a necessidade de utilizar comandos SQL e sem perda de dados.
-
-Quando ocorrer alterações na model, digite no terminal:
-
-	$ python manage.py schemamigration modelagem --auto
-	$ python manage.py migrate modelagem
-
-Observação: Cuidado ao diminuir o tamanho dos campos. Podem existir dados com tamanho superior ao tamanho desejado.
-
 6. Conferindo se está tudo certo
 ---------------------------------
-Execute o script de testes e testes unitários:
+Rode o comando:
 
-    $ source tests.sh
-
-
-Inicie o servidor do Django:
-
-    $ python manage.py runserver
-
-Considerando que você importou os dados da Convenção Nacional Francesa, acesse **http://127.0.0.1:8000/analises/analise/conv** e verifique se o gráfico aparece corretamente (um gráfico estático com três circunferâncias, dispostos aproximadamente como um triângulo equilátero).
-
-
-
+    docker-compose up test
 
 7. Instalação do Elasticsearch
 -------------------
