@@ -9,7 +9,7 @@ A primeira coisa que deve ser feita é o clone do projeto no *Github*. Para isso
         $ git clone https://github.com/radar-parlamentar/radar.git
 
 2. Configuração do ambiente
-------------------------------
+---------------------------
 
 O Radar Parlamentar funciona, tanto em produção quanto em desenvolvimento,
 utilizando containers docker.
@@ -20,16 +20,7 @@ Nossa instalação foi testada utilizando:
     * Docker 18.02.0-ce (Community Edition) build __fc4de44__
     * docker-compose 1.17.1
 
-3. Banco de dados
---------------------------
-
-Para subir o banco de dados basta rodar o comando:
-
-`RADAR_DB_PASSWORD=radar docker-compose up -d postgres`
-
-Obs.: trocar a senha para ambiente de produção.
-
-4. Rodar o projeto
+3. Rodar o projeto
 ------------------
 
 Para rodar o projeto, agora precisamos de mais dois containers. O container
@@ -38,23 +29,20 @@ container que possui o webserver (**nginx**).
 
 Primeiro iniciaremos o servidor de aplicação.
 
-`docker-compose up -d django` (caso deseje ver os logs no terminal/console, não
-utilize a flag `-d` após o parâmetro `up`).
+    `RADAR_DB_PASSWORD=radar docker-compose up`
 
-Agora iniciaremos o servidor nginx. (Se você manteve o output do container do
-django em foreground, você precisará rodar este comando numa nova janela)
-
-`docker-compose up -d nginx` (caso deseje ver os logs no terminal/console, não
-utilize a flag `-d` após o parâmetro `up`).
+Obs.: trocar a senha para ambiente de produção.
 
 Pronto, o projeto já deve estar acessível via "http://localhost". =)
 
+Caso queira que o console não fique preso o docker, utilize a flag `-d`.
+
 Para limpar tudo, rode o comando:
 
-    docker-compose rm -fsv; docker volume prune -f
+    docker-compose down -v; -docker-compose rm -fsv; docker volume prune -f
 
-5. Importação dos Dados
--------------------
+4. Importação dos Dados
+-----------------------
 
 Primeiro crie um usuário administrativo do django:
 
@@ -92,7 +80,7 @@ http://radarparlamentar.polignu.org/importadores/
 ---------------------------------
 Rode o comando:
 
-    docker-compose up test
+    docker-compose -f docker-compose-test.yml up
 
 7. Instalação do Elasticsearch
 -------------------

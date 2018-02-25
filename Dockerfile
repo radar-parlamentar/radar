@@ -52,5 +52,5 @@ RUN set -ex \
 # Forward uwsgi logs to the docker log collector
 # RUN ln -sf /dev/stdout /var/log/uwsgi/djangoapp.log \
 #     && ln -sf /dev/stdout /var/log/uwsgi/emperor.log
-COPY utils/entrypoint.sh /usr/bin/entrypoint.sh
+COPY deploy/entrypoint.sh /usr/bin/entrypoint.sh
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]

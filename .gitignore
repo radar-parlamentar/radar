@@ -6,6 +6,7 @@ radar_parlamentar/radar_parlamentar/settings/production.py
 radar_parlamentar/radar_parlamentar/settings/development.py
 radar_parlamentar/radar_parlamentar/static/db-dump/radar.sql
 radar.sock
+sockets/
 
 .DS_Store
 *.py.bak

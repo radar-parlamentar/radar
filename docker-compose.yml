@@ -3,7 +3,8 @@ version: "3.4"
 
 volumes:
     volume_radar_pg_data:
-    volume_django_static:
+    volume_radar_django_static:
+    volume_radar_sockets:
 
 services:
 
@@ -19,14 +20,10 @@ services:
     nginx:
         image: nginx:1.13-alpine
         volumes:
-            - volume_django_static:/radar/radar_parlamentar/static
-            - ./radar.sock:/radar/radar.sock
-            - ./deploy/uwsgi_params:/radar/deploy/uwsgi_params
+            - volume_radar_django_static:/radar/radar_parlamentar/static
+            - volume_radar_sockets:/radar/sockets/
+            - ./deploy:/radar/deploy
             - ./deploy/radar.nginx.conf:/etc/nginx/conf.d/default.conf
-        links:
-            - django
-        depends_on:
-            - django
         ports:
             - "80:80"
             - "443:443"
@@ -43,27 +40,17 @@ services:
     django:
         image: radarparlamentar
         build: .
+        environment:
+            - RADAR_CMD=${RADAR_CMD}
         volumes:
             - .:/radar
-            - volume_django_static:/radar/radar_parlamentar/static
+            - volume_radar_sockets:/radar/sockets/
+            - volume_radar_django_static:/radar/radar_parlamentar/static
         links:
             - postgres
+            - nginx
             # - rabbitmq
         depends_on:
             - postgres
+            - nginx
             # - rabbitmq
-        command: deploy
-
-    test_db:
-        image: postgres:10.2-alpine
-        environment:
-            - POSTGRES_USER=radar
-            - POSTGRES_PASSWORD=radar
-            - POSTGRES_DB=radar
-
-    test:
-        image: radarparlamentar
-        build: .
-        volumes:
-            - .:/radar
-        command: test

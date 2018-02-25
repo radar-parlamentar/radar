@@ -27,34 +27,31 @@ wait_for_port() {
   done
 }
 
-case "$1" in
+case "$RADAR_CMD" in
   deploy)
     wait_for_port "Postgres" "$DB_HOST" "$DB_PORT"
-    sleep 10
     python manage.py migrate
     python manage.py collectstatic --noinput
-    uwsgi --ini /radar/deploy/radar_uwsgi.ini
-    break
     ;;
-  update)
+  migrate)
     wait_for_port "Postgres" "$DB_HOST" "$DB_PORT"
-    sleep 10
     python manage.py migrate
-    python manage.py collectstatic --noinput
-    break
     ;;
   test)
     export RADAR_TEST='True'
     python manage.py migrate
     python manage.py collectstatic --noinput
     python manage.py test
-    rm -f /radar/radar_parlamentar/radar_parlamentar.db
+    rm /radar/radar_parlamentar/radar_parlamentar.db
     # The previous line is made for tests run on sqlite.
-    break
     ;;
   *)
     # The command is something like bash, not an airflow subcommand. Just run it in the right environment.
+    wait_for_port "Postgres" "$DB_HOST" "$DB_PORT"
+    python manage.py migrate
+    python manage.py collectstatic --noinput
     uwsgi --ini /radar/deploy/radar_uwsgi.ini
-    break
     ;;
 esac
+
+rm -f /radar/sockets/radar.sock
