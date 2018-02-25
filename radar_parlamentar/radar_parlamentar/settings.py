@@ -230,13 +230,20 @@ if os.getenv('RADAR_IS_PRODUCTION'):
 
     # LOGGING['handlers']['file']['filename'] = '/var/log/radar/radar.log'
 
-if (len(sys.argv) >= 2 and sys.argv[1]):
+if os.getenv('RADAR_TEST'):
     print('Starting TEST environment ...')
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': 'radar_parlamentar.db',
         }
+        # 'default': {
+        #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        #     'NAME': 'radar',
+        #     'USER': 'radar',
+        #     'PASSWORD': 'radar',
+        #     'HOST': 'test_db'
+        # }
     }
 
 TEMPLATE_DEBUG = DEBUG
