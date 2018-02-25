@@ -1,9 +1,11 @@
 radar_parlamentar/radar.log
 radar_parlamentar/static
+radar_parlamentar/static/*
 radar_parlamentar/static/db-dump/radar.sql
 radar_parlamentar/radar_parlamentar/settings/production.py
 radar_parlamentar/radar_parlamentar/settings/development.py
 radar_parlamentar/radar_parlamentar/static/db-dump/radar.sql
+radar.sock
 
 .DS_Store
 *.py.bak
