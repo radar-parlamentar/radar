@@ -3,8 +3,7 @@
 # DESCRIPTION: Radar Parlamentar main container
 # BUILD: docker build --rm -t radar-parlamentar
 # SOURCE: https://github.com/radar_parlamentar/radar
-
-FROM python:3.6-stretch
+FROM python:3.6-alpine
 MAINTAINER DiRaOL
 
 # Never prompts the user for choices on installation/configuration of packages
@@ -24,28 +23,30 @@ ENV DJANGO_CACHE_DIR=/tmp/django_cache
 RUN mkdir -p ${RADAR_HOME} ${DJANGO_CACHE_DIR} /var/log/uwsgi
 WORKDIR ${RADAR_HOME}
 
-RUN set -ex \
-    && apt-get update -yqq \
-    && apt-get upgrade -yqq --no-install-recommends \
-    && apt-get install -yqq --no-install-recommends \
-        curl \
-        locales \
-        rabbitmq-server \
-    && pip install -U pip setuptools wheel \
-    && pip install -U $(pip freeze) \
-    && pip install uwsgi \
-    && apt-get clean \
-    && rm -rf \
-        /var/lib/apt/lists/* \
-        /tmp/* \
-        /var/tmp/* \
-        /usr/share/man \
-        /usr/share/doc \
-        /usr/share/doc-base
-
 COPY radar_parlamentar/requirements.txt /tmp/requirements.txt
-
-RUN set -ex && pip install -r /tmp/requirements.txt
+# git é uma dependência do projeto, utilizamos no código para pegar a versão
+# corrente do projeto pelo commit.
+# postgresql-dev é necessário para instalar a lib que vai fazer a conexão com
+# o postgres.
+# musl-dev é usada apenas apra compilação da lib python psycopg2.
+RUN set -ex \
+    && apk add --update \
+        curl \
+        postgresql-dev \
+        git \
+    && apk --no-cache add --virtual _build_deps \
+        build-base \
+        python3-dev \
+        gcc \
+        libc-dev \
+        linux-headers \
+        musl-dev \
+    && pip install -U pip setuptools wheel \
+    && pip install uwsgi -r /tmp/requirements.txt \
+    && apk del _build_deps \
+    && rm -rf \
+        ~/.cache/pip/* \
+        /var/cache/apk/*
 
 # Forward uwsgi logs to the docker log collector
 # RUN ln -sf /dev/stdout /var/log/uwsgi/djangoapp.log \

@@ -17,7 +17,7 @@ services:
           # - "volume_radar_pg_data:/var/lib/postgresql/data/pgdata"
 
   nginx:
-    image: nginx:1.13.9-alpine
+    image: nginx:1.13-alpine
     volumes:
         - volume_django_static:/radar/radar_parlamentar/static
         - ./radar.sock:/radar/radar.sock
@@ -31,6 +31,15 @@ services:
         - "80:80"
         - "443:443"
 
+  # memcache:
+  #    image: memcached:1.5-alpine
+
+  # elasticsearch:
+  #    image: elasticsearch:6.2.2
+
+  # rabbitmq:
+  #    image: 3.7-alpine
+
   django:
     image: radarparlamentar
     build: .
@@ -39,10 +48,12 @@ services:
         - volume_django_static:/radar/radar_parlamentar/static
     links:
         - postgres
+        - rabbitmq
     depends_on:
         - postgres
+        - rabbitmq
     command: >
-        bash -c "python manage.py migrate &&
+        sh -c "python manage.py migrate &&
         python manage.py collectstatic --noinput &&
         uwsgi --ini /radar/deploy/radar_uwsgi.ini"
 
@@ -61,7 +72,7 @@ services:
     environment:
         - RADAR_TEST=True
     command: >
-        bash -c "python manage.py migrate &&
+        sh -c "python manage.py migrate &&
         python manage.py test &&
         rm -f /radar/radar_parlamentar/radar_parlamentar.db"
         # The previous line is made for tests run on sqlite.
