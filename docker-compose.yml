@@ -1,5 +1,5 @@
 # EXAMPLE AT: https://github.com/nevercaution/docker-django-uwsgi-nginx
-version: "3.1"
+version: "3.4"
 
 volumes:
     volume_radar_pg_data:
@@ -45,3 +45,23 @@ services:
         bash -c "python manage.py migrate &&
         python manage.py collectstatic --noinput &&
         uwsgi --ini /radar/deploy/radar_uwsgi.ini"
+
+  test_db:
+    image: postgres:10.2-alpine
+    environment:
+        - POSTGRES_USER=radar
+        - POSTGRES_PASSWORD=radar
+        - POSTGRES_DB=radar
+
+  test:
+    image: radarparlamentar
+    build: .
+    volumes:
+        - .:/radar
+    environment:
+        - RADAR_TEST=True
+    command: >
+        bash -c "python manage.py migrate &&
+        python manage.py test &&
+        rm -f /radar/radar_parlamentar/radar_parlamentar.db"
+        # The previous line is made for tests run on sqlite.
