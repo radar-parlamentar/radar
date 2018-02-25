@@ -48,14 +48,11 @@ services:
             - volume_django_static:/radar/radar_parlamentar/static
         links:
             - postgres
-            - rabbitmq
+            # - rabbitmq
         depends_on:
             - postgres
-            - rabbitmq
-        command: >
-            sh -c "python manage.py migrate &&
-            python manage.py collectstatic --noinput &&
-            uwsgi --ini /radar/deploy/radar_uwsgi.ini"
+            # - rabbitmq
+        command: deploy
 
     test_db:
         image: postgres:10.2-alpine
@@ -69,10 +66,4 @@ services:
         build: .
         volumes:
             - .:/radar
-        environment:
-            - RADAR_TEST=True
-        command: >
-            sh -c "python manage.py migrate &&
-            python manage.py test &&
-            rm -f /radar/radar_parlamentar/radar_parlamentar.db"
-            # The previous line is made for tests run on sqlite.
+        command: test
