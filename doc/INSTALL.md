@@ -48,7 +48,7 @@ Primeiro crie um usuário administrativo do django:
 
      docker-compose exec django python manage.py createsuperuser
 
-## CONTINUAR A REFATORAR DAQUI: 
+## CONTINUAR A REFATORAR DAQUI:
 Depois inicie o Celery na pasta onde fica o manage.py:
 
     $./start_celery.sh
@@ -76,7 +76,7 @@ Obs: todas as importações são relativamente rápidas, exceto a da Câmara dos
 
 http://radarparlamentar.polignu.org/importadores/
 
-6. Conferindo se está tudo certo
+6. Executando os testes
 ---------------------------------
 Rode o comando:
 
@@ -130,4 +130,3 @@ Por fim, para testar:
 
     $ curl -XGET 'http://localhost:9200/radar_parlamentar/radar/_search?q=texto'
 onde text é o texto que será analisado.
-
