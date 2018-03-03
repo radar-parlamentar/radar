@@ -3,14 +3,16 @@ language: python
 python:
   - "3.6.3"
 
-# Dependencias do projeto
-install:
-  - pip install -U pip setuptools wheel
-  - pip install -r radar_parlamentar/requirements.txt
+sudo: required
+
+services:
+  - docker
 
 # Roda Testes
 script:
-   - cd radar_parlamentar/ ; python manage.py test
+   - docker build . -t radarparlamentar # TODO store our image on docker hub
+   - docker-compose -f docker-compose-test.yml up -d
+   - docker exec --env RADAR_TEST='True' radar_django_1 python /radar/radar_parlamentar/manage.py tes
    - coverage run --source=modelagem,analises,exportadores,importadores,radar_parlamentar manage.py test modelagem analises exportadores importadores radar_parlamentar
 
 after_success:

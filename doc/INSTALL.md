@@ -78,9 +78,10 @@ http://radarparlamentar.polignu.org/importadores/
 
 6. Executando os testes
 ---------------------------------
-Rode o comando:
+Rode os comandos:
 
-    docker-compose -f docker-compose-test.yml up
+    docker-compose -f docker-compose-test.yml up -d
+    docker exec --env RADAR_TEST='True' radar_django_1 python /radar/radar_parlamentar/manage.py tes
 
 7. Instalação do Elasticsearch
 -------------------
