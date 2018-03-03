@@ -51,3 +51,20 @@ services:
             - postgres
             - nginx
             # - rabbitmq
+            
+    # rabbitmq:
+    #   image: 3.7-alpine
+    #
+    # celery:
+    #     image: radarparlamentar
+    #     build: .
+    #     environment:
+    #         - RADAR_CMD=${RADAR_CMD}
+    #     volumes:
+    #         - .:/radar
+    #     links:
+    #         - postgres
+    #         - rabbitmq
+    #     depends_on:
+    #         - postgres
+    #         # - rabbitmq
