@@ -198,6 +198,8 @@ ALLOWED_HOSTS = ['radarparlamentar.polignu.org', 'localhost']
 
 DEBUG = True
 
+LOGGING['handlers']['file']['filename'] = '/var/log/radar/radar.log'
+
 if os.getenv('RADAR_IS_PRODUCTION'):
 
     print('Starting PRODUCTION environment ...')
@@ -227,8 +229,6 @@ if os.getenv('RADAR_IS_PRODUCTION'):
     #   for the page – again, from the CACHE_MIDDLEWARE_SECONDS setting.
     # https://docs.djangoproject.com/en/2.0/topics/cache/#the-per-site-cache
     CACHE_MIDDLEWARE_SECONDS = 60*60
-
-    # LOGGING['handlers']['file']['filename'] = '/var/log/radar/radar.log'
 
 if os.getenv('RADAR_TEST'):
     print('Starting TEST environment ...')

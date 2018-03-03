@@ -19,8 +19,9 @@ ENV PYTHONUNBUFFERED 1
 # Radar
 ENV RADAR_HOME=/radar/radar_parlamentar
 ENV DJANGO_CACHE_DIR=/tmp/django_cache
+ENV RADAR_LOG_DIR=/var/log/radar
 
-RUN mkdir -p ${RADAR_HOME} ${DJANGO_CACHE_DIR} /var/log/uwsgi
+RUN mkdir -p ${RADAR_HOME} ${DJANGO_CACHE_DIR} ${RADAR_LOG_DIR} /var/log/uwsgi
 WORKDIR ${RADAR_HOME}
 
 COPY radar_parlamentar/requirements.txt /tmp/requirements.txt
