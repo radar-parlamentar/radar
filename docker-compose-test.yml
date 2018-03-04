@@ -3,7 +3,7 @@ version: "3.4"
 services:
 
     django:
-        image: radarparlamentar
+        image: radarparlamentar/radar
         build: .
         environment:
             - RADAR_CMD=test
