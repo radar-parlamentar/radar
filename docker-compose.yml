@@ -51,7 +51,7 @@ services:
             - postgres
             - nginx
             # - rabbitmq
-            
+
     # rabbitmq:
     #   image: 3.7-alpine
     #

@@ -41,8 +41,9 @@ case "$RADAR_CMD" in
     # Radar will use SQLite
     export RADAR_TEST='True'
     python manage.py migrate
-    # To make the container do not die and wait for the test execution:
-    tail -f /dev/null
+    python manage.py collectstatic --noinput
+    python manage.py test
+    rm /radar/radar_parlamentar/radar_parlamentar.db
     ;;
   *)
     # The command is something like bash, not an airflow subcommand. Just run it in the right environment.

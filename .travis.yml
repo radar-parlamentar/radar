@@ -10,10 +10,7 @@ services:
 
 # Roda Testes
 script:
-   - docker build . -t radarparlamentar # TODO store our image on docker hub
-   - docker-compose -f docker-compose-test.yml up -d
-   - docker exec --env RADAR_TEST='True' radar_django_1 python /radar/radar_parlamentar/manage.py test
-   # TODO trocar docker-compose + docker exec por apenas um comando docker-compose run
+   - docker-compose -f docker-compose-test.yml up
    - coverage run --source=modelagem,analises,exportadores,importadores,radar_parlamentar manage.py test modelagem analises exportadores importadores radar_parlamentar
 
 after_success:
