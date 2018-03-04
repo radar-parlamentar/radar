@@ -38,8 +38,6 @@ services:
     django:
         image: radarparlamentar/radar
         build: .
-        environment:
-            - RADAR_CMD=${RADAR_CMD}
         volumes:
             - .:/radar
             - volume_radar_sockets:/radar/sockets/

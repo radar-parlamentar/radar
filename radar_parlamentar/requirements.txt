@@ -8,3 +8,5 @@ elasticsearch<1.0.0
 coveralls
 coverage
 codacy-coverage
+# Dependência para o coveralls
+pyyaml

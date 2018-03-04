@@ -1,7 +1,10 @@
 # VERSION 1.0.0-1
 # AUTHOR: Diego Rabatone Oliveira (@diraol)
 # DESCRIPTION: Radar Parlamentar main container
-# BUILD: docker build --rm -t radar-parlamentar
+# BUILD: - docker build -t radarparlamentar/base:<VERSION>  -t radarparlamentar/base:latest -f Dockerfile .
+#    To push the base image to dockerhub run:
+#    docker push radarparlamentar/base:<VERSION>
+#    docker push radarparlamentar/base:latest
 # SOURCE: https://github.com/radar_parlamentar/radar
 FROM python:3.6-alpine
 
