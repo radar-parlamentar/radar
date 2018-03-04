@@ -31,6 +31,7 @@ activate/
 build/
 venv/
 env/
+.python-version
 
 # Sonar config files
 radar_parlamentar/.coverage
