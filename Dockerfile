@@ -3,26 +3,7 @@
 # DESCRIPTION: Radar Parlamentar main container
 # BUILD: docker build --rm -t radar-parlamentar
 # SOURCE: https://github.com/radar_parlamentar/radar
-FROM python:3.6-alpine
-MAINTAINER DiRaOL
-
-# Never prompts the user for choices on installation/configuration of packages
-ENV DEBIAN_FRONTEND noninteractive
-ENV TERM linux
-
-# https://docs.python.org/3.6/using/cmdline.html#envvar-PYTHONUNBUFFERED
-# https://github.com/sclorg/s2i-python-container/issues/157
-# Aparentemente esta opção envolve expor mensagens de prompt/console/logs do
-# python para o container.
-ENV PYTHONUNBUFFERED 1
-
-# Radar
-ENV RADAR_HOME=/radar/radar_parlamentar
-ENV DJANGO_CACHE_DIR=/tmp/django_cache
-ENV RADAR_LOG_DIR=/var/log/radar
-
-RUN mkdir -p ${RADAR_HOME} ${DJANGO_CACHE_DIR} ${RADAR_LOG_DIR} /var/log/uwsgi
-WORKDIR ${RADAR_HOME}
+FROM radarparlamentar/base:1.0.0
 
 COPY radar_parlamentar/requirements.txt /tmp/requirements.txt
 # git é uma dependência do projeto, utilizamos no código para pegar a versão
@@ -31,23 +12,9 @@ COPY radar_parlamentar/requirements.txt /tmp/requirements.txt
 # o postgres.
 # musl-dev é usada apenas apra compilação da lib python psycopg2.
 RUN set -ex \
-    && apk add --update \
-        curl \
-        postgresql-dev \
-        git \
-    && apk --no-cache add --virtual _build_deps \
-        build-base \
-        python3-dev \
-        gcc \
-        libc-dev \
-        linux-headers \
-        musl-dev \
     && pip install -U pip setuptools wheel \
-    && pip install uwsgi -r /tmp/requirements.txt \
-    && apk del _build_deps \
-    && rm -rf \
-        ~/.cache/pip/* \
-        /var/cache/apk/*
+    && pip install -r /tmp/requirements.txt \
+    && rm -rf ~/.cache/pip/*
 
 # Forward uwsgi logs to the docker log collector
 # RUN ln -sf /dev/stdout /var/log/uwsgi/djangoapp.log \
