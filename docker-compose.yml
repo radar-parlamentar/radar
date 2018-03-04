@@ -36,7 +36,7 @@ services:
 
 
     django:
-        image: radarparlamentar
+        image: radarparlamentar/radar
         build: .
         environment:
             - RADAR_CMD=${RADAR_CMD}
