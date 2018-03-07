@@ -28,8 +28,8 @@ services:
             - "80:80"
             - "443:443"
 
-    # memcache:
-    #    image: memcached:1.5-alpine
+    memcache:
+       image: memcached:1.5-alpine
 
     # elasticsearch:
     #    image: elasticsearch:6.2.2
@@ -44,10 +44,12 @@ services:
             - volume_radar_django_static:/radar/radar_parlamentar/static
         links:
             - postgres
+            - memcache
             # - rabbitmq
         depends_on:
             - postgres
             - nginx
+            - memcache
             # - rabbitmq
 
     # rabbitmq:

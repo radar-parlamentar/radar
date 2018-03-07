@@ -1,6 +1,5 @@
 """Django settings for radar_parlamentar project."""
 import os
-import sys
 from pathlib import Path
 
 ADMINS = (('Leonardo', 'leonardofl87@gmail.com'),
@@ -135,7 +134,8 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+            'format': ('%(levelname)s %(asctime)s %(module)s %(process)d '
+                       '%(thread)d %(message)s')
         },
         'simple': {
             'format': '%(levelname)s %(asctime)s %(message)s'
@@ -152,7 +152,7 @@ LOGGING = {
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         },
-        'console':{
+        'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
@@ -163,7 +163,7 @@ LOGGING = {
             'formatter': 'simple',
             'filename': 'radar.log',
             'backupCount': 2,
-            'maxBytes': 1024*1024*10, # 10MB
+            'maxBytes': 1024*1024*10,  # 10MB
         }
     },
     'loggers': {
@@ -175,12 +175,12 @@ LOGGING = {
         'radar': {
             'handlers': ['file'],
             'level': 'DEBUG',
-            #'propagate': True,
+            # 'propagate': True,
         }
     }
 }
 
-ELASTIC_SEARCH_ADDRESS = {'host':'localhost', 'port':'9200'}
+ELASTIC_SEARCH_ADDRESS = {'host': 'elasticsearch', 'port': '9200'}
 ELASTIC_SEARCH_INDEX = "radar_parlamentar"
 
 DATABASES = {
@@ -210,22 +210,22 @@ if os.getenv('RADAR_IS_PRODUCTION'):
     # Last one on the list
     MIDDLEWARE.append('django.middleware.cache.FetchFromCacheMiddleware')
 
-    # Timeout here is the time that the django-server will hold the cached files
-    # on the server, it is not directly related to the http headers timeout
-    # information (defined below).
+    # Timeout here is the time that the django-server will hold the cached
+    # files on the server, it is not directly related to the http headers
+    # timeout information (defined below).
     CACHES = {
         'default': {
-            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-            'LOCATION': '/tmp/django_cache',
-            'TIMEOUT': 60*60*48,
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': 'memcache:11211',
+            'TIMEOUT': 60*60*48
         }
     }
 
     # This is the browser expiration cached info.
-    # UpdateCacheMiddleware automatically sets a few headers in each HttpResponse:
-    #   Sets the Expires header to the current date/time plus the defined
-    #   CACHE_MIDDLEWARE_SECONDS. Sets the Cache-Control header to give a max age
-    #   for the page – again, from the CACHE_MIDDLEWARE_SECONDS setting.
+    # UpdateCacheMiddleware automatically sets a few headers in each
+    # HttpResponse: Sets the Expires header to the current date/time plus the
+    # defined CACHE_MIDDLEWARE_SECONDS. Sets the Cache-Control header to give a
+    # max age for the page – again, from the CACHE_MIDDLEWARE_SECONDS setting.
     # https://docs.djangoproject.com/en/2.0/topics/cache/#the-per-site-cache
     CACHE_MIDDLEWARE_SECONDS = 60*60
 
