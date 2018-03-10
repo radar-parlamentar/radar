@@ -32,6 +32,7 @@ cleanup() {
     echo "Doing exit cleanup."
     echo "  - Removing /radar/sockets folder."
     rm -rf /radar/sockets
+    rm -rf /radar/radar_parlamentar/static
 }
 
 case "$1" in
@@ -44,15 +45,18 @@ case "$1" in
     wait_for_port "Postgres" "$DB_HOST" "$DB_PORT"
     python manage.py migrate
     ;;
-  test)
+  clean)
+    cleanup
+    ;;
+  test_only)
     # Radar will use SQLite
     export RADAR_TEST='True'
     python manage.py test
     ;;
-  coverage)
+  test|test_and_coverage)
     # Radar will use SQLite
     export RADAR_TEST='True'
-    coverage run --source=modelagem,analises,exportadores,importadores,radar_parlamentar manage.py test modelagem analises exportadores importadores radar_parlamentar
+    coverage run --source="." manage.py test analises exportadores importadores modelagem plenaria radar_parlamentar
     ;;
   *)
     # The command is something like bash, not an airflow subcommand. Just run it in the right environment.
@@ -63,4 +67,3 @@ case "$1" in
     ;;
 esac
 
-cleanup
