@@ -1,20 +1,40 @@
----
-engines:
-  pep8:
-    enabled: true
+version: "2"
+plugins:
   duplication:
     enabled: true
     config:
       languages:
-      - python
+        python:
+          python_version: 3
+  eslint:
+    enabled: true
   fixme:
+    enabled: true
+  pep8:
     enabled: true
   radon:
     enabled: true
-ratings:
-  paths:
-    - "radar_parlamentar/**/*"
-    - "**.py"
-exclude_paths:
+    config:
+      python_version: 3
+      threshold: "B"
+  sonar-python:
+    enabled: true
+    config:
+      tests_patterns:
+        - "radar_parlamentar/*/tests/**"
+        - "radar_parlamentar/testes_integracao/**"
+exclude_patterns:
   - "**/tests/**/*"
-  - radar_parlamentar/testes_integracao/
+  - "radar_parlamentar/testes_integracao/"
+  - "deploy"
+  - "doc"
+  - "docker*"
+  - "Docker*"
+  - "**/js/*.min.js"
+  - "**/js/d3*.js"
+  - "*.xml"
+  - "*.png"
+  - "*.jpg"
+  - "*.csv"
+  - "*.json"
+  - "**/utils_test/**"

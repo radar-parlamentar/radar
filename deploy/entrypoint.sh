@@ -57,6 +57,12 @@ case "$1" in
     # Radar will use SQLite
     export RADAR_TEST='True'
     coverage run --source="." manage.py test analises exportadores importadores modelagem plenaria radar_parlamentar
+    coverage report
+    ;;
+  travis)
+    export RADAR_TEST='True'
+    coverage run --source="." manage.py test analises exportadores importadores modelagem plenaria radar_parlamentar
+    coverage xml
     ;;
   *)
     # The command is something like bash, not an airflow subcommand. Just run it in the right environment.
