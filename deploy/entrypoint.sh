@@ -27,6 +27,13 @@ wait_for_port() {
   done
 }
 
+cleanup() {
+    # Cleanup instance files, such as socket files, test files and so on.
+    echo "Doing exit cleanup."
+    echo "  - Removing /radar/sockets folder."
+    rm -rf /radar/sockets
+}
+
 case "$1" in
   deploy)
     wait_for_port "Postgres" "$DB_HOST" "$DB_PORT"
@@ -55,3 +62,5 @@ case "$1" in
     uwsgi --ini /radar/deploy/radar_uwsgi.ini
     ;;
 esac
+
+cleanup
