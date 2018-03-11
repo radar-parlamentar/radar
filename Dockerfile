@@ -6,7 +6,7 @@
 #   docker push radarparlamentar/radar:<VERSION>
 #   docker push radarparlamentar/radar:latest
 # SOURCE: https://github.com/radar_parlamentar/radar
-FROM radarparlamentar/base:1.0.0
+FROM radarparlamentar/base:1.0.1
 
 COPY radar_parlamentar/requirements.txt /tmp/requirements.txt
 # git é uma dependência do projeto, utilizamos no código para pegar a versão
