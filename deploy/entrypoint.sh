@@ -71,6 +71,7 @@ case "$1" in
     export RADAR_TEST='True'
     coverage run --source="." manage.py test analises exportadores importadores modelagem plenaria radar_parlamentar
     coverage xml
+    coverage report
     ;;
   *)
     # The command is something like bash, not an airflow subcommand. Just run it in the right environment.
