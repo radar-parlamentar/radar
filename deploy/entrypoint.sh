@@ -37,29 +37,37 @@ cleanup() {
 
 case "$1" in
   deploy)
+    echo "Initializing deploy mode."
     wait_for_port "Postgres" "$DB_HOST" "$DB_PORT"
     python manage.py migrate
     python manage.py collectstatic --noinput
     ;;
   migrate)
+    echo "Initializing migrate mode."
     wait_for_port "Postgres" "$DB_HOST" "$DB_PORT"
     python manage.py migrate
     ;;
   clean)
+    echo "Initializing cleaning mode."
     cleanup
     ;;
   test_only)
+    echo "Initializing test only mode".
     # Radar will use SQLite
     export RADAR_TEST='True'
     python manage.py test
     ;;
   test|test_and_coverage)
+    echo "Initializing test and coverage mode."
     # Radar will use SQLite
     export RADAR_TEST='True'
     coverage run --source="." manage.py test analises exportadores importadores modelagem plenaria radar_parlamentar
+    echo "\n\n################################################################"
+    echo "Coverage report:\n"
     coverage report
     ;;
   travis)
+    echo "Initializing travis mode."
     export RADAR_TEST='True'
     coverage run --source="." manage.py test analises exportadores importadores modelagem plenaria radar_parlamentar
     coverage xml
