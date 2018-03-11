@@ -33,6 +33,7 @@ cleanup() {
     echo "  - Removing /radar/sockets folder."
     rm -rf /radar/sockets
     rm -rf /radar/radar_parlamentar/static
+    rm -rf /radar/radar_parlamentar/htmlcov
 }
 
 case "$1" in
@@ -65,6 +66,8 @@ case "$1" in
     echo "\n\n################################################################"
     echo "Coverage report:\n"
     coverage report
+    coverage html &> /dev/null
+    echo "To see the detailed coverage report, open the file radar_parlamentar/htmlcov/index.html on your browser."
     ;;
   travis)
     echo "Initializing travis mode."

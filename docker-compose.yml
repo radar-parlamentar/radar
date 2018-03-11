@@ -52,6 +52,16 @@ services:
             - memcache
             # - rabbitmq
 
+    test:
+        build: .
+        image: radarparlamentar/test
+        volumes:
+            - .:/radar
+        environment:
+            - RADAR_CMD=test
+        command:
+            - test
+
     # rabbitmq:
     #   image: 3.7-alpine
     #
