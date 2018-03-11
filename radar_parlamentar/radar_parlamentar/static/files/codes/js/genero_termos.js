@@ -13,7 +13,7 @@ var svg = d3.select("#animacao").append("svg")
   .append("g")
     .attr("transform", "translate(40,0)");
 
-d3.json("/static/files/codes/js/genero_base.js", function(error, root) {
+d3.json("/static/files/codes/js/genero_base.json", function(error, root) {
   var nodes = cluster.nodes(root),
       links = cluster.links(nodes);
 
