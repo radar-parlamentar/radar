@@ -1,13 +1,14 @@
-
 from django.test import TestCase
+import bz2
 import os
 import xml.etree.ElementTree as etree
+from pathlib import Path
 from unittest.mock import Mock
 
 from importadores import sen, sen_indexacao
 from modelagem import models
 
-XML_TEST = os.path.join(sen.MODULE_DIR, 'dados/senado/ListaVotacoesTest.xml')
+XML_TEST = str(Path(sen.MODULE_DIR) / 'dados/senado/ListaVotacoesTest.xml.bz2')
 
 
 class GeradorSenadoTest(TestCase):

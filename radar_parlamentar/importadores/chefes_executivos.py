@@ -1,4 +1,5 @@
 from modelagem import models
+import bz2
 import os
 import xml.etree.ElementTree as etree
 import logging
@@ -23,7 +24,7 @@ class ImportadorChefesExecutivos:
 
     def abrir_xml(self):
         xml_chefes = os.path.join(MODULE_DIR, self.xml_file)
-        file = open(xml_chefes, 'r')
+        file = bz2.open(xml_chefes, mode='rt')
         xml = file.read()
         file.close()
         return etree.fromstring(xml)

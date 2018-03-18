@@ -43,7 +43,7 @@ ANO_MIN = 1991
 
 logger = logging.getLogger("radar")
 
-XML_FILE = 'dados/chefe_executivo/chefe_executivo_congresso.xml'
+XML_FILE = 'dados/chefe_executivo/chefe_executivo_congresso.xml.bz2'
 NOME_CURTO = 'cdep'
 
 

@@ -7,7 +7,7 @@ import os
 import xml.etree.ElementTree as etree
 
 XML_TEST = os.path.join(
-    MODULE_DIR, 'dados/chefe_executivo/chefe_executivo_teste.xml')
+    MODULE_DIR, 'dados/chefe_executivo/chefe_executivo_teste.xml.bz2')
 
 
 class ImportadorChefesExecutivosTeste(TestCase):

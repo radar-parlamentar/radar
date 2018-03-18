@@ -27,6 +27,8 @@ from datetime import date
 from modelagem import models
 from django.core.exceptions import ObjectDoesNotExist
 from .chefes_executivos import ImportadorChefesExecutivos
+from pathlib import Path
+import bz2
 import re
 import os
 import sys
@@ -41,7 +43,7 @@ VOTACOES_FOLDER = os.path.join(DATA_FOLDER, 'votacoes')
 
 NOME_CURTO = 'sen'
 
-XML_FILE = 'dados/chefe_executivo/chefe_executivo_congresso.xml'
+XML_FILE = 'dados/chefe_executivo/chefe_executivo_congresso.xml.bz2'
 
 logger = logging.getLogger("radar")
 
@@ -200,7 +202,7 @@ class ImportadorVotacoesSenado:
         """Salva no banco de dados do Django e retorna lista das votações"""
 
         tree = None
-        with open(xml_file, encoding="iso-8859-1") as f:
+        with bz2.open(xml_file, mode='rt', encoding="iso-8859-1") as f:
             tree = etree.fromstring(f.read())
         return tree
 
@@ -318,14 +320,14 @@ class ImportadorVotacoesSenado:
         """Retorna uma lista com os caminhos dos arquivos XMLs contidos
         na pasta VOTACOES_FOLDER"""
         files = os.listdir(VOTACOES_FOLDER)
-        xmls = [name for name in files if name.endswith('.xml')]
+        xmls = [name for name in files if name.endswith('.xml.bz2')]
         xmls = [os.path.join(VOTACOES_FOLDER, name) for name in xmls]
         return xmls
 
     def importar_votacoes(self):
         """# for xml_file in
-        ['importadores/dados/senado/votacoes/ListaVotacoes2014.xml',
-        'importadores/dados/senado/votacoes/ListaVotacoes2015.xml']:
+        ['importadores/dados/senado/votacoes/ListaVotacoes2014.xml.bz2',
+        'importadores/dados/senado/votacoes/ListaVotacoes2015.xml.bz2']:
         # facilita debug"""
         for xml_file in self._xml_file_names():
             logger.debug('Importando %s' % xml_file)

@@ -32,7 +32,7 @@ import requests
 logger = logging.getLogger("radar")
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-XML_FILE = 'dados/chefe_executivo/chefe_executivo_cmsp.xml'
+XML_FILE = 'dados/chefe_executivo/chefe_executivo_cmsp.xml.bz2'
 NOME_CURTO = 'cmsp'
 
 # arquivos com os dados fornecidos pela cmsp
