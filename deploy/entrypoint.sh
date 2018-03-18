@@ -62,9 +62,11 @@ case "$1" in
     echo "Initializing test and coverage mode."
     # Radar will use SQLite
     export RADAR_TEST='True'
-    coverage run --source="." manage.py test analises exportadores importadores modelagem plenaria radar_parlamentar
-    echo "\n\n################################################################"
-    echo "Coverage report:\n"
+    coverage run --rcfile="../.coveragerc" --source="." manage.py test analises exportadores importadores modelagem plenaria radar_parlamentar
+    echo ""
+    echo ""
+    echo "################################################################"
+    echo "Coverage report:"
     coverage report
     coverage html &> /dev/null
     echo "To see the detailed coverage report, open the file radar_parlamentar/htmlcov/index.html on your browser."
