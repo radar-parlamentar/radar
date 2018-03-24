@@ -45,7 +45,11 @@ Para interagir diretamente com o shell do django em execução:
 
 Para ver o log do Django:
 
-     docker-compose exec django tail -f /var/log/radar/radar.log
+     docker-compose exec django tail -n 100 -f /var/log/radar/radar.log
+
+Para ver o log do Celery:
+
+    docker-compose logs --tail=100 -t -f celery
 
 3.1. Rodar o Projeto em Produção
 --------------------------------
@@ -59,21 +63,20 @@ Para rodar o radar em produção você precisa definir duas variáveis de ambien
 
     RADAR_IS_PRODUCTION=True RADAR_DB_PASSWORD=senha docker-compose up -d django
 
-4. Importação dos Dados
------------------------
-
-Primeiro crie um usuário administrativo do django:
+Na primeira vez em que o projeto for criado, será necessário criar o usuário
+administrativo do Django (que é persistido no banco). Para tanto utilize o
+comando:
 
      docker-compose exec django python manage.py createsuperuser
 
-## CONTINUAR A REFATORAR DAQUI:
-Depois inicie o Celery na pasta onde fica o manage.py:
+4. Importação dos Dados
+-----------------------
+Para importar os dados basta acessar a URL:
 
-    $./start_celery.sh
+    http://localhost/importar/<nome-curto-da-casa-legislativa>/
 
-O Celery é um gerenciador de execução de tarefas assíncronas.
-
-Para importar os dados basta acessar a URL: `http://127.0.0.1:8000/importar/<nome-curto-da-casa-legislativa>/`
+Obs: Você precisará colocar login/senha para ter acesso a esta página. Este
+login e senha são os criados no passo anterior deste documento.
 
 Possíveis valores para `<nome-curto-da-casa-legislativa>`:
 
@@ -84,25 +87,26 @@ Possíveis valores para `<nome-curto-da-casa-legislativa>`:
 
 Exemplo: para importar dados da Câmara Municipal de São Paulo basta acessar:
 
-http://127.0.0.1:8000/importar/cmsp
+    http://127.0.0.1:8000/importar/cmsp
 
-Recomendamos inicialmente que você realize a importação dos dados Convenção Nacional Francesa (uma casa legislativa fictícia).
+Recomendamos inicialmente que você realize a importação dos dados Convenção
+Nacional Francesa (uma casa legislativa fictícia).
 
-Obs: todas as importações são relativamente rápidas, exceto a da Câmara dos Deputados, que pode levar horas.
+Obs: todas as importações são relativamente rápidas, exceto a da Câmara dos
+Deputados, que pode levar horas.
 
 - Criando novos importadores:
 
 http://radarparlamentar.polignu.org/importadores/
 
 6. Executando os testes
----------------------------------
+-----------------------
 Rode o comando:
 
-    docker-compose -f docker-compose-test.yml up
+    docker-compose up test
 
 7. Instalação do Elasticsearch
--------------------
-
+------------------------------
 O Elasticsearch é um sistema de busca full-text em tempo real distribuido, escalável, altamente disponível e open-source.
 
 Para instalar, primeiro é necessário baixar e descompactar o Elasticsearch disponível em: http://www.elastic.co/
