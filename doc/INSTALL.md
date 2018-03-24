@@ -29,9 +29,9 @@ container que possui o webserver (**nginx**).
 
 Primeiro iniciaremos o servidor de aplicação.
 
-    `RADAR_DB_PASSWORD=radar docker-compose up django`
+    docker-compose up django
 
-Obs.: trocar a senha para ambiente de produção.
+Obs.: trocar a senha para ambiente de produção: `RADAR_DB_PASSWORD=senha docker-compose up django`.
 
 Pronto, o projeto já deve estar acessível via "http://localhost". =)
 
