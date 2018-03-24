@@ -45,6 +45,10 @@ Para interagir diretamente com o shell do django em execução:
 
     docker-compose exec django python manage.py shell
 
+Para ver o log do Django:
+
+     docker-compose exec django tail -f /var/log/radar/radar.log
+
 4. Importação dos Dados
 -----------------------
 
