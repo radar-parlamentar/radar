@@ -57,8 +57,6 @@ services:
         image: radarparlamentar/test
         volumes:
             - .:/radar
-        environment:
-            - RADAR_CMD=test
         command:
             - test
 
@@ -68,8 +66,6 @@ services:
     # celery:
     #     image: radarparlamentar
     #     build: .
-    #     environment:
-    #         - RADAR_CMD=${RADAR_CMD}
     #     volumes:
     #         - .:/radar
     #     links:
