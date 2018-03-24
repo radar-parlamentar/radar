@@ -8,6 +8,16 @@ volumes:
 
 services:
 
+
+    rabbitmq:
+        image: rabbitmq:3.7-alpine
+
+    memcache:
+        image: memcached:1.5-alpine
+
+    # elasticsearch:
+    #    image: elasticsearch:6.2.2
+
     postgres:
         image: postgres:10.2-alpine
         environment:
@@ -29,13 +39,6 @@ services:
             - "80:80"
             - "443:443"
 
-    memcache:
-       image: memcached:1.5-alpine
-
-    # elasticsearch:
-    #    image: elasticsearch:6.2.2
-
-
     django:
         image: radarparlamentar/radar
         build: .
@@ -49,12 +52,28 @@ services:
         links:
             - postgres
             - memcache
-            # - rabbitmq
+            - rabbitmq
         depends_on:
             - postgres
             - nginx
             - memcache
-            # - rabbitmq
+            - rabbitmq
+            - celery
+
+    celery:
+        image: radarparlamentar/radar
+        environment:
+            - RADAR_DB_PASSWORD=${RADAR_DB_PASSWORD:-radar}
+        volumes:
+            - .:/radar
+        links:
+            - postgres
+            - rabbitmq
+        depends_on:
+            - postgres
+            - rabbitmq
+        command:
+            - celery
 
     test:
         build: .
@@ -63,18 +82,3 @@ services:
             - .:/radar
         command:
             - test
-
-    # rabbitmq:
-    #   image: 3.7-alpine
-    #
-    # celery:
-    #     image: radarparlamentar
-    #     build: .
-    #     volumes:
-    #         - .:/radar
-    #     links:
-    #         - postgres
-    #         - rabbitmq
-    #     depends_on:
-    #         - postgres
-    #         # - rabbitmq

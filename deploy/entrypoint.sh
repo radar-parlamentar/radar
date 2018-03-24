@@ -43,6 +43,10 @@ case "$1" in
     python manage.py migrate
     python manage.py collectstatic --noinput
     ;;
+  celery)
+    echo "Initializing celery."
+    celery -A radar_parlamentar worker -l info --concurrency 1
+    ;;
   migrate)
     echo "Initializing migrate mode."
     wait_for_port "Postgres" "$DB_HOST" "$DB_PORT"
@@ -80,9 +84,11 @@ case "$1" in
     ;;
   *)
     # The command is something like bash, not an airflow subcommand. Just run it in the right environment.
+    echo "Default initialization."
     wait_for_port "Postgres" "$DB_HOST" "$DB_PORT"
     python manage.py migrate
     python manage.py collectstatic --noinput
+    echo "Starting uwsgi"
     uwsgi --ini /radar/deploy/radar_uwsgi.ini
     ;;
 esac

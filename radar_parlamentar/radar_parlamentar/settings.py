@@ -195,6 +195,8 @@ DATABASES = {
 
 ALLOWED_HOSTS = ['radarparlamentar.polignu.org', 'localhost']
 
+CELERY_BROKER_URL= 'amqp://guest:guest@rabbitmq:5672//'
+
 DEBUG = True
 
 LOGGING['handlers']['file']['filename'] = '/var/log/radar/radar.log'

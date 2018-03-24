@@ -1,4 +1,7 @@
-"""# Celery/Django HOW-TO:
+"""Celery configs.
+
+Celery/Django HOW-TO.
+
 http://celery.readthedocs.io/en/latest/getting-started/first-steps-with-celery.html
 http://celery.readthedocs.org/en/latest/django/first-steps-with-django.html
 """
@@ -7,8 +10,7 @@ from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
 
-# DJANGO_SETTINGS_MODULE já deve estar configurado como uma variável de ambiente.
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.defaults')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'radar_parlamentar.settings')
 
 app = Celery('radar_parlamentar')
 
