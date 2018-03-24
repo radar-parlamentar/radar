@@ -29,7 +29,7 @@ container que possui o webserver (**nginx**).
 
 Primeiro iniciaremos o servidor de aplicação.
 
-    `RADAR_DB_PASSWORD=radar docker-compose up`
+    `RADAR_DB_PASSWORD=radar docker-compose up django`
 
 Obs.: trocar a senha para ambiente de produção.
 
