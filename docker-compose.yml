@@ -5,6 +5,7 @@ volumes:
     volume_radar_pg_data:
     volume_radar_django_static:
     volume_radar_sockets:
+    volume_radar_elasticsearch_data:
 
 services:
 
@@ -15,8 +16,11 @@ services:
     memcache:
         image: memcached:1.5-alpine
 
-    # elasticsearch:
-    #    image: elasticsearch:6.2.2
+    elasticsearch:
+        image: elasticsearch:2.4-alpine  # docker.elastic.co/elasticsearch/elasticsearch:6.2.3
+        volumes:
+            - ./deploy/elasticsearch/hunspell:/usr/share/elasticsearch/config/hunspell
+            - volume_radar_elasticsearch_data:/usr/share/elasticsearch/data
 
     postgres:
         image: postgres:10.2-alpine
@@ -53,12 +57,14 @@ services:
             - postgres
             - memcache
             - rabbitmq
+            - elasticsearch
         depends_on:
             - postgres
             - nginx
             - memcache
             - rabbitmq
             - celery
+            - elasticsearch
 
     celery:
         image: radarparlamentar/radar
