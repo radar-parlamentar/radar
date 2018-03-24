@@ -221,11 +221,7 @@ if os.getenv('RADAR_IS_PRODUCTION'):
         }
     }
 
-    # This is the browser expiration cached info.
-    # UpdateCacheMiddleware automatically sets a few headers in each
-    # HttpResponse: Sets the Expires header to the current date/time plus the
-    # defined CACHE_MIDDLEWARE_SECONDS. Sets the Cache-Control header to give a
-    # max age for the page – again, from the CACHE_MIDDLEWARE_SECONDS setting.
+    # The number of seconds each page should be cached
     # https://docs.djangoproject.com/en/2.0/topics/cache/#the-per-site-cache
     CACHE_MIDDLEWARE_SECONDS = 60*60
 
