@@ -3,4 +3,6 @@ radar_parlamentar/static
 radar_parlamentar/htmlcov
 radar_parlamentar/.coverage
 radar_parlamentar/exportadores/saida/votes.csv
+sockets/*
+static/*
 .git
