@@ -5,6 +5,7 @@ requests
 psycopg2-binary
 celery
 elasticsearch<1.0.0
+python-memcached
 coveralls
 coverage
 codacy-coverage

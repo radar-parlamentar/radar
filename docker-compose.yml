@@ -14,6 +14,7 @@ services:
             - POSTGRES_USER=radar
             - POSTGRES_PASSWORD=${RADAR_DB_PASSWORD}
             - POSTGRES_DB=radar
+            - PGDATA=/var/lib/postgresql/data/pgdata
         volumes:
             - volume_radar_pg_data:/var/lib/postgresql/data/pgdata
 
