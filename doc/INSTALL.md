@@ -31,8 +31,6 @@ Primeiro iniciaremos o servidor de aplicação.
 
     docker-compose up django
 
-Obs.: trocar a senha para ambiente de produção: `RADAR_DB_PASSWORD=senha docker-compose up django`.
-
 Pronto, o projeto já deve estar acessível via "http://localhost". =)
 
 Caso queira que o console não fique preso o docker, utilize a flag `-d`.
@@ -48,6 +46,18 @@ Para interagir diretamente com o shell do django em execução:
 Para ver o log do Django:
 
      docker-compose exec django tail -f /var/log/radar/radar.log
+
+3.1. Rodar o Projeto em Produção
+--------------------------------
+Para rodar o radar em produção você precisa definir duas variáveis de ambiente:
+
+    - `RADAR_IS_PRODUCTION`: Define que o projeto está sendo executado em
+        ambiente de produção. Isso habilita o Cache do Django e coloca o DEBUG
+        como 'FALSE'
+    - `RADAR_DB_PASSWORD`: Define a senha do banco de dados do radar em 
+        produção
+
+    RADAR_IS_PRODUCTION=True RADAR_DB_PASSWORD=senha docker-compose up -d django
 
 4. Importação dos Dados
 -----------------------

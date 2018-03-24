@@ -12,7 +12,7 @@ services:
         image: postgres:10.2-alpine
         environment:
             - POSTGRES_USER=radar
-            - POSTGRES_PASSWORD=${RADAR_DB_PASSWORD}
+            - POSTGRES_PASSWORD=${RADAR_DB_PASSWORD:-radar}
             - POSTGRES_DB=radar
             - PGDATA=/var/lib/postgresql/data/pgdata
         volumes:
@@ -39,6 +39,9 @@ services:
     django:
         image: radarparlamentar/radar
         build: .
+        environment:
+            - RADAR_DB_PASSWORD=${RADAR_DB_PASSWORD:-radar}
+            - RADAR_IS_PRODUCTION=${RADAR_IS_PRODUCTION}
         volumes:
             - .:/radar
             - volume_radar_sockets:/radar/sockets/
