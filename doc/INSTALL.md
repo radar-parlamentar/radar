@@ -41,6 +41,10 @@ Para limpar tudo, rode o comando:
 
     docker-compose down -v; -docker-compose rm -fsv; docker volume prune -f
 
+Para interagir diretamente com o shell do django em execução:
+
+    docker-compose exec django python manage.py shell
+
 4. Importação dos Dados
 -----------------------
 
