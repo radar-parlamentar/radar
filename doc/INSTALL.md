@@ -35,6 +35,14 @@ Pronto, o projeto já deve estar acessível via "http://localhost". =)
 
 Caso queira que o console não fique preso o docker, utilize a flag `-d`.
 
+Na primeira vez em que o projeto for criado, será necessário criar o usuário
+administrativo do Django (que é persistido no banco). Para tanto utilize o
+comando:
+
+     docker-compose exec django python manage.py createsuperuser
+
+3.1. Comandos úteis
+--------------------------------
 Para limpar tudo, rode o comando:
 
     docker-compose down -v; -docker-compose rm -fsv; docker volume prune -f
@@ -51,23 +59,17 @@ Para ver o log do Celery:
 
     docker-compose logs --tail=100 -t -f celery
 
-3.1. Rodar o Projeto em Produção
+3.2. Rodar o Projeto em Produção
 --------------------------------
 Para rodar o radar em produção você precisa definir duas variáveis de ambiente:
 
     - `RADAR_IS_PRODUCTION`: Define que o projeto está sendo executado em
         ambiente de produção. Isso habilita o Cache do Django e coloca o DEBUG
         como 'FALSE'
-    - `RADAR_DB_PASSWORD`: Define a senha do banco de dados do radar em 
+    - `RADAR_DB_PASSWORD`: Define a senha do banco de dados do radar em
         produção
 
     RADAR_IS_PRODUCTION=True RADAR_DB_PASSWORD=senha docker-compose up -d django
-
-Na primeira vez em que o projeto for criado, será necessário criar o usuário
-administrativo do Django (que é persistido no banco). Para tanto utilize o
-comando:
-
-     docker-compose exec django python manage.py createsuperuser
 
 4. Importação dos Dados
 -----------------------
@@ -76,7 +78,7 @@ Para importar os dados basta acessar a URL:
     http://localhost/importar/<nome-curto-da-casa-legislativa>/
 
 Obs: Você precisará colocar login/senha para ter acesso a esta página. Este
-login e senha são os criados no passo anterior deste documento.
+login e senha são os criados com o comando `createsuperuser` (Seção 3).
 
 Possíveis valores para `<nome-curto-da-casa-legislativa>`:
 
