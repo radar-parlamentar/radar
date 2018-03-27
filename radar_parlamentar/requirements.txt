@@ -5,6 +5,7 @@ requests
 psycopg2-binary
 celery
 elasticsearch<1.0.0
+django_cron
 python-memcached
 ipython
 coveralls
