@@ -5,6 +5,7 @@ logger = logging.getLogger("radar")
 
 # Isso é chamada a cada 2 min contanto que
 # python manage.py runcrons seja constantemente executado
+# TODO: colocar "python manage.py runcrons" no cron do container.
 class DemoJob(CronJobBase):
 
     RUN_EVERY_MINS = 2
