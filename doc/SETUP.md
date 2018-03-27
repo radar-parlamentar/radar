@@ -55,7 +55,7 @@ Para ver o log do Celery:
 
     docker-compose logs --tail=100 -t -f celery
 
-### 3.2. Rodar o Projeto em Produção
+### 3.2. Rodar o projeto em produção
 
 Para rodar o radar em produção você precisa definir duas variáveis de ambiente:
 
@@ -67,7 +67,7 @@ Para rodar o radar em produção você precisa definir duas variáveis de ambien
 
     RADAR_IS_PRODUCTION=True RADAR_DB_PASSWORD=senha docker-compose up -d django
 
-## 4. Importação dos Dados
+## 4. Importação dos dados
 
 Para importar os dados basta acessar a URL:
 
