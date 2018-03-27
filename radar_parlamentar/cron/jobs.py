@@ -5,7 +5,7 @@ logger = logging.getLogger("radar")
 
 # Isso é chamada a cada 2 min contanto que
 # python manage.py runcrons seja constantemente executado
-class CashRefresherJob(CronJobBase):
+class DemoJob(CronJobBase):
 
     RUN_EVERY_MINS = 2
 
@@ -13,4 +13,9 @@ class CashRefresherJob(CronJobBase):
     code = 'job.CashRefresherJob'    # a unique code
 
     def do(self):
-        logger.info('CashRefresherJob got executed')
+        logger.info('DemoJob got executed')
+
+# TODO
+# class CashRefresherJob
+# class DbDumperJob
+# class ImportadorJob
