@@ -1,15 +1,12 @@
-Passo a Passo da instalação
-============================
+# Configuração do ambiente do desenvolvedor
 
-1. Clonando o repositório
-------------------------------
+## 1. Clonando o repositório
 
 A primeira coisa que deve ser feita é o clone do projeto no *Github*. Para isso basta fazer:
 
         $ git clone https://github.com/radar-parlamentar/radar.git
 
-2. Configuração do ambiente
----------------------------
+## 2. Configuração do ambiente
 
 O Radar Parlamentar funciona, tanto em produção quanto em desenvolvimento,
 utilizando containers docker.
@@ -20,8 +17,7 @@ Nossa instalação foi testada utilizando:
     * Docker 18.02.0-ce (Community Edition) build __fc4de44__
     * docker-compose 1.17.1
 
-3. Rodar o projeto
-------------------
+## 3. Rodar o projeto
 
 Para rodar o projeto, agora precisamos de mais dois containers. O container
 (**django**) que tem o projeto do radar em si e o servidor de aplicação (**uwsgi**) e o
@@ -41,8 +37,8 @@ comando:
 
      docker-compose exec django python manage.py createsuperuser
 
-3.1. Comandos úteis
---------------------------------
+### 3.1. Comandos úteis
+
 Para limpar tudo, rode o comando:
 
     docker-compose down -v; -docker-compose rm -fsv; docker volume prune -f
@@ -59,8 +55,8 @@ Para ver o log do Celery:
 
     docker-compose logs --tail=100 -t -f celery
 
-3.2. Rodar o Projeto em Produção
---------------------------------
+### 3.2. Rodar o Projeto em Produção
+
 Para rodar o radar em produção você precisa definir duas variáveis de ambiente:
 
     - `RADAR_IS_PRODUCTION`: Define que o projeto está sendo executado em
@@ -71,8 +67,8 @@ Para rodar o radar em produção você precisa definir duas variáveis de ambien
 
     RADAR_IS_PRODUCTION=True RADAR_DB_PASSWORD=senha docker-compose up -d django
 
-4. Importação dos Dados
------------------------
+## 4. Importação dos Dados
+
 Para importar os dados basta acessar a URL:
 
     http://localhost/importar/<nome-curto-da-casa-legislativa>/
@@ -101,8 +97,8 @@ Deputados, que pode levar horas.
 
 http://radarparlamentar.polignu.org/importadores/
 
-6. Executando os testes
------------------------
+## 6. Executando os testes
+
 Rode o comando:
 
     docker-compose up test
