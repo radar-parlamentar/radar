@@ -3,6 +3,11 @@ import logging
 
 logger = logging.getLogger("radar")
 
+"""
+Django Cron documentation:
+http://django-cron.readthedocs.io/en/latest/installation.html
+"""
+
 # Isso é chamada a cada 2 min contanto que
 # python manage.py runcrons seja constantemente executado
 # TODO: colocar "python manage.py runcrons" no cron do container.
