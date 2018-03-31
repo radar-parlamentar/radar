@@ -23,6 +23,8 @@ Wiki: https://github.com/radar-parlamentar/radar/wiki
 Configuração do ambiente:
 [Setup](https://github.com/radar-parlamentar/radar/blob/master/doc/SETUP.md)
 
+Artigo acadêmico sobre o Radar: https://www.revistas.usp.br/leviathan/article/view/143408
+
 Licença do projeto: *AGPL v3*
 
 Seja bem vindo!
