@@ -1,15 +1,22 @@
+radar_parlamentar/radar.log
+radar_parlamentar/htmlcov
+radar_parlamentar/exportadores/saida/votes.csv
+radar_parlamentar/static
+radar_parlamentar/static/*
+radar_parlamentar/static/db-dump/radar.sql
+radar_parlamentar/radar_parlamentar/settings/production.py
+radar_parlamentar/radar_parlamentar/settings/development.py
+radar_parlamentar/radar_parlamentar/static/db-dump/radar.sql
+radar.sock
+sockets/
+sockets/*
+
 .DS_Store
 *.py.bak
 *~
 *.pyc
 .*.swp
 __pycache__
-resultados/camara.db.backup
-camaraws/camaraws.db
-radar_parlamentar.db
-radar_parlamentar/settings.py
-radar_parlamentar/radar_parlamentar.db
-radar.log
 
 # eclipse related
 .project
@@ -27,6 +34,7 @@ activate/
 build/
 venv/
 env/
+.python-version
 
 # Sonar config files
 radar_parlamentar/.coverage

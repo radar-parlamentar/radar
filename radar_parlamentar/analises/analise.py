@@ -1,5 +1,3 @@
-# coding=utf8
-
 # Copyright (C) 2012, Leonardo Leite, Saulo Trento, Diego Rabatone,
 # Guilherme Januário
 #
@@ -21,15 +19,15 @@
 
 """Módulo analise"""
 
-from __future__ import unicode_literals
+
 from math import hypot, atan2, pi
-from models import AnalisePeriodo, AnaliseTemporal
+from .models import AnalisePeriodo, AnaliseTemporal
 from modelagem import models
 from modelagem import utils
 from analises import filtro
 import logging
 import numpy
-import pca
+from . import pca
 import copy
 # import time # timetrack
 
@@ -181,7 +179,7 @@ class AnalisadorPeriodo:
         self.pca_parlamentares = None
         self.coordenadas_parlamentares = {}
 
-        #lista de chefes_executivos
+        # lista de chefes_executivos
         self.chefes_executivos = self._inicializa_chefes_executivo()
 
     def _inicializa_votacoes(self):
@@ -193,7 +191,7 @@ class AnalisadorPeriodo:
         return self.votacoes
 
     def _inicializa_chefes_executivo(self):
-        """Pega chefes executivo deste período no banco de dados filtrando pela casa 
+        """Pega chefes executivo deste período no banco de dados filtrando pela casa
         legislativa e seta a lista self.chefes_executivo"""
         filtro_chefe = filtro.FiltroChefesExecutivo(
             self.casa_legislativa, self.periodo)
@@ -212,9 +210,11 @@ class AnalisadorPeriodo:
         analisePeriodo.num_votacoes = self.num_votacoes
         analisePeriodo.pca = self.pca
         analisePeriodo.tamanhos_partidos = self.tamanhos_partidos
-        analisePeriodo.coordenadas_parlamentares = self.coordenadas_parlamentares
+        analisePeriodo.coordenadas_parlamentares = \
+            self.coordenadas_parlamentares
         analisePeriodo.coordenadas_partidos = self.coordenadas_partidos
-        analisePeriodo.parlamentares_por_partido = self.parlamentares_por_partido
+        analisePeriodo.parlamentares_por_partido = \
+            self.parlamentares_por_partido
         analisePeriodo.chefes_executivos = self.chefes_executivos
         return analisePeriodo
 
@@ -236,18 +236,18 @@ class AnalisadorPeriodo:
         if not self.analise_ja_feita:
             self.coordenadas_parlamentares = self._pca_parlamentares()
             if self.num_votacoes > 1:
-                for partido in self.coordenadas_parlamentares.keys():
+                for partido in list(self.coordenadas_parlamentares.keys()):
                     self.coordenadas_parlamentares[partido] = (
                         self.coordenadas_parlamentares[partido])[0:2]
             # se só tem 1 votação, só tem 1 C.P. Jogar tudo zero na segunda CP.
             elif self.num_votacoes == 1:
-                for partido in self.coordenadas_parlamentares.keys():
+                for partido in list(self.coordenadas_parlamentares.keys()):
                     self.coordenadas_parlamentares[partido] = numpy.array(
                         [(self.coordenadas_parlamentares[partido])[0], 0.])
             # Zero votações no período. Os partidos são todos iguais. Tudo
             # zero.
             else:
-                for parlamentar in self.coordenadas_parlamentares.keys():
+                for parlamentar in list(self.coordenadas_parlamentares.keys()):
                     self.coordenadas_parlamentares[
                         parlamentar] = numpy.array([0., 0.])
         return self.coordenadas_parlamentares
@@ -261,13 +261,15 @@ class AnalisadorPeriodo:
         if not self.pca_parlamentares:
             if not self.vetores_votacao:
                 self._inicializa_vetores()
-            ids_parlamentares_presentes = self._listar_indices_de_parlamentares_presentes()
+            ids_parlamentares_presentes = \
+                self._listar_indices_de_parlamentares_presentes()
             matriz = self.vetores_votacao
             # exclui parlamentares ausentes em todas as votações do período
             matriz = matriz[ids_parlamentares_presentes, :]
             matriz = matriz - matriz.mean(axis=0)  # centraliza dados
             self.pca = pca.PCA(matriz, fraction=1)  # faz o pca
-            self._preenche_pca_de_parlamentares_nulos(ids_parlamentares_presentes)
+            self._preenche_pca_de_parlamentares_nulos(
+                ids_parlamentares_presentes)
             logger.info("PCA terminada com sucesso. ini=%s, fim=%s" %
                         (str(self.ini), str(self.fim)))
         # Criar dicionario a ser retornado:
@@ -360,8 +362,7 @@ class ConstrutorDeMatrizesDeDados:
 
     def _construtor_dicionario_parlamentares_votos(self, votacao):
         # com o "select_related" fazemos uma query eager
-        votos = votacao.voto_set.select_related(
-            'opcao', 'parlamentar__id').all()
+        votos = votacao.voto_set.select_related('parlamentar').all()
         for voto in votos:
             self._dic_parlamentares_votos[voto.parlamentar.id] = voto.opcao
 
@@ -372,7 +373,8 @@ class ConstrutorDeMatrizesDeDados:
             self.partido_do_parlamentar.append(parlamentar.partido.nome)
             if parlamentar.id in self._dic_parlamentares_votos:
                 opcao = self._dic_parlamentares_votos[parlamentar.id]
-                self.matriz_votacoes[ip][iv] = self._converter_opcao_para_valor(opcao)
+                self.matriz_votacoes[ip][iv] = \
+                    self._converter_opcao_para_valor(opcao)
                 if (opcao == models.AUSENTE):
                     self.matriz_presencas[ip][iv] = 0.
                 else:
@@ -432,6 +434,7 @@ class AnalisadorPartidos:
         mm = numpy.mean(mdat, axis=0)
         return mm.filled(numpy.nan)
 
+
 class Rotacionador:
 
     def __init__(self, analisePeriodo, analisePeriodoReferencia):
@@ -439,14 +442,14 @@ class Rotacionador:
         self.analisePeriodoReferencia = analisePeriodoReferencia
 
     def _espelhar_coordenadas(self, lista_coordenadas):
-        for indice, coords in lista_coordenadas.items():
+        for indice, coords in list(lista_coordenadas.items()):
             lista_coordenadas[indice] = numpy.dot(
                 coords, numpy.array([[-1., 0.], [0., 1.]]))
 
     def _rotacionar_coordenadas(self, theta, lista_coordenadas):
-        for indice, coords in lista_coordenadas.items():
+        for indice, coords in list(lista_coordenadas.items()):
             lista_coordenadas[indice] = numpy.dot(
-            coords, self._gerar_matriz_rotacao(theta))
+                coords, self._gerar_matriz_rotacao(theta))
 
     def _energia(self, dados_fixos, dados_meus, por_partido,
                  graus=0, espelho=0):
@@ -461,8 +464,9 @@ class Rotacionador:
         if espelho == 1:
             self._espelhar_coordenadas(dados_meus)
         if graus != 0:
-            for partido, coords in dados_meus.items():
-                dados_meus[partido] = numpy.dot(coords, self._gerar_matriz_rotacao(graus))
+            for partido, coords in list(dados_meus.items()):
+                dados_meus[partido] = numpy.dot(
+                    coords, self._gerar_matriz_rotacao(graus))
 
         if por_partido:
             for p in dados_meus:
@@ -508,11 +512,11 @@ class Rotacionador:
 
     def espelha_ou_roda(self, por_partido=False, so_espelha=True):
         """Retorna nova AnalisePeriodo com coordenadas rotacionadas
-        se por_partido == True:
+        se por_partido = True:
         a operacao minimiza o quanto os partidos caminharam
-        se por_partido == False:
+        se por_partido = False:
         minimiza o quanto os parlamentares em si caminham
-        se so_espelha == True:
+        se so_espelha = True:
         nao se faz rotacao, apenas espelha as componentes se necessario.
         """
         if por_partido:
@@ -528,7 +532,7 @@ class Rotacionador:
             logger.info("Calculando ângulo teta 1 e ângulo teta 2...")
             numerador = 0
             denominador = 0
-            for indice, coords in dados_meus.items():
+            for indice, coords in list(dados_meus.items()):
                 meu_polar = self._polar(coords[0], coords[1], 0)
                 alheio_polar = self._polar(
                     dados_fixos[indice][0], dados_fixos[indice][1], 0)
@@ -544,9 +548,12 @@ class Rotacionador:
                 angulo_teta1 = 90
                 angulo_teta2 = 270
             else:
-                angulo_teta1 = numpy.arctan(numerador / denominador) * 180 / 3.141592
+                angulo_teta1 = numpy.arctan(
+                    numerador / denominador) * 180 / 3.141592
                 angulo_teta2 = angulo_teta1 + 180
-            logger.info("angulo_teta 1 = " + str(angulo_teta1) + "; angulo_teta2 = " + str(angulo_teta2))
+            logger.info("angulo_teta 1 = " +
+                        str(angulo_teta1) + "; angulo_teta2 = " +
+                        str(angulo_teta2))
         else:
             angulo_teta1 = 0
             angulo_teta2 = 180

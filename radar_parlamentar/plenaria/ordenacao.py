@@ -1,5 +1,3 @@
-# coding=utf8
-
 # Copyright (C) 2016, Saulo Trento
 #
 # This file is part of Radar Parlamentar.
@@ -20,11 +18,11 @@
 
 """Módulo ordenacao.
 Este módulo foi criado na hackaton sprinklr set/2016 para resolver a issue 331.
-O mapa de parlamentares precisa de uma ordem dos parlamentares, 
+O mapa de parlamentares precisa de uma ordem dos parlamentares,
 agrupados por partido, para que os partidos fiquem coesosno mapa."""
 
 
-from __future__ import unicode_literals
+
 from modelagem.models import Parlamentar, Proposicao, Votacao, \
     PeriodoCasaLegislativa, Voto
 from modelagem import utils
@@ -77,7 +75,7 @@ def ordem_dos_parl_por_votacao(votacao, dicionario_votantes, lista_ordenada_part
     lista_ordenada_partidos -- lista de objetos Partido, ja bem ordenada.
     """
     retorno = []
-    votos = votacao.voto_set.select_related('parlamentar','parlamentar__partido')
+    votos = votacao.voto_set.select_related('parlamentar__partido')
     parlamentares = [v.parlamentar for v in votos]
     ordenado = sorted([(lista_ordenada_partidos.index(p.partido),dicionario_votantes[p][1],p.nome,p) for p in parlamentares], key=itemgetter(2))
     ordenado = sorted(ordenado, key=itemgetter(1), reverse=True)
@@ -91,17 +89,17 @@ def ordenar_partidos(casa, periodo):
     analise_periodo = analisador.analisa()
     coords = analise_periodo.coordenadas_partidos
     coords_list = []
-    for k in coords.iteritems():
+    for k in list(coords.items()):
         coords_list.append(k)
     partidos = sorted([(x[0],x[1][0]) for x in coords_list], key=itemgetter(1,0))
     return [p[0] for p in partidos]
-    
+
 def ordenar_votantes(proposicao):
     """Retorna um dicionario Parlamentar -> (partido,int)
     onde o inteiro é o número de vezes que o parlamentar votou SIM ou NAO,
     mas nao se absteve ou faltou, nas votacoes da proposicao, e partido é o
     seu partido."""
-    votos_prop = Voto.objects.filter(votacao__proposicao = proposicao).select_related("parlamentar", "parlamentar__partido")
+    votos_prop = Voto.objects.filter(votacao__proposicao = proposicao).select_related("parlamentar__partido")
     parlams = set()
     for v in votos_prop:
         parlams.add(v.parlamentar)
@@ -109,5 +107,3 @@ def ordenar_votantes(proposicao):
     for prl in parlams:
         retorno[prl] = (prl.partido,len([vv for vv in votos_prop if vv.parlamentar == prl]))
     return retorno
-
-    

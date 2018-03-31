@@ -1,7 +1,5 @@
-# -*- coding: utf8 -*-
-
 import subprocess
-import settings
+from radar_parlamentar.settings import TIME_ZONE
 import logging
 from django import template
 register = template.Library()
@@ -12,7 +10,7 @@ logger = logging.getLogger("radar")
 
 @register.simple_tag
 def versao_radar():
-    time_zone = settings.defaults.TIME_ZONE
+    time_zone = TIME_ZONE
     versao_radar = ''
 
     try:
@@ -28,8 +26,9 @@ def versao_radar():
 
         versao_radar = 'Versão: <a href="https://github.com/radar-parlamentar/'
         versao_radar += 'radar/commit/{0}" target="_blank">{1}</a> de {2}' \
-                        .format(hash_ultimo_commit, hash_abrev_ultimo_commit,
-                                data_ultimo_commit)
+                        .format(hash_ultimo_commit.decode("utf-8"),
+                                hash_abrev_ultimo_commit.decode("utf-8"),
+                                data_ultimo_commit.decode("utf-8"))
 
     except (IndexError, subprocess.CalledProcessError) as e:
         logger.error('Erro ao pegar o hash ou' +

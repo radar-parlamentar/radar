@@ -1,5 +1,3 @@
-# coding=utf8
-
 # Copyright (C) 2015, Vanessa Soares, Thaiane Braga
 #
 # This file is part of Radar Parlamentar.
@@ -19,6 +17,7 @@
 
 from modelagem.models import CasaLegislativa, Parlamentar, Proposicao
 
+
 class Genero:
 
     def __init__(self):
@@ -26,32 +25,33 @@ class Genero:
         self.dicionario_palavras = {}
 
     def agrupa_palavras(self, genero, id_casa_legislativa):
-        for parlamentar in Parlamentar.objects.filter(genero=genero, casa_legislativa_id=id_casa_legislativa):
-            for proposicao in Proposicao.objects.filter(autor_principal=parlamentar.nome):
+        for parlamentar in Parlamentar.objects.filter(
+                genero=genero, casa_legislativa_id=id_casa_legislativa):
+            for proposicao in Proposicao.objects.filter(
+                    autor_principal=parlamentar.nome):
                 for palavra in proposicao.indexacao.split(','):
                     if len(palavra) != 0:
                         self.palavras.append(palavra.strip().lower())
         return self.define_chaves_dicionario(self.palavras)
 
-
     def define_chaves_dicionario(self, palavras):
         for palavra in palavras:
-            if self.dicionario_palavras.has_key(palavra):
-                self.dicionario_palavras[palavra] = self.dicionario_palavras[palavra] + 1
+            if palavra in self.dicionario_palavras:
+                self.dicionario_palavras[palavra] += 1
             else:
                 self.dicionario_palavras[palavra] = 1
         return self.organiza_lista_palavras(self.dicionario_palavras)
 
     def organiza_lista_palavras(self, dicionario_palavras):
         numero_maximo_de_palavras = 51
-        temas_frequencia = sorted(
-            dicionario_palavras.items(), reverse=True, key=lambda i: i[1])
+        temas_frequencia = sorted(list(
+            dicionario_palavras.items()), reverse=True, key=lambda i: i[1])
         temas_frequencia = temas_frequencia[:numero_maximo_de_palavras]
         return temas_frequencia
 
-
     '''
-    Retorna as casas legislativas que tenham parlamentares com a informacao de genero
+    Retorna as casas legislativas que tenham
+    parlamentares com a informacao de genero
     '''
     @staticmethod
     def get_casas_legislativas_com_genero():
@@ -59,7 +59,8 @@ class Genero:
         casas_legislativas = []
 
         for casa in CasaLegislativa.objects.all():
-            for parlamentar in Parlamentar.objects.filter(casa_legislativa_id=casa.id):
+            for parlamentar in Parlamentar.objects.filter(
+                    casa_legislativa_id=casa.id):
                 if parlamentar.genero != "":
                     casas_legislativas.append(casa)
                     break

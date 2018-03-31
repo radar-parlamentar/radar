@@ -1,5 +1,3 @@
-# coding=utf8
-
 # Copyright (C) 2014, Leonardo Leite
 #
 # This file is part of Radar Parlamentar.
@@ -17,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.test import TestCase
 
 from analises import grafico
@@ -48,7 +46,7 @@ class JsonAnaliseGeneratorTest(TestCase):
     def setUp(self):
 
         self.casa = models.CasaLegislativa.objects.get(nome_curto='conv')
-       
+
         for partido in JsonAnaliseGeneratorTest.importer.partidos:
             if partido.nome == conv.GIRONDINOS:
                 self.girondinos = partido
@@ -63,8 +61,10 @@ class JsonAnaliseGeneratorTest(TestCase):
         analise_temporal.analises_periodo = []
         analise_temporal.total_votacoes = 8
 
-        self.chefe = models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva", genero="M", partido = self.girondinos,
-                                    mandato_ano_inicio = 1989, mandato_ano_fim = 1990)
+        self.chefe = models.ChefeExecutivo(nome="Luiz Inacio Pierre da Silva",
+                                           genero="M", partido=self.girondinos,
+                                           mandato_ano_inicio=1989,
+                                           mandato_ano_fim=1990)
         self.chefe.save()
         self.chefe.casas_legislativas.add(self.casa)
 
@@ -89,7 +89,8 @@ class JsonAnaliseGeneratorTest(TestCase):
         ap1.parlamentares_por_partido = \
             JsonAnaliseGeneratorTest.importer.parlamentares
         ap1.coordenadas_parlamentares = {}  # parlamentar.id => [x,y]
-        for partido, parlamentares in ap1.parlamentares_por_partido.items():
+        for partido, parlamentares in list(
+                ap1.parlamentares_por_partido.items()):
             for parlamentar in parlamentares:
                 ap1.coordenadas_parlamentares[parlamentar.id] = [random(),
                                                                  random()]
@@ -100,21 +101,21 @@ class JsonAnaliseGeneratorTest(TestCase):
         self.dict_analise = json.loads(generated_json)
 
     def test_total_votacoes(self):
-        self.assertEquals(self.dict_analise['geral']['total_votacoes'], 8)
+        self.assertEqual(self.dict_analise['geral']['total_votacoes'], 8)
 
     def test_chefes_executivos(self):
         list_periodos = self.dict_analise['periodos']
         dict_periodo = list_periodos[0]
         expected = "Presidente: Luiz Inacio Pierre da Silva - Girondinos"
-        self.assertEquals(dict_periodo['chefe_executivo'][0]['nome'], expected)
+        self.assertEqual(dict_periodo['chefe_executivo'][0]['nome'], expected)
 
     def test_nome_casa_legislativa(self):
         dict_casa = self.dict_analise['geral']['CasaLegislativa']
-        self.assertEquals(dict_casa['nome_curto'], self.casa.nome_curto)
+        self.assertEqual(dict_casa['nome_curto'], self.casa.nome_curto)
 
     def test_quantidade_periodos(self):
         list_periodos = self.dict_analise['periodos']
-        self.assertEquals(len(list_periodos), 1)
+        self.assertEqual(len(list_periodos), 1)
 
     def test_nome_periodo(self):
         list_periodos = self.dict_analise['periodos']
@@ -123,7 +124,7 @@ class JsonAnaliseGeneratorTest(TestCase):
 
     def test_quantidade_partidos(self):
         list_partidos = self.dict_analise['partidos']
-        self.assertEquals(len(list_partidos), 3)
+        self.assertEqual(len(list_partidos), 3)
 
     def test_nome_partido(self):
         list_partidos = self.dict_analise['partidos']
@@ -136,13 +137,13 @@ class JsonAnaliseGeneratorTest(TestCase):
         list_partidos = self.dict_analise['partidos']
         dict_partido = list_partidos[0]
         list_tamanhos = dict_partido['t']
-        self.assertEquals(list_tamanhos[0], 3)
+        self.assertEqual(list_tamanhos[0], 3)
 
     def test_quantidade_parlamentares(self):
         list_partidos = self.dict_analise['partidos']
         dict_partido = list_partidos[0]
         list_parlamentares = dict_partido['parlamentares']
-        self.assertEquals(len(list_parlamentares), 3)
+        self.assertEqual(len(list_parlamentares), 3)
 
     def test_coordenada_parlamentar(self):
         list_partidos = self.dict_analise['partidos']
@@ -170,15 +171,15 @@ class MaxRadiusCalculatorTest(TestCase):
 
     def test_max_radius_calculator(self):
         calc = grafico.MaxRadiusCalculator()
-        self.assertEquals(calc.max_r(), 0)
+        self.assertEqual(calc.max_r(), 0)
         calc.add_point(4, 3)
-        self.assertEquals(calc.max_r(), 5)
+        self.assertEqual(calc.max_r(), 5)
         calc.add_point(1, 2)
-        self.assertEquals(calc.max_r(), 5)
+        self.assertEqual(calc.max_r(), 5)
         calc.add_point(1, None)
-        self.assertEquals(calc.max_r(), 5)
+        self.assertEqual(calc.max_r(), 5)
         calc.add_point(10, 3)
-        self.assertAlmostEquals(calc.max_r(), 10.44, 1)
+        self.assertAlmostEqual(calc.max_r(), 10.44, 1)
 
 
 class GraphScalerTest(TestCase):

@@ -1,5 +1,3 @@
-# coding=utf8
-
 # Copyright (C) 2014, Leonardo Leite
 #
 # This file is part of Radar Parlamentar.
@@ -17,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 import logging
 from django.http import HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
-from celery import importar_assincronamente
+from importadores.celery_tasks import importar_assincronamente
 
 logger = logging.getLogger("radar")
 

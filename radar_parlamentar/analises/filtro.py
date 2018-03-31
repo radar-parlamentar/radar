@@ -1,5 +1,3 @@
-# coding=utf8
-
 # Copyright (C) 2012, Arthur Del Esposte, Leonardo Leite, Aline Santos,
 # Gabriel Augusto, Thallys Martins, Thatiany Lima, Winstein Martins,
 # Eduardo Kuroda.
@@ -19,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.test import TestCase
 from modelagem import models
 from elasticsearch import Elasticsearch
@@ -66,6 +64,7 @@ class LuceneQueryBuilder():
         return "votacao_data:[%s TO %s]" % (
             self.periodo_casa_legislativa.ini.isoformat(),
             self.periodo_casa_legislativa.fim.isoformat())
+
 
 class FiltroVotacao(TestCase):
 
@@ -129,9 +128,9 @@ class FiltroChefesExecutivo(TestCase):
         self.chefes_executivos = []
 
     def filtra_chefes_executivo(self):
-        self.chefes_executivo = models.ChefeExecutivo.por_casa_legislativa_e_periodo(
-            self.casa_legislativa,
-            self.periodo_casa_legislativa.ini,
-            self.periodo_casa_legislativa.fim)
+        self.chefes_executivo = \
+            models.ChefeExecutivo.por_casa_legislativa_e_periodo(
+                self.casa_legislativa,
+                self.periodo_casa_legislativa.ini,
+                self.periodo_casa_legislativa.fim)
         return self.chefes_executivo
-

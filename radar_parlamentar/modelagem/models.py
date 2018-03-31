@@ -1,6 +1,3 @@
-
-# coding=utf8
-
 # Copyright (C) 2012, Leonardo Leite, Eduardo Hideo, Saulo Trento,
 #                     Diego Rabatone
 #
@@ -19,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.db import models
 from django.utils.dateparse import parse_datetime
 import re
@@ -77,22 +74,6 @@ PERIODOS = (
 
 SEM_PARTIDO = 'Sem partido'
 COR_PRETA = '#000000'
-
-
-class Indexadores(models.Model):
-    """Termos utilizados na indexação de proposições
-
-    Atributos:
-        termo -- string; ex: "mulher" ou "partido político"+
-        principal -- bool; identifica se o termo é o principal
-                    de uma linha de sinônimos, o termo a ser usado.
-    """
-    termo = models.CharField(max_length=120)
-    principal = models.BooleanField()
-
-    def __unicode__(self):
-        return '%s-%s-%s' % (self.nome, self.numero, self.cor)
-
 
 class Partido(models.Model):
     """Partido político.
@@ -184,7 +165,7 @@ class Partido(models.Model):
                 return partido
         return None
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s-%s' % (self.nome, self.numero)
 
 
@@ -204,7 +185,7 @@ class CasaLegislativa(models.Model):
     esfera = models.CharField(max_length=10, choices=ESFERAS)
     local = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.nome
 
     def partidos(self):
@@ -259,42 +240,44 @@ class ChefeExecutivo(models.Model):
 
     nome = models.CharField(max_length=100)
     genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
-    partido = models.ForeignKey(Partido)
+    partido = models.ForeignKey(Partido, on_delete=models.CASCADE)
     mandato_ano_inicio = models.IntegerField()
     mandato_ano_fim = models.IntegerField()
     casas_legislativas = models.ManyToManyField(CasaLegislativa)
     titulo = None
-    
-    def __unicode__(self):
+
+    def __str__(self):
         self.titulo = self.get_titulo_chefe()
         return self.titulo + ": " + self.nome + " - " + self.partido.nome
 
     @staticmethod
-    def por_casa_legislativa_e_periodo(casa_legislativa,
-                             data_inicial=None,
-                             data_final=None):
-        
+    def por_casa_legislativa_e_periodo(
+            casa_legislativa, data_inicial=None, data_final=None):
+
         chefes_executivo = ChefeExecutivo.objects.filter(
             casas_legislativas__nome_curto=casa_legislativa.nome_curto)
-        
+
         chefes = []
         if data_inicial is not None and data_final is not None:
             ano_inicio = int(data_inicial.year)
             ano_fim = int(data_final.year)
             if(ano_inicio == ano_fim):
-                chefes = ChefeExecutivo.get_chefe_anual(ano_inicio, chefes_executivo)
+                chefes = ChefeExecutivo.get_chefe_anual(
+                    ano_inicio, chefes_executivo)
             else:
-                chefes = ChefeExecutivo.get_chefe_periodo(ano_inicio, ano_fim, chefes_executivo)
+                chefes = ChefeExecutivo.get_chefe_periodo(
+                    ano_inicio, ano_fim, chefes_executivo)
         else:
             chefes = chefes_executivo
 
         return chefes
-    
+
     @staticmethod
     def get_chefe_anual(ano, chefes_executivo):
         chefes = []
         for chefe in chefes_executivo:
-            ano_valido = chefe.mandato_ano_inicio <= ano and chefe.mandato_ano_fim >= ano
+            ano_valido = (chefe.mandato_ano_inicio <= ano) and (
+                chefe.mandato_ano_fim >= ano)
             if(ano_valido):
                 chefes.append(chefe)
 
@@ -304,11 +287,19 @@ class ChefeExecutivo(models.Model):
     def get_chefe_periodo(ano_inicio, ano_fim, chefes_executivo):
         chefes = []
         for chefe in chefes_executivo:
-            ano_inicio_valido =  ano_inicio >= chefe.mandato_ano_inicio and ano_inicio <= chefe.mandato_ano_fim   
-            ano_fim_valido =  ano_fim >= chefe.mandato_ano_inicio and ano_fim <= chefe.mandato_ano_fim
-            mandato_ano_inicio_valido = chefe.mandato_ano_inicio >= ano_inicio and chefe.mandato_ano_inicio <= ano_fim
-            mandato_ano_fim_valido = chefe.mandato_ano_fim >= ano_inicio and chefe.mandato_ano_fim <= ano_fim
-            if(ano_inicio_valido or ano_fim_valido or mandato_ano_inicio_valido or mandato_ano_fim_valido):
+            ano_inicio_valido = (ano_inicio >= chefe.mandato_ano_inicio) and (
+                ano_inicio <= chefe.mandato_ano_fim)
+            ano_fim_valido = (ano_fim >= chefe.mandato_ano_inicio) and (
+                ano_fim <= chefe.mandato_ano_fim)
+            mandato_ano_inicio_valido = (
+                chefe.mandato_ano_inicio >= ano_inicio) and (
+                chefe.mandato_ano_inicio <= ano_fim)
+            mandato_ano_fim_valido = (
+                chefe.mandato_ano_fim >= ano_inicio) and (
+                chefe.mandato_ano_fim <= ano_fim)
+
+            if(ano_inicio_valido or ano_fim_valido or
+                    mandato_ano_inicio_valido or mandato_ano_fim_valido):
                 chefes.append(chefe)
 
         return chefes
@@ -317,7 +308,7 @@ class ChefeExecutivo(models.Model):
         titulo = ""
         casas_legislativas = self.casas_legislativas.all()
         for casa in casas_legislativas:
-            esfera = casa.esfera  
+            esfera = casa.esfera
             genero_masculino = self.genero == M
             if(esfera == FEDERAL):
                 if(genero_masculino):
@@ -329,7 +320,7 @@ class ChefeExecutivo(models.Model):
                     titulo = "Prefeito"
                 else:
                     titulo = "Prefeita"
-        return titulo                
+        return titulo
 
 
 class PeriodoCasaLegislativa(object):
@@ -344,18 +335,8 @@ class PeriodoCasaLegislativa(object):
         self.ini = data_inicio
         self.fim = data_fim
         self.quantidade_votacoes = quantidade_votacoes
-        self.string = ""
-        self.string = unicode(self)
 
     def __str__(self):
-        return self.__unicode__()
-
-    def __unicode__(self):
-        if not self.string:
-            self._build_string()
-        return self.string
-
-    def _build_string(self):
         data_string = ''
 #       data_string = str(self.ini.year) # sempre começa com o ano
         delta = self.fim - self.ini
@@ -389,7 +370,7 @@ class PeriodoCasaLegislativa(object):
         elif delta.days < 1500:  # periodo é um quadriênio
             data_string += str(self.ini.year) + " a "
             data_string += str(self.fim.year)
-        self.string = data_string
+        return data_string
 
 
 class Parlamentar(models.Model):
@@ -409,11 +390,12 @@ class Parlamentar(models.Model):
     id_parlamentar = models.CharField(max_length=100, blank=True)
     nome = models.CharField(max_length=100)
     genero = models.CharField(max_length=10, choices=GENEROS, blank=True)
-    casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
-    partido = models.ForeignKey(Partido)
+    casa_legislativa = models.ForeignKey(CasaLegislativa, null=True,
+                                         on_delete=models.CASCADE)
+    partido = models.ForeignKey(Partido, on_delete=models.CASCADE)
     localidade = models.CharField(max_length=100, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s - %s' % (self.nome, self.partido.nome)
 
 
@@ -444,7 +426,8 @@ class Proposicao(models.Model):
     indexacao = models.TextField(blank=True)
     data_apresentacao = models.DateField(null=True)
     situacao = models.TextField(blank=True)
-    casa_legislativa = models.ForeignKey(CasaLegislativa, null=True)
+    casa_legislativa = models.ForeignKey(CasaLegislativa, null=True,
+                                         on_delete=models.CASCADE)
     autor_principal = models.TextField(blank=True)
     # TODO
     # autor_principal = models.ForeignKey(
@@ -453,13 +436,12 @@ class Proposicao(models.Model):
     #    related_name='Autor principal')
     autores = models.ManyToManyField(
         Parlamentar,
-        null=True,
         related_name='demais_autores')
 
     def nome(self):
         return "%s %s/%s" % (self.sigla, self.numero, self.ano)
 
-    def __unicode__(self):
+    def __str__(self):
         return "[%s] %s" % (self.nome(), self.ementa)
 
 
@@ -482,7 +464,8 @@ class Votacao(models.Model):
     descricao = models.TextField(blank=True)
     data = models.DateField(blank=True, null=True)
     resultado = models.TextField(blank=True)
-    proposicao = models.ForeignKey(Proposicao, null=True)
+    proposicao = models.ForeignKey(Proposicao, null=True,
+                                   on_delete=models.CASCADE)
 
     def votos(self):
         """Retorna os votos da votação (depende do banco de dados)"""
@@ -520,7 +503,7 @@ class Votacao(models.Model):
 
     # TODO def por_uf(self):
 
-    def __unicode__(self):
+    def __str__(self):
         if self.data:
             return "[%s] %s" % (self.data, self.descricao)
         else:
@@ -536,11 +519,11 @@ class Voto(models.Model):
                 (sim, não, abstenção, obstrução, não votou)
     """
 
-    votacao = models.ForeignKey(Votacao)
-    parlamentar = models.ForeignKey(Parlamentar)
+    votacao = models.ForeignKey(Votacao, on_delete=models.CASCADE)
+    parlamentar = models.ForeignKey(Parlamentar, on_delete=models.CASCADE)
     opcao = models.CharField(max_length=10, choices=OPCOES)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s votou %s" % (self.parlamentar, self.opcao)
 
 
@@ -593,11 +576,9 @@ class VotosAgregados:
         else:
             return 0
 
-    def __unicode__(self):
+    def __str__(self):
         return '(%s, %s, %s)' % (self.sim, self.nao, self.abstencao)
 
-    def __str__(self):
-        return unicode(self).encode('utf-8')
 
 
 class VotoPartido(VotosAgregados):

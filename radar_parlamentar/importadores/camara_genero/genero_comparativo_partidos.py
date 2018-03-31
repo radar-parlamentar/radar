@@ -77,7 +77,7 @@ for arq in arqs:
 
 print(cont)
 
-print(historia.keys())
+print((list(historia.keys())))
 
 arq = open("genero_comparativo_partidos.json", "w")
 json.dump(historia, arq)

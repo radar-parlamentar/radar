@@ -81,20 +81,18 @@ for arq in arqs:
                 nums["duracao"] = 4
                 nums["legis"] = legislatura
 
-
-            #ordenada = []
-            # for a in legis_partidos.keys():
+            # ordenada = []
+            #  for a in legis_partidos.keys():
             #    ordenada.append(a)
             # ordenada.sort()
 
-            #prox = None
-            # for l in ordenada:
+            # prox = None
+            #  for l in ordenada:
             #    try:
             #        prox_data = ordenada[ordenada.index(i)+1]
             #        prox = prox_data.partition("-")[0]
             #    except ValueError, error :
             #        logger.error("ValueError: %s" % error)
-
 
             #    ano1, e, ano2 = i.partition("-")
             #    duracao = int(ano2)-int(ano1)+1
@@ -106,7 +104,7 @@ for arq in arqs:
 
 print(cont)
 ordenada = []
-for a in historia.keys():
+for a in list(historia.keys()):
     ordenada.append(a)
 ordenada.sort()
 

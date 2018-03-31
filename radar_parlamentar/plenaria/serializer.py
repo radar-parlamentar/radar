@@ -1,5 +1,3 @@
-# coding=utf8
-
 # Copyright (C) 2016, Leonardo Leite
 #
 # This file is part of Radar Parlamentar.
@@ -17,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
+
 from django.utils.dateparse import parse_datetime
 from modelagem import models
 import json
 
-from ordenacao import ordem_dos_parlamentares
+from .ordenacao import ordem_dos_parlamentares
 
 
 class ProposicaoSerializer():
@@ -113,5 +111,5 @@ class ProposicaoSerializer():
 def main():
     p = models.Proposicao.objects.filter(casa_legislativa__nome_curto='cmsp')[0]
     json = get_json_proposicao(p)
-    print json
+    print(json)
 

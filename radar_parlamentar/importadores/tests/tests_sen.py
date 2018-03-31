@@ -1,60 +1,62 @@
-from __future__ import unicode_literals
 from django.test import TestCase
+import bz2
 import os
 import xml.etree.ElementTree as etree
-import mock
+from pathlib import Path
+from unittest.mock import Mock
 
 from importadores import sen, sen_indexacao
 from modelagem import models
 
-XML_TEST = os.path.join(sen.MODULE_DIR, 'dados/senado/ListaVotacoesTest.xml')
+XML_TEST = str(Path(sen.MODULE_DIR) / 'dados/senado/ListaVotacoesTest.xml.bz2')
 
 
 class GeradorSenadoTest(TestCase):
 
     def test_geracao_da_casa(self):
         casa = sen.CasaLegislativaGerador().gera_senado()
-        self.assertEquals(casa.nome_curto, 'sen')
+        self.assertEqual(casa.nome_curto, 'sen')
 
     def test_recupera_a_casa_existente(self):
         casa1 = sen.CasaLegislativaGerador().gera_senado()
         casa2 = sen.CasaLegislativaGerador().gera_senado()
-        self.assertEquals(casa1.pk, casa2.pk)
+        self.assertEqual(casa1.pk, casa2.pk)
+
 
 class ImportadorSenadoTest(TestCase):
 
     def setUp(self):
         casa = sen.CasaLegislativaGerador().gera_senado()
         self.importer = sen.ImportadorVotacoesSenado()
-        self.importer._xml_file_names = mock.Mock(return_value=[XML_TEST])
+        self.importer._xml_file_names = Mock(return_value=[XML_TEST])
         self.importer.importar_votacoes()
 
     def test_votacao_importada(self):
-        votacao = models.Votacao.objects.get(pk=1)
-        self.assertEquals(votacao.resultado, "R")
+        votacao = models.Votacao.objects.first()
+        self.assertEqual(votacao.resultado, "R")
 
     def test_parlamentar_importado(self):
         parlamentar = models.Parlamentar.objects.get(nome='Jader Barbalho')
         self.assertTrue(parlamentar)
-        self.assertEquals(parlamentar.genero, 'M')
-        self.assertEquals(parlamentar.localidade, 'PA')
+        self.assertEqual(parlamentar.genero, 'M')
+        self.assertEqual(parlamentar.localidade, 'PA')
         partido = models.Partido.objects.get(nome='PMDB')
         self.assertTrue(partido)
-        self.assertEquals(parlamentar.partido.nome, 'PMDB')
+        self.assertEqual(parlamentar.partido.nome, 'PMDB')
+
 
 class IndexacaoSenadoTest(TestCase):
 
     def setUp(self):
         casa = sen.CasaLegislativaGerador().gera_senado()
         self.importer = sen.ImportadorVotacoesSenado()
-        self.importer._xml_file_names = mock.Mock(return_value=[XML_TEST])
+        self.importer._xml_file_names = Mock(return_value=[XML_TEST])
         self.importer.importar_votacoes()
         sen_indexacao.indexar_proposicoes()
 
     def test_proposicoes_importadas(self):
-        proposicao = models.Proposicao.objects.get(pk=1)
+        proposicao = models.Proposicao.objects.first()
         self.assertTrue(proposicao)
-        self.assertEquals(proposicao.ano, '2015')
-        self.assertEquals(proposicao.sigla, 'PLS')
-        self.assertEquals(proposicao.numero, '00131')
-
+        self.assertEqual(proposicao.ano, '2015')
+        self.assertEqual(proposicao.sigla, 'PLS')
+        self.assertEqual(proposicao.numero, '00131')

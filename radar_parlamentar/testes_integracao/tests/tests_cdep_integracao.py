@@ -1,6 +1,3 @@
-# !/usr/bin/python
-# coding=utf8
-
 # Copyright (C) 2012, 2013, Leonardo Leite, Diego Rabatone, Eduardo Hideo
 #
 # This file is part of Radar Parlamentar.
@@ -62,7 +59,7 @@ class CamarawsTest(TestCase):
             self.camaraws.obter_proposicao_por_id(id_que_nao_existe)
         except ValueError as e:
             self.assertEqual(
-                e.message, 'Proposicao %s nao encontrada' % id_que_nao_existe)
+                str(e), 'Proposicao %s nao encontrada' % id_que_nao_existe)
             caught = True
         self.assertTrue(caught)
 
@@ -75,7 +72,7 @@ class CamarawsTest(TestCase):
             self.camaraws.obter_votacoes(sigla, num, ano)
         except ValueError as e:
             self.assertEqual(
-                e.message, 'Votacoes da proposicao %s %s/%s nao encontrada'
+                str(e), 'Votacoes da proposicao %s %s/%s nao encontrada'
                 % (sigla, num, ano))
             caught = True
         self.assertTrue(caught)
@@ -88,7 +85,7 @@ class CamarawsTest(TestCase):
             self.camaraws.listar_proposicoes(sigla, ano)
         except ValueError as e:
             self.assertEqual(
-                e.message, 'Proposicoes nao encontradas para sigla=%s&ano=%s'
+                str(e), 'Proposicoes nao encontradas para sigla=%s&ano=%s'
                 % (sigla, ano))
             caught = True
         self.assertTrue(caught)

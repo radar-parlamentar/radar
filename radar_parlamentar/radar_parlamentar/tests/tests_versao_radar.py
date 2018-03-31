@@ -1,8 +1,7 @@
-# -*- coding: utf8 -*-
-
 from django.test import TestCase
 from radar_parlamentar.templatetags.versao_radar import versao_radar
 import re
+
 
 class VersaoRadarTest(TestCase):
 
@@ -16,5 +15,4 @@ class VersaoRadarTest(TestCase):
         pattern += '\d{2}/\d{2}/\d{4}$'
 
         result = re.match(pattern, self.versao_radar)
-
         self.assertIsNotNone(result)

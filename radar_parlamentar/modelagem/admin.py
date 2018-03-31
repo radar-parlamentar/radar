@@ -1,5 +1,3 @@
-# coding=utf8
-
 # Copyright (C) 2014, Saulo Trento
 #
 # This file is part of Radar Parlamentar.
@@ -22,12 +20,12 @@ from django.contrib import admin
 
 
 class ParlamentarAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', 'genero')
+    list_display = ('__str__', 'genero')
     list_filter = ['genero']
 
 
 class ProposicaoAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', 'sigla', 'numero', 'ano', 'ementa',
+    list_display = ('__str__', 'sigla', 'numero', 'ano', 'ementa',
                     'descricao', 'indexacao', 'data_apresentacao',
                     'casa_legislativa')
     list_filter = ['ano', 'casa_legislativa']
@@ -42,9 +40,8 @@ class VotacaoAdmin(admin.ModelAdmin):
 
 
 class VotoAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', 'votacao')
+    list_display = ('__str__', 'votacao')
 
-admin.site.register(Indexadores)
 admin.site.register(Partido)
 admin.site.register(CasaLegislativa)
 admin.site.register(Parlamentar, ParlamentarAdmin)

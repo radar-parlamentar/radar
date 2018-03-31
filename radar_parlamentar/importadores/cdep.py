@@ -1,6 +1,3 @@
-# !/usr/bin/python
-# coding=utf8
-
 # Copyright (C) 2012, Leonardo Leite, Diego Rabatone, Saulo Trento,
 # Carolina Ramalho, Brenddon Gontijo Furtado
 #
@@ -21,16 +18,18 @@
 
 """módulo que cuida da importação dos dados da Câmara dos Deputados"""
 
-from __future__ import unicode_literals
+
 from django.utils.dateparse import parse_date
 from django.core.exceptions import ObjectDoesNotExist
-from chefes_executivos import ImportadorChefesExecutivos
+from .chefes_executivos import ImportadorChefesExecutivos
 from modelagem import models
 from datetime import datetime
 import re
 import os
 import xml.etree.ElementTree as etree
-import urllib2
+import urllib.request
+import urllib.error
+import urllib.parse
 import logging
 import threading
 import math
@@ -44,7 +43,7 @@ ANO_MIN = 1991
 
 logger = logging.getLogger("radar")
 
-XML_FILE = 'dados/chefe_executivo/chefe_executivo_congresso.xml'
+XML_FILE = 'dados/chefe_executivo/chefe_executivo_congresso.xml.bz2'
 NOME_CURTO = 'cdep'
 
 
@@ -56,7 +55,7 @@ class Url(object):
         try:
             xml = self.read(url)
             tree = etree.fromstring(xml)
-        except etree.ParseError, error:
+        except etree.ParseError as error:
             logger.error("etree.ParseError: %s" % error)
             return None
         return tree
@@ -64,11 +63,11 @@ class Url(object):
     def read(self, url):
         text = ''
         try:
-            request = urllib2.Request(url)
-            text = urllib2.urlopen(request).read()
-        except urllib2.URLError, error:
+            request = urllib.request.Request(url)
+            text = urllib.request.urlopen(request).read()
+        except urllib.error.URLError as error:
             logger.error("%s ao acessar %s" % (error, url))
-        except urllib2.HTTPError:
+        except urllib.error.HTTPError:
             logger.error("%s ao acessar %s" % (error, url))
         return text
 
@@ -91,12 +90,11 @@ class Camaraws:
     def _montar_url_consulta_camara(self, base_url, url_params, **kwargs):
         built_url = base_url
 
-        for par in kwargs.keys():
-            if type(par) == str:
+        for par in list(kwargs.keys()):
+            if isinstance(kwargs[par], str):
                 kwargs[par] = kwargs[par].lower()
-
         for par in url_params:
-            if par in kwargs.keys():
+            if par in list(kwargs.keys()):
                 built_url += str(par) + "=" + str(kwargs[par]) + "&"
             else:
                 built_url += str(par) + "=&"
@@ -340,7 +338,8 @@ class ImportadorCamara:
         return (votacao.proposicao.id_prop, votacao.descricao, votacao.data)
 
     def importar(self, votadas):
-        """votadas -- lista de dicionários com id/sigla/num/ano das proposições que tiveram votações
+        """votadas -- lista de dicionários com
+            id/sigla/num/ano das proposições que tiveram votações
         """
         self.total_proposicoes = len(votadas)
         self.proposicoes_importadas = 0
@@ -351,14 +350,17 @@ class ImportadorCamara:
 
     def _progresso(self):
         self.proposicoes_importadas += 1
-        porcentagem = 100.0 * self.proposicoes_importadas / self.total_proposicoes
+        fracao = self.proposicoes_importadas / self.total_proposicoes
+        porcentagem = 100.0 * fracao
         if porcentagem > self.imprimir_quando_progresso:
             logger.info('Progresso: %.1f%%' % porcentagem)
             self.imprimir_quando_progresso += 5
 
     def _importar(self, dic_proposicao):
-        """dic_proposicao -- dicionário com id/sigla/num/ano de uma proposição a ser importada
+        """dic_proposicao -- dicionário com
+            id/sigla/num/ano de uma proposição a ser importada
         """
+
         f = lambda dic: (dic['id'], dic['sigla'], dic['num'], dic['ano'])
         id_prop, sigla, num, ano = f(dic_proposicao)
 
@@ -372,7 +374,7 @@ class ImportadorCamara:
             votacoes_xml = self.camaraws.obter_votacoes(sigla, num, ano)
             for child in votacoes_xml.find('Votacoes'):
                 self._votacao_from_xml(child, prop)
-        except ValueError, error:
+        except ValueError as error:
             logger.error("ValueError: %s" % error)
 
     def _prop_from_xml(self, prop_xml):
@@ -386,7 +388,8 @@ class ImportadorCamara:
         prop.sigla = prop_xml.get('tipo').strip()
         prop.numero = prop_xml.get('numero').strip()
         prop.ano = prop_xml.get('ano').strip()
-        logger.info("Importando %s %s/%s" % (prop.sigla, prop.numero, prop.ano))
+        logger.info("Importando %s %s/%s" % (
+            prop.sigla, prop.numero, prop.ano))
         prop.ementa = prop_xml.find('Ementa').text.strip()
         prop.descricao = prop_xml.find('ExplicacaoEmenta').text.strip()
         prop.indexacao = prop_xml.find('Indexacao').text.strip()
@@ -434,25 +437,41 @@ class ImportadorCamara:
         voto.save()
 
     def _opcao_xml_to_model(self, voto):
-        """Interpreta voto como tá no XML e responde em adequação a modelagem
-        em models.py"""
         voto = voto.strip()
-        if voto == 'Não':
+
+        def voto_nao():
             return models.NAO
-        elif voto == 'Sim':
+
+        def voto_sim():
             return models.SIM
-        elif voto == 'Obstrução':
+
+        def voto_obstrucao():
             return models.OBSTRUCAO
-        elif voto == 'Abstenção':
+
+        def voto_abstencao():
             return models.ABSTENCAO
+
         # presidente da casa não pode votar
-        elif voto == 'Art. 17':
+        def voto_art17():
             return models.ABSTENCAO
-        else:
+
+        def default():
             logger.warning(
                 'opção de voto "%s" desconhecido! Mapeado como ABSTENCAO'
                 % voto)
             return models.ABSTENCAO
+
+        dict = {'Não': voto_nao,
+                'Sim': voto_sim,
+                'Obstrução': voto_obstrucao,
+                'Abstenção': voto_abstencao,
+                'Art. 17': voto_art17}
+
+
+        try:
+            return dict[voto]()
+        except:
+            return default()
 
     def _deputado(self, voto_xml):
         """Procura primeiro no cache e depois no banco; se não existir,
@@ -559,7 +578,8 @@ def main():
     pos_importacao = PosImportacao()
     pos_importacao.processar()
     logger.info('IMPORTANDO CHEFES EXECUTIVOS DA CAMARA DOS DEPUTADOS')
-    importer_chefe = ImportadorChefesExecutivos(NOME_CURTO, 'Presidentes', 'Presidente', XML_FILE)
+    importer_chefe = ImportadorChefesExecutivos(
+        NOME_CURTO, 'Presidentes', 'Presidente', XML_FILE)
     importer_chefe.importar_chefes()
 
     from importadores import cdep_genero

@@ -1,6 +1,3 @@
-# !/usr/bin/python
-# coding=utf8
-
 # Copyright (C) 2012, Leonardo Leite, Saulo Trento, Diego Rabatone
 #
 # This file is part of Radar Parlamentar.
@@ -23,7 +20,7 @@ Responsável por cuidar das coisas relacionadas à apresentação do PCA para
 o usuário final, dado que os cálculos do PCA já foram realizados
 """
 
-from __future__ import unicode_literals
+
 import json
 import logging
 from math import sqrt, isnan
@@ -106,7 +103,7 @@ class JsonAnaliseGenerator:
             var_explicada = round(
                 (eigen0 + eigen1) / ap.pca.eigen.sum() * 100, 1)
             dict_ap['nvotacoes'] = ap.num_votacoes
-            dict_ap['nome'] = ap.periodo.string
+            dict_ap['nome'] = str(ap.periodo)
             dict_ap['var_explicada'] = var_explicada
             dict_ap['cp1'] = self._dict_cp1(ap)
             dict_ap['cp2'] = self._dict_cp2(ap)
@@ -122,6 +119,7 @@ class JsonAnaliseGenerator:
     def _dict_cp2(self, ap):
         return self._dict_cp(ap, 1)
 
+    @classmethod
     def _dict_cp(self, ap, idx):
         """ap -- AnalisePeriodo; idx == 0 para cp1 and idx == 1 para cp2"""
         dict_cp = {}
@@ -145,22 +143,24 @@ class JsonAnaliseGenerator:
         # o JsonGenerator não deveria entender dessas cosias.
         return dict_cp
 
+    @classmethod
     def _list_votacoes_do_periodo(self, ap):
         list_votacoes = []
         for votacao in ap.votacoes:
             dict_votacao = {}
-            dict_votacao['id'] = unicode(votacao).replace('"', "'")
+            dict_votacao['id'] = str(votacao).replace('"', "'")
             list_votacoes.append(dict_votacao)
         return list_votacoes
-    
+
+    @classmethod
     def _list_chefes_do_periodo(self, ap):
         list_chefes = []
         for chefe in ap.chefes_executivos:
             dict_chefe = {}
-            dict_chefe['nome'] = unicode(chefe).replace('"', "'")
+            dict_chefe['nome'] = str(chefe).replace('"', "'")
             list_chefes.append(dict_chefe)
         return list_chefes
-    
+
     def _list_partidos_instrumented(self):
         db.reset_queries()
         logger.info('comecando lista de partidos')
@@ -175,7 +175,7 @@ class JsonAnaliseGenerator:
     def _list_partidos(self):
         list_partidos = []
         partidos = self.analise_temporal.casa_legislativa.partidos(
-        ).select_related('nome', 'numero', 'cor')
+        )
         #  self.analise_temporal.analises_periodo[0].partidos:
         for partido in partidos:
             list_partidos.append(self._dict_partido(partido))
@@ -204,8 +204,8 @@ class JsonAnaliseGenerator:
                 else:
                     dict_partido["x"].append(0.)
                     dict_partido["y"].append(0.)
-            except KeyError, error:
-                logger.error("KeyError: %s" % error)
+            except KeyError as error:
+                logger.error("KeyError: %s", error)
                 dict_partido["x"].append(0.)
                 dict_partido["y"].append(0.)
             tamanho = ap.tamanhos_partidos[partido]
@@ -216,10 +216,7 @@ class JsonAnaliseGenerator:
         dict_partido["parlamentares"] = []
         parlamentares = \
             self.analise_temporal.casa_legislativa.parlamentares().filter(
-                partido=partido).select_related('id',
-                                                'localidade',
-                                                'partido__nome',
-                                                'nome')
+                partido=partido).select_related('partido')
         for parlamentar in parlamentares:
             dict_partido["parlamentares"].append(
                 self._dict_parlamentar(parlamentar))
@@ -238,7 +235,7 @@ class JsonAnaliseGenerator:
             cache_coords_key = str(ap.periodo)
             coordenadas = self.parlamentaresScaler.scale(
                 ap.coordenadas_parlamentares, cache_coords_key)
-            if coordenadas.has_key(leg_id):
+            if leg_id in coordenadas:
                 x = coordenadas[leg_id][0]
                 y = coordenadas[leg_id][1]
                 self.max_parlamentar_radius_calculator.add_point(x, y)
@@ -266,6 +263,7 @@ class MaxRadiusCalculator:
             r2 = x ** 2 + y ** 2
             self.max_r2 = max(self.max_r2, r2)
 
+    @classmethod
     def _valid(self, value):
         return value is not None and not isnan(value)
 
@@ -282,15 +280,16 @@ class GraphScaler:
         """Changes X,Y scale from [-1,1] to [-100,100]
         coords -- key => [x, y]
         """
-        if cache_key in self.cache.keys():
+        if cache_key in list(self.cache.keys()):
             return self.cache[cache_key]
         scaled = self._scale(coords)
         self.cache[cache_key] = scaled
         return scaled
 
+    @classmethod
     def _scale(self, coords):
         scaled = {}
-        for key, coord in coords.items():
+        for key, coord in list(coords.items()):
             x = coord[0]
             try:
                 y = coord[1]
@@ -322,8 +321,8 @@ class RaioPartidoCalculator():
 
     def _init_area_total(self):
         maior_soma = 0
-        for tamanhos_partidos in self.tamanhos_dos_partidos_por_periodo.values(
-        ):
+        for tamanhos_partidos in list(
+                self.tamanhos_dos_partidos_por_periodo.values()):
             soma_dos_tamanhos_dos_partidos = sum(tamanhos_partidos.values())
             if soma_dos_tamanhos_dos_partidos > maior_soma:
                 maior_soma = soma_dos_tamanhos_dos_partidos

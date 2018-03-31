@@ -1,0 +1,90 @@
+# EXAMPLE AT: https://github.com/nevercaution/docker-django-uwsgi-nginx
+version: "3.4"
+
+volumes:
+    volume_radar_pg_data:
+    volume_radar_django_static:
+    volume_radar_sockets:
+    volume_radar_elasticsearch_data:
+
+services:
+
+
+    rabbitmq:
+        image: rabbitmq:3.7-alpine
+
+    memcache:
+        image: memcached:1.5-alpine
+
+    elasticsearch:
+        image: elasticsearch:2.4-alpine  # docker.elastic.co/elasticsearch/elasticsearch:6.2.3
+        volumes:
+            - ./deploy/elasticsearch/hunspell:/usr/share/elasticsearch/config/hunspell
+            - volume_radar_elasticsearch_data:/usr/share/elasticsearch/data
+
+    postgres:
+        image: postgres:10.2-alpine
+        environment:
+            - POSTGRES_USER=radar
+            - POSTGRES_PASSWORD=${RADAR_DB_PASSWORD:-radar}
+            - POSTGRES_DB=radar
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        volumes:
+            - volume_radar_pg_data:/var/lib/postgresql/data/pgdata
+
+    nginx:
+        image: nginx:1.13-alpine
+        volumes:
+            - volume_radar_django_static:/radar/radar_parlamentar/static
+            - volume_radar_sockets:/radar/sockets/
+            - ./deploy:/radar/deploy
+            - ./deploy/radar.nginx.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - "80:80"
+            - "443:443"
+
+    django:
+        image: radarparlamentar/radar
+        build: .
+        environment:
+            - RADAR_DB_PASSWORD=${RADAR_DB_PASSWORD:-radar}
+            - RADAR_IS_PRODUCTION=${RADAR_IS_PRODUCTION}
+        volumes:
+            - .:/radar
+            - volume_radar_sockets:/radar/sockets/
+            - volume_radar_django_static:/radar/radar_parlamentar/static
+        links:
+            - postgres
+            - memcache
+            - rabbitmq
+            - elasticsearch
+        depends_on:
+            - postgres
+            - nginx
+            - memcache
+            - rabbitmq
+            - celery
+            - elasticsearch
+
+    celery:
+        image: radarparlamentar/radar
+        environment:
+            - RADAR_DB_PASSWORD=${RADAR_DB_PASSWORD:-radar}
+        volumes:
+            - .:/radar
+        links:
+            - postgres
+            - rabbitmq
+        depends_on:
+            - postgres
+            - rabbitmq
+        command:
+            - celery
+
+    test:
+        build: .
+        image: radarparlamentar/test
+        volumes:
+            - .:/radar
+        command:
+            - test
