@@ -230,6 +230,7 @@ if os.getenv('RADAR_IS_PRODUCTION'):
 
     CRON_CLASSES  = [
         'cron.jobs.DemoJob',
+        'cron.jobs.ImportadorJob',
     ]
 
 if os.getenv('RADAR_TEST'):
