@@ -1,4 +1,4 @@
-# Configuração do ambiente do desenvolvedor
+# Configuração do ambiente
 
 ## 1. Clonando o repositório
 

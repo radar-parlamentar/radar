@@ -20,13 +20,10 @@ Site em produção:
 
 Wiki: https://github.com/radar-parlamentar/radar/wiki
 
-Página de Instalação:
-[Instalação](https://github.com/radar-parlamentar/radar/blob/master/doc/INSTALL.md "Instalação")
-
-Servidor de integração contínua: http://200.144.254.67:60581/
+Configuração de ambiente:
+[Setup](https://github.com/radar-parlamentar/radar/blob/master/doc/SETUP.md)
 
 Licença do projeto: *AGPL v3*
 
-Seja bem vindo,
+Seja bem vindo!
 
-Leonardo Leite
