@@ -20,10 +20,9 @@ Site em produção:
 
 Wiki: https://github.com/radar-parlamentar/radar/wiki
 
-Configuração de ambiente:
+Configuração do ambiente:
 [Setup](https://github.com/radar-parlamentar/radar/blob/master/doc/SETUP.md)
 
 Licença do projeto: *AGPL v3*
 
 Seja bem vindo!
-
