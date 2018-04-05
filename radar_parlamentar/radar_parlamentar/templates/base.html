@@ -160,6 +160,7 @@
                                 <li><a href="/ogrupo">O Grupo</a></li>
                                 <li><a href="/premiacoes">Premiações</a></li>
                                 <li><a href="/radarnamidia">Radar na Mídia</a></li>
+                                <li><a href="/radarnaacademia">Radar na Academia</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -179,7 +180,7 @@
 
     <section id="content">
         <ul class="breadcrumbs">
-            {% block breadcrumbs %}{% endblock breadcrumbs %} 
+            {% block breadcrumbs %}{% endblock breadcrumbs %}
         </ul>
         {% if messages %}
             <ul class="messages">
@@ -191,7 +192,7 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        {% block content %}{% csrf_token %}{% endblock content %}     
+        {% block content %}{% csrf_token %}{% endblock content %}
 
         <section class="cols">
             <div class="half">
@@ -338,7 +339,7 @@
                         </ul>
                     </div><!-- end of .oneThird -->
                     <div class="oneThird">
-                        
+
                             <div class="stHead"><h2>CONTATE-NOS</h2></div>
                             <ul class="address">
     <!--                            <li class="street">Av. Prof. Almeida Prado, trav. 2, n.83, sala S-33 - Edif. de Eng. Civil - Cid. Universitária - São Paulo - SP 05508-900 Brasil</li>
@@ -347,7 +348,7 @@
                     <li class="email"><a href="mailto:radar@polignu.org" rel="nofollow">radar@polignu.org (lista aberta)</a></li>
                                 <!-- <li class="skype"><a href="skype:circles_support?add" rel="nofollow">circles_support</a></li> -->
                             </ul><!-- end of .address -->
-                        
+
                             <div class="stHead"><h2>APOIO</h2></div>
                                 <ul class="miniBlogList">
                                     <li>
@@ -369,18 +370,18 @@
                                         <h5><a href="http://ccsl.ime.usp.br/" target="_blank">Centro de Competência de Software Livre</a></h5>
                                     </li>
                                 </ul>
-                        
+
                     </div><!-- end of .oneThird -->
                 </section><!-- end of .cols -->
             </div><!-- end of .wrap -->
         </div><!-- end of .top -->
         <section class="bottom">
-            
+
             <div class="contents">
                 <p class="copy">
-                    Copyright &copy; 2012 | 
-					<a href="http://www.gnu.org/licenses/agpl">Alguns Direitos Reservados: Affero GPL</a> | 
-                    <a href="https://github.com/radar-parlamentar/radar/">Código Fonte deste projeto</a> 
+                    Copyright &copy; 2012 |
+					<a href="http://www.gnu.org/licenses/agpl">Alguns Direitos Reservados: Affero GPL</a> |
+                    <a href="https://github.com/radar-parlamentar/radar/">Código Fonte deste projeto</a>
 				</p>
                 <ul class="socialLinks">
                     <li class="twitter"><a href="https://twitter.com/#!/RadarParlamento">Twitter</a></li>
@@ -390,7 +391,7 @@
                     <li class="flickr"><a href="#">Flickr</a></li> -->
 
                 </ul><!-- end of socialLinks -->
-                
+
                 <p class="version">
                     {% load versao_radar %}
                     {% versao_radar %}
@@ -442,17 +443,17 @@
 
 {% if request.get_host != '127.0.0.1:8000' and  request.get_host != 'localhost:8000' %}
     <script type="text/javascript">
-    
+
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-11505683-7']);
       _gaq.push(['_trackPageview']);
-    
+
       (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
-    
+
     </script>
 {% endif %}
 </body>

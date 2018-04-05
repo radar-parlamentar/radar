@@ -54,6 +54,7 @@ urlpatterns = [
     path('ogrupo/', radar_views.ogrupo, name="ogrupo"),
     path('premiacoes/', radar_views.premiacoes, name="premiacoes"),
     path('radarnamidia/', radar_views.radar_na_midia, name="radar_na_midia"),
+    path('radarnaacademia/', radar_views.radar_na_academia, name="radar_na_academia"),
     path('sim-voto-aberto/', radar_views.votoaberto, name="votoaberto"),
     path('blog/', radar_views.generate_blog_news, name="blog"),
     path('dados/', radar_views.dados_utilizados),  # URL legada
