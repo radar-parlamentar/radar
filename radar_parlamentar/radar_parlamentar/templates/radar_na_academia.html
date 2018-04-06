@@ -1,0 +1,59 @@
+{%extends "base.html"%}
+
+{% block title %}
+   Radar na Academia
+{% endblock title %}
+
+{% block extrascripts %}
+{% endblock extrascripts %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block headerImgClass %}
+    about
+{% endblock headerImgClass %}
+
+{% block nomepagina %}
+    Radar na Academia
+{% endblock nomepagina %}
+
+{% block pagedesc %}
+    Radar Parlamentar também está no mundo acadêmico!
+{% endblock pagedesc %}
+
+{% block breadcrumbs %}
+    <li><a href="/index">Home</a> &raquo;</li>
+    <li><a href="/radarnamidia">Radar na Academia</a></li>
+
+{% endblock breadcrumbs %}
+
+{% block content %}
+    <article class="aboutDesc">
+        <p>
+        <h3><a href="https://www.revistas.usp.br/leviathan" target="_blank"> Leviathan</a></h3>
+        <h4>Análise de votações nominais do legislativo brasileiro utilizando componentes principais</h4>
+        Este artigo traz uma revisão de métodos de análise quantitativa de votações nominais em casas legislativas e discute a utilização da análise de componentes principais (ACP) como um método simples e eficaz para analisar votações nominais de casas legislativas. Apresentamos também nossa abordagem para o tratamento de abstenções e para análises agregadas por partido, temas pouco explorados na literatura devido a pouca relevância no contexto de casas legislativas dos Estados Unidos. A avaliação do modelo é apresentada com medidas comparadas ao WNOMINATE, um dos métodos mais conhecidos de análise de votações nominais das ciências políticas.
+        <br><a href="https://www.revistas.usp.br/leviathan/article/view/143408" target="_blank">Artigo completo...</a><br>
+        </p>
+        <p>
+        <h3><a href="https://fga.unb.br/" target="_blank"> Universidade de Brasília - Faculdade UnB Gama (UnB/FGA)</a></h3>
+        <h4>Aplicação de Software Analytics e o Algoritmo de Ranqueamento de Páginas Para Apoiar Decisões de Planejamento de Sprint</h4>
+        A utilização de metodologias ágeis para o desenvolvimento de software vem sendo uma crescente nos últimos anos, com isso, trazendo a tona as dificuldades intrínsecas  desta atividade que também estão presentes na metodologia ágil. Uma das dificuldades que se destacam e é uma constante em todos os processos, independente de metodologia, é a dificuldade de planejar entregas, ou releases. Para reduzir o impacto das incertezas dentro de projetos, principalmente os de grande complexidade e níveis de abstração, foram propostas pela literatura diversos métodos e tecnicas, entre elas a utilização de análise de dados para tomar decisões e planejar o futuro. Este trabalho propõe da utilização de \textit{Software Analytics}, para a anáĺise de relevancia de \textit{issues} de repositórios de código aberto com a utilização de algoritmos de \textit{Page Ranking} e centralidade de redes para apoiar a tomada de decisões de planejamento de sprint e a priorização de atividades.
+        <br><a href="https://fga.unb.br/articles/0001/6945/tcc__2_.pdf" target="_blank">Trabalho completo...</a><br>
+        </p>
+        <p>
+        <h3><a href="https://www.oss2018.org/" target="_blank"> OSS 2018 (a ser publicado)</a></h3>
+        <h4>Using PageRank to reveal relevant issues tosupport decision-making on open source projects</h4>
+        Software release planning is crucial to software projects thatadopt incremental development. Open source projects depend on theirglobally distributed maintainers’ communities who share project infor-mation, usually described in the software project repository asissues, toplan the contents and timing of the next releases. This paper introducesan approach based on softwareissuesto support decision-making regard-ing open source software development activities such as release planningand retrospectives. It uses the PageRank algorithm to suggest an impor-tance ranking of the softwareissuesbased on theissuesdependenciestopology. When based on a highly connected topology, project leaderscan use this rank as an input to planning activities. The observation oftwo open source projects indicates the feasibility of our approach.
+        <br><a href="https://www.dropbox.com/s/gie4u0tym5bekqo/OSS2018_PageRank_Issues.pdf?dl=0" target="_blank">Artigo completo...</a><br>
+        </p>
+	</article>
+{% endblock content %}
+
+{% block extrascriptsend %}
+    menuActive('sobre_nos');
+{% endblock extrascriptsend %}
+
+{% block extrajsend %}
+{% endblock extrajsend %}

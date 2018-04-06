@@ -53,6 +53,10 @@ def radar_na_midia(request):
     return render(request,'radar_na_midia.html')
 
 
+def radar_na_academia(request):
+    return render(request,'radar_na_academia.html')
+
+
 def votoaberto(request):
     return render(request,'votoaberto.html')
 
