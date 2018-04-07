@@ -76,6 +76,25 @@
             <input type="submit" value="Buscar">
         </form>
 
+
+        <div style="width: 40%">
+            <p style="background: none;border: none; color: #1292db; font-weight:bold;cursor:pointer; font-size: 15px;"
+            onmouseover="this.style.color='#555';"
+            onmouseout="this.style.color='#1292db';"
+            onclick="mostrarDadosAvancados();"
+            id="botao_dados_avancados">  &rarr; Informações estatísticas avançadas</p>
+        </div>
+
+        <div style="display: none" id="dadosAvancados">
+          <li>
+            <ul>
+              <p style="background: none;border: none; color: #1292db; font-weight:bold; cursor:pointer; font-size: 15px;">
+             Variância explicada pelos componentes principais: <span id="varexp"> </span>
+              </p>
+            </ul>
+          </li>
+        </div>
+
         <!-- Popup windows content -->
         <div id="popup-content">
             <div class="row">
@@ -147,6 +166,17 @@
             }else{
                 document.getElementById("formAnalise").style.display = 'none';
                 document.getElementById("botao_busca_avancada").innerHTML = "&rarr; Análise Avançada";
+            }
+        }
+
+        function mostrarDadosAvancados(){
+            var visibilidade = document.getElementById("dadosAvancados").style.display;
+            if(visibilidade == 'none'){
+                document.getElementById("dadosAvancados").style.display = 'block';
+                document.getElementById("botao_dados_avancados").innerHTML = "&darr; Informações estatísticas avançadas";
+            }else{
+                document.getElementById("dadosAvancados").style.display = 'none';
+                document.getElementById("botao_dados_avancados").innerHTML = "&rarr; Informações estatísticas avançadas";
             }
         }
 

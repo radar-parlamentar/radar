@@ -173,7 +173,7 @@ Plot = (function ($) {
         // Creates the SVG container and sets the origin.
         var svg_base = d3.select("#animacao").append("svg")
             .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom + space_between_graph_and_control)
+            .attr("height", height + margin.top + margin.bottom + space_between_graph_and_control + 50)
             .style("position", "relative");
 
         var grupo_controle_periodos = svg_base.append("g")
@@ -539,7 +539,7 @@ Plot = (function ($) {
             label_periodo.text(periodos[periodo_atual].nome);
             quantidade_votacoes = periodos[periodo_atual].nvotacoes;
             label_nvotacoes.text(quantidade_votacoes + " votações");
-
+            $("#varexp").html(periodos[periodo_atual].var_explicada)
             sortAll();
 
             if (periodo_para == periodo_max) mouseout_next();
