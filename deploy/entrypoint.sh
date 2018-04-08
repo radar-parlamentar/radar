@@ -36,12 +36,23 @@ cleanup() {
     rm -rf /radar/radar_parlamentar/htmlcov
 }
 
+setup_cron() {
+  echo "Setuping cron"
+  crontab -l > mycron
+  # Executes 'manage.py runcrons' hourly:
+  echo "5 * * * * python /radar/radar_parlamentar/manage.py runcrons >> /var/log/radar/cronjob.log 2>&1" >> mycron
+  crontab mycron
+  rm mycron
+  crond
+}
+
 case "$1" in
   deploy)
     echo "Initializing deploy mode."
     wait_for_port "Postgres" "$DB_HOST" "$DB_PORT"
     python manage.py migrate
     python manage.py collectstatic --noinput
+    setup_cron
     ;;
   celery)
     echo "Initializing celery."
@@ -88,8 +99,8 @@ case "$1" in
     wait_for_port "Postgres" "$DB_HOST" "$DB_PORT"
     python manage.py migrate
     python manage.py collectstatic --noinput
+    setup_cron
     echo "Starting uwsgi"
     uwsgi --ini /radar/deploy/radar_uwsgi.ini
     ;;
 esac
-

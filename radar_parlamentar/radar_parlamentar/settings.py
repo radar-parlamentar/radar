@@ -229,7 +229,6 @@ if os.getenv('RADAR_IS_PRODUCTION'):
     CACHE_MIDDLEWARE_SECONDS = 60*60
 
     CRON_CLASSES  = [
-        'cron.jobs.DemoJob',
         'cron.jobs.ImportadorJob',
     ]
 

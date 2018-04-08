@@ -12,8 +12,8 @@ http://django-cron.readthedocs.io/en/latest/installation.html
 
 # Isso é chamada a cada 2 min contanto que
 # python manage.py runcrons seja constantemente executado
-# TODO: colocar "python manage.py runcrons" no cron do container.
 class DemoJob(CronJobBase):
+    """Para testes"""
 
     RUN_EVERY_MINS = 2
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
@@ -23,6 +23,7 @@ class DemoJob(CronJobBase):
         logger.info('DemoJob foi chamado.')
 
 class ImportadorJob(CronJobBase):
+    """Executado terça às 2h"""
 
     RUN_AT_TIMES = ['02:00']
     schedule = Schedule(run_at_times=RUN_AT_TIMES)
@@ -39,6 +40,5 @@ class ImportadorJob(CronJobBase):
         else:
             logger.info('Hoje não é o dia. ImportadorJob só trabalha às terças.')
 
-# TODO
-# class CashRefresherJob
-# class DbDumperJob
+# TODO class CashRefresherJob - Executado diariamente às 1h
+# TODO class DbDumperJob - Executado segunda às 4h
