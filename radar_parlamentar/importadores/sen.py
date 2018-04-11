@@ -25,7 +25,7 @@ Classes:
 
 from datetime import date
 from modelagem import models
-from request.exceptions import RequestException
+from requests.exceptions import RequestException
 from django.core.exceptions import ObjectDoesNotExist
 from .chefes_executivos import ImportadorChefesExecutivos
 from pathlib import Path
@@ -35,7 +35,7 @@ import os
 import sys
 import xml.etree.ElementTree as etree
 import logging
-import urllib2
+import requests
 
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -283,9 +283,8 @@ class ImportadorVotacoesSenado:
         if self._save_votacao(votacao_tree, votacao):
             return True, votacao
 
-    def _save_votacao_in_db(self, xml_file):
-
-        tree = self._read_xml(xml_file)
+    def _save_votacao_in_db(self, xml_text):
+        tree = etree.fromstring(xml_text)
 
         votacoes = []
         # Pelo q vimos, nesses XMLs não há votações 'inúteis' (homenagens etc)
@@ -318,46 +317,29 @@ class ImportadorVotacoesSenado:
         sys.stdout.write('x')
         sys.stdout.flush()
 
-
-
-    '''
-    ARRRUMAR AQUI
-    '''
     def _xml_file_names(self):
-        """Retorna uma lista com os caminhos dos arquivos XMLs contidos
-        na pasta VOTACOES_FOLDER"""
-        XML_URL = 'http://legis.senado.leg.br/dadosabertos/dados' + \
-                   '/ListaVotacoes%d.xml'
-        ANOS_DISPONIVEIS = [1991, 1992, 1993, 1994, 1995,
-                            1996, 1997, 1998, 1999, 2000,
-                            2001, 2002, 2003, 2004, 2005,
-                            2006, 2007, 2008, 2009, 2010,
-                            2011, 2012, 2013, 2014, 2015,
-                            2016, 2017]
+        """Retorna uma lista com as urls dos arquivos XMLs disponíveis
+        na API do Senado"""
         xmls = []
-        for ano in ANOS_DISPONIVEIS:
-            xmls.append(XML_URL % ano)
+        XML_URL = ("http://legis.senado.leg.br/dadosabertos/dados"
+                   "/ListaVotacoes{ano}.xml")
+        for ano in range(1991, 2017):
+            xmls.append(XML_URL.format(ano=ano))
         return xmls
 
-
-
     def importar_votacoes(self):
-        """# for xml_url in xml_list
-        http://legis.senado.leg.br/dadosabertos/dados/
-        ListaVotacoes%d.xml
-        %d é iterado em uma lista de anos entre 1991 e 2017
+        """# Realiza a consulta a API do senado através de uma request e
+        retorna os arquivos XMLS referentes as votações para serem importados
+        pelo radar
          # facilita debug"""
-        try:
-            list_xml = self._xml_file_names()
-            for xml_url in list_xml:
-                request = urllib2.Request(xml_url)
-                xml_text = urllib2.urlopen(request).read()
+        list_xml = self._xml_file_names()
+        for xml_url in list_xml:
+            try:
+                xml_text = requests.get(xml_url).text
                 logger.debug('Importando %s' % xml_url)
                 self._save_votacao_in_db(xml_text)
-                
-        except RequestException as error:
-            logger.error("%s ao acessar %s" % (error, xml_url))
-        
+            except RequestException as error:
+                logger.error("%s ao acessar %s" % (error, xml_url))
 
 
 class PosImportacao:
