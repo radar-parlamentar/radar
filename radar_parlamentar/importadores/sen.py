@@ -25,6 +25,7 @@ Classes:
 
 from datetime import date
 from modelagem import models
+from request.exceptions import RequestException
 from django.core.exceptions import ObjectDoesNotExist
 from .chefes_executivos import ImportadorChefesExecutivos
 from pathlib import Path
@@ -34,6 +35,7 @@ import os
 import sys
 import xml.etree.ElementTree as etree
 import logging
+import urllib2
 
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -316,22 +318,46 @@ class ImportadorVotacoesSenado:
         sys.stdout.write('x')
         sys.stdout.flush()
 
+
+
+    '''
+    ARRRUMAR AQUI
+    '''
     def _xml_file_names(self):
         """Retorna uma lista com os caminhos dos arquivos XMLs contidos
         na pasta VOTACOES_FOLDER"""
-        files = os.listdir(VOTACOES_FOLDER)
-        xmls = [name for name in files if name.endswith('.xml.bz2')]
-        xmls = [os.path.join(VOTACOES_FOLDER, name) for name in xmls]
+        XML_URL = 'http://legis.senado.leg.br/dadosabertos/dados' + \
+                   '/ListaVotacoes%d.xml'
+        ANOS_DISPONIVEIS = [1991, 1992, 1993, 1994, 1995,
+                            1996, 1997, 1998, 1999, 2000,
+                            2001, 2002, 2003, 2004, 2005,
+                            2006, 2007, 2008, 2009, 2010,
+                            2011, 2012, 2013, 2014, 2015,
+                            2016, 2017]
+        xmls = []
+        for ano in ANOS_DISPONIVEIS:
+            xmls.append(XML_URL % ano)
         return xmls
 
+
+
     def importar_votacoes(self):
-        """# for xml_file in
-        ['importadores/dados/senado/votacoes/ListaVotacoes2014.xml.bz2',
-        'importadores/dados/senado/votacoes/ListaVotacoes2015.xml.bz2']:
-        # facilita debug"""
-        for xml_file in self._xml_file_names():
-            logger.debug('Importando %s' % xml_file)
-            self._save_votacao_in_db(xml_file)
+        """# for xml_url in xml_list
+        http://legis.senado.leg.br/dadosabertos/dados/
+        ListaVotacoes%d.xml
+        %d é iterado em uma lista de anos entre 1991 e 2017
+         # facilita debug"""
+        try:
+            list_xml = self._xml_file_names()
+            for xml_url in list_xml:
+                request = urllib2.Request(xml_url)
+                xml_text = urllib2.urlopen(request).read()
+                logger.debug('Importando %s' % xml_url)
+                self._save_votacao_in_db(xml_text)
+                
+        except RequestException as error:
+            logger.error("%s ao acessar %s" % (error, xml_url))
+        
 
 
 class PosImportacao:
