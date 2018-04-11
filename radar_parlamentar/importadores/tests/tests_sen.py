@@ -10,7 +10,6 @@ from modelagem import models
 
 XML_TEST = str(Path(sen.MODULE_DIR) / 'dados/senado/ListaVotacoesTest.xml.bz2')
 
-
 class GeradorSenadoTest(TestCase):
 
     def test_geracao_da_casa(self):
@@ -28,12 +27,16 @@ class ImportadorSenadoTest(TestCase):
     def setUp(self):
         casa = sen.CasaLegislativaGerador().gera_senado()
         self.importer = sen.ImportadorVotacoesSenado()
-        self.importer._xml_file_names = Mock(return_value=[XML_TEST])
-        self.importer.importar_votacoes()
+
+        xml_string = ""
+        with bz2.open(XML_TEST, mode='rt', encoding="iso-8859-1") as f:
+            xml_string = f.read()
+
+        self.importer._save_votacao_in_db(xml_string)
 
     def test_votacao_importada(self):
         votacao = models.Votacao.objects.first()
-        self.assertEqual(votacao.resultado, "R")
+        self.assertEqual(votacao.resultado, 'R')
 
     def test_parlamentar_importado(self):
         parlamentar = models.Parlamentar.objects.get(nome='Jader Barbalho')
@@ -50,8 +53,13 @@ class IndexacaoSenadoTest(TestCase):
     def setUp(self):
         casa = sen.CasaLegislativaGerador().gera_senado()
         self.importer = sen.ImportadorVotacoesSenado()
-        self.importer._xml_file_names = Mock(return_value=[XML_TEST])
-        self.importer.importar_votacoes()
+        
+        xml_string = ""
+        with bz2.open(XML_TEST, mode='rt', encoding="iso-8859-1") as f:
+            xml_string = f.read()
+
+        self.importer._save_votacao_in_db(xml_string)
+
         sen_indexacao.indexar_proposicoes()
 
     def test_proposicoes_importadas(self):
