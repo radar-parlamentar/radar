@@ -2,6 +2,7 @@ from django_cron import CronJobBase, Schedule
 import logging
 from importadores.celery_tasks import importar_assincronamente
 from datetime import date
+from django.core.cache import cache
 
 logger = logging.getLogger("radar")
 
@@ -17,7 +18,7 @@ class DemoJob(CronJobBase):
 
     RUN_EVERY_MINS = 2
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
-    code = 'job.CashRefresherJob'    # a unique code
+    code = 'job.DemoJob'    # a unique code
 
     def do(self):
         logger.info('DemoJob foi chamado.')
@@ -39,6 +40,18 @@ class ImportadorJob(CronJobBase):
             importar_assincronamente.delay('cdep')
         else:
             logger.info('Hoje não é o dia. ImportadorJob só trabalha às terças.')
+
+class CashRefresherJob(CronJobBase):
+    """Executado diariamente às 1h"""
+
+    RUN_AT_TIMES = ['01:00']
+    schedule = Schedule(run_at_times=RUN_AT_TIMES)
+    code = 'job.CashRefresherJob'
+
+    def do(self):
+        logger.info('CashRefresherJob foi chamado.')
+        cache.clear()
+        # chama as análises
 
 # TODO class CashRefresherJob - Executado diariamente às 1h
 # TODO class DbDumperJob - Executado segunda às 4h
