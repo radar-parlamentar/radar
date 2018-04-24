@@ -1,3 +1,4 @@
+
 # EXAMPLE AT: https://github.com/nevercaution/docker-django-uwsgi-nginx
 version: "3.4"
 
@@ -18,6 +19,10 @@ services:
 
     elasticsearch:
         image: elasticsearch:2.4-alpine  # docker.elastic.co/elasticsearch/elasticsearch:6.2.3
+        # Estamos usando uma versão velha do ElasticSearch para não ter que
+        # dar o seguinte comando no host:
+        # sysctl -w vm.max_map_count=262144
+        # https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
         volumes:
             - ./deploy/elasticsearch/hunspell:/usr/share/elasticsearch/config/hunspell
             - volume_radar_elasticsearch_data:/usr/share/elasticsearch/data
@@ -58,6 +63,7 @@ services:
             - memcache
             - rabbitmq
             - elasticsearch
+            - nginx # because CashRefresherJob
         depends_on:
             - postgres
             - nginx
