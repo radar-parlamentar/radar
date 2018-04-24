@@ -27,7 +27,7 @@ genero_patterns = [
          name="genero_futuro"),
     path('tematica/nuvem/', radar_views.genero_termos_nuvem,
          name="genero_termos_nuvem"),
-    path('tematica/nuvem/?Pcasa_legislativa=',
+    path('tematica/nuvem/<nome_casa_legislativa>',
          radar_views.genero_termos_nuvem),
 ]
 

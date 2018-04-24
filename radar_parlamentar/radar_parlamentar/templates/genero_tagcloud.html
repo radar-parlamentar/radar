@@ -6,7 +6,7 @@
 
 {% block extrascripts %}
     <link rel="stylesheet" href="/static/files/codes/css/genero_treemap.css" type="text/css" />
-    
+
 {% endblock extrascripts %}
 
 {% block extrahead %}
@@ -44,16 +44,26 @@
         <!--Quantidade de palavras-chave consideradas nesta análise: <b>33</b> palavras.<br/><br/>
         Quantidade de partidos consideradas nesta análise: <b>75</b> partidos.<br/><br/-->
         Os dados das casas legislativas utilizados para análise estão disponíveis para <a href="https://github.com/radar-parlamentar/radar">download aqui</a>.<br/>
-         <form id="formTagCloud"  method="get" action="" onloadstart="teste()">
+         <form id="formTagCloud"  method="post" action="" onloadstart="teste()">
+            {% csrf_token %}
              <p><label for="casa_legislativa_list"> Casa Legislativa: </label>
-                 <select id="casa_legislativa_list" name="casa_legislativa" onchange="enableButton()">
-                     <option value="" selected="selected"> Selecione... </option>
+                 <select id="casa_legislativa_list" onchange="enableButton();updateIdCasaLegislativa(this.options[this.selectedIndex].getAttribute('id-casa-legislativa'));">
+                     {% if nome_casa_legislativa %}
+                        <option value=""> Selecione... </option>
+                     {% else %}
+                        <option value="" selected="selected"> Selecione... </option>
+                     {% endif %}
                      {% for casa in casas_legislativas %}
-                         <option value="{{casa.id}}"> {{ casa.nome }} </option>
+                        {% if casa.nome_curto == nome_casa_legislativa %}
+                          <option value="{{ casa.nome_curto }}" id-casa-legislativa="{{ casa.id }}" selected="selected"> {{ casa.nome }} </option>
+                        {% else %}
+                          <option value="{{ casa.nome_curto }}" id-casa-legislativa="{{ casa.id }}"> {{ casa.nome }} </option>
+                        {% endif %}
                      {% endfor %}
                  </select>
              </p>
-         <input id="button" type="submit" value="Gerar nuvem de palavras!" title="Gerar nuvem de palavras!" disabled="disabled" >
+         <input id='id_casa_legislativa' name='id_casa_legislativa' type="hidden" value=''>
+         <input id="button" type="submit" value="Gerar nuvem de palavras!" title="Gerar nuvem de palavras!" disabled >
          </form>
 
         {% if temas_mulher and temas_homem %}
@@ -89,7 +99,7 @@
     <script src="/static/files/codes/js/genero_treemap.js"></script>
     <script src="/static/files/codes/js/d3.js"></script>
     <script src="/static/files/codes/js/d3.layout.cloud.js"></script>
-    
+
     <script>
         var width = 800;
         var height = 500;
@@ -167,23 +177,20 @@
 
 {% block extrascriptsend %}
 
-    setOptionAfterPageLoad();
-
-    function setOptionAfterPageLoad() {
-        var combobox = document.getElementById("casa_legislativa_list");
-        var url = window.location.href;
-        var idcasa = /casa_legislativa=([^&]+)/.exec(url)[1];
-        combobox.value = idcasa;
+    function updateIdCasaLegislativa(id) {
+      var id_casa_legislativa = document.getElementById("id_casa_legislativa");
+      id_casa_legislativa.value = id;
     }
 
     function enableButton() {
         var combobox = document.getElementById("casa_legislativa_list");
         var selectedVal = combobox.value;
+        var form = document.getElementById("formTagCloud").setAttribute("action", selectedVal);
 
-        if (Number(selectedVal)===parseInt(selectedVal) && !(selectedVal=="")) {
-            var button = document.getElementById("button").removeAttribute('disabled');
+        if (selectedVal!="") {
+          var button = document.getElementById("button").disabled = false;
         } else {
-            var button = document.getElementById("button").addAttribute('disabled');
+          var button = document.getElementById("button").disabled = true;
         }
     }
 
@@ -191,4 +198,3 @@
     $(document).ready(function() {
     });
 {% endblock extrascriptsend %}
-
