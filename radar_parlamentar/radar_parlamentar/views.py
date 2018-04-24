@@ -74,34 +74,36 @@ def genero(request):
     return render(request,'genero.html')
 
 
-def genero_termos_nuvem(request):
+def genero_termos_nuvem(request, nome_casa_legislativa=""):
 
     genero = Genero()
 
     casas_legislativas_com_genero = genero.get_casas_legislativas_com_genero()
 
     try:
-        id_casa_legislativa = int(request.GET["casa_legislativa"])
-    except:
+        id_casa_legislativa = int(request.POST.get("id_casa_legislativa"))
+    except TypeError:
         id_casa_legislativa = ""
 
     if not isinstance(id_casa_legislativa, int):
 
-        return render(request,'genero_tagcloud.html',
-                      {'casas_legislativas': casas_legislativas_com_genero})
+        return render(request, 'genero_tagcloud.html',
+                      {'casas_legislativas': casas_legislativas_com_genero,
+                       'nome_casa_legislativa': nome_casa_legislativa})
 
     else:
-        temas_frequencia_mulher = genero.agrupa_palavras('F',
-                                                         id_casa_legislativa)
+        temas_frequencia_mulher = \
+            genero.agrupa_palavras('F', id_casa_legislativa)
         temas_json_mulher = json.dumps(temas_frequencia_mulher)
-        temas_frequencia_homem = genero.agrupa_palavras('M',
-                                                        id_casa_legislativa)
+        temas_frequencia_homem = \
+            genero.agrupa_palavras('M', id_casa_legislativa)
         temas_json_homem = json.dumps(temas_frequencia_homem)
 
-        return render(request,'genero_tagcloud.html',
+        return render(request, 'genero_tagcloud.html',
                       {'temas_mulher': temas_json_mulher,
                        'temas_homem': temas_json_homem,
-                       'casas_legislativas': casas_legislativas_com_genero})
+                       'casas_legislativas': casas_legislativas_com_genero,
+                       'nome_casa_legislativa': nome_casa_legislativa})
 
 
 def genero_matriz(request):
