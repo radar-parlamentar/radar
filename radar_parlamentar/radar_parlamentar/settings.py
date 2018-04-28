@@ -174,7 +174,7 @@ LOGGING = {
             'propagate': True,
         },
         'radar': {
-            'handlers': ['file'],
+            'handlers': ['file', 'console'],
             'level': 'DEBUG',
             # 'propagate': True,
         }
