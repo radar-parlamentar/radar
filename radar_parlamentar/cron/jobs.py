@@ -4,6 +4,7 @@ from importadores.celery_tasks import importar_assincronamente
 from datetime import date
 from django.core.cache import cache
 import requests
+import os
 from modelagem import models
 
 logger = logging.getLogger("radar")
@@ -69,4 +70,57 @@ class CashRefresherJob(CronJobBase):
                 # funciona.
 
 
-# TODO class DbDumperJob - Executado segunda às 4h
+class DbDumperJob(CronJobBase):
+    """Executado segunda às 4h"""
+
+    RUN_AT_TIMES = ['04:00']
+    schedule = Schedule(run_at_times=RUN_AT_TIMES)
+    code = 'job.DbDumperJob'
+
+    def do(self):
+        logger.info('DbDumperJob foi chamado.')
+        weekday = date.today().weekday()
+        # segunda é o zero
+        if weekday == 0:
+            logger.info('DbDumperJob fazendo dump do banco.')
+        else:
+            logger.info('Hoje não é o dia. DbDumperJob só trabalha às segundas.')
+
+class DbDumperJob(CronJobBase):
+    """Executado segunda às 4h"""
+
+    RUN_AT_TIMES = ['04:00']
+    schedule = Schedule(run_at_times=RUN_AT_TIMES)
+    code = 'job.DbDumperJob'
+
+    def do(self):
+        logger.info('DbDumperJob foi chamado.')
+        weekday = date.today().weekday()
+        # segunda é o zero
+        if weekday == 0:
+            logger.info('DbDumperJob fazendo dump do banco.')
+        else:
+            logger.info('Hoje não é o dia. DbDumperJob só trabalha às segundas.')
+
+class DbDumper():
+
+    # Roteiro:
+    # OK Verificar que link em dados não tem dump
+    # criar .pgpass
+    # Execução de pg_dump retornou: pg_dump: aborting because of server version mismatch
+    # Executar DbDumper sem collectstatic
+    # Verificar que link em dados não tem dump
+    # Executar DbDumper com collectstatic
+    # Verificar que link em dados tem dump
+    # Teste de DbDumper: 1o apaga arquivo se existir, executa, verifica se arquivo foi criado
+    # publicar radar/base no docker hub
+
+    DUMP_FILE = "/radar/radar_parlamentar/radar_parlamentar/static/db-dump/radar.sql"
+
+    def dump(self):
+        dump_command = 'pg_dump -h postgres -U radar -d radar -W --inserts -t modelagem_* -f %s' % DbDumper.DUMP_FILE
+        os.system(dump_command)
+        #compress_command = 'bzip2 -9 -f %s' % DbDumper.DUMP_FILE
+        #os.system(compress_command)
+        #collectstatic_command = 'python manage.py collectstatic --noinput' # necessário?
+        #os.system(collectstatic_command)

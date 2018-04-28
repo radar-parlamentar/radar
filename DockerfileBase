@@ -1,7 +1,7 @@
-# VERSION 1.0.0-1
+# VERSION 1.0.3
 # AUTHOR: Diego Rabatone Oliveira (@diraol)
 # DESCRIPTION: Radar Parlamentar main container
-# BUILD: - docker build -t radarparlamentar/base:<VERSION>  -t radarparlamentar/base:latest -f Dockerfile .
+# BUILD: - docker build -t radarparlamentar/base:<VERSION>  -t radarparlamentar/base:latest -f DockerfileBase .
 #    To push the base image to dockerhub run:
 #    docker push radarparlamentar/base:<VERSION>
 #    docker push radarparlamentar/base:latest
@@ -31,10 +31,13 @@ WORKDIR ${RADAR_HOME}
 # postgresql-dev é necessário para instalar a lib que vai fazer a conexão com
 # o postgres.
 # musl-dev é usada apenas apra compilação da lib python psycopg2.
+# postgresql é utilizado para a funcionalidade de dump do banco (pg_dump).
+# Obs: pg_dump não está disponível em postgres_client =(
 RUN set -ex \
     && apk add --update \
         curl \
         postgresql-dev \
+        postgresql \
         git \
     && apk --no-cache add --virtual _build_deps \
         build-base \
