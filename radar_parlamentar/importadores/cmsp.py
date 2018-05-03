@@ -22,6 +22,7 @@ from django.utils.dateparse import parse_datetime
 from modelagem import models
 from requests.exceptions import RequestException
 from .chefes_executivos import ImportadorChefesExecutivos
+from datetime import datetime
 import re
 import sys
 import os
@@ -36,8 +37,8 @@ XML_FILE = 'dados/chefe_executivo/chefe_executivo_cmsp.xml.bz2'
 NOME_CURTO = 'cmsp'
 
 # arquivos com os dados fornecidos pela cmsp
-XML_URL = 'https://splegispdarmazenamento.blob.core.windows.net/containersip/VOTACOES_%d.xml'
-ANOS_DISPONIVEIS = [2012, 2013, 2014, 2015, 2016, 2017]
+XML_URL = 'https://splegispdarmazenamento.blob.core.windows.net/containersip/VOTACOES{ano}.xml'
+ANO_MIN = 2012
 
 # tipos de proposições encontradas nos XMLs da cmsp
 # esta lista ajuda a identificar as votações que são de proposições
@@ -87,8 +88,8 @@ class XmlCMSP:
         return parlamentares
 
     def _key(self, parlamentar):
-        return (parlamentar.nome, parlamentar.partido.nome)
 
+        return (parlamentar.nome, parlamentar.partido.nome)
     def converte_data(self, data_str):
         """Converte string "d/m/a para objeto datetime;
         retona None se data_str é inválido"""
@@ -280,18 +281,27 @@ class ImportadorCMSP:
         self.proposicoes = {}
         self.votacoes = []
 
-    def importar_de_url(self, xml_url):
+    def importar_de_url(self):
+        ''' Constroi a URL que será acessada para baixar o
+        XML da API do CMSP e realiza a chamada ao método
+        _importar_de
+        '''
         text = ''
-        try:
-            xml_text = requests.get(xml_url).text
-            self.importar_de(xml_text)
-        except RequestException as error:
-            logger.error("%s ao acessar %s", error, xml_url)
+
+        ano_max = datetime.today().year
+        for ano in range(ANO_MIN, ano_max):
+            xml_url = XML_URL.format(ano=ano)
+
+            try:
+                xml_text = requests.get(xml_url).text
+                self.importar_de(xml_text)
+            except RequestException as error:
+                logger.error("%s ao acessar %s", error, xml_url)
 
     def importar_de(self, xml_text):
         """Salva no banco de dados do Django e retorna lista das votações"""
         if self.verbose:
-            logger.info("importando de: " + str(xml_file))
+            logger.info("importando de: " + str(xml_text))
 
         tree = etree.fromstring(xml_text)
         self.analisar_xml(self.proposicoes, self.votacoes, tree)
@@ -312,8 +322,6 @@ def main():
     importer_chefe = ImportadorChefesExecutivos(
         NOME_CURTO, 'PrefeitosSP', 'PrefeitoSP', XML_FILE)
     importer_chefe.importar_chefes()
-    for ano in ANOS_DISPONIVEIS:
-        xml_url = XML_URL % ano
-        importer.importar_de_url(xml_url)
+    importer.importar_de_url()
     logger.info('Importacao dos dados da \
                 Camara Municipal de Sao Paulo (CMSP) terminada')
