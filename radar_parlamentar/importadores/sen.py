@@ -47,6 +47,8 @@ NOME_CURTO = 'sen'
 
 XML_FILE = 'dados/chefe_executivo/chefe_executivo_congresso.xml.bz2'
 
+ANO_MIN = 2003
+
 logger = logging.getLogger("radar")
 
 
@@ -283,7 +285,7 @@ class ImportadorVotacoesSenado:
         if self._save_votacao(votacao_tree, votacao):
             return True, votacao
 
-    def _save_votacao_in_db(self, xml_text):
+    def _save_votacoes_in_db(self, xml_text):
         tree = etree.fromstring(xml_text)
 
         votacoes = []
@@ -323,7 +325,8 @@ class ImportadorVotacoesSenado:
         xmls = []
         XML_URL = ("http://legis.senado.leg.br/dadosabertos/dados"
                    "/ListaVotacoes{ano}.xml")
-        for ano in range(1991, 2017):
+        ano_atual = date.today().year
+        for ano in range(ANO_MIN, ano_atual+1):
             xmls.append(XML_URL.format(ano=ano))
         return xmls
 
@@ -335,9 +338,13 @@ class ImportadorVotacoesSenado:
         list_xml = self._xml_file_names()
         for xml_url in list_xml:
             try:
-                xml_text = requests.get(xml_url).text
-                logger.debug('Importando %s' % xml_url)
-                self._save_votacao_in_db(xml_text)
+                response = requests.get(xml_url)
+                if response.status_code == 200:
+                    xml_text = response.text
+                    logger.debug('Importando %s' % xml_url)
+                    self._save_votacoes_in_db(xml_text)
+                else:
+                    logger.info("XML indisponível: %s" % xml_url)
             except RequestException as error:
                 logger.error("%s ao acessar %s" % (error, xml_url))
 

@@ -32,7 +32,7 @@ class ImportadorSenadoTest(TestCase):
         with bz2.open(XML_TEST, mode='rt', encoding="iso-8859-1") as f:
             xml_string = f.read()
 
-        self.importer._save_votacao_in_db(xml_string)
+        self.importer._save_votacoes_in_db(xml_string)
 
     def test_votacao_importada(self):
         votacao = models.Votacao.objects.first()
@@ -53,12 +53,12 @@ class IndexacaoSenadoTest(TestCase):
     def setUp(self):
         casa = sen.CasaLegislativaGerador().gera_senado()
         self.importer = sen.ImportadorVotacoesSenado()
-        
+
         xml_string = ""
         with bz2.open(XML_TEST, mode='rt', encoding="iso-8859-1") as f:
             xml_string = f.read()
 
-        self.importer._save_votacao_in_db(xml_string)
+        self.importer._save_votacoes_in_db(xml_string)
 
         sen_indexacao.indexar_proposicoes()
 
