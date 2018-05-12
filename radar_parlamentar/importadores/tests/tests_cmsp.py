@@ -16,7 +16,7 @@
 # along with Radar Parlamentar.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.test import TestCase
-from importadores.cmsp import GeradorCasaLegislativa, XmlCMSP, ImportadorCMSP
+from importadores.cmsp import GeradorCasaLegislativa, XmlCMSP, ImportadorCMSP, AcessoXmlCmsp
 from importadores import cmsp
 from modelagem import models
 import os
@@ -267,3 +267,15 @@ class IdempotenciaCMSPCase(TestCase):
         self.assertEqual(num_parlamentares_antes_depois,
                          num_parlamentares_antes)
         self.assertEqual(num_parlamentares_depois, num_parlamentares_antes)
+
+class AcessoXmlCase(TestCase):
+
+    def test_acesso_xml_online(self):
+        acesso = AcessoXmlCmsp()
+        xml = acesso.acessar_xml(2013)
+        self.assertTrue("<?xml version=\"1.0\"" in xml)
+        self.assertTrue("Sessoes Periodo" in xml)
+
+    def test_nao_tentar_acessar_antes_de_2012(self):
+        acesso = AcessoXmlCmsp()
+        self.assertRaises(ValueError, acesso.acessar_xml, 2011)

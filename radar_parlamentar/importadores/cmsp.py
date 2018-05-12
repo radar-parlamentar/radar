@@ -28,6 +28,7 @@ import os
 import xml.etree.ElementTree as etree
 import logging
 import requests
+from datetime import date
 
 logger = logging.getLogger("radar")
 MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -35,9 +36,7 @@ MODULE_DIR = os.path.abspath(os.path.dirname(__file__))
 XML_FILE = 'dados/chefe_executivo/chefe_executivo_cmsp.xml.bz2'
 NOME_CURTO = 'cmsp'
 
-# arquivos com os dados fornecidos pela cmsp
-XML_URL = 'https://splegispdarmazenamento.blob.core.windows.net/containersip/VOTACOES_%d.xml'
-ANOS_DISPONIVEIS = [2012, 2013, 2014, 2015, 2016, 2017]
+ANO_MIN = 2012
 
 # tipos de proposições encontradas nos XMLs da cmsp
 # esta lista ajuda a identificar as votações que são de proposições
@@ -50,6 +49,21 @@ PROP_REGEX = '([a-zA-Z]{1,3}) ([0-9]{1,4}) ?/([0-9]{4})'
 
 INICIO_PERIODO = parse_datetime('2010-01-01 0:0:0')
 FIM_PERIODO = parse_datetime('2012-12-31 0:0:0')
+
+class AcessoXmlCmsp(object):
+
+    XML_URL = 'https://splegispdarmazenamento.blob.core.windows.net/containersip/VOTACOES_%d.xml'
+
+    def acessar_xml(self, ano):
+        """
+            ano - int
+            retorna string
+        """
+        if ano < ANO_MIN:
+            raise ValueError("ano informado = %d, mas não pode ser menor que %d." % (ano, ANO_MIN))
+        xml_url = AcessoXmlCmsp.XML_URL % ano
+        xml_text = requests.get(xml_url).text
+        return xml_text
 
 
 class GeradorCasaLegislativa(object):
@@ -279,14 +293,19 @@ class ImportadorCMSP:
         self.xml_cmsp = XmlCMSP(cmsp, verbose)
         self.proposicoes = {}
         self.votacoes = []
+        self.acessoXmlCmsp = AcessoXmlCmsp()
 
-    def importar_de_url(self, xml_url):
-        text = ''
+    def importar(self):
+        ano_atual = date.today().year
+        for ano in range(ANO_MIN, ano_atual+1):
+            self._importar(ano)
+
+    def _importar(self, ano):
         try:
-            xml_text = requests.get(xml_url).text
+            xml_text = self.acessoXmlCmsp.acessar_xml(ano)
             self.importar_de(xml_text)
         except RequestException as error:
-            logger.error("%s ao acessar %s", error, xml_url)
+            logger.error("Erro ao acessar XML de %d: %s", ano, error)
 
     def importar_de(self, xml_text):
         """Salva no banco de dados do Django e retorna lista das votações"""
@@ -306,14 +325,10 @@ def main():
     logger.info('IMPORTANDO DADOS DA CAMARA MUNICIPAL DE SAO PAULO (CMSP)')
     gerador_casa = GeradorCasaLegislativa()
     cmsp = gerador_casa.gerar_cmsp()
-    importer = ImportadorCMSP(cmsp)
-    logger.info(
-        'IMPORTANDO CHEFES EXECUTIVOS DA CAMARA MUNICIPAL DE SÃO PAULO')
     importer_chefe = ImportadorChefesExecutivos(
         NOME_CURTO, 'PrefeitosSP', 'PrefeitoSP', XML_FILE)
     importer_chefe.importar_chefes()
-    for ano in ANOS_DISPONIVEIS:
-        xml_url = XML_URL % ano
-        importer.importar_de_url(xml_url)
+    importer = ImportadorCMSP(cmsp)
+    importer.importar()
     logger.info('Importacao dos dados da \
                 Camara Municipal de Sao Paulo (CMSP) terminada')
