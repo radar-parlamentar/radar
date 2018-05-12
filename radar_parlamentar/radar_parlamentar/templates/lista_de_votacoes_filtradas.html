@@ -37,7 +37,11 @@
 
     {% for votacao in votacoes %}
         <tr>
-            <td align="justify">{{votacao.proposicao.sigla}}{{votacao.proposicao.numero}}/{{votacao.proposicao.ano}}</td>
+			<td align="justify">
+				<a href="/plenaria/{{casa_legislativa.nome_curto}}/{{votacao.proposicao.sigla}}-{{votacao.proposicao.numero}}-{{votacao.proposicao.ano}}/">
+					{{votacao.proposicao.sigla}}{{votacao.proposicao.numero}}/{{votacao.proposicao.ano}}
+				</a>
+			</td>
             <td align="justify"><b>{{votacao.data}} </br></b>{{votacao.descricao}}</td>
             <td align="justify">{{votacao.proposicao.ementa}}</td>
             <td align="justify">{{votacao.proposicao.indexacao}}</td>
