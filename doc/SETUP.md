@@ -93,6 +93,14 @@ Nacional Francesa (uma casa legislativa fictícia).
 Obs: todas as importações são relativamente rápidas, exceto a da Câmara dos
 Deputados, que pode levar horas.
 
+Além de importar via URL, uma maneira alternativa de importar os dados é:
+
+```
+docker-compose exec django python manage.py shell
+from importadores import importador
+importador.main(['cmsp', 'conv']) # pode passar outras casas na lista
+```
+
 - Criando novos importadores:
 
 http://radarparlamentar.polignu.org/importadores/
