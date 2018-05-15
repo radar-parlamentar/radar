@@ -33,11 +33,12 @@
 {% block content %}
     <h3> {{casa_legislativa.nome}}</h3>
     <article id="descricao" class="inwrap">
-        Total de votações existentes nesta casa legislativa: <b>{{num_votacao}} </b>
+        Total de votações existentes nesta casa legislativa: <b>{{num_votacao}} </b>.
+        <a href="/votacoes/{{casa_legislativa.nome_curto}}" target="_blank">Veja todas as votações!</a>
         <br/><br/>
         <div id="total_votacoes_filtradas_div" style="display:none">
           <b><span id="total_votacoes_filtradas"></span></b> votações encontradas usando filtro <b>"{{palavras_chave}}"</b>.
-                <span id="veja_as_votacoes"><a href="/votacoes/{{casa_legislativa.nome_curto}}/{{periodicidade}}/{{palavras_chave}}" target="_blank">Veja as votações!</a></span>
+          <a href="/votacoes/{{casa_legislativa.nome_curto}}/{{periodicidade}}/{{palavras_chave}}" target="_blank">Veja as votações com o filtro!</a>
 
         <br/><br/>
         </div>
