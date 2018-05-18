@@ -287,6 +287,8 @@ class ImportadorCamara:
         self.proposicoes = self._init_proposicoes()
         self.votacoes = self._init_votacoes()
         self.camaraws = camaraws
+        self.opcoes_voto_desconhecidas = []
+        self.partidos_desconhecidos = []
 
     def _gera_casa_legislativa(self):
         """Gera objeto do tipo CasaLegislativa
@@ -456,9 +458,11 @@ class ImportadorCamara:
             return models.ABSTENCAO
 
         def default():
-            logger.warning(
-                'opção de voto "%s" desconhecido! Mapeado como ABSTENCAO'
-                % voto)
+            if not voto in self.opcoes_voto_desconhecidas:
+                self.opcoes_voto_desconhecidas.append(voto)
+                logger.warning(
+                    'opção de voto "%s" desconhecido! Mapeado como ABSTENCAO'
+                    % voto)
             return models.ABSTENCAO
 
         dict = {'Não': voto_nao,
@@ -491,8 +495,10 @@ class ImportadorCamara:
             parlamentar.casa_legislativa = self.camara_dos_deputados
             parlamentar.save()
             if partido.numero == 0:
-                logger.warn('Não achou o partido %s' % nome_partido)
-                logger.info('Deputado %s inserido sem partido' % nome)
+                if not nome_partido in self.partidos_desconhecidos:
+                    self.partidos_desconhecidos.append(nome_partido)
+                    logger.warn('Não achou o partido %s. Mapeado como "sem partido"'
+                        % nome_partido)
             self.parlamentares[key] = parlamentar
         return parlamentar
 
