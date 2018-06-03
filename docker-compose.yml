@@ -28,7 +28,7 @@ services:
             - volume_radar_elasticsearch_data:/usr/share/elasticsearch/data
 
     postgres:
-        image: postgres:9.5.12-alpine
+        image: postgres:10.4-alpine
         environment:
             - POSTGRES_USER=radar
             - POSTGRES_PASSWORD=${RADAR_DB_PASSWORD:-radar}
