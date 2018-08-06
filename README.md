@@ -1,6 +1,8 @@
 Radar Parlamentar
 ==================
 
+Estamos de mudança para o GitLab: https://gitlab.com/radar-parlamentar/radar
+
 [![Build Status](https://travis-ci.org/radar-parlamentar/radar.svg?branch=master)](https://travis-ci.org/radar-parlamentar/radar)
 [![Code Climate](https://codeclimate.com/github/RadarParlamentar-MES2017-1/radar/badges/gpa.svg)](https://codeclimate.com/github/RadarParlamentar-MES2017-1/radar)
 [![Coverage Status](https://coveralls.io/repos/radar-parlamentar/radar/badge.svg?branch=master)](https://coveralls.io/r/radar-parlamentar/radar?branch=master) (app modelagem)
