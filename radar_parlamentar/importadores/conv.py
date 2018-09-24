@@ -26,6 +26,8 @@ from __future__ import unicode_literals
 from django.utils.dateparse import parse_datetime
 from modelagem import models
 import logging
+import json
+import os
 
 logger = logging.getLogger("radar")
 
@@ -43,6 +45,7 @@ PARLAMENTARES_POR_PARTIDO = 3
 GIRONDINOS = 'Girondinos'
 JACOBINOS = 'Jacobinos'
 MONARQUISTAS = 'Monarquistas'
+ARQUIVO = os.path.dirname(__file__)
 
 
 class ImportadorConvencao:
@@ -89,14 +92,17 @@ class ImportadorConvencao:
                 parlamentar.save()
                 self.parlamentares[partido.nome].append(parlamentar)
 
-    def _gera_proposicao(self, num, descricao):
+    def _gera_proposicao(self, num, descricao, indexacao_ementa_dict=None):
         prop = models.Proposicao()
         prop.id_prop = num
         prop.sigla = 'PL'
         prop.numero = num
-        prop.ementa = descricao
         prop.descricao = descricao
         prop.casa_legislativa = self.casa
+        prop.ementa = descricao
+        if indexacao_ementa_dict is not None:
+            prop.indexacao = indexacao_ementa_dict.get("indexacao")
+            prop.ementa = indexacao_ementa_dict.get("ementa")
         prop.save()
         return prop
 
@@ -118,180 +124,46 @@ class ImportadorConvencao:
             voto.votacao = votacao
             voto.save()
 
-    def _gera_votacao1(self):
+    def _obtem_dados_json(self):
+        data = None
+        with open(os.path.join(ARQUIVO, 'votacoes.json')) as arquivo:
+            data = json.load(arquivo)
+        if data is None:
+            data = {"votacao_params": {}}
+        return data
 
-        numero_proposicao = '1'
-        descricao_proposicao = 'Reforma agrária'
-        prop = self._gera_proposicao(numero_proposicao, descricao_proposicao)
-        votacao = self._gera_votacao(numero_proposicao, descricao_proposicao,
-                                     DATA_NO_PRIMEIRO_SEMESTRE, prop)
-
-        votos_girondinos = [models.SIM, models.ABSTENCAO, models.NAO]
-        self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
-
-        votos_jacobinos = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
-
-        votos_monarquistas = [models.NAO, models.NAO, models.NAO]
-        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas)
-
-    def _gera_votacao2(self):
-
-        numero_proposicao = '2'
-        descricao_proposicao = 'Aumento da pensão dos nobres'
-        prop = self._gera_proposicao(numero_proposicao, descricao_proposicao)
-        votacao = self._gera_votacao(numero_proposicao, descricao_proposicao,
-                                     DATA_NO_PRIMEIRO_SEMESTRE, prop)
-
-        votos_girondinos = [models.NAO, models.NAO, models.NAO]
-        self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
-
-        votos_jacobinos = [models.NAO, models.NAO, models.NAO]
-        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
-
-        votos_monarquistas = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas)
-
-    def _gera_votacao3(self):
-
-        numero_proposicao = '3'
-        descricao_proposicao = 'Institui o Dia de Carlos Magno'
-        prop = self._gera_proposicao(numero_proposicao, descricao_proposicao)
-        votacao = self._gera_votacao(numero_proposicao, descricao_proposicao,
-                                     DATA_NO_PRIMEIRO_SEMESTRE, prop)
-
-        votos_girondinos = [models.NAO, models.NAO, models.SIM]
-        self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
-
-        votos_jacobinos = [models.NAO, models.NAO, models.NAO]
-        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
-
-        votos_monarquistas = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas)
-
-    def _gera_votacao4(self):
-
-        numero_proposicao = '4'
-        descricao_proposicao = 'Diminuição de impostos sobre a indústria'
-        prop = self._gera_proposicao(numero_proposicao, descricao_proposicao)
-        votacao = self._gera_votacao(numero_proposicao, descricao_proposicao,
-                                     DATA_NO_PRIMEIRO_SEMESTRE, prop)
-
-        votos_girondinos = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
-
-        votos_jacobinos = [models.SIM, models.ABSTENCAO, models.NAO]
-        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
-
-        votos_monarquistas = [models.SIM, models.NAO, models.AUSENTE]
-        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas)
-
-    def _gera_votacao5(self):
-
-        numero_proposicao = '5'
-        descricao_proposicao = 'Guilhotinar o Conde Pierre'
-        prop = self._gera_proposicao(numero_proposicao, descricao_proposicao)
-        votacao = self._gera_votacao(numero_proposicao, descricao_proposicao,
-                                     DATA_NO_SEGUNDO_SEMESTRE, prop)
-
-        votos_girondinos = [models.SIM, models.SIM, models.ABSTENCAO]
-        self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
-
-        votos_jacobinos = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
-
-        votos_monarquistas = [models.NAO, models.NAO, models.NAO]
-        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas)
-
-    def _gera_votacao6(self):
-
-        numero_proposicao = '6'
-        descricao_proposicao = 'Criação de novas escolas'
-        prop = self._gera_proposicao(numero_proposicao, descricao_proposicao)
-        votacao = self._gera_votacao(numero_proposicao, descricao_proposicao,
-                                     DATA_NO_SEGUNDO_SEMESTRE, prop)
-
-        votos_girondinos = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
-
-        votos_jacobinos = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
-
-        votos_monarquistas = [models.AUSENTE, models.SIM, models.SIM]
-        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas)
-
-    def _gera_votacao7(self):
-
-        numero_proposicao = '7'
-        descricao_proposicao = 'Aumento do efetivo militar'
-        prop = self._gera_proposicao(numero_proposicao, descricao_proposicao)
-        votacao = self._gera_votacao(numero_proposicao, descricao_proposicao,
-                                     DATA_NO_SEGUNDO_SEMESTRE, prop)
-
-        votos_girondinos = [models.SIM, models.SIM, models.ABSTENCAO]
-        self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
-
-        votos_jacobinos = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
-
-        votos_monarquistas = [models.SIM, models.AUSENTE, models.SIM]
-        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas)
-
-    # votação com atributos diferentes para teste
-    def _gera_votacao8(self):
-
-        numero_proposicao = '8'
-        descricao_proposicao = 'Guerra contra a Inglaterra'
-        prop = models.Proposicao()
-        prop.id_prop = numero_proposicao
-        prop.sigla = 'PL'
-        prop.numero = numero_proposicao
-        prop.ementa = 'o uso proibido de armas químicas'
-        prop.descricao = 'descricao da guerra'
-        prop.casa_legislativa = self.casa
-        prop.indexacao = 'bombas, efeitos, destruições'
-        prop.save()
-        votacao = self._gera_votacao(numero_proposicao, descricao_proposicao,
-                                     DATA_NO_SEGUNDO_SEMESTRE, prop)
-
-        votos_girondinos = [models.NAO, models.NAO, models.NAO]
-        self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
-
-        votos_jacobinos = [models.ABSTENCAO, models.NAO, models.NAO]
-        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
-
-        votos_monarquistas = [models.SIM, models.AUSENTE, models.SIM]
-        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas)
-
-    def _gera_votacao9(self):
-        numero_proposicao = '9'
-        descricao_proposicao = 'Contratar médicos para a capital'
-        prop = self._gera_proposicao(numero_proposicao, descricao_proposicao)
-        votacao = self._gera_votacao(numero_proposicao, descricao_proposicao,
-                                     DATA_VOTACAO_9, prop)
-
-        votos_girondinos = [models.SIM, models.SIM, models.ABSTENCAO]
-        self._gera_votos(votacao, GIRONDINOS, votos_girondinos)
-
-        votos_jacobinos = [models.SIM, models.SIM, models.SIM]
-        self._gera_votos(votacao, JACOBINOS, votos_jacobinos)
-
-        votos_monarquistas = [models.SIM, models.AUSENTE, models.SIM]
-        self._gera_votos(votacao, MONARQUISTAS, votos_monarquistas)
+    def _gera_votacao_geral(self):
+        data = self._obtem_dados_json()
+        votacoes_params = data.get("votacoes_params")
+        for index, valor in enumerate(votacoes_params):
+            numero_prop = str(index+1)
+            descricao_prop = valor["descricao"]
+            prop = valor.get("prop")
+            if prop is not None:
+                valor_prop = valor.get("prop")
+                descricao = valor_prop.get("descricao_extra")
+                indexacao_ementa_dict = {
+                   "indexacao": valor_prop.get("indexacao"),
+                   "ementa":  valor_prop.get("ementa")}
+                prop = self._gera_proposicao(
+                    numero_prop,
+                    descricao,
+                    indexacao_ementa_dict)
+            else:
+                prop = self._gera_proposicao(numero_prop, descricao_prop)
+            votacao = self._gera_votacao(
+                numero_prop,
+                descricao_prop,
+                DATA_NO_PRIMEIRO_SEMESTRE, prop)
+            partidos = valor["partidos"]
+            for partido, votos in partidos.items():
+                self._gera_votos(votacao, partido, votos)
 
     def importar(self):
         self.casa = self._gera_casa_legislativa()
         self._gera_partidos()
         self._gera_parlamentares()
-        self._gera_votacao1()
-        self._gera_votacao2()
-        self._gera_votacao3()
-        self._gera_votacao4()
-        self._gera_votacao5()
-        self._gera_votacao6()
-        self._gera_votacao7()
-        self._gera_votacao8()
-        self._gera_votacao9()
+        self._gera_votacao_geral()
         self._gera_proposicao('10', 'Legalizacao da maconha')
 
 

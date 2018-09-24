@@ -1,0 +1,82 @@
+{
+    "votacoes_params": [
+        {
+            "descricao": "Reforma agrária",
+            "partidos": {
+                "Girondinos": ["SIM", "ABSTENCAO", "NAO"],
+                "Jacobinos": ["SIM","SIM","SIM"],
+                "Monarquistas": ["NAO","NAO","NAO"]
+            }
+        },
+        {
+            "descricao": "Aumento da pensão dos nobres",
+            "partidos": {
+                "Girondinos": ["NAO", "NAO", "NAO"],
+                "Jacobinos": ["NAO","NAO","NAO"],
+                "Monarquistas": ["SIM","SIM","SIM"]
+            }
+        },
+        {
+            "descricao": "Institui o Dia de Carlos Magno",
+            "partidos": {
+                "Girondinos": ["NAO", "NAO", "SIM"],
+                "Jacobinos": ["NAO","NAO","NAO"],
+                "Monarquistas": ["SIM","SIM","SIM"]
+            }
+        },
+        {
+            "descricao": "Diminuição de impostos sobre a indústria",
+            "partidos": {
+                "Girondinos": ["SIM", "SIM", "SIM"],
+                "Jacobinos": ["SIM","ABSTENCAO","NAO"],
+                "Monarquistas": ["SIM","NAO","AUSENTE"]
+            }
+        },
+        {
+            "descricao": "Guilhotinar o Conde Pierre",
+            "partidos": {
+                "Girondinos": ["SIM", "SIM", "ABSTENCAO"],
+                "Jacobinos": ["SIM","SIM","SIM"],
+                "Monarquistas": ["NAO","NAO","NAO"]
+            }
+        },
+        {
+            "descricao": "Criação de novas escolas",
+            "partidos": {
+                "Girondinos": ["SIM", "SIM", "SIM"],
+                "Jacobinos": ["SIM","SIM","SIM"],
+                "Monarquistas": ["AUSENTE","SIM","SIM"]
+            }
+        },
+        {
+            "descricao": "Aumento do efetivo militar",
+            "partidos": {
+                "Girondinos": ["SIM", "SIM", "ABSTENCAO"],
+                "Jacobinos": ["SIM","SIM","SIM"],
+                "Monarquistas": ["SIM","AUSENTE","SIM"]
+            }
+        },
+        {
+            "descricao": "Guerra contra a Inglaterra",
+            "partidos": {
+                "Girondinos": ["SIM", "SIM", "ABSTENCAO"],
+                "Jacobinos": ["SIM","SIM","SIM"],
+                "Monarquistas": ["SIM","AUSENTE","SIM"]
+            },
+            "prop": {
+                "sigla": "PL",
+                "ementa": "o uso proibido de armas químicas",
+                "descricao_extra": "descricao da guerra",
+                "indexacao": "bombas, efeitos, destruições"
+            }
+        },
+        {
+            "descricao": "Contratar médicos para a capital",
+            "partidos": {
+                "Girondinos": ["SIM", "SIM", "ABSTENCAO"],
+                "Jacobinos": ["SIM","SIM","SIM"],
+                "Monarquistas": ["SIM","AUSENTE","SIM"]
+            }
+        }
+    ]
+}
