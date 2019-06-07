@@ -58,6 +58,7 @@ services:
             - .:/radar
             - volume_radar_sockets:/radar/sockets/
             - volume_radar_django_static:/radar/radar_parlamentar/static
+            - ./radar_parlamentar/.pgpass:/root/.pgpass
         links:
             - postgres
             - memcache

@@ -97,13 +97,16 @@ class DbDumperJob(CronJobBase):
         logger.info('DbDumperJob foi chamado.')
         weekday = date.today().weekday()
         # segunda é o zero
+
         if weekday == 0:
             logger.info('DbDumperJob fazendo dump do banco.')
+            dumper = DbDumper()
+            dumper.dump()
+            logger.info('Dump realizado.')
         else:
             logger.info('Hoje não é o dia. DbDumperJob só trabalha às segundas.')
 
 class DbDumper():
-
     # Roteiro:
     # OK Verificar que link em dados não tem dump
     # criar .pgpass
@@ -118,8 +121,11 @@ class DbDumper():
     DUMP_FILE = "/radar/radar_parlamentar/radar_parlamentar/static/db-dump/radar.sql"
 
     def dump(self):
-        dump_command = 'pg_dump -h postgres -U radar -d radar -W --inserts -t modelagem_* -f %s' % DbDumper.DUMP_FILE
+        # precisa modificar permissao do pgpass pra funcionar
+        os.system('chmod 0600 ~/.pgpass')
+        dump_command = 'pg_dump -h postgres -U radar -d radar -w --inserts -t modelagem_* -f %s' % DbDumper.DUMP_FILE
         os.system(dump_command)
+
         #compress_command = 'bzip2 -9 -f %s' % DbDumper.DUMP_FILE
         #os.system(compress_command)
         #collectstatic_command = 'python manage.py collectstatic --noinput' # necessário?

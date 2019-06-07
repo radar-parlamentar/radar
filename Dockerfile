@@ -9,6 +9,7 @@
 FROM radarparlamentar/base:1.0.3
 
 COPY radar_parlamentar/requirements.txt /tmp/requirements.txt
+
 RUN set -ex \
     && pip install -U pip setuptools wheel \
     && pip install -r /tmp/requirements.txt \
